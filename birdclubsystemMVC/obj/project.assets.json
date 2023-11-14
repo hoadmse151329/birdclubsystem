@@ -14,11 +14,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\VisualStudioCommunityProjects\\birdclubsystem\\birdclubsystem.csproj",
+      "projectUniqueName": "D:\\VisualStudioCommunityProjects\\birdclubsystem\\birdclubsystemMVC\\birdclubsystem.csproj",
       "projectName": "birdclubsystem",
-      "projectPath": "D:\\VisualStudioCommunityProjects\\birdclubsystem\\birdclubsystem.csproj",
+      "projectPath": "D:\\VisualStudioCommunityProjects\\birdclubsystem\\birdclubsystemMVC\\birdclubsystem.csproj",
       "packagesPath": "C:\\Users\\ADMIN\\.nuget\\packages\\",
-      "outputPath": "D:\\VisualStudioCommunityProjects\\birdclubsystem\\obj\\",
+      "outputPath": "D:\\VisualStudioCommunityProjects\\birdclubsystem\\birdclubsystemMVC\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "A:\\Microsoft Visual Studio\\Tools\\NuGetPackages"
