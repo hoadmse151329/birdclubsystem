@@ -1,0 +1,84 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - birdclubsystem</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/birdclubsystem.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <header>
+        @*<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">birdclubsystem</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>*@
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow mb-3" style="backdrop-filter:blur() background: rgba(255, 255, 255, 0.8)">
+            <div class="container-fluid">
+                <div class="ChaomaoClub" style="width: 162px; height: 35px; left: 54px; top: 17px; position: absolute; text-align: center; color: #1F5300; font-size: 30px; font-family: Inter; font-weight: 700; word-wrap: break-word">ChaoMao <br />Club</div>
+                <div class="Navbar" style="width: 721px; height: 172px; left: 718px; top: 22px; position: absolute">
+                    <div class="Meetings" style="left: 336px; top: 22px; position: absolute; text-align: center; color: black; font-size: 16px; font-family: Inter; font-weight: 700; word-wrap: break-word">Meetings</div>
+                    <div class="FieldTrips" style="left: 234px; top: 22px; position: absolute; text-align: center; color: black; font-size: 16px; font-family: Inter; font-weight: 700; word-wrap: break-word">Field trips</div>
+                    <div class="GuestContestsButton" style="width: 128px; height: 82px; padding-bottom: 39px; padding-left: 28px; padding-right: 28px; left: 110px; top: 22px; position: absolute; justify-content: center; align-items: center; display: inline-flex">
+                        <div class="News" style="position: relative">
+                            <div class="Contests" style="left: 0px; top: 0px; position: absolute; text-align: center; color: black; font-size: 16px; font-family: Inter; font-weight: 700; word-wrap: break-word">Contests</div>
+                            <div class="IcBaselineArrowBackIosNew" style="width: 24px; height: 24px; padding-top: 2px; padding-bottom: 2px; padding-left: 6px; padding-right: 6.23px; left: 24px; top: 43px; position: absolute; transform: rotate(-90deg); transform-origin: 0 0; justify-content: center; align-items: center; display: inline-flex">
+                                <div class="Vector" style="width: 11.77px; height: 20px; background: black"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="Gallery" style="left: 549px; top: 22px; position: absolute; text-align: center; color: black; font-size: 16px; font-family: Inter; font-weight: 700; word-wrap: break-word">Gallery</div>
+                    <div class="CommunityDropdown" style="width: 91px; height: 43px; left: 434px; top: 22px; position: absolute">
+                        <div class="Community" style="left: 0px; top: 0px; position: absolute; text-align: center; color: black; font-size: 16px; font-family: Inter; font-weight: 700; word-wrap: break-word">Community</div>
+                        <div class="IcBaselineArrowBackIosNew" style="width: 24px; height: 24px; padding-top: 2px; padding-bottom: 2px; padding-left: 6px; padding-right: 6.23px; left: 34px; top: 43px; position: absolute; transform: rotate(-90deg); transform-origin: 0 0; justify-content: center; align-items: center; display: inline-flex">
+                            <div class="Vector" style="width: 11.77px; height: 20px; background: black"></div>
+                        </div>
+                    </div>
+                    <div class="GuestButton" style="width: 128px; height: 172px; padding-bottom: 112px; padding-left: 34px; padding-right: 34px; left: 593px; top: 0px; position: absolute; flex-direction: column; justify-content: flex-start; align-items: center; display: inline-flex">
+                        <div class="GuestButton" style="width: 60px; height: 60px; position: relative; flex-direction: column; justify-content: flex-start; align-items: flex-start; display: flex">
+                            <div class="Ellipse3" style="width: 60px; height: 60px; background: rgba(74.29, 195.50, 0, 0.35)"></div>
+                            <div class="IcBaselinePersonOutline" style="width: 40px; height: 40px; padding: 6.67px; justify-content: center; align-items: center; display: inline-flex">
+                                <div class="Vector" style="width: 26.67px; height: 26.67px; background: black"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="Home" style="left: 0px; top: 22px; position: absolute; text-align: center; color: black; font-size: 16px; font-family: Inter; font-weight: 700; word-wrap: break-word">Home</div>
+                    <div class="News" style="left: 70px; top: 22px; position: absolute; text-align: center; color: black; font-size: 16px; font-family: Inter; font-weight: 700; word-wrap: break-word">News</div>
+                </div>
+                <img class="RedWhiskeredBulbulBirdLogoEps10Generated1" style="width: 70px; height: 86px; left: 5px; top: 9px; position: absolute" src="/images/Red_whiskered_bulbul_bird_logo_eps_10_generated 1.png" />
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2024 - birdclubsystem - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
