@@ -9,19 +9,19 @@
   },
   "packageFolders": {
     "C:\\Users\\ADMIN\\.nuget\\packages\\": {},
-    "A:\\Microsoft Visual Studio\\Tools\\NuGetPackages": {}
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\VisualStudioCommunityProjects\\birdclubsystem\\birdclubsystemMVC\\birdclubsystem.csproj",
+      "projectUniqueName": "D:\\My Stuff\\Codes\\C#\\birdclubsystem\\birdclubsystemMVC\\birdclubsystem.csproj",
       "projectName": "birdclubsystem",
-      "projectPath": "D:\\VisualStudioCommunityProjects\\birdclubsystem\\birdclubsystemMVC\\birdclubsystem.csproj",
+      "projectPath": "D:\\My Stuff\\Codes\\C#\\birdclubsystem\\birdclubsystemMVC\\birdclubsystem.csproj",
       "packagesPath": "C:\\Users\\ADMIN\\.nuget\\packages\\",
-      "outputPath": "D:\\VisualStudioCommunityProjects\\birdclubsystem\\birdclubsystemMVC\\obj\\",
+      "outputPath": "D:\\My Stuff\\Codes\\C#\\birdclubsystem\\birdclubsystemMVC\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "A:\\Microsoft Visual Studio\\Tools\\NuGetPackages"
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
         "C:\\Users\\ADMIN\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -33,6 +33,7 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -69,7 +70,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.103\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100\\RuntimeIdentifierGraph.json"
       }
     }
   }

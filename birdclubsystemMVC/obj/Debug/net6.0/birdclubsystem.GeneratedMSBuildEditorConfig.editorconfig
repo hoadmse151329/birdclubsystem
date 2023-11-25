@@ -9,65 +9,67 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = birdclubsystem
 build_property.RootNamespace = birdclubsystem
-build_property.ProjectDir = D:\VisualStudioCommunityProjects\birdclubsystem\birdclubsystemMVC\
+build_property.ProjectDir = D:\My Stuff\Codes\C#\BirdClubSystem\birdclubsystemMVC\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 6.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = D:\VisualStudioCommunityProjects\birdclubsystem\birdclubsystemMVC
+build_property.MSBuildProjectDirectory = D:\My Stuff\Codes\C#\BirdClubSystem\birdclubsystemMVC
 build_property._RazorSourceGeneratorDebug = 
 
-[D:/VisualStudioCommunityProjects/birdclubsystem/birdclubsystemMVC/Views/FieldTrip/FieldTripPayment.cshtml]
+[D:/My Stuff/Codes/C\#/BirdClubSystem/birdclubsystemMVC/Views/FieldTrip/FieldTripPayment.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmllbGRUcmlwXEZpZWxkVHJpcFBheW1lbnQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/VisualStudioCommunityProjects/birdclubsystem/birdclubsystemMVC/Views/FieldTrip/FieldTripPostDayByDay.cshtml]
+[D:/My Stuff/Codes/C\#/BirdClubSystem/birdclubsystemMVC/Views/FieldTrip/FieldTripPostDayByDay.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmllbGRUcmlwXEZpZWxkVHJpcFBvc3REYXlCeURheS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/VisualStudioCommunityProjects/birdclubsystem/birdclubsystemMVC/Views/FieldTrip/FieldTripPostGettingThere.cshtml]
+[D:/My Stuff/Codes/C\#/BirdClubSystem/birdclubsystemMVC/Views/FieldTrip/FieldTripPostGettingThere.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmllbGRUcmlwXEZpZWxkVHJpcFBvc3RHZXR0aW5nVGhlcmUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/VisualStudioCommunityProjects/birdclubsystem/birdclubsystemMVC/Views/FieldTrip/FieldTripPostInclusion.cshtml]
+[D:/My Stuff/Codes/C\#/BirdClubSystem/birdclubsystemMVC/Views/FieldTrip/FieldTripPostInclusion.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmllbGRUcmlwXEZpZWxkVHJpcFBvc3RJbmNsdXNpb24uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/VisualStudioCommunityProjects/birdclubsystem/birdclubsystemMVC/Views/FieldTrip/FieldTripPostRate.cshtml]
+[D:/My Stuff/Codes/C\#/BirdClubSystem/birdclubsystemMVC/Views/FieldTrip/FieldTripPostRate.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmllbGRUcmlwXEZpZWxkVHJpcFBvc3RSYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/VisualStudioCommunityProjects/birdclubsystem/birdclubsystemMVC/Views/FieldTrip/FieldTripRegister.cshtml]
+[D:/My Stuff/Codes/C\#/BirdClubSystem/birdclubsystemMVC/Views/FieldTrip/FieldTripRegister.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmllbGRUcmlwXEZpZWxkVHJpcFJlZ2lzdGVyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/VisualStudioCommunityProjects/birdclubsystem/birdclubsystemMVC/Views/FieldTrip/Index.cshtml]
+[D:/My Stuff/Codes/C\#/BirdClubSystem/birdclubsystemMVC/Views/FieldTrip/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmllbGRUcmlwXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/VisualStudioCommunityProjects/birdclubsystem/birdclubsystemMVC/Views/Home/Index.cshtml]
+[D:/My Stuff/Codes/C\#/BirdClubSystem/birdclubsystemMVC/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/VisualStudioCommunityProjects/birdclubsystem/birdclubsystemMVC/Views/Home/Privacy.cshtml]
+[D:/My Stuff/Codes/C\#/BirdClubSystem/birdclubsystemMVC/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/VisualStudioCommunityProjects/birdclubsystem/birdclubsystemMVC/Views/Shared/Error.cshtml]
+[D:/My Stuff/Codes/C\#/BirdClubSystem/birdclubsystemMVC/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/VisualStudioCommunityProjects/birdclubsystem/birdclubsystemMVC/Views/Shared/_ValidationScriptsPartial.cshtml]
+[D:/My Stuff/Codes/C\#/BirdClubSystem/birdclubsystemMVC/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/VisualStudioCommunityProjects/birdclubsystem/birdclubsystemMVC/Views/_ViewImports.cshtml]
+[D:/My Stuff/Codes/C\#/BirdClubSystem/birdclubsystemMVC/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/VisualStudioCommunityProjects/birdclubsystem/birdclubsystemMVC/Views/_ViewStart.cshtml]
+[D:/My Stuff/Codes/C\#/BirdClubSystem/birdclubsystemMVC/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/VisualStudioCommunityProjects/birdclubsystem/birdclubsystemMVC/Views/Shared/_Layout.cshtml]
+[D:/My Stuff/Codes/C\#/BirdClubSystem/birdclubsystemMVC/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-49dm9kpyv0
