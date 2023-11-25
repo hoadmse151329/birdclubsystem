@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "D:\\VisualStudioCommunityProjects\\birdclubsystem\\birdclubsystemMVC\\birdclubsystem.csproj": {}
+    "D:\\New folder\\SWP391\\fptu_alarm_project\\birdclubsystem\\birdclubsystemMVC\\birdclubsystem.csproj": {}
   },
   "projects": {
-    "D:\\VisualStudioCommunityProjects\\birdclubsystem\\birdclubsystemMVC\\birdclubsystem.csproj": {
+    "D:\\New folder\\SWP391\\fptu_alarm_project\\birdclubsystem\\birdclubsystemMVC\\birdclubsystem.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\VisualStudioCommunityProjects\\birdclubsystem\\birdclubsystemMVC\\birdclubsystem.csproj",
+        "projectUniqueName": "D:\\New folder\\SWP391\\fptu_alarm_project\\birdclubsystem\\birdclubsystemMVC\\birdclubsystem.csproj",
         "projectName": "birdclubsystem",
-        "projectPath": "D:\\VisualStudioCommunityProjects\\birdclubsystem\\birdclubsystemMVC\\birdclubsystem.csproj",
-        "packagesPath": "C:\\Users\\ADMIN\\.nuget\\packages\\",
-        "outputPath": "D:\\VisualStudioCommunityProjects\\birdclubsystem\\birdclubsystemMVC\\obj\\",
+        "projectPath": "D:\\New folder\\SWP391\\fptu_alarm_project\\birdclubsystem\\birdclubsystemMVC\\birdclubsystem.csproj",
+        "packagesPath": "C:\\Users\\Admins\\.nuget\\packages\\",
+        "outputPath": "D:\\New folder\\SWP391\\fptu_alarm_project\\birdclubsystem\\birdclubsystemMVC\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "A:\\Microsoft Visual Studio\\Tools\\NuGetPackages"
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\ADMIN\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Admins\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -49,8 +49,7 @@
             "net47",
             "net471",
             "net472",
-            "net48",
-            "net481"
+            "net48"
           ],
           "assetTargetFallback": true,
           "warn": true,
@@ -62,7 +61,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.103\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.320\\RuntimeIdentifierGraph.json"
         }
       }
     }
