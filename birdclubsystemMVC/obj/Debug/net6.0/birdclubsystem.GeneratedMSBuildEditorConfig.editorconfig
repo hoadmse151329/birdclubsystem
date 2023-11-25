@@ -16,6 +16,34 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = D:\VisualStudioCommunityProjects\birdclubsystem\birdclubsystemMVC
 build_property._RazorSourceGeneratorDebug = 
 
+[D:/VisualStudioCommunityProjects/birdclubsystem/birdclubsystemMVC/Views/FieldTrip/FieldTripPayment.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmllbGRUcmlwXEZpZWxkVHJpcFBheW1lbnQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/VisualStudioCommunityProjects/birdclubsystem/birdclubsystemMVC/Views/FieldTrip/FieldTripPostDayByDay.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmllbGRUcmlwXEZpZWxkVHJpcFBvc3REYXlCeURheS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/VisualStudioCommunityProjects/birdclubsystem/birdclubsystemMVC/Views/FieldTrip/FieldTripPostGettingThere.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmllbGRUcmlwXEZpZWxkVHJpcFBvc3RHZXR0aW5nVGhlcmUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/VisualStudioCommunityProjects/birdclubsystem/birdclubsystemMVC/Views/FieldTrip/FieldTripPostInclusion.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmllbGRUcmlwXEZpZWxkVHJpcFBvc3RJbmNsdXNpb24uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/VisualStudioCommunityProjects/birdclubsystem/birdclubsystemMVC/Views/FieldTrip/FieldTripPostRate.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmllbGRUcmlwXEZpZWxkVHJpcFBvc3RSYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/VisualStudioCommunityProjects/birdclubsystem/birdclubsystemMVC/Views/FieldTrip/FieldTripRegister.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmllbGRUcmlwXEZpZWxkVHJpcFJlZ2lzdGVyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/VisualStudioCommunityProjects/birdclubsystem/birdclubsystemMVC/Views/FieldTrip/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmllbGRUcmlwXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/VisualStudioCommunityProjects/birdclubsystem/birdclubsystemMVC/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
