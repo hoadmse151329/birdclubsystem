@@ -361,3 +361,13 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/birdclubsystemMVC/obj/project.nuget.cache
+/birdclubsystemMVC/obj/project.assets.json
+/birdclubsystemMVC/obj/birdclubsystem.csproj.nuget.g.props
+/birdclubsystemMVC/obj/birdclubsystem.csproj.nuget.dgspec.json
+/birdclubsystemMVC/obj/Debug/net6.0/birdclubsystem.assets.cache
+/birdclubsystemMVC/obj/Debug/net6.0/birdclubsystem.csproj.CoreCompileInputs.cache
+/birdclubsystemMVC/obj/Debug/net6.0/birdclubsystem.csproj.FileListAbsolute.txt
+/birdclubsystemMVC/obj/Debug/net6.0/birdclubsystem.genruntimeconfig.cache
+/birdclubsystemMVC/obj/Debug/net6.0/staticwebassets.development.json
+/birdclubsystemMVC/obj/Debug/net6.0/staticwebassets.pack.json
