@@ -14,5 +14,40 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+    background: url("../images/Background.png") no-repeat center;
+    background-size: cover;
+}
+nav {
+    backdrop-filter: blur();
+    background-color: rgba(255, 255, 255, 0.6);
+}
+a{
+    text-decoration:none;
+    color:darkgreen;
+}
+.navbar .nav-name-text {
+    text-align: center;
+    color:darkgreen;
+    font-size: 30px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', 'Arial', 'sans-serif';
+    font-weight: 700;
+    word-wrap: break-word;
+    word-spacing: 1px;
+}
+.nav-item-text .nav-link{
+    text-decoration: none;
+    text-align: center;
+    color:black;
+    font-size: 22px;
+    font-family: Inter;
+    font-weight: 700;
+    white-space: nowrap;
+}
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.55%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+.navbar-toggler {
+    color: rgba(255,255,255,.55);
+    border-color: rgba(255,255,255,.1);
 }

@@ -5,6 +5,10 @@
       "PackagePath": "staticwebassets\\birdclubsystem.bundle.scp.css"
     },
     {
+      "Id": "D:\\VisualStudioCommunityProjects\\birdclubsystem\\birdclubsystemMVC\\wwwroot\\css\\FieldTrip.css",
+      "PackagePath": "staticwebassets\\css\\FieldTrip.css"
+    },
+    {
       "Id": "D:\\VisualStudioCommunityProjects\\birdclubsystem\\birdclubsystemMVC\\wwwroot\\css\\site.css",
       "PackagePath": "staticwebassets\\css\\site.css"
     },

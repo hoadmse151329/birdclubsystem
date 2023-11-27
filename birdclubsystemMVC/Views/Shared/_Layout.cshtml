@@ -6,9 +6,10 @@
     <title>@ViewData["Title"] - birdclubsystem</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/FieldTrip.css" asp-append-version="true"/>
     <link rel="stylesheet" href="~/birdclubsystem.styles.css" asp-append-version="true" />
 </head>
-<body style="background: url(images/Background.png) no-repeat center; background-size: cover">
+<body>
     <header>
         @*<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
@@ -29,47 +30,104 @@
                 </div>
             </div>
         </nav>*@
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow mb-3" style="backdrop-filter:blur(); background: rgba(255, 255, 255, 0.6)">
+        <nav class="navbar navbar-expand-xl border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <div class="row col-5">
-                    <img class="img-fluid nav-item" style="width: 70px; height: 86px; left: 100px;" src="/images/Red_whiskered_bulbul_bird_logo_eps_10_generated 1.png" />
-                    <div class="nav-item" style="width: 162px; left: 54px; text-align: center; color: #1F5300; font-size: 30px; font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; font-weight: 700; word-wrap: break-word; word-spacing: 1px">ChaoMao <br />Club</div>
+                <a class="navbar-brand nav-name-text" href="#">
+                    <img class="d-inline-block" src="/images/Red_whiskered_bulbul_bird_logo_eps_10_generated 1.png" />
+                    ChaoMao Club
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarText">
+                    <ul class="navbar-nav ms-auto mb-2 mb-xl-0">
+                        <li class="nav-item nav-item-text">
+                            <a class="nav-link" href="#">Home</a>
+                        </li>
+                        <li class="nav-item nav-item-text">
+                            <a class="nav-link" href="#">News</a>
+                        </li>
+                        <li class="nav-item nav-item-text">
+                            <a class="nav-link" href="#">Meetings</a>
+                        </li>
+                        <li class="nav-item nav-item-text">
+                            <a class="nav-link" href="#">Field trips</a>
+                        </li>
+                        <li class="nav-item nav-item-text">
+                            <a class="nav-link" href="#">Contests</a>
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <li><a class="dropdown-item" href="#">LeaderBoard</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item nav-item-text">
+                            <a class="nav-link" href="#">Gallery</a>
+                        </li>
+                        <li class="nav-item nav-item-text">
+                            <a class="nav-link" href="#">Community</a>
+                        </li>
+                        <li class="nav-item nav-item-text">
+                            <a class="nav-link" href="#">User</a>
+                        </li>
+                    </ul>
                 </div>
-                <div class="row col-7 align-items-center">
-                    <a class="col d-flex nav-item p-auto" style=" text-decoration: none;  text-align: center; color: black; font-size: 20px; font-family: Inter; font-weight: 700; word-wrap: break-word">Home</a>
-                    <a class="col d-flex nav-item p-auto" style=" text-decoration: none;  text-align: center; color: black; font-size: 20px; font-family: Inter; font-weight: 700; word-wrap: break-word">News</a>
-                    <a class="col d-flex nav-item p-auto" style="text-decoration: none;  text-align: center; color: black; font-size: 20px; font-family: Inter; font-weight: 700; word-wrap: break-word">Meetings</a>
-                    <a class="col d-flex nav-item p-auto" style=" text-decoration: none;  text-align: center; color: black; font-size: 20px; font-family: Inter; font-weight: 700; word-wrap: break-word">Field trips</a>
-                    <a class="col d-flex nav-item p-auto" style="text-decoration: none;  text-align: center; color: black; font-size: 20px; font-family: Inter; font-weight: 700; word-wrap: break-word">Contests</a>
-                    @*<div class="IcBaselineArrowBackIosNew" style="width: 24px; height: 24px; padding-top: 2px; padding-bottom: 2px; padding-left: 6px; padding-right: 6.23px; left: 24px; top: 43px;  transform: rotate(-90deg); transform-origin: 0 0; justify-content: center; align-items: center; display: inline-flex">
-                    <div class="Vector" style="width: 11.77px; height: 20px; background: black"></div>
-                    </div>*@
-                    <a class="col d-flex nav-item p-auto" style=" text-decoration: none;  text-align: center; color: black; font-size: 20px; font-family: Inter; font-weight: 700; word-wrap: break-word">Gallery</a>
-                    <a class="col d-flex nav-item p-auto" style=" text-decoration: none;  text-align: center; color: black; font-size: 20px; font-family: Inter; font-weight: 700; word-wrap: break-word">Community</a>
-                    @*<div class="IcBaselineArrowBackIosNew" style="width: 24px; height: 24px; padding-top: 2px; padding-bottom: 2px; padding-left: 6px; padding-right: 6.23px; left: 34px; top: 43px;  transform: rotate(-90deg); transform-origin: 0 0; justify-content: center; align-items: center; display: inline-flex">
-                    <div class="Vector" style="width: 11.77px; height: 20px; background: black"></div>
-                    </div>*@
-                    <a class="col d-flex nav-item p-auto" style="width: 128px; padding-bottom: 112px; padding-left: 34px; padding-right: 34px; left: 593px; text-decoration: none;   flex-direction: column; justify-content: flex-start; align-items: center; display: inline-flex">
-                        @*<a class="nav-link" style="width: 60px; height: 60px; position: relative; flex-direction: column; justify-content: flex-start; align-items: flex-start; display: flex">
-                        <div class="Ellipse3" style="width: 60px; height: 60px; background: rgba(74.29, 195.50, 0, 0.35)"></div>
-                        <div class="IcBaselinePersonOutline" style="width: 40px; height: 40px; padding: 6.67px; justify-content: center; align-items: center; display: inline-flex">
-                        <div class="Vector" style="width: 26.67px; height: 26.67px; background: black"></div>
-                        </div>
-                        </a>*@
+                @*<a class="d-flex nav-item px-2 nav-item-text text-black" style="width: 128px; padding-bottom: 112px; padding-left: 34px; padding-right: 34px; left: 593px; text-decoration: none;">
+                    <a class="nav-link" style="width: 60px; height: 60px; position: relative; flex-direction: column; justify-content: flex-start; align-items: flex-start; display: flex">
+                    <div class="Ellipse3" style="width: 60px; height: 60px; background: rgba(74.29, 195.50, 0, 0.35)"></div>
+                    <div class="IcBaselinePersonOutline" style="width: 40px; height: 40px; padding: 6.67px; justify-content: center; align-items: center; display: inline-flex">
+                    <div class="Vector" style="width: 26.67px; height: 26.67px; background: black"></div>
+                    </div>
                     </a>
-                </div>
+                </a>*@
             </div>
         </nav>
     </header>
-    <div class="container">
+    <div class="container-fluid">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
-
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2024 - birdclubsystem - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    @*<div class="Footer" style="width: 1439px; height: 266px; left: -0px; top: 1884px; position: absolute">
+        <div class="Rectangle4" style="width: 1439px; height: 266px; left: 0px; top: 0px; position: absolute; background: rgba(31.49, 82.87, 0, 0.35)"></div>
+        <div class="2024ChaomaoBirdclub" style="left: 153px; top: 200px; position: absolute; color: black; font-size: 24px; font-family: Inter; font-weight: 400; letter-spacing: 1.20px; word-wrap: break-word">@@2024 ChaoMao BirdClub</div>
+        <div class="OtherFanpages" style="width: 147px; height: 30px; left: 1140px; top: 195px; position: absolute">
+            <div class="AntDesignInstagramOutlined" style="width: 30px; height: 30px; padding: 3.29px; left: 39px; top: 0px; position: absolute; justify-content: center; align-items: center; display: inline-flex">
+                <div class="Vector" style="width: 23.42px; height: 23.42px; background: black"></div>
+            </div>
+            <div class="BxlFacebook" style="width: 30px; height: 30px; padding-top: 3.75px; padding-bottom: 3.75px; padding-left: 9.16px; padding-right: 9.17px; left: 78px; top: 0px; position: absolute; justify-content: center; align-items: center; display: inline-flex">
+                <div class="Vector" style="width: 11.67px; height: 22.50px; background: black"></div>
+            </div>
+            <div class="AntDesignTwitterOutlined" style="width: 30px; height: 30px; padding-left: 2.81px; padding-right: 2.81px; padding-top: 5.10px; padding-bottom: 5.10px; left: 117px; top: 0px; position: absolute; justify-content: center; align-items: center; display: inline-flex">
+                <div class="Vector" style="width: 24.38px; height: 19.80px; background: black"></div>
+            </div>
+            <div class="AkarIconsLocation" style="width: 30px; height: 30px; padding-left: 5px; padding-right: 5px; padding-top: 2.50px; padding-bottom: 2.50px; left: 0px; top: 0px; position: absolute; justify-content: center; align-items: center; display: inline-flex">
+                <div class="Group" style="width: 20px; height: 25px; position: relative">
+                    <div class="Vector" style="width: 7.50px; height: 7.50px; left: 6.25px; top: 6.25px; position: absolute; border: 1.67px black solid"></div>
+                    <div class="Vector" style="width: 20px; height: 25px; left: 0px; top: 0px; position: absolute; border: 1.67px black solid"></div>
+                </div>
+            </div>
+        </div>
+        <div class="WeWelcomeDonationsInAnyAmountToHelpFundClubInitiativesAndActivitiesSuchAsThePurchaseOfBirdSeedForFeedingBirdsNecessariesForHarmedBirdTreatmentsTheAnnualContestsFieldTripsAndOtherClubEventsThePurchaseOfSuppliesAndToolsForOurVolunteerProjectsEtc" style="width: 1134px; height: 84px; left: 152px; top: 20px; position: absolute; color: black; font-size: 16px; font-family: Inter; font-weight: 400; letter-spacing: 0.80px; word-wrap: break-word">We welcome donations in any amount to help fund club initiatives and activities, such as the purchase of bird seed for feeding birds, necessaries for harmed bird treatments, the annual Contests, Field trips and other club events, the purchase of supplies and tools for our volunteer projects, etc.</div>
+        <div class="LearnMoreButton" style="width: 214px; height: 55px; left: 612px; top: 105px; position: absolute">
+            <div class="Rectangle2" style="width: 214px; height: 55px; left: 0px; top: 0px; position: absolute; background: rgba(74.29, 195.50, 0, 0.35); border-radius: 50px"></div>
+            <div class="Donate" style="left: 71px; top: 16px; position: absolute; color: black; font-size: 20px; font-family: Inter; font-weight: 700; word-wrap: break-word">Donate</div>
+        </div>
+    </div>*@
+    <footer class="footer" style="background: rgba(31.49, 82.87, 0, 0.35)">
+        <div class="overlap-5">
+            @*<div class="rectangle-4"></div>
+            <div class="text-wrapper-13">2024 ChaoMao BirdClub</div>
+            <img class="other-fanpages" src="~/img/other-fanpages.png" />
+            <p class="text-wrapper-14 text-break">
+                We welcome donations in any amount to help fund club initiatives and activities, such as the purchase of
+                bird seed for feeding birds, necessaries for harmed bird treatments, the annual Contests, Field trips
+                and other club events, the purchase of supplies and tools for our volunteer projects, etc.
+            </p>
+            <div class="learn-more-button">
+                <div class="overlap-group-2"><div class="text-wrapper-15">Donate</div></div>
+            </div>*@
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
