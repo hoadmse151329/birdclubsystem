@@ -30,7 +30,7 @@ a{
     text-align: center;
     color:darkgreen;
     font-size: 30px;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', 'Arial', 'sans-serif';
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-weight: 700;
     word-wrap: break-word;
     word-spacing: 1px;
@@ -40,7 +40,7 @@ a{
     text-align: center;
     color:black;
     font-size: 22px;
-    font-family: Inter;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-weight: 700;
     white-space: nowrap;
 }
@@ -50,4 +50,27 @@ a{
 .navbar-toggler {
     color: rgba(255,255,255,.55);
     border-color: rgba(255,255,255,.1);
+}
+.bottom-text {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+}
+.button {
+    justify-content:center;
+}
+.button .bottom-text {
+    width: 150px;
+    height: auto;
+    background: rgba(74.29, 195.50, 0, 0.35);
+    border-radius: 50px;
+    font-size: 22px;
+    color: black;
+}
+/*.footer .d-flex {
+    flex-direction: column;
+    align-items: center;
+}*/
+.other-fanpages {
+    justify-content:end;
 }
