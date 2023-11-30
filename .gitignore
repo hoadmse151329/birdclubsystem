@@ -705,3 +705,15 @@ FodyWeavers.xsd
 # Additional files built by Visual Studio
 
 # End of https://www.toptal.com/developers/gitignore/api/csharp,visualstudio,aspnetcore
+/birdclubsystemMVC/.vs/birdclubsystem/DesignTimeBuild/.dtbcache.v2
+/birdclubsystemMVC/.vs/birdclubsystem/v17/.futdcache.v2
+/birdclubsystemMVC/.vs/birdclubsystem/v17/.suo
+/birdclubsystemMVC/.vs/ProjectEvaluation/birdclubsystem.metadata.v5.2
+/birdclubsystemMVC/.vs/ProjectEvaluation/birdclubsystem.projects.v5.2
+/birdclubsystemMVC/bin/Debug/net6.0/birdclubsystem.dll
+/birdclubsystemMVC/bin/Debug/net6.0/birdclubsystem.pdb
+/birdclubsystemMVC/obj/Debug/net6.0/ref/birdclubsystem.dll
+/birdclubsystemMVC/obj/Debug/net6.0/refint/birdclubsystem.dll
+/birdclubsystemMVC/obj/Debug/net6.0/birdclubsystem.dll
+/birdclubsystemMVC/obj/Debug/net6.0/birdclubsystem.GeneratedMSBuildEditorConfig.editorconfig
+/birdclubsystemMVC/obj/Debug/net6.0/birdclubsystem.pdb
