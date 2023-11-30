@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "CfAVUr3mKCeJtWfEO1I8cxxcbrdaUQP15p/cfHpa6d34mVGXcppYsdss4SZEwXY2ObR2AwhugRvPWMsj3CC67Q==",
+  "dgSpecHash": "e+vOQe08W6QEtqH7hnmxe2Ms5jAYHxAoXcOrt/6VXPNPqgrXy4kZoIHr6c4lBa8aZ0UgnUy/2tXWDjpWEu1m1w==",
   "success": true,
-  "projectFilePath": "D:\\My Stuff\\Codes\\C#\\birdclubsystem\\birdclubsystemMVC\\birdclubsystem.csproj",
+  "projectFilePath": "D:\\VisualStudioCommunityProjects\\birdclubsystem\\birdclubsystemMVC\\birdclubsystem.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\ADMIN\\.nuget\\packages\\humanizer\\2.14.1\\humanizer.2.14.1.nupkg.sha512",
     "C:\\Users\\ADMIN\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",

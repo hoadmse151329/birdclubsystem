@@ -728,7 +728,6 @@ FodyWeavers.xsd
 /birdclubsystemMVC/obj/Debug/net6.0/birdclubsystem.pdb
 /birdclubsystemMVC/.vs/birdclubsystem/v17/.suo
 /birdclubsystemMVC/bin/Debug/net6.0/birdclubsystem.dll
-/birdclubsystemMVC/bin/Debug/net6.0/birdclubsystem.exe
 /birdclubsystemMVC/bin/Debug/net6.0/birdclubsystem.pdb
 /birdclubsystemMVC/bin/Debug/net6.0/birdclubsystem.staticwebassets.runtime.json
 /birdclubsystemMVC/obj/Debug/net6.0/ref/birdclubsystem.dll
@@ -737,3 +736,7 @@ FodyWeavers.xsd
 /birdclubsystemMVC/obj/Debug/net6.0/birdclubsystem.pdb
 /birdclubsystemMVC/obj/Debug/net6.0/birdclubsystem.RazorAssemblyInfo.cache
 /birdclubsystemMVC/obj/Debug/net6.0/birdclubsystem.AssemblyInfoInputs.cache
+/birdclubsystemMVC/obj/project.nuget.cache
+/birdclubsystemMVC/obj/birdclubsystem.csproj.nuget.dgspec.json
+/birdclubsystemMVC/obj/Debug/net6.0/birdclubsystem.GeneratedMSBuildEditorConfig.editorconfig
+/birdclubsystemMVC/obj/Debug/net6.0/birdclubsystem.assets.cache
