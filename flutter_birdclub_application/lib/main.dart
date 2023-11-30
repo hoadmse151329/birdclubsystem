@@ -16,15 +16,27 @@ class MyApp extends StatelessWidget {
       ),
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Bird Club System'),
-          flexibleSpace: Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(
-                    'assets/images/bird.png'), // Replace with your image URL
-                fit: BoxFit.fill,
+          title: Row(
+            children: [
+              CircleAvatar(
+                backgroundColor:
+                    Colors.white, // Replace with the desired background color
+                radius: 40, // Adjust the radius of the circle
+                child: Padding(
+                  padding:
+                      const EdgeInsets.all(10.0), // Adjust padding as needed
+                  child: Image.asset(
+                    'images/bird.jpg', // Replace with the path to your image asset
+                    width: 800, // Adjust the width of the image
+                    height: 1000, // Adjust the height of the image
+                  ),
+                ),
               ),
-            ),
+              SizedBox(
+                  width:
+                      8), // Adjust the spacing between the image and the title
+              Text('Chao Mao Club'),
+            ],
           ),
         ),
         drawer: Drawer(
@@ -34,7 +46,7 @@ class MyApp extends StatelessWidget {
                 accountName: Text('Duy'),
                 accountEmail: Text('hotrankhanhduy16@email.com'),
                 currentAccountPicture: CircleAvatar(
-                  backgroundImage: AssetImage('assets/images/avatar.png'),
+                  backgroundImage: AssetImage('images/avatar.jpg'),
                   // You can replace 'assets/your_picture.jpg' with the path to your image asset
                 ),
               ),
@@ -128,54 +140,32 @@ class MeetingOnlineQrCode extends StatelessWidget {
                           height: 980.24,
                           decoration: BoxDecoration(
                             image: DecorationImage(
-                              image: NetworkImage(
-                                  "https://via.placeholder.com/2173x980"),
+                              image: AssetImage('images/Background.jpg'),
                               fit: BoxFit.fill,
                             ),
                           ),
                         ),
                       ),
-                      Positioned(
-                        left: 0,
-                        top: 740.55,
-                        child: Container(
-                          width: 2171.49,
-                          height: 1036.45,
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              begin: Alignment(-0.00, -1.00),
-                              end: Alignment(0, 1),
-                              colors: [
-                                Colors.white.withOpacity(0),
-                                Colors.white,
-                                Colors.white,
-                                Colors.white
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        left: 0,
-                        top: 820.73,
-                        child: Container(
-                          width: 2171.49,
-                          height: 159.52,
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              begin: Alignment(-0.00, -1.00),
-                              end: Alignment(0, 1),
-                              colors: [
-                                Colors.white.withOpacity(0),
-                                Colors.white,
-                                Colors.white,
-                                Colors.white
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
                     ],
+                  ),
+                ),
+              ),
+              Positioned(
+                left: 135,
+                top: 604,
+                child: SizedBox(
+                  width: 607,
+                  height: 66,
+                  child: Text(
+                    'Meeting Online',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 32,
+                      fontFamily: 'Inter',
+                      fontWeight: FontWeight.w700,
+                      height: 0,
+                    ),
                   ),
                 ),
               ),
@@ -199,14 +189,14 @@ class MeetingOnlineQrCode extends StatelessWidget {
                 ),
               ),
               Positioned(
-                left: 114,
+                left: 190,
                 top: 925,
                 child: Container(
-                  width: 669,
-                  height: 562,
+                  width: 500,
+                  height: 500,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage('assets/images/avatar.png'),
+                      image: AssetImage('images/QR.jpg'),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -372,15 +362,18 @@ class MeetingOnlineQrCode extends StatelessWidget {
                 child: SizedBox(
                   width: 696,
                   height: 68,
-                  child: Text(
-                    'We welcome donations in any amount to help fund club initiatives and activities, such as the purchase of bird seed for feeding birds, necessaries for harmed bird treatments, the annual Tournaments, Field trips and other club events, the purchase of supplies and tools for our volunteer projects, etc.',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 24,
-                      fontFamily: 'Inter',
-                      fontWeight: FontWeight.w400,
-                      height: 0,
-                      letterSpacing: 1.20,
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    child: Text(
+                      'We welcome donations in any amount to help fund club initiatives and activities, such as the purchase of bird seed for feeding birds, necessaries for harmed bird treatments, the annual Tournaments, Field trips and other club events, the purchase of supplies and tools for our volunteer projects, etc.',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 24,
+                        fontFamily: 'Inter',
+                        fontWeight: FontWeight.w400,
+                        height: 1.5, // Adjust line spacing as needed
+                        letterSpacing: 1.20,
+                      ),
                     ),
                   ),
                 ),
