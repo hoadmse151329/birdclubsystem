@@ -16,6 +16,14 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = D:\VisualStudioCommunityProjects\birdclubsystem\birdclubsystemMVC
 build_property._RazorSourceGeneratorDebug = 
 
+[D:/VisualStudioCommunityProjects/birdclubsystem/birdclubsystemMVC/Views/Contest/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29udGVzdFxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/VisualStudioCommunityProjects/birdclubsystem/birdclubsystemMVC/Views/Contest/LeaderBoard.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29udGVzdFxMZWFkZXJCb2FyZC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/VisualStudioCommunityProjects/birdclubsystem/birdclubsystemMVC/Views/FieldTrip/FieldTripPayment.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmllbGRUcmlwXEZpZWxkVHJpcFBheW1lbnQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
