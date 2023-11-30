@@ -8,5 +8,13 @@ namespace birdclubsystem.Controllers
         {
             return View();
         }
+        public IActionResult MeetingPost()
+        {
+            return View();
+        }
+        public IActionResult MeetingRegister()
+        {
+            return View();
+        }
     }
 }
