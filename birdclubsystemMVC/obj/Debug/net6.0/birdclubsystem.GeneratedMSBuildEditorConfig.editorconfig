@@ -8,65 +8,77 @@ build_property.PlatformNeutralAssembly =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = birdclubsystem
 build_property.RootNamespace = birdclubsystem
-build_property.ProjectDir = D:\New folder\SWP391\fptu_alarm_project\birdclubsystem\birdclubsystemMVC\
+build_property.ProjectDir = D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\birdclubsystemMVC\
 build_property.RazorLangVersion = 6.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = D:\New folder\SWP391\fptu_alarm_project\birdclubsystem\birdclubsystemMVC
+build_property.MSBuildProjectDirectory = D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\birdclubsystemMVC
 build_property._RazorSourceGeneratorDebug = 
 
-[D:/New folder/SWP391/fptu_alarm_project/birdclubsystem/birdclubsystemMVC/Views/FieldTrip/FieldTripPayment.cshtml]
+[D:/New folder/SWP391/fptu_alarm_project/New folder/New folder/birdclubsystem/birdclubsystemMVC/Views/FieldTrip/FieldTripPayment.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmllbGRUcmlwXEZpZWxkVHJpcFBheW1lbnQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/New folder/SWP391/fptu_alarm_project/birdclubsystem/birdclubsystemMVC/Views/FieldTrip/FieldTripPostDayByDay.cshtml]
+[D:/New folder/SWP391/fptu_alarm_project/New folder/New folder/birdclubsystem/birdclubsystemMVC/Views/FieldTrip/FieldTripPostDayByDay.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmllbGRUcmlwXEZpZWxkVHJpcFBvc3REYXlCeURheS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/New folder/SWP391/fptu_alarm_project/birdclubsystem/birdclubsystemMVC/Views/FieldTrip/FieldTripPostGettingThere.cshtml]
+[D:/New folder/SWP391/fptu_alarm_project/New folder/New folder/birdclubsystem/birdclubsystemMVC/Views/FieldTrip/FieldTripPostGettingThere.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmllbGRUcmlwXEZpZWxkVHJpcFBvc3RHZXR0aW5nVGhlcmUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/New folder/SWP391/fptu_alarm_project/birdclubsystem/birdclubsystemMVC/Views/FieldTrip/FieldTripPostInclusion.cshtml]
+[D:/New folder/SWP391/fptu_alarm_project/New folder/New folder/birdclubsystem/birdclubsystemMVC/Views/FieldTrip/FieldTripPostInclusion.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmllbGRUcmlwXEZpZWxkVHJpcFBvc3RJbmNsdXNpb24uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/New folder/SWP391/fptu_alarm_project/birdclubsystem/birdclubsystemMVC/Views/FieldTrip/FieldTripPostRate.cshtml]
+[D:/New folder/SWP391/fptu_alarm_project/New folder/New folder/birdclubsystem/birdclubsystemMVC/Views/FieldTrip/FieldTripPostRate.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmllbGRUcmlwXEZpZWxkVHJpcFBvc3RSYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/New folder/SWP391/fptu_alarm_project/birdclubsystem/birdclubsystemMVC/Views/FieldTrip/FieldTripRegister.cshtml]
+[D:/New folder/SWP391/fptu_alarm_project/New folder/New folder/birdclubsystem/birdclubsystemMVC/Views/FieldTrip/FieldTripRegister.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmllbGRUcmlwXEZpZWxkVHJpcFJlZ2lzdGVyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/New folder/SWP391/fptu_alarm_project/birdclubsystem/birdclubsystemMVC/Views/FieldTrip/Index.cshtml]
+[D:/New folder/SWP391/fptu_alarm_project/New folder/New folder/birdclubsystem/birdclubsystemMVC/Views/FieldTrip/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmllbGRUcmlwXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/New folder/SWP391/fptu_alarm_project/birdclubsystem/birdclubsystemMVC/Views/Home/Index.cshtml]
+[D:/New folder/SWP391/fptu_alarm_project/New folder/New folder/birdclubsystem/birdclubsystemMVC/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/New folder/SWP391/fptu_alarm_project/birdclubsystem/birdclubsystemMVC/Views/Home/Privacy.cshtml]
+[D:/New folder/SWP391/fptu_alarm_project/New folder/New folder/birdclubsystem/birdclubsystemMVC/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/New folder/SWP391/fptu_alarm_project/birdclubsystem/birdclubsystemMVC/Views/Shared/Error.cshtml]
+[D:/New folder/SWP391/fptu_alarm_project/New folder/New folder/birdclubsystem/birdclubsystemMVC/Views/Meeting/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWVldGluZ1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/New folder/SWP391/fptu_alarm_project/New folder/New folder/birdclubsystem/birdclubsystemMVC/Views/Meeting/MeetingPost.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWVldGluZ1xNZWV0aW5nUG9zdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/New folder/SWP391/fptu_alarm_project/New folder/New folder/birdclubsystem/birdclubsystemMVC/Views/Meeting/MeetingRegister.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWVldGluZ1xNZWV0aW5nUmVnaXN0ZXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/New folder/SWP391/fptu_alarm_project/New folder/New folder/birdclubsystem/birdclubsystemMVC/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/New folder/SWP391/fptu_alarm_project/birdclubsystem/birdclubsystemMVC/Views/Shared/_ValidationScriptsPartial.cshtml]
+[D:/New folder/SWP391/fptu_alarm_project/New folder/New folder/birdclubsystem/birdclubsystemMVC/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/New folder/SWP391/fptu_alarm_project/birdclubsystem/birdclubsystemMVC/Views/_ViewImports.cshtml]
+[D:/New folder/SWP391/fptu_alarm_project/New folder/New folder/birdclubsystem/birdclubsystemMVC/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/New folder/SWP391/fptu_alarm_project/birdclubsystem/birdclubsystemMVC/Views/_ViewStart.cshtml]
+[D:/New folder/SWP391/fptu_alarm_project/New folder/New folder/birdclubsystem/birdclubsystemMVC/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/New folder/SWP391/fptu_alarm_project/birdclubsystem/birdclubsystemMVC/Views/Shared/_Layout.cshtml]
+[D:/New folder/SWP391/fptu_alarm_project/New folder/New folder/birdclubsystem/birdclubsystemMVC/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-49dm9kpyv0
