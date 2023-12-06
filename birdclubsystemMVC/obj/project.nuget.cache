@@ -1,8 +1,15 @@
 {
   "version": 2,
-  "dgSpecHash": "srdnPSCUR1GIFb+qOkwSD7e+De1dCxDtL1cy7cNNEFYhzh735m8sytjD3N1DodCuDzJYZCS4k6Q7SzHJpQ4egw==",
+  "dgSpecHash": "ohNgEGxMdHKASzEBJKhTm20DHYA7pmeea5MCkhhmHLBLAccq5JLqFHQuHjVFT6IFwsJaSX9qw6qq63uQvrJOZQ==",
   "success": true,
-  "projectFilePath": "D:\\New folder\\SWP391\\fptu_alarm_project\\birdclubsystem\\birdclubsystemMVC\\birdclubsystem.csproj",
+  "projectFilePath": "D:\\New folder\\SWP391\\fptu_alarm_project\\New folder\\New folder\\birdclubsystem\\birdclubsystemMVC\\birdclubsystem.csproj",
   "expectedPackageFiles": [],
-  "logs": []
+  "logs": [
+    {
+      "code": "Undefined",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Problem reading the cache file D:\\New folder\\SWP391\\fptu_alarm_project\\New folder\\New folder\\birdclubsystem\\birdclubsystemMVC\\obj\\project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
+    }
+  ]
 }
