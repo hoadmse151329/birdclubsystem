@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\My Stuff\\Codes\\C#\\birdclubsystem\\birdclubsystemMVC\\birdclubsystem.csproj": {}
+    "D:\\My Stuff\\Codes\\C#\\BirdClubSystem\\birdclubsystemMVC\\birdclubsystem.csproj": {}
   },
   "projects": {
-    "D:\\My Stuff\\Codes\\C#\\birdclubsystem\\birdclubsystemMVC\\birdclubsystem.csproj": {
+    "D:\\My Stuff\\Codes\\C#\\BirdClubSystem\\birdclubsystemMVC\\birdclubsystem.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\My Stuff\\Codes\\C#\\birdclubsystem\\birdclubsystemMVC\\birdclubsystem.csproj",
+        "projectUniqueName": "D:\\My Stuff\\Codes\\C#\\BirdClubSystem\\birdclubsystemMVC\\birdclubsystem.csproj",
         "projectName": "birdclubsystem",
-        "projectPath": "D:\\My Stuff\\Codes\\C#\\birdclubsystem\\birdclubsystemMVC\\birdclubsystem.csproj",
+        "projectPath": "D:\\My Stuff\\Codes\\C#\\BirdClubSystem\\birdclubsystemMVC\\birdclubsystem.csproj",
         "packagesPath": "C:\\Users\\ADMIN\\.nuget\\packages\\",
-        "outputPath": "D:\\My Stuff\\Codes\\C#\\birdclubsystem\\birdclubsystemMVC\\obj\\",
+        "outputPath": "D:\\My Stuff\\Codes\\C#\\BirdClubSystem\\birdclubsystemMVC\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
