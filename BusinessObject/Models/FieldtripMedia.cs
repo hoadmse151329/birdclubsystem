@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace BusinessObject.Models
 {
-    internal class FieldtripMedia
+    public partial class FieldtripMedia
     {
+        public int pictureId { get; set; }
+        public int? tripId { get; set; }
+        public string? description { get; set; }
+        public string? image { get; set; }
     }
 }

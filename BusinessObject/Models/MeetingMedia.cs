@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace BusinessObject.Models
 {
-    internal class MeetingMedia
+    public partial class MeetingMedia
     {
+        public int pictureId { get; set; }
+        public int? meetingId { get; set; }
+        public string? description { get; set; }
+        public string? image { get; set; }
     }
 }

@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace BusinessObject.Models
 {
-    internal class MeetingParticipant
+    public partial class MeetingParticipant
     {
+        public int? meetingId { get; set; }
+        public int? memberId { get; set; }
+        public string participantNo { get; set; } = null!;
     }
 }

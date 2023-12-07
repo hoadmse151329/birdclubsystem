@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace BusinessObject.Models
 {
-    internal class FieldtripRates
+    public partial class FieldtripRates
     {
+        public int tripId { get; set; }
+        public int rateId { get; set; }
+        public string rateType { get; set; } = null!;
+        public double price { get; set; }
     }
 }

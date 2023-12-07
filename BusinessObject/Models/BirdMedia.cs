@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace BusinessObject.Models
 {
-    internal class BirdMedia
+    public partial class BirdMedia
     {
+        public int pictureId { get; set; }
+        public int? birdId { get; set; }
+        public string? description { get; set; }
+        public string? image { get; set; }
     }
 }

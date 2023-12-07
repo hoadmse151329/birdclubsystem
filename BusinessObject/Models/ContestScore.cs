@@ -6,7 +6,14 @@ using System.Threading.Tasks;
 
 namespace BusinessObject.Models
 {
-    internal class ContestScore
+    public partial class ContestScore
     {
+        public int scoreId { get; set; }
+        public int? contestId { get; set; }
+        public int? birdId { get; set; }
+        public int? memberId { get; set; }
+        public double? score { get; set; }
+        public DateTime? scoreDate { get; set; }
+        public string? comment { get; set; }
     }
 }

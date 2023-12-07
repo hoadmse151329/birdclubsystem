@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace BusinessObject.Models
 {
-    internal class ClubLocation
+    public partial class ClubLocation
     {
+        public int clubLocationId { get; set; }
+        public string? clubName { get; set; }
+        public string? description { get; set; }
+        public int? locationId { get; set; }
     }
 }
