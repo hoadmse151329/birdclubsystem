@@ -1,23 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessObject.Models
 {
     public partial class Member
     {
-        public int memberId { get; set; }
-        public string fullName { get; set; } = null!;
-        public string userName { get; set; } = null!;
-        public string email { get; set; } = null!;
-        public string gender { get; set; } = null!;
-        public string role { get; set; } = null!;
-        public string address { get; set; } = null!;
-        public string phone { get; set; } = null!;
-        public string description { get; set; } = null!;
-        public string status { get; set; } = null!;
-        public int? clubId { get; set; }
+        public Member()
+        {
+            Birds = new HashSet<Bird>();
+            Users = new HashSet<User>();
+        }
+
+        public int MemberId { get; set; }
+        public string? FullName { get; set; }
+        public string? UserName { get; set; }
+        public string? Email { get; set; }
+        public string? Gender { get; set; }
+        public string? Role { get; set; }
+        public string? Address { get; set; }
+        public string? Phone { get; set; }
+        public string? Description { get; set; }
+        public string? Status { get; set; }
+        public int? ClubId { get; set; }
+
+        public virtual ICollection<Bird> Birds { get; set; }
+        public virtual ICollection<User> Users { get; set; }
     }
 }

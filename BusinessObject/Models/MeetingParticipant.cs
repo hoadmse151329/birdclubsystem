@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessObject.Models
 {
     public partial class MeetingParticipant
     {
-        public int? meetingId { get; set; }
-        public int? memberId { get; set; }
-        public string participantNo { get; set; } = null!;
+        public int? MeetingId { get; set; }
+        public int? MemberId { get; set; }
+        public string ParticipantNo { get; set; } = null!;
+
+        public virtual Meeting? Meeting { get; set; }
+        public virtual Member? Member { get; set; }
     }
 }
