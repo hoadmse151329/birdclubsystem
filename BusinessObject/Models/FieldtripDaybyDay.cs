@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessObject.Models
 {
     public partial class FieldtripDaybyDay
     {
-        public int tripId { get; set; }
-        public int daybyDayID { get; set; }
-        public int day { get; set; }
-        public string description { get; set; } = null!;
-        public string? pictureId { get; set; }
+        public int TripId { get; set; }
+        public int DaybyDayId { get; set; }
+        public int Day { get; set; }
+        public string Description { get; set; } = null!;
+        public string? PictureId { get; set; }
+
+        public virtual FieldTrip Trip { get; set; } = null!;
     }
 }

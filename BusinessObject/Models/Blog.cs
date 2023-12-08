@@ -1,20 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessObject.Models
 {
     public partial class Blog
     {
-        public int blogId { get; set; }
-        public int userId { get; set; }
-        public string description { get; set; } = null!;
-        public string? category { get; set; }
-        public DateTime uploadDate { get; set; }
-        public int vote { get; set; }
-        public string? image { get; set; }
-        public string status { get; set; } = null!;
+        public Blog()
+        {
+            Comments = new HashSet<Comment>();
+        }
+
+        public int BlogId { get; set; }
+        public int UserId { get; set; }
+        public string Description { get; set; } = null!;
+        public string? Category { get; set; }
+        public DateTime UploadDate { get; set; }
+        public int Vote { get; set; }
+        public string? Image { get; set; }
+        public string Status { get; set; } = null!;
+
+        public virtual User User { get; set; } = null!;
+        public virtual ICollection<Comment> Comments { get; set; }
     }
 }
