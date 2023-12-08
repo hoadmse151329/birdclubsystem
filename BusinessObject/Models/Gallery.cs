@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessObject.Models
 {
     public partial class Gallery
     {
-        public int? pictureId { get; set; }
-        public string? description { get; set; }
-        public int? userId { get; set; }
-        public string image { get; set; } = null!;
+        public int? PictureId { get; set; }
+        public string? Description { get; set; }
+        public int? UserId { get; set; }
+        public string Image { get; set; } = null!;
+
+        public virtual User? User { get; set; }
     }
 }

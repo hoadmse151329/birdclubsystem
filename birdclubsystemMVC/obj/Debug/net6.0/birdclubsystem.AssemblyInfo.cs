@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("birdclubsystem")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ccd47e8de12570b8268cd8967290b549188d255c")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
 [assembly: System.Reflection.AssemblyProductAttribute("birdclubsystem")]
 [assembly: System.Reflection.AssemblyTitleAttribute("birdclubsystem")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -605,7 +605,9 @@ FodyWeavers.xsd
 /birdclubsystemMVC/obj/birdclubsystem.csproj.nuget.dgspec.json
 /birdclubsystemMVC/obj/Debug/net6.0/birdclubsystem.GeneratedMSBuildEditorConfig.editorconfig
 /birdclubsystemMVC/.vs/birdclubsystem/v17/.futdcache.v2
+/birdclubsystemMVC/.vs/birdclubsystem/DesignTimeBuild/.dtbcache.v2
 /birdclubsystemMVC/obj/Debug/net6.0/birdclubsystem.assets.cache
 /birdclubsystemMVC/obj/birdclubsystem.csproj.nuget.dgspec.json
 *.vsidx
 /birdclubsystemMVC/.vs/birdclubsystem/v17/.futdcache.v1
+/birdclubsystemMVC/appsettings.json

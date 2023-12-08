@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessObject.Models
 {
     public partial class Comment
     {
-        public int commentId { get; set; }
-        public int? blogId { get; set; }
-        public int? vote { get; set; }
-        public string? description { get; set; }
-        public DateTime? date { get; set; }
-        public int? userId { get; set; }
+        public int CommentId { get; set; }
+        public int? BlogId { get; set; }
+        public int? Vote { get; set; }
+        public string? Description { get; set; }
+        public DateTime? Date { get; set; }
+        public int? UserId { get; set; }
+
+        public virtual Blog? Blog { get; set; }
+        public virtual User? User { get; set; }
     }
 }

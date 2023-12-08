@@ -1,23 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessObject.Models
 {
-    public partial class FIeldTripOverview
+    public partial class FieldTripOverview
     {
-        public int tripId { get; set; }
-        public string title { get; set; } = null!;
-        public string description { get; set; } = null!;
-        public int duration { get; set; }
-        public double price { get; set; }
-        public string destination { get; set; } = null!;
-        public DateTime registrationDeadline { get; set; }
-        public DateTime startDate { get; set; }
-        public DateTime endDate { get; set; }
-        public int? pictureId { get; set; }
-        public string? userReview { get; set; }
+        public int TripId { get; set; }
+        public string Title { get; set; } = null!;
+        public string Description { get; set; } = null!;
+        public int Duration { get; set; }
+        public decimal Price { get; set; }
+        public string Destination { get; set; } = null!;
+        public DateTime RegistrationDeadline { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+        public int? PictureId { get; set; }
+        public string? UserReview { get; set; }
+
+        public virtual FieldTrip Trip { get; set; } = null!;
     }
 }

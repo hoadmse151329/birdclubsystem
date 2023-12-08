@@ -1,30 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessObject.Models
 {
     public partial class Contest
     {
-        public int contestId { get; set; }
-        public string contestName { get; set; } = null!;
-        public string? description { get; set; }
-        public DateTime? registrationDeadline { get; set; }
-        public int? locationId { get; set; }
-        public string? status { get; set; }
-        public DateTime? startDate { get; set; }
-        public DateTime? endDate { get; set; }
-        public int? beforeScore { get; set; }
-        public int? afterScore { get; set; }
-        public double? fee { get; set; }
-        public double? price { get; set; }
-        public string? host { get; set; }
-        public string? incharge { get; set; }
-        public string? note { get; set; }
-        public string? review { get; set; }
-        public int? numberOfParticipants { get; set; }
-        public int? clubId { get; set; }
+        public Contest()
+        {
+            ContestMedia = new HashSet<ContestMedium>();
+        }
+
+        public int ContestId { get; set; }
+        public string ContestName { get; set; } = null!;
+        public string? Description { get; set; }
+        public DateTime? RegistrationDeadline { get; set; }
+        public int? LocationId { get; set; }
+        public string? Status { get; set; }
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
+        public int? BeforeScore { get; set; }
+        public int? AfterScore { get; set; }
+        public decimal? Fee { get; set; }
+        public decimal? Prize { get; set; }
+        public string? Host { get; set; }
+        public string? Incharge { get; set; }
+        public string? Note { get; set; }
+        public string? Review { get; set; }
+        public int? NumberOfParticipants { get; set; }
+        public int? ClubId { get; set; }
+
+        public virtual ICollection<ContestMedium> ContestMedia { get; set; }
     }
 }
