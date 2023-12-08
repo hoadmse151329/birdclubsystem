@@ -1,53 +1,157 @@
 ﻿@{
-    ViewData["Title"] = "Meeting Post";
+    ViewData["Title"] = "Meeting Post Page";
 }
 
 <!DOCTYPE html>
 <html>
-    <body>
-    <div style="width: 1334px; height: 2453px; position: relative">
-        <div style="width: 764px; height: 2453px; left: 0px; top: 0px; position: absolute">
-            <div style="width: 764px; height: 2187px; left: 0px; top: 0px; position: absolute; background: rgba(255, 255, 255, 0.80); border-radius: 25px"></div>
-            <div style="width: 763px; height: 2038px; left: 1px; top: 415px; position: absolute; background: rgba(255, 255, 255, 0.80); box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); border: 1px rgba(31.49, 82.87, 0, 0.35) solid"></div>
-            <div style="width: 582px; height: 354.19px; left: 91px; top: 432.01px; position: absolute; text-align: center"><span style="color: black; font-size: 24px; font-family: Inter; font-weight: 700; letter-spacing: 1.20px; word-wrap: break-word">Content<br /></span><span style="color: black; font-size: 20px; font-family: Inter; font-weight: 500; letter-spacing: 1px; word-wrap: break-word">Meet up with new members, exchanging experiences and ideas...Fusce dui est, pellentesque a dolor eu, facilisis aliquam ligula. Integer dignissim pellentesque lacus, et tempor diam volutpat et. Vivamus iaculis nec ante ac laoreet. Pellentesque aliquam dolor vel felis dignissim facilisis. Nullam non fermentum tortor. Aenean hendrerit lacus quis arcu finibus, posuere aliquet magna dictum. Etiam in sapien ligula. Sed a purus sit amet ligula interdum sagittis. Duis fermentum arcu enim, eu hendrerit tortor mollis vitae.Fusce dui est, pellentesque a dolor eu, facilisis aliquam ligula. Integer dignissim pellentesque lacus, et tempor diam volutpat et. Vivamus iaculis nec ante ac laoreet. Pellentesque aliquam dolor vel felis dignissim facilisis. Nullam non fermentum tortor. Aenean hendrerit lacus quis arcu finibus, posuere aliquet magna dictum. Etiam in sapien ligula. Sed a purus sit amet ligula interdum sagittis. Duis fermentum arcu enim, eu hendrerit tortor mollis vitae.Fusce dui est, pellentesque a dolor eu, facilisis aliquam ligula. Integer dignissim pellentesque lacus, et tempor diam volutpat et. Vivamus iaculis nec ante ac laoreet. Pellentesque aliquam dolor vel felis dignissim facilisis. Nullam non fermentum tortor. Aenean hendrerit lacus quis arcu finibus, posuere aliquet magna dictum. Etiam in sapien ligula. Sed a purus sit amet ligula interdum sagittis. Duis fermentum arcu enim, eu hendrerit tortor mollis vitae.</span></div>
-            <div style="width: 636px; height: 133.69px; left: 65px; top: 1112.46px; position: absolute; text-align: center"><span style="color: black; font-size: 24px; font-family: Inter; font-weight: 700; letter-spacing: 1.20px; word-wrap: break-word">Notes<br /></span><span style="color: black; font-size: 20px; font-family: Inter; font-weight: 500; letter-spacing: 1px; word-wrap: break-word">Meet up with new members, exchanging experiences and ideas...Fusce dui est, pellentesque a dolor eu, facilisis aliquam ligula. Integer dignissim pellentesque lacus, et tempor diam volutpat et. Vivamus iaculis nec ante ac laoreet. Pellentesque aliquam dolor vel felis dignissim facilisis. Nullam non fermentum tortor. Aenean hendrerit lacus quis arcu finibus, posuere aliquet magna dictum.</span></div>
-            <div style="width: 400px; height: 443.39px; left: 182px; top: 1387px; position: absolute">
-                <img style="width: 400px; height: 368.33px; left: 0px; top: 75.06px; position: absolute" src="https://via.placeholder.com/400x368" />
-                <div style="width: 326px; height: 29px; left: 37px; top: 0px; position: absolute; text-align: center; color: black; font-size: 24px; font-family: Inter; font-weight: 700; word-wrap: break-word">Please save below QR code for scanning at the end of the meeting for check in</div>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="Meeting.css" />
+  </head>
+  <body>
+    <div class="member-meeting-post">
+      <div class="overlap-wrapper">
+        <div class="overlap">
+          <div class="background">
+            <div class="overlap-group">
+              <img class="subtract" src="img/subtract.png" />
+              <div class="rectangle"></div>
+              <div class="div"></div>
+              <div class="rectangle-2"></div>
             </div>
-            <div style="width: 763px; height: 99.77px; left: 1px; top: 0px; position: absolute">
-                <div style="width: 763px; height: 99.77px; left: 0px; top: 0px; position: absolute; background: rgba(74.29, 195.50, 0, 0.35); border-top-left-radius: 25px; border-top-right-radius: 25px"></div>
-                <div style="width: 129px; height: 38.91px; left: 317px; top: 30.93px; position: absolute; color: black; font-size: 32px; font-family: Inter; font-weight: 700; word-wrap: break-word">Meeting</div>
+          </div>
+          <div class="headlines">
+            <div class="group">
+              <div class="overlap-2">
+                <img class="img" src="img/rectangle-3.svg" />
+                <div class="rectangle-3"></div>
+                <div class="flexcontainer">
+                  <p class="text">
+                    <span class="text-wrapper">Content<br /></span>
+                  </p>
+                  <p class="span-wrapper">
+                    <span class="span"
+                      >Meet up with new members, exchanging experiences and ideas...Fusce dui est, pellentesque a dolor
+                      eu, facilisis aliquam ligula. Integer dignissim pellentesque lacus, et tempor diam volutpat et.
+                      Vivamus iaculis nec ante ac laoreet. Pellentesque aliquam dolor vel felis dignissim facilisis.
+                      Nullam non fermentum tortor. Aenean hendrerit lacus quis arcu finibus, posuere aliquet magna
+                      dictum. Etiam in sapien ligula. Sed a purus sit amet ligula interdum sagittis. Duis fermentum arcu
+                      enim, eu hendrerit tortor mollis vitae.Fusce dui est, pellentesque a dolor eu, facilisis aliquam
+                      ligula. Integer dignissim pellentesque lacus, et tempor diam volutpat et. Vivamus iaculis nec ante
+                      ac laoreet. Pellentesque aliquam dolor vel felis dignissim facilisis. Nullam non fermentum tortor.
+                      Aenean hendrerit lacus quis arcu finibus, posuere aliquet magna dictum. Etiam in sapien ligula.
+                      Sed a purus sit amet ligula interdum sagittis. Duis fermentum arcu enim, eu hendrerit tortor
+                      mollis vitae.Fusce dui est, pellentesque a dolor eu, facilisis aliquam ligula. Integer dignissim
+                      pellentesque lacus, et tempor diam volutpat et. Vivamus iaculis nec ante ac laoreet. Pellentesque
+                      aliquam dolor vel felis dignissim facilisis. Nullam non fermentum tortor. Aenean hendrerit lacus
+                      quis arcu finibus, posuere aliquet magna dictum. Etiam in sapien ligula. Sed a purus sit amet
+                      ligula interdum sagittis. Duis fermentum arcu enim, eu hendrerit tortor mollis vitae.</span
+                    >
+                  </p>
+                </div>
+                <div class="flexcontainer-2">
+                  <p class="text">
+                    <span class="text-wrapper">Notes<br /></span>
+                  </p>
+                  <p class="p">
+                    <span class="span"
+                      >Meet up with new members, exchanging experiences and ideas...Fusce dui est, pellentesque a dolor
+                      eu, facilisis aliquam ligula. Integer dignissim pellentesque lacus, et tempor diam volutpat et.
+                      Vivamus iaculis nec ante ac laoreet. Pellentesque aliquam dolor vel felis dignissim facilisis.
+                      Nullam non fermentum tortor. Aenean hendrerit lacus quis arcu finibus, posuere aliquet magna
+                      dictum.</span
+                    >
+                  </p>
+                </div>
+                <div class="QR">
+                  <img class="rectangle-4" src="img/rectangle-7.png" />
+                  <p class="text-wrapper-2">
+                    Please save below QR code for scanning at the end of the meeting for check in
+                  </p>
+                </div>
+                <div class="type">
+                  <div class="div-wrapper"><div class="text-wrapper-3">Meeting</div></div>
+                </div>
+                <img
+                  class="soi-noi-hoi-thi-chim"
+                  src="img/soi-noi-hoi-thi-chim-chao-mao-hot-dau-chuyen-nghiep-chim-chao-mao-03-1542616692-width600height403-1.png"
+                />
+              </div>
             </div>
-            <img style="width: 763px; height: 315px; left: 1px; top: 100px; position: absolute; border: 1px rgba(31.49, 82.87, 0, 0.35) solid" src="https://via.placeholder.com/763x315" />
+            <div class="info">
+              <div class="overlap-3">
+                <div class="rectangle-5"></div>
+                <img class="rectangle-6" src="img/rectangle-8.png" />
+                <div class="tittle">
+                  <div class="overlap-group-2"><p class="text-wrapper-4">ChaoMao New Member Bird meeting</p></div>
+                </div>
+                <div class="text-wrapper-5">From 10-28-2024 to 10-28-2024</div>
+                <div class="group-2">
+                  <div class="text-wrapper-6">Location</div>
+                  <div class="text-wrapper-7">Participation Limit</div>
+                  <div class="text-wrapper-8">Registration Deadlines</div>
+                  <div class="text-wrapper-9">Contact</div>
+                  <div class="text-wrapper-10">Organizer</div>
+                </div>
+                <div class="group-3">
+                  <div class="text-wrapper-11">10-20-2024</div>
+                  <p class="text-wrapper-12">H22/183 Hoang Van Thai Street, Thanh Xuan District, Hanoi.</p>
+                  <div class="text-wrapper-13">30 Participant</div>
+                  <div class="text-wrapper-14">ChaoMaoClub@gmail.com</div>
+                  <div class="text-wrapper-15">ChaoMaoClub</div>
+                </div>
+                <div class="register">
+                  <div class="overlap-group-3"><div class="text-wrapper-16">Register</div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <footer class="footer">
+            <div class="overlap-4">
+              <div class="rectangle-7"></div>
+              <div class="text-wrapper-17"> 2024 ChaoMao BirdClub</div>
+              <img class="other-fanpages" src="img/other-fanpages.png" />
+              <p class="text-wrapper-18">
+                We welcome donations in any amount to help fund club initiatives and activities, such as the purchase of
+                bird seed for feeding birds, necessaries for harmed bird treatments, the annual Contests, Field trips
+                and other club events, the purchase of supplies and tools for our volunteer projects, etc.
+              </p>
+              <div class="learn-more-button">
+                <div class="overlap-group-3"><div class="text-wrapper-19">Donate</div></div>
+              </div>
+            </div>
+          </footer>
+          <div class="navbar">
+            <div class="overlap-5">
+              <div class="rectangle-8"></div>
+              <div class="chaomao-club">ChaoMao <br />Club</div>
+              <div class="navbar-2">
+                <div class="text-wrapper-20">Meetings</div>
+                <div class="overlap-6">
+                  <div class="text-wrapper-21">Field trips</div>
+                  <div class="text-wrapper-22">News</div>
+                  <div class="guest-contests">
+                    <div class="news">
+                      <div class="text-wrapper-22">Contests</div>
+                      <img class="ic-baseline-arrow" src="img/ic-baseline-arrow-back-ios-new.svg" />
+                    </div>
+                  </div>
+                </div>
+                <div class="overlap-group-4">
+                  <div class="text-wrapper-23">Gallery</div>
+                  <img class="member-button" src="img/member-button.svg" />
+                </div>
+                <div class="community-dropdown">
+                  <div class="text-wrapper-22">Community</div>
+                  <img class="ic-baseline-arrow-2" src="img/image.svg" />
+                </div>
+                <div class="text-wrapper-23">Home</div>
+              </div>
+              <img class="red-whiskered-bulbul" src="img/red-whiskered-bulbul-bird-logo-eps-10-generated-1.png" />
+            </div>
+          </div>
         </div>
-        <div style="width: 530px; height: 1132px; left: 804px; top: 100px; position: absolute">
-            <div style="width: 530px; height: 1132px; left: 0px; top: 0px; position: absolute; background: rgba(255, 255, 255, 0.80); box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); border-radius: 25px; border: 1px rgba(31.49, 82.87, 0, 0.35) solid"></div>
-            <img style="width: 480px; height: 419px; left: 25px; top: 593px; position: absolute" src="https://via.placeholder.com/480x419" />
-            <div style="width: 530px; height: 100px; left: 0px; top: 0px; position: absolute">
-                <div style="width: 530px; height: 100px; left: 0px; top: 0px; position: absolute; background: rgba(74.29, 195.50, 0, 0.35); border-top-left-radius: 25px; border-top-right-radius: 25px"></div>
-                <div style="left: 33px; top: 36px; position: absolute; color: black; font-size: 24px; font-family: Inter; font-weight: 700; letter-spacing: 1.20px; word-wrap: break-word">ChaoMao New Member Bird meeting</div>
-            </div>
-            <div style="left: 94px; top: 111px; position: absolute; color: black; font-size: 20px; font-family: Inter; font-weight: 500; letter-spacing: 1px; word-wrap: break-word">From 10-28-2024 to 10-28-2024</div>
-            <div style="width: 200px; height: 383px; left: 12px; top: 164px; position: absolute">
-                <div style="left: 44px; top: 104px; position: absolute; text-align: center; color: black; font-size: 24px; font-family: Inter; font-weight: 700; letter-spacing: 1.20px; word-wrap: break-word">Location</div>
-                <div style="width: 200px; height: 60px; left: 0px; top: 177px; position: absolute; text-align: center; color: black; font-size: 24px; font-family: Inter; font-weight: 700; letter-spacing: 1.20px; word-wrap: break-word">Participation Limit</div>
-                <div style="width: 167px; height: 60px; left: 16px; top: 0px; position: absolute; text-align: center; color: black; font-size: 24px; font-family: Inter; font-weight: 700; letter-spacing: 1.20px; word-wrap: break-word">Registration Deadlines</div>
-                <div style="left: 49px; top: 281px; position: absolute; text-align: center; color: black; font-size: 24px; font-family: Inter; font-weight: 700; letter-spacing: 1.20px; word-wrap: break-word">Contact</div>
-                <div style="left: 37px; top: 354px; position: absolute; text-align: center; color: black; font-size: 24px; font-family: Inter; font-weight: 700; letter-spacing: 1.20px; word-wrap: break-word">Organizer</div>
-            </div>
-            <div style="width: 302px; height: 362px; left: 223px; top: 182px; position: absolute">
-                <div style="left: 88px; top: 0px; position: absolute; text-align: center; color: black; font-size: 20px; font-family: Inter; font-weight: 500; letter-spacing: 1px; word-wrap: break-word">10-20-2024</div>
-                <div style="width: 302px; height: 74px; left: 0px; top: 72px; position: absolute; text-align: center; color: black; font-size: 20px; font-family: Inter; font-weight: 500; letter-spacing: 1px; word-wrap: break-word">H22/183 Hoang Van Thai Street, Thanh Xuan District, Hanoi.</div>
-                <div style="left: 76px; top: 177px; position: absolute; text-align: center; color: black; font-size: 20px; font-family: Inter; font-weight: 500; letter-spacing: 1px; word-wrap: break-word">30 Participant</div>
-                <div style="left: 14px; top: 266px; position: absolute; text-align: center; color: black; font-size: 20px; font-family: Inter; font-weight: 500; letter-spacing: 1px; word-wrap: break-word">ChaoMaoClub@gmail.com</div>
-                <div style="left: 78px; top: 338px; position: absolute; text-align: center; color: black; font-size: 20px; font-family: Inter; font-weight: 500; letter-spacing: 1px; word-wrap: break-word">ChaoMaoClub</div>
-            </div>
-            <div style="width: 214px; height: 54.87px; left: 158px; top: 1041px; position: absolute">
-                <div style="width: 214px; height: 54.87px; left: 0px; top: 0px; position: absolute; background: rgba(74.29, 195.50, 0, 0.35); border-radius: 50px"></div>
-                <div style="width: 83px; height: 23.95px; left: 66px; top: 15.96px; position: absolute; color: black; font-size: 20px; font-family: Inter; font-weight: 700; word-wrap: break-word">Register</div>
-            </div>
-        </div>
+      </div>
     </div>
-    </body>
+  </body>
 </html>
