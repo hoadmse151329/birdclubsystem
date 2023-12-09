@@ -23,7 +23,7 @@ namespace BusinessObject.Models
         public virtual DbSet<ClubLocation> ClubLocations { get; set; } = null!;
         public virtual DbSet<Comment> Comments { get; set; } = null!;
         public virtual DbSet<Contest> Contests { get; set; } = null!;
-        public virtual DbSet<ContestMedium> ContestMedia { get; set; } = null!;
+        public virtual DbSet<ContestMedia> ContestMedia { get; set; } = null!;
         public virtual DbSet<ContestParticipant> ContestParticipants { get; set; } = null!;
         public virtual DbSet<ContestScore> ContestScores { get; set; } = null!;
         public virtual DbSet<Feedback> Feedbacks { get; set; } = null!;
@@ -33,12 +33,12 @@ namespace BusinessObject.Models
         public virtual DbSet<FieldtripDaybyDay> FieldtripDaybyDays { get; set; } = null!;
         public virtual DbSet<FieldtripGettingThere> FieldtripGettingTheres { get; set; } = null!;
         public virtual DbSet<FieldtripInclusion> FieldtripInclusions { get; set; } = null!;
-        public virtual DbSet<FieldtripMedium> FieldtripMedia { get; set; } = null!;
+        public virtual DbSet<FieldtripMedia> FieldtripMedia { get; set; } = null!;
         public virtual DbSet<FieldtripRate> FieldtripRates { get; set; } = null!;
         public virtual DbSet<Gallery> Galleries { get; set; } = null!;
         public virtual DbSet<Location> Locations { get; set; } = null!;
         public virtual DbSet<Meeting> Meetings { get; set; } = null!;
-        public virtual DbSet<MeetingMedium> MeetingMedia { get; set; } = null!;
+        public virtual DbSet<MeetingMedia> MeetingMedia { get; set; } = null!;
         public virtual DbSet<MeetingParticipant> MeetingParticipants { get; set; } = null!;
         public virtual DbSet<Member> Members { get; set; } = null!;
         public virtual DbSet<News> News { get; set; } = null!;
@@ -260,7 +260,7 @@ namespace BusinessObject.Models
                     .HasColumnName("status");
             });
 
-            modelBuilder.Entity<ContestMedium>(entity =>
+            modelBuilder.Entity<ContestMedia>(entity =>
             {
                 entity.HasKey(e => e.PictureId)
                     .HasName("PK__ContestM__769A271A99BA2109");
@@ -559,7 +559,7 @@ namespace BusinessObject.Models
                     .HasConstraintName("FK_FieldtripInclusions_FieldTrip");
             });
 
-            modelBuilder.Entity<FieldtripMedium>(entity =>
+            modelBuilder.Entity<FieldtripMedia>(entity =>
             {
                 entity.HasKey(e => e.PictureId)
                     .HasName("PK__Fieldtri__769A271A8A157F2E");
@@ -675,7 +675,7 @@ namespace BusinessObject.Models
                     .HasColumnName("startDate");
             });
 
-            modelBuilder.Entity<MeetingMedium>(entity =>
+            modelBuilder.Entity<MeetingMedia>(entity =>
             {
                 entity.HasKey(e => e.PictureId)
                     .HasName("PK__MeetingM__769A271ABCFB98BB");

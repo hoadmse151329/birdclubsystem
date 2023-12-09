@@ -7,7 +7,7 @@ namespace BusinessObject.Models
     {
         public Meeting()
         {
-            MeetingMedia = new HashSet<MeetingMedium>();
+            MeetingMedia = new HashSet<MeetingMedia>();
         }
 
         public int MeetingId { get; set; }
@@ -21,6 +21,6 @@ namespace BusinessObject.Models
         public string? Incharge { get; set; }
         public string? Note { get; set; }
 
-        public virtual ICollection<MeetingMedium> MeetingMedia { get; set; }
+        public virtual ICollection<MeetingMedia> MeetingMedia { get; set; }
     }
 }
