@@ -622,3 +622,7 @@ FodyWeavers.xsd
 /BusinessObject/obj/BusinessObject.csproj.nuget.g.props
 /BusinessObject/obj/project.assets.json
 /BusinessObject/obj/project.nuget.cache
+/birdclubsystemMVC/.vs/birdclubsystem/v17/.suo
+/birdclubsystemMVC/.vs/ProjectEvaluation/birdclubsystem.metadata.v7.bin
+/birdclubsystemMVC/.vs/ProjectEvaluation/birdclubsystem.projects.v7.bin
+/birdclubsystemMVC/bin/Debug/net6.0/birdclubsystem.deps.json

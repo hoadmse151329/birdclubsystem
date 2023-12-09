@@ -7,7 +7,7 @@ namespace BusinessObject.Models
     {
         public FieldTrip()
         {
-            FieldtripMedia = new HashSet<FieldtripMedium>();
+            FieldtripMedia = new HashSet<FieldtripMedia>();
         }
 
         public int TripId { get; set; }
@@ -26,6 +26,6 @@ namespace BusinessObject.Models
         public string? Note { get; set; }
         public string? Review { get; set; }
 
-        public virtual ICollection<FieldtripMedium> FieldtripMedia { get; set; }
+        public virtual ICollection<FieldtripMedia> FieldtripMedia { get; set; }
     }
 }

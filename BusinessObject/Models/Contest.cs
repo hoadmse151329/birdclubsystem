@@ -7,7 +7,7 @@ namespace BusinessObject.Models
     {
         public Contest()
         {
-            ContestMedia = new HashSet<ContestMedium>();
+            ContestMedia = new HashSet<ContestMedia>();
         }
 
         public int ContestId { get; set; }
@@ -29,6 +29,6 @@ namespace BusinessObject.Models
         public int? NumberOfParticipants { get; set; }
         public int? ClubId { get; set; }
 
-        public virtual ICollection<ContestMedium> ContestMedia { get; set; }
+        public virtual ICollection<ContestMedia> ContestMedia { get; set; }
     }
 }
