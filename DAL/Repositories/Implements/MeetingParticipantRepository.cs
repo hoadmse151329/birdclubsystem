@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 
 namespace DAL.Repositories.Implements
 {
-    public class CommentRepository : RepositoryBase<Comment>, ICommentRepository
+    public class MeetingParticipantRepository : RepositoryBase<MeetingParticipant>, IMeetingParticipantRepository
     {
         private readonly BirdClubContext _context;
-        public CommentRepository(BirdClubContext context) : base(context)
+        public MeetingParticipantRepository(BirdClubContext context) : base(context)
         {
             _context = context;
         }

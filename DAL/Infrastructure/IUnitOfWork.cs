@@ -9,10 +9,11 @@ namespace DAL.Infrastructure
 {
     public interface IUnitOfWork : IDisposable
     {
-        IBirdRepository BirdRepository { get; }
-        IBirdMediaRepository BirdMediaRepository { get; }
-        IBlogRepository BlogRepository { get; }
-        ICommentRepository CommentRepository { get; }
+        IMeetingRepository MeetingRepository { get; }
+        IMeetingMediaRepository MediaRepository { get; }
+        IMeetingParticipantRepository ParticipantRepository { get; }
+        IMemberRepository MemberRepository { get; }
+        IUserRepository UserRepository { get; } 
         void save();
     }
 }
