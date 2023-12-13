@@ -7,10 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="AutoMapperProfile\" />
     <Folder Include="Services\Implements\" />
     <Folder Include="Services\Interfaces\" />
-    <Folder Include="ViewModels\" />
   </ItemGroup>
 
   <ItemGroup>
