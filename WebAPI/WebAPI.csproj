@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Repository\Repository.csproj" />
+    <ProjectReference Include="..\BAL\BAL.csproj" />
   </ItemGroup>
 
   <ItemGroup>
