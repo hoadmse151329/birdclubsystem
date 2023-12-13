@@ -7,7 +7,7 @@ namespace BusinessObject.Models
     {
         public Bird()
         {
-            BirdMedia = new HashSet<BirdMedium>();
+            BirdMedia = new HashSet<BirdMedia>();
         }
 
         public int BirdId { get; set; }
@@ -23,6 +23,6 @@ namespace BusinessObject.Models
         public string? Origin { get; set; }
 
         public virtual Member Member { get; set; } = null!;
-        public virtual ICollection<BirdMedium> BirdMedia { get; set; }
+        public virtual ICollection<BirdMedia> BirdMedia { get; set; }
     }
 }

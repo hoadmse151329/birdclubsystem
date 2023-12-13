@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.Extensions.Configuration;
 
 namespace BusinessObject.Models
 {
@@ -17,7 +18,7 @@ namespace BusinessObject.Models
         }
 
         public virtual DbSet<Bird> Birds { get; set; } = null!;
-        public virtual DbSet<BirdMedium> BirdMedia { get; set; } = null!;
+        public virtual DbSet<BirdMedia> BirdMedia { get; set; } = null!;
         public virtual DbSet<Blog> Blogs { get; set; } = null!;
         public virtual DbSet<ClubInformation> ClubInformations { get; set; } = null!;
         public virtual DbSet<ClubLocation> ClubLocations { get; set; } = null!;
@@ -49,8 +50,14 @@ namespace BusinessObject.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
+                IConfiguration config = new ConfigurationBuilder()
+                                        .SetBasePath(Directory.GetCurrentDirectory())
+                                        .AddJsonFile("appsettings.json").Build();
+
+                string? connectionString = config["ConnectionStrings:DefaultConnection"];
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Data Source=LAPTOP-VR0KVDVV\\SQLEXPRESS;Initial Catalog=BirdClub;Integrated Security=True");
+                //optionsBuilder.UseSqlServer("Data Source=LAPTOP-VR0KVDVV\\SQLEXPRESS;Initial Catalog=BirdClub;Integrated Security=True");
+                optionsBuilder.UseSqlServer(connectionString);
             }
         }
 
@@ -91,7 +98,7 @@ namespace BusinessObject.Models
                     .HasConstraintName("FK_Bird_Member");
             });
 
-            modelBuilder.Entity<BirdMedium>(entity =>
+            modelBuilder.Entity<BirdMedia>(entity =>
             {
                 entity.HasKey(e => e.PictureId)
                     .HasName("PK__BirdMedi__8C2866D8E5255F8B");
