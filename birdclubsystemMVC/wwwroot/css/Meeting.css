@@ -759,6 +759,7 @@
         left: 5px;
         object-fit: cover;
     }
+
 .member-meeting-post {
     background-color: #ffffff;
     display: flex;
@@ -1545,6 +1546,7 @@
         left: 5px;
         object-fit: cover;
     }
+
 .meeting-register {
     background-color: #ffffff;
     display: flex;

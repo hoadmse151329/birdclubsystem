@@ -855,8 +855,8 @@ namespace DAL.Models
                     .HasColumnName("userName");
 
                 entity.HasOne(d => d.Member)
-                    .WithOne(p => p.Users)
-                    //.HasForeignKey(d => d.MemberId)
+                    .WithMany(p => p.Users)
+                    .HasForeignKey(d => d.MemberId)
                     .HasConstraintName("FK_Users_Member");
             });
 
