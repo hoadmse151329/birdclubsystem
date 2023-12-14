@@ -9,5 +9,6 @@ namespace Repository
 {
     public class MeetingRepository : GenericRepository<Meeting>, IMeetingRepository
     {
+
     }
 }

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DAL.Models;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,7 +26,7 @@ namespace DAL.Infrastructure
 
         public IEnumerable<T> GetAll()
         {
-            return _dbSet.AsNoTracking().ToList();
+            return _dbSet.AsNoTrackingWithIdentityResolution().ToList();
         }
 
         public void Create(T entity)
@@ -35,6 +37,7 @@ namespace DAL.Infrastructure
         {
             _dbSet.Remove(entity);
         }
+
         public void Update(T entity)
         {
             _dbSet.Update(entity);

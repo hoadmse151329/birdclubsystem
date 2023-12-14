@@ -1,4 +1,7 @@
-﻿using System;
+﻿using DAL.Models;
+using DAL.Repositories.Implements;
+using DAL.Repositories.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,6 +20,7 @@ namespace DAL.Infrastructure
         private IMeetingParticipantRepository _meetingParticipantRepository;
         private IMemberRepository _memberRepository;
         private IUserRepository _userRepository;
+
         public UnitOfWork(BirdClubContext context)
         {
             _context = context;
