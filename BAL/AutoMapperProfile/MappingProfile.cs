@@ -13,6 +13,10 @@ namespace BAL.AutoMapperProfile
     {
         public MappingProfile()
         {
+            CreateMap<Meeting, MeetingViewModel>().ReverseMap();
+            CreateMap<MeetingMedia, MeetingMediaViewModel>().ReverseMap();
+            CreateMap<MeetingParticipant, MeetingParticipantViewModel>().ReverseMap();
+            CreateMap<Member, MemberViewModel>().ReverseMap();
             CreateMap<User, UserViewModel>().ReverseMap();
         }
     }

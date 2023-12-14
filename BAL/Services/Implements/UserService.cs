@@ -19,9 +19,34 @@ namespace BAL.Services.Implements
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
-        public IEnumerable<UserViewModel> GetAll()
+        public bool GetByEmail(string email)
         {
-            return _mapper.Map<IEnumerable<UserViewModel>>(_unitOfWork.UserRepository.GetAll());
+            var user = _unitOfWork.UserRepository.GetByEmail(email);
+            if (user == null)
+            {
+                return true;
+            }
+            return false;
+        }
+        public UserViewModel GetById(int id)
+        {
+            var user = _unitOfWork.UserRepository.GetById(id);
+            if (user != null)
+            {
+                var usr = _mapper.Map<UserViewModel>(user);
+                return usr;
+            }
+            throw new Exception("No user with that id!");
+        }
+        public UserViewModel GetByIdNoTracking(int id)
+        {
+            var user = _unitOfWork.UserRepository.GetByIdNoTracking(id);
+            if (user != null)
+            {
+                var usr = _mapper.Map<UserViewModel>(user);
+                return usr;
+            }
+            throw new Exception("No user with that id!");
         }
     }
 }

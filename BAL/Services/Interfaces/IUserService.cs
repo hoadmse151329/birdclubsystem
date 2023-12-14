@@ -9,6 +9,8 @@ namespace BAL.Services.Interfaces
 {
     public interface IUserService
     {
-        IEnumerable<UserViewModel> GetAll();
+        UserViewModel GetById(int id);
+        UserViewModel GetByIdNoTracking(int id);
+        bool GetByEmail(string email);
     }
 }

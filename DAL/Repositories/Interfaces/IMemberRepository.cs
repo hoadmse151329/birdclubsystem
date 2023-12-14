@@ -10,5 +10,6 @@ namespace DAL.Repositories.Interfaces
 {
     public interface IMemberRepository : IRepositoryBase<Member>
     {
+        Member? GetByEmail(string email);
     }
 }
