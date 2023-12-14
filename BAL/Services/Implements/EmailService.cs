@@ -1,9 +1,15 @@
-﻿using System.Net.Mail;
+﻿using BAL.Services.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Mail;
 using System.Net;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace WebAPI.Utilities
+namespace BAL.Services.Implements
 {
-    public static class MailUtilities
+    public class EmailService : IEmailService
     {
         /// <summary>
         /// Gửi Email
@@ -14,7 +20,7 @@ namespace WebAPI.Utilities
         /// <param name="_body">Nội dung (hỗ trợ HTML) của email</param>
         /// <param name="client">SmtpClient - kết nối smtp để chuyển thư</param>
         /// <returns>Task</returns>
-        public static async Task<bool> SendMail(string _from, string _to, string _subject, string _body, SmtpClient client)
+        public async Task<bool> SendEmailAsync(string _from, string _to, string _subject, string _body, SmtpClient client)
         {
             // Tạo nội dung Email
             MailMessage message = new MailMessage(
@@ -44,15 +50,16 @@ namespace WebAPI.Utilities
         /// <summary>
         /// Gửi Email sử dụng máy chủ SMTP cài đặt localhost
         /// </summary>
-        public static async Task<bool> SendMailLocalSmtp(string _from, string _to, string _subject, string _body)
+        public async Task<bool> SendEmailLocalSmtp(string _from, string _to, string _subject, string _body)
         {
             using (SmtpClient client = new SmtpClient("localhost"))
             {
-                return await SendMail(_from, _to, _subject, _body, client);
+                return await SendEmailAsync(_from, _to, _subject, _body, client);
             }
         }
         /// <summary>
         /// Gửi email sử dụng máy chủ SMTP Google (smtp.gmail.com)
+        /// </summary>
         /// <param name="_from">Địa chỉ email gửi</param>
         /// <param name="_to">Địa chỉ email nhận</param>
         /// <param name="_subject">Chủ đề của email</param>
@@ -60,9 +67,8 @@ namespace WebAPI.Utilities
         /// <param name="_gmailsend">Username hoặc Địa chỉ Email của tài khoản người gửi</param>
         /// <param name="_gmailpassword">Password của tài khoản người gửi, để null do đã có app password</param>
         /// <returns>Task</returns>
-        /// </summary>
-        public static async Task<bool> SendMailGoogleSmtp(string _from, string _to, string _subject,
-                                                            string _body, string _gmailsend, string _gmailpassword = null)
+        public async Task<bool> SendEmailGoogleSmtpAsync(string _from, string _to, string _subject,
+                                                            string _body, string _gmailsend, string? _gmailpassword)
         {
 
             MailMessage message = new MailMessage(
@@ -83,7 +89,7 @@ namespace WebAPI.Utilities
                 client.Port = 587;
                 client.Credentials = new NetworkCredential(_gmailsend, "lyqzvolmaiwrtojt");
                 client.EnableSsl = true;
-                return await SendMail(_from, _to, _subject, _body, client);
+                return await SendEmailAsync(_from, _to, _subject, _body, client);
             }
         }
     }

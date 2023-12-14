@@ -25,8 +25,4 @@
     <ProjectReference Include="..\BAL\BAL.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Middlewares\" />
-  </ItemGroup>
-
 </Project>

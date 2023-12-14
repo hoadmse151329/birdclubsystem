@@ -1,9 +1,11 @@
-﻿using BusinessObject.Models;
+﻿
+using BAL.Services.Implements;
+using BAL.Services.Interfaces;
+using DAL.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Repository;
 using System.Text;
 using System.Text.Json.Serialization;
 
@@ -19,7 +21,7 @@ namespace WebAPI
                                         .SetBasePath(Directory.GetCurrentDirectory())
                                         .AddJsonFile("appsettings.json").Build();
 
-            builder.Services.AddDbContext<BirdClubContext>(options
+            builder.Services.AddDbContextFactory<BirdClubContext>(options
                 => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             // Add services to the container.
@@ -94,7 +96,8 @@ namespace WebAPI
                           .AllowAnyMethod();
                 });
             });
-            builder.Services.AddScoped<IUserRepository, UserRepository>();
+            //builder.Services.AddScoped<IUserRepository, UserRepository>();
+            builder.Services.AddTransient<IEmailService,EmailService>();
 
             var app = builder.Build();
 

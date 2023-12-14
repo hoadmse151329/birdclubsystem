@@ -8,10 +8,7 @@
 
   <ItemGroup>
     <Folder Include="Data\" />
-    <Folder Include="Infrastructure\" />
     <Folder Include="Migrations\" />
-    <Folder Include="Repositories\Implements\" />
-    <Folder Include="Repositories\Interfaces\" />
   </ItemGroup>
 
   <ItemGroup>
