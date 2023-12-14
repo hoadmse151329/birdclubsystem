@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using BAL.ViewModels;
+using DAL.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +13,7 @@ namespace BAL.AutoMapperProfile
     {
         public MappingProfile()
         {
-
+            CreateMap<User, UserViewModel>().ReverseMap();
         }
     }
 }

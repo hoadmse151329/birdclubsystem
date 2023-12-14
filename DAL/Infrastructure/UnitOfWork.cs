@@ -21,5 +21,20 @@ namespace DAL.Infrastructure
         {
             _context = context;
         }
+
+        public IMeetingRepository MeetingRepository => _meetingRepository ??= new MeetingRepository(_context);
+        public IMeetingMediaRepository MeetingMediaRepository => _meetingMediaRepository ??= new MeetingMediaRepository(_context);
+        public IMeetingParticipantRepository MeetingParticipantRepository => _meetingParticipantRepository ??= new MeetingParticipantRepository(_context);
+        public IMemberRepository MemberRepository => _memberRepository ??= new MemberRepository(_context);
+        public IUserRepository UserRepository => _userRepository ??= new UserRepository(_context);
+        public void Dispose()
+        {
+            _context.Dispose();
+        }
+
+        public void Save()
+        {
+            _context.SaveChanges();
+        }
     }
 }

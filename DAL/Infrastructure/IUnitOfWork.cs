@@ -10,10 +10,10 @@ namespace DAL.Infrastructure
     public interface IUnitOfWork : IDisposable
     {
         IMeetingRepository MeetingRepository { get; }
-        IMeetingMediaRepository MediaRepository { get; }
-        IMeetingParticipantRepository ParticipantRepository { get; }
+        IMeetingMediaRepository MeetingMediaRepository { get; }
+        IMeetingParticipantRepository MeetingParticipantRepository { get; }
         IMemberRepository MemberRepository { get; }
         IUserRepository UserRepository { get; } 
-        void save();
+        void Save();
     }
 }
