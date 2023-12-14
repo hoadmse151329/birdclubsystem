@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DAL.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Infrastructure
 {
@@ -16,9 +18,10 @@ namespace DAL.Infrastructure
         {
             _dbSet = context.Set<T>();
         }
-        public void Delete(T entity)
+
+        public T GetById(int id)
         {
-            _dbSet.Remove(entity);
+            return _dbSet.Find(id);
         }
 
         public IEnumerable<T> GetAll()
@@ -26,14 +29,13 @@ namespace DAL.Infrastructure
             return _dbSet.AsNoTrackingWithIdentityResolution().ToList();
         }
 
-        public T GetById(int id)
-        {
-            return _dbSet.Find(id);
-        }
-
-        public void Insert(T entity)
+        public void Create(T entity)
         {
             _dbSet.Add(entity);
+        }
+        public void Delete(T entity)
+        {
+            _dbSet.Remove(entity);
         }
 
         public void Update(T entity)

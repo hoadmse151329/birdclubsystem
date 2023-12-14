@@ -29,7 +29,7 @@ namespace DAL.Repositories.Implements
         }
 
         public User? GetByLogin(string userName, string passWord)
-        {
+    {
             return _context.Users.AsNoTrackingWithIdentityResolution().SingleOrDefault(usr => usr.UserName == userName && usr.Password == passWord);
         }
     }

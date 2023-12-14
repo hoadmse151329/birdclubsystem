@@ -10,7 +10,7 @@ namespace DAL.Infrastructure
     {
         IEnumerable<T> GetAll();
         T GetById(int id);
-        void Insert(T entity);
+        void Create(T entity);
         void Update(T entity);
         void Delete(T entity);
     }
