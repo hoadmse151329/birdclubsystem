@@ -1,307 +1,152 @@
-﻿@{
+﻿@using birdclubsystem.Controllers
+@{
     ViewData["Title"] = "Meeting Page";
 }
 
+<!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="Meeting.css" />
+    <link rel="stylesheet" href="~/css/Meeting.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css">
+    <!-- FONT -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,100&family=Roboto+Condensed:wght@400;700&display=swap"
+        rel="stylesheet">
+    <!-- FONT AWESOME -->
+    <link rel="stylesheet" href="fonts/fontawesome-free-5.15.4-web/css/all.min.css">
+
+    <!-- main CSS -->
+    <link rel="stylesheet" href="~/css/main.css">
   </head>
   <body>
-    <div class="member-meetings">
-      <div class="overlap-wrapper">
-        <div class="overlap">
-          <div class="background">
-            <div class="overlap-group">
-              <img class="subtract" src="img/subtract.png" />
-              <img class="subtract" src="~/images/tree.jpg" />
-              <div class="rectangle"></div>
-              <div class="div"></div>
-            </div>
-          </div>
-          <div class="headlines">
-            <div class="overlap-2">
-              <div class="rectangle-2"></div>
-              <p class="text-wrapper">Recent meetings from the club</p>
-              <div class="group">
-                <div class="overlap-3">
-                  <div class="rectangle-3"></div>
-                  <img
-                    class="soi-noi-hoi-thi-chim"
-                    src="img/soi-noi-hoi-thi-chim-chao-mao-hot-dau-chuyen-nghiep-chim-chao-mao-03-1542616692-width600height403-1-5.png"
-                    src="https://via.placeholder.com/360x248"
-                  />
-                  <button class="type-button" onclick="handleClick()">
-                      <div class="type">
-                          <div class="div-wrapper">
-                               <div class="text-wrapper-2">Meeting</div>
-                          </div>
-                      </div>
-                  </button>
-                  <p class="p">ChaoMao New Member Bird meeting</p>
-                  <div class="text-wrapper-3">From 10-28-2024 to 10-29-2024</div>
-                  <p class="text-wrapper-4">Meet up with new members, exchanging experiences and ideas...</p>
-                  <div class="flexcontainer">
-                    <p class="text">
-                      <span class="span">Location<br />
-                          <p class="text"><span class="text-wrapper-5">Ha Noi</span>
-                              </p></span>
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div class="overlap-group-wrapper">
-                <div class="overlap-3">
-                  <div class="rectangle-3"></div>
-                  <img
-                    class="soi-noi-hoi-thi-chim"
-                    src="img/soi-noi-hoi-thi-chim-chao-mao-hot-dau-chuyen-nghiep-chim-chao-mao-03-1542616692-width600height403-1.png"
-                    src="https://via.placeholder.com/360x248"
-                  />
-                  <div class="type">
-                    <div class="div-wrapper"><div class="text-wrapper-2">Meeting</div></div>
-                  </div>
-                  <p class="p">ChaoMao New Member Bird meeting</p>
-                  <div class="text-wrapper-6">From 9-20-2024 to 9-21-2024</div>
-                  <p class="text-wrapper-4">Meet up with new members, exchanging experiences and ideas...</p>
-                  <div class="flexcontainer">
-                    <p class="text">
-                      <span class="span">Location<br /></span>
-                    </p>
-                    <p class="text"><span class="text-wrapper-5">Hai Phong</span></p>
-                  </div>
-                </div>
-              </div>
-              <div class="group-2">
-                <div class="overlap-3">
-                  <div class="rectangle-3"></div>
-                  <img
-                    class="soi-noi-hoi-thi-chim"
-                    src="img/soi-noi-hoi-thi-chim-chao-mao-hot-dau-chuyen-nghiep-chim-chao-mao-03-1542616692-width600height403-1-6.png"
-                    src="https://via.placeholder.com/360x248"
-                  />
-                  <div class="type">
-                    <div class="div-wrapper"><div class="text-wrapper-2">Meeting</div></div>
-                  </div>
-                  <p class="p">ChaoMao New Member Bird meeting</p>
-                  <div class="text-wrapper-6">From 9-20-2024 to 9-21-2024</div>
-                  <p class="text-wrapper-4">Meet up with new members, exchanging experiences and ideas...</p>
-                  <div class="flexcontainer">
-                    <p class="text">
-                      <span class="span">Location<br /></span>
-                    </p>
-                    <p class="text"><span class="text-wrapper-5">Hai Phong</span></p>
-                  </div>
-                </div>
-              </div>
-              <div class="group-3">
-                <div class="overlap-3">
-                  <div class="rectangle-3"></div>
-                  <img
-                    class="soi-noi-hoi-thi-chim"
-                    src="img/soi-noi-hoi-thi-chim-chao-mao-hot-dau-chuyen-nghiep-chim-chao-mao-03-1542616692-width600height403-1-2.png"
-                    src="https://via.placeholder.com/360x248"
-                  />
-                  <div class="type">
-                    <div class="div-wrapper"><div class="text-wrapper-2">Meeting</div></div>
-                  </div>
-                  <p class="p">ChaoMao New Member Bird meeting</p>
-                  <div class="text-wrapper-6">From 9-20-2024 to 9-21-2024</div>
-                  <p class="text-wrapper-4">Meet up with new members, exchanging experiences and ideas...</p>
-                  <div class="flexcontainer">
-                    <p class="text">
-                      <span class="span">Location<br /></span>
-                    </p>
-                    <p class="text"><span class="text-wrapper-5">Hai Phong</span></p>
-                  </div>
-                </div>
-              </div>
-              <div class="group-4">
-                <div class="overlap-3">
-                  <div class="rectangle-3"></div>
-                  <img
-                    class="soi-noi-hoi-thi-chim"
-                    src="img/soi-noi-hoi-thi-chim-chao-mao-hot-dau-chuyen-nghiep-chim-chao-mao-03-1542616692-width600height403-1-7.png"
-                    src="https://via.placeholder.com/360x248"
-                  />
-                  <div class="type">
-                    <div class="div-wrapper"><div class="text-wrapper-2">Meeting</div></div>
-                  </div>
-                  <p class="p">ChaoMao New Member Bird meeting</p>
-                  <div class="text-wrapper-6">From 9-20-2024 to 9-21-2024</div>
-                  <p class="text-wrapper-4">Meet up with new members, exchanging experiences and ideas...</p>
-                  <div class="flexcontainer">
-                    <p class="text">
-                      <span class="span">Location<br /></span>
-                    </p>
-                    <p class="text"><span class="text-wrapper-5">Hai Phong</span></p>
-                  </div>
-                </div>
-              </div>
-              <div class="group-5">
-                <div class="overlap-3">
-                  <div class="rectangle-3"></div>
-                  <img
-                    class="soi-noi-hoi-thi-chim"
-                    src="img/soi-noi-hoi-thi-chim-chao-mao-hot-dau-chuyen-nghiep-chim-chao-mao-03-1542616692-width600height403-1-4.png"
-                    src="https://via.placeholder.com/360x248"
-                  />
-                  <div class="type">
-                    <div class="div-wrapper"><div class="text-wrapper-2">Meeting</div></div>
-                  </div>
-                  <p class="p">ChaoMao New Member Bird meeting</p>
-                  <div class="text-wrapper-6">From 9-20-2024 to 9-21-2024</div>
-                  <p class="text-wrapper-4">Meet up with new members, exchanging experiences and ideas...</p>
-                  <div class="flexcontainer">
-                    <p class="text">
-                      <span class="span">Location<br /></span>
-                    </p>
-                    <p class="text"><span class="text-wrapper-5">Hai Phong</span></p>
-                  </div>
-                </div>
-              </div>
-              <img class="ic-sharp-search" src="img/ic-sharp-search.svg" />
-              <a href="#" onclick="performSearch()">
-                  <img class="ic-sharp-search" src="~/images/ic-sharp-search.png" alt="Search Icon" />
-              </a>
-              <div class="search-button">
-                <div class="overlap-4">
-                    <input type="text" class="text-wrapper-7" placeholder="Search news" style="width:130px; border: none; outline: none; padding: 0;">
-                </div>
-              </div>
-              <div class="group-6">
-                <div class="overlap-3">
-                  <div class="rectangle-3"></div>
-                  <img
-                    class="soi-noi-hoi-thi-chim"
-                    src="img/soi-noi-hoi-thi-chim-chao-mao-hot-dau-chuyen-nghiep-chim-chao-mao-03-1542616692-width600height403-1-8.png"
-                    src="https://via.placeholder.com/360x248"
-                  />
-                  <div class="type">
-                    <div class="div-wrapper"><div class="text-wrapper-2">Meeting</div></div>
-                  </div>
-                  <p class="p">ChaoMao New Member Bird meeting</p>
-                  <div class="text-wrapper-6">From 9-20-2024 to 9-21-2024</div>
-                  <p class="text-wrapper-4">Meet up with new members, exchanging experiences and ideas...</p>
-                  <div class="flexcontainer">
-                    <p class="text">
-                      <span class="span">Location<br /></span>
-                    </p>
-                    <p class="text"><span class="text-wrapper-5">Hai Phong</span></p>
-                  </div>
-                </div>
-              </div>
-              <div class="group-7">
-                <div class="overlap-3">
-                  <div class="rectangle-3"></div>
-                  <img
-                    class="soi-noi-hoi-thi-chim"
-                    src="img/soi-noi-hoi-thi-chim-chao-mao-hot-dau-chuyen-nghiep-chim-chao-mao-03-1542616692-width600height403-1-3.png"
-                    src="https://via.placeholder.com/360x248"
-                  />
-                  <div class="type">
-                    <div class="div-wrapper"><div class="text-wrapper-2">Meeting</div></div>
-                  </div>
-                  <p class="p">ChaoMao New Member Bird meeting</p>
-                  <div class="text-wrapper-6">From 9-20-2024 to 9-21-2024</div>
-                  <p class="text-wrapper-4">Meet up with new members, exchanging experiences and ideas...</p>
-                  <div class="flexcontainer">
-                    <p class="text">
-                      <span class="span">Location<br /></span>
-                      <p class="text"><span class="text-wrapper-5">Hai Phong</span></p>
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div class="group-8">
-                <div class="overlap-3">
-                  <div class="rectangle-3"></div>
-                  <img class="soi-noi-hoi-thi-chim" src="https://via.placeholder.com/360x248" />
-                  <div class="type">
-                    <div class="div-wrapper"><div class="text-wrapper-2">Meeting</div></div>
-                  </div>
-                  <p class="p">ChaoMao New Member Bird meeting</p>
-                  <div class="text-wrapper-6">From 9-20-2024 to 9-21-2024</div>
-                  <p class="text-wrapper-4">Meet up with new members, exchanging experiences and ideas...</p>
-                  <div class="flexcontainer">
-                    <p class="text">
-                      <span class="span">Location<br /></span>
-                    </p>
-                    <p class="text"><span class="text-wrapper-5">Hai Phong</span></p>
-                  </div>
-                </div>
-              </div>
-              <div class="pages">
-                <img class="ic-baseline-arrow" src="img/ic-baseline-arrow-back-ios-new.svg" />
-                <img class="img" src="img/ic-baseline-arrow-back-ios-new-3.svg" />
-                <div class="element">9</div>
-                <div class="element-2">8</div>
-                <div class="element-3">6</div>
-                <div class="element-4">5</div>
-                <div class="text-wrapper-8">4</div>
-                <div class="text-wrapper-9">3</div>
-                <div class="text-wrapper-10">2</div>
-                <div class="text-wrapper-11">1</div>
-                <div class="element-5">7</div>
-              </div>
-            </div>
-          </div>
-          <footer class="footer">
-            <div class="overlap-5">
-              <div class="rectangle-4"></div>
-              <div class="text-wrapper-12"> 2024 ChaoMao BirdClub</div>
-              <img class="other-fanpages" src="img/other-fanpages.png" />
-              <p class="text-wrapper-13">
-                We welcome donations in any amount to help fund club initiatives and activities, such as the purchase of
-                bird seed for feeding birds, necessaries for harmed bird treatments, the annual Contests, Field trips
-                and other club events, the purchase of supplies and tools for our volunteer projects, etc.
-              </p>
-              <div class="learn-more-button">
-                <div class="overlap-group-2"><div class="text-wrapper-14">Donate</div></div>
-              </div>
-            </div>
-          </footer>
-          <div class="navbar">
-            <div class="overlap-6">
-              <div class="rectangle-5"></div>
-              <div class="chaomao-club">ChaoMao <br />Club</div>
-              <div class="navbar-2">
-                <div class="text-wrapper-15">Meetings</div>
-                <div class="overlap-7">
-                  <div class="text-wrapper-16">Field trips</div>
-                  <div class="text-wrapper-17">News</div>
-                  <div class="guest-contests">
-                    <div class="news">
-                      <div class="text-wrapper-17">Contests</div>
-                      <img class="ic-baseline-arrow-2" src="img/image.svg" />
-                    </div>
-                  </div>
-                </div>
-                <div class="overlap-group-3">
-                  <div class="text-wrapper-18">Gallery</div>
-                  <img class="member-button" src="img/member-button.svg" />
-                </div>
-                <div class="community-dropdown">
-                  <div class="text-wrapper-17">Community</div>
-                  <img class="ic-baseline-arrow-3" src="img/ic-baseline-arrow-back-ios-new-2.svg" />
-                </div>
-                <div class="text-wrapper-18">Home</div>
-              </div>
-              <img class="red-whiskered-bulbul" src="img/red-whiskered-bulbul-bird-logo-eps-10-generated-1.png" />
-            </div>
-          </div>
-        </div>
-      </div>
+          <hr>
+      <div class="header__breadcrumb container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")" class="text-decoration-none">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Meeting List</li>
+            </ol>
+        </nav>
     </div>
+    <hr>
+
+            <section class="content__list-room container">
+    <div class="row">
+        <div class="content__filter col-3">
+            <div class="content__filter-tabs-left">
+                <div class="tabs-left-title">
+                    <h3 class="heading">Recent meetings from the club</h3>
+                </div>
+                <form class="tabs-left-filter" action="MeetingManager">
+                    <div class="input-group mb-3">
+                        <select class="custom-select" name="district" id="inputGroupSelect02">
+                            <option value=""> District </option>
+                            @if (MeetingController.LIST_DISTRICT != null)
+                            {
+                                @if (MeetingController.LIST_DISTRICT.Any())
+                                {
+                                    foreach (var d in MeetingController.LIST_DISTRICT)
+                                    {
+                                        <option value="@d.districtID"> @d.name</option>
+                                    }
+                                }
+                            }
+                            </select>
+                        </div>
+                        <div class="filter-search text-center">
+                            <button class="button--primary" type="submit" name="action" value="filter"><i class="fa fa-filter"></i> Lọc</button>
+                        </div>
+                    </form>
+                    <div class="col-bg">
+                        <div class="bg-1"></div>
+                        <div class="bg-2"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="content__list col-9">
+            <div class="row">
+                @if (MeetingController.LIST_MEETING != null && MeetingController.LIST_MEETING.Any())
+                {
+                    foreach (var o in MeetingController.LIST_MEETING)
+                    {
+                        <div class="col-4 p-0">
+                            <div class="room-item ">
+                                <a href="MainController?action=ShowMeetingDetail&meetingID=@o.meetingID" class="meeting-image">
+                                    <img class="img-fluid" src="@o.image" alt="nt1">
+                                </a>
+                                <div class="motel-title my-2">
+                                    <a href="MainController?action=ShowMeetingDetail&meetingID=@o.meetingID" class="text-decoration-none">@o.name </a>
+                                </div>
+                                <div class="motel-address ">
+                                    <p class="address truncate"><i class="fas fa-map-marker-alt"></i> @o.address, @o.district, @o.city</p>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <p><i class="fa fa-star"></i> Loại:</p><p> @o.typename</p>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <p><i class="fas fa-address-book"></i> Hotline</p><p> @o.phone</p>
+                                </div>
+                                <div class="motel-price d-flex justify-content-between">
+                                    <p style="font-size: 1rem"><i class="fas fa-money-bill-wave"></i> Chỉ từ: @o.motelprice</p>
+                                    <button class="button--primary"><a class="text-decoration-none text-white"
+                                                                       href="MainController?action=ShowMotelDetail&motelID=@o.motelID">Xem ngay</a></button>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+                @if (MeetingController.MESSAGE != null && MeetingController.MESSAGE.Any())
+                {
+                    <div class="reviews-title alert alert-info col-12">
+                        @MeetingController.MESSAGE.FirstOrDefault()
+                    </div>
+                }
+            </div>
+            <div class="pagination mb-3">
+
+            </div>
+        </div>
+    </div>
+</section>
+        <!-- FOOTER -->
+
+        <!-- thư viện hỗ trợ -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+        referrerpolicy="no-referrer"></script>
+        <!-- Jquery Waypoint -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>
+        <!-- BS4 JS -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.5/umd/popper.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- BS4 carousels -->
+        <script>
+            $('.carousel').carousel({
+                interval: 3000
+            });
+        </script>
+        <!-- owl carousels -->
+        <script src="./assets/js/owl.carousel.min.js"></script>
+        <script>
+            $('.motelList-carousel').owlCarousel({
+                loop: true,
+                margin: 10,
+                nav: false,
+                responsive: {
+                    0: {
+                        items: 1
+                    },
+                    576: {
+                        items: 2
+                    },
+                    1200: {
+                        items: 4
+                    }
+                }
+            });
+        </script>
+        <!-- main js -->
+        <script src="assets/js/user-script.js"></script>
   </body>
-  <script>
-    function performSearch() {
-        // Add your search functionality or redirect logic here
-        console.log('Search button clicked!');
-    }
-    function handleClick() {
-        // Add your click event functionality here
-        console.log('Button clicked!');
-    }
-</script>
 </html>
