@@ -1,8 +1,8 @@
 D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\appsettings.Development.json
 D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\appsettings.json
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\WebAPI.exe
 D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\WebAPI.deps.json
 D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\WebAPI.runtimeconfig.json
-D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\WebAPI.exe
 D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\WebAPI.dll
 D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\WebAPI.pdb
 D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\AutoMapper.dll
@@ -29,6 +29,7 @@ D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\Web
 D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\Microsoft.Win32.SystemEvents.dll
 D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\MimeKit.dll
 D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\NETCore.MailKit.dll
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\Newtonsoft.Json.dll
 D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\Swashbuckle.AspNetCore.Swagger.dll
 D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerUI.dll

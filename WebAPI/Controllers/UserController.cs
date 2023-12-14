@@ -1,11 +1,9 @@
-
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
 using WebAPI.Utilities;
-using DAL.Repositories;
-using DAL.Models;
 using DAL.Repositories.Interfaces;
+using DAL.Models;
 
 namespace WebAPI.Controllers
 {
@@ -548,4 +546,3 @@ namespace WebAPI.Controllers
         }*/
     }
 }
-

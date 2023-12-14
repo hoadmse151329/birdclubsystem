@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "LmN/+ssj+eH0IEy32KZCjEbEjfzhevy3cIY/WZ9EXtnhyP762vo6HUEDOG62uGQDPIGWqWVd6gsrDyCx7pyCJg==",
+  "dgSpecHash": "BkMIoW1AOmdUgNUA+aaYAsdkJs9g4BCYYmsLzfAYN+JmkXmpDDqJwoDaqOh+vYMpsBD4XDqTmbJIVEwF9XELPw==",
   "success": true,
   "projectFilePath": "D:\\New folder\\SWP391\\fptu_alarm_project\\New folder\\New folder\\birdclubsystem\\WebAPI\\WebAPI.csproj",
   "expectedPackageFiles": [
@@ -50,6 +50,7 @@
     "C:\\Users\\Admins\\.nuget\\packages\\microsoft.win32.systemevents\\4.7.0\\microsoft.win32.systemevents.4.7.0.nupkg.sha512",
     "C:\\Users\\Admins\\.nuget\\packages\\mimekit\\4.3.0\\mimekit.4.3.0.nupkg.sha512",
     "C:\\Users\\Admins\\.nuget\\packages\\netcore.mailkit\\2.1.0\\netcore.mailkit.2.1.0.nupkg.sha512",
+    "C:\\Users\\Admins\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
     "C:\\Users\\Admins\\.nuget\\packages\\swashbuckle.aspnetcore\\6.2.3\\swashbuckle.aspnetcore.6.2.3.nupkg.sha512",
     "C:\\Users\\Admins\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\6.2.3\\swashbuckle.aspnetcore.swagger.6.2.3.nupkg.sha512",
     "C:\\Users\\Admins\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\6.2.3\\swashbuckle.aspnetcore.swaggergen.6.2.3.nupkg.sha512",
