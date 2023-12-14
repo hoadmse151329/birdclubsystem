@@ -1,6 +1,8 @@
 ﻿
+using BAL.AutoMapperProfile;
 using BAL.Services.Implements;
 using BAL.Services.Interfaces;
+using DAL.Infrastructure;
 using DAL.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -76,7 +78,10 @@ namespace WebAPI
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(config["AppSettings:SecretKey"])),
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(
+                        builder.Configuration.GetSection("AppSettings")["SecretKey"]
+                        //config["AppSettings:SecretKey"]
+                        )),
                     ValidateIssuer = false,
                     ValidateAudience = false
                 };
@@ -96,9 +101,12 @@ namespace WebAPI
                           .AllowAnyMethod();
                 });
             });
-            //builder.Services.AddScoped<IUserRepository, UserRepository>();
+            builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
+            builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddTransient<IEmailService,EmailService>();
+            builder.Services.AddScoped<IJWTService,JWTService>();
 
+            builder.Services.AddAutoMapper(typeof(MappingProfile));
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

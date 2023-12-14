@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using BAL.ViewModels;
+using DAL.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +13,15 @@ namespace BAL.AutoMapperProfile
     {
         public MappingProfile()
         {
-
+            CreateMap<User, UserViewModel>()
+                /*.ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.Member.FullName))*/
+                .ForMember(dest => dest.Email, opt =>
+                {
+                    opt.AllowNull();
+                    opt.MapFrom(src => src.Member != null ? src.Member.Email : "");
+                })
+                .ReverseMap();
+            CreateMap<Member, MemberViewModel>().ReverseMap();
         }
     }
 }

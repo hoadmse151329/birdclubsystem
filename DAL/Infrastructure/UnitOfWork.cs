@@ -21,6 +21,10 @@ namespace DAL.Infrastructure
         private IMemberRepository _memberRepository;
         private IUserRepository _userRepository;
         public IUserRepository UserRepository => _userRepository ??= new UserRepository(_context);
+        public IMeetingRepository MeetingRepository => _meetingRepository ??= new MeetingRepository(_context);
+        public IMeetingMediaRepository MeetingMediaRepository => _meetingMediaRepository ??= new MeetingMediaRepository(_context);
+        public IMeetingParticipantRepository MeetingParticipantRepository => _meetingParticipantRepository ??= new MeetingParticipantRepository(_context);
+        public IMemberRepository MemberRepository => _memberRepository ??= new MemberRepository(_context);
 
         public UnitOfWork(BirdClubContext context)
         {
