@@ -22,6 +22,14 @@ namespace DAL.Infrastructure
         private IUserRepository _userRepository;
         public IUserRepository UserRepository => _userRepository ??= new UserRepository(_context);
 
+        public IMeetingRepository MeetingRepository => throw new NotImplementedException();
+
+        public IMeetingMediaRepository MediaRepository => throw new NotImplementedException();
+
+        public IMeetingParticipantRepository ParticipantRepository => throw new NotImplementedException();
+
+        public IMemberRepository MemberRepository => throw new NotImplementedException();
+
         public UnitOfWork(BirdClubContext context)
         {
             _context = context;
