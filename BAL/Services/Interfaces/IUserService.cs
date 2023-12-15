@@ -1,4 +1,5 @@
 ﻿using BAL.ViewModels;
+using BAL.ViewModels.Authenticates;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +10,15 @@ namespace BAL.Services.Interfaces
 {
     public interface IUserService
     {
-        UserViewModel GetById(int id);
-        UserViewModel GetByIdNoTracking(int id);
+        AuthenResponse AuthenticateUser(AuthenRequest request);
+        AuthenResponse AuthenticateUserEmail(string email);
+        UserViewModel? GetById(int id);
         bool GetByEmail(string email);
+        UserViewModel? GetByLogin(string username, string password);
+        /* void Create(UserViewModel entity);*/
+        void Create(UserViewModel entity);
+        /*void Update(UserViewModel entity);*/
+        void Update(UserViewModel entity);
+        UserViewModel? GetByEmailModel(string email);
     }
 }

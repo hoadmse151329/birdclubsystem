@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace DAL.Models
 {
@@ -22,7 +23,8 @@ namespace DAL.Models
         public string? Status { get; set; }
         public int? ClubId { get; set; }
 
+        public virtual User? User { get; set; }
+        [JsonIgnore]
         public virtual ICollection<Bird> Birds { get; set; }
-        public virtual User Users { get; set; }
     }
 }
