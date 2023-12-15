@@ -453,7 +453,7 @@ namespace WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult ChangePassword(
             [FromForm][Required][EmailAddress] string email,
-            [FromForm][PasswordPropertyText] string password,
+            [FromForm][Required][PasswordPropertyText] string password,
             [FromForm][Required][PasswordPropertyText] string Newpassword,
             [FromForm][Required][PasswordPropertyText] string NewConfirmPassword)
         {
