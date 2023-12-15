@@ -125,7 +125,6 @@ namespace BAL.Services.Implements
 
         public void Update(UserViewModel entity)
         {
-
             var usr = _mapper.Map<User>(entity);
             usr.Member.Email = entity.Email;
             _unitOfWork.UserRepository.Update(usr);

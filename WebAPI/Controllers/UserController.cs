@@ -86,7 +86,7 @@ namespace WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult GetUserLogin(
             [FromForm][Required] string userName, 
-            [FromForm][Required][PasswordPropertyText] string password)
+            [FromForm][Required][PasswordPropertyText][DataType(DataType.Password)] string password)
         {
             try
             {
