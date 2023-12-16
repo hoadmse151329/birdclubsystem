@@ -10,5 +10,18 @@ namespace DAL.Repositories.Interfaces
 {
     public interface IMeetingRepository : IRepositoryBase<Meeting>
     {
+        IEnumerable<Meeting> GetSortedMeetings(
+            int meetingId,
+            string? meetingName,
+            string? meetingDescription,
+            DateTime? registrationDeadline,
+            DateTime? startDate,
+            DateTime? endDate,
+            int numberOfParticipants,
+            string? host,
+            string? incharge,
+            string? note
+            );
+        Meeting? GetMeetingById(int id);
     }
 }
