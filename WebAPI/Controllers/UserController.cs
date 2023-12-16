@@ -2,20 +2,25 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
 using WebAPI.Utilities;
-using DAL.Repositories.Interfaces;
-using DAL.Models;
+using BAL.Services.Interfaces;
+using BAL.ViewModels;
+using BAL.ViewModels.Authenticates;
+using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebAPI.Controllers
 {
     public class UserController : ControllerBase
     {
-        private readonly IUserRepository _userRepo;
-        private readonly OtpGenerator otpver = new OtpGenerator(6);
+        private readonly IUserService _userService;
+        private readonly IConfiguration _config;
+        //private readonly OtpGenerator otpver = new OtpGenerator(6);
         private readonly OtpGenerator otpname = new OtpGenerator(10);
 
-        public UserController(IUserRepository userRepo)
+        public UserController(IUserService userService,IConfiguration config)
         {
-            _userRepo = userRepo;
+            _userService = userService;
+            _config = config;
         }
 
         /// <summary>
@@ -25,14 +30,15 @@ namespace WebAPI.Controllers
         /// <returns>Return result of action and error message</returns>
         // GET api/<UserController>/5
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(User), StatusCodes.Status200OK)]
+        [Authorize(Roles ="Admin")]
+        [ProducesResponseType(typeof(UserViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult GetUserById([FromRoute] int id)
         {
             try
             {
-                var result = _userRepo.GetById(id);
+                var result = _userService.GetById(id);
                 if (result == null)
                 {
                     return NotFound(new
@@ -75,14 +81,21 @@ namespace WebAPI.Controllers
         /// </remarks>
         /// <returns>Return result of action and error message</returns>
         [HttpPost("Login")]
-        [ProducesResponseType(typeof(User), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(UserViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult GetUserLogin([FromForm][Required] string userName, [FromForm][Required][PasswordPropertyText] string password)
+        public IActionResult GetUserLogin(
+            [FromForm][Required] string userName, 
+            [FromForm][Required][PasswordPropertyText][DataType(DataType.Password)] string password)
         {
             try
             {
-                var result = _userRepo.GetByLogin(userName, password);
+                var loguser = new AuthenRequest()
+                {
+                    Username = userName,
+                    Password = password
+                };
+                var result = _userService.AuthenticateUser(loguser);
                 if (result == null)
                 {
                     return NotFound(new
@@ -126,35 +139,34 @@ namespace WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult GetUserLoginByThirdParty(
-            [Required][EmailAddress] string email)
+            [FromBody][Required][EmailAddress][DataType(DataType.EmailAddress)] string email)
         {
             try
             {
-                var result = _userRepo.GetByEmail(email);
+                var result = _userService.GetByEmailModel(email);
                 if (result == null)
                 {
                     string sRanName = otpname.GenerateRandomOTP();
                     string sRanPassword = otpname.GenerateRandomOTP();
-                    var usr = new User()
+                    var usr = new UserViewModel()
                     {
                         UserName = "NewGoogleUser" + sRanName,
                         Password = sRanPassword,
+                        Email = email
                     };
-                    usr.Member = new Member();
-                    usr.Member.FullName = "NewGoogleUser" + sRanName;
-                    usr.Member.Email = email;
-                    _userRepo.Insert(usr);
-                    usr = _userRepo.GetByEmail(email);
-                    return Ok(new
-                    {
-                        status = true,
-                        usr,
-                    });
+                    _userService.Create(usr);
+                    result = _userService.GetByEmailModel(email);
                 }
+                var loguser = new AuthenRequest()
+                {
+                    Username = result.UserName,
+                    Password = result.Password
+                };
+                var login = _userService.AuthenticateUser(loguser);
                 return Ok(new
                 {
                     status = true,
-                    result
+                    login
                 });
             }
             catch (Exception ex)
@@ -270,23 +282,18 @@ namespace WebAPI.Controllers
         /// <returns>Return result of action and error message</returns>
         //[HttpPost]
         [HttpPost("Register")]
-        [ProducesResponseType(typeof(User), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(UserViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult CreateUser(
             [FromForm] [Required] string username,
-            [FromForm] [Required] [PasswordPropertyText] string password,
-            [FromForm] [Required] [PasswordPropertyText] string confirmPassword,
-            [FromForm] [Required] [EmailAddress(ErrorMessage ="Email is Invalid !")] string email)
+            [FromForm] [Required] [EmailAddress] [DataType(DataType.EmailAddress)] string email,
+            [FromForm] [Required] [PasswordPropertyText] [DataType(DataType.Password)] string password,
+            [FromForm] [Required] [PasswordPropertyText] [DataType(DataType.Password)] string confirmPassword)
         {
             try
             {
-                var value = new User()
-                {
-                    UserName = username,
-                    Password = password
-                };
-                if (value.Password == null || value.Password == string.Empty)
+                if (password == null || password == string.Empty)
                 {
                     return BadRequest(new
                     {
@@ -294,7 +301,7 @@ namespace WebAPI.Controllers
                         errorMessage = "Password is Empty !"
                     });
                 }
-                var result = _userRepo.GetByEmail(email);
+                var result = _userService.GetByEmailModel(email);
                 if (result != null)
                 {
                     return BadRequest(new
@@ -303,7 +310,7 @@ namespace WebAPI.Controllers
                         errorMessage = "Email has already registered !"
                     });
                 }
-                if (!value.Password.Equals(confirmPassword))
+                if (!password.Equals(confirmPassword))
                 {
                     return BadRequest(new
                     {
@@ -311,12 +318,19 @@ namespace WebAPI.Controllers
                         errorMessage = "Password and Confirm Password are not the same !"
                     });
                 }
-                value.Member = new Member();
-                value.Member.Email = email;
-                _userRepo.Insert(value);
-                _userRepo.Save();
-
-                var resultaft = _userRepo.GetByLogin(value.UserName, value.Password);
+                UserViewModel value = new UserViewModel()
+                {
+                    UserName= username,
+                    Email= email,
+                    Password= password,
+                };
+                _userService.Create(value);
+                var loguser = new AuthenRequest()
+                {
+                    Username = username,
+                    Password = password
+                };
+                var resultaft = _userService.AuthenticateUser(loguser);
 
                 if (resultaft == null)
                 {
@@ -370,23 +384,19 @@ namespace WebAPI.Controllers
         /// </remarks>
         /// <returns>Return result of action and error message</returns>
         [HttpPut("{id}")]
+        [Authorize(Roles ="Admin,Member")]
         [HttpPut("Update/{id}")]
-        //[ProducesResponseType(typeof(UserViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(UserViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult Update([FromRoute][Required] int id, 
-            [FromBody] string userName,
-            [FromBody] string passWord)
+        public IActionResult Update(
+            [FromRoute][Required] int id,
+            [FromForm][Required][EmailAddress] string email,
+            [FromForm][Required] string username)
         {
             try
             {
-                var value = new User()
-                {
-                    UserName = userName,
-                    Password = passWord
-                };
-                value.UserId = id;
-                var result = _userRepo.GetById(id);
+                var result = _userService.GetById(id);
                 if (result == null)
                 {
                     return NotFound(new
@@ -395,10 +405,10 @@ namespace WebAPI.Controllers
                         errorMessage = "Account does not exist !"
                     });
                 }
-                _userRepo.Update(value/*,
-                        ForgotOTP: value.ForgotOtp,
-                        ForgotOTPCreatedDate: value.ForgotOtpCreatedDate*/);
-                result = _userRepo.GetById(value.UserId);
+                result.Email = email;
+                result.UserName = username;
+                _userService.Update(result);
+                result = _userService.GetById(id);
                 return Ok(new
                 {
                     status = true,
@@ -437,18 +447,19 @@ namespace WebAPI.Controllers
         /// </remarks>
         /// <returns>Return result of action and error message</returns>
         [HttpPut("ChangePassword")]
-        //[ProducesResponseType(typeof(User), StatusCodes.Status200OK)]
+        [Authorize(Roles ="Admin,Member")]
+        [ProducesResponseType(typeof(UserViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult ChangePassword(
-            [Required][EmailAddress] string email,
-            [Required][PasswordPropertyText] string password,
-            [Required][PasswordPropertyText] string Newpassword,
-            [Required][PasswordPropertyText] string NewConfirmPassword)
+            [FromForm][Required][EmailAddress] string email,
+            [FromForm][Required][PasswordPropertyText] string password,
+            [FromForm][Required][PasswordPropertyText] string Newpassword,
+            [FromForm][Required][PasswordPropertyText] string NewConfirmPassword)
         {
             try
             {
-                var result = _userRepo.GetByLogin(email, password);
+                var result = _userService.GetByEmailModel(email);
                 if (result == null)
                 {
                     return NotFound(new
@@ -466,8 +477,8 @@ namespace WebAPI.Controllers
                     });
                 }
                 result.Password = Newpassword;
-                _userRepo.Update(result);
-                result = _userRepo.GetById(result.UserId);
+                _userService.Update(result);
+                result = _userService.GetById(result.UserId.Value);
                 return Ok(new
                 {
                     status = true,

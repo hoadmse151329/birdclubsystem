@@ -14,10 +14,7 @@ namespace BAL.Services.Implements
 {
     public class JWTService : IJWTService
     {
-        IConfiguration config = new ConfigurationBuilder()
-                                        .SetBasePath(Directory.GetCurrentDirectory())
-                                        .AddJsonFile("appsettings.json").Build();
-        public ObjectToken ExtractToken(string token)
+        public ObjectToken ExtractToken(string token, IConfiguration config)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(config["AppSettings:SecretKey"]);
@@ -32,16 +29,16 @@ namespace BAL.Services.Implements
             var jwtToken = (JwtSecurityToken)validatedToken;
             var username = jwtToken.Claims.First(x => x.Type == "unique_name").Value;
             var role = jwtToken.Claims.First(x => x.Type == "role").Value;
-            var employeeID = jwtToken.Claims.First(x => x.Type == "nameid").Value;
+            var UserId = jwtToken.Claims.First(x => x.Type == "nameid").Value;
             return new ObjectToken
             {
                 Username = username,
                 Role = role,
-                UserId = employeeID,
+                UserId = UserId,
             };
         }
 
-        public string GenerateJWTToken(int userID, string username, string role)
+        public string GenerateJWTToken(int userID, string username, string role, IConfiguration config)
         {
             var key = Encoding.ASCII.GetBytes(config["AppSettings:SecretKey"]);
             var tokenHandler = new JwtSecurityTokenHandler();

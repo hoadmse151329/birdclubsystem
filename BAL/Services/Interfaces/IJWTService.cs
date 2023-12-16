@@ -1,4 +1,5 @@
 ﻿using BAL.ViewModels.Authenticates;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace BAL.Services.Interfaces
 {
     public interface IJWTService
     {
-        public string GenerateJWTToken(int userID, string username, string role);
-        public ObjectToken ExtractToken(string token);
+        public string GenerateJWTToken(int userID, string username, string role, IConfiguration config);
+        public ObjectToken ExtractToken(string token, IConfiguration config);
     }
 }

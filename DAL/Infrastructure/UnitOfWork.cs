@@ -6,9 +6,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DAL.Models;
-using DAL.Repositories.Implements;
-using DAL.Repositories.Interfaces;
 
 namespace DAL.Infrastructure
 {
@@ -21,6 +18,10 @@ namespace DAL.Infrastructure
         private IMemberRepository _memberRepository;
         private IUserRepository _userRepository;
         public IUserRepository UserRepository => _userRepository ??= new UserRepository(_context);
+        public IMeetingRepository MeetingRepository => _meetingRepository ??= new MeetingRepository(_context);
+        public IMeetingMediaRepository MeetingMediaRepository => _meetingMediaRepository ??= new MeetingMediaRepository(_context);
+        public IMeetingParticipantRepository MeetingParticipantRepository => _meetingParticipantRepository ??= new MeetingParticipantRepository(_context);
+        public IMemberRepository MemberRepository => _memberRepository ??= new MemberRepository(_context);
 
         public IMeetingRepository MeetingRepository => throw new NotImplementedException();
 
@@ -34,7 +35,6 @@ namespace DAL.Infrastructure
         {
             _context = context;
         }
-
         public void Dispose()
         {
             _context.Dispose();

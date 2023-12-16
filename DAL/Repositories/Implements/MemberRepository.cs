@@ -1,6 +1,7 @@
 ﻿using DAL.Infrastructure;
 using DAL.Models;
 using DAL.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,16 @@ namespace DAL.Repositories.Implements
         public MemberRepository(BirdClubContext context) : base(context)
         {
             _context = context;
+        }
+
+        public Member? GetByEmail(string email)
+        {
+            return _context.Members.AsNoTrackingWithIdentityResolution().SingleOrDefault(mem => mem.Email == email);
+        }
+
+        public Member? GetByIdNoTracking(int id)
+        {
+            return _context.Members.AsNoTrackingWithIdentityResolution().SingleOrDefault(mem => mem.MemberId == id);
         }
     }
 }

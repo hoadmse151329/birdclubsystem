@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BAL.Services.Interfaces
 {
-    internal interface IMemberService
+    public interface IMemberService
     {
     }
 }
