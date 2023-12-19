@@ -18,41 +18,27 @@ namespace DAL.Repositories.Implements
             _context = context;
         }
 
-        public Meeting? GetMeetingById(int id)
+        public IEnumerable<Meeting> GetAllByRegistrationDeadline(DateTime registrationDeadline)
         {
-            var meetimage = _context.MeetingMedia
-                .SingleOrDefault(m => m.MeetingId.Equals(id));
-            var meet = _context.Meetings
-                .Where(m => m.MeetingId.Equals(meetimage.MeetingId))
-                .Select(m => new Meeting
-                {
-                    MeetingId = m.MeetingId,
-                    MeetingName = m.MeetingName,
-                    Description = m.Description,
-                    RegistrationDeadline = m.RegistrationDeadline,
-                    StartDate = m.StartDate,
-                    EndDate = m.EndDate,
-                    NumberOfParticipants = m.NumberOfParticipants,
-                    Host = m.Host,
-                    Incharge = m.Incharge,
-                    Note = m.Note,
-                }).First();
-            meetimage.Meeting = meet;
-            return meet;
+            return _context.Meetings.Where(m => m.RegistrationDeadline == registrationDeadline).ToList();
+        }
+
+        public IEnumerable<string> GetAllMeetingName()
+        {
+            return _context.Meetings
+                .Select(m => m.MeetingName)
+                .Distinct()
+                .ToList();
         }
 
         public IEnumerable<Meeting> GetSortedMeetings(
             int meetingId,
             string? meetingName,
-            string? description,
             DateTime? registrationDeadline,
             DateTime? startDate,
             DateTime? endDate,
-            int numberOfParticipants,
-            string? host,
-            string? incharge,
-            string? note,
-            string? image
+            int? numberOfParticipants,
+            string? orderBy
             )
         {
             var meetings = _context.Meetings.Where(m => m.MeetingId == meetingId);
@@ -61,10 +47,7 @@ namespace DAL.Repositories.Implements
             {
                 meetings = meetings.Where(m => m.MeetingName.Contains(meetingName));
             }
-            if (description != null)
-            {
-                meetings = meetings.Where(m => m.Description.Contains(description));
-            }
+
             if (registrationDeadline != null)
             {
                 meetings = meetings.Where(m => m.RegistrationDeadline == registrationDeadline);
@@ -81,27 +64,42 @@ namespace DAL.Repositories.Implements
             {
                 meetings = meetings.Where(m => m.NumberOfParticipants == numberOfParticipants);
             }
-            if (host != null)
-            {
-                meetings = meetings.Where(m => m.Host.Contains(host));
-            }
-            if (incharge != null)
-            {
-                meetings = meetings.Where(m => m.Incharge == incharge);
-            }
-            if (note != null)
-            {
-                meetings = meetings.Where(m => m.Note == note);
-            }
-            if (image != null)
-            {
-                meetings = meetings.Where(m => m.MeetingMedia.Any(mm => mm.Image == image));
-            }
 
-            foreach (var meet in meetings)
+            if (!string.IsNullOrEmpty(orderBy))
             {
-
+                switch (orderBy)
+                {
+                    case "meetingname_asc":
+                        meetings = meetings.OrderBy(m => m.MeetingName);
+                        break;
+                    case "meetingname_desc":
+                        meetings = meetings.OrderByDescending(m => m.MeetingName);
+                        break;
+                    case "registrationdeadline_asc":
+                        meetings = meetings.OrderBy(m => m.RegistrationDeadline);
+                        break;
+                    case "registrationdeadline_desc":
+                        meetings = meetings.OrderByDescending(m => m.RegistrationDeadline);
+                        break;
+                    case "startdate_asc":
+                        meetings = meetings.OrderBy(m => m.StartDate);
+                        break;
+                    case "startdate_desc":
+                        meetings = meetings.OrderByDescending(m => m.StartDate);
+                        break;
+                    case "enddate_asc":
+                        meetings = meetings.OrderBy(m => m.EndDate);
+                        break;
+                    case "enddate_desc":
+                        meetings = meetings.OrderByDescending(m => m.EndDate);
+                        break;
+                }
             }
+            else
+            {
+                meetings = meetings.OrderBy(m => m.MeetingId);
+            }
+            return meetings.ToList();
         }
     }
 }
