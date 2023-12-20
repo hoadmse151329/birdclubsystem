@@ -13,3 +13,19 @@ D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\BAL
 D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\BAL\obj\Debug\net6.0\refint\BAL.dll
 D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\BAL\obj\Debug\net6.0\BAL.pdb
 D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\BAL\obj\Debug\net6.0\ref\BAL.dll
+D:\My Stuff\Codes\C#\BirdClubSystem\BAL\bin\Debug\net6.0\BAL.deps.json
+D:\My Stuff\Codes\C#\BirdClubSystem\BAL\bin\Debug\net6.0\BAL.dll
+D:\My Stuff\Codes\C#\BirdClubSystem\BAL\bin\Debug\net6.0\BAL.pdb
+D:\My Stuff\Codes\C#\BirdClubSystem\BAL\bin\Debug\net6.0\DAL.dll
+D:\My Stuff\Codes\C#\BirdClubSystem\BAL\bin\Debug\net6.0\DAL.pdb
+D:\My Stuff\Codes\C#\BirdClubSystem\BAL\obj\Debug\net6.0\BAL.csproj.AssemblyReference.cache
+D:\My Stuff\Codes\C#\BirdClubSystem\BAL\obj\Debug\net6.0\BAL.GeneratedMSBuildEditorConfig.editorconfig
+D:\My Stuff\Codes\C#\BirdClubSystem\BAL\obj\Debug\net6.0\BAL.AssemblyInfoInputs.cache
+D:\My Stuff\Codes\C#\BirdClubSystem\BAL\obj\Debug\net6.0\BAL.AssemblyInfo.cs
+D:\My Stuff\Codes\C#\BirdClubSystem\BAL\obj\Debug\net6.0\BAL.csproj.CoreCompileInputs.cache
+D:\My Stuff\Codes\C#\BirdClubSystem\BAL\obj\Debug\net6.0\BAL.sourcelink.json
+D:\My Stuff\Codes\C#\BirdClubSystem\BAL\obj\Debug\net6.0\BAL.csproj.CopyComplete
+D:\My Stuff\Codes\C#\BirdClubSystem\BAL\obj\Debug\net6.0\BAL.dll
+D:\My Stuff\Codes\C#\BirdClubSystem\BAL\obj\Debug\net6.0\refint\BAL.dll
+D:\My Stuff\Codes\C#\BirdClubSystem\BAL\obj\Debug\net6.0\BAL.pdb
+D:\My Stuff\Codes\C#\BirdClubSystem\BAL\obj\Debug\net6.0\ref\BAL.dll
