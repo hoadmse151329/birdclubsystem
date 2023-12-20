@@ -650,3 +650,11 @@ FodyWeavers.xsd
 /WebAPI/obj/project.nuget.cache
 /WebAPI/obj/WebAPI.csproj.nuget.dgspec.json
 /WebAPI/obj/WebAPI.csproj.nuget.g.props
+/BAL/obj/Debug/net6.0/BAL.AssemblyInfo.cs
+/BAL/obj/Debug/net6.0/BAL.csproj.AssemblyReference.cache
+/BAL/obj/Debug/net6.0/BAL.GeneratedMSBuildEditorConfig.editorconfig
+/DAL/obj/Debug/net6.0/DAL.AssemblyInfo.cs
+/DAL/obj/Debug/net6.0/DAL.GeneratedMSBuildEditorConfig.editorconfig
+/WebAPI/obj/Debug/net6.0/WebAPI.GeneratedMSBuildEditorConfig.editorconfig
+/WebAPI/obj/Debug/net6.0/WebAPI.AssemblyInfo.cs
+/WebAPI/obj/Debug/net6.0/WebAPI.csproj.AssemblyReference.cache
