@@ -1,0 +1,164 @@
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\appsettings.Development.json
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\appsettings.json
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\WebAPI.exe
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\WebAPI.deps.json
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\WebAPI.runtimeconfig.json
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\WebAPI.dll
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\WebAPI.pdb
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\AutoMapper.dll
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\BCrypt.Net-Next.dll
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\BouncyCastle.Cryptography.dll
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\Humanizer.dll
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\MailKit.dll
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\Microsoft.Data.SqlClient.dll
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.dll
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.Design.dll
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.Relational.dll
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.SqlServer.dll
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\Microsoft.Identity.Client.dll
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\Microsoft.IdentityModel.Abstractions.dll
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\Microsoft.IdentityModel.JsonWebTokens.dll
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\Microsoft.IdentityModel.Logging.dll
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\Microsoft.IdentityModel.Protocols.dll
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\Microsoft.IdentityModel.Tokens.dll
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\Microsoft.OpenApi.dll
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\Microsoft.Win32.SystemEvents.dll
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\MimeKit.dll
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\NETCore.MailKit.dll
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\Newtonsoft.Json.dll
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\Swashbuckle.AspNetCore.Swagger.dll
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\System.Configuration.ConfigurationManager.dll
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\System.Drawing.Common.dll
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\System.Formats.Asn1.dll
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\System.IdentityModel.Tokens.Jwt.dll
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\System.Runtime.Caching.dll
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\System.Security.Cryptography.Pkcs.dll
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\System.Security.Cryptography.ProtectedData.dll
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\System.Security.Permissions.dll
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\System.Text.Encoding.CodePages.dll
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\System.Windows.Extensions.dll
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\runtimes\unix\lib\netcoreapp3.1\Microsoft.Data.SqlClient.dll
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\runtimes\win\lib\netcoreapp3.1\Microsoft.Data.SqlClient.dll
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\runtimes\win-arm\native\Microsoft.Data.SqlClient.SNI.dll
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\runtimes\win-arm64\native\Microsoft.Data.SqlClient.SNI.dll
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\runtimes\win\lib\netcoreapp3.0\Microsoft.Win32.SystemEvents.dll
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\runtimes\unix\lib\netcoreapp3.0\System.Drawing.Common.dll
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\runtimes\win\lib\netcoreapp3.0\System.Drawing.Common.dll
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\runtimes\win\lib\netstandard2.0\System.Runtime.Caching.dll
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Security.Cryptography.Pkcs.dll
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Text.Encoding.CodePages.dll
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\runtimes\win\lib\netcoreapp3.0\System.Windows.Extensions.dll
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\BAL.dll
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\DAL.dll
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\BAL.pdb
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\bin\Debug\net6.0\DAL.pdb
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\obj\Debug\net6.0\WebAPI.csproj.AssemblyReference.cache
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\obj\Debug\net6.0\WebAPI.GeneratedMSBuildEditorConfig.editorconfig
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\obj\Debug\net6.0\WebAPI.AssemblyInfoInputs.cache
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\obj\Debug\net6.0\WebAPI.AssemblyInfo.cs
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\obj\Debug\net6.0\WebAPI.csproj.CoreCompileInputs.cache
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\obj\Debug\net6.0\WebAPI.MvcApplicationPartsAssemblyInfo.cs
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\obj\Debug\net6.0\WebAPI.MvcApplicationPartsAssemblyInfo.cache
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\obj\Debug\net6.0\staticwebassets.build.json
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\obj\Debug\net6.0\staticwebassets.development.json
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\obj\Debug\net6.0\scopedcss\bundle\WebAPI.styles.css
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\obj\Debug\net6.0\WebAPI.csproj.CopyComplete
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\obj\Debug\net6.0\WebAPI.dll
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\obj\Debug\net6.0\refint\WebAPI.dll
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\obj\Debug\net6.0\WebAPI.pdb
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\obj\Debug\net6.0\WebAPI.genruntimeconfig.cache
+D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\WebAPI\obj\Debug\net6.0\ref\WebAPI.dll
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\bin\Debug\net6.0\appsettings.Development.json
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\bin\Debug\net6.0\appsettings.json
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\bin\Debug\net6.0\WebAPI.exe
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\bin\Debug\net6.0\WebAPI.deps.json
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\bin\Debug\net6.0\WebAPI.runtimeconfig.json
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\bin\Debug\net6.0\WebAPI.dll
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\bin\Debug\net6.0\WebAPI.pdb
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\bin\Debug\net6.0\AutoMapper.dll
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\bin\Debug\net6.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\bin\Debug\net6.0\BCrypt.Net-Next.dll
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\bin\Debug\net6.0\BouncyCastle.Cryptography.dll
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\bin\Debug\net6.0\Humanizer.dll
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\bin\Debug\net6.0\MailKit.dll
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\bin\Debug\net6.0\Microsoft.Data.SqlClient.dll
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.dll
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.Design.dll
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.Relational.dll
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.SqlServer.dll
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\bin\Debug\net6.0\Microsoft.Identity.Client.dll
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\bin\Debug\net6.0\Microsoft.IdentityModel.Abstractions.dll
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\bin\Debug\net6.0\Microsoft.IdentityModel.JsonWebTokens.dll
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\bin\Debug\net6.0\Microsoft.IdentityModel.Logging.dll
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\bin\Debug\net6.0\Microsoft.IdentityModel.Protocols.dll
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\bin\Debug\net6.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\bin\Debug\net6.0\Microsoft.IdentityModel.Tokens.dll
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\bin\Debug\net6.0\Microsoft.OpenApi.dll
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\bin\Debug\net6.0\Microsoft.Win32.SystemEvents.dll
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\bin\Debug\net6.0\MimeKit.dll
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\bin\Debug\net6.0\NETCore.MailKit.dll
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\bin\Debug\net6.0\Newtonsoft.Json.dll
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\bin\Debug\net6.0\Swashbuckle.AspNetCore.Swagger.dll
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\bin\Debug\net6.0\System.Configuration.ConfigurationManager.dll
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\bin\Debug\net6.0\System.Drawing.Common.dll
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\bin\Debug\net6.0\System.Formats.Asn1.dll
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\bin\Debug\net6.0\System.IdentityModel.Tokens.Jwt.dll
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\bin\Debug\net6.0\System.Runtime.Caching.dll
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\bin\Debug\net6.0\System.Security.Cryptography.Pkcs.dll
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\bin\Debug\net6.0\System.Security.Cryptography.ProtectedData.dll
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\bin\Debug\net6.0\System.Security.Permissions.dll
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\bin\Debug\net6.0\System.Text.Encoding.CodePages.dll
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\bin\Debug\net6.0\System.Windows.Extensions.dll
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\bin\Debug\net6.0\runtimes\unix\lib\netcoreapp3.1\Microsoft.Data.SqlClient.dll
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\bin\Debug\net6.0\runtimes\win\lib\netcoreapp3.1\Microsoft.Data.SqlClient.dll
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\bin\Debug\net6.0\runtimes\win-arm\native\Microsoft.Data.SqlClient.SNI.dll
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\bin\Debug\net6.0\runtimes\win-arm64\native\Microsoft.Data.SqlClient.SNI.dll
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\bin\Debug\net6.0\runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\bin\Debug\net6.0\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\bin\Debug\net6.0\runtimes\win\lib\netcoreapp3.0\Microsoft.Win32.SystemEvents.dll
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\bin\Debug\net6.0\runtimes\unix\lib\netcoreapp3.0\System.Drawing.Common.dll
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\bin\Debug\net6.0\runtimes\win\lib\netcoreapp3.0\System.Drawing.Common.dll
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\bin\Debug\net6.0\runtimes\win\lib\netstandard2.0\System.Runtime.Caching.dll
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Security.Cryptography.Pkcs.dll
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\bin\Debug\net6.0\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Text.Encoding.CodePages.dll
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\bin\Debug\net6.0\runtimes\win\lib\netcoreapp3.0\System.Windows.Extensions.dll
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\bin\Debug\net6.0\BAL.dll
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\bin\Debug\net6.0\DAL.dll
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\bin\Debug\net6.0\BAL.pdb
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\bin\Debug\net6.0\DAL.pdb
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\obj\Debug\net6.0\WebAPI.csproj.AssemblyReference.cache
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\obj\Debug\net6.0\WebAPI.GeneratedMSBuildEditorConfig.editorconfig
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\obj\Debug\net6.0\WebAPI.AssemblyInfoInputs.cache
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\obj\Debug\net6.0\WebAPI.AssemblyInfo.cs
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\obj\Debug\net6.0\WebAPI.csproj.CoreCompileInputs.cache
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\obj\Debug\net6.0\WebAPI.MvcApplicationPartsAssemblyInfo.cs
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\obj\Debug\net6.0\WebAPI.MvcApplicationPartsAssemblyInfo.cache
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\obj\Debug\net6.0\WebAPI.sourcelink.json
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\obj\Debug\net6.0\staticwebassets.build.json
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\obj\Debug\net6.0\staticwebassets.development.json
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\obj\Debug\net6.0\staticwebassets\msbuild.WebAPI.Microsoft.AspNetCore.StaticWebAssets.props
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\obj\Debug\net6.0\staticwebassets\msbuild.build.WebAPI.props
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\obj\Debug\net6.0\staticwebassets\msbuild.buildMultiTargeting.WebAPI.props
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\obj\Debug\net6.0\staticwebassets\msbuild.buildTransitive.WebAPI.props
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\obj\Debug\net6.0\staticwebassets.pack.json
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\obj\Debug\net6.0\scopedcss\bundle\WebAPI.styles.css
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\obj\Debug\net6.0\WebAPI.csproj.CopyComplete
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\obj\Debug\net6.0\WebAPI.dll
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\obj\Debug\net6.0\refint\WebAPI.dll
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\obj\Debug\net6.0\WebAPI.pdb
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\obj\Debug\net6.0\WebAPI.genruntimeconfig.cache
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\obj\Debug\net6.0\ref\WebAPI.dll

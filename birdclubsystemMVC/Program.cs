@@ -8,6 +8,7 @@ namespace birdclubsystem
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            builder.Services.AddRazorPages();
             /*builder.Services.AddRazorPages().AddRazorPagesOptions(options =>
             {
                 options.Conventions.AddPageRoute("/register-login/login", "login");
