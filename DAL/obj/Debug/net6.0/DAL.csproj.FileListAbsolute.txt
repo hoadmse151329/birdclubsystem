@@ -12,6 +12,7 @@ D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\DAL
 D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\DAL\obj\Debug\net6.0\DAL.pdb
 D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\DAL\obj\Debug\net6.0\DAL.genruntimeconfig.cache
 D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\DAL\obj\Debug\net6.0\ref\DAL.dll
+<<<<<<< HEAD
 D:\VisualStudioCommunityProjects\birdclubsystem\DAL\bin\Debug\net6.0\DAL.deps.json
 D:\VisualStudioCommunityProjects\birdclubsystem\DAL\bin\Debug\net6.0\DAL.runtimeconfig.json
 D:\VisualStudioCommunityProjects\birdclubsystem\DAL\bin\Debug\net6.0\DAL.dll
@@ -26,3 +27,20 @@ D:\VisualStudioCommunityProjects\birdclubsystem\DAL\obj\Debug\net6.0\refint\DAL.
 D:\VisualStudioCommunityProjects\birdclubsystem\DAL\obj\Debug\net6.0\DAL.pdb
 D:\VisualStudioCommunityProjects\birdclubsystem\DAL\obj\Debug\net6.0\DAL.genruntimeconfig.cache
 D:\VisualStudioCommunityProjects\birdclubsystem\DAL\obj\Debug\net6.0\ref\DAL.dll
+=======
+D:\My Stuff\Codes\C#\BirdClubSystem\DAL\obj\Debug\net6.0\DAL.csproj.AssemblyReference.cache
+D:\My Stuff\Codes\C#\BirdClubSystem\DAL\obj\Debug\net6.0\DAL.GeneratedMSBuildEditorConfig.editorconfig
+D:\My Stuff\Codes\C#\BirdClubSystem\DAL\obj\Debug\net6.0\DAL.AssemblyInfoInputs.cache
+D:\My Stuff\Codes\C#\BirdClubSystem\DAL\obj\Debug\net6.0\DAL.AssemblyInfo.cs
+D:\My Stuff\Codes\C#\BirdClubSystem\DAL\obj\Debug\net6.0\DAL.csproj.CoreCompileInputs.cache
+D:\My Stuff\Codes\C#\BirdClubSystem\DAL\obj\Debug\net6.0\DAL.sourcelink.json
+D:\My Stuff\Codes\C#\BirdClubSystem\DAL\obj\Debug\net6.0\DAL.dll
+D:\My Stuff\Codes\C#\BirdClubSystem\DAL\obj\Debug\net6.0\refint\DAL.dll
+D:\My Stuff\Codes\C#\BirdClubSystem\DAL\obj\Debug\net6.0\DAL.pdb
+D:\My Stuff\Codes\C#\BirdClubSystem\DAL\bin\Debug\net6.0\DAL.deps.json
+D:\My Stuff\Codes\C#\BirdClubSystem\DAL\bin\Debug\net6.0\DAL.runtimeconfig.json
+D:\My Stuff\Codes\C#\BirdClubSystem\DAL\bin\Debug\net6.0\DAL.dll
+D:\My Stuff\Codes\C#\BirdClubSystem\DAL\bin\Debug\net6.0\DAL.pdb
+D:\My Stuff\Codes\C#\BirdClubSystem\DAL\obj\Debug\net6.0\DAL.genruntimeconfig.cache
+D:\My Stuff\Codes\C#\BirdClubSystem\DAL\obj\Debug\net6.0\ref\DAL.dll
+>>>>>>> 85d14c121da285d90fbb40d561bfe506b7200d14

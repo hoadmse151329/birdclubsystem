@@ -10,5 +10,6 @@ namespace DAL.Repositories.Interfaces
 {
     public interface IMeetingParticipantRepository : IRepositoryBase<MeetingParticipant>
     {
+
     }
 }

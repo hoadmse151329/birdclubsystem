@@ -23,5 +23,40 @@ namespace BAL.Services.Implements
         {
             return _mapper.Map<IEnumerable<MeetingViewModel>>(_unitOfWork.MeetingRepository.GetAll());
         }
+
+        public IEnumerable<MeetingViewModel> GetAllByRegistrationDeadline(DateTime registrationDeadline)
+        {
+            return _mapper.Map<IEnumerable<MeetingViewModel>>(_unitOfWork.MeetingRepository.GetAllByRegistrationDeadline(registrationDeadline));
+        }
+
+        public MeetingViewModel GetById(int id)
+        {
+            return _mapper.Map<MeetingViewModel>(_unitOfWork.MeetingRepository.GetById(id));
+        }
+
+        public IEnumerable<MeetingViewModel> GetSortedMeetings(int meetingId,
+            string? meetingName,
+            DateTime? registrationDeadline,
+            DateTime? startDate,
+            DateTime? endDate,
+            int? numberOfParticipants,
+            string? orderBy)
+        {
+            return _mapper.Map<IEnumerable<MeetingViewModel>>(_unitOfWork.MeetingRepository.GetSortedMeetings(
+                meetingId,
+                meetingName,
+                registrationDeadline,
+                startDate,
+                endDate,
+                numberOfParticipants,
+                orderBy
+                ));
+        }
+
+        public List<string> GetAllMeetingName()
+        {
+            var meetingNames = _unitOfWork.MeetingRepository.GetAllMeetingName().ToList();
+            return meetingNames;
+        }
     }
 }
