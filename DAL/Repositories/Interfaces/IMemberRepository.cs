@@ -12,5 +12,6 @@ namespace DAL.Repositories.Interfaces
     {
         Member? GetByIdNoTracking(int id);
         Member? GetByEmail(string email);
+
     }
 }

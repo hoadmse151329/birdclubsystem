@@ -103,10 +103,12 @@ namespace BAL.Services.Implements
 
         public UserViewModel? GetById(int id)
         {
-            var user = _unitOfWork.UserRepository.GetById(id);
+            var user = _unitOfWork.UserRepository.GetByIdNoTracking(id);
             if (user != null)
             {
-                var usr = _mapper.Map<UserViewModel>(user);
+				var mem = _unitOfWork.MemberRepository.GetById(user.MemberId.Value);
+				var usr = _mapper.Map<UserViewModel>(user);
+                usr.Email = mem.Email;
                 return usr;
             }
             return null;
@@ -126,7 +128,19 @@ namespace BAL.Services.Implements
         public void Update(UserViewModel entity)
         {
             var usr = _mapper.Map<User>(entity);
-            usr.Member.Email = entity.Email;
+            if (usr.MemberId != null)
+            {
+				var usrmem = _unitOfWork.MemberRepository.GetById(usr.MemberId.Value);
+                if(usrmem == null)
+                {
+                    usr.Member = new Member()
+                    {
+                        Email = entity.Email
+                    };
+                } else
+                usrmem.Email = entity.Email;
+                usr.Member = usrmem;
+			}
             _unitOfWork.UserRepository.Update(usr);
             _unitOfWork.Save();
         }

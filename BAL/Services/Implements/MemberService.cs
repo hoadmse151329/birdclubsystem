@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BAL.Services.Interfaces;
+using BAL.ViewModels;
 using DAL.Infrastructure;
 using System;
 using System.Collections.Generic;
@@ -18,5 +19,35 @@ namespace BAL.Services.Implements
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
-    }
+
+		public void Create(MemberViewModel entity)
+		{
+			throw new NotImplementedException();
+		}
+
+		public bool GetByEmail(string email)
+		{
+			throw new NotImplementedException();
+		}
+
+		public MemberViewModel? GetByEmailModel(string email)
+		{
+			throw new NotImplementedException();
+		}
+
+		public MemberViewModel? GetById(int id)
+		{
+			throw new NotImplementedException();
+		}
+
+		public MemberViewModel? GetByLogin(string username, string password)
+		{
+			throw new NotImplementedException();
+		}
+
+		public void Update(MemberViewModel entity)
+		{
+			throw new NotImplementedException();
+		}
+	}
 }

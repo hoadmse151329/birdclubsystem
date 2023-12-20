@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "D:\\New folder\\SWP391\\fptu_alarm_project\\New folder\\New folder\\birdclubsystem\\WebAPI\\WebAPI.csproj": {}
+    "D:\\VisualStudioCommunityProjects\\birdclubsystem\\WebAPI\\WebAPI.csproj": {}
   },
   "projects": {
-    "D:\\New folder\\SWP391\\fptu_alarm_project\\New folder\\New folder\\birdclubsystem\\BAL\\BAL.csproj": {
+    "D:\\VisualStudioCommunityProjects\\birdclubsystem\\BAL\\BAL.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\New folder\\SWP391\\fptu_alarm_project\\New folder\\New folder\\birdclubsystem\\BAL\\BAL.csproj",
+        "projectUniqueName": "D:\\VisualStudioCommunityProjects\\birdclubsystem\\BAL\\BAL.csproj",
         "projectName": "BAL",
-        "projectPath": "D:\\New folder\\SWP391\\fptu_alarm_project\\New folder\\New folder\\birdclubsystem\\BAL\\BAL.csproj",
-        "packagesPath": "C:\\Users\\Admins\\.nuget\\packages\\",
-        "outputPath": "D:\\New folder\\SWP391\\fptu_alarm_project\\New folder\\New folder\\birdclubsystem\\BAL\\obj\\",
+        "projectPath": "D:\\VisualStudioCommunityProjects\\birdclubsystem\\BAL\\BAL.csproj",
+        "packagesPath": "C:\\Users\\ADMIN\\.nuget\\packages\\",
+        "outputPath": "D:\\VisualStudioCommunityProjects\\birdclubsystem\\BAL\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+          "A:\\Microsoft Visual Studio\\Tools\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\Admins\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\ADMIN\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -32,8 +32,8 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "D:\\New folder\\SWP391\\fptu_alarm_project\\New folder\\New folder\\birdclubsystem\\DAL\\DAL.csproj": {
-                "projectPath": "D:\\New folder\\SWP391\\fptu_alarm_project\\New folder\\New folder\\birdclubsystem\\DAL\\DAL.csproj"
+              "D:\\VisualStudioCommunityProjects\\birdclubsystem\\DAL\\DAL.csproj": {
+                "projectPath": "D:\\VisualStudioCommunityProjects\\birdclubsystem\\DAL\\DAL.csproj"
               }
             }
           }
@@ -59,7 +59,8 @@
             "net47",
             "net471",
             "net472",
-            "net48"
+            "net48",
+            "net481"
           ],
           "assetTargetFallback": true,
           "warn": true,
@@ -68,24 +69,24 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.320\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.103\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "D:\\New folder\\SWP391\\fptu_alarm_project\\New folder\\New folder\\birdclubsystem\\DAL\\DAL.csproj": {
+    "D:\\VisualStudioCommunityProjects\\birdclubsystem\\DAL\\DAL.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\New folder\\SWP391\\fptu_alarm_project\\New folder\\New folder\\birdclubsystem\\DAL\\DAL.csproj",
+        "projectUniqueName": "D:\\VisualStudioCommunityProjects\\birdclubsystem\\DAL\\DAL.csproj",
         "projectName": "DAL",
-        "projectPath": "D:\\New folder\\SWP391\\fptu_alarm_project\\New folder\\New folder\\birdclubsystem\\DAL\\DAL.csproj",
-        "packagesPath": "C:\\Users\\Admins\\.nuget\\packages\\",
-        "outputPath": "D:\\New folder\\SWP391\\fptu_alarm_project\\New folder\\New folder\\birdclubsystem\\DAL\\obj\\",
+        "projectPath": "D:\\VisualStudioCommunityProjects\\birdclubsystem\\DAL\\DAL.csproj",
+        "packagesPath": "C:\\Users\\ADMIN\\.nuget\\packages\\",
+        "outputPath": "D:\\VisualStudioCommunityProjects\\birdclubsystem\\DAL\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+          "A:\\Microsoft Visual Studio\\Tools\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\Admins\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\ADMIN\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -143,7 +144,8 @@
             "net47",
             "net471",
             "net472",
-            "net48"
+            "net48",
+            "net481"
           ],
           "assetTargetFallback": true,
           "warn": true,
@@ -152,24 +154,24 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.320\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.103\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "D:\\New folder\\SWP391\\fptu_alarm_project\\New folder\\New folder\\birdclubsystem\\WebAPI\\WebAPI.csproj": {
+    "D:\\VisualStudioCommunityProjects\\birdclubsystem\\WebAPI\\WebAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\New folder\\SWP391\\fptu_alarm_project\\New folder\\New folder\\birdclubsystem\\WebAPI\\WebAPI.csproj",
+        "projectUniqueName": "D:\\VisualStudioCommunityProjects\\birdclubsystem\\WebAPI\\WebAPI.csproj",
         "projectName": "WebAPI",
-        "projectPath": "D:\\New folder\\SWP391\\fptu_alarm_project\\New folder\\New folder\\birdclubsystem\\WebAPI\\WebAPI.csproj",
-        "packagesPath": "C:\\Users\\Admins\\.nuget\\packages\\",
-        "outputPath": "D:\\New folder\\SWP391\\fptu_alarm_project\\New folder\\New folder\\birdclubsystem\\WebAPI\\obj\\",
+        "projectPath": "D:\\VisualStudioCommunityProjects\\birdclubsystem\\WebAPI\\WebAPI.csproj",
+        "packagesPath": "C:\\Users\\ADMIN\\.nuget\\packages\\",
+        "outputPath": "D:\\VisualStudioCommunityProjects\\birdclubsystem\\WebAPI\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+          "A:\\Microsoft Visual Studio\\Tools\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\Admins\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\ADMIN\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -184,8 +186,8 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "D:\\New folder\\SWP391\\fptu_alarm_project\\New folder\\New folder\\birdclubsystem\\BAL\\BAL.csproj": {
-                "projectPath": "D:\\New folder\\SWP391\\fptu_alarm_project\\New folder\\New folder\\birdclubsystem\\BAL\\BAL.csproj"
+              "D:\\VisualStudioCommunityProjects\\birdclubsystem\\BAL\\BAL.csproj": {
+                "projectPath": "D:\\VisualStudioCommunityProjects\\birdclubsystem\\BAL\\BAL.csproj"
               }
             }
           }
@@ -249,7 +251,8 @@
             "net47",
             "net471",
             "net472",
-            "net48"
+            "net48",
+            "net481"
           ],
           "assetTargetFallback": true,
           "warn": true,
@@ -261,7 +264,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.320\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.103\\RuntimeIdentifierGraph.json"
         }
       }
     }

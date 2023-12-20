@@ -16,5 +16,15 @@ namespace DAL.Repositories.Implements
         {
             _context = context;
         }
-    }
+
+		public Meeting? GetMeetingById(int id)
+		{
+			throw new NotImplementedException();
+		}
+
+		public IEnumerable<Meeting> GetSortedMeetings(int meetingId, string? meetingName, string? meetingDescription, DateTime? registrationDeadline, DateTime? startDate, DateTime? endDate, int numberOfParticipants, string? host, string? incharge, string? note)
+		{
+			throw new NotImplementedException();
+		}
+	}
 }

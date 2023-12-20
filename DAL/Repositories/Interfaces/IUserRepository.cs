@@ -13,7 +13,6 @@ namespace DAL.Repositories.Interfaces
         User? GetByLogin(string userName, string passWord);
         User? GetByIdNoTracking(int id);
         User? GetByEmail(string email);
-        void Insert(User usr);
-        void Save();
+
     }
 }

@@ -13,3 +13,18 @@ D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\BAL
 D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\BAL\obj\Debug\net6.0\refint\BAL.dll
 D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\BAL\obj\Debug\net6.0\BAL.pdb
 D:\New folder\SWP391\fptu_alarm_project\New folder\New folder\birdclubsystem\BAL\obj\Debug\net6.0\ref\BAL.dll
+D:\VisualStudioCommunityProjects\birdclubsystem\BAL\bin\Debug\net6.0\BAL.deps.json
+D:\VisualStudioCommunityProjects\birdclubsystem\BAL\bin\Debug\net6.0\BAL.dll
+D:\VisualStudioCommunityProjects\birdclubsystem\BAL\bin\Debug\net6.0\BAL.pdb
+D:\VisualStudioCommunityProjects\birdclubsystem\BAL\bin\Debug\net6.0\DAL.dll
+D:\VisualStudioCommunityProjects\birdclubsystem\BAL\bin\Debug\net6.0\DAL.pdb
+D:\VisualStudioCommunityProjects\birdclubsystem\BAL\obj\Debug\net6.0\BAL.csproj.AssemblyReference.cache
+D:\VisualStudioCommunityProjects\birdclubsystem\BAL\obj\Debug\net6.0\BAL.GeneratedMSBuildEditorConfig.editorconfig
+D:\VisualStudioCommunityProjects\birdclubsystem\BAL\obj\Debug\net6.0\BAL.AssemblyInfoInputs.cache
+D:\VisualStudioCommunityProjects\birdclubsystem\BAL\obj\Debug\net6.0\BAL.AssemblyInfo.cs
+D:\VisualStudioCommunityProjects\birdclubsystem\BAL\obj\Debug\net6.0\BAL.csproj.CoreCompileInputs.cache
+D:\VisualStudioCommunityProjects\birdclubsystem\BAL\obj\Debug\net6.0\BAL.csproj.CopyComplete
+D:\VisualStudioCommunityProjects\birdclubsystem\BAL\obj\Debug\net6.0\BAL.dll
+D:\VisualStudioCommunityProjects\birdclubsystem\BAL\obj\Debug\net6.0\refint\BAL.dll
+D:\VisualStudioCommunityProjects\birdclubsystem\BAL\obj\Debug\net6.0\BAL.pdb
+D:\VisualStudioCommunityProjects\birdclubsystem\BAL\obj\Debug\net6.0\ref\BAL.dll
