@@ -2,7 +2,6 @@
     ViewData["Title"] = "Meeting Post Page";
 }
 
-<!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8" />
@@ -14,7 +13,7 @@
         <div class="overlap">
           <div class="background">
             <div class="overlap-group">
-              <img class="subtract" src="~/images/subtract.png" />
+              <img class="subtract" src="~/images/Background.png" />
               <div class="rectangle"></div>
               <div class="div"></div>
               <div class="rectangle-2"></div>
@@ -23,8 +22,6 @@
           <div class="headlines">
             <div class="group">
               <div class="overlap-2">
-                <img class="img" src="~/images/rectangle-3.svg" />
-                <div class="rectangle-3"></div>
                 <div class="flexcontainer">
                   <p class="text">
                     <span class="text-wrapper">Content<br /></span>
@@ -32,11 +29,7 @@
                   <p class="span-wrapper">
                     <span class="span"
                       >Meet up with new members, exchanging experiences and ideas...Fusce dui est, pellentesque a dolor
-                      eu, facilisis aliquam ligula. Integer dignissim pellentesque lacus, et tempor diam volutpat et.
-                      Vivamus iaculis nec ante ac laoreet. Pellentesque aliquam dolor vel felis dignissim facilisis.
-                      Nullam non fermentum tortor. Aenean hendrerit lacus quis arcu finibus, posuere aliquet magna
-                      dictum. Etiam in sapien ligula. Sed a purus sit amet ligula interdum sagittis. Duis fermentum arcu
-                      enim, eu hendrerit tortor mollis vitae..</span
+                      eu, The main focus of the meetings is birding, thus the meeting location is rotated among good birding locations.</span
                     >
                   </p>
                 </div>
@@ -46,33 +39,31 @@
                   </p>
                   <p class="p">
                     <span class="span"
-                      >Meet up with new members, exchanging experiences and ideas...Fusce dui est, pellentesque a dolor
-                      eu, facilisis aliquam ligula. Integer dignissim pellentesque lacus, et tempor diam volutpat et.
-                      Vivamus iaculis nec ante ac laoreet. Pellentesque aliquam dolor vel felis dignissim facilisis.
-                      Nullam non fermentum tortor. Aenean hendrerit lacus quis arcu finibus, posuere aliquet magna
-                      dictum.</span
+                      >Everyone interested in birds of the HCM city is welcome at our general meetings, whether members of the Chao Mao Club or not.
+                      Specifics about upcoming meetings are provided via the Newsletter sent to all members,
+                      and are also provided on this web site.</span
                     >
                   </p>
                 </div>
                 <div class="QR">
-                  <img class="rectangle-4" src="~/images/rectangle-7.png" />
+                  <img class="rectangle-4" src="~/images/QR.png" />
                   <p class="text-wrapper-2">
                     Please save below QR code for scanning at the end of the meeting for check in
                   </p>
                 </div>
-                <div class="type">
-                  <div class="div-wrapper"><div class="text-wrapper-3">Meeting</div></div>
-                </div>
+                <div class="tittle">
+                    <div class="div-wrapper"><div class="text-wrapper-3">Register</div></div>
+                  </div>
                 <img
                   class="soi-noi-hoi-thi-chim"
-                  src="~/images/soi-noi-hoi-thi-chim-chao-mao-hot-dau-chuyen-nghiep-chim-chao-mao-03-1542616692-width600height403-1.png"
+                  src="~/images/meeting.png"
                 />
               </div>
             </div>
             <div class="info">
               <div class="overlap-3">
                 <div class="rectangle-5"></div>
-                <img class="rectangle-6" src="~/images/rectangle-8.png" />
+                <img class="rectangle-6" src="~/images/map1.png" />
                 <div class="tittle">
                   <div class="overlap-group-2"><p class="text-wrapper-4">ChaoMao New Member Bird meeting</p></div>
                 </div>
@@ -92,7 +83,11 @@
                   <div class="text-wrapper-15">ChaoMaoClub</div>
                 </div>
                 <div class="register">
-                  <div class="overlap-group-3"><div class="text-wrapper-16">Register</div></div>
+                  <button class="overlap-group-3">
+                     <a href="@Url.Action("MeetingRegister", "Meeting")">
+                        <div class="text-wrapper-16">Register</div>
+                     </a>
+                  </button>
                 </div>
               </div>
             </div>

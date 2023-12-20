@@ -27,34 +27,6 @@ namespace DAL.Infrastructure
 
         public IMeetingParticipantRepository ParticipantRepository => throw new NotImplementedException();
 
-        public IMeetingParticipantRepository ParticipantRepository => throw new NotImplementedException();
-
-        public IMemberRepository MemberRepository => throw new NotImplementedException();
-
-        public IMeetingParticipantRepository ParticipantRepository => throw new NotImplementedException();
-
-        public IMemberRepository MemberRepository => throw new NotImplementedException();
-
-        public IMeetingParticipantRepository ParticipantRepository => throw new NotImplementedException();
-
-        public IMemberRepository MemberRepository => throw new NotImplementedException();
-
-        public IMeetingParticipantRepository ParticipantRepository => throw new NotImplementedException();
-
-        public IMemberRepository MemberRepository => throw new NotImplementedException();
-
-        public IMeetingParticipantRepository ParticipantRepository => throw new NotImplementedException();
-
-        public IMemberRepository MemberRepository => throw new NotImplementedException();
-
-        public IMeetingParticipantRepository ParticipantRepository => throw new NotImplementedException();
-
-        public IMemberRepository MemberRepository => throw new NotImplementedException();
-
-        public IMeetingParticipantRepository ParticipantRepository => throw new NotImplementedException();
-
-        public IMemberRepository MemberRepository => throw new NotImplementedException();
-
         public UnitOfWork(BirdClubContext context)
         {
             _context = context;

@@ -46,7 +46,7 @@ body {
     border-radius: 10px;
     overflow: hidden; }
     .room-item .motel-image img {
-      height: 172px; }
+      height: 100px; }
   .room-item .motel-price {
     font-size: 14px; }
   .room-item:hover {
@@ -537,7 +537,8 @@ footer {
   -webkit-text-fill-color: transparent; }
 
 .heading {
-  font-weight: bold; }
+  font-weight: bold; 
+}
 
 .background {
   color: #f0f0f0; }
@@ -671,17 +672,13 @@ footer {
   display: grid;
   row-gap: 50px;
   margin-top: 10px; }
-  .col-bg .bg-1 {
-    background: url(../../assets/img/background-motel.jpg); }
-  .col-bg .bg-2 {
-    background: url(../../assets/img/background.jpg); }
   .col-bg .bg-1,
   .col-bg .bg-2 {
     width: 100%;
     background-repeat: no-repeat;
     background-position: 50% 50%;
     background-size: cover;
-    height: 525px;
+    height: 425px;
     border-radius: 10px;
     border: 1px solid #edebeb75; }
 
@@ -932,5 +929,7 @@ footer {
 .stars label.star::before {
   content: "\f005";
   font-family: FontAwesome; }
-
+.tabs-left-title .heading {
+    color: black;
+}
 /*# sourceMappingURL=main.css.map */
