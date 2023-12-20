@@ -2171,3 +2171,11 @@
         left: 5px;
         object-fit: cover;
     }
+    .meeting-register .ellipse{
+        position:absolute;
+        width: 400px;
+        height: 400px;
+        top: 300px;
+        left: 750px;
+        object-fit:cover;
+    }
