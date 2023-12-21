@@ -10,7 +10,8 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace WebAPI.Controllers
 {
-    public class UserController : ControllerBase
+	[Route("api/[controller]")]
+	public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
         private readonly IConfiguration _config;
@@ -85,16 +86,10 @@ namespace WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult GetUserLogin(
-            [FromForm][Required] string userName, 
-            [FromForm][Required][PasswordPropertyText][DataType(DataType.Password)] string password)
+            [FromBody] AuthenRequest loguser)
         {
             try
             {
-                var loguser = new AuthenRequest()
-                {
-                    Username = userName,
-                    Password = password
-                };
                 var result = _userService.AuthenticateUser(loguser);
                 if (result == null)
                 {
@@ -106,8 +101,8 @@ namespace WebAPI.Controllers
                 }
                 return Ok(new
                 {
-                    status = true,
-                    result
+                    Status = true,
+                    Data = result
                 });
             }
             catch (Exception ex)

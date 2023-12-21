@@ -8,13 +8,17 @@ namespace birdclubsystem
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
-            /*builder.Services.AddRazorPages().AddRazorPagesOptions(options =>
-            {
-                options.Conventions.AddPageRoute("/register-login/login", "login");
-                options.Conventions
-            });*/
 
-            var app = builder.Build();
+			builder.Services.AddSession(options =>
+			{
+				options.Cookie.IsEssential = true;
+				options.Cookie.SameSite = SameSiteMode.None;
+				options.Cookie.HttpOnly = true;
+				options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+				options.IdleTimeout = TimeSpan.FromMinutes(30); // Adjust the timeout as needed
+			});
+
+			var app = builder.Build();
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
@@ -28,13 +32,14 @@ namespace birdclubsystem
             app.UseStaticFiles();
 
             app.UseRouting();
+			app.UseSession();
+			app.UseCors();
 
             app.UseAuthorization();
 
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
-            app.MapRazorPages();
 
             app.Run();
         }

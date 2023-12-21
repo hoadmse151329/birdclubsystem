@@ -4,7 +4,13 @@ namespace birdclubsystem.Controllers
 {
     public class MeetingController : Controller
     {
-        public IActionResult Index()
+		private readonly ILogger<MeetingController> _logger;
+
+		public MeetingController(ILogger<MeetingController> logger)
+		{
+			_logger = logger;
+		}
+		public IActionResult Index()
         {
             return View();
         }

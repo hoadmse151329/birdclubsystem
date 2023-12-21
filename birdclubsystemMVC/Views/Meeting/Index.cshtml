@@ -42,7 +42,7 @@
                     <div class="input-group mb-3">
                         <select class="custom-select" name="district" id="inputGroupSelect02">
                             <option value=""> District </option>
-                            @if (MeetingController.LIST_DISTRICT != null)
+                            @*@if (MeetingController.LIST_DISTRICT != null)
                             {
                                 @if (MeetingController.LIST_DISTRICT.Any())
                                 {
@@ -51,7 +51,7 @@
                                         <option value="@d.districtID"> @d.name</option>
                                     }
                                 }
-                            }
+                            }*@
                             </select>
                         </div>
                         <div class="filter-search text-center">
@@ -67,7 +67,7 @@
         </div>
         <div class="content__list col-9">
             <div class="row">
-                @if (MeetingController.LIST_MEETING != null && MeetingController.LIST_MEETING.Any())
+                @*@if (MeetingController.LIST_MEETING != null && MeetingController.LIST_MEETING.Any())
                 {
                     foreach (var o in MeetingController.LIST_MEETING)
                     {
@@ -102,7 +102,7 @@
                     <div class="reviews-title alert alert-info col-12">
                         @MeetingController.MESSAGE.FirstOrDefault()
                     </div>
-                }
+                }*@
             </div>
             <div class="pagination mb-3">
 
