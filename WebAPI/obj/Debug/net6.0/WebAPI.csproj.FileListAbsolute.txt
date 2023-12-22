@@ -162,3 +162,6 @@ D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\obj\Debug\net6.0\refint\WebAPI.dll
 D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\obj\Debug\net6.0\WebAPI.pdb
 D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\obj\Debug\net6.0\WebAPI.genruntimeconfig.cache
 D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\obj\Debug\net6.0\ref\WebAPI.dll
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\bin\Debug\net6.0\Microsoft.Extensions.Caching.Memory.dll
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\bin\Debug\net6.0\Microsoft.Extensions.DependencyInjection.dll
+D:\My Stuff\Codes\C#\BirdClubSystem\WebAPI\bin\Debug\net6.0\System.Diagnostics.DiagnosticSource.dll

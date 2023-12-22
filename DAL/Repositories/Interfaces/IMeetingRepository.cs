@@ -21,5 +21,6 @@ namespace DAL.Repositories.Interfaces
             string? orderBy
             );
         IEnumerable<string> GetAllMeetingName();
+        IEnumerable<Meeting> GetMeetings();
     }
 }

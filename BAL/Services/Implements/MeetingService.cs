@@ -29,7 +29,7 @@ namespace BAL.Services.Implements
             return _mapper.Map<IEnumerable<MeetingViewModel>>(_unitOfWork.MeetingRepository.GetAllByRegistrationDeadline(registrationDeadline));
         }
 
-        public MeetingViewModel GetById(int id)
+        public MeetingViewModel? GetById(int id)
         {
             return _mapper.Map<MeetingViewModel>(_unitOfWork.MeetingRepository.GetById(id));
         }

@@ -101,5 +101,10 @@ namespace DAL.Repositories.Implements
             }
             return meetings.ToList();
         }
+
+        public IEnumerable<Meeting> GetMeetings()
+        {
+            return _context.Meetings.ToList();
+        }
     }
 }
