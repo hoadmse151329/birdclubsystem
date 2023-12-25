@@ -22,5 +22,7 @@ namespace BAL.Services.Interfaces
             string? orderBy
             );
         List<string> GetAllMeetingName();
+        void Create(MeetingViewModel entity);
+        void Update(MeetingViewModel entity);
     }
 }
