@@ -4,6 +4,7 @@ using BAL.ViewModels;
 using BAL.ViewModels.Authenticates;
 using DAL.Infrastructure;
 using DAL.Models;
+using DAL.Repositories.Interfaces;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -21,7 +22,7 @@ namespace BAL.Services.Implements
         private readonly IEmailService _emailService;
         private readonly IConfiguration _configuration;
 
-        public UserService(IUnitOfWork unitOfWork, 
+        public UserService( IUnitOfWork unitOfWork, 
             IMapper mapper, 
             IJWTService jWTServices, 
             IEmailService emailSender,
@@ -34,9 +35,9 @@ namespace BAL.Services.Implements
             _configuration = configuration;
         }
 
-        public AuthenResponse AuthenticateUser(AuthenRequest request)
+        public async Task<AuthenResponse> AuthenticateUser(AuthenRequest request)
         {
-            var user = _unitOfWork.UserRepository.GetByLogin(request.Username, request.Password);
+            var user = await _unitOfWork.UserRepository.GetByLogin(request.Username, request.Password);
             if (user != null)
             {
                 //var role = _unitOfWork.UserRepository
@@ -51,9 +52,9 @@ namespace BAL.Services.Implements
             return null;
         }
 
-        public AuthenResponse AuthenticateUserEmail(string email)
+        public async Task<AuthenResponse> AuthenticateUserEmail(string email)
         {
-            var user = _unitOfWork.UserRepository.GetByEmail(email);
+            var user = await _unitOfWork.UserRepository.GetByEmail(email);
             if (user != null)
             {
                 var accessToken = _jwtService.GenerateJWTToken(user.UserId, user.UserName, user.Member.Role, _configuration);
@@ -90,9 +91,9 @@ namespace BAL.Services.Implements
             return false;
         }
 
-        public UserViewModel? GetByEmailModel(string email)
+        public async Task<UserViewModel?> GetByEmailModel(string email)
         {
-            var user = _unitOfWork.UserRepository.GetByEmail(email);
+            var user = await _unitOfWork.UserRepository.GetByEmail(email);
             if (user != null)
             {
                 var usr = _mapper.Map<UserViewModel>(user);
@@ -101,9 +102,9 @@ namespace BAL.Services.Implements
             return null;
         }
 
-        public UserViewModel? GetById(int id)
+        public async Task<UserViewModel?> GetById(int id)
         {
-            var user = _unitOfWork.UserRepository.GetByIdNoTracking(id);
+            var user = await _unitOfWork.UserRepository.GetByIdNoTracking(id);
             if (user != null)
             {
 				var mem = _unitOfWork.MemberRepository.GetById(user.MemberId.Value);
@@ -114,9 +115,9 @@ namespace BAL.Services.Implements
             return null;
         }
 
-        public UserViewModel? GetByLogin(string username, string password)
+        public async Task<UserViewModel?> GetByLogin(string username, string password)
         {
-            var user = _unitOfWork.UserRepository.GetByLogin(username, password);
+            var user = await _unitOfWork.UserRepository.GetByLogin(username, password);
             if (user != null)
             {
                 var usr = _mapper.Map<UserViewModel>(user);
@@ -144,5 +145,5 @@ namespace BAL.Services.Implements
             _unitOfWork.UserRepository.Update(usr);
             _unitOfWork.Save();
         }
-    }
+	}
 }

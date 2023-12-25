@@ -18,12 +18,12 @@ namespace DAL.Repositories.Implements
             _context = context;
         }
 
-        public Member? GetByEmail(string email)
+        public async Task<Member?> GetByEmail(string email)
         {
             return _context.Members.AsNoTrackingWithIdentityResolution().SingleOrDefault(mem => mem.Email == email);
         }
 
-        public Member? GetByIdNoTracking(int id)
+        public async Task<Member?> GetByIdNoTracking(int id)
         {
             return _context.Members.AsNoTrackingWithIdentityResolution().SingleOrDefault(mem => mem.MemberId == id);
         }

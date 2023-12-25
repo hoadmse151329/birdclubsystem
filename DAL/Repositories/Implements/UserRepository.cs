@@ -18,19 +18,19 @@ namespace DAL.Repositories.Implements
             _context = context;
         }
 
-        public User? GetByEmail(string email)
+        public async Task<User?> GetByEmail(string email)
         {
             if(_context.Members.AsNoTracking().SingleOrDefault(mem => mem.Email == email) != null)
             return _context.Users.AsNoTrackingWithIdentityResolution().Include(usr => usr.Member).SingleOrDefault(usr => usr.Member.Email == email);
             return null;
         }
 
-        public User? GetByIdNoTracking(int id)
+        public async Task<User?> GetByIdNoTracking(int id)
         {
             return _context.Users.AsNoTrackingWithIdentityResolution().Include(usr => usr.Member).SingleOrDefault(usr => usr.UserId == id);
         }
 
-        public User? GetByLogin(string userName, string passWord)
+        public async Task<User?> GetByLogin(string userName, string passWord)
         {
             return _context.Users.AsNoTrackingWithIdentityResolution().Include(usr => usr.Member).SingleOrDefault(usr => usr.UserName == userName && usr.Password == passWord);
         }

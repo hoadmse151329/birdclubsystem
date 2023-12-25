@@ -10,15 +10,15 @@ namespace BAL.Services.Interfaces
 {
     public interface IUserService
     {
-        AuthenResponse AuthenticateUser(AuthenRequest request);
-        AuthenResponse AuthenticateUserEmail(string email);
-        UserViewModel? GetById(int id);
+        public Task<AuthenResponse> AuthenticateUser(AuthenRequest request);
+        public Task<AuthenResponse> AuthenticateUserEmail(string email);
+        public Task<UserViewModel?> GetById(int id);
         bool GetByEmail(string email);
-        UserViewModel? GetByLogin(string username, string password);
+        public Task<UserViewModel?> GetByLogin(string username, string password);
         /* void Create(UserViewModel entity);*/
         void Create(UserViewModel entity);
         /*void Update(UserViewModel entity);*/
         void Update(UserViewModel entity);
-        UserViewModel? GetByEmailModel(string email);
+        public Task<UserViewModel?> GetByEmailModel(string email);
     }
 }

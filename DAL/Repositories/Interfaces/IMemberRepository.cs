@@ -10,8 +10,8 @@ namespace DAL.Repositories.Interfaces
 {
     public interface IMemberRepository : IRepositoryBase<Member>
     {
-        Member? GetByIdNoTracking(int id);
-        Member? GetByEmail(string email);
+        public Task<Member?> GetByIdNoTracking(int id);
+        public Task<Member?> GetByEmail(string email);
 
     }
 }

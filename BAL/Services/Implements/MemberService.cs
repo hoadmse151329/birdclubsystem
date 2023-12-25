@@ -2,6 +2,7 @@
 using BAL.Services.Interfaces;
 using BAL.ViewModels;
 using DAL.Infrastructure;
+using DAL.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,11 @@ namespace BAL.Services.Implements
 
 		public void Create(MemberViewModel entity)
 		{
-			throw new NotImplementedException();
+			var mem = _mapper.Map<Member>(entity);
+			mem.Status = "Active";
+			mem.Role = "Member";
+			_unitOfWork.MemberRepository.Create(mem);
+			_unitOfWork.Save();
 		}
 
 		public bool GetByEmail(string email)
@@ -30,24 +35,39 @@ namespace BAL.Services.Implements
 			throw new NotImplementedException();
 		}
 
-		public MemberViewModel? GetByEmailModel(string email)
+		public async Task<MemberViewModel?> GetByEmailModel(string email)
 		{
 			throw new NotImplementedException();
 		}
 
-		public MemberViewModel? GetById(int id)
+		public async Task<MemberViewModel?> GetById(int id)
 		{
-			throw new NotImplementedException();
+			var mem = await _unitOfWork.MemberRepository.GetByIdNoTracking(id);
+			/*if (mem != null)
+			{
+				var mem = _unitOfWork.MemberRepository.GetById(user.MemberId.Value);
+				var usr = _mapper.Map<UserViewModel>(user);
+				usr.Email = mem.Email;
+				return usr;
+			}*/
+			if(mem != null)
+			{
+				var memb = _mapper.Map<MemberViewModel>(mem);
+				return memb;
+			}
+			return null;
 		}
 
-		public MemberViewModel? GetByLogin(string username, string password)
+		public Task<MemberViewModel?> GetByUserId()
 		{
 			throw new NotImplementedException();
 		}
 
 		public void Update(MemberViewModel entity)
 		{
-			throw new NotImplementedException();
+			var mem = _mapper.Map<Member>(entity);
+			_unitOfWork.MemberRepository.Update(mem);
+			_unitOfWork.Save();
 		}
 	}
 }

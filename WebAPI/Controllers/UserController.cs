@@ -85,12 +85,12 @@ namespace WebAPI.Controllers
         [ProducesResponseType(typeof(UserViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult GetUserLogin(
+        public async Task<IActionResult> GetUserLogin(
             [FromBody] AuthenRequest loguser)
         {
             try
             {
-                var result = _userService.AuthenticateUser(loguser);
+                var result = await _userService.AuthenticateUser(loguser);
                 if (result == null)
                 {
                     return NotFound(new
@@ -133,12 +133,12 @@ namespace WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult GetUserLoginByThirdParty(
+        public async Task<IActionResult> GetUserLoginByThirdParty(
             [FromBody][Required][EmailAddress][DataType(DataType.EmailAddress)] string email)
         {
             try
             {
-                var result = _userService.GetByEmailModel(email);
+                var result = await _userService.GetByEmailModel(email);
                 if (result == null)
                 {
                     string sRanName = otpname.GenerateRandomOTP();
@@ -150,7 +150,7 @@ namespace WebAPI.Controllers
                         Email = email
                     };
                     _userService.Create(usr);
-                    result = _userService.GetByEmailModel(email);
+                    result = await _userService.GetByEmailModel(email);
                 }
                 var loguser = new AuthenRequest()
                 {
@@ -384,14 +384,14 @@ namespace WebAPI.Controllers
         [ProducesResponseType(typeof(UserViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult Update(
+        public async Task<IActionResult> Update(
             [FromRoute][Required] int id,
             [FromForm][Required][EmailAddress] string email,
             [FromForm][Required] string username)
         {
             try
             {
-                var result = _userService.GetById(id);
+                var result = await _userService.GetById(id);
                 if (result == null)
                 {
                     return NotFound(new
@@ -403,7 +403,7 @@ namespace WebAPI.Controllers
                 result.Email = email;
                 result.UserName = username;
                 _userService.Update(result);
-                result = _userService.GetById(id);
+                result = await _userService.GetById(id);
                 return Ok(new
                 {
                     status = true,
@@ -446,7 +446,7 @@ namespace WebAPI.Controllers
         [ProducesResponseType(typeof(UserViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult ChangePassword(
+        public async Task<IActionResult> ChangePassword(
             [FromForm][Required][EmailAddress] string email,
             [FromForm][Required][PasswordPropertyText] string password,
             [FromForm][Required][PasswordPropertyText] string Newpassword,
@@ -454,7 +454,7 @@ namespace WebAPI.Controllers
         {
             try
             {
-                var result = _userService.GetByEmailModel(email);
+                var result = await _userService.GetByEmailModel(email);
                 if (result == null)
                 {
                     return NotFound(new
@@ -473,7 +473,7 @@ namespace WebAPI.Controllers
                 }
                 result.Password = Newpassword;
                 _userService.Update(result);
-                result = _userService.GetById(result.UserId.Value);
+                result = await _userService.GetById(result.UserId.Value);
                 return Ok(new
                 {
                     status = true,

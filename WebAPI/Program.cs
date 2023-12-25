@@ -19,13 +19,6 @@ namespace WebAPI
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            IConfiguration config = new ConfigurationBuilder()
-                                        .SetBasePath(Directory.GetCurrentDirectory())
-                                        .AddJsonFile("appsettings.json").Build();
-
-            builder.Services.AddDbContextFactory<BirdClubContext>(options
-                => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
             // Add services to the container.
 
             builder.Services.AddControllers().AddJsonOptions(options =>
@@ -33,6 +26,10 @@ namespace WebAPI
                 options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
                 options.JsonSerializerOptions.WriteIndented = true;
                 options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+            });
+            builder.Services.AddDbContext<BirdClubContext>(options =>
+            {
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
             builder.Services.AddHttpContextAccessor();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -103,6 +100,7 @@ namespace WebAPI
             });
             builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
             builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<IMemberService,MemberService>();
             builder.Services.AddTransient<IEmailService,EmailService>();
             builder.Services.AddScoped<IJWTService,JWTService>();
 
