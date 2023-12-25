@@ -2,6 +2,7 @@
 using BAL.Services.Interfaces;
 using BAL.ViewModels;
 using DAL.Infrastructure;
+using DAL.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,7 +30,7 @@ namespace BAL.Services.Implements
             return _mapper.Map<IEnumerable<MeetingViewModel>>(_unitOfWork.MeetingRepository.GetAllByRegistrationDeadline(registrationDeadline));
         }
 
-        public MeetingViewModel GetById(int id)
+        public MeetingViewModel? GetById(int id)
         {
             return _mapper.Map<MeetingViewModel>(_unitOfWork.MeetingRepository.GetById(id));
         }
@@ -57,6 +58,22 @@ namespace BAL.Services.Implements
         {
             var meetingNames = _unitOfWork.MeetingRepository.GetAllMeetingName().ToList();
             return meetingNames;
+        }
+
+        public void Create(MeetingViewModel entity)
+        {
+            var meeting = _mapper.Map<Meeting>(entity);
+            meeting.MeetingId = 0;
+            _unitOfWork.MeetingRepository.Create(meeting);
+            _unitOfWork.Save();
+        }
+
+        public void Update(MeetingViewModel entity)
+        {
+            var meeting = _mapper.Map<Meeting>(entity);
+            meeting.MeetingName = entity.MeetingName;
+            _unitOfWork.MeetingRepository.Update(meeting);
+            _unitOfWork.Save();
         }
     }
 }

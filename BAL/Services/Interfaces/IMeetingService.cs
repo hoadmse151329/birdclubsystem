@@ -9,7 +9,7 @@ namespace BAL.Services.Interfaces
 {
     public interface IMeetingService
     {
-        MeetingViewModel GetById(int id);
+        MeetingViewModel? GetById(int id);
         IEnumerable<MeetingViewModel> GetAll();
         IEnumerable<MeetingViewModel> GetAllByRegistrationDeadline(DateTime registrationDeadline);
         IEnumerable<MeetingViewModel> GetSortedMeetings(
@@ -22,5 +22,7 @@ namespace BAL.Services.Interfaces
             string? orderBy
             );
         List<string> GetAllMeetingName();
+        void Create(MeetingViewModel entity);
+        void Update(MeetingViewModel entity);
     }
 }
