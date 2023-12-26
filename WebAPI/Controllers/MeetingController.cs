@@ -59,6 +59,9 @@ namespace WebAPI.Controllers
 
         [HttpPost("Create")]
         [Authorize(Roles = "Manager")]
+        [ProducesResponseType(typeof(MeetingViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult Create (string meetingName, string description, DateTime registrationDeadline, DateTime startDate, DateTime endDate, int numberOfParticipants, string host, string incharge, string note)
         {
             try
@@ -95,6 +98,9 @@ namespace WebAPI.Controllers
 
         [HttpPut("Update")]
         [Authorize(Roles = "Manager")]
+        [ProducesResponseType(typeof(MeetingViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult Update(int id, string meetingname, string description, DateTime registrationDeadline, DateTime startDate, DateTime endDate, int numberOfParticipants, string host, string incharge, string note)
         {
             try
