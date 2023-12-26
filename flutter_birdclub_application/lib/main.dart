@@ -5,11 +5,13 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return MaterialApp(
       theme: ThemeData.dark().copyWith(
         scaffoldBackgroundColor: const Color.fromARGB(255, 18, 32, 47),
@@ -19,22 +21,19 @@ class MyApp extends StatelessWidget {
           title: Row(
             children: [
               CircleAvatar(
-                backgroundColor:
-                    Colors.white, // Replace with the desired background color
-                radius: 40, // Adjust the radius of the circle
+                backgroundColor: Colors.white,
+                radius: screenWidth * 0.05, // Adjust the radius of the circle
                 child: Padding(
-                  padding:
-                      const EdgeInsets.all(10.0), // Adjust padding as needed
+                  padding: EdgeInsets.all(screenWidth * 0.015),
                   child: Image.asset(
-                    'images/bird.jpg', // Replace with the path to your image asset
-                    width: 800, // Adjust the width of the image
-                    height: 1000, // Adjust the height of the image
+                    'images/bird.jpg',
+                    width: screenWidth * 0.1, // Adjust the width of the image
+                    height:
+                        screenHeight * 0.1, // Adjust the height of the image
                   ),
                 ),
               ),
-              SizedBox(
-                  width:
-                      8), // Adjust the spacing between the image and the title
+              SizedBox(width: screenWidth * 0.01),
               Text('Chao Mao Club'),
             ],
           ),
@@ -47,58 +46,48 @@ class MyApp extends StatelessWidget {
                 accountEmail: Text('hotrankhanhduy16@email.com'),
                 currentAccountPicture: CircleAvatar(
                   backgroundImage: AssetImage('images/avatar.jpg'),
-                  // You can replace 'assets/your_picture.jpg' with the path to your image asset
                 ),
               ),
-              // Add your sidebar content here
               ListTile(
                 title: Text('Home'),
                 onTap: () {
-                  // Handle home item tap
-                  Navigator.pop(context); // Close the sidebar
+                  Navigator.pop(context);
                 },
               ),
               ListTile(
                 title: Text('Contests'),
                 onTap: () {
-                  // Handle meetings item tap
-                  Navigator.pop(context); // Close the sidebar
+                  Navigator.pop(context);
                 },
               ),
-              // Add more items as needed
               ListTile(
-                title: Text('Fiedltrips'),
+                title: Text('Field trips'),
                 onTap: () {
-                  // Handle meetings item tap
-                  Navigator.pop(context); // Close the sidebar
+                  Navigator.pop(context);
                 },
               ),
               ListTile(
                 title: Text('Meetings'),
                 onTap: () {
-                  // Handle meetings item tap
-                  Navigator.pop(context); // Close the sidebar
+                  Navigator.pop(context);
                 },
               ),
               ListTile(
                 title: Text('Events'),
                 onTap: () {
-                  // Handle meetings item tap
-                  Navigator.pop(context); // Close the sidebar
+                  Navigator.pop(context);
                 },
               ),
               ListTile(
                 title: Text('Community'),
                 onTap: () {
-                  // Handle meetings item tap
-                  Navigator.pop(context); // Close the sidebar
+                  Navigator.pop(context);
                 },
               ),
               ListTile(
                 title: Text('Gallery'),
                 onTap: () {
-                  // Handle meetings item tap
-                  Navigator.pop(context); // Close the sidebar
+                  Navigator.pop(context);
                 },
               ),
             ],
@@ -115,6 +104,7 @@ class MyApp extends StatelessWidget {
 class MeetingOnlineQrCode extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
     return Column(
       children: [
         Container(

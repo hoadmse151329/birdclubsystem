@@ -10,15 +10,15 @@ namespace birdclubsystem.Controllers
     public class MeetingController : Controller
     {
 		private readonly ILogger<MeetingController> _logger;
-        private readonly HttpClient client = null;
+        private readonly HttpClient _httpClient = null;
         private string MeetingAPI_URL = "";
         public MeetingController(ILogger<MeetingController> logger)
         {
             _logger = logger;
-            client = new HttpClient();
+            _httpClient = new HttpClient();
             var contentType = new MediaTypeWithQualityHeaderValue("application/json");
-            client.DefaultRequestHeaders.Accept.Add(contentType);
-            client.BaseAddress = new Uri("https://localhost:7022");
+            _httpClient.DefaultRequestHeaders.Accept.Add(contentType);
+            _httpClient.BaseAddress = new Uri("https://localhost:7022");
             MeetingAPI_URL = "/api/Meeting";
         }
 		public IActionResult Index()
