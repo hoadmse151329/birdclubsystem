@@ -3,6 +3,8 @@ using Microsoft.VisualBasic;
 using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Text;
+using BAL.ViewModels;
+using System.Net.Http;
 namespace birdclubsystem.Controllers
 {
     public class MeetingController : Controller
@@ -30,6 +32,23 @@ namespace birdclubsystem.Controllers
         public IActionResult MeetingRegister()
         {
             return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> In()
+        {
+            // Call the API endpoint
+            HttpResponseMessage response = await _httpClient.GetAsync("1"); // Replace '1' with the actual meeting ID
+            if (response.IsSuccessStatusCode)
+            {
+                var meeting = await response.Content.ReadAsAsync<MeetingViewModel>();
+                return View(meeting);
+            }
+            else
+            {
+                // Handle error
+                _logger.LogError($"API request failed with status code {response.StatusCode}");
+                return View("Error");
+            }
         }
     }
 }
