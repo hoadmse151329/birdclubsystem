@@ -5,6 +5,8 @@ using System.Text.Json;
 using System.Text;
 using BAL.ViewModels;
 using System.Net.Http;
+using DAL.Models;
+using BAL.ViewModels.Meeting;
 namespace birdclubsystem.Controllers
 {
     public class MeetingController : Controller
@@ -12,6 +14,7 @@ namespace birdclubsystem.Controllers
 		private readonly ILogger<MeetingController> _logger;
         private readonly HttpClient _httpClient = null;
         private string MeetingAPI_URL = "";
+        
         public MeetingController(ILogger<MeetingController> logger)
         {
             _logger = logger;
@@ -48,6 +51,26 @@ namespace birdclubsystem.Controllers
                 // Handle error
                 _logger.LogError($"API request failed with status code {response.StatusCode}");
                 return View("Error");
+            }
+        }
+        [HttpPost]
+        public async Task<IActionResult> RegisterMeeting(RegisterMeeting register)
+        {
+            var _register = new RegisterMeeting
+            {
+                UserName = register.UserName,
+                FullName = register.FullName,
+                Gender = register.Gender,
+                Email = register.Email,
+                PhoneNumber = register.PhoneNumber,
+            };
+            if ((register.UserName != null) && (register.FullName != null) && (register.Gender != null) && (register.Email != null) && (register.PhoneNumber != null))
+            {
+                return RedirectToAction("MeetingPost");
+            }
+            else
+            {
+                return View(_register);
             }
         }
     }
