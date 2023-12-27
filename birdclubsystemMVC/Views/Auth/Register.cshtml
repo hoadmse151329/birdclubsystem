@@ -1,3 +1,7 @@
+@model BAL.ViewModels.Member.CreateNewMember
+@{
+	ViewData["Title"] = "Register Page";
+}
 <!DOCTYPE html>
 <!-- saved from url=(0035)https://themewagon.github.io/furni/ -->
 <html lang="en">
@@ -110,32 +114,54 @@
 						<div class="d-flex justify-content-center box-header light-green">
 							<h5><b>Register</b></h5>
 						</div>
+						@using (Html.BeginForm("SignUp", "Auth", FormMethod.Post))
+						{
 						<div class="d-flex box-body justify-content-center">
 							<form class="reg-form">
+								@{
+									if (ViewBag.error != null)
+									{
+										<span class="text-danger">@ViewBag.error</span>
+									}
+								}
 								<div class="form-group">
-									<input type="text" class="form-control" placeholder="Username">
+									<input placeholder="Username" asp-for="UserName" class="form-control form-data" />
+
+									<span asp-validation-for="UserName" class="text-danger"></span>
 								</div>
 								<div class="form-group">
-									<input type="text" class="form-control" placeholder="Fullname">
+									<input placeholder="Fullname" asp-for="FullName" class="form-control form-data" />
+
+									<span asp-validation-for="FullName" class="text-danger"></span>
 								</div>
 								<div class="form-group">
-									<input type="text" class="form-control" placeholder="Gender">
+									<input placeholder="Gender" asp-for="Gender" class="form-control form-data" />
+
+									<span asp-validation-for="Gender" class="text-danger"></span>
 								</div>
 								<div class="form-group">
-									<input type="text" class="form-control" placeholder="Email">
+									<input placeholder="Email" asp-for="Email" class="form-control form-data" />
+
+									<span asp-validation-for="Email" class="text-danger"></span>
 								</div>
 								<div class="form-group">
-									<input type="text" class="form-control" placeholder="Phone Number">
+									<input placeholder="Phone" asp-for="Phone" class="form-control form-data" />
+
+									<span asp-validation-for="Phone" class="text-danger"></span>
 								</div>
 								<div class="form-group">
-									<input type="text" class="form-control" placeholder="Password">
+									<input placeholder="Password" asp-for="Password" class="form-control" />
+
+									<span asp-validation-for="Password" class="text-danger"></span>
 								</div>
 								<div class="form-group">
-									<input type="text" class="form-control" placeholder="Confirm Password">
+									<input placeholder="ConfirmPassword" asp-for="ConfirmPassword" class="form-control" />
+									
+									<span asp-validation-for="ConfirmPassword" class="text-danger"></span>
 								</div>
-								<button class="reg-button btn light-green" type="submit">Register</button>
+								<button class="reg-button btn light-green" type="submit" value="Register">Register</button>
 								<div class="reg-text">
-									Already a Member? <a href="#" class="link-success">Login</a>
+									Already a Member? <a href="@Url.Action("Login","Auth")" class="link-success">Login</a>
 								</div>
 								<div class="reg-text">
 									Or Login with
@@ -143,6 +169,7 @@
 								<img class="google-icon" img src="register_files/google.png">
 							</form>
 						</div>
+						}
 					</div>
 					<!-- <div class="row my-5">
 						<div class="col-6 col-md-6">

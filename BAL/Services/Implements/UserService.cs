@@ -2,6 +2,7 @@
 using BAL.Services.Interfaces;
 using BAL.ViewModels;
 using BAL.ViewModels.Authenticates;
+using BAL.ViewModels.Member;
 using DAL.Infrastructure;
 using DAL.Models;
 using DAL.Repositories.Interfaces;
@@ -69,14 +70,24 @@ namespace BAL.Services.Implements
             return null;
         }
 
-        public void Create(UserViewModel entity)
+        public void Create(UserViewModel entity, CreateNewMember newmem = null)
         {
             var usr = _mapper.Map<User>(entity);
-            usr.Member = new Member();
-            usr.Member.MemberId = 0;
-            usr.Member.Role = "Member";
-            usr.Member.Email = entity.Email;
-            usr.UserId = 0;
+			usr.Member = new Member();
+			usr.Member.MemberId = 0;
+			usr.Member.Role = "Member";
+			usr.Member.Status = "Active";
+			usr.Member.Email = entity.Email;
+			usr.UserId = 0;
+			if (newmem != null)
+            {
+                usr.Member.FullName = newmem.FullName;
+                usr.Member.UserName = newmem.UserName;
+				usr.Member.Email = entity.Email;
+				usr.Member.Gender = newmem.Gender;
+				usr.Member.Address = newmem.Address;
+                usr.Member.Phone = newmem.Phone;
+			}
             _unitOfWork.UserRepository.Create(usr);
             _unitOfWork.Save();
         }

@@ -7,6 +7,7 @@ using BAL.ViewModels;
 using BAL.ViewModels.Authenticates;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Authorization;
+using BAL.ViewModels.Member;
 
 namespace WebAPI.Controllers
 {
@@ -44,15 +45,15 @@ namespace WebAPI.Controllers
                 {
                     return NotFound(new
                     {
-                        status = false,
-                        errorMessage = "User Not Found!"
+                        Status = false,
+                        ErrorMessage = "User Not Found!"
                     });
                 }
 
                 return Ok(new
                 {
-                    status = true,
-                    result
+                    Status = true,
+                    Data = result
                 });
             }
             catch (Exception ex)
@@ -60,8 +61,8 @@ namespace WebAPI.Controllers
                 // Log the exception if needed
                 return BadRequest(new
                 {
-                    status = false,
-                    errorMessage = ex.Message
+                    Status = false,
+					ErrorMessage = ex.Message
                 });
             }
         }
@@ -95,8 +96,8 @@ namespace WebAPI.Controllers
                 {
                     return NotFound(new
                     {
-                        status = false,
-                        errorMessage = "User Not Found!"
+						Status = false,
+						ErrorMessage = "User Not Found!"
                     });
                 }
                 return Ok(new
@@ -110,8 +111,8 @@ namespace WebAPI.Controllers
                 // Log the exception if needed
                 return BadRequest(new
                 {
-                    status = false,
-                    errorMessage = ex.Message
+					Status = false,
+					ErrorMessage = ex.Message
                 });
             }
         }
@@ -160,17 +161,17 @@ namespace WebAPI.Controllers
                 var login = _userService.AuthenticateUser(loguser);
                 return Ok(new
                 {
-                    status = true,
-                    login
-                });
+                    Status = true,
+					Data = login
+				});
             }
             catch (Exception ex)
             {
                 // Log the exception if needed
                 return BadRequest(new
                 {
-                    status = false,
-                    errorMessage = ex.Message
+                    Status = false,
+					ErrorMessage = ex.Message
                 });
             }
         }
@@ -280,67 +281,64 @@ namespace WebAPI.Controllers
         [ProducesResponseType(typeof(UserViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult CreateUser(
-            [FromForm] [Required] string username,
-            [FromForm] [Required] [EmailAddress] [DataType(DataType.EmailAddress)] string email,
-            [FromForm] [Required] [PasswordPropertyText] [DataType(DataType.Password)] string password,
-            [FromForm] [Required] [PasswordPropertyText] [DataType(DataType.Password)] string confirmPassword)
+        public async Task<IActionResult> CreateUser(
+            [FromBody][Required] CreateNewMember newmem)
         {
             try
             {
-                if (password == null || password == string.Empty)
+                if (newmem.Password == null || newmem.Password == string.Empty)
                 {
                     return BadRequest(new
                     {
-                        status = false,
-                        errorMessage = "Password is Empty !"
+                        Status = false,
+						ErrorMessage = "Password is Empty !"
                     });
                 }
-                var result = _userService.GetByEmailModel(email);
+                var result = await _userService.GetByEmailModel(newmem.Email);
                 if (result != null)
                 {
                     return BadRequest(new
                     {
-                        status = false,
-                        errorMessage = "Email has already registered !"
+                        Status = false,
+						ErrorMessage = "Email has already registered !"
                     });
                 }
-                if (!password.Equals(confirmPassword))
+                if (!newmem.Password.Equals(newmem.ConfirmPassword))
                 {
                     return BadRequest(new
                     {
-                        status = false,
-                        errorMessage = "Password and Confirm Password are not the same !"
+                        Status = false,
+						ErrorMessage = "Password and Confirm Password are not the same !"
                     });
                 }
                 UserViewModel value = new UserViewModel()
                 {
-                    UserName= username,
-                    Email= email,
-                    Password= password,
+                    UserName= newmem.UserName,
+                    Email= newmem.Email,
+                    Password= newmem.Password,
                 };
-                _userService.Create(value);
+                _userService.Create(value,newmem);
                 var loguser = new AuthenRequest()
                 {
-                    Username = username,
-                    Password = password
+                    Username = newmem.UserName,
+                    Password = newmem.Password
                 };
-                var resultaft = _userService.AuthenticateUser(loguser);
+                var resultaft = await _userService.AuthenticateUser(loguser);
 
                 if (resultaft == null)
                 {
                     return StatusCode(StatusCodes.Status500InternalServerError, new
                     {
-                        status = false,
-                        errorMessage = "Error while Registering your Account !"
+						Status = false,
+						ErrorMessage = "Error while Registering your Account !"
 
                     });
                 }
                 return Ok(new
                 {
-                    status = true,
-                    Message = "Account Create successfully !",
-                    resultaft
+					Status = true,
+					SuccessMessage = "Account Create successfully !",
+                    Data = resultaft
                 });
             }
             catch (Exception ex)
@@ -348,8 +346,8 @@ namespace WebAPI.Controllers
                 // Log the exception if needed
                 return BadRequest(new
                 {
-                    status = false,
-                    errorMessage = ex.Message
+					Status = false,
+					ErrorMessage = ex.Message
                 });
             }
         }
@@ -396,8 +394,8 @@ namespace WebAPI.Controllers
                 {
                     return NotFound(new
                     {
-                        status = false,
-                        errorMessage = "Account does not exist !"
+                        Status = false,
+                        ErrorMessage = "Account does not exist !"
                     });
                 }
                 result.Email = email;
@@ -406,8 +404,8 @@ namespace WebAPI.Controllers
                 result = await _userService.GetById(id);
                 return Ok(new
                 {
-                    status = true,
-                    result
+                    Status = true,
+                    Data = result
                 });
             }
             catch (Exception ex)
@@ -415,8 +413,8 @@ namespace WebAPI.Controllers
                 // Log the exception if needed
                 return BadRequest(new
                 {
-                    status = false,
-                    errorMessage = ex.Message
+                    Status = false,
+                    ErrorMessage = ex.Message
                 });
             }
         }
@@ -459,16 +457,16 @@ namespace WebAPI.Controllers
                 {
                     return NotFound(new
                     {
-                        status = false,
-                        errorMessage = "Account does not exist !"
+                        Status = false,
+						ErrorMessage = "Account does not exist !"
                     });
                 }
                 if (!Newpassword.Equals(NewConfirmPassword))
                 {
                     return BadRequest(new
                     {
-                        status = true,
-                        errorMessage = "New Password and New Confirm Password are not the same !"
+                        Status = true,
+						ErrorMessage = "New Password and New Confirm Password are not the same !"
                     });
                 }
                 result.Password = Newpassword;
@@ -476,8 +474,8 @@ namespace WebAPI.Controllers
                 result = await _userService.GetById(result.UserId.Value);
                 return Ok(new
                 {
-                    status = true,
-                    result
+					Status = true,
+                    Data = result
                 });
             }
             catch (Exception ex)
@@ -485,8 +483,8 @@ namespace WebAPI.Controllers
                 // Log the exception if needed
                 return BadRequest(new
                 {
-                    status = false,
-                    errorMessage = ex.Message
+					Status = false,
+					ErrorMessage = ex.Message
                 });
             }
         }

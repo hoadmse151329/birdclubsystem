@@ -1,5 +1,6 @@
 ﻿using BAL.ViewModels;
 using BAL.ViewModels.Authenticates;
+using BAL.ViewModels.Member;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,7 @@ namespace BAL.Services.Interfaces
         bool GetByEmail(string email);
         public Task<UserViewModel?> GetByLogin(string username, string password);
         /* void Create(UserViewModel entity);*/
-        void Create(UserViewModel entity);
+        void Create(UserViewModel entity, CreateNewMember newmem = null);
         /*void Update(UserViewModel entity);*/
         void Update(UserViewModel entity);
         public Task<UserViewModel?> GetByEmailModel(string email);
