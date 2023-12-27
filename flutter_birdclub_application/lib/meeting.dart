@@ -1,17 +1,11 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_birdclub_application/contest.dart';
 import 'package:flutter_birdclub_application/fieldtrip.dart';
-import 'package:flutter_birdclub_application/meeting.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+import './main.dart';
+import 'package:flutter/material.dart';
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key});
-  navigateTo(String route, BuildContext context) {
-    Navigator.of(context).pushReplacementNamed(route);
-  }
+class MeetingPage extends StatelessWidget {
+  const MeetingPage({super.key});
 
   @override
   Widget build(BuildContext context) {

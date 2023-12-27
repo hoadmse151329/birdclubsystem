@@ -6,6 +6,8 @@
   <head>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="~/css/Meeting.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   </head>
   <body>
     <div class="member-meeting-post">
@@ -45,12 +47,6 @@
                     >
                   </p>
                 </div>
-                <div class="QR">
-                  <img class="rectangle-4" src="~/images/QR.png" />
-                  <p class="text-wrapper-2">
-                    Please save below QR code for scanning at the end of the meeting for check in
-                  </p>
-                </div>
                 <div class="tittle">
                     <div class="div-wrapper"><div class="text-wrapper-3">Register</div></div>
                   </div>
@@ -63,7 +59,7 @@
             <div class="info">
               <div class="overlap-3">
                 <div class="rectangle-5"></div>
-                <img class="rectangle-6" src="~/images/map1.png" />
+                <div class="rectangle-6" id="map"></div>
                 <div class="tittle">
                   <div class="overlap-group-2"><p class="text-wrapper-4">ChaoMao New Member Bird meeting</p></div>
                 </div>
@@ -95,5 +91,41 @@
         </div>
       </div>
     </div>
+<script>
+  // Function to initialize the map using a dynamic address
+  function initializeMap(dynamicAddress) {
+    // Use OpenStreetMap Nominatim API for geocoding
+    var geocodeUrl = "https://nominatim.openstreetmap.org/search?format=json&limit=1&q=" + encodeURIComponent(dynamicAddress);
+
+    fetch(geocodeUrl)
+      .then(response => response.json())
+      .then(data => {
+        if (data && data.length > 0) {
+          var coordinates = [parseFloat(data[0].lat), parseFloat(data[0].lon)];
+
+          // Initialize the map
+          var mymap = L.map('map').setView(coordinates, 13);
+
+          // Add the OpenStreetMap base layer
+          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors'
+          }).addTo(mymap);
+
+          // Add a marker for the specific location
+          var marker = L.marker(coordinates).addTo(mymap);
+
+          // Popup for the marker
+          marker.bindPopup("<b>" + dynamicAddress + "</b>").openPopup();
+        }
+      })
+      .catch(error => console.error('Error:', error));
+  }
+
+  // Example: Fetch the dynamic address from the server (replace with your actual logic)
+  var dynamicAddressFromServer = "H22/183 Hoang Van Thai Street, Thanh Xuan District, Hanoi";
+
+  // Call the function to initialize the map with the dynamic address
+  initializeMap(dynamicAddressFromServer);
+</script>
   </body>
 </html>

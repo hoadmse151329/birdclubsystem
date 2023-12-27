@@ -63,7 +63,16 @@ namespace BAL.Services.Implements
         public void Create(MeetingViewModel entity)
         {
             var meeting = _mapper.Map<Meeting>(entity);
-            meeting.MeetingId = 0;
+            meeting.MeetingId = (int)entity.MeetingId;
+            meeting.MeetingName = entity.MeetingName;
+            meeting.Description = entity.Description;
+            meeting.RegistrationDeadline = entity.RegistrationDeadline;
+            meeting.StartDate = entity.StartDate;
+            meeting.EndDate = entity.EndDate;
+            meeting.NumberOfParticipants = entity.NumberOfParticipants;
+            meeting.Host = entity.Host;
+            meeting.Incharge = entity.Incharge;
+            meeting.Note = entity.Note;
             _unitOfWork.MeetingRepository.Create(meeting);
             _unitOfWork.Save();
         }
@@ -71,7 +80,16 @@ namespace BAL.Services.Implements
         public void Update(MeetingViewModel entity)
         {
             var meeting = _mapper.Map<Meeting>(entity);
+            meeting.MeetingId = (int)entity.MeetingId;
             meeting.MeetingName = entity.MeetingName;
+            meeting.Description = entity.Description;
+            meeting.RegistrationDeadline = entity.RegistrationDeadline;
+            meeting.StartDate = entity.StartDate;
+            meeting.EndDate = entity.EndDate;
+            meeting.NumberOfParticipants = entity.NumberOfParticipants;
+            meeting.Host = entity.Host;
+            meeting.Incharge = entity.Incharge;
+            meeting.Note = entity.Note;
             _unitOfWork.MeetingRepository.Update(meeting);
             _unitOfWork.Save();
         }
