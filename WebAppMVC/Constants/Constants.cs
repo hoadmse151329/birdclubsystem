@@ -1,4 +1,4 @@
-﻿namespace birdclubsystem.Constants
+﻿namespace WebAppMVC.Constants
 {
 	public static class Constants
 	{

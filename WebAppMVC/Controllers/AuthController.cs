@@ -4,10 +4,10 @@ using Microsoft.VisualBasic;
 using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Text;
-using birdclubsystem.Models.Auth;
 using BAL.ViewModels.Member;
+using WebAppMVC.Models.Auth;
 
-namespace birdclubsystem.Controllers
+namespace WebAppMVC.Controllers
 {
 	public class AuthController : Controller
 	{

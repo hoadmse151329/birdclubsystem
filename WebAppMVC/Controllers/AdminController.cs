@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace birdclubsystem.Controllers
+namespace WebAppMVC.Controllers
 {
-    public class AdminController : Controller
-    {
-        public IActionResult Admin()
-        {
-            return View();
-        }
-    }
+	public class AdminController : Controller
+	{
+		public IActionResult Admin()
+		{
+			return View();
+		}
+	}
 }

@@ -1,16 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace birdclubsystem.Controllers
+namespace WebAppMVC.Controllers
 {
-    public class RegisterController : Controller
-    {
-        public IActionResult Login()
-        {
-            return View();
-        }
-        public IActionResult Register()
-        {
-            return View();
-        }
-    }
+	public class RegisterController : Controller
+	{
+		public IActionResult Login()
+		{
+			return View();
+		}
+		public IActionResult Register()
+		{
+			return View();
+		}
+	}
 }
