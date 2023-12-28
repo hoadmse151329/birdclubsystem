@@ -20,6 +20,9 @@ namespace DAL.Models
         public string? Host { get; set; }
         public string? Incharge { get; set; }
         public string? Note { get; set; }
+        //Thêm Location Id để dò Location của Meeting
+        public int? LocationId { get; set; }
+
 
         public virtual ICollection<MeetingMedia> MeetingMedia { get; set; }
     }
