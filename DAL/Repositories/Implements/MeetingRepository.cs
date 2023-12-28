@@ -102,7 +102,7 @@ namespace DAL.Repositories.Implements
             return meetings.ToList();
         }
 
-        public IEnumerable<Meeting> GetMeetings()
+        public async Task<IEnumerable<Meeting>> GetMeetings()
         {
             return _context.Meetings.ToList();
         }

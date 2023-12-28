@@ -1,6 +1,6 @@
 ﻿using BAL.ViewModels.Authenticates;
 
-namespace birdclubsystem.Models.Auth
+namespace WebAppMVC.Models.Auth
 {
 	public class GetAuthenResponse
 	{

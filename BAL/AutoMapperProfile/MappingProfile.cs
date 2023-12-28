@@ -22,6 +22,7 @@ namespace BAL.AutoMapperProfile
                 })
                 .ReverseMap();
             CreateMap<Member, MemberViewModel>().ReverseMap();
+            CreateMap<Meeting, MeetingViewModel>().ReverseMap();
         }
     }
 }

@@ -20,7 +20,7 @@ namespace BAL.Services.Implements
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
-        public IEnumerable<MeetingViewModel> GetAll()
+        public async Task<IEnumerable<MeetingViewModel>> GetAll()
         {
             return _mapper.Map<IEnumerable<MeetingViewModel>>(_unitOfWork.MeetingRepository.GetAll());
         }

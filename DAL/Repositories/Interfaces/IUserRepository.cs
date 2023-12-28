@@ -10,9 +10,9 @@ namespace DAL.Repositories.Interfaces
 {
     public interface IUserRepository : IRepositoryBase<User>
     {
-        public Task<User?> GetByLogin(string userName, string passWord);
-        public Task<User?> GetByIdNoTracking(int id);
-        public Task<User?> GetByEmail(string email);
+        Task<User?> GetByLogin(string userName, string passWord);
+        Task<User?> GetByIdNoTracking(int id);
+        Task<User?> GetByEmail(string email);
 
     }
 }
