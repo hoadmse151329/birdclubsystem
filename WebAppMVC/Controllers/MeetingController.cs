@@ -8,6 +8,7 @@ using System.Net.Http;
 using Microsoft.Extensions.Options;
 using WebAppMVC.Models.Auth;
 using WebAppMVC.Models.Meeting;
+using BAL.ViewModels.Meeting;
 
 namespace WebAppMVC.Controllers
 {
@@ -25,29 +26,45 @@ namespace WebAppMVC.Controllers
 			_httpClient.BaseAddress = new Uri("https://localhost:7022");
 			MeetingAPI_URL = "/api/Meeting";
 		}
-        [HttpGet]
+		[HttpGet]
 		public async Task<IActionResult> Index()
 		{
-            var options = new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true,
-            };
-            MeetingAPI_URL += "/All";
-            HttpResponseMessage response = await _httpClient.GetAsync(MeetingAPI_URL);
-            if (!response.IsSuccessStatusCode)
-            {
-                ViewBag.error = "Error while processing your request! (Get List Meeting!).";
-                return Redirect("~/Home/Index");
-            }
-            string jsonResponse = await response.Content.ReadAsStringAsync();
-            var listmeetResponse = JsonSerializer.Deserialize<GetMeetingResponseByList>(jsonResponse, options);
-            var responsemeetlist = listmeetResponse.Data;
-            return View(responsemeetlist);
+			var options = new JsonSerializerOptions
+			{
+				PropertyNameCaseInsensitive = true,
+			};
+			MeetingAPI_URL += "/All";
+			HttpResponseMessage response = await _httpClient.GetAsync(MeetingAPI_URL);
+			if (!response.IsSuccessStatusCode)
+			{
+				ViewBag.error = "Error while processing your request! (Get List Meeting!).";
+				return Redirect("~/Home/Index");
+			}
+			string jsonResponse = await response.Content.ReadAsStringAsync();
+			var listmeetResponse = JsonSerializer.Deserialize<GetMeetingResponseByList>(jsonResponse, options);
+			var responsemeetlist = listmeetResponse.Data;
+			return View(responsemeetlist);
 		}
-		public IActionResult MeetingPost()
+
+
+		[HttpGet("{id}")]
+		public async Task<IActionResult> MeetingPost(int id)
 		{
-			return View();
+			var options = new JsonSerializerOptions 
+			{ PropertyNameCaseInsensitive = true, };
+			MeetingAPI_URL += "/{id}";
+			HttpResponseMessage response = await _httpClient.GetAsync(MeetingAPI_URL);
+			if (!response.IsSuccessStatusCode)
+			{
+				ViewBag.error = "Error while getting meeting information!";
+				return Redirect("~/Meeting/Index");
+			}
+			string jsonResponse = await response.Content.ReadAsStringAsync();
+			var meetpostResponse = JsonSerializer.Deserialize<GetMeetingPostResponse>(jsonResponse, options);
+			var responsemeetpost = meetpostResponse.Data;
+			return View(responsemeetpost);
 		}
+
 		public IActionResult MeetingRegister()
 		{
 			return View();
@@ -68,6 +85,37 @@ namespace WebAppMVC.Controllers
 				_logger.LogError($"API request failed with status code {response.StatusCode}");
 				return View("Error");
 			}
+		}
+
+
+
+
+
+		[HttpPost]
+		public async Task<IActionResult> RegisterMeeting(RegisterMeeting register)
+		{
+			var json = JsonSerializer.Serialize(register);
+			var content = new StringContent(json, Encoding.UTF8, "application/json");
+			var options = new JsonSerializerOptions
+			{
+				PropertyNameCaseInsensitive = true,
+			};
+			MeetingAPI_URL += "/Register";
+			HttpResponseMessage response = await _httpClient.PostAsync(MeetingAPI_URL, content);
+			if (!response.IsSuccessStatusCode)
+			{
+				ViewBag.error = "Error while registering for meeting ! ";
+				return View("MeetingRegister");
+			}
+			string jsonResponse = await response.Content.ReadAsStringAsync();
+			var meetingResponse = JsonSerializer.Deserialize<GetMeetingRegisterResponse>(jsonResponse);
+			var responseRegister = meetingResponse.Data;
+			if (meetingResponse.Status)
+			{
+				HttpContext.Session.SetString("USER_NAME", responseRegister.UserName);
+				HttpContext.Session.SetString("FULL_NAME", responseRegister.FullName);
+			}
+			return null;
 		}
 	}
 }

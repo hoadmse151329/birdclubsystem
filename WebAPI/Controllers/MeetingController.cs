@@ -46,7 +46,7 @@ namespace WebAPI.Controllers
                 return Ok(new
                 {
                     status = true,
-                    result
+                    Data = result
                 });
             }
             catch (Exception ex)
