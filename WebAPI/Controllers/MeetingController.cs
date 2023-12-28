@@ -22,7 +22,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("{id}")]
-        [Authorize(Roles = "Manager,Member")]
+        [Authorize(Roles = "Admin,Manager,Staff,Member")]
         [ProducesResponseType(typeof(MeetingViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -56,8 +56,42 @@ namespace WebAPI.Controllers
                 });
             }
         }
+		[HttpGet("All")]
+		[HttpGet]
+		[ProducesResponseType(typeof(List<MeetingViewModel>), StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
+		[ProducesResponseType(StatusCodes.Status400BadRequest)]
+		public async Task<IActionResult> GetAllMeetings()
+		{
+			try
+			{
+				var result = await _meetingService.GetAll();
+				if (result == null)
+				{
+					return NotFound(new
+					{
+						Status = false,
+						ErrorMessage = "List of Meetings Not Found!"
+					});
+				}
 
-        [HttpPost("Create")]
+				return Ok(new
+				{
+					Status = true,
+					Data = result
+				});
+			}
+			catch (Exception ex)
+			{
+				// Log the exception if needed
+				return BadRequest(new
+				{
+					Status = false,
+					ErrorMessage = ex.Message
+				});
+			}
+		}
+		[HttpPost("Create")]
         [Authorize(Roles = "Manager")]
         [ProducesResponseType(typeof(MeetingViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

@@ -5,6 +5,9 @@ using System.Text.Json;
 using System.Text;
 using BAL.ViewModels;
 using System.Net.Http;
+using Microsoft.Extensions.Options;
+using WebAppMVC.Models.Auth;
+using WebAppMVC.Models.Meeting;
 
 namespace WebAppMVC.Controllers
 {
@@ -22,9 +25,24 @@ namespace WebAppMVC.Controllers
 			_httpClient.BaseAddress = new Uri("https://localhost:7022");
 			MeetingAPI_URL = "/api/Meeting";
 		}
-		public IActionResult Index()
+        [HttpGet]
+		public async Task<IActionResult> Index()
 		{
-			return View();
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+            };
+            MeetingAPI_URL += "/All";
+            HttpResponseMessage response = await _httpClient.GetAsync(MeetingAPI_URL);
+            if (!response.IsSuccessStatusCode)
+            {
+                ViewBag.error = "Error while processing your request! (Get List Meeting!).";
+                return Redirect("~/Home/Index");
+            }
+            string jsonResponse = await response.Content.ReadAsStringAsync();
+            var listmeetResponse = JsonSerializer.Deserialize<GetMeetingResponseByList>(jsonResponse, options);
+            var responsemeetlist = listmeetResponse.Data;
+            return View(responsemeetlist);
 		}
 		public IActionResult MeetingPost()
 		{

@@ -10,7 +10,7 @@ namespace BAL.Services.Interfaces
     public interface IMeetingService
     {
         MeetingViewModel? GetById(int id);
-        IEnumerable<MeetingViewModel> GetAll();
+        Task<IEnumerable<MeetingViewModel>> GetAll();
         IEnumerable<MeetingViewModel> GetAllByRegistrationDeadline(DateTime registrationDeadline);
         IEnumerable<MeetingViewModel> GetSortedMeetings(
             int meetingId,

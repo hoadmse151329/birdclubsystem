@@ -1,4 +1,4 @@
-﻿using birdclubsystem.Models;
+﻿using WebAppMVC.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
