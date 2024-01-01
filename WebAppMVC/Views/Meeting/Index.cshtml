@@ -1,6 +1,7 @@
-﻿@model IEnumerable<BAL.ViewModels.MeetingViewModel>
+﻿@model dynamic
 @{
     ViewData["Title"] = "Meeting Page";
+    List<BAL.ViewModels.LocationViewModel> locationList = Model.Locations;
 }
 
 <html>
@@ -42,9 +43,10 @@
                         <div class="input-group mb-3">
                             <select class="custom-select" id="inputGroupSelect02">
                                 <option selected>District</option>
-                                <option value="1">Thu Duc City</option>
-                                <option value="2">Disctrict 1</option>
-                                <option value="3">Disctrict 2</option>
+                                @for (int i = 0; i < locationList.Count; i++)
+                                {
+                                    <option value="@i">@locationList[i].District</option>
+                                }
                             </select>
                         </div>
                         <div class="filter-search text-center">
@@ -60,7 +62,7 @@
 
             <div class="col-9">
                 <div class="content__list row" style="display: none;">
-                    @foreach(var data in Model)
+                    @foreach(BAL.ViewModels.MeetingViewModel data in Model.Meetings)
                     {
                         <div class="col-4 p-0 ">
                             <div class="room-item">
@@ -75,10 +77,10 @@
                                     From @data.StartDate.Value.ToString("MM-dd-yyyy") 
                                     to @data.EndDate.Value.ToString("MM-dd-yyyy")</p>
                                 <div class="motel-address" data-toggle="tooltip" data-placement="auto"
-                                    title="HCM City">
-                                    <p class="address truncate"><i class="fas fa-map-marker-alt"></i><span class="district">
-                                            District
-                                            Tan Binh</span>, <span class="city">HCM City</span></p>
+                                    title="@data.City">
+                                    <p class="address truncate">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                        <span class="district">District @data.District</span>, <span class="city">@data.City</span></p>
                                 </div>
                                 <div class="d-flex justify-content-between">
                                     <p class="motel-price"><i class="fas fa-comment-alt"></i>@data.Description</p>

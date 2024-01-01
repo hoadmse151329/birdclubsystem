@@ -10,5 +10,7 @@ namespace DAL.Repositories.Interfaces
 {
     public interface ILocationRepository : IRepositoryBase<Location>
     {
+        Task<IEnumerable<string?>> GetAllLocationName();
+        Task<string?> GetLocationNameById(int id);
     }
 }

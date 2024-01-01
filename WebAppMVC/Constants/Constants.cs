@@ -12,5 +12,9 @@
 		public static string STAFF = "Staff";
 		public readonly static string MANAGER = "Manager";
 		public static string LOGIN_URL = "../Auth/Login";
-	}
+		public static string GET_METHOD = "GET";
+        public static string POST_METHOD = "POST";
+		public static string PUT_METHOD = "PUT";
+		public static string DELETE_METHOD = "DELETE";
+    }
 }
