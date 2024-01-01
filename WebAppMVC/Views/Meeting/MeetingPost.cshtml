@@ -1,4 +1,4 @@
-﻿@model IEnumerable<BAL.ViewModels.MeetingViewModel>
+﻿@model BAL.ViewModels.MeetingViewModel
 @{
     ViewData["Title"] = "Meeting Post Page";
 }
@@ -62,7 +62,7 @@
                 <div class="rectangle-5"></div>
                 <div class="rectangle-6" id="map"></div>
                 <div class="tittle">
-                  <div class="overlap-group-2"><p class="text-wrapper-4">ChaoMao New Member Bird meeting</p></div>
+                  <div class="overlap-group-2"><p class="text-wrapper-4">@Model.MeetingName</p></div>
                 </div>
                 <div class="text-wrapper-5">From 10-28-2024 to 10-28-2024</div>
                 <div class="group-2">
@@ -73,9 +73,9 @@
                   <div class="text-wrapper-10">Organizer</div>
                 </div>
                 <div class="group-3">
-                  <div class="text-wrapper-11">10-20-2024</div>
+                  <div class="text-wrapper-11">@Model.RegistrationDeadline</div>
                   <p class="text-wrapper-12">H22/183 Hoang Van Thai Street, Thanh Xuan District, Hanoi.</p>
-                  <div class="text-wrapper-13">30 Participant</div>
+                  <div class="text-wrapper-13">@Model.NumberOfParticipants</div>
                   <div class="text-wrapper-14">ChaoMaoClub@gmail.com</div>
                   <div class="text-wrapper-15">ChaoMaoClub</div>
                 </div>

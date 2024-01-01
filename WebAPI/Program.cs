@@ -101,6 +101,7 @@ namespace WebAPI
             builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IMemberService,MemberService>();
+            builder.Services.AddScoped<ILocationService,LocationService>();
             builder.Services.AddTransient<IEmailService,EmailService>();
             builder.Services.AddScoped<IJWTService,JWTService>();
             builder.Services.AddScoped<IMeetingService,MeetingService>();

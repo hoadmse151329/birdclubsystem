@@ -24,41 +24,6 @@ namespace WebAPI.Controllers
             _config = config;
         }
 
-        [HttpGet("{id}")]
-        [Authorize(Roles = "Admin,Manager,Staff,Member")]
-        [ProducesResponseType(typeof(MeetingViewModel), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult GetMeetingById([FromRoute]int id)
-        {
-            try
-            {
-                var result = _meetingService.GetById(id);
-                if (result == null)
-                {
-                    return NotFound(new
-                    {
-                        status = false,
-                        errorMessage = "Meeting Not Found!"
-                    });
-                }
-
-                return Ok(new
-                {
-                    status = true,
-                    Data = result
-                });
-            }
-            catch (Exception ex)
-            {
-                // Log the exception if needed
-                return BadRequest(new
-                {
-                    status = false,
-                    errorMessage = ex.Message
-                });
-            }
-        }
 		[HttpGet("All")]
 		[HttpGet]
 		[ProducesResponseType(typeof(List<MeetingViewModel>), StatusCodes.Status200OK)]
@@ -94,7 +59,44 @@ namespace WebAPI.Controllers
 				});
 			}
 		}
-		[HttpPost("Create")]
+
+        [HttpGet("{id}")]
+        [Authorize(Roles = "Admin,Manager,Staff,Member")]
+        [ProducesResponseType(typeof(MeetingViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public IActionResult GetMeetingById([FromRoute] int id)
+        {
+            try
+            {
+                var result = _meetingService.GetById(id);
+                if (result == null)
+                {
+                    return NotFound(new
+                    {
+                        status = false,
+                        errorMessage = "Meeting Not Found!"
+                    });
+                }
+
+                return Ok(new
+                {
+                    status = true,
+                    Data = result
+                });
+            }
+            catch (Exception ex)
+            {
+                // Log the exception if needed
+                return BadRequest(new
+                {
+                    status = false,
+                    errorMessage = ex.Message
+                });
+            }
+        }
+
+        [HttpPost("Create")]
         [Authorize(Roles = "Manager")]
         [ProducesResponseType(typeof(MeetingViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

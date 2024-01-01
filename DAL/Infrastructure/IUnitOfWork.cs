@@ -14,6 +14,7 @@ namespace DAL.Infrastructure
         IMeetingParticipantRepository MeetingParticipantRepository { get; }
         IMemberRepository MemberRepository { get; }
         IUserRepository UserRepository { get; } 
+        ILocationRepository LocationRepository { get; }
         void Save();
     }
 }
