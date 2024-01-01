@@ -9,6 +9,7 @@ using Microsoft.Extensions.Options;
 using WebAppMVC.Models.Auth;
 using WebAppMVC.Models.Meeting;
 using BAL.ViewModels.Meeting;
+using BAL.Services.Interfaces;
 
 namespace WebAppMVC.Controllers
 {
@@ -26,6 +27,7 @@ namespace WebAppMVC.Controllers
 			_httpClient.BaseAddress = new Uri("https://localhost:7022");
 			MeetingAPI_URL = "/api/Meeting";
 		}
+
 		[HttpGet]
 		public async Task<IActionResult> Index()
 		{
@@ -46,8 +48,7 @@ namespace WebAppMVC.Controllers
 			return View(responsemeetlist);
 		}
 
-
-		[HttpGet("{id}")]
+        /*[HttpGet("/GetById/{id}")]
 		public async Task<IActionResult> MeetingPost(int id)
 		{
 			var options = new JsonSerializerOptions 
@@ -63,6 +64,11 @@ namespace WebAppMVC.Controllers
 			var meetpostResponse = JsonSerializer.Deserialize<GetMeetingPostResponse>(jsonResponse, options);
 			var responsemeetpost = meetpostResponse.Data;
 			return View(responsemeetpost);
+		}*/
+
+		public IActionResult MeetingPost()
+		{
+			return View();
 		}
 
 		public IActionResult MeetingRegister()
@@ -86,9 +92,6 @@ namespace WebAppMVC.Controllers
 				return View("Error");
 			}
 		}
-
-
-
 
 
 		[HttpPost]

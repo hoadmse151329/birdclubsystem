@@ -30,9 +30,15 @@ namespace BAL.Services.Implements
             return _mapper.Map<IEnumerable<MeetingViewModel>>(_unitOfWork.MeetingRepository.GetAllByRegistrationDeadline(registrationDeadline));
         }
 
-        public MeetingViewModel? GetById(int id)
+        public async Task<MeetingViewModel?> GetById(int id)
         {
-            return _mapper.Map<MeetingViewModel>(_unitOfWork.MeetingRepository.GetById(id));
+            var meet = await _unitOfWork.MeetingRepository.GetMeetingById(id);
+            if (meet != null)
+            {
+                var meeting = _mapper.Map<MeetingViewModel>(meet);
+                return meeting;
+            }
+            return null;
         }
 
         public IEnumerable<MeetingViewModel> GetSortedMeetings(int meetingId,
