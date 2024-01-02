@@ -1,6 +1,8 @@
 ﻿using BAL.Services.Implements;
 using BAL.Services.Interfaces;
 using BAL.ViewModels;
+using BAL.ViewModels.Authenticates;
+using BAL.ViewModels.Meeting;
 using DAL.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -48,7 +50,7 @@ namespace WebAPI.Controllers
                 return Ok(new
                 {
                     status = true,
-                    result
+                    Data = result
                 });
             }
             catch (Exception ex)
@@ -176,7 +178,8 @@ namespace WebAPI.Controllers
         }
         [HttpPut("Update")]
         [Authorize(Roles = "Manager")]
-        [ProducesResponseType(typeof(MeetingViewModel), StatusCodes.Status200OK)]
+		[HttpPut("Update/{id}")]
+		[ProducesResponseType(typeof(MeetingViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult Update(int id, string meetingname, string description, DateTime registrationDeadline, DateTime startDate, DateTime endDate, int numberOfParticipants, string host, string incharge, string note)
@@ -219,5 +222,37 @@ namespace WebAPI.Controllers
                 });
             }
         }
-    }
+        [HttpPost("Register")]
+        public async Task<IActionResult> RegisterMeeting(
+            [FromBody][Required] RegisterMeeting register)
+		{
+			try
+			{
+				MemberViewModel value = new MemberViewModel()
+				{
+					UserName = register.UserName,
+                    FullName = register.FullName,
+                    Gender = register.Gender,
+					Email = register.Email,
+					Phone = register.PhoneNumber,
+				};
+				
+				return Ok(new
+				{
+					Status = true,
+					SuccessMessage = "Register meeting successfully !",
+                    Data = value
+				});
+			}
+			catch (Exception ex)
+			{
+				// Log the exception if needed
+				return BadRequest(new
+				{
+					Status = false,
+					ErrorMessage = ex.Message
+				});
+			}
+		}
+	}
 }
