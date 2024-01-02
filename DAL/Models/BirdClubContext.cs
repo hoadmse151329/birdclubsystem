@@ -736,7 +736,6 @@ namespace DAL.Models
 
             modelBuilder.Entity<MeetingParticipant>(entity =>
             {
-                entity.HasNoKey();
 
                 entity.ToTable("MeetingParticipant");
 
@@ -761,6 +760,7 @@ namespace DAL.Models
                     .WithMany()
                     .HasForeignKey(d => d.MemberId)
                     .HasConstraintName("FK_MeetingParticipant_Member");
+                entity.HasKey(e => new { e.MeetingId, e.MemberId});
             });
 
             modelBuilder.Entity<Member>(entity =>

@@ -52,5 +52,40 @@ namespace WebAPI.Controllers
                 });
             }
         }
+
+        [HttpGet("{id:int}")]
+        [ProducesResponseType(typeof(LocationViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetLocationById([FromRoute] int id)
+        {
+            try
+            {
+                var result = await _locationService.GetLocationById(id);
+                if (result == null)
+                {
+                    return NotFound(new
+                    {
+                        status = false,
+                        errorMessage = "Location Not Found!"
+                    });
+                }
+
+                return Ok(new
+                {
+                    status = true,
+                    Data = result
+                });
+            }
+            catch (Exception ex)
+            {
+                // Log the exception if needed
+                return BadRequest(new
+                {
+                    status = false,
+                    errorMessage = ex.Message
+                });
+            }
+        }
     }
 }

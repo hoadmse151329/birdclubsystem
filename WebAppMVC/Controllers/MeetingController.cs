@@ -4,13 +4,9 @@ using System.Text.Json;
 using BAL.ViewModels;
 using WebAppMVC.Models.Meeting;
 using BAL.ViewModels.Meeting;
-=========
-
-=========
 using System.Dynamic;
 using WebAppMVC.Constants;
 using WebAppMVC.Models.Location;
-using BAL.ViewModels.Meeting;
 using BAL.Services.Interfaces;
 using System.Text;
 
@@ -54,11 +50,18 @@ namespace WebAppMVC.Controllers
 				options: options,
 				methodName: "GET",
 				url: MeetingAPI_URL);
-
 			if(listMeetResponse == null || listLocationResponse == null)
 			{
+                ViewBag.error =
+                    "Error while processing your request! (Getting List Meeting!).\n List was Empty!";
+                Redirect("~/Home/Index");
+            }
+			else
+			if(!listMeetResponse.Status || !listLocationResponse.Status)
+			{
 				ViewBag.error =
-					"Error while processing your request! (Get List Meeting!).";
+					"Error while processing your request! (Getting List Meeting!).\n"
+					+ listMeetResponse.ErrorMessage + "\n" + listLocationResponse.ErrorMessage;
                 Redirect("~/Home/Index");
             }
             testmodel.Meetings = listMeetResponse.Data;
@@ -66,11 +69,11 @@ namespace WebAppMVC.Controllers
             return View(testmodel);
 		}
 
-		[HttpGet("{id}")]
+		[HttpGet("{id:int}")]
 		public async Task<IActionResult> MeetingPost(int id)
 		{
 			MeetingAPI_URL += "/{id}";
-			//string LocationAPI_URL_id = "/api/Location/{id}";
+			string LocationAPI_URL_id = "/api/Location/{id}";
 			dynamic testmodel = new ExpandoObject();
 
 			var meetPostResponse = await methcall.CallMethodReturnObject<GetMeetingPostResponse>(
@@ -78,15 +81,61 @@ namespace WebAppMVC.Controllers
 				options: options,
 				methodName: "GET",
 				url: MeetingAPI_URL);
+            var listLocationResponse = await methcall.CallMethodReturnObject<GetLocationResponseByList>(
+                _httpClient: _httpClient,
+                options: options,
+                methodName: "GET",
+                url: LocationAPI_URL_id);
 
-			if(meetPostResponse == null)
-		public IActionResult MeetingRegister()
-		{
+            if (!meetPostResponse.Status || !listLocationResponse.Status)
+			{
+				ViewBag.error =
+					"Error while processing your request! (Getting Meeting Post!).\n"
+					+ meetPostResponse.ErrorMessage + "\n" + listLocationResponse.ErrorMessage;
+				Redirect("~/Meeting/Index");
+			}
 			return View();
 		}
-=========
->>>>>>>>> Temporary merge branch 2
+
 		[HttpPost]
+		public async Task<IActionResult> MeetingRegister(int meetingId)
+		{
+            MeetingAPI_URL += "/Register";
+
+            string? role = HttpContext.Session.GetString("ROLE_NAME");
+			if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
+			else if (!role.Equals("Member")) return View("Index");
+
+            string? usrId = HttpContext.Session.GetString("USER_ID");
+			if(usrId == null) return RedirectToAction("Login", "Auth");
+
+            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
+            if (accToken == null) return RedirectToAction("Login", "Auth");
+
+            var participationNo = await methcall.CallMethodReturnObject<GetMeetingParticipationNo>(
+                _httpClient: _httpClient,
+                options: options,
+                methodName: "POST",
+                url: MeetingAPI_URL + "/" + meetingId,
+				inputType: usrId,
+				accessToken: accToken);
+			if(participationNo == null)
+			{
+                ViewBag.error =
+                    "Error while processing your request! (Registering Meeting Participation!).\n Meeting Not Found!";
+                View("Index");
+            }
+            if (!participationNo.Status)
+            {
+                ViewBag.error =
+                    "Error while processing your request! (Registering Meeting Participation!).\n"
+					+ participationNo.ErrorMessage;
+                View("Index");
+            }
+			ViewBag.PartNumber = participationNo.Data;
+			return View("MeetingPost");
+        }
+        [HttpPost]
 		public async Task<IActionResult> In()
 		{
 			// Call the API endpoint

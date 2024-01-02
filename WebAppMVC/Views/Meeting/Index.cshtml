@@ -62,6 +62,12 @@
 
             <div class="col-9">
                 <div class="content__list row" style="display: none;">
+                    @{
+                        if (ViewBag.error != null)
+                        {
+                            <span class="text-danger">@ViewBag.error</span>
+                        }
+                    }
                     @foreach(BAL.ViewModels.MeetingViewModel data in Model.Meetings)
                     {
                         <div class="col-4 p-0 ">
