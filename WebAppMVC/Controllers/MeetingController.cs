@@ -3,6 +3,10 @@ using System.Net.Http.Headers;
 using System.Text.Json;
 using BAL.ViewModels;
 using WebAppMVC.Models.Meeting;
+using BAL.ViewModels.Meeting;
+=========
+
+=========
 using System.Dynamic;
 using WebAppMVC.Constants;
 using WebAppMVC.Models.Location;
@@ -76,18 +80,12 @@ namespace WebAppMVC.Controllers
 				url: MeetingAPI_URL);
 
 			if(meetPostResponse == null)
-			{
-				ViewBag.error = "Error while processing your request! (Get Meeting Post!).";
-				Redirect("~/Meeting/Index");
-			}
-			return View();
-		}
-
-		/*public IActionResult MeetingPost()
+		public IActionResult MeetingRegister()
 		{
 			return View();
-		}*/
-
+		}
+=========
+>>>>>>>>> Temporary merge branch 2
 		[HttpPost]
 		public async Task<IActionResult> In()
 		{
