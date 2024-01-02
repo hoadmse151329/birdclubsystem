@@ -1,4 +1,5 @@
-﻿@{
+﻿@model BAL.ViewModels.MeetingViewModel
+@{
     ViewData["Title"] = "Meeting Post Page";
 }
 
@@ -26,6 +27,12 @@
               <div class="overlap-2">
                 <div class="flexcontainer">
                   <p class="text">
+                      @{
+						    if (ViewBag.error != null)
+						    {
+							    <span class="text-danger">@ViewBag.error</span>
+						    }
+					    }
                     <span class="text-wrapper">Content<br /></span>
                   </p>
                   <p class="span-wrapper">
@@ -78,11 +85,17 @@
                   <div class="text-wrapper-14">ChaoMaoClub@gmail.com</div>
                   <div class="text-wrapper-15">ChaoMaoClub</div>
                 </div>
+                @{
+                    if (ViewBag.PartNumber != null)
+                    {
+                        <span class="text-success">@ViewBag.PartNumber</span>
+                    }
+                }
                 <div class="register">
                   <button class="overlap-group-3">
-                     <a href="@Url.Action("MeetingRegister", "Meeting")">
-                        <div class="text-wrapper-16">Register</div>
-                     </a>
+                      <form asp-action="MeetingRegister" asp-controller="Meeting" method="post" asp-route-meetingId="1">
+                            <button class="text-wrapper-16" type="submit">Register</button>
+                      </form>
                   </button>
                 </div>
               </div>

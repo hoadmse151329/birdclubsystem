@@ -2,6 +2,7 @@
 using BAL.Services.Interfaces;
 using BAL.ViewModels;
 using DAL.Infrastructure;
+using DAL.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +20,25 @@ namespace BAL.Services.Implements
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
-        public IEnumerable<MeetingParticipantViewModel> GetAll()
+
+        public async Task<int> Create(int memId, int metId)
+        {
+            int partNo = await _unitOfWork.MeetingParticipantRepository.GetParticipationNoMeetingParticipantById(metId, memId);
+            if (partNo > 0) return partNo;
+            int meetpartCount =  await _unitOfWork.MeetingParticipantRepository.GetCountMeetingParticipantsByMeetId(metId);
+            if (meetpartCount.Equals(0)) partNo = 1; else partNo = meetpartCount + 1;
+            MeetingParticipant meetingParticipant = new MeetingParticipant()
+            {
+                MeetingId= metId,
+                MemberId= memId,
+                ParticipantNo = partNo.ToString()
+            };
+            _unitOfWork.MeetingParticipantRepository.Create(meetingParticipant);
+            _unitOfWork.Save();
+            return partNo;
+        }
+
+        public async Task<IEnumerable<MeetingParticipantViewModel>> GetAll()
         {
             return _mapper.Map<IEnumerable<MeetingParticipantViewModel>>(_unitOfWork.MeetingRepository.GetAll());
         }

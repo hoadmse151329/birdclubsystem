@@ -9,6 +9,7 @@ namespace BAL.Services.Interfaces
 {
     public interface IMeetingParticipantService
     {
-        IEnumerable<MeetingParticipantViewModel> GetAll();
+        Task<IEnumerable<MeetingParticipantViewModel>> GetAll();
+        Task<int> Create(int memId, int metId);
     }
 }

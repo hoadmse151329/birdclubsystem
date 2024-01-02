@@ -5,6 +5,7 @@ using DAL.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace WebAPI.Controllers
 {
@@ -13,12 +14,16 @@ namespace WebAPI.Controllers
     public class MeetingController : ControllerBase
     {
         private readonly IMeetingService _meetingService;
+        private readonly IMeetingParticipantService _participantService;
+        private readonly IMemberService _memberService;
         private readonly IConfiguration _config;
 
-        public MeetingController(IMeetingService meetingService, IConfiguration config)
+        public MeetingController(IMeetingService meetingService, IConfiguration config, IMemberService memberService, IMeetingParticipantService meetingParticipantService)
         {
             _meetingService = meetingService;
             _config = config;
+            _memberService = memberService;
+            _participantService = meetingParticipantService;
         }
 
         [HttpGet("{id}")]
@@ -115,21 +120,60 @@ namespace WebAPI.Controllers
                 _meetingService.Create(value);
                 return Ok(new
                 {
-                    status = true,
+                    Status = true,
                     Message = "Meeting Create successfully !",
-                    value
+                    Data = value
                 });
             }
             catch (Exception ex)
             {
                 return BadRequest(new
                 {
-                    status = false,
-                    errorMessage = ex.Message
+                    Status = false,
+                    ErrorMessage = ex.Message
                 });
             }
         }
-
+        [HttpPost("Register/{id}")]
+        [Authorize(Roles = "Member")]
+        [ProducesResponseType(typeof(MeetingParticipantViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Register(
+            [Required] [FromRoute] int id,
+            [Required] [FromBody] int usrId)
+        {
+            try
+            {
+                var meeting = _meetingService.GetById(id);
+                if(meeting == null) return NotFound(new
+                {
+                    Status = false,
+                    ErrorMessage = "Meeting Not Found!"
+                });
+                var mem = await _memberService.GetById(usrId);
+                if(mem == null) return NotFound(new
+                {
+                    Status = false,
+                    ErrorMessage = "Member Not Found!"
+                });
+                int participateNo = await _participantService.Create(usrId, id);
+                return Ok(new
+                {
+                    Status = true,
+                    Message = "Add Member Participation successfully !",
+                    Data = participateNo
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new
+                {
+                    Status = false,
+                    ErrorMessage = ex.Message
+                });
+            }
+        }
         [HttpPut("Update")]
         [Authorize(Roles = "Manager")]
         [ProducesResponseType(typeof(MeetingViewModel), StatusCodes.Status200OK)]

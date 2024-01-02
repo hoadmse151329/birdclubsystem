@@ -4,6 +4,7 @@ using DAL.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Migrations
 {
     [DbContext(typeof(BirdClubContext))]
-    partial class BirdClubContextModelSnapshot : ModelSnapshot
+    [Migration("20240102031711_DbAlterCompositeKey1")]
+    partial class DbAlterCompositeKey1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -916,22 +918,20 @@ namespace DAL.Migrations
             modelBuilder.Entity("DAL.Models.MeetingParticipant", b =>
                 {
                     b.Property<int?>("MeetingId")
+                        .IsRequired()
                         .HasColumnType("int")
-                        .HasColumnName("meetingId")
-                        .HasColumnOrder(0);
+                        .HasColumnName("meetingId");
 
                     b.Property<int?>("MemberId")
+                        .IsRequired()
                         .HasColumnType("int")
-                        .HasColumnName("memberId")
-                        .HasColumnOrder(1);
+                        .HasColumnName("memberId");
 
                     b.Property<string>("ParticipantNo")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)")
                         .HasColumnName("participantNo");
-
-                    b.HasKey("MeetingId", "MemberId");
 
                     b.HasIndex(new[] { "MeetingId" }, "IX_MeetingParticipant_meetingId");
 

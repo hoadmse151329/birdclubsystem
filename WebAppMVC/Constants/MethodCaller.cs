@@ -18,10 +18,12 @@ namespace WebAppMVC.Constants
             JsonSerializerOptions options,
             string methodName,
             string url,
-            T inputType = null) where T : class
+            object inputType = null,
+            string accessToken = null) where T : class
         {
             HttpResponseMessage response = new HttpResponseMessage();
             var json = JsonSerializer.Serialize(inputType);
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
             // sử dụng frombody để 
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 

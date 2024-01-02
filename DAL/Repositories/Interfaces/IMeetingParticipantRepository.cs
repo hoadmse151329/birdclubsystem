@@ -10,6 +10,12 @@ namespace DAL.Repositories.Interfaces
 {
     public interface IMeetingParticipantRepository : IRepositoryBase<MeetingParticipant>
     {
-
+        Task<IEnumerable<MeetingParticipant>> GetMeetingParticipantsByMeetId(int meetingId);
+        Task<int> GetCountMeetingParticipantsByMeetId(int meetingId);
+        Task<bool> GetBoolMeetingParticipantById(int meetingId, int memberId);
+        Task<int> GetParticipationNoMeetingParticipantById(int meetingId, int memberId);
+        Task<MeetingParticipant> GetMeetingParticipantById(int meetingId, int memberId);
+        Task<IEnumerable<MeetingParticipant>> GetMeetingParticipantsByMemberId(int memId);
+        Task<int> GetCountMeetingParticipantsByMemberId(int memId);
     }
 }
