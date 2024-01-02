@@ -22,7 +22,19 @@ namespace BAL.Services.Implements
         }
         public async Task<IEnumerable<MeetingViewModel>> GetAll()
         {
-            return _mapper.Map<IEnumerable<MeetingViewModel>>(_unitOfWork.MeetingRepository.GetAll());
+            string locationName;
+            var listmeet = _unitOfWork.MeetingRepository.GetAll();
+            var listmeetview = _mapper.Map<IEnumerable<MeetingViewModel>>(listmeet);
+            foreach (var itemview in listmeetview)
+            {
+                foreach(var item in listmeet)
+                {
+                    locationName = await _unitOfWork.LocationRepository.GetLocationNameById(item.LocationId.Value);
+                    itemview.District = locationName.Split(",")[0];
+                    itemview.City = locationName.Split(",")[1];
+                }
+            }
+            return listmeetview;
         }
 
         public IEnumerable<MeetingViewModel> GetAllByRegistrationDeadline(DateTime registrationDeadline)

@@ -17,6 +17,7 @@ namespace DAL.Infrastructure
         private IMeetingParticipantRepository _meetingParticipantRepository;
         private IMemberRepository _memberRepository;
         private IUserRepository _userRepository;
+        private ILocationRepository _locationRepository;
 		public UnitOfWork(BirdClubContext context)
 		{
 			_context = context;
@@ -26,7 +27,10 @@ namespace DAL.Infrastructure
 		public IMeetingMediaRepository MeetingMediaRepository => _meetingMediaRepository ??= new MeetingMediaRepository(_context);
 		public IMeetingParticipantRepository MeetingParticipantRepository => _meetingParticipantRepository ??= new MeetingParticipantRepository(_context);
 		public IMemberRepository MemberRepository => _memberRepository ??= new MemberRepository(_context);
-		public void Dispose()
+
+        public ILocationRepository LocationRepository => _locationRepository ??= new LocationRepository(_context);
+
+        public void Dispose()
         {
             _context.Dispose();
         }

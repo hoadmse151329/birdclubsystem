@@ -1,14 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualBasic;
 using System.Net.Http.Headers;
 using System.Text.Json;
-using System.Text;
 using BAL.ViewModels;
-using System.Net.Http;
-using Microsoft.Extensions.Options;
-using WebAppMVC.Models.Auth;
 using WebAppMVC.Models.Meeting;
 using BAL.ViewModels.Meeting;
+using System.Dynamic;
+using WebAppMVC.Constants;
+using WebAppMVC.Models.Location;
 
 namespace WebAppMVC.Controllers
 {
@@ -17,7 +15,12 @@ namespace WebAppMVC.Controllers
 		private readonly ILogger<MeetingController> _logger;
 		private readonly HttpClient _httpClient = null;
 		private string MeetingAPI_URL = "";
-		public MeetingController(ILogger<MeetingController> logger)
+        private JsonSerializerOptions options = new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true,
+        };
+		private MethodCaller methcall = new();
+        public MeetingController(ILogger<MeetingController> logger)
 		{
 			_logger = logger;
 			_httpClient = new HttpClient();
@@ -29,21 +32,31 @@ namespace WebAppMVC.Controllers
 		[HttpGet]
 		public async Task<IActionResult> Index()
 		{
-			var options = new JsonSerializerOptions
+            MeetingAPI_URL += "/All";
+			string LocationAPI_URL_All = "/api/Location/All";
+			dynamic testmodel = new ExpandoObject();
+
+            var listLocationResponse = await methcall.CallMethodReturnObject<GetLocationResponseByList>(
+                _httpClient: _httpClient,
+                options: options,
+                methodName: "GET",
+                url: LocationAPI_URL_All);
+
+            var listMeetResponse = await methcall.CallMethodReturnObject<GetMeetingResponseByList>(
+				_httpClient: _httpClient,
+				options: options,
+				methodName: "GET",
+				url: MeetingAPI_URL);
+
+			if(listMeetResponse == null || listLocationResponse == null)
 			{
-				PropertyNameCaseInsensitive = true,
-			};
-			MeetingAPI_URL += "/All";
-			HttpResponseMessage response = await _httpClient.GetAsync(MeetingAPI_URL);
-			if (!response.IsSuccessStatusCode)
-			{
-				ViewBag.error = "Error while processing your request! (Get List Meeting!).";
-				return Redirect("~/Home/Index");
-			}
-			string jsonResponse = await response.Content.ReadAsStringAsync();
-			var listmeetResponse = JsonSerializer.Deserialize<GetMeetingResponseByList>(jsonResponse, options);
-			var responsemeetlist = listmeetResponse.Data;
-			return View(responsemeetlist);
+				ViewBag.error =
+					"Error while processing your request! (Get List Meeting!).";
+                Redirect("~/Home/Index");
+            }
+            testmodel.Meetings = listMeetResponse.Data;
+			testmodel.Locations = listLocationResponse.Data;
+            return View(testmodel);
 		}
 
 
@@ -63,11 +76,6 @@ namespace WebAppMVC.Controllers
 			var meetpostResponse = JsonSerializer.Deserialize<GetMeetingPostResponse>(jsonResponse, options);
 			var responsemeetpost = meetpostResponse.Data;
 			return View(responsemeetpost);
-		}
-
-		public IActionResult MeetingRegister()
-		{
-			return View();
 		}
 		[HttpPost]
 		public async Task<IActionResult> In()
