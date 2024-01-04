@@ -28,41 +28,6 @@ namespace WebAPI.Controllers
             _participantService = meetingParticipantService;
         }
 
-        [HttpGet("{id}")]
-        //[Authorize(Roles = "Admin,Manager,Staff,Member")]
-        [ProducesResponseType(typeof(MeetingViewModel), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult GetMeetingById(int id)
-        {
-            try
-            {
-                var result = _meetingService.GetById(id);
-                if (result == null)
-                {
-                    return NotFound(new
-                    {
-                        status = false,
-                        errorMessage = "Meeting Not Found!"
-                    });
-                }
-
-                return Ok(new
-                {
-                    status = true,
-                    Data = result
-                });
-            }
-            catch (Exception ex)
-            {
-                // Log the exception if needed
-                return BadRequest(new
-                {
-                    status = false,
-                    errorMessage = ex.Message
-                });
-            }
-        }
 		[HttpGet("All")]
 		[HttpGet]
 		[ProducesResponseType(typeof(List<MeetingViewModel>), StatusCodes.Status200OK)]
@@ -98,7 +63,43 @@ namespace WebAPI.Controllers
 				});
 			}
 		}
-		[HttpPost("Create")]
+
+        [HttpGet("{id:int}")]
+        [ProducesResponseType(typeof(MeetingViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetMeetingById([FromRoute] int id)
+        {
+            try
+            {
+                var result = await _meetingService.GetById(id);
+                if (result == null)
+                {
+                    return NotFound(new
+                    {
+                        status = false,
+                        errorMessage = "Meeting Not Found!"
+                    });
+                }
+
+                return Ok(new
+                {
+                    status = true,
+                    Data = result
+                });
+            }
+            catch (Exception ex)
+            {
+                // Log the exception if needed
+                return BadRequest(new
+                {
+                    status = false,
+                    errorMessage = ex.Message
+                });
+            }
+        }
+
+        [HttpPost("Create")]
         [Authorize(Roles = "Manager")]
         [ProducesResponseType(typeof(MeetingViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -182,11 +183,11 @@ namespace WebAPI.Controllers
 		[ProducesResponseType(typeof(MeetingViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult Update(int id, string meetingname, string description, DateTime registrationDeadline, DateTime startDate, DateTime endDate, int numberOfParticipants, string host, string incharge, string note)
+        public async Task<IActionResult> Update([FromBody] MeetingViewModel meeting)
         {
             try
             {
-                var result = _meetingService.GetById(id);
+                var result = await _meetingService.GetById(meeting.MeetingId.Value);
                 if (result == null)
                 {
                     return NotFound(new
@@ -195,17 +196,8 @@ namespace WebAPI.Controllers
                         errorMessage = "Meeting does not exist!"
                     });
                 }
-                result.MeetingName = meetingname;
-                result.Description = description;
-                result.RegistrationDeadline = registrationDeadline;
-                result.StartDate = startDate;
-                result.EndDate = endDate;
-                result.NumberOfParticipants = numberOfParticipants;
-                result.Host = host;
-                result.Incharge = incharge;
-                result.Note = note;
-                _meetingService.Update(result);
-                result = _meetingService.GetById(id);
+                _meetingService.Update(meeting);
+                result = await _meetingService.GetById(meeting.MeetingId.Value);
                 return Ok(new
                 {
                     status = true,
