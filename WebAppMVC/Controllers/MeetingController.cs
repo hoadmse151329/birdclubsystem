@@ -67,12 +67,12 @@ namespace WebAppMVC.Controllers
 		}
 
 
-		[HttpGet("{id}")]
-		public async Task<IActionResult> MeetingPost(int id)
+		[HttpGet("{meetingId}")]
+		public async Task<IActionResult> MeetingPost(int meetingId)
 		{
 			var options = new JsonSerializerOptions 
 			{ PropertyNameCaseInsensitive = true, };
-			MeetingAPI_URL += "/{id}";
+			MeetingAPI_URL += "/" + meetingId;
 			HttpResponseMessage response = await _httpClient.GetAsync(MeetingAPI_URL);
 			if (!response.IsSuccessStatusCode)
 			{
@@ -138,37 +138,6 @@ namespace WebAppMVC.Controllers
 				_logger.LogError($"API request failed with status code {response.StatusCode}");
 				return View("Error");
 			}
-		}
-
-
-
-
-
-		[HttpPost]
-		public async Task<IActionResult> RegisterMeeting(RegisterMeeting register)
-		{
-			var json = JsonSerializer.Serialize(register);
-			var content = new StringContent(json, Encoding.UTF8, "application/json");
-			var options = new JsonSerializerOptions
-			{
-				PropertyNameCaseInsensitive = true,
-			};
-			MeetingAPI_URL += "/Register";
-			HttpResponseMessage response = await _httpClient.PostAsync(MeetingAPI_URL, content);
-			if (!response.IsSuccessStatusCode)
-			{
-				ViewBag.error = "Error while registering for meeting ! ";
-				return View("MeetingRegister");
-			}
-			string jsonResponse = await response.Content.ReadAsStringAsync();
-			var meetingResponse = JsonSerializer.Deserialize<GetMeetingRegisterResponse>(jsonResponse);
-			var responseRegister = meetingResponse.Data;
-			if (meetingResponse.Status)
-			{
-				HttpContext.Session.SetString("USER_NAME", responseRegister.UserName);
-				HttpContext.Session.SetString("FULL_NAME", responseRegister.FullName);
-			}
-			return null;
 		}
 	}
 }
