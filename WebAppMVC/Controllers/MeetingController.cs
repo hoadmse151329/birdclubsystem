@@ -7,6 +7,8 @@ using BAL.ViewModels.Meeting;
 using System.Dynamic;
 using WebAppMVC.Constants;
 using WebAppMVC.Models.Location;
+using BAL.Services.Interfaces;
+using System.Text;
 
 namespace WebAppMVC.Controllers
 {
@@ -29,6 +31,7 @@ namespace WebAppMVC.Controllers
 			_httpClient.BaseAddress = new Uri("https://localhost:7022");
 			MeetingAPI_URL = "/api/Meeting";
 		}
+
 		[HttpGet]
 		public async Task<IActionResult> Index()
 		{
@@ -66,24 +69,34 @@ namespace WebAppMVC.Controllers
             return View(testmodel);
 		}
 
-
-		[HttpGet("{id}")]
+		[HttpGet("{id:int}")]
 		public async Task<IActionResult> MeetingPost(int id)
 		{
-			var options = new JsonSerializerOptions 
-			{ PropertyNameCaseInsensitive = true, };
 			MeetingAPI_URL += "/{id}";
-			HttpResponseMessage response = await _httpClient.GetAsync(MeetingAPI_URL);
-			if (!response.IsSuccessStatusCode)
+			string LocationAPI_URL_id = "/api/Location/{id}";
+			dynamic testmodel = new ExpandoObject();
+
+			var meetPostResponse = await methcall.CallMethodReturnObject<GetMeetingPostResponse>(
+				_httpClient: _httpClient,
+				options: options,
+				methodName: "GET",
+				url: MeetingAPI_URL);
+            var listLocationResponse = await methcall.CallMethodReturnObject<GetLocationResponseByList>(
+                _httpClient: _httpClient,
+                options: options,
+                methodName: "GET",
+                url: LocationAPI_URL_id);
+
+            if (!meetPostResponse.Status || !listLocationResponse.Status)
 			{
-				ViewBag.error = "Error while getting meeting information!";
-				return Redirect("~/Meeting/Index");
+				ViewBag.error =
+					"Error while processing your request! (Getting Meeting Post!).\n"
+					+ meetPostResponse.ErrorMessage + "\n" + listLocationResponse.ErrorMessage;
+				Redirect("~/Meeting/Index");
 			}
-			string jsonResponse = await response.Content.ReadAsStringAsync();
-			var meetpostResponse = JsonSerializer.Deserialize<GetMeetingPostResponse>(jsonResponse, options);
-			var responsemeetpost = meetpostResponse.Data;
-			return View(responsemeetpost);
+			return View();
 		}
+
 		[HttpPost]
 		public async Task<IActionResult> MeetingRegister(int meetingId)
 		{
@@ -139,9 +152,6 @@ namespace WebAppMVC.Controllers
 				return View("Error");
 			}
 		}
-
-
-
 
 
 		[HttpPost]
