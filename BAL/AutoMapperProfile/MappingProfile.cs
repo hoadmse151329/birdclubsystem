@@ -22,17 +22,20 @@ namespace BAL.AutoMapperProfile
                 })
                 .ReverseMap();
             CreateMap<Member, MemberViewModel>().ReverseMap();
-            CreateMap<Meeting, MeetingViewModel>().ReverseMap();
+            CreateMap<Meeting, MeetingViewModel>()
+                .ReverseMap();
             CreateMap<Location, LocationViewModel>()
                 .AfterMap((src, dest) =>
                 {
-                    dest.District = src.LocationName.Split(",")[0];
-                    dest.City = src.LocationName.Split(",")[1];
+                    dest.AreaNumber = src.LocationName.Split(",")[0];
+                    dest.Street = src.LocationName.Split(",")[1];
+                    dest.District = src.LocationName.Split(",")[2];
+                    dest.City = src.LocationName.Split(",")[3];
                 })
                 .ReverseMap()
                 .AfterMap((src, dest) =>
                 {
-                    dest.LocationName = src.District + "," + src.City;
+                    dest.LocationName = src.AreaNumber + "," + src.Street + "," + src.District + "," + src.City;
                 });
         }
     }

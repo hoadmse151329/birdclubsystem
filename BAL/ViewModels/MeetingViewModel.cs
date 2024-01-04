@@ -19,6 +19,8 @@ namespace BAL.ViewModels
         public string? Incharge { get; set; }
         public string? Note { get; set; }
         public string? District { get; set; }
+        public int? LocationId { get; set; }
+        public string? Address { get; set; }
         public string? City { get; set; }
     }
 }

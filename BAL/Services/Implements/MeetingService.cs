@@ -29,9 +29,13 @@ namespace BAL.Services.Implements
             {
                 foreach(var item in listmeet)
                 {
-                    locationName = await _unitOfWork.LocationRepository.GetLocationNameById(item.LocationId.Value);
-                    itemview.District = locationName.Split(",")[0];
-                    itemview.City = locationName.Split(",")[1];
+                    if(item.MeetingId == itemview.MeetingId)
+                    {
+                        locationName = await _unitOfWork.LocationRepository.GetLocationNameById(item.LocationId.Value);
+                        itemview.Address = locationName;
+                        itemview.District = locationName.Split(",")[2];
+                        itemview.City = locationName.Split(",")[3];
+                    }
                 }
             }
             return listmeetview;
@@ -47,7 +51,11 @@ namespace BAL.Services.Implements
             var meet = await _unitOfWork.MeetingRepository.GetMeetingById(id);
             if (meet != null)
             {
+                string locationName = await _unitOfWork.LocationRepository.GetLocationNameById(meet.LocationId.Value);
                 var meeting = _mapper.Map<MeetingViewModel>(meet);
+                meeting.Address = locationName;
+                meeting.District = locationName.Split(",")[2];
+                meeting.City = locationName.Split(",")[3];
                 return meeting;
             }
             return null;
@@ -81,16 +89,6 @@ namespace BAL.Services.Implements
         public void Create(MeetingViewModel entity)
         {
             var meeting = _mapper.Map<Meeting>(entity);
-            meeting.MeetingId = (int)entity.MeetingId;
-            meeting.MeetingName = entity.MeetingName;
-            meeting.Description = entity.Description;
-            meeting.RegistrationDeadline = entity.RegistrationDeadline;
-            meeting.StartDate = entity.StartDate;
-            meeting.EndDate = entity.EndDate;
-            meeting.NumberOfParticipants = entity.NumberOfParticipants;
-            meeting.Host = entity.Host;
-            meeting.Incharge = entity.Incharge;
-            meeting.Note = entity.Note;
             _unitOfWork.MeetingRepository.Create(meeting);
             _unitOfWork.Save();
         }
@@ -98,16 +96,6 @@ namespace BAL.Services.Implements
         public void Update(MeetingViewModel entity)
         {
             var meeting = _mapper.Map<Meeting>(entity);
-            meeting.MeetingId = (int)entity.MeetingId;
-            meeting.MeetingName = entity.MeetingName;
-            meeting.Description = entity.Description;
-            meeting.RegistrationDeadline = entity.RegistrationDeadline;
-            meeting.StartDate = entity.StartDate;
-            meeting.EndDate = entity.EndDate;
-            meeting.NumberOfParticipants = entity.NumberOfParticipants;
-            meeting.Host = entity.Host;
-            meeting.Incharge = entity.Incharge;
-            meeting.Note = entity.Note;
             _unitOfWork.MeetingRepository.Update(meeting);
             _unitOfWork.Save();
         }
