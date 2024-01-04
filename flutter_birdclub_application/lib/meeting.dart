@@ -1,6 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter_birdclub_application/contest.dart';
 import 'package:flutter_birdclub_application/fieldtrip.dart';
-
+import 'package:http/http.dart' as http;
 import './main.dart';
 import 'package:flutter/material.dart';
 
@@ -230,5 +232,19 @@ class MeetingOnlineQrCode extends StatelessWidget {
             ),
           )
         ]));
+  }
+}
+
+class MeetingModel {
+  final int id;
+  final String meetingName;
+
+  MeetingModel({required this.id, required this.meetingName});
+
+  factory MeetingModel.fromJson(Map<String, dynamic> json) {
+    return MeetingModel(
+      id: json['id'],
+      meetingName: json['meetingName'],
+    );
   }
 }
