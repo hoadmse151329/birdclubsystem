@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using DAL.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.Configuration;
@@ -905,6 +906,14 @@ namespace DAL.Models
                     .HasForeignKey<User>(d => d.MemberId)
                     .HasConstraintName("FK_User_Member");
             });
+
+            #region DataSeederCall
+            modelBuilder.SeedLocations();
+            modelBuilder.SeedClubInfos();
+            modelBuilder.SeedMeetings();
+            modelBuilder.SeedMembers();
+            modelBuilder.SeedUsers();
+            #endregion
 
             OnModelCreatingPartial(modelBuilder);
         }

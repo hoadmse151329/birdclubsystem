@@ -8,6 +8,9 @@ namespace DAL.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropPrimaryKey(
+               name: "PK_Member_Meeting",
+               table: "MeetingParticipant");
             migrationBuilder.AddPrimaryKey(
                 name: "PK_MeetingParticipant",
                 table: "MeetingParticipant",
@@ -16,6 +19,10 @@ namespace DAL.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.AddPrimaryKey(
+                name: "PK_Member_Meeting",
+                table: "MeetingParticipant",
+                columns: new[] { "meetingId", "memberId" });
             migrationBuilder.DropPrimaryKey(
                 name: "PK_MeetingParticipant",
                 table: "MeetingParticipant");
