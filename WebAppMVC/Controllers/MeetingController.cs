@@ -3,10 +3,10 @@ using System.Net.Http.Headers;
 using System.Text.Json;
 using BAL.ViewModels;
 using WebAppMVC.Models.Meeting;
-using BAL.ViewModels.Meeting;
 using System.Dynamic;
 using WebAppMVC.Constants;
 using WebAppMVC.Models.Location;
+using BAL.Services.Interfaces;
 using System.Text;
 
 namespace WebAppMVC.Controllers
@@ -30,7 +30,9 @@ namespace WebAppMVC.Controllers
 			_httpClient.BaseAddress = new Uri("https://localhost:7022");
 			MeetingAPI_URL = "/api/Meeting";
 		}
+
 		[HttpGet]
+		[Route("Meeting/Index")]
 		public async Task<IActionResult> Index()
 		{
             MeetingAPI_URL += "/All";
@@ -48,6 +50,7 @@ namespace WebAppMVC.Controllers
 				options: options,
 				methodName: "GET",
 				url: MeetingAPI_URL);
+
 			if(listMeetResponse == null || listLocationResponse == null)
 			{
                 ViewBag.error =
@@ -67,28 +70,41 @@ namespace WebAppMVC.Controllers
             return View(testmodel);
 		}
 
-
-		[HttpGet("{id}")]
+		[HttpGet("{id:int}")]
+		[Route("Meeting/MeetingPost/{id}",Name = "Post")]
 		public async Task<IActionResult> MeetingPost(int id)
 		{
-			var options = new JsonSerializerOptions 
-			{ PropertyNameCaseInsensitive = true, };
-			MeetingAPI_URL += "/{id}";
-			HttpResponseMessage response = await _httpClient.GetAsync(MeetingAPI_URL);
-			if (!response.IsSuccessStatusCode)
+			MeetingAPI_URL += "/" + id;
+
+			var meetPostResponse = await methcall.CallMethodReturnObject<GetMeetingPostResponse>(
+				_httpClient: _httpClient,
+				options: options,
+				methodName: "GET",
+				url: MeetingAPI_URL);
+            if (meetPostResponse == null)
+            {
+                ViewBag.error =
+                    "Error while processing your request! (Getting Meeting!).\n Meeting Not Found!";
+                View("Index");
+            }
+
+            var meetmodel = meetPostResponse.Data;
+            if (!meetPostResponse.Status)
 			{
-				ViewBag.error = "Error while getting meeting information!";
-				return Redirect("~/Meeting/Index");
+				ViewBag.error =
+					"Error while processing your request! (Getting Meeting Post!).\n"
+					+ meetPostResponse.ErrorMessage;
+                View("Index");
 			}
-			string jsonResponse = await response.Content.ReadAsStringAsync();
-			var meetpostResponse = JsonSerializer.Deserialize<GetMeetingPostResponse>(jsonResponse, options);
-			var responsemeetpost = meetpostResponse.Data;
-			return View(responsemeetpost);
+			if(TempData["PartakeNo"] != null)
+				ViewBag.PartNumber = Int32.Parse(TempData["PartakeNo"].ToString());
+            return View(meetmodel);
 		}
+
 		[HttpPost]
 		public async Task<IActionResult> MeetingRegister(int meetingId)
 		{
-            MeetingAPI_URL += "/Register";
+            MeetingAPI_URL += "/Register/" + meetingId;
 
             string? role = HttpContext.Session.GetString("ROLE_NAME");
 			if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
@@ -104,26 +120,27 @@ namespace WebAppMVC.Controllers
                 _httpClient: _httpClient,
                 options: options,
                 methodName: "POST",
-                url: MeetingAPI_URL + "/" + meetingId,
+                url: MeetingAPI_URL,
 				inputType: usrId,
 				accessToken: accToken);
 			if(participationNo == null)
 			{
                 ViewBag.error =
                     "Error while processing your request! (Registering Meeting Participation!).\n Meeting Not Found!";
-                View("Index");
-            }
+                RedirectToAction("MeetingPost", new { id = meetingId });
+            }else
             if (!participationNo.Status)
             {
                 ViewBag.error =
                     "Error while processing your request! (Registering Meeting Participation!).\n"
 					+ participationNo.ErrorMessage;
-                View("Index");
+                RedirectToAction("MeetingPost", new { id = meetingId });
             }
-			ViewBag.PartNumber = participationNo.Data;
-			return View("MeetingPost");
+			TempData["partakeNo"] = participationNo.Data;
+
+            return RedirectToAction("MeetingPost", new { id = meetingId });
         }
-        [HttpPost]
+        /*[HttpPost]
 		public async Task<IActionResult> In()
 		{
 			// Call the API endpoint
@@ -139,37 +156,6 @@ namespace WebAppMVC.Controllers
 				_logger.LogError($"API request failed with status code {response.StatusCode}");
 				return View("Error");
 			}
-		}
-
-
-
-
-
-		[HttpPost]
-		public async Task<IActionResult> RegisterMeeting(RegisterMeeting register)
-		{
-			var json = JsonSerializer.Serialize(register);
-			var content = new StringContent(json, Encoding.UTF8, "application/json");
-			var options = new JsonSerializerOptions
-			{
-				PropertyNameCaseInsensitive = true,
-			};
-			MeetingAPI_URL += "/Register";
-			HttpResponseMessage response = await _httpClient.PostAsync(MeetingAPI_URL, content);
-			if (!response.IsSuccessStatusCode)
-			{
-				ViewBag.error = "Error while registering for meeting ! ";
-				return View("MeetingRegister");
-			}
-			string jsonResponse = await response.Content.ReadAsStringAsync();
-			var meetingResponse = JsonSerializer.Deserialize<GetMeetingRegisterResponse>(jsonResponse);
-			var responseRegister = meetingResponse.Data;
-			if (meetingResponse.Status)
-			{
-				HttpContext.Session.SetString("USER_NAME", responseRegister.UserName);
-				HttpContext.Session.SetString("FULL_NAME", responseRegister.FullName);
-			}
-			return null;
-		}
+		}*/
 	}
 }

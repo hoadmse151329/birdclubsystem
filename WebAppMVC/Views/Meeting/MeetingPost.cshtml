@@ -1,4 +1,4 @@
-﻿@model IEnumerable<BAL.ViewModels.MeetingViewModel>
+﻿@model BAL.ViewModels.MeetingViewModel
 @{
     ViewData["Title"] = "Meeting Post Page";
 }
@@ -36,10 +36,9 @@
                     <span class="text-wrapper">Content<br /></span>
                   </p>
                   <p class="span-wrapper">
-                    <span class="span"
-                      >Meet up with new members, exchanging experiences and ideas...Fusce dui est, pellentesque a dolor
-                      eu, The main focus of the meetings is birding, thus the meeting location is rotated among good birding locations.</span
-                    >
+                    <span class="span">
+                        @Model.Description
+                    </span>
                   </p>
                 </div>
                 <div class="flexcontainer-2">
@@ -47,11 +46,9 @@
                     <span class="text-wrapper">Notes<br /></span>
                   </p>
                   <p class="p">
-                    <span class="span"
-                      >Everyone interested in birds of the HCM city is welcome at our general meetings, whether members of the Chao Mao Club or not.
-                      Specifics about upcoming meetings are provided via the Newsletter sent to all members,
-                      and are also provided on this web site.</span
-                    >
+                    <span class="span">
+                        @Model.Note
+                    </span>
                   </p>
                 </div>
                 <div class="tittle">
@@ -67,10 +64,13 @@
               <div class="overlap-3">
                 <div class="rectangle-5"></div>
                 <div class="rectangle-6" id="map"></div>
+
                 <div class="tittle">
-                  <div class="overlap-group-2"><p class="text-wrapper-4">ChaoMao New Member Bird meeting</p></div>
+                  <div class="overlap-group-2"><p class="text-wrapper-4">Meeting Name</p></div>
                 </div>
-                <div class="text-wrapper-5">From 10-28-2024 to 10-28-2024</div>
+                <div class="text-wrapper-5">From @Model.StartDate.Value.ToString("MM-dd-yyyy") to @Model.EndDate.Value.ToString("MM-dd-yyyy")</div>
+
+
                 <div class="group-2">
                   <div class="text-wrapper-6">Location</div>
                   <div class="text-wrapper-7">Participation Limit</div>
@@ -78,25 +78,28 @@
                   <div class="text-wrapper-9">Contact</div>
                   <div class="text-wrapper-10">Organizer</div>
                 </div>
+
+
+
                 <div class="group-3">
-                  <div class="text-wrapper-11">10-20-2024</div>
-                  <p class="text-wrapper-12">H22/183 Hoang Van Thai Street, Thanh Xuan District, Hanoi.</p>
-                  <div class="text-wrapper-13">30 Participant</div>
+                  <div class="text-wrapper-11">@Model.RegistrationDeadline</div>
+                  <p class="text-wrapper-12">@Model.Address</p>
+                  <div class="text-wrapper-13">@Model.NumberOfParticipants</div>
                   <div class="text-wrapper-14">ChaoMaoClub@gmail.com</div>
-                  <div class="text-wrapper-15">ChaoMaoClub</div>
+                  <div class="text-wrapper-15">@Model.Host</div>
                 </div>
-                @{
-                    if (ViewBag.PartNumber != null)
-                    {
-                        <span class="text-success">@ViewBag.PartNumber</span>
-                    }
-                }
                 <div class="register">
-                  <button class="overlap-group-3">
-                      <form asp-action="MeetingRegister" asp-controller="Meeting" method="post" asp-route-meetingId="1">
-                            <button class="text-wrapper-16" type="submit">Register</button>
-                      </form>
-                  </button>
+                    @{
+                        if (ViewBag.PartNumber != null)
+                        {
+                            <div class="overlap-group-3 text-wrapper-16">
+                                <span class="text-success">@ViewBag.PartNumber</span>
+                            </div>
+                        }
+                    }
+                    <form asp-action="MeetingRegister" asp-controller="Meeting" method="post" asp-route-meetingId="@Model.MeetingId">
+                        <button class="overlap-group-3 text-wrapper-16" type="submit">Register</button>
+                    </form>
                 </div>
               </div>
             </div>

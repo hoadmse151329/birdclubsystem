@@ -106,5 +106,10 @@ namespace DAL.Repositories.Implements
         {
             return _context.Meetings.ToList();
         }
+
+        public async Task<Meeting?> GetMeetingById(int id)
+        {
+            return _context.Meetings.SingleOrDefault(meet => meet.MeetingId == id);
+        }
     }
 }
