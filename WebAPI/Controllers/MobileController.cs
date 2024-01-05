@@ -6,7 +6,6 @@ using BAL.Services.Implements;
 using BAL.Services.Interfaces;
 using BAL.ViewModels;
 using BAL.ViewModels.Authenticates;
-using BAL.ViewModels.Meeting;
 using DAL.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -185,11 +184,11 @@ namespace WebAPI.Controllers
         [ProducesResponseType(typeof(MeetingViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult Update(int id, string meetingname, string description, DateTime registrationDeadline, DateTime startDate, DateTime endDate, int numberOfParticipants, string host, string incharge, string note)
+        public async Task<IActionResult> Update(int id, string meetingname, string description, DateTime registrationDeadline, DateTime startDate, DateTime endDate, int numberOfParticipants, string host, string incharge, string note)
         {
             try
             {
-                var result = _meetingService.GetById(id);
+                var result = await _meetingService.GetById(id);
                 if (result == null)
                 {
                     return NotFound(new
@@ -208,7 +207,7 @@ namespace WebAPI.Controllers
                 result.Incharge = incharge;
                 result.Note = note;
                 _meetingService.Update(result);
-                result = _meetingService.GetById(id);
+                result = await _meetingService.GetById(id);
                 return Ok(new
                 {
                     status = true,
@@ -222,38 +221,6 @@ namespace WebAPI.Controllers
                 {
                     status = false,
                     errorMessage = ex.Message
-                });
-            }
-        }
-        [HttpPost("Register")]
-        public async Task<IActionResult> RegisterMeeting(
-            [FromBody][Required] RegisterMeeting register)
-        {
-            try
-            {
-                MemberViewModel value = new MemberViewModel()
-                {
-                    UserName = register.UserName,
-                    FullName = register.FullName,
-                    Gender = register.Gender,
-                    Email = register.Email,
-                    Phone = register.PhoneNumber,
-                };
-
-                return Ok(new
-                {
-                    Status = true,
-                    SuccessMessage = "Register meeting successfully !",
-                    Data = value
-                });
-            }
-            catch (Exception ex)
-            {
-                // Log the exception if needed
-                return BadRequest(new
-                {
-                    Status = false,
-                    ErrorMessage = ex.Message
                 });
             }
         }
