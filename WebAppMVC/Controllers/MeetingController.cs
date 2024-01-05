@@ -7,6 +7,7 @@ using BAL.ViewModels.Meeting;
 using System.Dynamic;
 using WebAppMVC.Constants;
 using WebAppMVC.Models.Location;
+using System.Text;
 
 namespace WebAppMVC.Controllers
 {
