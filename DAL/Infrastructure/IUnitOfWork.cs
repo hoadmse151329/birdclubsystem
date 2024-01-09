@@ -15,6 +15,8 @@ namespace DAL.Infrastructure
         IMemberRepository MemberRepository { get; }
         IUserRepository UserRepository { get; } 
         ILocationRepository LocationRepository { get; }
+        ITransactionRepository TransactionRepository { get; }
+        IFieldTripRepository FieldTripRepository { get; }
         void Save();
     }
 }

@@ -191,11 +191,11 @@ namespace WebAPI.Controllers
 		[ProducesResponseType(typeof(MeetingViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Update([FromBody] MeetingViewModel meeting)
+        public async Task<IActionResult> Update(int id, string meetingname, string description, DateTime registrationDeadline, DateTime startDate, DateTime endDate, int numberOfParticipants, string host, string incharge, string note)
         {
             try
             {
-                var result = await _meetingService.GetById(meeting.MeetingId.Value);
+                var result = await _meetingService.GetById(id);
                 if (result == null)
                 {
                     return NotFound(new
@@ -204,8 +204,17 @@ namespace WebAPI.Controllers
                         errorMessage = "Meeting does not exist!"
                     });
                 }
-                _meetingService.Update(meeting);
-                result = await _meetingService.GetById(meeting.MeetingId.Value);
+                result.MeetingName = meetingname;
+                result.Description = description;
+                result.RegistrationDeadline = registrationDeadline;
+                result.StartDate = startDate;
+                result.EndDate = endDate;
+                result.NumberOfParticipants = numberOfParticipants;
+                result.Host = host;
+                result.Incharge = incharge;
+                result.Note = note;
+                _meetingService.Update(result);
+                result = await _meetingService.GetById(id);
                 return Ok(new
                 {
                     status = true,
@@ -222,5 +231,5 @@ namespace WebAPI.Controllers
                 });
             }
         }
-	}
+    }
 }
