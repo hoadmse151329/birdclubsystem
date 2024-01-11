@@ -10,5 +10,6 @@ namespace DAL.Repositories.Interfaces
 {
     public interface ITransactionRepository : IRepositoryBase<Transaction>
     {
+        public Task<Transaction?> GetTransactionById(int id);
     }
 }

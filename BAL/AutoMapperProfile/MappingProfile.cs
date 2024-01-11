@@ -37,6 +37,8 @@ namespace BAL.AutoMapperProfile
                 {
                     dest.LocationName = src.AreaNumber + "," + src.Street + "," + src.District + "," + src.City;
                 });
+            CreateMap<Transaction, TransactionViewModel>().ReverseMap();
+            CreateMap<FieldTrip, FieldTripViewModel>().ReverseMap();
         }
     }
 }
