@@ -86,13 +86,12 @@
                                     title="@data.City">
                                     <p class="address truncate">
                                         <i class="fas fa-map-marker-alt"></i>
-                                        <span class="district">Address @data.District</span>, <span class="city">@data.City</span></p>
+                                        <span class="district">District @data.District</span>, <span class="city">@data.City</span></p>
                                 </div>
                                 <div class="d-flex justify-content-between">
                                     <p class="motel-price"><i class="fas fa-comment-alt"></i>@data.Description</p>
-                                    <form asp-action="MeetingPost" asp-controller="Meeting" method="get" asp-route-id="@data.MeetingId">
-                                        <button class="button--primary text-white text-wrapper-16" type="submit">See Now</button>
-                                    </form>
+                                    <button class="button--primary"><a class="text-decoration-none text-white"
+                                            href="@Url.Action("MeetingPost", "Meeting",data.MeetingId)">See Now</a></button>
                                 </div>
 
                             </div>
