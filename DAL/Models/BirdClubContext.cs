@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using DAL.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.Configuration;
@@ -65,8 +64,6 @@ namespace DAL.Models
             {
                 entity.ToTable("Bird");
 
-                entity.HasIndex(e => e.MemberId, "IX_Bird_memberId");
-
                 entity.Property(e => e.BirdId).HasColumnName("birdId");
 
                 entity.Property(e => e.AddDate)
@@ -83,7 +80,9 @@ namespace DAL.Models
 
                 entity.Property(e => e.Elo).HasColumnName("ELO");
 
-                entity.Property(e => e.MemberId).HasColumnName("memberId");
+                entity.Property(e => e.MemberId)
+                    .HasMaxLength(50)
+                    .HasColumnName("memberId");
 
                 entity.Property(e => e.Origin).HasColumnName("origin");
 
@@ -103,8 +102,6 @@ namespace DAL.Models
                 entity.HasKey(e => e.PictureId)
                     .HasName("PK__BirdMedi__8C2866D8E5255F8B");
 
-                entity.HasIndex(e => e.BirdId, "IX_BirdMedia_birdId");
-
                 entity.Property(e => e.PictureId).HasColumnName("pictureId");
 
                 entity.Property(e => e.BirdId).HasColumnName("birdId");
@@ -122,8 +119,6 @@ namespace DAL.Models
             modelBuilder.Entity<Blog>(entity =>
             {
                 entity.ToTable("Blog");
-
-                entity.HasIndex(e => e.UserId, "IX_Blog_userId");
 
                 entity.Property(e => e.BlogId).HasColumnName("blogId");
 
@@ -148,18 +143,12 @@ namespace DAL.Models
                 entity.Property(e => e.UserId).HasColumnName("userId");
 
                 entity.Property(e => e.Vote).HasColumnName("vote");
-
-                entity.HasOne(d => d.User)
-                    .WithMany(p => p.Blogs)
-                    .HasForeignKey(d => d.UserId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Blog_User");
             });
 
             modelBuilder.Entity<ClubInformation>(entity =>
             {
                 entity.HasKey(e => e.ClubId)
-                    .HasName("PK__ClubInfo__DF4AEAB2B80BD850");
+                    .HasName("PK__ClubInfo__DF4AEAB2467C2F83");
 
                 entity.ToTable("ClubInformation");
 
@@ -187,10 +176,6 @@ namespace DAL.Models
             {
                 entity.ToTable("Comment");
 
-                entity.HasIndex(e => e.BlogId, "IX_Comment_blogId");
-
-                entity.HasIndex(e => e.UserId, "IX_Comment_userId");
-
                 entity.Property(e => e.CommentId).HasColumnName("commentId");
 
                 entity.Property(e => e.BlogId).HasColumnName("blogId");
@@ -204,16 +189,6 @@ namespace DAL.Models
                 entity.Property(e => e.UserId).HasColumnName("userId");
 
                 entity.Property(e => e.Vote).HasColumnName("vote");
-
-                entity.HasOne(d => d.Blog)
-                    .WithMany(p => p.Comments)
-                    .HasForeignKey(d => d.BlogId)
-                    .HasConstraintName("FK_Blog_Comments");
-
-                entity.HasOne(d => d.User)
-                    .WithMany(p => p.Comments)
-                    .HasForeignKey(d => d.UserId)
-                    .HasConstraintName("FK_User_Comments");
             });
 
             modelBuilder.Entity<Contest>(entity =>
@@ -278,9 +253,7 @@ namespace DAL.Models
             modelBuilder.Entity<ContestMedia>(entity =>
             {
                 entity.HasKey(e => e.PictureId)
-                    .HasName("PK__ContestM__769A271A7CF0320F");
-
-                entity.HasIndex(e => e.ContestId, "IX_ContestMedia_contestId");
+                    .HasName("PK__ContestM__769A271A9B2DCFE0");
 
                 entity.Property(e => e.PictureId).HasColumnName("pictureId");
 
@@ -299,10 +272,6 @@ namespace DAL.Models
             modelBuilder.Entity<ContestParticipant>(entity =>
             {
                 entity.HasNoKey();
-
-                entity.HasIndex(e => e.BirdId, "IX_ContestParticipants_birdId");
-
-                entity.HasIndex(e => e.ContestId, "IX_ContestParticipants_contestId");
 
                 entity.Property(e => e.BirdId).HasColumnName("birdId");
 
@@ -333,7 +302,7 @@ namespace DAL.Models
             modelBuilder.Entity<ContestScore>(entity =>
             {
                 entity.HasKey(e => e.ScoreId)
-                    .HasName("PK__ContestS__B56A0C8DD44B44C9");
+                    .HasName("PK__ContestS__B56A0C8D230083CD");
 
                 entity.ToTable("ContestScore");
 
@@ -381,6 +350,12 @@ namespace DAL.Models
                     .HasColumnName("title");
 
                 entity.Property(e => e.UserId).HasColumnName("userId");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.Feedbacks)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Feedback_Users");
             });
 
             modelBuilder.Entity<FieldTrip>(entity =>
@@ -441,8 +416,6 @@ namespace DAL.Models
 
                 entity.ToTable("FieldTripOverview");
 
-                entity.HasIndex(e => e.TripId, "IX_FieldTripOverview_tripId");
-
                 entity.Property(e => e.Description).HasColumnName("description");
 
                 entity.Property(e => e.Destination)
@@ -488,11 +461,9 @@ namespace DAL.Models
             {
                 entity.HasNoKey();
 
-                entity.HasIndex(e => e.MemberId, "IX_FieldTripParticipants_memberId");
-
-                entity.HasIndex(e => e.TripId, "IX_FieldTripParticipants_tripId");
-
-                entity.Property(e => e.MemberId).HasColumnName("memberId");
+                entity.Property(e => e.MemberId)
+                    .HasMaxLength(50)
+                    .HasColumnName("memberId");
 
                 entity.Property(e => e.ParticipantNo)
                     .HasMaxLength(50)
@@ -519,8 +490,6 @@ namespace DAL.Models
 
                 entity.ToTable("FieldtripDaybyDay");
 
-                entity.HasIndex(e => e.TripId, "IX_FieldtripDaybyDay_tripId");
-
                 entity.Property(e => e.Day).HasColumnName("day");
 
                 entity.Property(e => e.DaybyDayId)
@@ -546,8 +515,6 @@ namespace DAL.Models
 
                 entity.ToTable("FieldtripGettingThere");
 
-                entity.HasIndex(e => e.TripId, "IX_FieldtripGettingThere_tripId");
-
                 entity.Property(e => e.GettingThereId)
                     .ValueGeneratedOnAdd()
                     .HasColumnName("gettingThereId");
@@ -566,8 +533,6 @@ namespace DAL.Models
             modelBuilder.Entity<FieldtripInclusion>(entity =>
             {
                 entity.HasNoKey();
-
-                entity.HasIndex(e => e.TripId, "IX_FieldtripInclusions_tripId");
 
                 entity.Property(e => e.InclusionId)
                     .ValueGeneratedOnAdd()
@@ -595,9 +560,7 @@ namespace DAL.Models
             modelBuilder.Entity<FieldtripMedia>(entity =>
             {
                 entity.HasKey(e => e.PictureId)
-                    .HasName("PK__Fieldtri__769A271A7C84EFD2");
-
-                entity.HasIndex(e => e.TripId, "IX_FieldtripMedia_tripId");
+                    .HasName("PK__Fieldtri__769A271A14AF4791");
 
                 entity.Property(e => e.PictureId).HasColumnName("pictureId");
 
@@ -616,8 +579,6 @@ namespace DAL.Models
             modelBuilder.Entity<FieldtripRate>(entity =>
             {
                 entity.HasNoKey();
-
-                entity.HasIndex(e => e.TripId, "IX_FieldtripRates_tripId");
 
                 entity.Property(e => e.Price)
                     .HasColumnType("decimal(10, 2)")
@@ -646,8 +607,6 @@ namespace DAL.Models
 
                 entity.ToTable("Gallery");
 
-                entity.HasIndex(e => e.UserId, "IX_Gallery_userId");
-
                 entity.Property(e => e.Description).HasColumnName("description");
 
                 entity.Property(e => e.Image)
@@ -657,11 +616,6 @@ namespace DAL.Models
                 entity.Property(e => e.PictureId).HasColumnName("pictureId");
 
                 entity.Property(e => e.UserId).HasColumnName("userId");
-
-                entity.HasOne(d => d.User)
-                    .WithMany()
-                    .HasForeignKey(d => d.UserId)
-                    .HasConstraintName("FK_Gallery_User");
             });
 
             modelBuilder.Entity<Location>(entity =>
@@ -697,6 +651,8 @@ namespace DAL.Models
                     .HasMaxLength(100)
                     .HasColumnName("incharge");
 
+                entity.Property(e => e.LocationId).HasColumnName("locationId");
+
                 entity.Property(e => e.MeetingName)
                     .HasMaxLength(255)
                     .HasColumnName("meetingName");
@@ -712,14 +668,14 @@ namespace DAL.Models
                 entity.Property(e => e.StartDate)
                     .HasColumnType("datetime")
                     .HasColumnName("startDate");
+
+                entity.Property(e => e.Status).HasColumnName("status");
             });
 
             modelBuilder.Entity<MeetingMedia>(entity =>
             {
                 entity.HasKey(e => e.PictureId)
-                    .HasName("PK__MeetingM__769A271A8E424EAF");
-
-                entity.HasIndex(e => e.MeetingId, "IX_MeetingMedia_meetingId");
+                    .HasName("PK__MeetingM__769A271A1B6856EF");
 
                 entity.Property(e => e.PictureId).HasColumnName("pictureId");
 
@@ -737,38 +693,41 @@ namespace DAL.Models
 
             modelBuilder.Entity<MeetingParticipant>(entity =>
             {
+                entity.HasKey(e => new { e.MeetingId, e.MemberId })
+                    .HasName("PK__MeetingP__2BA312F592ED3821");
 
                 entity.ToTable("MeetingParticipant");
 
-                entity.HasIndex(e => e.MeetingId, "IX_MeetingParticipant_meetingId");
-
-                entity.HasIndex(e => e.MemberId, "IX_MeetingParticipant_memberId");
-
                 entity.Property(e => e.MeetingId).HasColumnName("meetingId");
 
-                entity.Property(e => e.MemberId).HasColumnName("memberId");
+                entity.Property(e => e.MemberId)
+                    .HasMaxLength(50)
+                    .HasColumnName("memberId");
 
                 entity.Property(e => e.ParticipantNo)
                     .HasMaxLength(50)
                     .HasColumnName("participantNo");
 
                 entity.HasOne(d => d.Meeting)
-                    .WithMany()
+                    .WithMany(p => p.MeetingParticipants)
                     .HasForeignKey(d => d.MeetingId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__MeetingPar__MeID__03F0984C");
 
                 entity.HasOne(d => d.Member)
-                    .WithMany()
+                    .WithMany(p => p.MeetingParticipants)
                     .HasForeignKey(d => d.MemberId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_MeetingParticipant_Member");
-                entity.HasKey(e => new { e.MeetingId, e.MemberId});
             });
 
             modelBuilder.Entity<Member>(entity =>
             {
                 entity.ToTable("Member");
 
-                entity.Property(e => e.MemberId).HasColumnName("memberId");
+                entity.Property(e => e.MemberId)
+                    .HasMaxLength(50)
+                    .HasColumnName("memberId");
 
                 entity.Property(e => e.Address).HasColumnName("address");
 
@@ -807,8 +766,6 @@ namespace DAL.Models
 
             modelBuilder.Entity<News>(entity =>
             {
-                entity.HasIndex(e => e.UserId, "IX_News_userId");
-
                 entity.Property(e => e.NewsId).HasColumnName("newsId");
 
                 entity.Property(e => e.Category)
@@ -838,12 +795,6 @@ namespace DAL.Models
                     .HasColumnName("uploadDate");
 
                 entity.Property(e => e.UserId).HasColumnName("userId");
-
-                entity.HasOne(d => d.User)
-                    .WithMany(p => p.News)
-                    .HasForeignKey(d => d.UserId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_News_User");
             });
 
             modelBuilder.Entity<Transaction>(entity =>
@@ -879,41 +830,33 @@ namespace DAL.Models
 
             modelBuilder.Entity<User>(entity =>
             {
-                entity.HasIndex(e => e.MemberId, "IX_User_memberId")
-                    .IsUnique()
-                    .HasFilter("([memberId] IS NOT NULL)");
-
-                entity.HasIndex(e => e.UserName, "UQ__User__66DCF95CC4AB3072")
-                    .IsUnique()
-                    .HasFilter("([userName] IS NOT NULL)");
-
-                entity.Property(e => e.UserId).HasColumnName("userId");
+                entity.Property(e => e.UserId)
+                    .ValueGeneratedNever()
+                    .HasColumnName("userId");
 
                 entity.Property(e => e.ClubId).HasColumnName("clubId");
 
-                entity.Property(e => e.MemberId).HasColumnName("memberId");
+                entity.Property(e => e.MemberId)
+                    .HasMaxLength(50)
+                    .HasColumnName("memberId");
 
                 entity.Property(e => e.Password)
                     .HasMaxLength(255)
                     .HasColumnName("password");
 
-                entity.Property(e => e.UserName)
+                entity.Property(e => e.Role)
                     .HasMaxLength(50)
+                    .HasColumnName("role");
+
+                entity.Property(e => e.UserName)
+                    .HasMaxLength(255)
                     .HasColumnName("userName");
 
                 entity.HasOne(d => d.Member)
-                    .WithOne(p => p.User)
+                    .WithOne(p => p.Users)
                     .HasForeignKey<User>(d => d.MemberId)
-                    .HasConstraintName("FK_User_Member");
+                    .HasConstraintName("FK_Users_Member");
             });
-
-            #region DataSeederCall
-            modelBuilder.SeedLocations();
-            modelBuilder.SeedClubInfos();
-            modelBuilder.SeedMeetings();
-            modelBuilder.SeedMembers();
-            modelBuilder.SeedUsers();
-            #endregion
 
             OnModelCreatingPartial(modelBuilder);
         }

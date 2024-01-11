@@ -11,7 +11,7 @@ namespace DAL.Models
         }
 
         public int BirdId { get; set; }
-        public int MemberId { get; set; }
+        public string MemberId { get; set; } = null!;
         public string BirdName { get; set; } = null!;
         public int Elo { get; set; }
         public int? Age { get; set; }

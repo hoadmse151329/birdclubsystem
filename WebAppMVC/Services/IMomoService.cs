@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WebAppMVC.Models.Momo;
 
-namespace BAL.Services.Interfaces
+namespace WebAppMVC.Services
 {
     public interface IMomoService
     {
