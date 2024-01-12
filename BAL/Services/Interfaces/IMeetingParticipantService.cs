@@ -11,5 +11,6 @@ namespace BAL.Services.Interfaces
     {
         Task<IEnumerable<MeetingParticipantViewModel>> GetAll();
         Task<int> Create(int memId, int metId);
+        Task<bool> Delete(int memId, int metId);
     }
 }

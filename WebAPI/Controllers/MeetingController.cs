@@ -6,6 +6,7 @@ using DAL.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace WebAPI.Controllers
@@ -220,6 +221,40 @@ namespace WebAPI.Controllers
                     status = true,
                     result
                 });
+            }
+            catch (Exception ex)
+            {
+                // Log the exception if needed
+                return BadRequest(new
+                {
+                    status = false,
+                    errorMessage = ex.Message
+                });
+            }
+        }
+        [HttpDelete("RemoveParticipant/{id}")]
+        [Authorize(Roles = "Manager")]
+        [ProducesResponseType(typeof(MeetingParticipantViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> RemoveParticipant(int id, int memId)
+        {
+            try
+            {
+                var meeting = _meetingService.GetById(id);
+                if (meeting == null) return NotFound(new
+                {
+                    Status = false,
+                    ErrorMessage = "Meeting Not Found!"
+                });
+                var mem = await _memberService.GetById(memId);
+                if (mem == null) return NotFound(new
+                {
+                    Status = false,
+                    ErrorMessage = "Member Not Found!"
+                });
+                var result = await _participantService.Delete(memId, id);
+                return Ok(result);
             }
             catch (Exception ex)
             {
