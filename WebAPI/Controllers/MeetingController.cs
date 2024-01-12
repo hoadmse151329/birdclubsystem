@@ -17,13 +17,20 @@ namespace WebAPI.Controllers
         private readonly IMeetingService _meetingService;
         private readonly IMeetingParticipantService _participantService;
         private readonly IMemberService _memberService;
+        private readonly IUserService _userService;
         private readonly IConfiguration _config;
 
-        public MeetingController(IMeetingService meetingService, IConfiguration config, IMemberService memberService, IMeetingParticipantService meetingParticipantService)
+        public MeetingController(
+            IMeetingService meetingService, 
+            IConfiguration config, 
+            IMemberService memberService, 
+            IUserService userService,
+            IMeetingParticipantService meetingParticipantService)
         {
             _meetingService = meetingService;
             _config = config;
             _memberService = memberService;
+            _userService = userService;
             _participantService = meetingParticipantService;
         }
 
@@ -63,11 +70,12 @@ namespace WebAPI.Controllers
 			}
 		}
 
-        [HttpGet("{id:int}")]
+        [HttpGet("{id}")]
         [ProducesResponseType(typeof(MeetingViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> GetMeetingById([FromRoute] int id)
+        public async Task<IActionResult> GetMeetingById(
+            [FromRoute] int id)
         {
             try
             {
@@ -104,15 +112,15 @@ namespace WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult Create (
-            string meetingName, 
-            string description, 
-            DateTime registrationDeadline, 
-            DateTime startDate, 
-            DateTime endDate, 
-            int numberOfParticipants, 
-            string host, 
-            string incharge, 
-            string note)
+            [Required] string meetingName,
+            [Required] string description,
+            [Required] DateTime registrationDeadline,
+            [Required] DateTime startDate,
+            [Required] DateTime endDate, 
+            [Required] int numberOfParticipants, 
+            [Required] string host, 
+            [Required] string incharge, 
+            [Required] string note)
         {
             try
             {
@@ -156,19 +164,19 @@ namespace WebAPI.Controllers
         {
             try
             {
-                var meeting = _meetingService.GetById(id);
+                var meeting = await _meetingService.GetById(id);
                 if(meeting == null) return NotFound(new
                 {
                     Status = false,
                     ErrorMessage = "Meeting Not Found!"
                 });
-                var mem = await _memberService.GetById(usrId);
+                var mem = await _userService.GetById(usrId);
                 if(mem == null) return NotFound(new
                 {
                     Status = false,
                     ErrorMessage = "Member Not Found!"
                 });
-                int participateNo = await _participantService.Create(usrId, id);
+                int participateNo = await _participantService.Create(mem.MemberId, id);
                 return Ok(new
                 {
                     Status = true,
@@ -185,13 +193,63 @@ namespace WebAPI.Controllers
                 });
             }
         }
-        [HttpPut("Update")]
+        [HttpPost("Participant/{id}")]
+        [Authorize(Roles = "Member")]
+        [ProducesResponseType(typeof(MeetingViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetMeetingAndParticipantNo(
+            [Required][FromRoute] int id,
+            [Required][FromBody] int usrId)
+        {
+            try
+            {
+                var meeting = await _meetingService.GetById(id);
+                if (meeting == null) return NotFound(new
+                {
+                    Status = false,
+                    ErrorMessage = "Meeting Not Found!"
+                });
+                var mem = await _userService.GetById(usrId);
+                if (mem == null) return NotFound(new
+                {
+                    Status = false,
+                    ErrorMessage = "Member Not Found!"
+                });
+                int participateNo = await _participantService.GetParticipationNo(mem.MemberId, id);
+                meeting.ParticipationNo = participateNo;
+                return Ok(new
+                {
+                    Status = true,
+                    Message = "Get Meeting successfully !",
+                    Data = meeting
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new
+                {
+                    Status = false,
+                    ErrorMessage = ex.Message
+                });
+            }
+        }
         [Authorize(Roles = "Manager")]
 		[HttpPut("Update/{id}")]
 		[ProducesResponseType(typeof(MeetingViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Update(int id, string meetingname, string description, DateTime registrationDeadline, DateTime startDate, DateTime endDate, int numberOfParticipants, string host, string incharge, string note)
+        public async Task<IActionResult> Update(
+            [Required][FromRoute] int id,
+            [Required] string meetingname, 
+            [Required] string description, 
+            [Required] DateTime registrationDeadline, 
+            [Required] DateTime startDate,
+            [Required] DateTime endDate,
+            [Required] int numberOfParticipants,
+            [Required] string host,
+            [Required] string incharge,
+            [Required] string note)
         {
             try
             {
@@ -200,8 +258,8 @@ namespace WebAPI.Controllers
                 {
                     return NotFound(new
                     {
-                        status = false,
-                        errorMessage = "Meeting does not exist!"
+                        Status = false,
+                        ErrorMessage = "Meeting does not exist!"
                     });
                 }
                 result.MeetingName = meetingname;
@@ -217,8 +275,8 @@ namespace WebAPI.Controllers
                 result = await _meetingService.GetById(id);
                 return Ok(new
                 {
-                    status = true,
-                    result
+                    Status = true,
+                    Data = result
                 });
             }
             catch (Exception ex)
@@ -226,8 +284,8 @@ namespace WebAPI.Controllers
                 // Log the exception if needed
                 return BadRequest(new
                 {
-                    status = false,
-                    errorMessage = ex.Message
+                    Status = false,
+                    ErrorMessage = ex.Message
                 });
             }
         }

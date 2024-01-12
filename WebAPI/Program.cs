@@ -107,6 +107,7 @@ namespace WebAPI
             builder.Services.AddScoped<IMeetingService,MeetingService>();
             builder.Services.AddScoped<IMeetingMediaService,MeetingMediaService>();
             builder.Services.AddScoped<IMeetingParticipantService,MeetingParticipantService>();
+            builder.Services.AddScoped<IFieldTripService, FieldTripService>();
 
             builder.Services.AddAutoMapper(typeof(MappingProfile));
             var app = builder.Build();

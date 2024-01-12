@@ -42,11 +42,11 @@ namespace BAL.Services.Implements
             if (user != null)
             {
                 //var role = _unitOfWork.UserRepository
-                var accessToken = _jwtService.GenerateJWTToken(user.UserId, user.UserName, user.Member.Role, _configuration);
+                var accessToken = _jwtService.GenerateJWTToken(user.UserId, user.UserName, user.Role, _configuration);
                 return new AuthenResponse()
                 {
                     UserId = user.UserId,
-                    RoleName = user.Member.Role,
+                    RoleName = user.Role,
                     AccessToken = accessToken
                 };
             }
@@ -74,16 +74,13 @@ namespace BAL.Services.Implements
         {
             var usr = _mapper.Map<User>(entity);
 			usr.Member = new Member();
-			usr.Member.MemberId = 0;
-			usr.Member.Role = "Member";
+			usr.Member.MemberId = Guid.NewGuid().ToString();
 			usr.Member.Status = "Active";
 			usr.Member.Email = entity.Email;
-			usr.UserId = 0;
 			if (newmem != null)
             {
                 usr.Member.FullName = newmem.FullName;
                 usr.Member.UserName = newmem.UserName;
-				usr.Member.Email = entity.Email;
 				usr.Member.Gender = newmem.Gender;
 				usr.Member.Address = newmem.Address;
                 usr.Member.Phone = newmem.Phone;
@@ -92,7 +89,17 @@ namespace BAL.Services.Implements
             _unitOfWork.Save();
         }
 
-        public bool GetByEmail(string email)
+		public async Task<bool> GetBoolById(int id)
+		{
+            var user = await _unitOfWork.UserRepository.GetByIdNoTracking(id);
+            if(user != null)
+            {
+                return true;
+            }
+            return false;
+		}
+
+		public bool GetByEmail(string email)
         {
             var user = _unitOfWork.UserRepository.GetByEmail(email);
             if (user == null)
@@ -118,7 +125,7 @@ namespace BAL.Services.Implements
             var user = await _unitOfWork.UserRepository.GetByIdNoTracking(id);
             if (user != null)
             {
-				var mem = _unitOfWork.MemberRepository.GetById(user.MemberId.Value);
+				var mem = await _unitOfWork.MemberRepository.GetByIdNoTracking(user.MemberId);
 				var usr = _mapper.Map<UserViewModel>(user);
                 usr.Email = mem.Email;
                 return usr;
@@ -142,7 +149,7 @@ namespace BAL.Services.Implements
             var usr = _mapper.Map<User>(entity);
             if (usr.MemberId != null)
             {
-				var usrmem = _unitOfWork.MemberRepository.GetById(usr.MemberId.Value);
+				var usrmem =  _unitOfWork.MemberRepository.GetByIdNoTracking(usr.MemberId).Result;
                 if(usrmem == null)
                 {
                     usr.Member = new Member()
@@ -151,6 +158,7 @@ namespace BAL.Services.Implements
                     };
                 } else
                 usrmem.Email = entity.Email;
+                usr.Role= entity.Role;
                 usr.Member = usrmem;
 			}
             _unitOfWork.UserRepository.Update(usr);

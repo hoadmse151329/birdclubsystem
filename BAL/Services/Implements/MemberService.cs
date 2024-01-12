@@ -30,7 +30,24 @@ namespace BAL.Services.Implements
 			_unitOfWork.Save();
 		}
 
-		public bool GetByEmail(string email)
+        public async Task<bool> GetBoolById(string id)
+        {
+            var mem = await _unitOfWork.MemberRepository.GetByIdNoTracking(id);
+            /*if (mem != null)
+			{
+				var mem = _unitOfWork.MemberRepository.GetById(user.MemberId.Value);
+				var usr = _mapper.Map<UserViewModel>(user);
+				usr.Email = mem.Email;
+				return usr;
+			}*/
+            if (mem != null)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public bool GetByEmail(string email)
 		{
 			throw new NotImplementedException();
 		}
@@ -40,7 +57,7 @@ namespace BAL.Services.Implements
 			throw new NotImplementedException();
 		}
 
-		public async Task<MemberViewModel?> GetById(int id)
+		public async Task<MemberViewModel?> GetById(string id)
 		{
 			var mem = await _unitOfWork.MemberRepository.GetByIdNoTracking(id);
 			/*if (mem != null)

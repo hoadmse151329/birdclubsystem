@@ -68,7 +68,7 @@
                 <div class="tittle">
                   <div class="overlap-group-2"><p class="text-wrapper-4">Meeting Name</p></div>
                 </div>
-                <div class="text-wrapper-5">From @Model.StartDate.Value.ToString("MM-dd-yyyy") to @Model.EndDate.Value.ToString("MM-dd-yyyy")</div>
+                <div class="text-wrapper-5">From @Model.StartDate.Value.ToString("MM/dd/yyyy") to @Model.EndDate.Value.ToString("MM/dd/syyyy")</div>
 
 
                 <div class="group-2">
@@ -84,22 +84,28 @@
                 <div class="group-3">
                   <div class="text-wrapper-11">@Model.RegistrationDeadline</div>
                   <p class="text-wrapper-12">@Model.Address</p>
-                  <div class="text-wrapper-13">@Model.NumberOfParticipants</div>
+                  <div class="text-wrapper-13">@Model.NumberOfParticipantsLimit</div>
                   <div class="text-wrapper-14">ChaoMaoClub@gmail.com</div>
                   <div class="text-wrapper-15">@Model.Host</div>
                 </div>
                 <div class="register">
                     @{
-                        if (ViewBag.PartNumber != null)
+                        if (Model.ParticipationNo != 0 && Model.ParticipationNo != null)
                         {
                             <div class="overlap-group-3 text-wrapper-16">
                                 <span class="text-success">@ViewBag.PartNumber</span>
                             </div>
+                            <form asp-action="MeetingDeRegister" asp-controller="Meeting" method="post" asp-route-meetingId="@Model.MeetingId">
+                                <button class="overlap-group-3 text-wrapper-16" type="submit">Sign Out</button>
+                            </form> 
+                        }
+                        else
+                        {
+                            <form asp-action="MeetingRegister" asp-controller="Meeting" method="post" asp-route-meetingId="@Model.MeetingId">
+                                <button class="overlap-group-3 text-wrapper-16" type="submit">Register</button>
+                            </form>             
                         }
                     }
-                    <form asp-action="MeetingRegister" asp-controller="Meeting" method="post" asp-route-meetingId="@Model.MeetingId">
-                        <button class="overlap-group-3 text-wrapper-16" type="submit">Register</button>
-                    </form>
                 </div>
               </div>
             </div>

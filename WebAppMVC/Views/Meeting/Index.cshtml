@@ -2,6 +2,7 @@
 @{
     ViewData["Title"] = "Meeting Page";
     List<BAL.ViewModels.LocationViewModel> locationList = Model.Locations;
+    List<BAL.ViewModels.MeetingViewModel> meetingList = Model.Meetings;
 }
 
 <html>
@@ -25,7 +26,7 @@
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")" class="text-decoration-none">Home</a></li>
-                <li class="breadcrumb-item active" aria-current="page">MeetingList</li>
+                <li class="breadcrumb-item active" aria-current="page">All Meetings</li>
             </ol>
         </nav>
     </div>
@@ -68,9 +69,9 @@
                             <span class="text-danger">@ViewBag.error</span>
                         }
                     }
-                    @foreach(BAL.ViewModels.MeetingViewModel data in Model.Meetings)
+                    @foreach (var data in meetingList)
                     {
-                        <div class="col-4 p-0 ">
+                        <div class="col-4 p-0">
                             <div class="room-item">
 
                                 <a href="#" class="motel-image">
@@ -80,8 +81,8 @@
                                     <a href="#" class="text-decoration-none">@data.MeetingName</a>
                                 </div>
                                 <p class="motel-price"><i class="fas fa-calendar-alt"></i>
-                                    From @data.StartDate.Value.ToString("MM-dd-yyyy") 
-                                    to @data.EndDate.Value.ToString("MM-dd-yyyy")</p>
+                                    From @data.StartDate.Value.ToString("MM/dd/yyyy") 
+                                    to @data.EndDate.Value.ToString("MM/dd/yyyy")</p>
                                 <div class="motel-address" data-toggle="tooltip" data-placement="auto"
                                     title="@data.City">
                                     <p class="address truncate">
