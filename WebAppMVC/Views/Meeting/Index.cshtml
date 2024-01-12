@@ -73,23 +73,23 @@
                         <div class="col-4 p-0 ">
                             <div class="room-item">
 
-                                <a href="#" class="motel-image">
+                                <a href="#" class="club-image">
                                     <img class="img-fluid" src="~/images/meeting.png" alt="nt1">
                                 </a>
-                                <div class="motel-title">
+                                <div class="club-title">
                                     <a href="#" class="text-decoration-none">@data.MeetingName</a>
                                 </div>
-                                <p class="motel-price"><i class="fas fa-calendar-alt"></i>
+                                <p class="club-price"><i class="fas fa-calendar-alt"></i>
                                     From @data.StartDate.Value.ToString("MM-dd-yyyy") 
                                     to @data.EndDate.Value.ToString("MM-dd-yyyy")</p>
-                                <div class="motel-address" data-toggle="tooltip" data-placement="auto"
+                                <div class="club-address" data-toggle="tooltip" data-placement="auto"
                                     title="@data.City">
                                     <p class="address truncate">
                                         <i class="fas fa-map-marker-alt"></i>
                                         <span class="district">Address @data.District</span>, <span class="city">@data.City</span></p>
                                 </div>
                                 <div class="d-flex justify-content-between">
-                                    <p class="motel-price"><i class="fas fa-comment-alt"></i>@data.Description</p>
+                                    <p class="club-price"><i class="fas fa-comment-alt"></i>@data.Description</p>
                                     <form asp-action="MeetingPost" asp-controller="Meeting" method="get" asp-route-id="@data.MeetingId">
                                         <button class="button--primary text-white text-wrapper-16" type="submit">See Now</button>
                                     </form>
@@ -100,21 +100,21 @@
                     }
                     <div class="col-4 p-0 ">
                         <div class="room-item">
-                            <a href="#" class="motel-image">
+                            <a href="#" class="club-image">
                                 <img class="img-fluid" src="~/images/meeting.png" alt="nt1">
                             </a>
-                            <div class="motel-title">
+                            <div class="club-title">
                                 <a href="#" class="text-decoration-none">Chao Mao New Member Bird Meeting</a>
                             </div>
-                            <p class="motel-price"><i class="fas fa-calendar-alt"></i> From 9-20-2024 to 9-21-2024</p>
-                            <div class="motel-address" data-toggle="tooltip" data-placement="auto"
+                            <p class="club-price"><i class="fas fa-calendar-alt"></i> From 9-20-2024 to 9-21-2024</p>
+                            <div class="club-address" data-toggle="tooltip" data-placement="auto"
                                 title="HCM City">
                                 <p class="address truncate"><i class="fas fa-map-marker-alt"></i><span class="district">
                                         District
                                         Tan Binh</span>, <span class="city">HCM City</span></p>
                             </div>
                             <div class="d-flex justify-content-between">
-                                <p class="motel-price"><i class="fas fa-comment-alt"></i> Meet up  with new members, exchanging experiences and ideas...</p>
+                                <p class="club-price"><i class="fas fa-comment-alt"></i> Meet up  with new members, exchanging experiences and ideas...</p>
                                 <button class="button--primary"><a class="text-decoration-none text-white"
                                         href="@Url.Action("MeetingPost", "Meeting")">See Now</a></button>
                             </div>
@@ -167,7 +167,7 @@
         <!-- owl carousels -->
         <script src="./assets/js/owl.carousel.min.js"></script>
         <script>
-            $('.motelList-carousel').owlCarousel({
+            $('.clubList-carousel').owlCarousel({
                 loop: true,
                 margin: 10,
                 nav: false,

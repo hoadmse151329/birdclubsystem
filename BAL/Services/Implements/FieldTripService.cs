@@ -43,5 +43,10 @@ namespace BAL.Services.Implements
             _unitOfWork.FieldTripRepository.Update(trip);
             _unitOfWork.Save();
         }
+
+        public Task<IEnumerable<FieldTripViewModel>> GetAllFieldTrips()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
