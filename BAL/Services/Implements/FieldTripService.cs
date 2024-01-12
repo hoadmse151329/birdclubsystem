@@ -44,9 +44,15 @@ namespace BAL.Services.Implements
             _unitOfWork.Save();
         }
 
-        public Task<IEnumerable<FieldTripViewModel>> GetAllFieldTrips()
+        public async Task<IEnumerable<FieldTripViewModel>> GetAllFieldTrips()
         {
-            throw new NotImplementedException();
+            var trip = await _unitOfWork.FieldTripRepository.GetAllFieldTrips();
+            if(trip != null)
+            {
+                var fieldtrip = _mapper.Map<IEnumerable<FieldTripViewModel>>(trip);
+                return fieldtrip;
+            }
+            return null;
         }
     }
 }

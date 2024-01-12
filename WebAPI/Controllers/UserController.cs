@@ -258,7 +258,6 @@ namespace WebAPI.Controllers
         /// Register New User Account
         /// aliases: api/User/ or api/User/Register
         /// </summary>
-        /// <param name="value">Object Type: UserViewModel</param>
         /// <remarks>
         /// Sample request:
         /// 
@@ -313,9 +312,10 @@ namespace WebAPI.Controllers
                 }
                 UserViewModel value = new UserViewModel()
                 {
-                    UserName= newmem.UserName,
+					UserName = newmem.UserName,
                     Email= newmem.Email,
                     Password= newmem.Password,
+                    Role = "Member"
                 };
                 _userService.Create(value,newmem);
                 var loguser = new AuthenRequest()
@@ -358,7 +358,6 @@ namespace WebAPI.Controllers
         /// aliases: api/User/{id} or api/User/Update/{id}
         /// </summary>
         /// <param name="id">Account ID</param>
-        /// <param name="value">Object Type: UserViewModel</param>
         /// <remarks>
         /// Sample request:
         /// 
@@ -385,7 +384,8 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> Update(
             [FromRoute][Required] int id,
             [FromForm][Required][EmailAddress] string email,
-            [FromForm][Required] string username)
+            [FromForm][Required] string username,
+            [FromForm][Required] string role)
         {
             try
             {
@@ -400,6 +400,7 @@ namespace WebAPI.Controllers
                 }
                 result.Email = email;
                 result.UserName = username;
+                result.Role = role;
                 _userService.Update(result);
                 result = await _userService.GetById(id);
                 return Ok(new

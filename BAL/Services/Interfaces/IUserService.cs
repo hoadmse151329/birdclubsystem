@@ -14,6 +14,7 @@ namespace BAL.Services.Interfaces
         public Task<AuthenResponse> AuthenticateUser(AuthenRequest request);
         public Task<AuthenResponse> AuthenticateUserEmail(string email);
         public Task<UserViewModel?> GetById(int id);
+        public Task<bool> GetBoolById(int id);
         bool GetByEmail(string email);
         public Task<UserViewModel?> GetByLogin(string username, string password);
         /* void Create(UserViewModel entity);*/

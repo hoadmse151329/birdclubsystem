@@ -74,13 +74,31 @@ namespace WebAppMVC.Controllers
 		[Route("Meeting/MeetingPost/{id}",Name = "Post")]
 		public async Task<IActionResult> MeetingPost(int id)
 		{
-			MeetingAPI_URL += "/" + id;
+			MeetingAPI_URL += "/";
 
-			var meetPostResponse = await methcall.CallMethodReturnObject<GetMeetingPostResponse>(
-				_httpClient: _httpClient,
-				options: options,
-				methodName: "GET",
-				url: MeetingAPI_URL);
+            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
+			string? usrId = HttpContext.Session.GetString("USER_ID");
+			GetMeetingPostResponse meetPostResponse = new();
+            if (!string.IsNullOrEmpty(accToken) && !string.IsNullOrEmpty(usrId))
+			{
+                MeetingAPI_URL += "Participant/" + id;
+                meetPostResponse = await methcall.CallMethodReturnObject<GetMeetingPostResponse>(
+                                   _httpClient: _httpClient,
+                                   options: options,
+                                   methodName: "POST",
+                                   url: MeetingAPI_URL,
+								   inputType: usrId,
+                                   accessToken: accToken);
+            }
+			else
+			{
+                MeetingAPI_URL += id;
+                meetPostResponse = await methcall.CallMethodReturnObject<GetMeetingPostResponse>(
+                                   _httpClient: _httpClient,
+                                   options: options,
+                                   methodName: "GET",
+                                   url: MeetingAPI_URL);
+            }
             if (meetPostResponse == null)
             {
                 ViewBag.error =
@@ -96,8 +114,8 @@ namespace WebAppMVC.Controllers
 					+ meetPostResponse.ErrorMessage;
                 View("Index");
 			}
-			if(TempData["PartakeNo"] != null)
-				ViewBag.PartNumber = Int32.Parse(TempData["PartakeNo"].ToString());
+			/*if(TempData["PartakeNo"] != null)
+				ViewBag.PartNumber = Int32.Parse(TempData["PartakeNo"].ToString());*/
             return View(meetmodel);
 		}
 
@@ -111,10 +129,10 @@ namespace WebAppMVC.Controllers
 			else if (!role.Equals("Member")) return View("Index");
 
             string? usrId = HttpContext.Session.GetString("USER_ID");
-			if(usrId == null) return RedirectToAction("Login", "Auth");
+			if(string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
 
             string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
-            if (accToken == null) return RedirectToAction("Login", "Auth");
+            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
 
             var participationNo = await methcall.CallMethodReturnObject<GetMeetingParticipationNo>(
                 _httpClient: _httpClient,
@@ -136,7 +154,7 @@ namespace WebAppMVC.Controllers
 					+ participationNo.ErrorMessage;
                 RedirectToAction("MeetingPost", new { id = meetingId });
             }
-			TempData["partakeNo"] = participationNo.Data;
+			//TempData["partakeNo"] = participationNo.Data;
 
             return RedirectToAction("MeetingPost", new { id = meetingId });
         }

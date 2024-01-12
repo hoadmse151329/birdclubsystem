@@ -27,10 +27,11 @@ namespace BAL.AutoMapperProfile
             CreateMap<Location, LocationViewModel>()
                 .AfterMap((src, dest) =>
                 {
-                    dest.AreaNumber = src.LocationName.Split(",")[0];
-                    dest.Street = src.LocationName.Split(",")[1];
-                    dest.District = src.LocationName.Split(",")[2];
-                    dest.City = src.LocationName.Split(",")[3];
+                    string[] address = src.LocationName.Split(',');
+                    dest.AreaNumber = address[0];
+                    dest.Street = address[1];
+                    dest.District = address[2];
+                    dest.City = address[3];
                 })
                 .ReverseMap()
                 .AfterMap((src, dest) =>

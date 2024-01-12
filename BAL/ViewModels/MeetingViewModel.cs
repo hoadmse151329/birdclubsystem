@@ -15,6 +15,8 @@ namespace BAL.ViewModels
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         public int? NumberOfParticipants { get; set; }
+        public int? NumberOfParticipantsLimit { get; set; }
+        public int? ParticipationNo { get; set; }
         public string? Host { get; set; }
         public string? Incharge { get; set; }
         public string? Note { get; set; }
@@ -22,5 +24,6 @@ namespace BAL.ViewModels
         public int? LocationId { get; set; }
         public string? Address { get; set; }
         public string? City { get; set; }
+        public string? Status { get; set; }
     }
 }

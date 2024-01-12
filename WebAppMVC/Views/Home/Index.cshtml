@@ -1,5 +1,8 @@
-﻿@{
+﻿@model dynamic
+@{
     ViewData["Title"] = "Home Page";
+    List<BAL.ViewModels.FieldTripViewModel> fieldtripList = Model.FieldTrips;
+    List<BAL.ViewModels.MeetingViewModel> meetingList = Model.Meetings;
 }
 
 <html lang="en">
@@ -23,6 +26,12 @@
         <link rel="stylesheet" href="~/css/main.css">
   </head>
   <body>
+    @{
+        if (ViewBag.error != null)
+        {
+            <span class="text-danger">@ViewBag.error</span>
+        }
+    }
       <section class="infor">
         <div class="background-infor">
                 <div id="carouselBanner" class="carousel slide">
@@ -106,103 +115,28 @@
         <div class="club__content">
             <h5><i class="fa fa-sort-amount-down"></i> Meeting</h5>
             <div class="famousList-carousel owl-carousel owl-theme">
-                <div class="room-item">
-                    <a href="#" class="club-image">
-                        <img class="img-fluid" src="~/images/meeting.png" alt="nt1">
-                    </a>
-                    <div class="club-title">
-                        <a href="#" class="text-decoration-none">Meeting</a>
-                    </div>
-                    <div class="d-flex justify-content-between">
-                        <p> ChaoMao New Member Bird meeting</p>
-                    </div>
-                    <div class="d-flex justify-content-between">
-                        <p class="club-price"><i class="fas fa-calendar"></i> From 10-28-2024 to 10-29-2024</p>
-                        <button class="button--primary"><a class="text-decoration-none text-white"
-                                href="@Url.Action("MeetingPost", "Meeting")">See More</a></button>
-                    </div>
-                </div>
-                <div class="room-item">
-                    <a href="#" class="club-image">
-                        <img class="img-fluid" src="~/images/meeting.png" alt="nt1">
-                    </a>
-                    <div class="club-title">
-                        <a href="#" class="text-decoration-none">Meeting</a>
-                    </div>
-                    <div class="d-flex justify-content-between">
-                        <p> ChaoMao New Member Bird meeting</p>
-                    </div>
-                    <div class="d-flex justify-content-between">
-                        <p class="club-price"><i class="fas fa-calendar"></i> From 10-28-2024 to 10-29-2024</p>
-                        <button class="button--primary"><a class="text-decoration-none text-white"
-                                href="@Url.Action("MeetingPost", "Meeting")">See More</a></button>
-                    </div>
-                </div>
-                <div class="room-item">
-                    <a href="#" class="club-image">
-                        <img class="img-fluid" src="~/images/meeting.png" alt="nt1">
-                    </a>
-                    <div class="club-title">
-                        <a href="#" class="text-decoration-none">Meeting</a>
-                    </div>
-                    <div class="d-flex justify-content-between">
-                        <p> ChaoMao New Member Bird meeting</p>
-                    </div>
-                    <div class="d-flex justify-content-between">
-                        <p class="club-price"><i class="fas fa-calendar"></i> From 10-28-2024 to 10-29-2024</p>
-                        <button class="button--primary"><a class="text-decoration-none text-white"
-                                href="@Url.Action("MeetingPost", "Meeting")">See More</a></button>
-                    </div>
-                </div>
-                <div class="room-item">
-                    <a href="#" class="club-image">
-                        <img class="img-fluid" src="~/images/meeting.png" alt="nt1">
-                    </a>
-                    <div class="club-title">
-                        <a href="#" class="text-decoration-none">Meeting</a>
-                    </div>
-                    <div class="d-flex justify-content-between">
-                        <p> ChaoMao New Member Bird meeting</p>
-                    </div>
-                    <div class="d-flex justify-content-between">
-                        <p class="club-price"><i class="fas fa-calendar"></i> From 10-28-2024 to 10-29-2024</p>
-                        <button class="button--primary"><a class="text-decoration-none text-white"
-                                href="@Url.Action("MeetingPost", "Meeting")">See More</a></button>
-                    </div>
-                </div>
-                <div class="room-item">
-                    <a href="#" class="club-image">
-                        <img class="img-fluid" src="~/images/meeting.png" alt="nt1">
-                    </a>
-                    <div class="club-title">
-                        <a href="#" class="text-decoration-none">Meeting</a>
-                    </div>
-                    <div class="d-flex justify-content-between">
-                        <p> ChaoMao New Member Bird meeting</p>
-                    </div>
-                    <div class="d-flex justify-content-between">
-                        <p class="club-price"><i class="fas fa-calendar"></i> From 10-28-2024 to 10-29-2024</p>
-                        <button class="button--primary"><a class="text-decoration-none text-white"
-                                href="@Url.Action("MeetingPost", "Meeting")">See More</a></button>
-                    </div>
-                </div>
-                <div class="room-item">
-                    <a href="#" class="club-image">
-                        <img class="img-fluid" src="~/images/meeting.png" alt="nt1">
-                    </a>
-                    <div class="club-title">
-                        <a href="#" class="text-decoration-none">Meeting</a>
-                    </div>
-                    <div class="d-flex justify-content-between">
-                        <p> ChaoMao New Member Bird meeting</p>
-                    </div>
-                    <div class="d-flex justify-content-between">
-                        <p class="club-price"><i class="fas fa-calendar"></i> From 10-28-2024 to 10-29-2024</p>
-                        <button class="button--primary"><a class="text-decoration-none text-white"
-                                href="@Url.Action("MeetingPost", "Meeting")">See More</a></button>
-                    </div>
-                </div>
-                </div>
+                @foreach (var data in meetingList)
+                {
+                        <div class="room-item">
+                            <a href="#" class="motel-image">
+                                <img class="img-fluid" src="~/images/meeting.png" alt="nt1">
+                            </a>
+                            <div class="motel-title">
+                                <a href="#" class="text-decoration-none">Meeting</a>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <p>@data.MeetingName</p>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                    <p class="motel-price"><i class="fas fa-calendar"></i> 
+                                        From @data.StartDate.Value.ToString("MM/dd/yyyy") 
+                                        to @data.EndDate.Value.ToString("MM/dd/yyyy")</p>
+                                <button class="button--primary"><a class="text-decoration-none text-white"
+                                        href="@Url.Action("MeetingPost", "Meeting",new {id = data.MeetingId})">See More</a></button>
+                            </div>
+                        </div>
+                }
+            </div>
             <h5><i class="fa fa-sort-amount-down"></i> Field Trip</h5>
             <div class="ratingList-carousel owl-carousel owl-theme">
                 <div class="room-item">

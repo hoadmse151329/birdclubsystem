@@ -52,7 +52,9 @@ namespace BAL.Services.Implements
             if (meet != null)
             {
                 string locationName = await _unitOfWork.LocationRepository.GetLocationNameById(meet.LocationId.Value);
+                int partAmount = await _unitOfWork.MeetingParticipantRepository.GetCountMeetingParticipantsByMeetId(meet.MeetingId);
                 var meeting = _mapper.Map<MeetingViewModel>(meet);
+                meeting.NumberOfParticipantsLimit = meeting.NumberOfParticipants - partAmount;
                 meeting.Address = locationName;
                 meeting.District = locationName.Split(",")[2];
                 meeting.City = locationName.Split(",")[3];

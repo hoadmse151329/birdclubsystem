@@ -12,10 +12,10 @@ namespace DAL.Repositories.Interfaces
     {
         Task<IEnumerable<MeetingParticipant>> GetMeetingParticipantsByMeetId(int meetingId);
         Task<int> GetCountMeetingParticipantsByMeetId(int meetingId);
-        Task<bool> GetBoolMeetingParticipantById(int meetingId, int memberId);
-        Task<int> GetParticipationNoMeetingParticipantById(int meetingId, int memberId);
-        Task<MeetingParticipant> GetMeetingParticipantById(int meetingId, int memberId);
-        Task<IEnumerable<MeetingParticipant>> GetMeetingParticipantsByMemberId(int memId);
-        Task<int> GetCountMeetingParticipantsByMemberId(int memId);
+        Task<bool> GetBoolMeetingParticipantById(int meetingId, string memberId);
+        Task<int> GetParticipationNoMeetingParticipantById(int meetingId, string memberId);
+        Task<MeetingParticipant> GetMeetingParticipantById(int meetingId, string memberId);
+        Task<IEnumerable<MeetingParticipant>> GetMeetingParticipantsByMemberId(string memId);
+        Task<int> GetCountMeetingParticipantsByMemberId(string memId);
     }
 }
