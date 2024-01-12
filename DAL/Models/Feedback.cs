@@ -12,7 +12,5 @@ namespace DAL.Models
         public DateTime? Date { get; set; }
         public string? Category { get; set; }
         public string? Status { get; set; }
-
-        public virtual User User { get; set; } = null!;
     }
 }
