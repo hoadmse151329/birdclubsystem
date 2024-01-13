@@ -295,7 +295,7 @@ namespace WebAPI.Controllers
         [ProducesResponseType(typeof(MeetingParticipantViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> RemoveParticipant(int id, int memId)
+        public async Task<IActionResult> RemoveParticipant(int id, string memId)
         {
             try
             {

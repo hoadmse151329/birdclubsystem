@@ -53,7 +53,7 @@ namespace BAL.Services.Implements
             return await _unitOfWork.MeetingParticipantRepository.GetParticipationNoMeetingParticipantById(metId, memId);
         }
 
-        public async Task<bool> Delete(int memId, int metId)
+        public async Task<bool> Delete(string memId, int metId)
         {
             bool check = await _unitOfWork.MeetingParticipantRepository.GetBoolMeetingParticipantById(metId, memId);
             if (!check) return false;

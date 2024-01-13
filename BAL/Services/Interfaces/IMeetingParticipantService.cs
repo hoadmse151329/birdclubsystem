@@ -13,6 +13,6 @@ namespace BAL.Services.Interfaces
         Task<int> Create(string memId, int metId);
         Task<int> GetCurrentParticipantAmounts(int metId);
         Task<int> GetParticipationNo(string memId, int metId);
-        Task<bool> Delete(int memId, int metId);
+        Task<bool> Delete(string memId, int metId);
     }
 }
