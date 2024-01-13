@@ -10,7 +10,9 @@ namespace BAL.Services.Interfaces
     public interface IMeetingParticipantService
     {
         Task<IEnumerable<MeetingParticipantViewModel>> GetAll();
-        Task<int> Create(int memId, int metId);
+        Task<int> Create(string memId, int metId);
+        Task<int> GetCurrentParticipantAmounts(int metId);
+        Task<int> GetParticipationNo(string memId, int metId);
         Task<bool> Delete(int memId, int metId);
     }
 }

@@ -53,14 +53,14 @@ namespace DAL.Data
         public static void SeedUsers(this ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>().HasData(
-                new User { UserId = 1, ClubId = 1, UserName = "ANV2024", Password = "123", MemberId = "1"},
-                new User { UserId = 2, ClubId = null, UserName = "DanEcho", Password = "123", MemberId = "2"},
-                new User { UserId = 3 , ClubId = 2, UserName = "Admin", Password = "theadmin", MemberId = "3"},
-                new User { UserId = 4, ClubId = 2, UserName = "JConnor", Password = "123", MemberId = "4"},
-                new User { UserId = 5, ClubId = 1, UserName = "TuVC1010", Password = "123", MemberId = "5"},
-                new User { UserId = 6, ClubId = 3, UserName = "ThienNTBirdio", Password = "123", MemberId = "6"},
-                new User { UserId = 7, ClubId = 3, UserName = "QuanNH2024", Password = "123", MemberId = "7"},
-                new User { UserId = 8, ClubId = null, UserName = "JustYourMan", Password = "123", MemberId = "8" }
+                new User { UserId = 1, ClubId = 1, UserName = "ANV2024", Password = "123", MemberId = 1},
+                new User { UserId = 2, ClubId = null, UserName = "DanEcho", Password = "123", MemberId = 2},
+                new User { UserId = 3 , ClubId = 2, UserName = "Admin", Password = "theadmin", MemberId = 3},
+                new User { UserId = 4, ClubId = 2, UserName = "JConnor", Password = "123", MemberId = 4},
+                new User { UserId = 5, ClubId = 1, UserName = "TuVC1010", Password = "123", MemberId = 5},
+                new User { UserId = 6, ClubId = 3, UserName = "ThienNTBirdio", Password = "123", MemberId = 6},
+                new User { UserId = 7, ClubId = 3, UserName = "QuanNH2024", Password = "123", MemberId = 7},
+                new User { UserId = 8, ClubId = null, UserName = "JustYourMan", Password = "123", MemberId = 8 }
                 );
         }
     }

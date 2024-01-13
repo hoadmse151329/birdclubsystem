@@ -10,7 +10,8 @@ namespace BAL.Services.Interfaces
 {
     public interface IMemberService
     {
-		Task<MemberViewModel?> GetById(int id);
+		Task<MemberViewModel?> GetById(string id);
+		Task<bool> GetBoolById(string id);
 		bool GetByEmail(string email);
 		Task<MemberViewModel?> GetByUserId();
 		/* void Create(UserViewModel entity);*/

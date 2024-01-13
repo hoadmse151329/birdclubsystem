@@ -831,7 +831,7 @@ namespace DAL.Models
             modelBuilder.Entity<User>(entity =>
             {
                 entity.Property(e => e.UserId)
-                    .ValueGeneratedNever()
+                    .UseIdentityColumn(1,1)
                     .HasColumnName("userId");
 
                 entity.Property(e => e.ClubId).HasColumnName("clubId");

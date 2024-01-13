@@ -18,7 +18,7 @@ namespace WebAPI.Controllers
             _connfig = connfig;
         }
 
-        [HttpGet("id:int")]
+        [HttpGet("{id}")]
         [ProducesResponseType(typeof(TransactionViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

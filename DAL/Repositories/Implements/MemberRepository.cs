@@ -23,7 +23,7 @@ namespace DAL.Repositories.Implements
             return _context.Members.AsNoTrackingWithIdentityResolution().SingleOrDefault(mem => mem.Email == email);
         }
 
-        public async Task<Member?> GetByIdNoTracking(int id)
+        public async Task<Member?> GetByIdNoTracking(string id)
         {
             return _context.Members.AsNoTrackingWithIdentityResolution().SingleOrDefault(mem => mem.MemberId == id);
         }

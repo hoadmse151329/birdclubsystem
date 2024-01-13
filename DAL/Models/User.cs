@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
 namespace DAL.Models
@@ -10,7 +12,7 @@ namespace DAL.Models
         {
             Feedbacks = new HashSet<Feedback>();
         }
-
+        [Key,DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int UserId { get; set; }
         public int? ClubId { get; set; }
         public string? MemberId { get; set; }
