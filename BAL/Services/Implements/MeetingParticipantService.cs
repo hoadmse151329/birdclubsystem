@@ -52,5 +52,15 @@ namespace BAL.Services.Implements
         {
             return await _unitOfWork.MeetingParticipantRepository.GetParticipationNoMeetingParticipantById(metId, memId);
         }
+
+        public async Task<bool> Delete(string memId, int metId)
+        {
+            bool check = await _unitOfWork.MeetingParticipantRepository.GetBoolMeetingParticipantById(metId, memId);
+            if (!check) return false;
+            MeetingParticipant meetingParticipant = await _unitOfWork.MeetingParticipantRepository.GetMeetingParticipantById(metId, memId);
+            _unitOfWork.MeetingParticipantRepository.Delete(meetingParticipant);
+            _unitOfWork.Save();
+            return true;
+        }
     }
 }
