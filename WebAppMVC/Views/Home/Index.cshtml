@@ -1,120 +1,340 @@
-﻿@{
+﻿@model dynamic
+@{
     ViewData["Title"] = "Home Page";
+    List<BAL.ViewModels.FieldTripViewModel> fieldtripList = Model.FieldTrips;
+    List<BAL.ViewModels.MeetingViewModel> meetingList = Model.Meetings;
 }
 
 <html lang="en">
-<body>
-    <div style="width: 1240px; height: 1959px; position: relative">
-        <div style="width: 1240px; height: 1959px; left: 0px; top: 0px; position: absolute; background: rgba(255, 255, 255, 0.80)"></div>
-        <div style="left: 343px; top: 570px; position: absolute; color: black; font-size: 24px; font-family: Inter; font-weight: 700; letter-spacing: 1.20px; word-wrap: break-word">Recent and Upcoming events and activities</div>
-        <div style="left: 135px; top: 41px; position: absolute"><span style="color: black; font-size: 64px; font-family: Inter; font-weight: 700; word-wrap: break-word">Welcome to </span><span style="color: #1F5300; font-size: 64px; font-family: Inter; font-weight: 700; word-wrap: break-word">ChaoMao</span><span style="color: black; font-size: 64px; font-family: Inter; font-weight: 700; word-wrap: break-word"> </span><span style="color: #1F5300; font-size: 64px; font-family: Inter; font-weight: 700; word-wrap: break-word">BirdClub</span></div>
-        <div style="width: 214px; height: 55px; left: 299px; top: 388px; position: absolute">
-            <div style="width: 214px; height: 55px; left: 0px; top: 0px; position: absolute; background: rgba(74.29, 195.50, 0, 0.35); border-radius: 50px"></div>
-            <div style="left: 58px; top: 16px; position: absolute; color: black; font-size: 20px; font-family: Inter; font-weight: 700; word-wrap: break-word">Join Now!</div>
-        </div>
-        <div style="width: 693px; height: 244px; left: 67px; top: 144px; position: absolute; color: black; font-size: 24px; font-family: Inter; font-weight: 400; letter-spacing: 1.20px; word-wrap: break-word">Founded in 2024 by Nguyen Van A, ChaoMao Bird-club aims to gather, share, exchanging fun, interesting information about birds and bird fans a like. We aim to create a big and awesome bird lover community in Vietnam and soon expand it further beyond. By bird lovers, for bird lovers.</div>
-        <div style="width: 400px; height: 400px; left: 772px; top: 144px; position: absolute">
-            <div style="width: 400px; height: 400px; left: 0px; top: 0px; position: absolute; background: linear-gradient(0deg, rgba(226.31, 226.31, 226.31, 0.33) 0%, rgba(226.31, 226.31, 226.31, 0.33) 100%); border-radius: 9999px"></div>
-            <div style="width: 42.86px; height: 42.86px; left: 178.57px; top: 357.14px; position: absolute">
-                <div style="width: 42.86px; height: 42.86px; left: 0px; top: 0px; position: absolute; background: #1F5300; border-radius: 9999px"></div>
-                <div style="width: 21.43px; height: 21.43px; padding-left: 6.25px; padding-right: 6.25px; padding-top: 5.36px; padding-bottom: 5.36px; left: 12.86px; top: 10.71px; position: absolute; justify-content: center; align-items: center; display: inline-flex">
-                    <div style="width: 8.93px; height: 10.71px; background: white"></div>
-                </div>
-            </div>
-        </div>
-        <div style="width: 360px; height: 464px; left: 830px; top: 625px; position: absolute; flex-direction: column; justify-content: center; align-items: center; display: inline-flex">
-            <div style="width: 360px; height: 464px; position: relative">
-                <div style="width: 360px; height: 464px; left: 0px; top: 0px; position: absolute; background: rgba(255, 255, 255, 0.80); box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); border: 1px rgba(31.49, 82.87, 0, 0.35) solid"></div>
-                <img style="width: 360px; height: 248px; left: 0px; top: 0px; position: absolute; border: 1px rgba(31.49, 82.87, 0, 0.35) solid" src="https://via.placeholder.com/360x248" />
-                <div style="width: 360px; height: 55px; left: 0px; top: 409px; position: absolute">
-                    <div style="width: 360px; height: 55px; left: 0px; top: 0px; position: absolute; background: rgba(74.29, 195.50, 0, 0.35); border-top-left-radius: 25px; border-top-right-radius: 25px"></div>
-                    <div style="left: 139px; top: 16px; position: absolute; color: black; font-size: 20px; font-family: Inter; font-weight: 700; word-wrap: break-word">Meeting</div>
-                </div>
-                <div style="left: 25px; top: 265px; position: absolute; color: black; font-size: 16px; font-family: Inter; font-weight: 700; letter-spacing: 0.80px; word-wrap: break-word">ChaoMao New Member Bird meeting</div>
-                <div style="left: 43px; top: 290px; position: absolute; color: black; font-size: 16px; font-family: Inter; font-weight: 500; letter-spacing: 0.80px; word-wrap: break-word">From 10-28-2024 to 10-29-2024</div>
-                <div style="width: 330px; height: 46px; left: 16px; top: 361px; position: absolute; color: black; font-size: 16px; font-family: Inter; font-weight: 500; letter-spacing: 0.80px; word-wrap: break-word">Meet up with new members, exchanging experiences and ideas...</div>
-                <div style="width: 106px; height: 42px; left: 127px; top: 315px; position: absolute; text-align: center"><span style="color: black; font-size: 20px; font-family: Inter; font-weight: 700; letter-spacing: 1px; word-wrap: break-word">Location<br /></span><span style="color: black; font-size: 16px; font-family: Inter; font-weight: 500; letter-spacing: 0.80px; word-wrap: break-word">Ha Noi</span></div>
-            </div>
-        </div>
-        <div style="width: 360px; height: 464px; left: 56px; top: 625px; position: absolute; flex-direction: column; justify-content: center; align-items: center; display: inline-flex">
-            <div style="width: 360px; height: 464px; position: relative">
-                <div style="width: 360px; height: 464px; left: 0px; top: 0px; position: absolute; background: rgba(255, 255, 255, 0.80); box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); border: 1px rgba(31.49, 82.87, 0, 0.35) solid"></div>
-                <img style="width: 360px; height: 248px; left: 0px; top: 0px; position: absolute; border: 1px rgba(31.49, 82.87, 0, 0.35) solid" src="https://via.placeholder.com/360x248" />
-                <div style="left: 75px; top: 265px; position: absolute; color: black; font-size: 16px; font-family: Inter; font-weight: 700; letter-spacing: 0.80px; word-wrap: break-word">Quang Ngai Bird Contest</div>
-                <div style="left: 45px; top: 290px; position: absolute; color: black; font-size: 16px; font-family: Inter; font-weight: 500; letter-spacing: 0.80px; word-wrap: break-word">From 12-12-2024 to 12-20-2024</div>
-                <div style="width: 330px; height: 46px; left: 15px; top: 361px; position: absolute; color: black; font-size: 16px; font-family: Inter; font-weight: 500; letter-spacing: 0.80px; word-wrap: break-word">Gather all Red-wiskered bulbul birds from around quang ngai...</div>
-                <div style="width: 360px; height: 55px; left: 0px; top: 409px; position: absolute">
-                    <div style="width: 360px; height: 55px; left: 0px; top: 0px; position: absolute; background: rgba(74.29, 195.50, 0, 0.35); border-top-left-radius: 25px; border-top-right-radius: 25px"></div>
-                    <div style="left: 141px; top: 16px; position: absolute; color: black; font-size: 20px; font-family: Inter; font-weight: 700; word-wrap: break-word">Contest</div>
-                </div>
-                <div style="width: 106px; height: 42px; left: 127px; top: 315px; position: absolute; text-align: center"><span style="color: black; font-size: 20px; font-family: Inter; font-weight: 700; letter-spacing: 1px; word-wrap: break-word">Location<br /></span><span style="color: black; font-size: 16px; font-family: Inter; font-weight: 500; letter-spacing: 0.80px; word-wrap: break-word">Quang Ngai</span></div>
-            </div>
-        </div>
-        <div style="width: 360px; height: 464px; left: 443px; top: 625px; position: absolute; flex-direction: column; justify-content: center; align-items: center; display: inline-flex">
-            <div style="width: 360px; height: 464px; position: relative">
-                <div style="width: 360px; height: 464px; left: 0px; top: 0px; position: absolute; background: rgba(255, 255, 255, 0.80); box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); border: 1px rgba(31.49, 82.87, 0, 0.35) solid"></div>
-                <img style="width: 360px; height: 248px; left: 0px; top: 0px; position: absolute; border: 1px rgba(31.49, 82.87, 0, 0.35) solid" src="https://via.placeholder.com/360x248" />
-                <div style="width: 360px; height: 55px; left: 0px; top: 409px; position: absolute">
-                    <div style="width: 360px; height: 55px; left: 0px; top: 0px; position: absolute; background: rgba(74.29, 195.50, 0, 0.35); border-top-left-radius: 25px; border-top-right-radius: 25px"></div>
-                    <div style="left: 137px; top: 16px; position: absolute; color: black; font-size: 20px; font-family: Inter; font-weight: 700; word-wrap: break-word">Field trip</div>
-                </div>
-                <div style="left: 54px; top: 265px; position: absolute; color: black; font-size: 16px; font-family: Inter; font-weight: 700; letter-spacing: 0.80px; word-wrap: break-word">Bidoup Bird watching in Dalat</div>
-                <div style="left: 49px; top: 290px; position: absolute; color: black; font-size: 16px; font-family: Inter; font-weight: 500; letter-spacing: 0.80px; word-wrap: break-word">From 11-11-2024 to 11-15-2024</div>
-                <div style="width: 330px; height: 46px; left: 15px; top: 361px; position: absolute; color: black; font-size: 16px; font-family: Inter; font-weight: 500; letter-spacing: 0.80px; word-wrap: break-word">Exciting field trip in Bidoup National Park located on Dalat...</div>
-                <div style="width: 106px; height: 42px; left: 127px; top: 315px; position: absolute; text-align: center"><span style="color: black; font-size: 20px; font-family: Inter; font-weight: 700; letter-spacing: 1px; word-wrap: break-word">Location<br /></span><span style="color: black; font-size: 16px; font-family: Inter; font-weight: 500; letter-spacing: 0.80px; word-wrap: break-word">Dalat</span></div>
-            </div>
-        </div>
-        <div style="width: 360px; height: 464px; left: 830px; top: 1116px; position: absolute; flex-direction: column; justify-content: center; align-items: center; display: inline-flex">
-            <div style="width: 360px; height: 464px; position: relative">
-                <div style="width: 360px; height: 464px; left: 0px; top: 0px; position: absolute; background: rgba(255, 255, 255, 0.80); box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); border: 1px rgba(31.49, 82.87, 0, 0.35) solid"></div>
-                <img style="width: 360px; height: 248px; left: 0px; top: 0px; position: absolute; border: 1px rgba(31.49, 82.87, 0, 0.35) solid" src="https://via.placeholder.com/360x248" />
-                <div style="width: 360px; height: 55px; left: 0px; top: 409px; position: absolute">
-                    <div style="width: 360px; height: 55px; left: 0px; top: 0px; position: absolute; background: rgba(74.29, 195.50, 0, 0.35); border-top-left-radius: 25px; border-top-right-radius: 25px"></div>
-                    <div style="left: 139px; top: 16px; position: absolute; color: black; font-size: 20px; font-family: Inter; font-weight: 700; word-wrap: break-word">Meeting</div>
-                </div>
-                <div style="left: 25px; top: 265px; position: absolute; color: black; font-size: 16px; font-family: Inter; font-weight: 700; letter-spacing: 0.80px; word-wrap: break-word">ChaoMao New Member Bird meeting</div>
-                <div style="left: 52px; top: 290px; position: absolute; color: black; font-size: 16px; font-family: Inter; font-weight: 500; letter-spacing: 0.80px; word-wrap: break-word">From 9-20-2024 to 9-24-2024</div>
-                <div style="width: 330px; height: 46px; left: 16px; top: 361px; position: absolute; color: black; font-size: 16px; font-family: Inter; font-weight: 500; letter-spacing: 0.80px; word-wrap: break-word">Meet up with new members, exchanging experiences and ideas...</div>
-                <div style="width: 106px; height: 42px; left: 127px; top: 315px; position: absolute; text-align: center"><span style="color: black; font-size: 20px; font-family: Inter; font-weight: 700; letter-spacing: 1px; word-wrap: break-word">Location<br /></span><span style="color: black; font-size: 16px; font-family: Inter; font-weight: 500; letter-spacing: 0.80px; word-wrap: break-word">Hai Phong</span></div>
-            </div>
-        </div>
-        <div style="width: 360px; height: 464px; left: 56px; top: 1116px; position: absolute; flex-direction: column; justify-content: center; align-items: center; display: inline-flex">
-            <div style="width: 360px; height: 464px; position: relative">
-                <div style="width: 360px; height: 464px; left: 0px; top: 0px; position: absolute; background: rgba(255, 255, 255, 0.80); box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); border: 1px rgba(31.49, 82.87, 0, 0.35) solid"></div>
-                <img style="width: 360px; height: 248px; left: 0px; top: 0px; position: absolute; border: 1px rgba(31.49, 82.87, 0, 0.35) solid" src="https://via.placeholder.com/360x248" />
-                <div style="width: 360px; height: 55px; left: 0px; top: 409px; position: absolute">
-                    <div style="width: 360px; height: 55px; left: 0px; top: 0px; position: absolute; background: rgba(74.29, 195.50, 0, 0.35); border-top-left-radius: 25px; border-top-right-radius: 25px"></div>
-                    <div style="left: 137px; top: 16px; position: absolute; color: black; font-size: 20px; font-family: Inter; font-weight: 700; word-wrap: break-word">Field trip</div>
-                </div>
-                <div style="left: 50px; top: 265px; position: absolute; color: black; font-size: 16px; font-family: Inter; font-weight: 700; letter-spacing: 0.80px; word-wrap: break-word">Cat tien Bird watching in Dalat</div>
-                <div style="left: 43px; top: 290px; position: absolute; color: black; font-size: 16px; font-family: Inter; font-weight: 500; letter-spacing: 0.80px; word-wrap: break-word">From 10-20-2024 to 10-22-2024</div>
-                <div style="width: 330px; height: 46px; left: 15px; top: 361px; position: absolute; color: black; font-size: 16px; font-family: Inter; font-weight: 500; letter-spacing: 0.80px; word-wrap: break-word">Exciting field trip in Cat tien National Park located on Dalat...</div>
-                <div style="width: 106px; height: 42px; left: 127px; top: 315px; position: absolute; text-align: center"><span style="color: black; font-size: 20px; font-family: Inter; font-weight: 700; letter-spacing: 1px; word-wrap: break-word">Location<br /></span><span style="color: black; font-size: 16px; font-family: Inter; font-weight: 500; letter-spacing: 0.80px; word-wrap: break-word">Dalat</span></div>
-            </div>
-        </div>
-        <div style="width: 360px; height: 464px; left: 443px; top: 1116px; position: absolute; flex-direction: column; justify-content: center; align-items: center; display: inline-flex">
-            <div style="width: 360px; height: 464px; position: relative">
-                <div style="width: 360px; height: 464px; left: 0px; top: 0px; position: absolute; background: rgba(255, 255, 255, 0.80); box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); border: 1px rgba(31.49, 82.87, 0, 0.35) solid"></div>
-                <img style="width: 360px; height: 248px; left: 0px; top: 0px; position: absolute; border: 1px rgba(31.49, 82.87, 0, 0.35) solid" src="https://via.placeholder.com/360x248" />
-                <div style="left: 81px; top: 265px; position: absolute; color: black; font-size: 16px; font-family: Inter; font-weight: 700; letter-spacing: 0.80px; word-wrap: break-word">Hai Phong Bird Contest</div>
-                <div style="left: 44px; top: 290px; position: absolute; color: black; font-size: 16px; font-family: Inter; font-weight: 500; letter-spacing: 0.80px; word-wrap: break-word">From 10-12-2024 to 10-20-2024</div>
-                <div style="width: 330px; height: 46px; left: 15px; top: 361px; position: absolute; color: black; font-size: 16px; font-family: Inter; font-weight: 500; letter-spacing: 0.80px; word-wrap: break-word">Gather all Red-wiskered bulbul birds from around quang ngai...</div>
-                <div style="width: 360px; height: 55px; left: 0px; top: 409px; position: absolute">
-                    <div style="width: 360px; height: 55px; left: 0px; top: 0px; position: absolute; background: rgba(74.29, 195.50, 0, 0.35); border-top-left-radius: 25px; border-top-right-radius: 25px"></div>
-                    <div style="left: 141px; top: 16px; position: absolute; color: black; font-size: 20px; font-family: Inter; font-weight: 700; word-wrap: break-word">Contest</div>
-                </div>
-                <div style="width: 106px; height: 42px; left: 127px; top: 315px; position: absolute; text-align: center"><span style="color: black; font-size: 20px; font-family: Inter; font-weight: 700; letter-spacing: 1px; word-wrap: break-word">Location<br /></span><span style="color: black; font-size: 16px; font-family: Inter; font-weight: 500; letter-spacing: 0.80px; word-wrap: break-word">Hai Phong</span></div>
-            </div>
-        </div>
-        <div style="width: 1230px; height: 40px; left: 5px; top: 1083px; position: absolute; justify-content: center; align-items: flex-start; gap: 1150px; display: inline-flex">
-            <div style="width: 40px; align-self: stretch; padding-top: 3.33px; padding-bottom: 3.33px; padding-left: 10px; padding-right: 10.38px; justify-content: center; align-items: center; display: inline-flex">
-                <div style="width: 19.62px; height: 33.33px; background: black"></div>
-            </div>
-            <div style="width: 40px; align-self: stretch; padding-top: 3.33px; padding-bottom: 3.33px; padding-left: 10px; padding-right: 10.38px; transform: rotate(-180deg); transform-origin: 0 0; justify-content: center; align-items: center; display: inline-flex">
-                <div style="width: 19.62px; height: 33.33px; background: black"></div>
-            </div>
-        </div>
-    </div>
-</body>
-</html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chao Mao Bird Club</title>
+    <link rel="stylesheet" href="~/css/Index.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css">
+        <!-- FONT -->
+        <link
+            href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,100&family=Roboto+Condensed:wght@400;700&display=swap"
+            rel="stylesheet">
+        <!-- FONT AWESOME -->
+        <link rel="stylesheet" href="~/fonts/fontawesome-free-5.15.4-web/css/all.min.css">
+        <!-- owl carousels -->
+        <link rel="stylesheet" href="~/css/owl.carousel.min.css">
+        <link rel="stylesheet" href="~//css/owl.theme.default.min.css">
 
+        <!-- main CSS -->
+        <link rel="stylesheet" href="~/css/main.css">
+  </head>
+  <body>
+    @{
+        if (ViewBag.error != null)
+        {
+            <span class="text-danger">@ViewBag.error</span>
+        }
+    }
+      <section class="infor">
+        <div class="background-infor">
+                <div id="carouselBanner" class="carousel slide">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img src="~/images/chao-mao2.png" class="d-block w-100" alt="cover-1">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="~/images/chaomao5.png" class="d-block w-100" alt="cover-2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="~/images/chao-mao-2.png" class="d-block w-100" alt="cover-3">
+                        </div>
+                    </div>
+                    <a class="carousel-control-prev" href="#carouselBanner" role="button" data-slide="prev">
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#carouselBanner" role="button" data-slide="next">
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </div>
+            </div>
+            <div class="infor__content container" style="background-color: whitesmoke">
+                <div class="row">
+                    <div class="col-12 col-md-4  d-flex my-5">
+                        <div class="image">
+                            <img src="~/images/best-choice.png" alt="best-choice">
+                        </div>
+                        <div class="content">
+                            <h4 style="color:black">Best choice</h4>
+                            <p style="color:black">CHAO MAO BIRDCLUB gives you suitable accommodation options for you to have a wonderful bird hobby.</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-4 d-flex my-5">
+                        <div class="image">
+                            <img src="~/images/security.png" alt="security">
+                        </div>
+                        <div class="content">
+                            <h4 style="color:black">Safety & security</h4>
+                            <p style="color:black">Cohesion information, high security and reputable services bring the best experience
+                                for you</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-4 d-flex  my-5">
+                        <div class="image">
+                            <img src="~/images/support.png" alt="img3">
+                        </div>
+                        <div class="content">
+                            <h4 style="color:black">Support 24/7</h4>
+                            <p style="color:black">Always listen, always support you with all services at CHAO MAO BIRDCLUB.</p>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+      </section>
+    <section class="main-container">      
+            <span class="text">Welcome to </span
+            ><span class="text-2">ChaoMao</span><span class="text-3"> </span
+            ><span class="text-4">BirdClub</span>
+          <div class="group">
+            <span class="text-5"
+              >Founded in 2024 by Nguyen Van A, ChaoMao Bird-club aims to
+              gather, share, exchanging fun, interesting information about birds
+              and bird fans a like. We aim to create a big and awesome bird
+              lover community in Vietnam and soon expand it further beyond. By
+              bird lovers, for bird lovers.</span
+            >
+            <div class="img-2"></div>
+            <div class="section"><span class="text-6">Join Now!</span></div>
+          <div class="img"></div>
+          <span class="text-7">Recent and Upcoming events and activities</span>
+        </div>
+        </section>
+        <section class="club container spacing">
+        <div class="d-flex justify-content-between align-items-center">
+            <h3 class="heading"><i class="fa fa-newspaper"></i> Latest News</h3>
+            <a href="user-club-list.html" class="view-club-list">See All <i class="fa fa-angle-right"></i></a>
+        </div>
+        <div class="club__content">
+            <h5><i class="fa fa-sort-amount-down"></i> Meeting</h5>
+            <div class="famousList-carousel owl-carousel owl-theme">
+                @foreach (var data in meetingList)
+                {
+                        <div class="room-item">
+                            <a href="#" class="motel-image">
+                                <img class="img-fluid" src="~/images/meeting.png" alt="nt1">
+                            </a>
+                            <div class="motel-title">
+                                <a href="#" class="text-decoration-none">Meeting</a>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <p>@data.MeetingName</p>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                    <p class="motel-price"><i class="fas fa-calendar"></i> 
+                                        From @data.StartDate.Value.ToString("MM/dd/yyyy") 
+                                        to @data.EndDate.Value.ToString("MM/dd/yyyy")</p>
+                                <button class="button--primary"><a class="text-decoration-none text-white"
+                                        href="@Url.Action("MeetingPost", "Meeting",new {id = data.MeetingId})">See More</a></button>
+                            </div>
+                        </div>
+                }
+            </div>
+            <h5><i class="fa fa-sort-amount-down"></i> Field Trip</h5>
+            <div class="ratingList-carousel owl-carousel owl-theme">
+                <div class="room-item">
+                    <a href="#" class="club-image">
+                        <img class="img-fluid" src="~/images/meeting.png" alt="nt1">
+                    </a>
+                    <div class="club-title">
+                        <a href="#" class="text-decoration-none">Meeting</a>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <p> ChaoMao New Member Bird meeting</p>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <p class="club-price"><i class="fas fa-calendar"></i> From 10-28-2024 to 10-29-2024</p>
+                        <button class="button--primary"><a class="text-decoration-none text-white"
+                                href="@Url.Action("MeetingPost", "Meeting")">See More</a></button>
+                    </div>
+                </div>
+                <div class="room-item">
+                    <a href="#" class="club-image">
+                        <img class="img-fluid" src="~/images/meeting.png" alt="nt1">
+                    </a>
+                    <div class="club-title">
+                        <a href="#" class="text-decoration-none">Meeting</a>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <p> ChaoMao New Member Bird meeting</p>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <p class="club-price"><i class="fas fa-calendar"></i> From 10-28-2024 to 10-29-2024</p>
+                        <button class="button--primary"><a class="text-decoration-none text-white"
+                               href="@Url.Action("MeetingPost", "Meeting")">See More</a></button>
+                    </div>
+                </div>
+                <div class="room-item">
+                    <a href="#" class="club-image">
+                        <img class="img-fluid" src="~/images/meeting.png" alt="nt1">
+                    </a>
+                    <div class="club-title">
+                        <a href="#" class="text-decoration-none">Meeting</a>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <p> ChaoMao New Member Bird meeting</p>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <p class="club-price"><i class="fas fa-calendar"></i> From 10-28-2024 to 10-29-2024</p>
+                        <button class="button--primary"><a class="text-decoration-none text-white"
+                                href="@Url.Action("MeetingPost", "Meeting")">See More</a></button>
+                    </div>
+                </div>
+                <div class="room-item">
+                    <a href="#" class="club-image">
+                        <img class="img-fluid" src="~/images/meeting.png" alt="nt1">
+                    </a>
+                    <div class="club-title">
+                        <a href="#" class="text-decoration-none">Meeting</a>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <p> ChaoMao New Member Bird meeting</p>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <p class="club-price"><i class="fas fa-calendar"></i> From 10-28-2024 to 10-29-2024</p>
+                        <button class="button--primary"><a class="text-decoration-none text-white"
+                               href="@Url.Action("MeetingPost", "Meeting"))">See More</a></button>
+                    </div>
+                </div>
+                <div class="room-item">
+                    <a href="#" class="club-image">
+                        <img class="img-fluid" src="~/images/meeting.png" alt="nt1">
+                    </a>
+                    <div class="club-title">
+                        <a href="#" class="text-decoration-none">Meeting</a>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <p> ChaoMao New Member Bird meeting</p>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <p class="club-price"><i class="fas fa-calendar"></i> From 10-28-2024 to 10-29-2024</p>
+                        <button class="button--primary"><a class="text-decoration-none text-white"
+                                href="@Url.Action("MeetingPost", "Meeting")">See More</a></button>
+                    </div>
+                </div>
+                <div class="room-item">
+                    <a href="#" class="club-image">
+                        <img class="img-fluid" src="~/images/meeting.png" alt="nt1">
+                    </a>
+                    <div class="club-title">
+                        <a href="#" class="text-decoration-none">Meeting</a>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <p> ChaoMao New Member Bird meeting</p>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <p class="club-price"><i class="fas fa-calendar"></i> From 10-28-2024 to 10-29-2024</p>
+                        <button class="button--primary"><a class="text-decoration-none text-white"
+                                href="@Url.Action("MeetingPost", "Meeting")">See More</a></button>
+                    </div>
+                </div>
+                <div class="room-item">
+                    <a href="#" class="club-image">
+                        <img class="img-fluid" src="~/images/meeting.png" alt="nt1">
+                    </a>
+                    <div class="club-title">
+                        <a href="#" class="text-decoration-none">Meeting</a>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <p> ChaoMao New Member Bird meeting</p>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <p class="club-price"><i class="fas fa-calendar"></i> From 10-28-2024 to 10-29-2024</p>
+                        <button class="button--primary"><a class="text-decoration-none text-white"
+                               href="@Url.Action("MeetingPost", "Meeting")">See More</a></button>
+                    </div>
+                </div>
+            </div>
+            <h5><i class="fa fa-sort-amount-down"></i> Bird Contest</h5>
+            <div class="ratingList-carousel owl-carousel owl-theme">
+                    @foreach (var data in fieldtripList)
+                    {
+                            <div class="room-item">
+                                <a href="#" class="motel-image">
+                                    <img class="img-fluid" src="~/images/meeting.png" alt="nt1">
+                                </a>
+                                <div class="motel-title">
+                                    <a href="#" class="text-decoration-none">Field Trip</a>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <p>@data.TripName</p>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                        <p class="motel-price"><i class="fas fa-calendar"></i> 
+                                            From @data.StartDate.Value.ToString("MM/dd/yyyy") 
+                                            to @data.EndDate.Value.ToString("MM/dd/yyyy")</p>
+                                    <button class="button--primary"><a class="text-decoration-none text-white"
+                                        href="@Url.Action("FieldTripPost", "FieldTrip",new {id = data.TripId})">See More</a></button>
+                                </div>
+                            </div>
+                    }
+            </div>
+        </div>
+    </section>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+        referrerpolicy="no-referrer"></script>
+        <!-- Jquery Waypoint -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>
+        <!-- BS4 JS -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.5/umd/popper.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- BS4 carousels -->
+        <script>
+            $('.carousel').carousel({
+                interval: 3000
+            });
+        </script>
+        <!-- owl carousels -->
+        <script src="~/js/owl.carousel.min.js"></script>
+        <script>
+            $('.famousList-carousel').owlCarousel({
+                loop: true,
+                margin: 10,
+                nav: true,
+                dots: false,
+                responsive: {
+                    0: {
+                        items: 1
+                    },
+                    576: {
+                        items: 2
+                    },
+                    1200: {
+                        items: 4
+                    }
+                }
+            });
+            $('.ratingList-carousel').owlCarousel({
+                loop: true,
+                margin: 10,
+                nav: true,
+                dots: false,
+                responsive: {
+                    0: {
+                        items: 1
+                    },
+                    576: {
+                        items: 2
+                    },
+                    1200: {
+                        items: 4
+                    }
+                }
+            });
+        </script>
+        <!-- main js -->
+        <script>
+            $(document).ready(function () {
+                $('[data-toggle="tooltip"]').tooltip();
+            });
+        </script>
+        <script src="~/js/user-script.js"></script>
+  </body>
+</html>

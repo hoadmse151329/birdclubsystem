@@ -56,8 +56,10 @@ namespace DAL.Migrations
                         .HasColumnType("int")
                         .HasColumnName("ELO");
 
-                    b.Property<int>("MemberId")
-                        .HasColumnType("int")
+                    b.Property<string>("MemberId")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
                         .HasColumnName("memberId");
 
                     b.Property<string>("Origin")
@@ -75,7 +77,7 @@ namespace DAL.Migrations
 
                     b.HasKey("BirdId");
 
-                    b.HasIndex(new[] { "MemberId" }, "IX_Bird_memberId");
+                    b.HasIndex("MemberId");
 
                     b.ToTable("Bird", (string)null);
                 });
@@ -104,7 +106,7 @@ namespace DAL.Migrations
                     b.HasKey("PictureId")
                         .HasName("PK__BirdMedi__8C2866D8E5255F8B");
 
-                    b.HasIndex(new[] { "BirdId" }, "IX_BirdMedia_birdId");
+                    b.HasIndex("BirdId");
 
                     b.ToTable("BirdMedia");
                 });
@@ -153,8 +155,6 @@ namespace DAL.Migrations
 
                     b.HasKey("BlogId");
 
-                    b.HasIndex(new[] { "UserId" }, "IX_Blog_userId");
-
                     b.ToTable("Blog", (string)null);
                 });
 
@@ -175,29 +175,9 @@ namespace DAL.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ClubId")
-                        .HasName("PK__ClubInfo__DF4AEAB2B80BD850");
+                        .HasName("PK__ClubInfo__DF4AEAB2467C2F83");
 
                     b.ToTable("ClubInformation", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            ClubId = 1,
-                            ClubLocationId = 3,
-                            Description = "The ThunderBird Roars!!!, ThunderBird Bird No 1 Fan Club in Da Nang city"
-                        },
-                        new
-                        {
-                            ClubId = 2,
-                            ClubLocationId = 1,
-                            Description = "ChaoMao Club Main headquarter"
-                        },
-                        new
-                        {
-                            ClubId = 3,
-                            ClubLocationId = 4,
-                            Description = "WindStrike Bird Fan Club from Ho Chi Minh city"
-                        });
                 });
 
             modelBuilder.Entity("DAL.Models.ClubLocation", b =>
@@ -257,10 +237,6 @@ namespace DAL.Migrations
                         .HasColumnName("vote");
 
                     b.HasKey("CommentId");
-
-                    b.HasIndex(new[] { "BlogId" }, "IX_Comment_blogId");
-
-                    b.HasIndex(new[] { "UserId" }, "IX_Comment_userId");
 
                     b.ToTable("Comment", (string)null);
                 });
@@ -374,9 +350,9 @@ namespace DAL.Migrations
                         .HasColumnName("image");
 
                     b.HasKey("PictureId")
-                        .HasName("PK__ContestM__769A271A7CF0320F");
+                        .HasName("PK__ContestM__769A271A9B2DCFE0");
 
-                    b.HasIndex(new[] { "ContestId" }, "IX_ContestMedia_contestId");
+                    b.HasIndex("ContestId");
 
                     b.ToTable("ContestMedia");
                 });
@@ -408,9 +384,9 @@ namespace DAL.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasColumnName("participantNo");
 
-                    b.HasIndex(new[] { "BirdId" }, "IX_ContestParticipants_birdId");
+                    b.HasIndex("BirdId");
 
-                    b.HasIndex(new[] { "ContestId" }, "IX_ContestParticipants_contestId");
+                    b.HasIndex("ContestId");
 
                     b.ToTable("ContestParticipants");
                 });
@@ -449,7 +425,7 @@ namespace DAL.Migrations
                         .HasColumnName("scoreDate");
 
                     b.HasKey("ScoreId")
-                        .HasName("PK__ContestS__B56A0C8DD44B44C9");
+                        .HasName("PK__ContestS__B56A0C8D230083CD");
 
                     b.ToTable("ContestScore", (string)null);
                 });
@@ -492,6 +468,8 @@ namespace DAL.Migrations
                         .HasColumnName("userId");
 
                     b.HasKey("FeedbackId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Feedback", (string)null);
                 });
@@ -598,7 +576,7 @@ namespace DAL.Migrations
                         .HasColumnType("int")
                         .HasColumnName("tripId");
 
-                    b.HasIndex(new[] { "TripId" }, "IX_FieldtripDaybyDay_tripId");
+                    b.HasIndex("TripId");
 
                     b.ToTable("FieldtripDaybyDay", (string)null);
                 });
@@ -621,7 +599,7 @@ namespace DAL.Migrations
                         .HasColumnType("int")
                         .HasColumnName("tripId");
 
-                    b.HasIndex(new[] { "TripId" }, "IX_FieldtripGettingThere_tripId");
+                    b.HasIndex("TripId");
 
                     b.ToTable("FieldtripGettingThere", (string)null);
                 });
@@ -656,7 +634,7 @@ namespace DAL.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasColumnName("type");
 
-                    b.HasIndex(new[] { "TripId" }, "IX_FieldtripInclusions_tripId");
+                    b.HasIndex("TripId");
 
                     b.ToTable("FieldtripInclusions");
                 });
@@ -683,9 +661,9 @@ namespace DAL.Migrations
                         .HasColumnName("tripId");
 
                     b.HasKey("PictureId")
-                        .HasName("PK__Fieldtri__769A271A7C84EFD2");
+                        .HasName("PK__Fieldtri__769A271A14AF4791");
 
-                    b.HasIndex(new[] { "TripId" }, "IX_FieldtripMedia_tripId");
+                    b.HasIndex("TripId");
 
                     b.ToTable("FieldtripMedia");
                 });
@@ -741,15 +719,17 @@ namespace DAL.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("userReview");
 
-                    b.HasIndex(new[] { "TripId" }, "IX_FieldTripOverview_tripId");
+                    b.HasIndex("TripId");
 
                     b.ToTable("FieldTripOverview", (string)null);
                 });
 
             modelBuilder.Entity("DAL.Models.FieldTripParticipant", b =>
                 {
-                    b.Property<int>("MemberId")
-                        .HasColumnType("int")
+                    b.Property<string>("MemberId")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
                         .HasColumnName("memberId");
 
                     b.Property<string>("ParticipantNo")
@@ -762,9 +742,9 @@ namespace DAL.Migrations
                         .HasColumnType("int")
                         .HasColumnName("tripId");
 
-                    b.HasIndex(new[] { "MemberId" }, "IX_FieldTripParticipants_memberId");
+                    b.HasIndex("MemberId");
 
-                    b.HasIndex(new[] { "TripId" }, "IX_FieldTripParticipants_tripId");
+                    b.HasIndex("TripId");
 
                     b.ToTable("FieldTripParticipants");
                 });
@@ -792,7 +772,7 @@ namespace DAL.Migrations
                         .HasColumnType("int")
                         .HasColumnName("tripId");
 
-                    b.HasIndex(new[] { "TripId" }, "IX_FieldtripRates_tripId");
+                    b.HasIndex("TripId");
 
                     b.ToTable("FieldtripRates");
                 });
@@ -816,8 +796,6 @@ namespace DAL.Migrations
                     b.Property<int?>("UserId")
                         .HasColumnType("int")
                         .HasColumnName("userId");
-
-                    b.HasIndex(new[] { "UserId" }, "IX_Gallery_userId");
 
                     b.ToTable("Gallery", (string)null);
                 });
@@ -845,38 +823,6 @@ namespace DAL.Migrations
                     b.HasKey("LocationId");
 
                     b.ToTable("Location", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            LocationId = 1,
-                            Description = "This is a big city, CS 1",
-                            LocationName = "H22/183,Hoang Van Thai,Thanh Xuan,Hanoi"
-                        },
-                        new
-                        {
-                            LocationId = 2,
-                            Description = "This is a big city",
-                            LocationName = "42/6,Ha Huy Tap,P3,Da Lat"
-                        },
-                        new
-                        {
-                            LocationId = 3,
-                            Description = "This is a big city",
-                            LocationName = "7,Quang Trung,Hai Chau,Da Nang"
-                        },
-                        new
-                        {
-                            LocationId = 4,
-                            Description = "This is a big city, CS 2",
-                            LocationName = "224,Le Van Viet,9,Ho Chi Minh"
-                        },
-                        new
-                        {
-                            LocationId = 5,
-                            Description = "This is a big city",
-                            LocationName = "23,Nguyen Dinh Chieu,9,Ho Chi Minh"
-                        });
                 });
 
             modelBuilder.Entity("DAL.Models.Meeting", b =>
@@ -907,7 +853,8 @@ namespace DAL.Migrations
                         .HasColumnName("incharge");
 
                     b.Property<int?>("LocationId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("locationId");
 
                     b.Property<string>("MeetingName")
                         .IsRequired()
@@ -931,67 +878,13 @@ namespace DAL.Migrations
                         .HasColumnType("datetime")
                         .HasColumnName("startDate");
 
+                    b.Property<int?>("Status")
+                        .HasColumnType("int")
+                        .HasColumnName("status");
+
                     b.HasKey("MeetingId");
 
                     b.ToTable("Meeting", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            MeetingId = 1,
-                            Description = "Meet up with new members, exchanging experiences and ideas...Fusce dui est, pellentesque a dolor eu, The main focus of the meetings is birding, thus the meeting location is rotated among good birding locations.",
-                            EndDate = new DateTime(2024, 1, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Host = "John Connor",
-                            Incharge = "James Howard",
-                            LocationId = 1,
-                            MeetingName = "ChaoMaoClub First Anual Meeting",
-                            Note = "Everyone interested in birds of the Ha Noi is welcome at our general meetings, whether members of the Chao Mao Club or not.Specifics about upcoming meetings are provided via the Newsletter sent to all members,and are also provided on this web site.",
-                            NumberOfParticipants = 30,
-                            RegistrationDeadline = new DateTime(2024, 1, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            StartDate = new DateTime(2024, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            MeetingId = 2,
-                            Description = "Meet up with new members, exchanging experiences and ideas...Fusce dui est, pellentesque a dolor eu, The main focus of the meetings is birding, thus the meeting location is rotated among good birding locations.",
-                            EndDate = new DateTime(2024, 2, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Host = "Adam Anderson",
-                            Incharge = "Adele Holmes",
-                            LocationId = 2,
-                            MeetingName = "ChaoMaoClub Second Anual Meeting",
-                            Note = "Everyone interested in birds of the Da Lat City is welcome at our general meetings, whether members of the Chao Mao Club or not.Specifics about upcoming meetings are provided via the Newsletter sent to all members,and are also provided on this web site.",
-                            NumberOfParticipants = 20,
-                            RegistrationDeadline = new DateTime(2024, 2, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            StartDate = new DateTime(2024, 2, 16, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            MeetingId = 3,
-                            Description = "Meet up with new members, exchanging experiences and ideas...Fusce dui est, pellentesque a dolor eu, The main focus of the meetings is birding, thus the meeting location is rotated among good birding locations.",
-                            EndDate = new DateTime(2024, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Host = "Nguyen Van A",
-                            Incharge = "Vuong Cam Tu",
-                            LocationId = 3,
-                            MeetingName = "ThunderBird Club First Meeting",
-                            Note = "Everyone interested in birds of the Da Nang is welcome at our general meetings, whether members of the Chao Mao Club or not.Specifics about upcoming meetings are provided via the Newsletter sent to all members,and are also provided on this web site.",
-                            NumberOfParticipants = 10,
-                            RegistrationDeadline = new DateTime(2024, 3, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            StartDate = new DateTime(2024, 3, 9, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            MeetingId = 4,
-                            Description = "Meet up with new members, exchanging experiences and ideas...Fusce dui est, pellentesque a dolor eu, The main focus of the meetings is birding, thus the meeting location is rotated among good birding locations.",
-                            EndDate = new DateTime(2024, 3, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Host = "Nguyen Tri Thien",
-                            Incharge = "Ngo Ho Quan",
-                            LocationId = 4,
-                            MeetingName = "WindStrike Club First Meeting",
-                            Note = "Everyone interested in birds of the HCM city is welcome at our general meetings, whether members of the Chao Mao Club or not.Specifics about upcoming meetings are provided via the Newsletter sent to all members,and are also provided on this web site.",
-                            NumberOfParticipants = 20,
-                            RegistrationDeadline = new DateTime(2024, 3, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            StartDate = new DateTime(2024, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        });
                 });
 
             modelBuilder.Entity("DAL.Models.MeetingMedia", b =>
@@ -1016,24 +909,23 @@ namespace DAL.Migrations
                         .HasColumnName("meetingId");
 
                     b.HasKey("PictureId")
-                        .HasName("PK__MeetingM__769A271A8E424EAF");
+                        .HasName("PK__MeetingM__769A271A1B6856EF");
 
-                    b.HasIndex(new[] { "MeetingId" }, "IX_MeetingMedia_meetingId");
+                    b.HasIndex("MeetingId");
 
                     b.ToTable("MeetingMedia");
                 });
 
             modelBuilder.Entity("DAL.Models.MeetingParticipant", b =>
                 {
-                    b.Property<int?>("MeetingId")
+                    b.Property<int>("MeetingId")
                         .HasColumnType("int")
-                        .HasColumnName("meetingId")
-                        .HasColumnOrder(0);
+                        .HasColumnName("meetingId");
 
-                    b.Property<int?>("MemberId")
-                        .HasColumnType("int")
-                        .HasColumnName("memberId")
-                        .HasColumnOrder(1);
+                    b.Property<string>("MemberId")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("memberId");
 
                     b.Property<string>("ParticipantNo")
                         .IsRequired()
@@ -1041,23 +933,20 @@ namespace DAL.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasColumnName("participantNo");
 
-                    b.HasKey("MeetingId", "MemberId");
+                    b.HasKey("MeetingId", "MemberId")
+                        .HasName("PK__MeetingP__2BA312F592ED3821");
 
-                    b.HasIndex(new[] { "MeetingId" }, "IX_MeetingParticipant_meetingId");
-
-                    b.HasIndex(new[] { "MemberId" }, "IX_MeetingParticipant_memberId");
+                    b.HasIndex("MemberId");
 
                     b.ToTable("MeetingParticipant", (string)null);
                 });
 
             modelBuilder.Entity("DAL.Models.Member", b =>
                 {
-                    b.Property<int>("MemberId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
+                    b.Property<string>("MemberId")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
                         .HasColumnName("memberId");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MemberId"), 1L, 1);
 
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)")
@@ -1109,116 +998,6 @@ namespace DAL.Migrations
                     b.HasKey("MemberId");
 
                     b.ToTable("Member", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            MemberId = 1,
-                            Address = "154/20 Nguyen Kim Street, Ward 6, Dist.10, Ho Chi Minh City",
-                            ClubId = 1,
-                            Description = "yo adsjsdajndsjadna",
-                            Email = "anguyenvan@gmail.com.vn",
-                            FullName = "Nguyen Van A",
-                            Gender = "male",
-                            Phone = "0838548850",
-                            Role = "Manager",
-                            Status = "Active",
-                            UserName = "Nguyen Van A"
-                        },
-                        new
-                        {
-                            MemberId = 2,
-                            Address = "334 Huynh Tan Phat Street, District 7, Ho Chi Minh City",
-                            Description = "yo adsjsdajndsjadna",
-                            Email = "danecho@gmail.com",
-                            FullName = "Daniel Echocraft",
-                            Gender = "male",
-                            Phone = "0838726767",
-                            Role = "Member",
-                            Status = "Active",
-                            UserName = "DanEchocraft"
-                        },
-                        new
-                        {
-                            MemberId = 3,
-                            Address = "23 Nguyen Bieu Street, Ba Dinh District, Ha Noi",
-                            ClubId = 2,
-                            Description = "yo adsjsdajndsjadna",
-                            Email = "adminquan@chaomaoclub.com.vn",
-                            FullName = "Vuong Hai Quan",
-                            Gender = "male",
-                            Phone = "0938329397",
-                            Role = "Admin",
-                            Status = "Active",
-                            UserName = "Admin"
-                        },
-                        new
-                        {
-                            MemberId = 4,
-                            Address = "111-E1 Phuong Mai Street, Dong Da District, Ha Noi",
-                            ClubId = 2,
-                            Description = "yo adsjsdajndsjadna",
-                            Email = "johncon@gmail.com",
-                            FullName = "John Connor",
-                            Gender = "male",
-                            Phone = "0938523649",
-                            Role = "Manager",
-                            Status = "Active",
-                            UserName = "JohnCon"
-                        },
-                        new
-                        {
-                            MemberId = 5,
-                            Address = "14 Nguyen Bieu Street, Ba Dinh District, Ha Noi",
-                            ClubId = 1,
-                            Description = "yo adsjsdajndsjadna",
-                            Email = "tuvc@gmail.com",
-                            FullName = "Vuong Cam Tu",
-                            Gender = "female",
-                            Phone = "0838548850",
-                            Role = "Staff",
-                            Status = "Active",
-                            UserName = "Vuong Cam Tu"
-                        },
-                        new
-                        {
-                            MemberId = 6,
-                            Address = "28/12, Phan Dinh Giot Street, Ward 2, Dist.Tan Binh, Ho Chi Minh City",
-                            ClubId = 3,
-                            Description = "yo adsjsdajndsjadna",
-                            Email = "thiennguyen132@gmail.com",
-                            FullName = "Nguyen Tri Thien",
-                            Gender = "male",
-                            Phone = "0938478766",
-                            Role = "Manager",
-                            Status = "Active",
-                            UserName = "Nguyen Tri Thien"
-                        },
-                        new
-                        {
-                            MemberId = 7,
-                            Address = "478 Nguyen Thi Minh Khai Street, Ward 2, District 3, Ho Chi Minh City",
-                            ClubId = 3,
-                            Description = "yo adsjsdajndsjadna",
-                            Email = "quanNHo145@gmail.com",
-                            FullName = "Ngo Ho Quan",
-                            Gender = "male",
-                            Phone = "0938353577",
-                            Role = "Staff",
-                            Status = "Active",
-                            UserName = "Ngo Ho Quan"
-                        },
-                        new
-                        {
-                            MemberId = 8,
-                            Email = "justym@gmail.com",
-                            FullName = "Michael Jordan",
-                            Gender = "male",
-                            Phone = "01241242141",
-                            Role = "Member",
-                            Status = "Active",
-                            UserName = "Michael Jordan"
-                        });
                 });
 
             modelBuilder.Entity("DAL.Models.News", b =>
@@ -1272,8 +1051,6 @@ namespace DAL.Migrations
                         .HasColumnName("userId");
 
                     b.HasKey("NewsId");
-
-                    b.HasIndex(new[] { "UserId" }, "IX_News_userId");
 
                     b.ToTable("News");
                 });
@@ -1336,8 +1113,9 @@ namespace DAL.Migrations
                         .HasColumnType("int")
                         .HasColumnName("clubId");
 
-                    b.Property<int?>("MemberId")
-                        .HasColumnType("int")
+                    b.Property<string>("MemberId")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
                         .HasColumnName("memberId");
 
                     b.Property<string>("Password")
@@ -1345,86 +1123,23 @@ namespace DAL.Migrations
                         .HasColumnType("nvarchar(255)")
                         .HasColumnName("password");
 
-                    b.Property<string>("UserName")
+                    b.Property<string>("Role")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)")
+                        .HasColumnName("role");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)")
                         .HasColumnName("userName");
 
                     b.HasKey("UserId");
 
-                    b.HasIndex(new[] { "MemberId" }, "IX_User_memberId")
+                    b.HasIndex("MemberId")
                         .IsUnique()
-                        .HasFilter("([memberId] IS NOT NULL)");
-
-                    b.HasIndex(new[] { "UserName" }, "UQ__User__66DCF95CC4AB3072")
-                        .IsUnique()
-                        .HasFilter("([userName] IS NOT NULL)");
+                        .HasFilter("[memberId] IS NOT NULL");
 
                     b.ToTable("User");
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = 1,
-                            ClubId = 1,
-                            MemberId = 1,
-                            Password = "123",
-                            UserName = "ANV2024"
-                        },
-                        new
-                        {
-                            UserId = 2,
-                            MemberId = 2,
-                            Password = "123",
-                            UserName = "DanEcho"
-                        },
-                        new
-                        {
-                            UserId = 3,
-                            ClubId = 2,
-                            MemberId = 3,
-                            Password = "theadmin",
-                            UserName = "Admin"
-                        },
-                        new
-                        {
-                            UserId = 4,
-                            ClubId = 2,
-                            MemberId = 4,
-                            Password = "123",
-                            UserName = "JConnor"
-                        },
-                        new
-                        {
-                            UserId = 5,
-                            ClubId = 1,
-                            MemberId = 5,
-                            Password = "123",
-                            UserName = "TuVC1010"
-                        },
-                        new
-                        {
-                            UserId = 6,
-                            ClubId = 3,
-                            MemberId = 6,
-                            Password = "123",
-                            UserName = "ThienNTBirdio"
-                        },
-                        new
-                        {
-                            UserId = 7,
-                            ClubId = 3,
-                            MemberId = 7,
-                            Password = "123",
-                            UserName = "QuanNH2024"
-                        },
-                        new
-                        {
-                            UserId = 8,
-                            MemberId = 8,
-                            Password = "123",
-                            UserName = "JustYourMan"
-                        });
                 });
 
             modelBuilder.Entity("DAL.Models.Bird", b =>
@@ -1446,34 +1161,6 @@ namespace DAL.Migrations
                         .HasConstraintName("FK_BirdMedia_Bird");
 
                     b.Navigation("Bird");
-                });
-
-            modelBuilder.Entity("DAL.Models.Blog", b =>
-                {
-                    b.HasOne("DAL.Models.User", "User")
-                        .WithMany("Blogs")
-                        .HasForeignKey("UserId")
-                        .IsRequired()
-                        .HasConstraintName("FK_Blog_User");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("DAL.Models.Comment", b =>
-                {
-                    b.HasOne("DAL.Models.Blog", "Blog")
-                        .WithMany("Comments")
-                        .HasForeignKey("BlogId")
-                        .HasConstraintName("FK_Blog_Comments");
-
-                    b.HasOne("DAL.Models.User", "User")
-                        .WithMany("Comments")
-                        .HasForeignKey("UserId")
-                        .HasConstraintName("FK_User_Comments");
-
-                    b.Navigation("Blog");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("DAL.Models.ContestMedia", b =>
@@ -1501,6 +1188,17 @@ namespace DAL.Migrations
                     b.Navigation("Bird");
 
                     b.Navigation("Contest");
+                });
+
+            modelBuilder.Entity("DAL.Models.Feedback", b =>
+                {
+                    b.HasOne("DAL.Models.User", "User")
+                        .WithMany("Feedbacks")
+                        .HasForeignKey("UserId")
+                        .IsRequired()
+                        .HasConstraintName("FK_Feedback_Users");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("DAL.Models.FieldtripDaybyDay", b =>
@@ -1587,16 +1285,6 @@ namespace DAL.Migrations
                     b.Navigation("Trip");
                 });
 
-            modelBuilder.Entity("DAL.Models.Gallery", b =>
-                {
-                    b.HasOne("DAL.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .HasConstraintName("FK_Gallery_User");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("DAL.Models.MeetingMedia", b =>
                 {
                     b.HasOne("DAL.Models.Meeting", "Meeting")
@@ -1610,16 +1298,14 @@ namespace DAL.Migrations
             modelBuilder.Entity("DAL.Models.MeetingParticipant", b =>
                 {
                     b.HasOne("DAL.Models.Meeting", "Meeting")
-                        .WithMany()
+                        .WithMany("MeetingParticipants")
                         .HasForeignKey("MeetingId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("FK__MeetingPar__MeID__03F0984C");
 
                     b.HasOne("DAL.Models.Member", "Member")
-                        .WithMany()
+                        .WithMany("MeetingParticipants")
                         .HasForeignKey("MemberId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("FK_MeetingParticipant_Member");
 
@@ -1628,23 +1314,12 @@ namespace DAL.Migrations
                     b.Navigation("Member");
                 });
 
-            modelBuilder.Entity("DAL.Models.News", b =>
-                {
-                    b.HasOne("DAL.Models.User", "User")
-                        .WithMany("News")
-                        .HasForeignKey("UserId")
-                        .IsRequired()
-                        .HasConstraintName("FK_News_User");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("DAL.Models.User", b =>
                 {
                     b.HasOne("DAL.Models.Member", "Member")
-                        .WithOne("User")
+                        .WithOne("Users")
                         .HasForeignKey("DAL.Models.User", "MemberId")
-                        .HasConstraintName("FK_User_Member");
+                        .HasConstraintName("FK_Users_Member");
 
                     b.Navigation("Member");
                 });
@@ -1652,11 +1327,6 @@ namespace DAL.Migrations
             modelBuilder.Entity("DAL.Models.Bird", b =>
                 {
                     b.Navigation("BirdMedia");
-                });
-
-            modelBuilder.Entity("DAL.Models.Blog", b =>
-                {
-                    b.Navigation("Comments");
                 });
 
             modelBuilder.Entity("DAL.Models.Contest", b =>
@@ -1672,22 +1342,22 @@ namespace DAL.Migrations
             modelBuilder.Entity("DAL.Models.Meeting", b =>
                 {
                     b.Navigation("MeetingMedia");
+
+                    b.Navigation("MeetingParticipants");
                 });
 
             modelBuilder.Entity("DAL.Models.Member", b =>
                 {
                     b.Navigation("Birds");
 
-                    b.Navigation("User");
+                    b.Navigation("MeetingParticipants");
+
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("DAL.Models.User", b =>
                 {
-                    b.Navigation("Blogs");
-
-                    b.Navigation("Comments");
-
-                    b.Navigation("News");
+                    b.Navigation("Feedbacks");
                 });
 #pragma warning restore 612, 618
         }

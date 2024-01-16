@@ -4,6 +4,7 @@ using BAL.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 using System.Data;
 
 namespace WebAPI.Controllers
@@ -31,7 +32,7 @@ namespace WebAPI.Controllers
 		[ProducesResponseType(typeof(MemberViewModel), StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
-		public IActionResult GetMemberDetailsById([FromRoute] int id)
+		public IActionResult GetMemberDetailsById([FromRoute] string id)
 		{
 			try
 			{
@@ -40,15 +41,15 @@ namespace WebAPI.Controllers
 				{
 					return NotFound(new
 					{
-						status = false,
-						errorMessage = "Member Details Not Found!"
+						Status = false,
+						ErrorMessage = "Member Details Not Found!"
 					});
 				}
 
 				return Ok(new
 				{
-					status = true,
-					result
+					Status = true,
+					Data = result
 				});
 			}
 			catch (Exception ex)
@@ -56,45 +57,42 @@ namespace WebAPI.Controllers
 				// Log the exception if needed
 				return BadRequest(new
 				{
-					status = false,
-					errorMessage = ex.Message
+					Status = false,
+					ErrorMessage = ex.Message
 				});
 			}
 		}
 		/// <summary>
 		/// Get member informations by Member ID
 		/// </summary>
-		///      <param name="id">Member's Details ID</param>
 		/// <returns>Return result of action and error message</returns>
 		// GET api/<UserController>/5
-		[HttpPut("{id}")]
-		[Authorize(Roles = "Member,Admin")]
-		[HttpPut("Update/{id}")]
-		[ProducesResponseType(typeof(MemberViewModel), StatusCodes.Status200OK)]
+        [HttpPut("Update")]
+        [Authorize(Roles = "Member,Admin")]
+        [ProducesResponseType(typeof(MemberViewModel), StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		public async Task<IActionResult> UpdateMemberDetails(
-			//[FromBody] int memId,
-			[FromBody] MemberViewModel member
+			[Required][FromBody] MemberViewModel member
 			)
 		{
 			try
 			{
-				var result = await _memberService.GetById(member.MemberId.Value);
+				var result = await _memberService.GetById(member.MemberId);
 				if (result == null)
 				{
 					return NotFound(new
 					{
-						status = false,
-						errorMessage = "Member Details Not Found!"
+						Status = false,
+						ErrorMessage = "Member Details Not Found!"
 					});
 				}
 				_memberService.Update(member);
-				result = await _memberService.GetById(member.MemberId.Value);
+				result = await _memberService.GetById(member.MemberId);
 				return Ok(new
 				{
-					status = true,
-					result
+					Status = true,
+					Data = result
 				});
 			}
 			catch (Exception ex)
@@ -102,8 +100,8 @@ namespace WebAPI.Controllers
 				// Log the exception if needed
 				return BadRequest(new
 				{
-					status = false,
-					errorMessage = ex.Message
+					Status = false,
+					ErrorMessage = ex.Message
 				});
 			}
 		}

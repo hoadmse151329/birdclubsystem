@@ -1,15 +1,7 @@
-﻿using DAL.Models;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System.Linq;
-using BAL.Services.Implements;
+﻿using Microsoft.AspNetCore.Mvc;
 using BAL.Services.Interfaces;
 using BAL.ViewModels;
-using BAL.ViewModels.Authenticates;
-using DAL.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 namespace WebAPI.Controllers
 {
@@ -31,11 +23,10 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("{id}")]
-        [Authorize(Roles = "Admin,Manager,Staff,Member")]
         [ProducesResponseType(typeof(MeetingViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult GetMeetingById(int id)
+        public IActionResult GetMeetingById([FromRoute] int id)
         {
             try
             {
@@ -105,7 +96,16 @@ namespace WebAPI.Controllers
         [ProducesResponseType(typeof(MeetingViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult Create(string meetingName, string description, DateTime registrationDeadline, DateTime startDate, DateTime endDate, int numberOfParticipants, string host, string incharge, string note)
+        public IActionResult Create(
+            [Required] string meetingName,
+            [Required] string description,
+            [Required] DateTime registrationDeadline,
+            [Required] DateTime startDate,
+            [Required] DateTime endDate,
+            [Required] int numberOfParticipants,
+            [Required] string host,
+            [Required] string incharge,
+            [Required] string note)
         {
             try
             {
@@ -145,7 +145,7 @@ namespace WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Register(
             [Required][FromRoute] int id,
-            [Required][FromBody] int usrId)
+            [Required][FromBody] string usrId)
         {
             try
             {
@@ -178,13 +178,22 @@ namespace WebAPI.Controllers
                 });
             }
         }
-        [HttpPut("Update")]
         [Authorize(Roles = "Manager")]
         [HttpPut("Update/{id}")]
         [ProducesResponseType(typeof(MeetingViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Update(int id, string meetingname, string description, DateTime registrationDeadline, DateTime startDate, DateTime endDate, int numberOfParticipants, string host, string incharge, string note)
+        public async Task<IActionResult> Update(
+            [Required][FromRoute] int id, 
+            [Required] string meetingname, 
+            [Required] string description, 
+            [Required] DateTime registrationDeadline, 
+            [Required] DateTime startDate, 
+            [Required] DateTime endDate, 
+            [Required] int numberOfParticipants, 
+            [Required] string host, 
+            [Required] string incharge, 
+            [Required] string note)
         {
             try
             {
@@ -224,6 +233,5 @@ namespace WebAPI.Controllers
                 });
             }
         }
-        
     }
 }

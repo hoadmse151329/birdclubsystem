@@ -21,7 +21,7 @@ namespace BAL.Services.Implements
             _mapper = mapper;
         }
 
-        public async Task<int> Create(int memId, int metId)
+        public async Task<int> Create(string memId, int metId)
         {
             int partNo = await _unitOfWork.MeetingParticipantRepository.GetParticipationNoMeetingParticipantById(metId, memId);
             if (partNo > 0) return partNo;
@@ -41,6 +41,26 @@ namespace BAL.Services.Implements
         public async Task<IEnumerable<MeetingParticipantViewModel>> GetAll()
         {
             return _mapper.Map<IEnumerable<MeetingParticipantViewModel>>(_unitOfWork.MeetingRepository.GetAll());
+        }
+
+        public async Task<int> GetCurrentParticipantAmounts(int metId)
+        {
+            return await _unitOfWork.MeetingParticipantRepository.GetCountMeetingParticipantsByMeetId(metId);
+        }
+
+        public async Task<int> GetParticipationNo(string memId, int metId)
+        {
+            return await _unitOfWork.MeetingParticipantRepository.GetParticipationNoMeetingParticipantById(metId, memId);
+        }
+
+        public async Task<bool> Delete(string memId, int metId)
+        {
+            bool check = await _unitOfWork.MeetingParticipantRepository.GetBoolMeetingParticipantById(metId, memId);
+            if (!check) return false;
+            MeetingParticipant meetingParticipant = await _unitOfWork.MeetingParticipantRepository.GetMeetingParticipantById(metId, memId);
+            _unitOfWork.MeetingParticipantRepository.Delete(meetingParticipant);
+            _unitOfWork.Save();
+            return true;
         }
     }
 }

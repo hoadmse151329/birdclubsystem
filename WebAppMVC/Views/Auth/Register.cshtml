@@ -116,7 +116,7 @@
 						</div>
 
 						<div class="d-flex box-body justify-content-center">
-							<form class="reg-form">
+							<form class="reg-form" asp-controller="Auth" asp-action="SignUp">
 								@{
 									if (ViewBag.error != null)
 									{
@@ -158,7 +158,7 @@
 									
 									<span asp-validation-for="ConfirmPassword" class="text-danger"></span>
 								</div>
-								<button class="reg-button btn light-green" type="submit" value="Register">Register</button>
+								<button class="reg-button btn light-green" type="submit" value="SignUp">Register</button>
 								<div class="reg-text">
 									Already a Member? <a href="@Url.Action("Login","Auth")" class="link-success">Login</a>
 								</div>

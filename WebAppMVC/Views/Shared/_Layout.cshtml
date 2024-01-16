@@ -70,9 +70,34 @@
                         <li class="nav-item nav-item-text">
                             <a class="nav-link" href="#">Community</a>
                         </li>
-                        <li class="nav-item nav-item-text">
-                            <a class="nav-link" href="#">User</a>
-                        </li>
+                        <ul class="nav">
+    @if (User.Identity.IsAuthenticated) // thiếu chia theo admin, staff , member, manager
+    {
+        <!-- Display this when the user is logged in -->
+        <li class="nav-item nav-item-text">
+             <div class="user-dropdown dropdown">
+                <button class="btn-user-dropdown text-white btn dropdown-toggle" type="button"
+                        id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span>Xin chào, FullName</span>
+                    <span><img id="profile-pic" class="img-fluid" src="~/images/avatar2.png" alt="fullname"></span>
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="MainController?action=ShowProfile&userID=<%=loginUser.getUserId()%>&role=<%=loginUser.getRole()%>">
+                        Member Profile</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="MainController?action=Logout">Logout</a>
+                </div>
+            </div>
+        </li>
+    }
+    else
+    {
+        <!-- Display this when the user is not logged in -->
+        <li class="nav-item nav-item-text">
+            <a class="nav-link" href="@Url.Action("login", "Auth")">Login</a>
+        </li>
+    }
+                    </ul>
                     </ul>
                 </div>
                 @*<a class="d-flex nav-item px-2 nav-item-text text-black" style="width: 128px; padding-bottom: 112px; padding-left: 34px; padding-right: 34px; left: 593px; text-decoration: none;">

@@ -34,20 +34,20 @@ body {
   display: table;
   transform: translateY(0);
   transition: 0.5s; }
-  .room-item .motel-title {
+  .room-item .club-title {
     padding-top: 10px; }
-    .room-item .motel-title a {
+    .room-item .club-title a {
       color: #00ccb8;
       transition: all 0.5s; }
-      .room-item .motel-title a:hover {
+      .room-item .club-title a:hover {
         color: #ffadd9; }
-  .room-item .motel-image {
+  .room-item .club-image {
     display: block;
     border-radius: 10px;
     overflow: hidden; }
-    .room-item .motel-image img {
+    .room-item .club-image img {
       height: 100px; }
-  .room-item .motel-price {
+  .room-item .club-price {
     font-size: 14px; }
   .room-item:hover {
     transform: translateY(-10px);
@@ -334,30 +334,30 @@ footer {
   color: #000;
   font-size: 40px; }
 .infor .infor__content img {
-  width: 65px;
-  height: 65px;
+  width: 45px;
+  height: 45px;
   border-radius: 50%; }
 .infor .infor__content .content {
   margin: 0 10px; }
   .infor .infor__content .content h4 {
     font-size: 18px; }
 
-.motel {
+.club {
   padding-top: 0; }
-  .motel .heading {
+  .club .heading {
     color: #2c3e50;
     font-weight: 700;
     margin-bottom: 15px; }
-  .motel .motel__content {
+  .club .club__content {
     position: relative;
     padding-bottom: 10px; }
-    .motel .motel__content h5 {
+    .club .club__content h5 {
       font-weight: bold;
       margin-left: 10px;
       background: -webkit-linear-gradient(0.25turn, #00ecd5, #ffadd9);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent; }
-      .motel .motel__content h5 i {
+      .club .club__content h5 i {
         font-size: 18px; }
 
 .content {
@@ -625,7 +625,7 @@ footer {
   box-shadow: 1px 1px 5px #b0b0b0;
   background-color: #fff;
   display: table; }
-  .content__list .item .motel-image {
+  .content__list .item .club-image {
     display: block;
     border-radius: 10px;
     overflow: hidden; }
