@@ -40,6 +40,7 @@ namespace BAL.AutoMapperProfile
                 });
             CreateMap<Transaction, TransactionViewModel>().ReverseMap();
             CreateMap<FieldTrip, FieldTripViewModel>().ReverseMap();
+            CreateMap<Contest, ContestViewModel>().ReverseMap();
         }
     }
 }
