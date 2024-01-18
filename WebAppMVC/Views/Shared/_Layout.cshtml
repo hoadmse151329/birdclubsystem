@@ -78,14 +78,14 @@
              <div class="user-dropdown dropdown">
                 <button class="btn-user-dropdown text-white btn dropdown-toggle" type="button"
                         id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <span>Xin chào, FullName</span>
+                    <span>Xin chào, @User.Identity.Name</span>
                     <span><img id="profile-pic" class="img-fluid" src="~/images/avatar2.png" alt="fullname"></span>
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" href="MainController?action=ShowProfile&userID=<%=loginUser.getUserId()%>&role=<%=loginUser.getRole()%>">
+                    <a class="dropdown-item" href="@Url.Action("MemberProfile", "Member")">
                         Member Profile</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="MainController?action=Logout">Logout</a>
+                    <a class="dropdown-item" href="@Url.Action("Logout", "Auth")">Logout</a>
                 </div>
             </div>
         </li>
