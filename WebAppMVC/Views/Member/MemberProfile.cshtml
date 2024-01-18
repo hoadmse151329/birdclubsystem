@@ -35,16 +35,17 @@
         <div class="row">
             <div class="navigation col-2" style="background:white">
                 <ul class="slide-menu" style="background-color:white">
-                    <li class="active">
-                        <a href="user-profile.html">
-                            <span><i class='bx bx-user'></i></span>
+                    <li>
+                        <a
+                            href="@Url.Action("MemberProfile", "Member")>
+                            <span><i class="bx bx-user"></i></span>
                             <span class="title">Account</span>
                         </a>
                     </li>
-                    <li>
-                        <a href="user-history-booking.html">
-                            <span><i class='bx bx-history'></i></span>
-                            <span class="title">Registered Event</span>
+                    <li class="active">
+                        <a href="@Url.Action("MemberHistoryEvent", "Member")>
+                            <span><i class="bx bx-history"></i></span>
+                            <span class="title">Member Registered Event</span>
                         </a>
                     </li>
                 </ul>
@@ -74,8 +75,7 @@
                                                             <div class="row userName-content">
                                                                 <label class="contact-title col-md-5 col-sm-4 mt-3">Account</label>
                                                                 <input type="text" name="userName"
-                                                                    class="form-control col-md-5 col-sm-8 mt-2" disabled
-                                                                    value="quan01">
+                                                                    class="form-control col-md-5 col-sm-8 mt-2">
                                                                 <span id="error_message"
                                                                     class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
