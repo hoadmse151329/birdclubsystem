@@ -71,20 +71,20 @@
                             <a class="nav-link" href="#">Community</a>
                         </li>
                         <ul class="nav">
-    @if (User.Identity.IsAuthenticated)
-    {
-        <!-- Display this when the user is logged in -->
-        <li class="nav-item nav-item-text">
-            <a class="nav-link" href="#">User</a>
-        </li>
-    }
-    else
-    {
-        <!-- Display this when the user is not logged in -->
-        <li class="nav-item nav-item-text">
-            <a class="nav-link" href="@Url.Action("login", "Auth")">Login</a>
-        </li>
-    }
+                            @if (TempData["ROLE_NAME"] != null)
+                            {
+                                    <!-- Display this when the user is logged in -->
+                                    <li class="nav-item nav-item-text">
+                                        <a class="nav-link" href="@Url.Action("MemberProfile", "Member")">User</a>
+                                    </li>
+                            }
+                            else
+                            {
+                                <!-- Display this when the user is not logged in -->
+                                <li class="nav-item nav-item-text">
+                                    <a class="nav-link" href="@Url.Action("login", "Auth")">Login</a>
+                                </li>
+                            }
                     </ul>
                     </ul>
                 </div>

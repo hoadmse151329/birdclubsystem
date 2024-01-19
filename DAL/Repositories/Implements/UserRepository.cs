@@ -34,5 +34,15 @@ namespace DAL.Repositories.Implements
         {
             return _context.Users.AsNoTrackingWithIdentityResolution().Include(usr => usr.Member).SingleOrDefault(usr => usr.UserName == userName && usr.Password == passWord);
         }
+
+        public async Task<string?> GetMemberIdByIdNoTracking(int id)
+        {
+            var usr = _context.Users.AsNoTrackingWithIdentityResolution().Include(usr => usr.Member).SingleOrDefault(usr => usr.UserId == id);
+            if (usr != null)
+            {
+                return usr.MemberId;
+            }
+            return null;
+        }
     }
 }

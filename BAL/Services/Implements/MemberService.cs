@@ -75,10 +75,19 @@ namespace BAL.Services.Implements
 			return null;
 		}
 
-		public Task<MemberViewModel?> GetByUserId()
+		public async Task<MemberViewModel?> GetByUserId(int id)
 		{
-			throw new NotImplementedException();
-		}
+            var memId = await _unitOfWork.UserRepository.GetMemberIdByIdNoTracking(id);
+			if(memId != null)
+			{
+                var mem = await _unitOfWork.MemberRepository.GetByIdNoTracking(memId);
+				if(mem != null)
+				{
+					return _mapper.Map<MemberViewModel>(mem);
+                }
+            }
+            return null;
+        }
 
 		public void Update(MemberViewModel entity)
 		{

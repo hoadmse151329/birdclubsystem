@@ -4,6 +4,6 @@ namespace WebAppMVC.Models.FieldTrip
 {
     public class GetFieldTripResponseByList : DefaultResponseViewModel
     {
-        public List<FieldTripViewModel> Data { get; set; }
+        public List<FieldTripViewModel>? Data { get; set; }
     }
 }

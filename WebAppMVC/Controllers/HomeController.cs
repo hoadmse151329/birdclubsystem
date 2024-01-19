@@ -37,18 +37,21 @@ namespace WebAppMVC.Controllers
             string MeetingAPI_URL = HomeAPI_URL + "Meeting/All";
             string FieldTripAPI_URL_All = HomeAPI_URL + "FieldTrip/All";
             dynamic testmodel = new ExpandoObject();
+            TempData["ROLE_NAME"] = HttpContext.Session.GetString("ROLE_NAME");
 
             var listFieldTripResponse = await methcall.CallMethodReturnObject<GetFieldTripResponseByList>(
                 _httpClient: _httpClient,
                 options: options,
                 methodName: "GET",
-                url: FieldTripAPI_URL_All);
+                url: FieldTripAPI_URL_All,
+                _logger: _logger);
 
             var listMeetResponse = await methcall.CallMethodReturnObject<GetMeetingResponseByList>(
                 _httpClient: _httpClient,
                 options: options,
                 methodName: "GET",
-                url: MeetingAPI_URL);
+                url: MeetingAPI_URL,
+                _logger: _logger);
 
             if (listMeetResponse == null || listFieldTripResponse == null)
             {

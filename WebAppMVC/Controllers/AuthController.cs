@@ -34,47 +34,54 @@ namespace WebAppMVC.Controllers
 		[HttpPost]
 		public async Task<IActionResult> Authorize(AuthenRequest authenRequest)
 		{
-			var json = JsonSerializer.Serialize(authenRequest);
+            AuthenAPI_URL += "/Login";
+            var json = JsonSerializer.Serialize(authenRequest);
 			var content = new StringContent(json, Encoding.UTF8, "application/json");
 			var options = new JsonSerializerOptions
 			{
 				PropertyNameCaseInsensitive = true,
 			};
-			AuthenAPI_URL += "/Login";
 			HttpResponseMessage response = await client.PostAsync(AuthenAPI_URL, content);
 			if (!response.IsSuccessStatusCode)
 			{
-				ViewBag.error = "Username or Password is invalid.";
+                _logger.LogInformation("Username or Password is invalid: " + response.StatusCode + " , Error Message: " + await response.Content.ReadAsStringAsync());
+                ViewBag.error = "Username or Password is invalid.";
 				return View("Login");
 			}
 			string jsonResponse = await response.Content.ReadAsStringAsync();
 			var authenResponse = JsonSerializer.Deserialize<GetAuthenResponse>(jsonResponse, options);
 			var reponseAuthen = authenResponse.Data;
+
 			if (authenResponse.Status)
 			{
 				HttpContext.Session.SetString("ACCESS_TOKEN", reponseAuthen.AccessToken);
 				HttpContext.Session.SetString("ROLE_NAME", reponseAuthen.RoleName);
-				HttpContext.Session.SetString("USER_ID", reponseAuthen.UserId.ToString());
+				HttpContext.Session.SetString("USER_ID", reponseAuthen.UserId);
 				client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", reponseAuthen.AccessToken);
+
 				TempData["ACCESS_TOKEN"] = reponseAuthen.AccessToken;
 				TempData["ROLE_NAME"] = reponseAuthen.RoleName;
-				TempData["USER_ID"] = reponseAuthen.UserId.ToString();
+				TempData["USER_ID"] = reponseAuthen.UserId;
 			}
 			if (reponseAuthen!.RoleName == Constants.Constants.ADMIN)
 			{
+				_logger.LogInformation("Admin Login Successful: " + TempData["ROLE_NAME"] + " , Id: " + TempData["USER_ID"]);
 				return base.Redirect(Constants.Constants.ADMIN_URL);
 			}
 			else if (reponseAuthen!.RoleName == Constants.Constants.MANAGER)
 			{
-				return base.Redirect(Constants.Constants.MANAGER_URL);
+                _logger.LogInformation("Manager Login Successful: " + TempData["ROLE_NAME"] + " , Id: " + TempData["USER_ID"]);
+                return base.Redirect(Constants.Constants.MANAGER_URL);
 			}
 			else if (reponseAuthen!.RoleName == Constants.Constants.STAFF)
 			{
-				return base.Redirect(Constants.Constants.STAFF_URL);
+                _logger.LogInformation("Staff Login Successful: " + TempData["ROLE_NAME"] + " , Id: " + TempData["USER_ID"]);
+                return base.Redirect(Constants.Constants.STAFF_URL);
 			}
 			else
 			{
-				return base.Redirect(Constants.Constants.MEMBER_URL);
+                _logger.LogInformation("Member Login Successful: " + TempData["ROLE_NAME"] + " , Id: " + TempData["USER_ID"]);
+                return base.Redirect(Constants.Constants.MEMBER_URL);
 			}
 		}
 		[HttpPost]
@@ -91,7 +98,8 @@ namespace WebAppMVC.Controllers
 			HttpResponseMessage response = await client.PostAsync(AuthenAPI_URL, content);
 			if (!response.IsSuccessStatusCode)
 			{
-				ViewBag.error = "Error while registering your new account ! ";
+                _logger.LogInformation("Error while registering your new account: " + response.StatusCode + " , Error Message: " + await response.Content.ReadAsStringAsync());
+                ViewBag.error = "Error while registering your new account ! ";
 				return View("Register");
 			}
 			string jsonResponse = await response.Content.ReadAsStringAsync();
@@ -101,28 +109,32 @@ namespace WebAppMVC.Controllers
 			{
 				HttpContext.Session.SetString("ACCESS_TOKEN", reponseAuthen.AccessToken);
 				HttpContext.Session.SetString("ROLE_NAME", reponseAuthen.RoleName);
-				HttpContext.Session.SetString("USER_ID", reponseAuthen.UserId.ToString());
+				HttpContext.Session.SetString("USER_ID", reponseAuthen.UserId);
 				client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", reponseAuthen.AccessToken);
 				TempData["ACCESS_TOKEN"] = reponseAuthen.AccessToken;
 				TempData["ROLE_NAME"] = reponseAuthen.RoleName;
-				TempData["USER_ID"] = reponseAuthen.UserId.ToString();
+				TempData["USER_ID"] = reponseAuthen.UserId;
 			}
-			if (reponseAuthen!.RoleName == Constants.Constants.ADMIN)
-			{
-				return base.Redirect(Constants.Constants.ADMIN_URL);
-			}
-			else if (reponseAuthen!.RoleName == Constants.Constants.MANAGER)
-			{
-				return base.Redirect(Constants.Constants.MANAGER_URL);
-			}
-			else if (reponseAuthen!.RoleName == Constants.Constants.STAFF)
-			{
-				return base.Redirect(Constants.Constants.STAFF_URL);
-			}
-			else
-			{
-				return base.Redirect(Constants.Constants.MEMBER_URL);
-			}
-		}
+            if (reponseAuthen!.RoleName == Constants.Constants.ADMIN)
+            {
+                _logger.LogInformation("Admin Register Successful: " + TempData["ROLE_NAME"] + " , Id: " + TempData["USER_ID"]);
+                return base.Redirect(Constants.Constants.ADMIN_URL);
+            }
+            else if (reponseAuthen!.RoleName == Constants.Constants.MANAGER)
+            {
+                _logger.LogInformation("Manager Register Successful: " + TempData["ROLE_NAME"] + " , Id: " + TempData["USER_ID"]);
+                return base.Redirect(Constants.Constants.MANAGER_URL);
+            }
+            else if (reponseAuthen!.RoleName == Constants.Constants.STAFF)
+            {
+                _logger.LogInformation("Staff Register Successful: " + TempData["ROLE_NAME"] + " , Id: " + TempData["USER_ID"]);
+                return base.Redirect(Constants.Constants.STAFF_URL);
+            }
+            else
+            {
+                _logger.LogInformation("Member Register Successful: " + TempData["ROLE_NAME"] + " , Id: " + TempData["USER_ID"]);
+                return base.Redirect(Constants.Constants.MEMBER_URL);
+            }
+        }
 	}
 }

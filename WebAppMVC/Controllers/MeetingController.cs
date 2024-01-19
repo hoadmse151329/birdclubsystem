@@ -8,6 +8,8 @@ using WebAppMVC.Constants;
 using WebAppMVC.Models.Location;
 using BAL.Services.Interfaces;
 using System.Text;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace WebAppMVC.Controllers
 {
@@ -38,21 +40,26 @@ namespace WebAppMVC.Controllers
             MeetingAPI_URL += "/All";
 			string LocationAPI_URL_All = "/api/Location/All";
 			dynamic testmodel = new ExpandoObject();
+            TempData["ROLE_NAME"] = HttpContext.Session.GetString("ROLE_NAME");
 
             var listLocationResponse = await methcall.CallMethodReturnObject<GetLocationResponseByList>(
                 _httpClient: _httpClient,
                 options: options,
                 methodName: "GET",
-                url: LocationAPI_URL_All);
+                url: LocationAPI_URL_All,
+                _logger: _logger);
 
             var listMeetResponse = await methcall.CallMethodReturnObject<GetMeetingResponseByList>(
 				_httpClient: _httpClient,
 				options: options,
 				methodName: "GET",
-				url: MeetingAPI_URL);
+				url: MeetingAPI_URL,
+                _logger: _logger);
 
 			if(listMeetResponse == null || listLocationResponse == null)
 			{
+                _logger.LogInformation(
+                    "Error while processing your request! (Getting List Meeting!). List was Empty!: " + listMeetResponse + " , Error Message: " + listMeetResponse.ErrorMessage);
                 ViewBag.error =
                     "Error while processing your request! (Getting List Meeting!).\n List was Empty!";
                 Redirect("~/Home/Index");
@@ -75,10 +82,12 @@ namespace WebAppMVC.Controllers
 		public async Task<IActionResult> MeetingPost(int id)
 		{
 			MeetingAPI_URL += "/";
-
+            string? role = HttpContext.Session.GetString("ROLE_NAME");
             string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
 			string? usrId = HttpContext.Session.GetString("USER_ID");
-			GetMeetingPostResponse meetPostResponse = new();
+
+            TempData["ROLE_NAME"] = role;
+            GetMeetingPostResponse? meetPostResponse = new();
             if (!string.IsNullOrEmpty(accToken) && !string.IsNullOrEmpty(usrId))
 			{
                 MeetingAPI_URL += "Participant/" + id;
@@ -87,7 +96,8 @@ namespace WebAppMVC.Controllers
                                    options: options,
                                    methodName: "POST",
                                    url: MeetingAPI_URL,
-								   inputType: usrId,
+                                   _logger: _logger,
+                                   inputType: usrId,
                                    accessToken: accToken);
             }
 			else
@@ -97,10 +107,12 @@ namespace WebAppMVC.Controllers
                                    _httpClient: _httpClient,
                                    options: options,
                                    methodName: "GET",
-                                   url: MeetingAPI_URL);
+                                   url: MeetingAPI_URL,
+                                   _logger: _logger);
             }
             if (meetPostResponse == null)
             {
+                _logger.LogInformation("Username or Password is invalid: " + meetPostResponse.Status + " , Error Message: " + meetPostResponse.ErrorMessage);
                 ViewBag.error =
                     "Error while processing your request! (Getting Meeting!).\n Meeting Not Found!";
                 View("Index");
@@ -109,7 +121,8 @@ namespace WebAppMVC.Controllers
             var meetmodel = meetPostResponse.Data;
             if (!meetPostResponse.Status)
 			{
-				ViewBag.error =
+                _logger.LogInformation("Username or Password is invalid: " + meetPostResponse.Status + " , Error Message: " + meetPostResponse.ErrorMessage);
+                ViewBag.error =
 					"Error while processing your request! (Getting Meeting Post!).\n"
 					+ meetPostResponse.ErrorMessage;
                 View("Index");
@@ -120,9 +133,13 @@ namespace WebAppMVC.Controllers
 		}
 
 		[HttpPost]
+		/*[Authorize(Roles ="Member")]*/
 		public async Task<IActionResult> MeetingRegister(int meetingId)
 		{
             MeetingAPI_URL += "/Register/" + meetingId;
+
+            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
+            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
 
             string? role = HttpContext.Session.GetString("ROLE_NAME");
 			if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
@@ -131,49 +148,78 @@ namespace WebAppMVC.Controllers
             string? usrId = HttpContext.Session.GetString("USER_ID");
 			if(string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
 
-            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
-            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+            TempData["ROLE_NAME"] = role;
 
             var participationNo = await methcall.CallMethodReturnObject<GetMeetingParticipationNo>(
                 _httpClient: _httpClient,
                 options: options,
                 methodName: "POST",
                 url: MeetingAPI_URL,
-				inputType: usrId,
+                _logger: _logger,
+                inputType: usrId,
 				accessToken: accToken);
 			if(participationNo == null)
 			{
+                _logger.LogInformation("Error while processing your request! (Registering Meeting Participation!): Meeting Not Found!");
                 ViewBag.error =
                     "Error while processing your request! (Registering Meeting Participation!).\n Meeting Not Found!";
                 RedirectToAction("MeetingPost", new { id = meetingId });
             }else
             if (!participationNo.Status)
             {
+                _logger.LogInformation("Error while processing your request! (Registering Meeting Participation!): " + participationNo.Status + " , Error Message: " + participationNo.ErrorMessage);
                 ViewBag.error =
                     "Error while processing your request! (Registering Meeting Participation!).\n"
 					+ participationNo.ErrorMessage;
                 RedirectToAction("MeetingPost", new { id = meetingId });
             }
-			//TempData["partakeNo"] = participationNo.Data;
 
             return RedirectToAction("MeetingPost", new { id = meetingId });
         }
-        /*[HttpPost]
-		public async Task<IActionResult> In()
-		{
-			// Call the API endpoint
-			HttpResponseMessage response = await _httpClient.GetAsync("1"); // Replace '1' with the actual meeting ID
-			if (response.IsSuccessStatusCode)
-			{
-				var meeting = await response.Content.ReadAsAsync<MeetingViewModel>();
-				return View(meeting);
-			}
-			else
-			{
-				// Handle error
-				_logger.LogError($"API request failed with status code {response.StatusCode}");
-				return View("Error");
-			}
-		}*/
-	}
+        [HttpPost]
+        /*[Authorize(Roles ="Member")]*/
+        public async Task<IActionResult> MeetingDeRegister(int meetingId)
+        {
+            MeetingAPI_URL += "/RemoveParticipant/" + meetingId;
+
+            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
+            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+
+            string? role = HttpContext.Session.GetString("ROLE_NAME");
+            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
+            else if (!role.Equals("Member")) return View("Index");
+
+            string? usrId = HttpContext.Session.GetString("USER_ID");
+            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
+
+            TempData["ROLE_NAME"] = role;
+
+            var participationNo = await methcall.CallMethodReturnObject<GetMeetingPostDeRegister>(
+                _httpClient: _httpClient,
+                options: options,
+                methodName: "POST",
+                url: MeetingAPI_URL,
+                _logger: _logger,
+                inputType: usrId,
+                accessToken: accToken);
+            if (participationNo == null)
+            {
+                _logger.LogInformation("Error while processing your request! (Remove Meeting Participation Registration!): Meeting Participation Not Found!");
+                ViewBag.error =
+                    "Error while processing your request! (Remove Meeting Participation Registration!).\n Meeting Participation Not Found!";
+                RedirectToAction("MeetingPost", new { id = meetingId });
+            }
+            else
+            if (!participationNo.Status)
+            {
+                _logger.LogInformation("Error while processing your request! (Remove Meeting Participation Registration!): " + participationNo.Status + " , Error Message: " + participationNo.ErrorMessage);
+                ViewBag.error =
+                    "Error while processing your request! (Remove Meeting Participation Registration!).\n"
+                    + participationNo.ErrorMessage;
+                RedirectToAction("MeetingPost", new { id = meetingId });
+            }
+
+            return RedirectToAction("MeetingPost", new { id = meetingId });
+        }
+    }
 }
