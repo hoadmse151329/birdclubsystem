@@ -6,6 +6,9 @@ using System.Text.Json;
 using System.Text;
 using BAL.ViewModels.Member;
 using WebAppMVC.Models.Auth;
+using System.Net.Http;
+using WebAppMVC.Models.Meeting;
+using WebAppMVC.Constants;
 
 namespace WebAppMVC.Controllers
 {
@@ -14,7 +17,12 @@ namespace WebAppMVC.Controllers
 		private readonly ILogger<AuthController> _logger;
 		private readonly HttpClient client = null;
 		private string AuthenAPI_URL = "";
-		public AuthController(ILogger<AuthController> logger)
+        private MethodCaller methcall = new();
+        private readonly JsonSerializerOptions options = new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true,
+        };
+        public AuthController(ILogger<AuthController> logger)
 		{
 			_logger = logger;
 			client = new HttpClient();
@@ -31,35 +39,40 @@ namespace WebAppMVC.Controllers
 		{
 			return View();
 		}
-		[HttpPost]
-    public IActionResult Logout()
-    {
-        HttpContext.Session.Clear();
+		[HttpGet]
+        [Route("Auth/Logout")]
+        public IActionResult Logout()
+        {
+			client.DefaultRequestHeaders.Authorization = null;
+            HttpContext.Session.Clear();
+            TempData["ACCESS_TOKEN"] = null;
+            TempData["ROLE_NAME"] = null;
+            TempData["USER_ID"] = null;
 
-        // If using ASP.NET Identity, you may want to sign out the user
-        // Example: await SignInManager.SignOutAsync();
+            // If using ASP.NET Identity, you may want to sign out the user
+            // Example: await SignInManager.SignOutAsync();
 
-        return RedirectToAction("MEMBER_URL");
-    }
+            return RedirectToAction(actionName: "Index", controllerName:"Home");
+        }
 		[HttpPost]
 		public async Task<IActionResult> Authorize(AuthenRequest authenRequest)
 		{
             AuthenAPI_URL += "/Login";
-            var json = JsonSerializer.Serialize(authenRequest);
-			var content = new StringContent(json, Encoding.UTF8, "application/json");
-			var options = new JsonSerializerOptions
+
+            var authenResponse = await methcall.CallMethodReturnObject<GetAuthenResponse>(
+                _httpClient: client,
+                options: options,
+                methodName: "POST",
+                url: AuthenAPI_URL,
+				inputType: authenRequest,
+                _logger: _logger);
+
+            if (authenResponse == null)
 			{
-				PropertyNameCaseInsensitive = true,
-			};
-			HttpResponseMessage response = await client.PostAsync(AuthenAPI_URL, content);
-			if (!response.IsSuccessStatusCode)
-			{
-                _logger.LogInformation("Username or Password is invalid: " + response.StatusCode + " , Error Message: " + await response.Content.ReadAsStringAsync());
+                _logger.LogInformation("Username or Password is invalid.");
                 ViewBag.error = "Username or Password is invalid.";
 				return View("Login");
 			}
-			string jsonResponse = await response.Content.ReadAsStringAsync();
-			var authenResponse = JsonSerializer.Deserialize<GetAuthenResponse>(jsonResponse, options);
 			var reponseAuthen = authenResponse.Data;
 
 			if (authenResponse.Status)
@@ -97,24 +110,25 @@ namespace WebAppMVC.Controllers
 		[HttpPost]
 		public async Task<IActionResult> SignUp(CreateNewMember newmemRequest)
 		{
-			var json = JsonSerializer.Serialize(newmemRequest);
-			//var content = new MultipartFormDataContent();
-			var content = new StringContent(json, Encoding.UTF8, "application/json");
-			var options = new JsonSerializerOptions
+            AuthenAPI_URL += "/Register";
+
+            var authenResponse = await methcall.CallMethodReturnObject<GetAuthenResponse>(
+                _httpClient: client,
+                options: options,
+                methodName: "POST",
+                url: AuthenAPI_URL,
+                inputType: newmemRequest,
+                _logger: _logger);
+
+            if (authenResponse == null)
 			{
-				PropertyNameCaseInsensitive = true,
-			};
-			AuthenAPI_URL += "/Register";
-			HttpResponseMessage response = await client.PostAsync(AuthenAPI_URL, content);
-			if (!response.IsSuccessStatusCode)
-			{
-                _logger.LogInformation("Error while registering your new account: " + response.StatusCode + " , Error Message: " + await response.Content.ReadAsStringAsync());
+                _logger.LogInformation("Error while registering your new account: ");
                 ViewBag.error = "Error while registering your new account ! ";
 				return View("Register");
 			}
-			string jsonResponse = await response.Content.ReadAsStringAsync();
-			var authenResponse = JsonSerializer.Deserialize<GetAuthenResponse>(jsonResponse, options);
+
 			var reponseAuthen = authenResponse.Data;
+
 			if (authenResponse.Status)
 			{
 				HttpContext.Session.SetString("ACCESS_TOKEN", reponseAuthen.AccessToken);
@@ -146,5 +160,5 @@ namespace WebAppMVC.Controllers
                 return base.Redirect(Constants.Constants.MEMBER_URL);
             }
         }
-	}
+    }
 }

@@ -301,17 +301,11 @@ namespace WebAPI.Controllers
         {
             try
             {
-                var meeting = _meetingService.GetById(id);
-                if (meeting == null) return NotFound(new
+                var meeting = await _participantService.GetParticipationNo(memId,id);
+                if (meeting == 0) return NotFound(new
                 {
                     Status = false,
                     ErrorMessage = "Meeting Not Found!"
-                });
-                var mem = await _memberService.GetBoolById(memId);
-                if (!mem) return NotFound(new
-                {
-                    Status = false,
-                    ErrorMessage = "Member Not Found!"
                 });
                 var result = await _participantService.Delete(memId, id);
                 return Ok(new

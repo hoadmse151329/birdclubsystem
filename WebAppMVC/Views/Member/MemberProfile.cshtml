@@ -3,7 +3,7 @@
     ViewData["Title"] = "Member Profile Page";
 }
 <html lang="en">
-    <head>
+<head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -24,7 +24,7 @@
     <div class="header__breadcrumb container">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#" class="text-decoration-none">Home</a></li>
+                <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")" class="text-decoration-none">Home</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Member Profile</li>
 
             </ol>
@@ -38,13 +38,13 @@
                 <ul class="slide-menu" style="background-color:white">
                     <li class="active">
                         <a href="@Url.Action("MemberProfile", "Member")">
-                            <span><i class='bx bx-user'></i></span>
+                            <span><i class="bx bx-user"></i></span>
                             <span class="title">Account</span>
                         </a>
                     </li>
                     <li>
                         <a href="@Url.Action("MemberHistoryEvent", "Member")">
-                            <span><i class='bx bx-history'></i></span>
+                            <span><i class="bx bx-history"></i></span>
                             <span class="title">Registered Event</span>
                         </a>
                     </li>
@@ -71,7 +71,7 @@
                                             <div class="profile-content">
                                                 <div class="contact-infor">
                                                     <div class="info-content">
-                                                        <form id="form-4" action="#" class="form-check">
+                                                        <form id="form-4" asp-action="Update" asp-controller="Member" class="form-check">
                                                             <div class="row userName-content">
                                                                 <label class="contact-title col-md-5 col-sm-4 mt-3">Account</label>
                                                                 <input type="text" name="userName"
@@ -117,36 +117,61 @@
                                                             <div class="gender-content row align-items-center">
                                                                 <label class="contact-title col-md-5 col-sm-4 mt-3">Gender</label>
                                                                 <div class="form-check">
-                                                                    <input class="form-check-input" type="radio"
-                                                                        name="exampleRadios" id="exampleRadios1"
-                                                                        value="option1" checked>
+                                                                    @if (Model.Gender.ToLower() == "male")
+                                                                    {
+                                                                        <input class="form-check-input" type="radio"
+                                                                           name="exampleRadios" id="exampleRadios1"
+                                                                           value="option1" checked>
+                                                                    }else{
+                                                                        <input class="form-check-input" type="radio"
+                                                                           name="exampleRadios" id="exampleRadios1"
+                                                                           value="option1">
+                                                                    }
                                                                     <label class="form-check-label"
                                                                         for="exampleRadios1">
                                                                         Male
                                                                     </label>
                                                                 </div>
                                                                 <div class="form-check">
-                                                                    <input class="form-check-input" type="radio"
-                                                                        name="exampleRadios" id="exampleRadios1"
-                                                                        value="option1" checked>
+                                                                    @if (Model.Gender.ToLower() == "female")
+                                                                    {
+                                                                        <input class="form-check-input" type="radio"
+                                                                           name="exampleRadios" id="exampleRadios1"
+                                                                           value="option2" checked>
+                                                                    }else{
+                                                                        <input class="form-check-input" type="radio"
+                                                                           name="exampleRadios" id="exampleRadios1"
+                                                                           value="option2">
+                                                                    }
                                                                     <label class="form-check-label"
                                                                         for="exampleRadios1">
                                                                         Female
                                                                     </label>
                                                                 </div>
                                                                 <div class="form-check">
-                                                                    <input class="form-check-input" type="radio"
-                                                                        name="exampleRadios" id="exampleRadios1"
-                                                                        value="option1" checked>
+                                                                    @if (Model.Gender.ToLower() == "other")
+                                                                    {
+                                                                        <input class="form-check-input" type="radio"
+                                                                           name="exampleRadios" id="exampleRadios1"
+                                                                           value="option3" checked>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <input class="form-check-input" type="radio"
+                                                                           name="exampleRadios" id="exampleRadios1"
+                                                                           value="option3">
+                                                                    }
                                                                     <label class="form-check-label"
                                                                         for="exampleRadios1">
                                                                         Other
                                                                     </label>
                                                                 </div>
+
                                                             </div>
+
                                                             <div class="row pt-3 d-flex">
                                                                 <button type="submit"
-                                                                    class="offset-5 button--primary text-white px-3">Save</button>
+                                                                    class="offset-5 button--primary text-white px-3">Save Changes</button>
                                                             </div>
                                                         </form>
                                                     </div>

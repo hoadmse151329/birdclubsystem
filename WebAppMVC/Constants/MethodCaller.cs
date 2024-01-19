@@ -12,6 +12,7 @@ namespace WebAppMVC.Constants
     {
         public MethodCaller()
         {
+
         }
         public async Task<T?> CallMethodReturnObject<T>(
             HttpClient _httpClient,

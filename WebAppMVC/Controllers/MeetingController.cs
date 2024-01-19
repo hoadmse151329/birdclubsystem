@@ -18,7 +18,7 @@ namespace WebAppMVC.Controllers
 		private readonly ILogger<MeetingController> _logger;
 		private readonly HttpClient _httpClient = null;
 		private string MeetingAPI_URL = "";
-        private JsonSerializerOptions options = new JsonSerializerOptions
+        private readonly JsonSerializerOptions options = new JsonSerializerOptions
         {
             PropertyNameCaseInsensitive = true,
         };
@@ -87,7 +87,9 @@ namespace WebAppMVC.Controllers
 			string? usrId = HttpContext.Session.GetString("USER_ID");
 
             TempData["ROLE_NAME"] = role;
+
             GetMeetingPostResponse? meetPostResponse = new();
+
             if (!string.IsNullOrEmpty(accToken) && !string.IsNullOrEmpty(usrId))
 			{
                 MeetingAPI_URL += "Participant/" + id;
@@ -147,6 +149,7 @@ namespace WebAppMVC.Controllers
 
             string? usrId = HttpContext.Session.GetString("USER_ID");
 			if(string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
+
 
             TempData["ROLE_NAME"] = role;
 
