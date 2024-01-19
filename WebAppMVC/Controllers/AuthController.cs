@@ -32,6 +32,16 @@ namespace WebAppMVC.Controllers
 			return View();
 		}
 		[HttpPost]
+    public IActionResult Logout()
+    {
+        HttpContext.Session.Clear();
+
+        // If using ASP.NET Identity, you may want to sign out the user
+        // Example: await SignInManager.SignOutAsync();
+
+        return RedirectToAction("MEMBER_URL");
+    }
+		[HttpPost]
 		public async Task<IActionResult> Authorize(AuthenRequest authenRequest)
 		{
             AuthenAPI_URL += "/Login";
