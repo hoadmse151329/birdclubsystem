@@ -6,7 +6,7 @@ namespace WebAppMVC.Controllers
     public class ManagerController : Controller
     {
         // GET: ManagerController
-        public IActionResult Index()
+        public IActionResult ManagerIndex()
         {
             return View();
         }
