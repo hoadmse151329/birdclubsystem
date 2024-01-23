@@ -6,11 +6,15 @@ namespace WebAppMVC.Controllers
     public class ManagerController : Controller
     {
         // GET: ManagerController
-        public IActionResult Index()
+        public IActionResult ManagerIndex()
         {
             return View();
         }
         public IActionResult ManagerMeeting()
+        {
+            return View();
+        }
+        public IActionResult ManagerNotification()
         {
             return View();
         }
@@ -42,73 +46,10 @@ namespace WebAppMVC.Controllers
         {
             return View();
         }
-        // GET: ManagerController/Details/5
-        public IActionResult Details(int id)
+        public IActionResult ManagerStatical()
         {
             return View();
         }
 
-        // GET: ManagerController/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: ManagerController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Create(IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: ManagerController/Edit/5
-        public IActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: ManagerController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: ManagerController/Delete/5
-        public IActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: ManagerController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
     }
 }
