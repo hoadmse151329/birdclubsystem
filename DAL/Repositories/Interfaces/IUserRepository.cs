@@ -12,6 +12,7 @@ namespace DAL.Repositories.Interfaces
     {
         Task<User?> GetByLogin(string userName, string passWord);
         Task<User?> GetByIdNoTracking(int id);
+        Task<string?> GetMemberIdByIdNoTracking(int id);
         Task<User?> GetByEmail(string email);
 
     }

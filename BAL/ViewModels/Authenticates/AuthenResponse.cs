@@ -12,7 +12,7 @@ namespace BAL.ViewModels.Authenticates
     {
         [PasswordPropertyText]
         [DataType(DataType.Password)]
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         public string? RoleName { get; set; }
         [PasswordPropertyText]
         [DataType(DataType.Password)]

@@ -13,7 +13,7 @@ namespace BAL.Services.Interfaces
 		Task<MemberViewModel?> GetById(string id);
 		Task<bool> GetBoolById(string id);
 		bool GetByEmail(string email);
-		Task<MemberViewModel?> GetByUserId();
+		Task<MemberViewModel?> GetByUserId(int id);
 		/* void Create(UserViewModel entity);*/
 		void Create(MemberViewModel entity);
 		/*void Update(UserViewModel entity);*/

@@ -10,7 +10,7 @@ namespace BAL.Services.Interfaces
 {
     public interface IJWTService
     {
-        public string GenerateJWTToken(int userID, string username, string role, IConfiguration config);
+        public string GenerateJWTToken(string userID, string username, string role, IConfiguration config);
         public ObjectToken ExtractToken(string token, IConfiguration config);
     }
 }

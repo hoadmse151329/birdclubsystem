@@ -72,6 +72,15 @@ namespace DAL.Repositories.Implements
                 // Example: dbContext.SaveChanges();
                 throw new NotImplementedException();
             }
+
+        public async Task<string?> GetMemberIdByIdNoTracking(int id)
+        {
+            var usr = _context.Users.AsNoTrackingWithIdentityResolution().Include(usr => usr.Member).SingleOrDefault(usr => usr.UserId == id);
+            if (usr != null)
+            {
+                return usr.MemberId;
+            }
+            return null;
         }
     }
 }

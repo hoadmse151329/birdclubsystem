@@ -42,10 +42,10 @@ namespace BAL.Services.Implements
             if (user != null)
             {
                 //var role = _unitOfWork.UserRepository
-                var accessToken = _jwtService.GenerateJWTToken(user.UserId, user.UserName, user.Role, _configuration);
+                var accessToken = _jwtService.GenerateJWTToken(user.MemberId, user.UserName, user.Role, _configuration);
                 return new AuthenResponse()
                 {
-                    UserId = user.UserId,
+                    UserId = user.MemberId,
                     RoleName = user.Role,
                     AccessToken = accessToken
                 };
@@ -58,10 +58,10 @@ namespace BAL.Services.Implements
             var user = await _unitOfWork.UserRepository.GetByEmail(email);
             if (user != null)
             {
-                var accessToken = _jwtService.GenerateJWTToken(user.UserId, user.UserName, user.Member.Role, _configuration);
+                var accessToken = _jwtService.GenerateJWTToken(user.MemberId, user.UserName, user.Member.Role, _configuration);
                 return new AuthenResponse()
                 {
-                    UserId = user.UserId,
+                    UserId = user.MemberId,
                     RoleName = user.Member.Role,
                     AccessToken = accessToken
                 };

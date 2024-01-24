@@ -161,7 +161,7 @@ namespace WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Register(
             [Required] [FromRoute] int id,
-            [Required] [FromBody] int usrId)
+            [Required] [FromBody] string memId)
         {
             try
             {
@@ -171,13 +171,13 @@ namespace WebAPI.Controllers
                     Status = false,
                     ErrorMessage = "Meeting Not Found!"
                 });
-                var mem = await _userService.GetById(usrId);
-                if(mem == null) return NotFound(new
+                var mem = await _memberService.GetBoolById(memId);
+                if(!mem) return NotFound(new
                 {
                     Status = false,
                     ErrorMessage = "Member Not Found!"
                 });
-                int participateNo = await _participantService.Create(mem.MemberId, id);
+                int participateNo = await _participantService.Create(memId, id);
                 return Ok(new
                 {
                     Status = true,
@@ -201,7 +201,7 @@ namespace WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetMeetingAndParticipantNo(
             [Required][FromRoute] int id,
-            [Required][FromBody] int usrId)
+            [Required][FromBody] string memId)
         {
             try
             {
@@ -211,18 +211,18 @@ namespace WebAPI.Controllers
                     Status = false,
                     ErrorMessage = "Meeting Not Found!"
                 });
-                var mem = await _userService.GetById(usrId);
-                if (mem == null) return NotFound(new
+                var mem = await _memberService.GetBoolById(memId);
+                if (!mem) return NotFound(new
                 {
                     Status = false,
                     ErrorMessage = "Member Not Found!"
                 });
-                int participateNo = await _participantService.GetParticipationNo(mem.MemberId, id);
+                int participateNo = await _participantService.GetParticipationNo(memId, id);
                 meeting.ParticipationNo = participateNo;
                 return Ok(new
                 {
                     Status = true,
-                    Message = "Get Meeting successfully !",
+                    SuccessMessage = "Get Meeting successfully !",
                     Data = meeting
                 });
             }
@@ -290,29 +290,30 @@ namespace WebAPI.Controllers
                 });
             }
         }
-        [HttpDelete("RemoveParticipant/{id}")]
-        [Authorize(Roles = "Manager")]
+        [HttpPost("RemoveParticipant/{id}")]
+        [Authorize(Roles = "Member,Manager")]
         [ProducesResponseType(typeof(MeetingParticipantViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> RemoveParticipant(int id, string memId)
+        public async Task<IActionResult> RemoveParticipant(
+            [Required][FromRoute] int id,
+            [Required][FromBody] string memId)
         {
             try
             {
-                var meeting = _meetingService.GetById(id);
-                if (meeting == null) return NotFound(new
+                var meeting = await _participantService.GetParticipationNo(memId,id);
+                if (meeting == 0) return NotFound(new
                 {
                     Status = false,
                     ErrorMessage = "Meeting Not Found!"
                 });
-                var mem = await _memberService.GetById(memId);
-                if (mem == null) return NotFound(new
-                {
-                    Status = false,
-                    ErrorMessage = "Member Not Found!"
-                });
                 var result = await _participantService.Delete(memId, id);
-                return Ok(result);
+                return Ok(new
+                {
+                    Status = true,
+                    Data = result,
+                    SuccessMessage = "Remove Meeting Participation successfully !",
+                });
             }
             catch (Exception ex)
             {
