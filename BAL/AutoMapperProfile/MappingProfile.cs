@@ -24,6 +24,8 @@ namespace BAL.AutoMapperProfile
             CreateMap<Member, MemberViewModel>().ReverseMap();
             CreateMap<Meeting, MeetingViewModel>()
                 .ReverseMap();
+            CreateMap<FieldTrip, FieldTripViewModel>().ReverseMap();
+            CreateMap<Contest, ContestViewModel>().ReverseMap();
             CreateMap<Location, LocationViewModel>()
                 .AfterMap((src, dest) =>
                 {
@@ -39,8 +41,6 @@ namespace BAL.AutoMapperProfile
                     dest.LocationName = src.AreaNumber + "," + src.Street + "," + src.District + "," + src.City;
                 });
             CreateMap<Transaction, TransactionViewModel>().ReverseMap();
-            CreateMap<FieldTrip, FieldTripViewModel>().ReverseMap();
-            CreateMap<Contest, ContestViewModel>().ReverseMap();
         }
     }
 }

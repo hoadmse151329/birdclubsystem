@@ -16,6 +16,10 @@ namespace BAL.ViewModels
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         public int? LocationId { get; set; }
+        public int? AreaNumber { get; set; }
+        public string? Street {  get; set; }
+        public string? District { get; set; }
+        public string? City { get; set; }
         public bool? Status { get; set; }
         public decimal? Fee { get; set; }
         public int? NumberOfParticipants { get; set; }
