@@ -16,9 +16,11 @@ namespace BAL.ViewModels
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         public int? LocationId { get; set; }
-        public string? Status { get; set; }
+        public bool? Status { get; set; }
         public decimal? Fee { get; set; }
         public int? NumberOfParticipants { get; set; }
+        public int? NumberOfParticipantsLimit { get; set; }
+        public int? ParticipationNo { get; set; }
         public string? Host { get; set; }
         public string? InCharge { get; set; }
         public string? Note { get; set; }

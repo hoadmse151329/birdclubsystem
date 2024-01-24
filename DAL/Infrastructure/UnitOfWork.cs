@@ -20,6 +20,7 @@ namespace DAL.Infrastructure
         private ILocationRepository _locationRepository;
         private ITransactionRepository _transactionRepository;
         private IFieldTripRepository _fieldTripRepository;
+        private IFieldTripParticipantRepository _fieldTripParticipantRepository;
         private IContestRepository _contestRepository;
 		public UnitOfWork(BirdClubContext context)
 		{
@@ -33,6 +34,7 @@ namespace DAL.Infrastructure
         public ILocationRepository LocationRepository => _locationRepository ??= new LocationRepository(_context);
         public ITransactionRepository TransactionRepository => _transactionRepository ??= new TransactionRepository(_context);
         public IFieldTripRepository FieldTripRepository => _fieldTripRepository ??= new FieldTripRepository(_context);
+        public IFieldTripParticipantRepository FieldTripParticipantRepository => _fieldTripParticipantRepository ??= new FieldTripParticipantRepository(_context);
         public IContestRepository ContestRepository => _contestRepository ??= new ContestRepository(_context);
 
         public void Dispose()

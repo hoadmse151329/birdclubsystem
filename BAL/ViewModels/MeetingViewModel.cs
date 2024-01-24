@@ -24,6 +24,6 @@ namespace BAL.ViewModels
         public int? LocationId { get; set; }
         public string? Address { get; set; }
         public string? City { get; set; }
-        public string? Status { get; set; }
+        public bool? Status { get; set; }
     }
 }

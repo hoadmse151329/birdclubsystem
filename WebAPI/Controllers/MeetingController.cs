@@ -121,7 +121,8 @@ namespace WebAPI.Controllers
             [Required] int numberOfParticipants, 
             [Required] string host, 
             [Required] string incharge, 
-            [Required] string note)
+            [Required] string note,
+            [Required] byte status)
         {
             try
             {
