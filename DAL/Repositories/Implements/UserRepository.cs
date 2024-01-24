@@ -34,6 +34,44 @@ namespace DAL.Repositories.Implements
         {
             return _context.Users.AsNoTrackingWithIdentityResolution().Include(usr => usr.Member).SingleOrDefault(usr => usr.UserName == userName && usr.Password == passWord);
         }
+        public class UserManager
+        {
+            public async Task<bool> ChangeImage(string userId, string newImagePath)
+            {
+                try
+                {
+                    // Replace the following line with your logic to fetch the user from the database
+                    User user = GetUserFromDatabase(userId);
+
+                    // Update the user's image path
+                    user.ImagePath = newImagePath;
+
+                    // Save changes to the database (replace with your actual logic)
+                    await SaveChangesToDatabase(user);
+
+                    return true; // Return true if the operation was successful
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"An error occurred while changing the image: {ex.Message}");
+                    return false; // Return false if an error occurred
+                }
+            }
+
+            // Replace the following methods with your actual database interaction logic
+            private User GetUserFromDatabase(string userId)
+            {
+                // Your logic to fetch the user from the database
+                // Example: return dbContext.Users.SingleOrDefault(u => u.UserId == userId);
+                throw new NotImplementedException();
+            }
+
+            private async Task SaveChangesToDatabase(User user)
+            {
+                // Your logic to save changes to the database
+                // Example: dbContext.SaveChanges();
+                throw new NotImplementedException();
+            }
 
         public async Task<string?> GetMemberIdByIdNoTracking(int id)
         {
