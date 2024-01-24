@@ -57,7 +57,7 @@ namespace BAL.Services.Implements
         {
             bool check = await _unitOfWork.MeetingParticipantRepository.GetBoolMeetingParticipantById(metId, memId);
             if (!check) return false;
-            MeetingParticipant meetingParticipant = await _unitOfWork.MeetingParticipantRepository.GetMeetingParticipantById(metId, memId);
+            var meetingParticipant = await _unitOfWork.MeetingParticipantRepository.GetMeetingParticipantById(metId, memId);
             _unitOfWork.MeetingParticipantRepository.Delete(meetingParticipant);
             _unitOfWork.Save();
             return true;

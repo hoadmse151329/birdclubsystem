@@ -4,6 +4,6 @@ namespace WebAppMVC.Models.Meeting
 {
     public class GetMeetingPostResponse : DefaultResponseViewModel
     {
-        public MeetingViewModel Data { get; set; }
+        public MeetingViewModel? Data { get; set; }
     }
 }

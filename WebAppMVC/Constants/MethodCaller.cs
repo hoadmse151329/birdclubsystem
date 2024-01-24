@@ -12,12 +12,14 @@ namespace WebAppMVC.Constants
     {
         public MethodCaller()
         {
+
         }
         public async Task<T?> CallMethodReturnObject<T>(
             HttpClient _httpClient,
             JsonSerializerOptions options,
             string methodName,
             string url,
+            ILogger _logger,
             object inputType = null,
             string accessToken = null) where T : class
         {
@@ -39,11 +41,19 @@ namespace WebAppMVC.Constants
                 }else if (methodName.Equals(Constants.PUT_METHOD))
                 {
                     response = await _httpClient.PutAsync(url, content);
+                }else if (methodName.Equals(Constants.DELETE_METHOD))
+                {
+                    response = await _httpClient.DeleteAsync(url);
                 }
             }
             string jsonResponse = await response.Content.ReadAsStringAsync();
-            if (!response.IsSuccessStatusCode) return null;
+            if (!response.IsSuccessStatusCode)
+            {
+                _logger.LogInformation("Error while processing your request!: " + response.StatusCode + " , Error Message: " + response.Content.ToString());
+                return null;
+            };
             var result = JsonSerializer.Deserialize<T>(jsonResponse, options);
+            _logger.LogInformation("Processing your Request Successfully!: " + response.StatusCode + " , Success Message: " + result);
             return result;
         }
     }

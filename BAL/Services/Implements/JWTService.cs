@@ -38,7 +38,7 @@ namespace BAL.Services.Implements
             };
         }
 
-        public string GenerateJWTToken(int userID, string username, string role, IConfiguration config)
+        public string GenerateJWTToken(string userID, string username, string role, IConfiguration config)
         {
             var key = Encoding.ASCII.GetBytes(config["AppSettings:SecretKey"]);
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -46,7 +46,7 @@ namespace BAL.Services.Implements
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.NameIdentifier, userID+""),
+                    new Claim(ClaimTypes.NameIdentifier, userID),
                     new Claim(ClaimTypes.Name, username),
                     new Claim(ClaimTypes.Role, role)
                 }),
