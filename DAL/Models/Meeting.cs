@@ -8,7 +8,6 @@ namespace DAL.Models
         public Meeting()
         {
             MeetingMedia = new HashSet<MeetingMedia>();
-            MeetingParticipants = new HashSet<MeetingParticipant>();
         }
 
         public int MeetingId { get; set; }
@@ -22,9 +21,8 @@ namespace DAL.Models
         public string? Incharge { get; set; }
         public string? Note { get; set; }
         public int? LocationId { get; set; }
-        public int? Status { get; set; }
+        public bool? Status { get; set; }
 
         public virtual ICollection<MeetingMedia> MeetingMedia { get; set; }
-        public virtual ICollection<MeetingParticipant> MeetingParticipants { get; set; }
     }
 }
