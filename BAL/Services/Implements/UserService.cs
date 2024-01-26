@@ -164,5 +164,12 @@ namespace BAL.Services.Implements
             _unitOfWork.UserRepository.Update(usr);
             _unitOfWork.Save();
         }
-	}
+
+        public async Task<bool> UpdateUserAvatar(string memId, string imagePath)
+        {
+            var isChanged = await _unitOfWork.UserRepository.ChangeUserAvatar(memId, imagePath);
+            if (isChanged) return true;
+            return false;
+        }
+    }
 }

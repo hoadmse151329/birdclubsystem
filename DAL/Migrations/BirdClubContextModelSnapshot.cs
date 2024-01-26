@@ -108,7 +108,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("BirdId");
 
-                    b.ToTable("BirdMedia");
+                    b.ToTable("BirdMedia", (string)null);
                 });
 
             modelBuilder.Entity("DAL.Models.Blog", b =>
@@ -354,7 +354,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("ContestId");
 
-                    b.ToTable("ContestMedia");
+                    b.ToTable("ContestMedia", (string)null);
                 });
 
             modelBuilder.Entity("DAL.Models.ContestParticipant", b =>
@@ -388,7 +388,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("ContestId");
 
-                    b.ToTable("ContestParticipants");
+                    b.ToTable("ContestParticipants", (string)null);
                 });
 
             modelBuilder.Entity("DAL.Models.ContestScore", b =>
@@ -636,7 +636,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("TripId");
 
-                    b.ToTable("FieldtripInclusions");
+                    b.ToTable("FieldtripInclusions", (string)null);
                 });
 
             modelBuilder.Entity("DAL.Models.FieldtripMedia", b =>
@@ -665,7 +665,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("TripId");
 
-                    b.ToTable("FieldtripMedia");
+                    b.ToTable("FieldtripMedia", (string)null);
                 });
 
             modelBuilder.Entity("DAL.Models.FieldTripOverview", b =>
@@ -746,7 +746,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("TripId");
 
-                    b.ToTable("FieldTripParticipants");
+                    b.ToTable("FieldTripParticipants", (string)null);
                 });
 
             modelBuilder.Entity("DAL.Models.FieldtripRate", b =>
@@ -774,7 +774,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("TripId");
 
-                    b.ToTable("FieldtripRates");
+                    b.ToTable("FieldtripRates", (string)null);
                 });
 
             modelBuilder.Entity("DAL.Models.Gallery", b =>
@@ -913,7 +913,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("MeetingId");
 
-                    b.ToTable("MeetingMedia");
+                    b.ToTable("MeetingMedia", (string)null);
                 });
 
             modelBuilder.Entity("DAL.Models.MeetingParticipant", b =>
@@ -1052,7 +1052,7 @@ namespace DAL.Migrations
 
                     b.HasKey("NewsId");
 
-                    b.ToTable("News");
+                    b.ToTable("News", (string)null);
                 });
 
             modelBuilder.Entity("DAL.Models.Transaction", b =>
@@ -1097,7 +1097,7 @@ namespace DAL.Migrations
 
                     b.HasKey("TransactionId");
 
-                    b.ToTable("Transactions");
+                    b.ToTable("Transactions", (string)null);
                 });
 
             modelBuilder.Entity("DAL.Models.User", b =>
@@ -1139,7 +1139,7 @@ namespace DAL.Migrations
                         .IsUnique()
                         .HasFilter("[memberId] IS NOT NULL");
 
-                    b.ToTable("User");
+                    b.ToTable("User", (string)null);
                 });
 
             modelBuilder.Entity("DAL.Models.Bird", b =>

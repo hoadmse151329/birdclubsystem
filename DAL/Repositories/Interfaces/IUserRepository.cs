@@ -14,6 +14,6 @@ namespace DAL.Repositories.Interfaces
         Task<User?> GetByIdNoTracking(int id);
         Task<string?> GetMemberIdByIdNoTracking(int id);
         Task<User?> GetByEmail(string email);
-
+        Task<bool> ChangeUserAvatar(string usrId, string imageAvatar);
     }
 }
