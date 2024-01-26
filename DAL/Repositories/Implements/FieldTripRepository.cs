@@ -18,7 +18,7 @@ namespace DAL.Repositories.Implements
         }
         public async Task<IEnumerable<FieldTrip>> GetAllFieldTrips()
         {
-            return  _context.FieldTrips.ToList();
+            return _context.FieldTrips.ToList();
         }
         public async Task<FieldTrip?> GetFieldTripById(int id)
         {

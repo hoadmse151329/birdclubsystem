@@ -20,7 +20,7 @@ namespace BAL.ViewModels
         public string? Street {  get; set; }
         public string? District { get; set; }
         public string? City { get; set; }
-        public bool? Status { get; set; }
+        public string? Status { get; set; }
         public decimal? Fee { get; set; }
         public int? NumberOfParticipants { get; set; }
         public int? NumberOfParticipantsLimit { get; set; }

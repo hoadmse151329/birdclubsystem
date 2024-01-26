@@ -24,7 +24,8 @@ namespace BAL.AutoMapperProfile
             CreateMap<Member, MemberViewModel>().ReverseMap();
             CreateMap<Meeting, MeetingViewModel>()
                 .ReverseMap();
-            CreateMap<FieldTrip, FieldTripViewModel>().ReverseMap();
+            CreateMap<FieldTrip, FieldTripViewModel>()
+                .ReverseMap();
             CreateMap<Contest, ContestViewModel>().ReverseMap();
             CreateMap<Location, LocationViewModel>()
                 .AfterMap((src, dest) =>
