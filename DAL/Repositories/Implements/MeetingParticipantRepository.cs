@@ -1,6 +1,7 @@
 ﻿using DAL.Infrastructure;
 using DAL.Models;
 using DAL.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,6 +48,11 @@ namespace DAL.Repositories.Implements
         public async Task<IEnumerable<MeetingParticipant>> GetMeetingParticipantsByMemberId(string memId)
         {
             return _context.MeetingParticipants.Where(m => m.MemberId == memId).ToList();
+        }
+
+        public async Task<IEnumerable<MeetingParticipant>> GetMeetingParticipantsByMemberIdInclude(string memId)
+        {
+            return _context.MeetingParticipants.Where(m => m.MemberId == memId).Include(n => n.Meeting).ToList();
         }
 
         public async Task<int> GetParticipationNoMeetingParticipantById(int meetingId, string memberId)

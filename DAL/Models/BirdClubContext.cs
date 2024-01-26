@@ -833,6 +833,10 @@ namespace DAL.Models
                     .HasMaxLength(50)
                     .HasColumnName("memberId");
 
+                entity.Property(e => e.ImagePath)
+                    .HasMaxLength(255)
+                    .HasColumnName("imagepath");
+
                 entity.Property(e => e.Password)
                     .HasMaxLength(255)
                     .HasColumnName("password");

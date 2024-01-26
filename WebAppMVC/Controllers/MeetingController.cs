@@ -78,7 +78,7 @@ namespace WebAppMVC.Controllers
 		}
 
 		[HttpGet("{id:int}")]
-		[Route("Meeting/MeetingPost/{id}",Name = "Post")]
+		[Route("Meeting/MeetingPost/{id:int}")]
 		public async Task<IActionResult> MeetingPost(int id)
 		{
 			MeetingAPI_URL += "/";
@@ -135,8 +135,9 @@ namespace WebAppMVC.Controllers
 		}
 
 		[HttpPost]
-		/*[Authorize(Roles ="Member")]*/
-		public async Task<IActionResult> MeetingRegister(int meetingId)
+        /*[Authorize(Roles ="Member")]*/
+        [Route("Meeting/MeetingRegister/{meetingId:int}")]
+        public async Task<IActionResult> MeetingRegister(int meetingId)
 		{
             MeetingAPI_URL += "/Register/" + meetingId;
 
@@ -180,6 +181,7 @@ namespace WebAppMVC.Controllers
             return RedirectToAction("MeetingPost", new { id = meetingId });
         }
         [HttpPost]
+        [Route("Meeting/MeetingDeRegister/{meetingId:int}")]
         /*[Authorize(Roles ="Member")]*/
         public async Task<IActionResult> MeetingDeRegister(int meetingId)
         {

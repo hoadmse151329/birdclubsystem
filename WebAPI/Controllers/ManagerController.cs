@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using DAL.Models; // Replace with the actual namespace of your models
 using DAL.Repositories;
 using DAL.Repositories.Implements;
-using static DAL.Repositories.Implements.UserRepository;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -20,7 +19,7 @@ public class ChangeImageController : ControllerBase
     {
         try
         {
-            if (photo != null && photo.Length > 0)
+            /*if (photo != null && photo.Length > 0)
             {
                 var fileName = Path.GetFileName(photo.FileName);
                 var pathImage = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", fileName);
@@ -40,7 +39,7 @@ public class ChangeImageController : ControllerBase
                 {
                     return Ok(new { Message = "Image uploaded successfully", RedirectUrl = SUCCESS });
                 }
-            }
+            }*/
         }
         catch (Exception e)
         {

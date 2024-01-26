@@ -1,5 +1,7 @@
-﻿@{
+﻿@model dynamic
+@{
     ViewData["Title"] = "Member History Event Page";
+    List<BAL.ViewModels.Event.GetEventParticipation> events = Model.RegisteredEvents;
 }
 <html lang="en">
 
@@ -217,8 +219,28 @@
                                                                 <th class="sorting" tabindex="0"
                                                                     aria-controls="history-table" rowspan="1"
                                                                     colspan="1"
+                                                                    aria-label="Event Name: activate to sort column ascending">
+                                                                    Event Type</th>
+                                                                <th class="sorting" tabindex="0"
+                                                                    aria-controls="history-table" rowspan="1"
+                                                                    colspan="1"
                                                                     aria-label="Date: activate to sort column ascending">
-                                                                    Date</th>
+                                                                    Registration Deadline</th>
+                                                                <th class="sorting" tabindex="0"
+                                                                    aria-controls="history-table" rowspan="1"
+                                                                    colspan="1"
+                                                                    aria-label="Date: activate to sort column ascending">
+                                                                    Start Date</th>
+                                                                <th class="sorting" tabindex="0"
+                                                                    aria-controls="history-table" rowspan="1"
+                                                                    colspan="1"
+                                                                    aria-label="Date: activate to sort column ascending">
+                                                                    End Date</th>
+                                                                <th class="sorting" tabindex="0"
+                                                                    aria-controls="history-table" rowspan="1"
+                                                                    colspan="1"
+                                                                    aria-label="Date: activate to sort column ascending">
+                                                                    Participation No</th>
                                                                 <th class="sorting" tabindex="0"
                                                                     aria-controls="history-table" rowspan="1"
                                                                     colspan="1"
@@ -228,16 +250,78 @@
                                                                     aria-controls="history-table" rowspan="1"
                                                                     colspan="1"
                                                                     aria-label="Tình trạng: activate to sort column ascending">
-                                                                    Tình trạng</th>
+                                                                    Status</th>
                                                                 <th class="sorting" tabindex="0"
                                                                     aria-controls="history-table" rowspan="1"
                                                                     colspan="1"
                                                                     aria-label="Action: activate to sort column ascending">
-                                                                    Hoạt động</th>
+                                                                    Options</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
+                                                            @for(int i = 0; i < events.Count(); i++)
+                                                            {
+                                                                <tr class="@("clickable-row "+ (i%2 == 0 ? "even" : "odd")) " data-href="#"
+                                                                data-bs-toggle="tooltip" data-bs-placement="right"
+                                                                title="More Details">
+                                                                    <td class="sorting_1">@events[i].EventId</td>
+                                                                    <td>@events[i].EventName</td>
+                                                                    <td>@events[i].EventType</td>
+                                                                    <td>@events[i].RegistrationDeadline</td>
+                                                                    <td>@events[i].StartDate</td>
+                                                                    <td>@events[i].EndDate</td>
+                                                                    <td>@events[i].ParticipationNo</td>
+                                                                    <td>@events[i].Fee</td>
+                                                                    <td>@events[i].Status</td>
+                                                                    <td>
+                                                                        <div class="d-flex justify-content-around">
+                                                                            <!--<a href="UserManager?action=feedback?userId=hai03&motelID=785146827" class="btn btn-info m-b-xs shadow btn-xs sharp me-1" data-bs-toggle="tooltip">Đánh giá</a>-->
+                                                                            <div class="rating-room">
+                                                                                <a href="@Url.Action(events[i].EventType + "Post", events[i].EventType,new {id = events[i].EventId})" 
+                                                                               class="button--primary btn-info bg-primary shadow btn-xs text-white">Review Event</a>
+                                                                            </div>
+                                                                            @switch (events[i].Status)
+                                                                            {
+                                                                                case "InPreperation":
+                                                                                    {
+                                                                                        <form asp-action="@(events[i].EventType)Deregister" asp-controller="@events[i].EventType" method="post" asp-route-meetingId="@events[i].EventId">
+                                                                                            <div class="report-room">
+                                                                                                <button class="button--primary btn-danger bg-danger shadow btn-xs text-white" type="submit">Sign Out</button>
+                                                                                            </div>
+                                                                                        </form>
+                                                                                        break;
+                                                                                    }
+                                                                                case "OnGoing":
+                                                                                case "Ended":
+                                                                                    {
+                                                                                        <div class="rating-room">
+                                                                                            <button data-toggle="modal"
+                                                                                                data-target="#feedback"
+                                                                                                class="button--primary btn-info m-b-xs shadow btn-xs sharp me-1 text-white bg-success">
+                                                                                                <span>Feedback</span>
+                                                                                            </button>
+                                                                                        </div>
+                                                                                        break;
+                                                                                    }
+                                                                            }
+                                                                            <div class="report-room">
+                                                                                <button data-toggle="modal"
+                                                                                    data-target="#report"
+                                                                                    class="button--primary btn-danger shadow btn-xs sharp text-white bg-danger">
+                                                                                    <span>Report</span>
+                                                                                </button>
+                                                                            </div>
+                                                                        </div>
 
+
+                                                                    </td>
+                                                                    <!-- feedback -->
+                                                                    <!-- end feedback -->
+                                                                    <!-- Report -->
+                                                                    <!-- end Report -->
+                                                                    <!-- feedback form -->
+                                                                </tr>
+                                                            }
                                                             <tr class="clickable-row odd" data-href="#"
                                                                 data-bs-toggle="tooltip" data-bs-placement="right"
                                                                 title="More Details">
@@ -283,7 +367,7 @@
                                                                 <!-- feedback form -->
                                                             </tr>
 
-                                                            <tr class="clickable-row even" data-href="#"
+                                                            @*<tr class="clickable-row even" data-href="#"
                                                                 data-bs-toggle="tooltip" data-bs-placement="right"
                                                                 title="More Details">
                                                                 <td class="sorting_1">Contest06</td>
@@ -301,7 +385,7 @@
                                                                 </td>
 
                                                                 <!-- feedback form -->
-                                                            </tr>
+                                                            </tr>*@
 
                                                         </tbody>
                                                     </table>

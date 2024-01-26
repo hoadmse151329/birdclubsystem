@@ -8,6 +8,7 @@ using System.Dynamic;
 using WebAppMVC.Models.Location;
 using WebAppMVC.Models.Meeting;
 using WebAppMVC.Models.FieldTrip;
+using WebAppMVC.Models.Contest;
 
 namespace WebAppMVC.Controllers
 {
@@ -36,6 +37,7 @@ namespace WebAppMVC.Controllers
 		{
             string MeetingAPI_URL = HomeAPI_URL + "Meeting/All";
             string FieldTripAPI_URL_All = HomeAPI_URL + "FieldTrip/All";
+            string ContestAPI_URL_All = HomeAPI_URL + "Contest/All";
             dynamic testmodel = new ExpandoObject();
             TempData["ROLE_NAME"] = HttpContext.Session.GetString("ROLE_NAME");
 
@@ -53,14 +55,21 @@ namespace WebAppMVC.Controllers
                 url: MeetingAPI_URL,
                 _logger: _logger);
 
-            if (listMeetResponse == null || listFieldTripResponse == null)
+			var listContestResponse = await methcall.CallMethodReturnObject<GetContestResponseByList>(
+				_httpClient: _httpClient,
+				options: options,
+				methodName: "GET",
+				url: ContestAPI_URL_All,
+				_logger: _logger);
+
+			if (listMeetResponse == null || listFieldTripResponse == null || listContestResponse == null)
             {
                 ViewBag.error =
                     "Error while processing your request! (Getting List Meeting Or Fieldtrip!).\n List was Empty!";
                 Redirect("~/Home/Error");
             }
             else
-            if (!listMeetResponse.Status || !listFieldTripResponse.Status)
+            if (!listMeetResponse.Status || !listFieldTripResponse.Status || !listContestResponse.Status)
             {
                 ViewBag.error =
                     "Error while processing your request! (Getting List Meeting Or Fieldtrip!).\n"
@@ -69,6 +78,7 @@ namespace WebAppMVC.Controllers
             }
             testmodel.Meetings = listMeetResponse.Data;
             testmodel.FieldTrips = listFieldTripResponse.Data;
+            testmodel.Contests = listContestResponse.Data;
             return View(testmodel);
 		}
 

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BAL.ViewModels;
+using BAL.ViewModels.Event;
 using DAL.Models;
 using System;
 using System.Collections.Generic;
@@ -22,6 +23,53 @@ namespace BAL.AutoMapperProfile
                 })
                 .ReverseMap();
             CreateMap<Member, MemberViewModel>().ReverseMap();
+            CreateMap<MeetingParticipant, GetEventParticipation>()
+                .AfterMap((src, dest) =>
+                {
+                    dest.EventId = src.MeetingId;
+                    dest.EventName = src.Meeting.MeetingName;
+                    dest.EventType = "Meeting";
+                    dest.StartDate = src.Meeting.StartDate;
+                    dest.EndDate = src.Meeting.EndDate;
+                    dest.RegistrationDeadline = src.Meeting.RegistrationDeadline;
+                    switch (src.Meeting.Status)
+                    {
+                        case 0:
+                            {
+                                dest.Status = "InPreperation";
+                                break;
+                            }
+                        case 1:
+                            {
+                                dest.Status = "OnGoing";
+                                break;
+                            }
+                        case 2:
+                            {
+                                dest.Status = "Ended";
+                                break;
+                            }
+                        default:
+                            {
+                                dest.Status = "Canceled";
+                                break;
+                            }
+                    }
+                    dest.ParticipationNo = Int32.Parse(src.ParticipantNo);
+                    dest.Fee = 30000;
+                })
+                .ReverseMap()
+                /*.AfterMap((src, dest) =>
+                {
+                    dest.MeetingId = src.MeetingId;
+                    dest.MeetingName = src.Meeting.MeetingName;
+                    dest.StartDate = src.Meeting.StartDate;
+                    dest.EndDate = src.Meeting.EndDate;
+                    dest.RegistrationDeadline = src.Meeting.RegistrationDeadline;
+                    dest.Status = src.Meeting.Status == 0 ? "Inactive" : "Active";
+                    dest.ParticipationNo = Int32.Parse(src.ParticipantNo);
+                    dest.Incharge = src.Meeting.Incharge;
+                })*/;
             CreateMap<Meeting, MeetingViewModel>()
                 .ReverseMap();
             CreateMap<FieldTrip, FieldTripViewModel>()

@@ -1,6 +1,7 @@
 ﻿using BAL.Services.Implements;
 using BAL.Services.Interfaces;
 using BAL.ViewModels;
+using BAL.ViewModels.Member;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -146,5 +147,6 @@ namespace WebAPI.Controllers
 				});
 			}
 		}
-	}
+
+    }
 }

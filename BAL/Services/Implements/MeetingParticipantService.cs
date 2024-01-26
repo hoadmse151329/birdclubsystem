@@ -1,10 +1,13 @@
 ﻿using AutoMapper;
+using AutoMapper.Execution;
 using BAL.Services.Interfaces;
 using BAL.ViewModels;
+using BAL.ViewModels.Event;
 using DAL.Infrastructure;
 using DAL.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -61,6 +64,26 @@ namespace BAL.Services.Implements
             _unitOfWork.MeetingParticipantRepository.Delete(meetingParticipant);
             _unitOfWork.Save();
             return true;
+        }
+
+        public async Task<IEnumerable<MeetingParticipantViewModel>> GetAllByMemberId(string memberId)
+        {
+            
+            return _mapper.Map<IEnumerable<MeetingParticipantViewModel>>(await 
+                _unitOfWork.MeetingParticipantRepository.GetMeetingParticipantsByMemberId(memberId));
+        }
+
+        public async Task<IEnumerable<GetEventParticipation>> GetAllByMemberIdInclude(string memberId)
+        {
+
+            return _mapper.Map<IEnumerable<GetEventParticipation>>(await
+                _unitOfWork.MeetingParticipantRepository.GetMeetingParticipantsByMemberIdInclude(memberId));
+        }
+
+        public async Task<IEnumerable<MeetingParticipantViewModel>> GetAllByMeetingId(int meetId)
+        {
+            return _mapper.Map<IEnumerable<MeetingParticipantViewModel>>(await
+                _unitOfWork.MeetingParticipantRepository.GetMeetingParticipantsByMeetId(meetId));
         }
     }
 }

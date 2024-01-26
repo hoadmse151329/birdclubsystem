@@ -11,16 +11,17 @@ namespace BAL.Services.Interfaces
 {
     public interface IUserService
     {
-        public Task<AuthenResponse> AuthenticateUser(AuthenRequest request);
-        public Task<AuthenResponse> AuthenticateUserEmail(string email);
-        public Task<UserViewModel?> GetById(int id);
-        public Task<bool> GetBoolById(int id);
+        Task<AuthenResponse> AuthenticateUser(AuthenRequest request);
+        Task<AuthenResponse> AuthenticateUserEmail(string email);
+        Task<UserViewModel?> GetById(int id);
+        Task<bool> GetBoolById(int id);
         bool GetByEmail(string email);
-        public Task<UserViewModel?> GetByLogin(string username, string password);
+        Task<bool> UpdateUserAvatar(string memId, string imagePath);
+        Task<UserViewModel?> GetByLogin(string username, string password);
         /* void Create(UserViewModel entity);*/
         void Create(UserViewModel entity, CreateNewMember newmem = null);
         /*void Update(UserViewModel entity);*/
         void Update(UserViewModel entity);
-        public Task<UserViewModel?> GetByEmailModel(string email);
+        Task<UserViewModel?> GetByEmailModel(string email);
     }
 }
