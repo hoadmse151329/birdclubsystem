@@ -50,6 +50,13 @@ namespace WebAppMVC.Controllers
         {
             return View();
         }
-
+        public IActionResult ManagerHistoryEventsDetail()
+        {
+            return View();
+        }
+        public IActionResult ManagerHistoryEvents()
+        {
+            return View();
+        }
     }
 }
