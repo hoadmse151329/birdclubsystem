@@ -83,7 +83,7 @@ namespace WebAPI.Controllers
         /// </remarks>
         /// <returns>Return result of action and error message</returns>
         [HttpPost("Login")]
-        [ProducesResponseType(typeof(UserViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(AuthenResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetUserLogin(
@@ -175,6 +175,7 @@ namespace WebAPI.Controllers
                 });
             }
         }
+        #region old code verify otp
         /*/// <summary>
         /// Verifying User's Account by OTP for Reset Password request.
         /// </summary>
@@ -252,6 +253,7 @@ namespace WebAPI.Controllers
                 });
             }
         }*/
+        #endregion
         // POST api/<UserController>
         // POST api/<UserController>/Register
         /// <summary>
@@ -489,6 +491,7 @@ namespace WebAPI.Controllers
                 });
             }
         }
+        #region old code reset password
         /*// PUT api/<UserController>/5
         /// <summary>
         /// Reset Account Password, requires Email OTP Verification
@@ -549,5 +552,6 @@ namespace WebAPI.Controllers
                 });
             }
         }*/
+        #endregion
     }
 }

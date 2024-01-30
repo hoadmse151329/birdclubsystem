@@ -34,59 +34,40 @@ namespace DAL.Repositories.Implements
         {
             return _context.Users.AsNoTrackingWithIdentityResolution().Include(usr => usr.Member).SingleOrDefault(usr => usr.UserName == userName && usr.Password == passWord);
         }
+        public async Task<bool> ChangeUserAvatar(string usrId, string imageAvatar)
+        {
+            try
+            {
+                //Get User
+                var user = await _context.Users.SingleOrDefaultAsync(u => u.MemberId == usrId);
+                if(user == null)
+                {
+                    throw new Exception("User not Found!");
+                }
+                // Update the user's image path
+                user.ImagePath = imageAvatar;
 
-        public Task<string?> GetMemberIdByIdNoTracking(int id)
+                // Save changes to the database (replace with your actual logic)
+                _context.Users.Update(user);
+                await _context.SaveChangesAsync();
+
+                return true; // Return true if the operation was successful
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred while changing the image: {ex.Message}");
+                return false; // Return false if an error occurred
+            }
+        }
+
+        public async Task<string?> GetMemberIdByIdNoTracking(int id)
         {
             var usr = _context.Users.AsNoTrackingWithIdentityResolution().Include(usr => usr.Member).SingleOrDefault(usr => usr.UserId == id);
-            return Task.Run(() =>
-            {
-                if (usr != null)
+            if (usr != null)
             {
                 return usr.MemberId;
             }
             return null;
-            });
-            
         }
-
-        public class UserManager
-        {
-            public async Task<bool> ChangeImage(string userId, string newImagePath)
-            {
-                try
-                {
-                    // Replace the following line with your logic to fetch the user from the database
-                    User user = GetUserFromDatabase(userId);
-
-                    // Update the user's image path
-                    user.ImagePath = newImagePath;
-
-                    // Save changes to the database (replace with your actual logic)
-                    await SaveChangesToDatabase(user);
-
-                    return true; // Return true if the operation was successful
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"An error occurred while changing the image: {ex.Message}");
-                    return false; // Return false if an error occurred
-                }
-            }
-
-            // Replace the following methods with your actual database interaction logic
-            private User GetUserFromDatabase(string userId)
-            {
-                // Your logic to fetch the user from the database
-                // Example: return dbContext.Users.SingleOrDefault(u => u.UserId == userId);
-                throw new NotImplementedException();
-            }
-
-            private async Task SaveChangesToDatabase(User user)
-            {
-                // Your logic to save changes to the database
-                // Example: dbContext.SaveChanges();
-                throw new NotImplementedException();
-            }
     }
 }
-    }

@@ -2,6 +2,7 @@
 using BAL.Services.Interfaces;
 using BAL.ViewModels;
 using BAL.ViewModels.Authenticates;
+using BAL.ViewModels.Event;
 using DAL.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -154,6 +155,61 @@ namespace WebAPI.Controllers
                 });
             }
         }
+        [Authorize(Roles = "Manager")]
+        [HttpPut("Update/{id}")]
+        [ProducesResponseType(typeof(MeetingViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Update(
+            [Required][FromRoute] int id,
+            [Required] string meetingname,
+            [Required] string description,
+            [Required] DateTime registrationDeadline,
+            [Required] DateTime startDate,
+            [Required] DateTime endDate,
+            [Required] int numberOfParticipants,
+            [Required] string host,
+            [Required] string incharge,
+            [Required] string note)
+        {
+            try
+            {
+                var result = await _meetingService.GetById(id);
+                if (result == null)
+                {
+                    return NotFound(new
+                    {
+                        Status = false,
+                        ErrorMessage = "Meeting does not exist!"
+                    });
+                }
+                result.MeetingName = meetingname;
+                result.Description = description;
+                result.RegistrationDeadline = registrationDeadline;
+                result.StartDate = startDate;
+                result.EndDate = endDate;
+                result.NumberOfParticipants = numberOfParticipants;
+                result.Host = host;
+                result.Incharge = incharge;
+                result.Note = note;
+                _meetingService.Update(result);
+                result = await _meetingService.GetById(id);
+                return Ok(new
+                {
+                    Status = true,
+                    Data = result
+                });
+            }
+            catch (Exception ex)
+            {
+                // Log the exception if needed
+                return BadRequest(new
+                {
+                    Status = false,
+                    ErrorMessage = ex.Message
+                });
+            }
+        }
         [HttpPost("Register/{id}")]
         [Authorize(Roles = "Member")]
         [ProducesResponseType(typeof(MeetingParticipantViewModel), StatusCodes.Status200OK)]
@@ -235,61 +291,6 @@ namespace WebAPI.Controllers
                 });
             }
         }
-        [Authorize(Roles = "Manager")]
-		[HttpPut("Update/{id}")]
-		[ProducesResponseType(typeof(MeetingViewModel), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Update(
-            [Required][FromRoute] int id,
-            [Required] string meetingname, 
-            [Required] string description, 
-            [Required] DateTime registrationDeadline, 
-            [Required] DateTime startDate,
-            [Required] DateTime endDate,
-            [Required] int numberOfParticipants,
-            [Required] string host,
-            [Required] string incharge,
-            [Required] string note)
-        {
-            try
-            {
-                var result = await _meetingService.GetById(id);
-                if (result == null)
-                {
-                    return NotFound(new
-                    {
-                        Status = false,
-                        ErrorMessage = "Meeting does not exist!"
-                    });
-                }
-                result.MeetingName = meetingname;
-                result.Description = description;
-                result.RegistrationDeadline = registrationDeadline;
-                result.StartDate = startDate;
-                result.EndDate = endDate;
-                result.NumberOfParticipants = numberOfParticipants;
-                result.Host = host;
-                result.Incharge = incharge;
-                result.Note = note;
-                _meetingService.Update(result);
-                result = await _meetingService.GetById(id);
-                return Ok(new
-                {
-                    Status = true,
-                    Data = result
-                });
-            }
-            catch (Exception ex)
-            {
-                // Log the exception if needed
-                return BadRequest(new
-                {
-                    Status = false,
-                    ErrorMessage = ex.Message
-                });
-            }
-        }
         [HttpPost("RemoveParticipant/{id}")]
         [Authorize(Roles = "Member,Manager")]
         [ProducesResponseType(typeof(MeetingParticipantViewModel), StatusCodes.Status200OK)]
@@ -322,6 +323,42 @@ namespace WebAPI.Controllers
                 {
                     status = false,
                     errorMessage = ex.Message
+                });
+            }
+        }
+        [HttpPost("Participation/AllMeetings")]
+        [Authorize(Roles = "Member,Staff")]
+        [ProducesResponseType(typeof(List<GetEventParticipation>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetAllMeetingParticipations(
+            [Required][FromBody] string memId)
+        {
+            try
+            {
+                var result = await _participantService.GetAllByMemberIdInclude(memId);
+                if (result == null)
+                {
+                    return NotFound(new
+                    {
+                        Status = false,
+                        ErrorMessage = "List of Meeting Participations Not Found!"
+                    });
+                }
+
+                return Ok(new
+                {
+                    Status = true,
+                    Data = result
+                });
+            }
+            catch (Exception ex)
+            {
+                // Log the exception if needed
+                return BadRequest(new
+                {
+                    Status = false,
+                    ErrorMessage = ex.Message
                 });
             }
         }
