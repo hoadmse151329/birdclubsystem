@@ -34,6 +34,21 @@ namespace DAL.Repositories.Implements
         {
             return _context.Users.AsNoTrackingWithIdentityResolution().Include(usr => usr.Member).SingleOrDefault(usr => usr.UserName == userName && usr.Password == passWord);
         }
+
+        public Task<string?> GetMemberIdByIdNoTracking(int id)
+        {
+            var usr = _context.Users.AsNoTrackingWithIdentityResolution().Include(usr => usr.Member).SingleOrDefault(usr => usr.UserId == id);
+            return Task.Run(() =>
+            {
+                if (usr != null)
+            {
+                return usr.MemberId;
+            }
+            return null;
+            });
+            
+        }
+
         public class UserManager
         {
             public async Task<bool> ChangeImage(string userId, string newImagePath)
@@ -72,15 +87,6 @@ namespace DAL.Repositories.Implements
                 // Example: dbContext.SaveChanges();
                 throw new NotImplementedException();
             }
-
-        public async Task<string?> GetMemberIdByIdNoTracking(int id)
-        {
-            var usr = _context.Users.AsNoTrackingWithIdentityResolution().Include(usr => usr.Member).SingleOrDefault(usr => usr.UserId == id);
-            if (usr != null)
-            {
-                return usr.MemberId;
-            }
-            return null;
-        }
     }
 }
+    }
