@@ -65,83 +65,6 @@
                                     <div class="card">
                                         <div class="card-body">
                                             <div class="table-responsive">
-                                                <!--Feedback-->
-                                                <div id="feedback" class="modal fade" role="dialog">
-                                                    <div class="modal-dialog modal-dialog-centered modal-lg"
-                                                        role="document">
-                                                        <div class="modal-content modal-addRoom">
-                                                            <div class="modal-header">
-                                                                <h4 class="modal-title">Feedback</h4>
-                                                                <button type="button" class="close" data-dismiss="modal"
-                                                                    aria-label="Close">
-                                                                    <span aria-hidden="true">&times;</span>
-                                                                </button>
-                                                            </div>
-                                                            <form
-                                                                action="@Url.Action("ManagerManageEvent", "Manager")">
-                                                            </form>
-                                                            <div class="modal-body">
-                                                                <div class="row p-4">
-                                                                    <div class="col-12">
-                                                                        <div class="row form-group">
-                                                                            <input name="meetingID" value="meeting03"
-                                                                                style="display: none">
-                                                                            <input name="userID" value="1"
-                                                                                style="display: none">
-                                                                            <label for="rating"
-                                                                                class="col-md-3 col-form-label text-md-right">Rating</label>
-                                                                            <div class="form-group col-md-5 stars">
-                                                                                <input class="star star-5" id="star-5"
-                                                                                    type="radio" name="rating"
-                                                                                    value="5">
-                                                                                <label class="star star-5"
-                                                                                    for="star-5"></label>
-                                                                                <input class="star star-4" id="star-4"
-                                                                                    type="radio" name="rating"
-                                                                                    value="4">
-                                                                                <label class="star star-4"
-                                                                                    for="star-4"></label>
-                                                                                <input class="star star-3" id="star-3"
-                                                                                    type="radio" name="rating"
-                                                                                    value="3">
-                                                                                <label class="star star-3"
-                                                                                    for="star-3"></label>
-                                                                                <input class="star star-2" id="star-2"
-                                                                                    type="radio" name="rating"
-                                                                                    value="2">
-                                                                                <label class="star star-2"
-                                                                                    for="star-2"></label>
-                                                                                <input class="star star-1" id="star-1"
-                                                                                    type="radio" name="rating"
-                                                                                    value="1">
-                                                                                <label class="star star-1"
-                                                                                    for="star-1"></label>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="row form-group">
-                                                                            <label for="desct"
-                                                                                class="col-md-3 col-form-label text-md-right">Feedback</label>
-                                                                            <textarea type="text"
-                                                                                placeholder="Feedback..." required=""
-                                                                                class="form-control col-md-7" rows="3"
-                                                                                name="desct"></textarea>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="modal-footer justify-content-center">
-                                                                    <button
-                                                                        class="button--primary bg-success text-white"
-                                                                        type="submit" name="action"
-                                                                        value="feedback">Feedback</button>
-                                                                    <button class="button--primary bg-danger text-white"
-                                                                        type="button" data-dismiss="modal">Cancel</button>
-                                                                </div>
-                                                            </div>
-
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!--End of FeedBack-->
                                                 <!--Report-->
                                                 <div id="report" class="modal fade" role="dialog">
                                                     <div class="modal-dialog modal-dialog-centered modal-lg"
@@ -277,8 +200,7 @@
                                                                         <div class="d-flex justify-content-around">
                                                                             <!--<a href="UserManager?action=feedback?userId=hai03&motelID=785146827" class="btn btn-info m-b-xs shadow btn-xs sharp me-1" data-bs-toggle="tooltip">Đánh giá</a>-->
                                                                             <div class="rating-room">
-                                                                                <a href="@Url.Action(events[i].EventType + "Post", events[i].EventType,new {id = events[i].EventId})" 
-                                                                               class="button--primary btn-info bg-primary shadow btn-xs text-white">Review Event</a>
+                                                                                <a href="@Url.Action(events[i].EventType + "Post", events[i].EventType,new {id = events[i].EventId})" ></a>
                                                                             </div>
                                                                             @switch (events[i].Status)
                                                                             {
@@ -294,23 +216,16 @@
                                                                                 case "OnGoing":
                                                                                 case "Ended":
                                                                                     {
-                                                                                        <div class="rating-room">
-                                                                                            <button data-toggle="modal"
-                                                                                                data-target="#feedback"
-                                                                                                class="button--primary btn-info m-b-xs shadow btn-xs sharp me-1 text-white bg-success">
-                                                                                                <span>Feedback</span>
-                                                                                            </button>
-                                                                                        </div>
-                                                                                        break;
-                                                                                    }
-                                                                            }
-                                                                            <div class="report-room">
+                                                                                        <div class="report-room">
                                                                                 <button data-toggle="modal"
                                                                                     data-target="#report"
                                                                                     class="button--primary btn-danger shadow btn-xs sharp text-white bg-danger">
                                                                                     <span>Report</span>
                                                                                 </button>
                                                                             </div>
+                                                                                        break;
+                                                                                    }
+                                                                            }
                                                                         </div>
 
 
@@ -322,50 +237,7 @@
                                                                     <!-- feedback form -->
                                                                 </tr>
                                                             }
-                                                            <tr class="clickable-row odd" data-href="#"
-                                                                data-bs-toggle="tooltip" data-bs-placement="right"
-                                                                title="More Details">
-                                                                <td class="sorting_1">meeting03</td>
-                                                                <td>Bulbul Enthusiasts Gathering</td>
-                                                                <td>2023-10-10</td>
-                                                                <td>0</td>
-
-
-                                                                <td>Completed</td>
-                                                                <td>
-                                                                    <div class="d-flex justify-content-around">
-                                                                        <!--<a href="UserManager?action=feedback?userId=hai03&motelID=785146827" class="btn btn-info m-b-xs shadow btn-xs sharp me-1" data-bs-toggle="tooltip">Đánh giá</a>-->
-                                                                        <div class="rating-room">
-                                                                            <button data-toggle="modal"
-                                                                                data-target="#feedback"
-                                                                                class="button--primary btn-info m-b-xs shadow btn-xs sharp me-1 text-white bg-success">
-                                                                                <span>Feedback</span>
-                                                                            </button>
-                                                                        </div>
-                                                                        <div class="report-room">
-                                                                            <button data-toggle="modal"
-                                                                                data-target="#report"
-                                                                                class="button--primary btn-danger shadow btn-xs sharp text-white bg-danger">
-                                                                                <span>Report</span>
-                                                                            </button>
-                                                                        </div>
-                                                                        <!--                                                                <a href="#" class="btn btn-danger shadow btn-xs sharp">Report</a>-->
-                                                                    </div>
-
-
-                                                                </td>
-                                                                <!-- feedback -->
-
-
-                                                                <!-- end feedback -->
-
-                                                                <!-- Report -->
-
-
-                                                                <!-- end Report -->
-
-                                                                <!-- feedback form -->
-                                                            </tr>
+                                                            
 
                                                             @*<tr class="clickable-row even" data-href="#"
                                                                 data-bs-toggle="tooltip" data-bs-placement="right"

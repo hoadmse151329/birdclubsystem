@@ -211,7 +211,7 @@
                                                     <div class="room-title">
                                                         <ul>
                                                             <li>
-                                                                <h6>Meeting Name:></h6>
+                                                                <h6>Meeting Name:</h6>
                                                                 <span>Meeting 1</span>
                                                             </li>
                                                             <li>
@@ -244,7 +244,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group mx-auto">
-                                                    <button class="btn btn-primary clickable-row" href="@Url.Action("ManagerMeeting", "Manager")">
+                                                    <button class="btn btn-primary clickable-row" onclick="redirectToDetailPage()">
                                                         <span>See Detail</span> 
                                                     </button>
                                                     <button class="btn btn-danger" data-toggle="modal" data-target="#deleteMeeting">
@@ -269,7 +269,7 @@
                                                     <div class="room-title">
                                                         <ul>
                                                             <li>
-                                                                <h6>Meeting Name:></h6>
+                                                                <h6>Meeting Name:</h6>
                                                                 <span>Meeting 1</span>
                                                             </li>
                                                             <li>
@@ -302,7 +302,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group mx-auto">
-                                                    <button class="btn btn-primary clickable-row" href="@Url.Action("ManagerMeeting", "Manager")">
+                                                    <button class="btn btn-primary clickable-row" onclick="redirectToDetailPage()">
                                                         <span>See Detail</span> 
                                                     </button>
                                                     <button class="btn btn-danger" data-toggle="modal" target="#deleteMeeting">
@@ -326,7 +326,7 @@
                                                     <div class="room-title">
                                                         <ul>
                                                             <li>
-                                                                <h6>Meeting Name:></h6>
+                                                                <h6>Meeting Name:</h6>
                                                                 <span>Meeting 1</span>
                                                             </li>
                                                             <li>
@@ -336,6 +336,8 @@
                                                             <li>
                                                                 <h6>Start Date:</h6>
                                                                 <span>26-1-2024</span>
+                                                            </li>
+                                                            <li>
                                                                 <h6>End Date:</h6>
                                                                 <span>16-2-2024</span>
                                                             </li>
@@ -359,7 +361,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group mx-auto">
-                                                    <button class="btn btn-primary clickable-row" href="@Url.Action("ManagerMeeting", "Manager")">
+                                                    <button class="btn btn-primary clickable-row" onclick="redirectToDetailPage()">
                                                         <span>See Detail</span> 
                                                     </button>
                                                     <button class="btn btn-danger" data-toggle="modal" data-target="#deleteMeeting">
@@ -464,5 +466,10 @@
     <script src="https://unpkg.com/filepond-plugin-file-poster/dist/filepond-plugin-file-poster.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="~/js/owner-script.js"></script>
+    <script>
+    function redirectToDetailPage() {
+        window.location.href = '@Url.Action("ManagerMeetingDetail", "Manager")';
+    }
+</script>
 </body>
 </html>
