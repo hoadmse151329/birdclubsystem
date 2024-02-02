@@ -1,6 +1,8 @@
 ﻿@model BAL.ViewModels.MemberViewModel
 @{
     ViewData["Title"] = "Member Profile Page";
+    IFormFile? formFile = null;
+    BAL.ViewModels.Member.UpdateMemberPassword memberPassword = new();
 }
 <html lang="en">
 <head>
@@ -182,19 +184,21 @@
                                                                     Save Changes
                                                                 </button>
                                                             </div>
+                                                            <input asp-for="ImagePath" type="text" name="ImagePath" value="@Model.ImagePath" hidden />
                                                         </form>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-lg-4">
-                                            <form action="#">
+                                            <form asp-action="UploadImage" asp-controller="Member" enctype="multipart/form-data">
                                                 <div class="avatar-wrapper form-group">
-                                                    <img class="profile-pic" src="~/images/avatar.jpg" />
+                                                    @*src="~/images/avatar.jpg"*@
+                                                    <img class="profile-pic" src="@Model.ImagePath" />
                                                     <div class="upload-button">
                                                         <i class="fa fa-camera" aria-hidden="true"></i>
                                                     </div>
-                                                    <input class="file-upload" type="file" accept=".jpg, .jpeg, .png" />
+                                                    <input asp-for="@formFile" class="file-upload" type="file" accept=".jpg, .jpeg, .png" name="photo" value="@formFile" />
                                                 </div>
                                                 <button type="submit"
                                                     class="button--primary saving-image text-white">Save Profile Picture</button>
@@ -218,22 +222,24 @@
                         <div class="collapse" id="collapseTwo" aria-labelledby="headingTwo" data-parent="#accordion">
                             <div class="card-body">
                                 <div class="card-group d-block">
-                                    <form action="#" method="post">
+                                    <form asp-action="ChangePassword" asp-controller="Member">
                                         <div class="row form-group">
-                                            <label class="offset-md-3 col-md-2 col-sm-3 col-form-label">Old Password</label>
-                                            <input class="col-md-3 col-sm-5 form-control" type="password"
-                                                name="oldpassword" required>
-                                            <span class="error-message col-sm-3 mt-2"></span>
+                                            <label asp-for=@memberPassword.password class="offset-md-3 col-md-2 col-sm-3 col-form-label">Old Password</label>
+                                            <input asp-for=@memberPassword.password class="col-md-3 col-sm-5 form-control" type="password"
+                                                   name="password" required value=@memberPassword.password>
+                                            <span asp-validation-for=@memberPassword.password class="error-message col-sm-3 mt-2"></span>
                                         </div>
                                         <div class="row form-group">
-                                            <label class="offset-md-3 col-md-2 col-sm-3 col-form-label">New Password</label>
-                                            <input class="col-md-3 col-sm-5 form-control" type="password"
-                                                name="newpassword" id="password" required>
+                                            <label asp-for=@memberPassword.Newpassword class="offset-md-3 col-md-2 col-sm-3 col-form-label">New Password</label>
+                                            <input asp-for=@memberPassword.Newpassword class="col-md-3 col-sm-5 form-control" type="newpassword"
+                                                   name="Newpassword" id="password" required value=@memberPassword.Newpassword>
+                                            <span asp-validation-for=@memberPassword.Newpassword class="error-message col-sm-3 mt-2"></span>
                                         </div>
                                         <div class="row form-group">
-                                            <label class="offset-md-3 col-md-2 col-sm-3 col-form-label">Confirm</label>
-                                            <input class="col-md-3 col-sm-5 form-control" type="password" name="confirm"
-                                                id="confirm" required>
+                                            <label asp-for=@memberPassword.NewConfirmPassword class="offset-md-3 col-md-2 col-sm-3 col-form-label">Confirm</label>
+                                            <input asp-for=@memberPassword.NewConfirmPassword class="col-md-3 col-sm-5 form-control" type="password" name="newconfirmpassword"
+                                                   id="confirm" required value=@memberPassword.NewConfirmPassword>
+                                            <span asp-validation-for=@memberPassword.NewConfirmPassword class="error-message col-sm-3 mt-2"></span>
                                         </div>
                                         <div class="row form-group justify-content-center">
                                             <button type="submit" class="button--primary">Change</button>

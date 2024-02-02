@@ -92,6 +92,33 @@
                         <li class="nav-item nav-item-text">
                             <a class="nav-link" href="#">Community</a>
                         </li>
+                        <ul class="nav">
+                            @if (TempData["ROLE_NAME"] != null) // thiếu chia theo admin, staff , member, manager
+                            {
+                                <!-- Display this when the user is logged in -->
+                                <li class="nav-item nav-item-text">
+                                     <div class="user-dropdown dropdown">
+                                        <button class="btn-user-dropdown text-white btn dropdown-toggle" type="button"
+                                                id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <span><img id="profile-pic" class="img-fluid" src="~/images/avatar2.png" alt="fullname"></span>
+                                        </button>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <a class="dropdown-item" href="@Url.Action("MemberProfile", "Member")">
+                                                Member Profile</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item" href="@Url.Action("Logout", "Auth")">Logout</a>
+                                        </div>
+                                    </div>
+                                </li>
+                            }
+                            else
+                            {
+                                <!-- Display this when the user is not logged in -->
+                                <li class="nav-item nav-item-text">
+                                    <a class="nav-link" href="@Url.Action("login", "Auth")">Login</a>
+                                </li>
+                            }
+                        </ul>
                     </ul>
                 </div>
             </div>

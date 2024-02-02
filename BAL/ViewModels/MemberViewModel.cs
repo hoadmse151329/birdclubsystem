@@ -26,6 +26,7 @@ namespace BAL.ViewModels
         [Phone]
         [DataType(DataType.PhoneNumber)]
         public string? Phone { get; set; }
+        public string? ImagePath { get; set; }
         public string? Description { get; set; }
         public string? Status { get; set; }
     }
