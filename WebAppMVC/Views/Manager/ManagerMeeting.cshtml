@@ -1,6 +1,9 @@
-﻿@{
+﻿@model dynamic
+@{
     Layout = null;
     ViewData["Title"] = "Manager Meeting Page";
+    List<BAL.ViewModels.LocationViewModel> locationList = Model.Locations;
+    List<BAL.ViewModels.MeetingViewModel> meetingList = Model.Meetings;
 }
 <html lang="en">
 <head>
@@ -42,7 +45,7 @@
                         </a>
                         <ul class="collapse sub-menu" id="collapseOne">
                             <li data-toggle="tooltip"data-placement="right" title="Manage Meeting">
-                                <a href="@Url.Action("ManagerMeeting", "Manager")" li class="dropdown-item">
+                                <a href="@Url.Action("Meeting", "Manager")" li class="dropdown-item">
                                     <i class='bx bx-home-alt-2'></i>
                                     <span class="title">Meeting</span>
                                 </a> 
@@ -168,8 +171,14 @@
                                     <div class="row search">
                                         <div class="col-sm-12 d-flex">
                                             <div class="col-sm-6 d-flex address-home">
-                                                <span>Address: </span>
-                                                <h5> 111a,Hai Ba Trung</h5>
+                                                @{
+                                                    if (ViewBag.error != null)
+                                                    {
+                                                        <span class="text-danger">@ViewBag.error</span>
+                                                    }
+                                                }
+                                                @*<span>Address: </span>
+                                                <h5> 111a,Hai Ba Trung</h5>*@
                                             </div>
                                             <div class="col-sm-6 d-flex justify-content-end">
                                                 <form action="#">
@@ -194,7 +203,71 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <!-- dung vong for o day -->
+                                        @foreach(var data in meetingList)
+                                        {
+                                            <div class="col-xl-3 col-lg-6 col-sm-6 my-3">
+                                                <div class="card card-child">
+                                                    <div class="room-name">
+                                                        <span>Meeting</span>
+                                                        <div class="status">
+                                                            <!-- dùng lệnh if -->
+                                                            @*<span class="stt1">Status:<h6>Processing</h6></span>*@
+                                                            <span class="stt1">Status:<h6>@data.Status</h6></span>
+                                                            <!-- <span class="stt2">Trạng thái:<h6>Done</h6></span>
+                                                            <span class="stt3">Trạng thái:<h6>Cancle</h6></span>
+                                                            <span class="stt3">Trạng thái:<h6>In debt</h6></span>-->
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <div class="room-title">
+                                                            <ul>
+                                                                <li>
+                                                                    <h6>Meeting Name:></h6>
+                                                                    <span>@data.MeetingName</span>
+                                                                </li>
+                                                                <li>
+                                                                    <h6>Registration Deadlines:</h6>
+                                                                    <span>@data.RegistrationDeadline.Value.ToString("MM/dd/yyyy")</span>
+                                                                </li>
+                                                                <li>
+                                                                    <h6>Start Date:</h6>
+                                                                    <span>@data.StartDate.Value.ToString("MM/dd/yyyy")</span>
+                                                                </li>
+                                                                <li>
+                                                                    <h6>End Date:</h6>
+                                                                    <span>@data.EndDate.Value.ToString("MM/dd/yyyy")</span>
+                                                                </li>
+                                                                <li>
+                                                                    <h6>Number of participants:</h6>
+                                                                    <span>@data.NumberOfParticipants</span>
+                                                                </li>
+                                                                <li>
+                                                                    <h6>Location:</h6>
+                                                                    <span>@data.Address</span>
+                                                                </li>
+                                                                <li>
+                                                                    <h6>Description:</h6>
+                                                                    <span>@data.Description</span>
+                                                                </li>
+                                                                <li>
+                                                                    <h6>Note:</h6>
+                                                                    <span>@data.Note</span>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group mx-auto">
+                                                        <form asp-action="Meeting" asp-controller="Manager" method="get" asp-route-id="@data.MeetingId">
+                                                            <button class="btn btn-primary clickable-row" type="submit">See Detail</button>
+                                                        </form>
+                                                        <form asp-action="ManagerMeetingDelete" asp-controller="Manager" method="post" asp-route-id="@data.MeetingId">
+                                                            <button class="btn btn-danger" data-toggle="modal" data-target="#deleteRoom" type="submit">Delete Meeting</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                        @*<!-- dung vong for o day -->
                                         <div class="col-xl-3 col-lg-6 col-sm-6 my-3">
                                             <div class="card card-child">
                                                 <div class="room-name">
@@ -373,7 +446,7 @@
                                                     </button>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div>*@
 
                                     <div class="pagination d-flex justify-content-center">
                                         <li class="page-item previous-page disabled"><a href="#" class="page-link">Previous</a></li>

@@ -22,7 +22,17 @@ namespace BAL.AutoMapperProfile
                     opt.MapFrom(src => src.Member != null ? src.Member.Email : "");
                 })
                 .ReverseMap();
-            CreateMap<Member, MemberViewModel>().ReverseMap();
+            CreateMap<Member, MemberViewModel>()
+                .AfterMap((src, dest) =>
+                {
+                    dest.ImagePath = src.Users.ImagePath;
+                })
+                .ReverseMap()
+                .AfterMap((src, dest) =>
+                {
+                    dest.Users.ImagePath = src.ImagePath;
+                })
+                ;
             CreateMap<MeetingParticipant, GetEventParticipation>()
                 .AfterMap((src, dest) =>
                 {

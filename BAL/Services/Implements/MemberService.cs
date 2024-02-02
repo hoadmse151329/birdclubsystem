@@ -91,7 +91,14 @@ namespace BAL.Services.Implements
 
 		public void Update(MemberViewModel entity)
 		{
-			var mem = _mapper.Map<Member>(entity);
+            var usr = _unitOfWork.UserRepository.GetByMemberId(entity.MemberId).Result;
+			if(usr == null)
+			{
+				throw new Exception("User not Found!");
+			}
+            var mem = _mapper.Map<Member>(entity);
+			usr.ImagePath = entity.ImagePath;
+			mem.Users = usr;
 			_unitOfWork.MemberRepository.Update(mem);
 			_unitOfWork.Save();
 		}
