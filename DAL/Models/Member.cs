@@ -8,7 +8,7 @@ namespace DAL.Models
         public Member()
         {
             Birds = new HashSet<Bird>();
-            Users = new HashSet<User>();
+            MemberUser = new User();
         }
 
         public string MemberId { get; set; } = null!;
@@ -24,7 +24,6 @@ namespace DAL.Models
         public int? ClubId { get; set; }
 
         public virtual ICollection<Bird> Birds { get; set; }
-        public virtual ICollection<MeetingParticipant> MeetingParticipants { get; set; }
-        public virtual User Users { get; set; }
+        public virtual User MemberUser { get; set; }
     }
 }

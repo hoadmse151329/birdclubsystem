@@ -45,7 +45,7 @@ namespace DAL.Repositories.Implements
                     throw new Exception("User not Found!");
                 }
                 // Update the user's image path
-                //user.ImagePath = imageAvatar;
+                user.ImagePath = imageAvatar;
 
                 // Save changes to the database (replace with your actual logic)
                 _context.Users.Update(user);

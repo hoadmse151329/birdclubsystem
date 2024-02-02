@@ -11,11 +11,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DAL\DAL.csproj" />
+    <Folder Include="ViewModels\Meeting\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ViewModels\Meeting\" />
+    <ProjectReference Include="..\DAL\DAL.csproj" />
   </ItemGroup>
 
 </Project>

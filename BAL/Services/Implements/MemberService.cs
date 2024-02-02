@@ -98,7 +98,7 @@ namespace BAL.Services.Implements
 			}
             var mem = _mapper.Map<Member>(entity);
 			usr.ImagePath = entity.ImagePath;
-			mem.Users = usr;
+			mem.MemberUser = usr;
 			_unitOfWork.MemberRepository.Update(mem);
 			_unitOfWork.Save();
 		}

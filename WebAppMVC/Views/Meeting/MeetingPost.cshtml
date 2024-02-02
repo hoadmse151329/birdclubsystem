@@ -1,6 +1,7 @@
 ﻿@model BAL.ViewModels.MeetingViewModel
 @{
     ViewData["Title"] = "Meeting Post Page";
+    Layout = "~/_layout";
 }
 
 <html>
@@ -67,7 +68,7 @@
               <div class="overlap-3">
                 <div>
                    <label for="addressInput">Enter Address:</label>
-                      <input type="text" id="addressInput" placeholder="E.g., 123 Main St, City">
+                                <input type="text" id="addressInput" placeholder="@Model.AreaNumber,@Model.Street,@Model.District,@Model.City">
                    <button onclick="updateMap()">Update Map</button>
                 </div>
     
@@ -89,8 +90,8 @@
 
 
                 <div class="group-3">
-                  <div class="text-wrapper-16">@Model.AreaNumber</div>
-                  <div class="text-wrapper-11">@Model.Street</div>
+                  <div class="text-wrapper-11">@Model.AreaNumber,@Model.Street,@Model.District,@Model.City</div>
+                  @*<div class="text-wrapper-11">@Model.Street</div>*@
                   <p class="text-wrapper-12">@Model.NumberOfParticipantsLimit</p>
                   <div class="text-wrapper-13">@Model.RegistrationDeadline</div>
                   <div class="text-wrapper-14">ChaoMaoClub@gmail.com</div>

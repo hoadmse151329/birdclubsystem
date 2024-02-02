@@ -1317,7 +1317,7 @@ namespace DAL.Migrations
             modelBuilder.Entity("DAL.Models.User", b =>
                 {
                     b.HasOne("DAL.Models.Member", "Member")
-                        .WithOne("Users")
+                        .WithOne("MemberUser")
                         .HasForeignKey("DAL.Models.User", "MemberId")
                         .HasConstraintName("FK_Users_Member");
 
@@ -1352,7 +1352,7 @@ namespace DAL.Migrations
 
                     b.Navigation("MeetingParticipants");
 
-                    b.Navigation("Users");
+                    b.Navigation("MemberUser");
                 });
 
             modelBuilder.Entity("DAL.Models.User", b =>

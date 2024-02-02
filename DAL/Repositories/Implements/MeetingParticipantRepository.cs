@@ -57,7 +57,7 @@ namespace DAL.Repositories.Implements
 
         public async Task<int> GetParticipationNoMeetingParticipantById(int meetingId, string memberId)
         {
-            var mempart = _context.MeetingParticipants.Find(meetingId, memberId);
+            var mempart = _context.MeetingParticipants.SingleOrDefault(m => m.MeetingId.Equals(meetingId) && m.MemberId.Equals(memberId));
             if (mempart != null) return Int32.Parse(mempart.ParticipantNo);
             return 0;
         }
