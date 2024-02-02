@@ -42,29 +42,7 @@ namespace BAL.AutoMapperProfile
                     dest.StartDate = src.Meeting.StartDate;
                     dest.EndDate = src.Meeting.EndDate;
                     dest.RegistrationDeadline = src.Meeting.RegistrationDeadline;
-                    switch (src.Meeting.Status)
-                    {
-                        case 0:
-                            {
-                                dest.Status = "InPreperation";
-                                break;
-                            }
-                        case 1:
-                            {
-                                dest.Status = "OnGoing";
-                                break;
-                            }
-                        case 2:
-                            {
-                                dest.Status = "Ended";
-                                break;
-                            }
-                        default:
-                            {
-                                dest.Status = "Canceled";
-                                break;
-                            }
-                    }
+                    dest.Status = src.Meeting.Status;
                     dest.ParticipationNo = Int32.Parse(src.ParticipantNo);
                     dest.Fee = 30000;
                 })

@@ -22,7 +22,7 @@ namespace DAL.Models
         public string? Incharge { get; set; }
         public string? Note { get; set; }
         public int? LocationId { get; set; }
-        public int? Status { get; set; }
+        public string? Status { get; set; }
 
         public virtual ICollection<MeetingMedia> MeetingMedia { get; set; }
         public virtual ICollection<MeetingParticipant> MeetingParticipants { get; set; }

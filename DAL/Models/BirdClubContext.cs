@@ -669,7 +669,9 @@ namespace DAL.Models
                     .HasColumnType("datetime")
                     .HasColumnName("startDate");
 
-                entity.Property(e => e.Status).HasColumnName("status");
+                entity.Property(e => e.Status)
+                    .HasMaxLength(20)
+                    .HasColumnName("status");
             });
 
             modelBuilder.Entity<MeetingMedia>(entity =>
@@ -840,9 +842,9 @@ namespace DAL.Models
                     .HasMaxLength(50)
                     .HasColumnName("memberId");
 
-                entity.Property(e => e.ImagePath)
-                    .HasMaxLength(255)
-                    .HasColumnName("imagepath");
+                //entity.Property(e => e.ImagePath)
+                //    .HasMaxLength(255)
+                //    .HasColumnName("imagepath");
 
                 entity.Property(e => e.Password)
                     .HasMaxLength(255)
