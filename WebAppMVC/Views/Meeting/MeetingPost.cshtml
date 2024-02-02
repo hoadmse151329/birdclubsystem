@@ -1,17 +1,22 @@
 ﻿@model BAL.ViewModels.MeetingViewModel
 @{
     ViewData["Title"] = "Meeting Post Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <html>
   <head>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="~/css/Meeting.css" />
-    <style>
-        #map {
-            height: 400px;
-        }
-    </style>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css">
+    <!-- FONT -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,100&family=Roboto+Condensed:wght@400;700&display=swap"
+        rel="stylesheet">
+    <!-- FONT AWESOME -->
+    <link rel="stylesheet" href="~/fonts/fontawesome-free-5.15.4-web/css/all.min.css">
+
+    <!-- main CSS -->
   </head>
   <body>
     <div class="member-meeting-post">
@@ -20,9 +25,6 @@
           <div class="background">
             <div class="overlap-group">
               <img class="subtract" src="~/images/Background.png" />
-              <div class="rectangle"></div>
-              <div class="div"></div>
-              <div class="rectangle-2"></div>
             </div>
           </div>
           <div class="headlines">
@@ -64,13 +66,7 @@
               </div>
             </div>
             <div class="info">
-              <div class="overlap-3">
-                <div>
-                   <label for="addressInput">Enter Address:</label>
-                      <input type="text" id="addressInput" placeholder="E.g., 123 Main St, City">
-                   <button onclick="updateMap()">Update Map</button>
-                </div>
-    
+              <div class="overlap-3"> 
                 <div id="map-container"></div>
                 <div class="tittle">
                   <div class="overlap-group-2"><p class="text-wrapper-4">@Model.MeetingName</p></div>
@@ -79,9 +75,9 @@
 
 
                 <div class="group-2">
-                  <div class="text-wrapper-6">Location</div>
-                  <div class="text-wrapper-7">Participation Limit</div>
-                  <div class="text-wrapper-8">Registration Deadlines</div>
+                  <div class="text-wrapper-6">Participation Limit</div>
+                  <div class="text-wrapper-7">Registration Deadlines</div>
+                  <div class="text-wrapper-8">Location</div>
                   <div class="text-wrapper-9">Contact</div>
                   <div class="text-wrapper-10">Organizer</div>
                 </div>
@@ -120,69 +116,5 @@
         </div>
       </div>
     </div>
-    <script>
-        var map; // Declare map variable globally
-
-        function initializeMap(coordinates) {
-            // Create a map with a marker
-            map = new ol.Map({
-                target: 'map-container',
-                layers: [
-                    new ol.layer.Tile({
-                        source: new ol.source.OSM()
-                    }),
-                    new ol.layer.Vector({
-                        source: new ol.source.Vector({
-                            features: [
-                                new ol.Feature({
-                                    geometry: new ol.geom.Point(ol.proj.fromLonLat(coordinates)),
-                                })
-                            ]
-                        })
-                    })
-                ],
-                view: new ol.View({
-                    center: ol.proj.fromLonLat(coordinates),
-                    zoom: 13
-                })
-            });
-        }
-
-        function updateMap() {
-            var addressInput = document.getElementById('addressInput').value;
-
-            if (addressInput.trim() !== '') {
-                var geocodeUrl = 'https://nominatim.openstreetmap.org/search?format=json&limit=1&q=' + encodeURIComponent(addressInput);
-
-                fetch(geocodeUrl)
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data && data.length > 0) {
-                            var coordinates = [parseFloat(data[0].lon), parseFloat(data[0].lat)];
-
-                            // Check if the map is already initialized
-                            if (map) {
-                                map.getView().setCenter(ol.proj.fromLonLat(coordinates));
-                                map.getLayers().getArray()[1].getSource().getFeatures()[0].getGeometry().setCoordinates(ol.proj.fromLonLat(coordinates));
-                            } else {
-                                initializeMap(coordinates);
-                            }
-                        } else {
-                            alert('Invalid address. Please try again.');
-                        }
-                    })
-                    .catch(error => console.error('Error:', error));
-            } else {
-                alert('Please enter an address.');
-            }
-        }
-
-        // Example: Initial location
-        var initialLocation = "1600 Amphitheatre Parkway, Mountain View, CA";
-
-        // Call the function to initialize the map with the initial location
-        updateMap();
-    </script>
-<script src="https://openlayers.org/en/latest/build/ol.js"></script>
   </body>
 </html>
