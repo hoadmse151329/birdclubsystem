@@ -11,30 +11,52 @@
 </head>
 <body>
     <header>
-        @*<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">birdclubsystem</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>*@
-        <nav class="navbar navbar-expand-xl border-bottom box-shadow mb-3">
+        <div class="header__top d-flex justify-content-between align-items-center container-fluid py-2 fixed-top">
+        <div class="header__left">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="mailto:hotrankhanhduy16@gmail.com" class="text-white text-decoration-none"><i
+                    class="fa fa-envelope"></i> hotrankhanhduy16@gmail.com</a>
+            <a href="tel:0888738852" class="text-white mr-4 text-decoration-none"><i class="fas fa-phone-alt"></i>
+                0888738852</a>
+        </div>
+        <div class="header__right">
+            <ul class="nav">
+                            @if (TempData["ROLE_NAME"] != null) // thiếu chia theo admin, staff , member, manager
+                            {
+                                <!-- Display this when the user is logged in -->
+                                <li class="nav-item nav-item-text">
+                                     <div class="user-dropdown dropdown">
+                                        <button class="btn-user-dropdown text-white btn dropdown-toggle" type="button"
+                                                id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <span>Xin chào, TempData</span>
+                                            <span><img id="profile-pic" class="img-fluid" src="~/images/avatar2.png" alt="fullname"></span>
+                                        </button>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <a class="dropdown-item" href="@Url.Action("MemberProfile", "Member")">
+                                                Member Profile</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item" href="@Url.Action("Logout", "Auth")">Logout</a>
+                                        </div>
+                                    </div>
+                                </li>
+                            }
+                            else
+                            {
+                                <!-- Display this when the user is not logged in -->
+                                <li class="nav-item nav-item-text">
+                                    <a class="nav-link" href="@Url.Action("login", "Auth")">Login</a>
+                                </li>
+                            }
+                        </ul>
+        </div>
+        </div>
+        <div class="header__bottom">
+        <nav class="myNavBar navbar navbar-expand-lg navbar-dark container-fluid">
             <div class="container-fluid">
                 <a class="navbar-brand nav-name-text" href="@Url.Action("Index", "Home")">
                     <img class="d-inline-block" src="/images/Red_whiskered_bulbul_bird_logo_eps_10_generated 1.png" />
-                    ChaoMao Club
+                    <a class="navbar-brand nav-name-text" style="color:black">ChaoMao Club</a>
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -70,38 +92,11 @@
                         <li class="nav-item nav-item-text">
                             <a class="nav-link" href="#">Community</a>
                         </li>
-                        <ul class="nav">
-                            @if (TempData["ROLE_NAME"] != null) // thiếu chia theo admin, staff , member, manager
-                            {
-                                <!-- Display this when the user is logged in -->
-                                <li class="nav-item nav-item-text">
-                                     <div class="user-dropdown dropdown">
-                                        <button class="btn-user-dropdown text-white btn dropdown-toggle" type="button"
-                                                id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            @*<span>Xin chào, TempData</span>*@
-                                            <span><img id="profile-pic" class="img-fluid" src="~/images/avatar2.png" alt="fullname"></span>
-                                        </button>
-                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                            <a class="dropdown-item" href="@Url.Action("MemberProfile", "Member")">
-                                                Member Profile</a>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="@Url.Action("Logout", "Auth")">Logout</a>
-                                        </div>
-                                    </div>
-                                </li>
-                            }
-                            else
-                            {
-                                <!-- Display this when the user is not logged in -->
-                                <li class="nav-item nav-item-text">
-                                    <a class="nav-link" href="@Url.Action("login", "Auth")">Login</a>
-                                </li>
-                            }
-                        </ul>
                     </ul>
                 </div>
             </div>
         </nav>
+        </div>
     </header>
     <div class="container-fluid">
         <main role="main" class="pb-3">

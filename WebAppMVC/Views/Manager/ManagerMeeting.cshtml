@@ -187,7 +187,7 @@
                                         <div class="col-xl-3 col-lg-6 col-sm-6 my-3 item">
                                             <div class="card card-child">
                                                 <div class="card-body add-room">
-                                                    <button class="border-0" data-toggle="modal"  data-target="#addRoom1">
+                                                    <button class="border-0" data-toggle="modal"  data-target="#addMeeting1">
                                                         <span>Add Meeting</span>
                                                         <i class='bx bx-add-to-queue'></i>
                                                     </button>
@@ -211,20 +211,18 @@
                                                     <div class="room-title">
                                                         <ul>
                                                             <li>
-                                                                <h6>Meeting Name:></h6>
+                                                                <h6>Meeting Name:</h6>
                                                                 <span>Meeting 1</span>
                                                             </li>
                                                             <li>
                                                                 <h6>Registration Deadlines:</h6>
-                                                                <span>16/2/2024</span>
+                                                                <span>16-2-2024</span>
                                                             </li>
                                                             <li>
                                                                 <h6>Start Date:</h6>
-                                                                <span>26/1/2024</span>
-                                                            </li>
-                                                            <li>
+                                                                <span>26-1-2024</span>
                                                                 <h6>End Date:</h6>
-                                                                <span>16/2/2024</span>
+                                                                <span>16-2-2024</span>
                                                             </li>
                                                             <li>
                                                                 <h6>Number of participants:</h6>
@@ -246,10 +244,10 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group mx-auto">
-                                                    <button class="btn btn-primary clickable-row" data-href="@Url.Action("ManagerMeetingDetail", "Manager")">
+                                                    <button class="btn btn-primary clickable-row" onclick="redirectToDetailPage()">
                                                         <span>See Detail</span> 
                                                     </button>
-                                                    <button class="btn btn-danger" data-toggle="modal" data-target="#deleteRoom">
+                                                    <button class="btn btn-danger" data-toggle="modal" data-target="#deleteMeeting">
                                                         <span>Delete Meeting</span> 
                                                     </button>
                                                 </div>
@@ -271,7 +269,7 @@
                                                     <div class="room-title">
                                                         <ul>
                                                             <li>
-                                                                <h6>Meeting Name:></h6>
+                                                                <h6>Meeting Name:</h6>
                                                                 <span>Meeting 1</span>
                                                             </li>
                                                             <li>
@@ -281,8 +279,6 @@
                                                             <li>
                                                                 <h6>Start Date:</h6>
                                                                 <span>26-1-2024</span>
-                                                            </li>
-                                                            <li>
                                                                 <h6>End Date:</h6>
                                                                 <span>16-2-2024</span>
                                                             </li>
@@ -306,10 +302,10 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group mx-auto">
-                                                    <button class="btn btn-primary clickable-row" data-href="@Url.Action("ManagerMeetingDetail", "Manager")">
+                                                    <button class="btn btn-primary clickable-row" onclick="redirectToDetailPage()">
                                                         <span>See Detail</span> 
                                                     </button>
-                                                    <button class="btn btn-danger" data-toggle="modal" data-target="#deleteRoom">
+                                                    <button class="btn btn-danger" data-toggle="modal" target="#deleteMeeting">
                                                         <span>Delete Meeting</span> 
                                                     </button>
                                                 </div>
@@ -330,7 +326,7 @@
                                                     <div class="room-title">
                                                         <ul>
                                                             <li>
-                                                                <h6>Meeting Name:></h6>
+                                                                <h6>Meeting Name:</h6>
                                                                 <span>Meeting 1</span>
                                                             </li>
                                                             <li>
@@ -365,10 +361,10 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group mx-auto">
-                                                    <button class="btn btn-primary clickable-row" data-href="@Url.Action("ManagerMeetingDetail", "Manager")">
+                                                    <button class="btn btn-primary clickable-row" onclick="redirectToDetailPage()">
                                                         <span>See Detail</span> 
                                                     </button>
-                                                    <button class="btn btn-danger" data-toggle="modal" data-target="#deleteRoom">
+                                                    <button class="btn btn-danger" data-toggle="modal" data-target="#deleteMeeting">
                                                         <span>Delete Meeting</span> 
                                                     </button>
                                                 </div>
@@ -470,5 +466,10 @@
     <script src="https://unpkg.com/filepond-plugin-file-poster/dist/filepond-plugin-file-poster.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="~/js/owner-script.js"></script>
+    <script>
+    function redirectToDetailPage() {
+        window.location.href = '@Url.Action("ManagerMeetingDetail", "Manager")';
+    }
+</script>
 </body>
 </html>

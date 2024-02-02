@@ -7,8 +7,11 @@
   <head>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="~/css/Meeting.css" />
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <style>
+        #map {
+            height: 400px;
+        }
+    </style>
   </head>
   <body>
     <div class="member-meeting-post">
@@ -62,9 +65,13 @@
             </div>
             <div class="info">
               <div class="overlap-3">
-                <div class="rectangle-5"></div>
-                <div class="rectangle-6" id="map"></div>
-
+                <div>
+                   <label for="addressInput">Enter Address:</label>
+                      <input type="text" id="addressInput" placeholder="E.g., 123 Main St, City">
+                   <button onclick="updateMap()">Update Map</button>
+                </div>
+    
+                <div id="map-container"></div>
                 <div class="tittle">
                   <div class="overlap-group-2"><p class="text-wrapper-4">@Model.MeetingName</p></div>
                 </div>
@@ -114,41 +121,69 @@
         </div>
       </div>
     </div>
-<script>
-  // Function to initialize the map using a dynamic address
-  function initializeMap(dynamicAddress) {
-    // Use OpenStreetMap Nominatim API for geocoding
-    var geocodeUrl = "https://nominatim.openstreetmap.org/search?format=json&limit=1&q=" + encodeURIComponent(dynamicAddress);
+    <script>
+        var map; // Declare map variable globally
 
-    fetch(geocodeUrl)
-      .then(response => response.json())
-      .then(data => {
-        if (data && data.length > 0) {
-          var coordinates = [parseFloat(data[0].lat), parseFloat(data[0].lon)];
-
-          // Initialize the map
-          var mymap = L.map('map').setView(coordinates, 13);
-
-          // Add the OpenStreetMap base layer
-          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; OpenStreetMap contributors'
-          }).addTo(mymap);
-
-          // Add a marker for the specific location
-          var marker = L.marker(coordinates).addTo(mymap);
-
-          // Popup for the marker
-          marker.bindPopup("<b>" + dynamicAddress + "</b>").openPopup();
+        function initializeMap(coordinates) {
+            // Create a map with a marker
+            map = new ol.Map({
+                target: 'map-container',
+                layers: [
+                    new ol.layer.Tile({
+                        source: new ol.source.OSM()
+                    }),
+                    new ol.layer.Vector({
+                        source: new ol.source.Vector({
+                            features: [
+                                new ol.Feature({
+                                    geometry: new ol.geom.Point(ol.proj.fromLonLat(coordinates)),
+                                })
+                            ]
+                        })
+                    })
+                ],
+                view: new ol.View({
+                    center: ol.proj.fromLonLat(coordinates),
+                    zoom: 13
+                })
+            });
         }
-      })
-      .catch(error => console.error('Error:', error));
-  }
 
-  // Example: Fetch the dynamic address from the server (replace with your actual logic)
-  var dynamicAddressFromServer = "H22/183 Hoang Van Thai Street, Thanh Xuan District, Hanoi";
+        function updateMap() {
+            var addressInput = document.getElementById('addressInput').value;
 
-  // Call the function to initialize the map with the dynamic address
-  initializeMap(dynamicAddressFromServer);
-</script>
+            if (addressInput.trim() !== '') {
+                var geocodeUrl = 'https://nominatim.openstreetmap.org/search?format=json&limit=1&q=' + encodeURIComponent(addressInput);
+
+                fetch(geocodeUrl)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data && data.length > 0) {
+                            var coordinates = [parseFloat(data[0].lon), parseFloat(data[0].lat)];
+
+                            // Check if the map is already initialized
+                            if (map) {
+                                map.getView().setCenter(ol.proj.fromLonLat(coordinates));
+                                map.getLayers().getArray()[1].getSource().getFeatures()[0].getGeometry().setCoordinates(ol.proj.fromLonLat(coordinates));
+                            } else {
+                                initializeMap(coordinates);
+                            }
+                        } else {
+                            alert('Invalid address. Please try again.');
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+            } else {
+                alert('Please enter an address.');
+            }
+        }
+
+        // Example: Initial location
+        var initialLocation = "1600 Amphitheatre Parkway, Mountain View, CA";
+
+        // Call the function to initialize the map with the initial location
+        updateMap();
+    </script>
+<script src="https://openlayers.org/en/latest/build/ol.js"></script>
   </body>
 </html>
