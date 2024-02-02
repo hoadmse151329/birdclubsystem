@@ -32,7 +32,8 @@ namespace BAL.Services.Implements
                     if(item.MeetingId == itemview.MeetingId)
                     {
                         locationName = await _unitOfWork.LocationRepository.GetLocationNameById(item.LocationId.Value);
-                        itemview.Address = locationName;
+                        itemview.AreaNumber = locationName[0];
+                        itemview.Street = locationName.Split(",")[1];
                         itemview.District = locationName.Split(",")[2];
                         itemview.City = locationName.Split(",")[3];
                     }
@@ -55,7 +56,8 @@ namespace BAL.Services.Implements
                 int partAmount = await _unitOfWork.MeetingParticipantRepository.GetCountMeetingParticipantsByMeetId(meet.MeetingId);
                 var meeting = _mapper.Map<MeetingViewModel>(meet);
                 meeting.NumberOfParticipantsLimit = meeting.NumberOfParticipants - partAmount;
-                meeting.Address = locationName;
+                meeting.AreaNumber = locationName[0];
+                meeting.Street = locationName.Split(",")[1];
                 meeting.District = locationName.Split(",")[2];
                 meeting.City = locationName.Split(",")[3];
                 return meeting;

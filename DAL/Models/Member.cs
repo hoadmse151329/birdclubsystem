@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text.Json.Serialization;
 
 namespace DAL.Models
 {
@@ -9,8 +8,7 @@ namespace DAL.Models
         public Member()
         {
             Birds = new HashSet<Bird>();
-            MeetingParticipants = new HashSet<MeetingParticipant>();
-            Users = new User();
+            Users = new HashSet<User>();
         }
 
         public string MemberId { get; set; } = null!;
@@ -24,7 +22,7 @@ namespace DAL.Models
         public string? Description { get; set; }
         public string? Status { get; set; }
         public int? ClubId { get; set; }
-        [JsonIgnore]
+
         public virtual ICollection<Bird> Birds { get; set; }
         public virtual ICollection<MeetingParticipant> MeetingParticipants { get; set; }
         public virtual User Users { get; set; }

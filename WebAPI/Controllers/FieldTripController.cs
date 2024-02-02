@@ -4,6 +4,7 @@ using BAL.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace WebAPI.Controllers
 {
@@ -12,11 +13,22 @@ namespace WebAPI.Controllers
     public class FieldTripController : ControllerBase
     {
         private readonly IFieldTripService _fieldTripService;
+        private readonly IFieldTripParticipantService _participantService;
+        private readonly IMemberService _memberService;
+        private readonly IUserService _userService;
         private readonly IConfiguration _config;
-        public FieldTripController(IFieldTripService fieldTripService, IConfiguration config)
+        public FieldTripController(
+            IFieldTripService fieldTripService,
+            IConfiguration config,
+            IMemberService memberService,
+            IUserService userService,
+            IFieldTripParticipantService fieldTripParticipantService)
         {
             _fieldTripService = fieldTripService;
             _config = config;
+            _memberService = memberService;
+            _userService = userService;
+            _participantService = fieldTripParticipantService;
         }
 
         [HttpGet("All")]
@@ -94,19 +106,19 @@ namespace WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult Create (
-            string tripName,
-            string description,
-            string details,
-            DateTime registrationDeadline,
-            DateTime startDate,
-            DateTime endDate,
-            string status,
-            decimal fee,
-            int numberOfParticipants,
-            string host,
-            string incharge,
-            string note,
-            string review
+            [Required] string tripName,
+            [Required] string description,
+            [Required] string details,
+            [Required] DateTime registrationDeadline,
+            [Required] DateTime startDate,
+            [Required] DateTime endDate,
+            [Required] string status,
+            [Required] decimal fee,
+            [Required] int numberOfParticipants,
+            [Required] string host,
+            [Required] string incharge,
+            [Required] string note,
+            [Required] string review
             )
         {
             try
@@ -134,6 +146,185 @@ namespace WebAPI.Controllers
                     Message = "Field Trip Create successfully!",
                     Data = value
                 });
+            }
+            catch (Exception ex)
+            {
+                // Log the exception if needed
+                return BadRequest(new
+                {
+                    status = false,
+                    errorMessage = ex.Message
+                });
+            }
+        }
+        [HttpPost("Register/{id}")]
+        [Authorize(Roles = "Member")]
+        [ProducesResponseType(typeof(FieldTripParticipantViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Register(
+            [Required][FromRoute] int id,
+            [Required][FromBody] int usrId)
+        {
+            try
+            {
+                var trip = await _fieldTripService.GetFieldTripById(id);
+                if (trip == null) return NotFound(new
+                {
+                    Status = false,
+                    ErrorMessage = "Field Trip Not Found!"
+                });
+                var mem = await _userService.GetById(usrId);
+                if (mem == null) return NotFound(new
+                {
+                    Status = false,
+                    ErrorMessage = "Member Not Found!"
+                });
+                int participantNo = await _participantService.Create(mem.MemberId, id);
+                return Ok(new
+                {
+                    Status = true,
+                    Message = "Add Member Participation successfully !",
+                    Data = participantNo
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new
+                {
+                    Status = false,
+                    ErrorMessage = ex.Message
+                });
+            }
+        }
+        [HttpPost("Participant/{id}")]
+        [Authorize(Roles = "Member")]
+        [ProducesResponseType(typeof(FieldTripViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetFieldTripAndParticipantNo(
+            [Required][FromRoute] int id,
+            [Required][FromBody] int usrId)
+        {
+            try
+            {
+                var trip = await _fieldTripService.GetFieldTripById(id);
+                if (trip == null) return NotFound(new
+                {
+                    Status = false,
+                    ErrorMessage = "Field Trip Not Found!"
+                });
+                var mem = await _userService.GetById(usrId);
+                if (mem == null) return NotFound(new
+                {
+                    Status = false,
+                    ErrorMessage = "Member Not Found!"
+                });
+                int participateNo = await _participantService.GetParticipationNo(mem.MemberId, id);
+                trip.ParticipationNo = participateNo;
+                return Ok(new
+                {
+                    Status = true,
+                    Message = "Get Field Trip successfully!",
+                    Data = trip
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new
+                {
+                    Status = false,
+                    ErrorMessage = ex.Message
+                });
+            }
+        }
+        [HttpPut("Update/{id}")]
+        [Authorize(Roles = "Manager")]
+        [ProducesResponseType(typeof(FieldTripViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Update(
+            [Required][FromRoute] int id,
+            [Required] string tripName,
+            [Required] string description,
+            [Required] string details,
+            [Required] DateTime registrationDeadline,
+            [Required] DateTime startDate,
+            [Required] DateTime endDate,
+            [Required] string status,
+            [Required] decimal fee,
+            [Required] int numberOfParticipants,
+            [Required] string host,
+            [Required] string incharge,
+            [Required] string note,
+            [Required] string review)
+        {
+            try
+            {
+                var result = await _fieldTripService.GetFieldTripById(id);
+                if (result == null)
+                {
+                    return NotFound(new
+                    {
+                        Status = false,
+                        ErrorMessage = "Field Trip does not exist!"
+                    });
+                }
+                result.TripName = tripName;
+                result.Description = description;
+                result.Details = details;
+                result.NumberOfParticipants = numberOfParticipants;
+                result.RegistrationDeadline = registrationDeadline;
+                result.StartDate = startDate;
+                result.EndDate = endDate;
+                result.Status = status;
+                result.Fee = fee;
+                result.NumberOfParticipants = numberOfParticipants;
+                result.Host = host;
+                result.InCharge = incharge;
+                result.Note = note;
+                result.Review = review;
+                _fieldTripService.Update(result);
+                result = await _fieldTripService.GetFieldTripById(id);
+                return Ok(new
+                {
+                    Status = true,
+                    Data = result
+                });
+            }
+            catch (Exception ex)
+            {
+                // Log the exception if needed
+                return BadRequest(new
+                {
+                    Status = false,
+                    ErrorMessage = ex.Message
+                });
+            }
+        }
+        [HttpDelete("RemoveParticipant/{id}")]
+        [Authorize(Roles = "Manager")]
+        [ProducesResponseType(typeof(FieldTripParticipantViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> RemoveParticipant(int id, string memId)
+        {
+            try
+            {
+                var trip = _fieldTripService.GetFieldTripById(id);
+                if (trip == null) return NotFound(new
+                {
+                    Status = false,
+                    ErrorMessage = "Field Trip Not Found!"
+                });
+                var mem = await _memberService.GetById(memId);
+                if (mem == null) return NotFound(new
+                {
+                    Status = false,
+                    ErrorMessage = "Member Not Found!"
+                });
+                var result = await _participantService.Delete(memId, id);
+                return Ok(result);
             }
             catch (Exception ex)
             {
