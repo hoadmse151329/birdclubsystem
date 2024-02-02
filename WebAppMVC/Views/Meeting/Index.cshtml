@@ -3,6 +3,7 @@
     ViewData["Title"] = "Meeting Page";
     List<BAL.ViewModels.LocationViewModel> locationList = Model.Locations;
     List<BAL.ViewModels.MeetingViewModel> meetingList = Model.Meetings;
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <html>
@@ -18,7 +19,6 @@
     <link rel="stylesheet" href="~/fonts/fontawesome-free-5.15.4-web/css/all.min.css">
 
     <!-- main CSS -->
-    <link rel="stylesheet" href="~/css/main.css">
   </head>
   <body>
     <hr>
