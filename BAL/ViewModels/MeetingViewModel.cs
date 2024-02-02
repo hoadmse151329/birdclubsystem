@@ -25,6 +25,6 @@ namespace BAL.ViewModels
         public string? Street { get; set; }
         public string? District { get; set; }
         public string? City { get; set; }
-        public bool? Status { get; set; }
+        public string? Status { get; set; }
     }
 }
