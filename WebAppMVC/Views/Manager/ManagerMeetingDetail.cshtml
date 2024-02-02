@@ -1,4 +1,5 @@
-﻿@{
+﻿@model BAL.ViewModels.MeetingViewModel
+@{
     Layout = null;
     ViewData["Title"] = "Manager Meeting Detail Page";
 }
@@ -41,8 +42,8 @@
                             <i class='bx bxs-chevron-down drop'></i>
                         </a>
                         <ul class="collapse sub-menu" id="collapseOne">
-                            <li data-toggle="tooltip" data-placement="right" title="Manage Meeting">
-                                <a href="@Url.Action("ManagerMeeting", "Manager")" li class="dropdown-item">
+                            <li data-toggle="tooltip"data-placement="right" title="Manage Meeting">
+                                <a href="@Url.Action("Meeting", "Manager")" li class="dropdown-item">
                                     <i class='bx bx-home-alt-2'></i>
                                     <span class="title">Meeting</span>
                                 </a>
@@ -183,7 +184,7 @@
                                             <label for="meeting-name">Meeting Name:</label>
                                         </div>
                                         <div class="col-md-7">
-                                            <span>Meeting 1</span>
+                                            <span>@Model.MeetingName</span>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -191,7 +192,7 @@
                                             <label for="customer-name">Registration Deadlines:</label>
                                         </div>
                                         <div class="col-md-7">
-                                            <span>16/2/2024</span>
+                                            <span>@Model.RegistrationDeadline.Value.ToString("MM/dd/yyyy")</span>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -199,7 +200,7 @@
                                             <label for="customer-name">Start Date:</label>
                                         </div>
                                         <div class="col-md-7">
-                                            <span>26/1/2024</span>
+                                            <span>@Model.StartDate.Value.ToString("MM/dd/yyyy")</span>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -207,7 +208,7 @@
                                             <label for="customer-name">End Date:</label>
                                         </div>
                                         <div class="col-md-7">
-                                            <span>16/2/2024</span>
+                                            <span>@Model.EndDate.Value.ToString("MM/dd/yyyy")</span>
                                         </div>
                                     </div>
                                     <div class="row mb-sm-2">
@@ -215,7 +216,7 @@
                                             <span>Number of participants:</span>
                                         </div>
                                         <div class="col-sm-7 text-sm-left">
-                                            <span>30</span>
+                                            <span>@Model.NumberOfParticipants</span>
                                         </div>
 
                                     </div>
@@ -224,7 +225,7 @@
                                             <span>Location:</span>
                                         </div>
                                         <div class="col-sm-7 text-sm-left">
-                                            <span>111a,Hai Ba Trung</span>
+                                            <span>@Model.Address</span>
                                         </div>
                                     </div>
                                     <div class="row mb-sm-2">
@@ -232,7 +233,7 @@
                                             <span>Description:</span>
                                         </div>
                                         <div class="col-sm-7 text-sm-left">
-                                            <span>Annual Meeting</span>
+                                            <span>@Model.Description</span>
                                         </div>
                                     </div>
                                     <div class="row mb-sm-2">
@@ -240,7 +241,7 @@
                                             <span>Note:</span>
                                         </div>
                                         <div class="col-sm-7 text-sm-left">
-                                            <span>Bring your own food, we have free water</span>
+                                            <span>@Model.Note</span>
                                         </div>
                                     </div>
                                 </div>

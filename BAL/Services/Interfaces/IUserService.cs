@@ -14,6 +14,7 @@ namespace BAL.Services.Interfaces
         Task<AuthenResponse> AuthenticateUser(AuthenRequest request);
         Task<AuthenResponse> AuthenticateUserEmail(string email);
         Task<UserViewModel?> GetById(int id);
+        Task<UserViewModel?> GetByMemberId(string memId);
         Task<bool> GetBoolById(int id);
         bool GetByEmail(string email);
         Task<bool> UpdateUserAvatar(string memId, string imagePath);

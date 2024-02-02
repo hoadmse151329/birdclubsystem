@@ -144,6 +144,17 @@ namespace BAL.Services.Implements
             return null;
         }
 
+        public async Task<UserViewModel?> GetByMemberId(string memId)
+        {
+            var user = await _unitOfWork.UserRepository.GetByMemberId(memId);
+            if (user != null)
+            {
+                var usr = _mapper.Map<UserViewModel>(user);
+                return usr;
+            }
+            return null;
+        }
+
         public void Update(UserViewModel entity)
         {
             var usr = _mapper.Map<User>(entity);
@@ -158,6 +169,7 @@ namespace BAL.Services.Implements
                     };
                 } else
                 usrmem.Email = entity.Email;
+
                 usr.Role= entity.Role;
                 usr.Member = usrmem;
 			}

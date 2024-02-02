@@ -175,85 +175,6 @@ namespace WebAPI.Controllers
                 });
             }
         }
-        #region old code verify otp
-        /*/// <summary>
-        /// Verifying User's Account by OTP for Reset Password request.
-        /// </summary>
-        /// <param name="otp">OTP for Account Verification (Get OTP from User's Email)</param>
-        /// <param name="Newpassword">New Default Password</param>
-        /// <remarks>
-        /// Sample request:
-        /// 
-        ///     GET 
-        ///     {
-        ///         "otp": "123456",
-        ///         "Newpassword": "example123456"
-        ///     } 
-        ///     
-        /// </remarks>
-        /// <returns>Return result of action and error message</returns>
-        [HttpPost("ResetPasswordOTP")]
-        //[ProducesResponseType(typeof(UserViewModel), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult ResetPasswordOTP(
-            [Required][StringLength(6)] string otp,
-            [Required][PasswordPropertyText] string Newpassword
-            )
-        {
-            try
-            {
-                var result = _userRepo.GetByForgotOtp(otp);
-                if (result == null)
-                {
-                    return BadRequest(new
-                    {
-                        status = false,
-                        errorMessage = "Invalid OTP !"
-                    });
-                }
-                DateTime forgotdate = result.ForgotOtpCreatedDate.Value.AddMinutes(2);
-                if (DateTime.Now.CompareTo(forgotdate) >= 0)
-                {
-                    string sRanOtp = otpver.GenerateRandomOTP();
-                    MailUtilities.SendMailGoogleSmtp("letsbirdclub@gmail.com",
-                        result.Email,
-                        "CC ChaoMao Bird Club Customer Service ",
-                        $"<h1>New OTP for Reset Password request: Hello User {result.Username}! </h1>" +
-                        "<p>Your verification code is <" + sRanOtp + "> .</p>" +
-                        "This Otp is only valid for 2 minutes. Have a great day!</p>",
-                        "letsbirdclub@gmail.com").Wait();
-                    _userRepo.Update(result,
-                        ForgotOTP: sRanOtp,
-                        ForgotOTPCreatedDate: DateTime.Now);
-                    return BadRequest(new
-                    {
-                        status = false,
-                        errorMessage = "OTP Expired, Please try again with a new OTP we just send you ! " +
-                        $"Please check your email {result.Email} to get New Verfication Code for Reset Password Request !"
-                    });
-                }
-                result.Password = Newpassword;
-                _userRepo.Update(result);
-                result = _userRepo.GetByLogin(result.Email, result.Password);
-                return Ok(new
-                {
-                    status = true,
-                    message = "Your Account Default Password has been changed successfully !",
-                    result
-                });
-            }
-            catch (Exception ex)
-            {
-                // Log the exception if needed
-                return BadRequest(new
-                {
-                    status = false,
-                    errorMessage = ex.Message
-                });
-            }
-        }*/
-        #endregion
         // POST api/<UserController>
         // POST api/<UserController>/Register
         /// <summary>
@@ -448,14 +369,11 @@ namespace WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> ChangePassword(
-            [FromForm][Required][EmailAddress] string email,
-            [FromForm][Required][PasswordPropertyText] string password,
-            [FromForm][Required][PasswordPropertyText] string Newpassword,
-            [FromForm][Required][PasswordPropertyText] string NewConfirmPassword)
+            [FromBody][Required] UpdateMemberPassword upPass)
         {
             try
             {
-                var result = await _userService.GetByEmailModel(email);
+                var result = await _userService.GetByMemberId(upPass.userId);
                 if (result == null)
                 {
                     return NotFound(new
@@ -464,7 +382,7 @@ namespace WebAPI.Controllers
 						ErrorMessage = "Account does not exist !"
                     });
                 }
-                if (!Newpassword.Equals(NewConfirmPassword))
+                if (!upPass.Newpassword.Equals(upPass.NewConfirmPassword))
                 {
                     return BadRequest(new
                     {
@@ -472,13 +390,12 @@ namespace WebAPI.Controllers
 						ErrorMessage = "New Password and New Confirm Password are not the same !"
                     });
                 }
-                result.Password = Newpassword;
+                result.Password = upPass.Newpassword;
                 _userService.Update(result);
-                result = await _userService.GetById(result.UserId.Value);
                 return Ok(new
                 {
 					Status = true,
-                    Data = result
+                    Data = true
                 });
             }
             catch (Exception ex)
@@ -488,6 +405,38 @@ namespace WebAPI.Controllers
                 {
 					Status = false,
 					ErrorMessage = ex.Message
+                });
+            }
+        }
+        [HttpPost("Upload")]
+        [Authorize(Roles = "Admin,Member")]
+        [ProducesResponseType(typeof(UpdateMemberAvatar), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> UploadImage(
+            [FromBody][Required] UpdateMemberAvatar uploadmem)
+        {
+            try
+            {
+                var result = await _userService.UpdateUserAvatar(uploadmem.MemberId, uploadmem.ImagePath);
+                if (!result)
+                {
+                    throw new Exception("Image Update Error !");
+                }
+
+                return Ok(new
+                {
+                    Status = true,
+                    Data = uploadmem
+                });
+            }
+            catch (Exception ex)
+            {
+                // Log the exception if needed
+                return BadRequest(new
+                {
+                    Status = false,
+                    ErrorMessage = ex.Message
                 });
             }
         }
@@ -540,6 +489,85 @@ namespace WebAPI.Controllers
                 {
                     status = true,
                     message = $"We have send an Account Verification OTP for Your Reset Password request to your Email {email} !",
+                });
+            }
+            catch (Exception ex)
+            {
+                // Log the exception if needed
+                return BadRequest(new
+                {
+                    status = false,
+                    errorMessage = ex.Message
+                });
+            }
+        }*/
+        #endregion
+        #region old code verify otp
+        /*/// <summary>
+        /// Verifying User's Account by OTP for Reset Password request.
+        /// </summary>
+        /// <param name="otp">OTP for Account Verification (Get OTP from User's Email)</param>
+        /// <param name="Newpassword">New Default Password</param>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     GET 
+        ///     {
+        ///         "otp": "123456",
+        ///         "Newpassword": "example123456"
+        ///     } 
+        ///     
+        /// </remarks>
+        /// <returns>Return result of action and error message</returns>
+        [HttpPost("ResetPasswordOTP")]
+        //[ProducesResponseType(typeof(UserViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public IActionResult ResetPasswordOTP(
+            [Required][StringLength(6)] string otp,
+            [Required][PasswordPropertyText] string Newpassword
+            )
+        {
+            try
+            {
+                var result = _userRepo.GetByForgotOtp(otp);
+                if (result == null)
+                {
+                    return BadRequest(new
+                    {
+                        status = false,
+                        errorMessage = "Invalid OTP !"
+                    });
+                }
+                DateTime forgotdate = result.ForgotOtpCreatedDate.Value.AddMinutes(2);
+                if (DateTime.Now.CompareTo(forgotdate) >= 0)
+                {
+                    string sRanOtp = otpver.GenerateRandomOTP();
+                    MailUtilities.SendMailGoogleSmtp("letsbirdclub@gmail.com",
+                        result.Email,
+                        "CC ChaoMao Bird Club Customer Service ",
+                        $"<h1>New OTP for Reset Password request: Hello User {result.Username}! </h1>" +
+                        "<p>Your verification code is <" + sRanOtp + "> .</p>" +
+                        "This Otp is only valid for 2 minutes. Have a great day!</p>",
+                        "letsbirdclub@gmail.com").Wait();
+                    _userRepo.Update(result,
+                        ForgotOTP: sRanOtp,
+                        ForgotOTPCreatedDate: DateTime.Now);
+                    return BadRequest(new
+                    {
+                        status = false,
+                        errorMessage = "OTP Expired, Please try again with a new OTP we just send you ! " +
+                        $"Please check your email {result.Email} to get New Verfication Code for Reset Password Request !"
+                    });
+                }
+                result.Password = Newpassword;
+                _userRepo.Update(result);
+                result = _userRepo.GetByLogin(result.Email, result.Password);
+                return Ok(new
+                {
+                    status = true,
+                    message = "Your Account Default Password has been changed successfully !",
+                    result
                 });
             }
             catch (Exception ex)

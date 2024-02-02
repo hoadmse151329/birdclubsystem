@@ -24,6 +24,7 @@ namespace DAL.Models
         public int? ClubId { get; set; }
 
         public virtual ICollection<Bird> Birds { get; set; }
-        public virtual ICollection<User> Users { get; set; }
+        public virtual ICollection<MeetingParticipant> MeetingParticipants { get; set; }
+        public virtual User Users { get; set; }
     }
 }

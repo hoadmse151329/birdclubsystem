@@ -135,7 +135,7 @@ namespace WebAppMVC.Controllers
 		}
 
 		[HttpPost]
-        /*[Authorize(Roles ="Member")]*/
+        //[Authorize(Roles = "Member")]
         [Route("Meeting/MeetingRegister/{meetingId:int}")]
         public async Task<IActionResult> MeetingRegister(int meetingId)
 		{
@@ -182,7 +182,7 @@ namespace WebAppMVC.Controllers
         }
         [HttpPost]
         [Route("Meeting/MeetingDeRegister/{meetingId:int}")]
-        /*[Authorize(Roles ="Member")]*/
+        //[Authorize(Roles = "Member")]
         public async Task<IActionResult> MeetingDeRegister(int meetingId)
         {
             MeetingAPI_URL += "/RemoveParticipant/" + meetingId;
