@@ -114,7 +114,7 @@ namespace WebAppMVC.Controllers
             }
             if (meetPostResponse == null)
             {
-                _logger.LogInformation("Username or Password is invalid: " + meetPostResponse.Status + " , Error Message: " + meetPostResponse.ErrorMessage);
+                //_logger.LogInformation("Username or Password is invalid: " + meetPostResponse.Status + " , Error Message: " + meetPostResponse.ErrorMessage);
                 ViewBag.error =
                     "Error while processing your request! (Getting Meeting!).\n Meeting Not Found!";
                 View("Index");

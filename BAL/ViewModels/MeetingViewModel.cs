@@ -20,7 +20,6 @@ namespace BAL.ViewModels
         public string? Host { get; set; }
         public string? Incharge { get; set; }
         public string? Note { get; set; }
-        public int? LocationId { get; set; }
         public int? AreaNumber { get; set; }
         public string? Street { get; set; }
         public string? District { get; set; }

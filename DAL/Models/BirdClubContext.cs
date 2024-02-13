@@ -147,7 +147,7 @@ namespace DAL.Models
             modelBuilder.Entity<ClubInformation>(entity =>
             {
                 entity.HasKey(e => e.ClubId)
-                    .HasName("PK__ClubInfo__DF4AEAB2A60F6B18");
+                    .HasName("PK__ClubInfo__DF4AEAB2E6AA9A1E");
 
                 entity.ToTable("ClubInformation");
 
@@ -252,7 +252,7 @@ namespace DAL.Models
             modelBuilder.Entity<ContestMedia>(entity =>
             {
                 entity.HasKey(e => e.PictureId)
-                    .HasName("PK__ContestM__769A271A673B605C");
+                    .HasName("PK__ContestM__769A271AF946BE41");
 
                 entity.Property(e => e.PictureId).HasColumnName("pictureId");
 
@@ -301,7 +301,7 @@ namespace DAL.Models
             modelBuilder.Entity<ContestScore>(entity =>
             {
                 entity.HasKey(e => e.ScoreId)
-                    .HasName("PK__ContestS__B56A0C8D4576A364");
+                    .HasName("PK__ContestS__B56A0C8DFDEC53A5");
 
                 entity.ToTable("ContestScore");
 
@@ -559,7 +559,7 @@ namespace DAL.Models
             modelBuilder.Entity<FieldtripMedia>(entity =>
             {
                 entity.HasKey(e => e.PictureId)
-                    .HasName("PK__Fieldtri__769A271AC9BBA3D6");
+                    .HasName("PK__Fieldtri__769A271AB98B1861");
 
                 entity.Property(e => e.PictureId).HasColumnName("pictureId");
 
@@ -612,7 +612,9 @@ namespace DAL.Models
                     .IsUnicode(false)
                     .HasColumnName("image");
 
-                entity.Property(e => e.PictureId).HasColumnName("pictureId");
+                entity.Property(e => e.PictureId)
+                    .ValueGeneratedOnAdd()
+                    .HasColumnName("pictureId");
 
                 entity.Property(e => e.UserId).HasColumnName("userId");
             });
@@ -660,6 +662,8 @@ namespace DAL.Models
 
                 entity.Property(e => e.NumberOfParticipants).HasColumnName("numberOfParticipants");
 
+                entity.Property(e => e.NumberOfParticipantsLimit).HasColumnName("numberOfParticipantsLimit");
+
                 entity.Property(e => e.RegistrationDeadline)
                     .HasColumnType("datetime")
                     .HasColumnName("registrationDeadline");
@@ -676,7 +680,7 @@ namespace DAL.Models
             modelBuilder.Entity<MeetingMedia>(entity =>
             {
                 entity.HasKey(e => e.PictureId)
-                    .HasName("PK__MeetingM__769A271A13BDD506");
+                    .HasName("PK__MeetingM__769A271A9BCC2D86");
 
                 entity.Property(e => e.PictureId).HasColumnName("pictureId");
 
@@ -834,13 +838,11 @@ namespace DAL.Models
 
                 entity.Property(e => e.ClubId).HasColumnName("clubId");
 
+                entity.Property(e => e.ImagePath).HasColumnName("imagePath");
+
                 entity.Property(e => e.MemberId)
                     .HasMaxLength(50)
                     .HasColumnName("memberId");
-
-                //entity.Property(e => e.ImagePath)
-                //    .HasMaxLength(255)
-                //    .HasColumnName("imagepath");
 
                 entity.Property(e => e.Password)
                     .HasMaxLength(255)
@@ -855,8 +857,8 @@ namespace DAL.Models
                     .HasColumnName("userName");
 
                 entity.HasOne(d => d.Member)
-                    .WithMany(p => p.Users)
-                    .HasForeignKey(d => d.MemberId)
+                    .WithOne(p => p.MemberUser)
+                    .HasForeignKey<User>(d => d.MemberId)
                     .HasConstraintName("FK_Users_Member");
             });
 

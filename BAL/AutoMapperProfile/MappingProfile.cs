@@ -25,12 +25,12 @@ namespace BAL.AutoMapperProfile
             CreateMap<Member, MemberViewModel>()
                 .AfterMap((src, dest) =>
                 {
-                    dest.ImagePath = src.Users.ImagePath;
+                    dest.ImagePath = src.MemberUser.ImagePath;
                 })
                 .ReverseMap()
                 .AfterMap((src, dest) =>
                 {
-                    dest.Users.ImagePath = src.ImagePath;
+                    dest.MemberUser.ImagePath = src.ImagePath;
                 })
                 ;
             CreateMap<MeetingParticipant, GetEventParticipation>()
