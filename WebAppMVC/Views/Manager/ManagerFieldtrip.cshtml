@@ -98,7 +98,7 @@
     <!-- End sidebar -->
 
     <!-- Header -->
-    <div class="header">
+     <div class="header">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-sm-12">
@@ -139,13 +139,10 @@
                     <div class="offset-sm-6 col-sm-6  d-flex justify-content-sm-end p-md-0 mt-2 mt-sm-0 ">
                         <ol class="breadcrumb">
                             <li class="breadcrumd-item">
-                                <a href="#">Quản lý</a>
+                                <a href="#">Manage</a>
                             </li>
                             <li class="breadcrumd-item">
                                 <span>/</span>
-                            </li>
-                            <li class="breadcrumd-item active">
-                                <a href="owner-room-list.html">Phòng</a>
                             </li>
                         </ol>
                     </div>
@@ -159,15 +156,9 @@
                                 <li class="nav-item">
                                     <a class="nav-link active" data-toggle="tab" href="#home1">
                                         <i class='bx bx-home-alt-2'></i>
-                                        <span>Home 1</span>
+                                        <span>FieldTrip</span>
                                     </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" data-toggle="tab" href="#home2">
-                                        <i class='bx bx-home-alt-2'></i>
-                                        <span>Home 2</span>
-                                    </a>
-                                </li>                
+                                </li>              
                             </ul>
                             
                             <!-- Tab panes -->
@@ -177,8 +168,8 @@
                                     <div class="row search">
                                         <div class="col-sm-12 d-flex">
                                             <div class="col-sm-6 d-flex address-home">
-                                                <span>Địa chỉ: </span>
-                                                <h5> 111a,Đình phong phú</h5>
+                                                <span>Address: </span>
+                                                <h5> 111a,Hai Ba Trung</h5>
                                             </div>
                                             <div class="col-sm-6 d-flex justify-content-end">
                                                 <form action="#">
@@ -196,8 +187,8 @@
                                         <div class="col-xl-3 col-lg-6 col-sm-6 my-3 item">
                                             <div class="card card-child">
                                                 <div class="card-body add-room">
-                                                    <button class="border-0" data-toggle="modal"  data-target="#addRoom1">
-                                                        <span>Thêm Phòng</span>
+                                                    <button class="border-0" data-toggle="modal"  data-target="#addFieldTrip1">
+                                                        <span>Add FieldTrip</span>
                                                         <i class='bx bx-add-to-queue'></i>
                                                     </button>
                                                 </div>
@@ -207,49 +198,57 @@
                                         <div class="col-xl-3 col-lg-6 col-sm-6 my-3">
                                             <div class="card card-child">
                                                 <div class="room-name">
-                                                    <span>Room 1</span>
+                                                    <span>FieldTrip</span>
                                                     <div class="status">
                                                         <!-- dùng lệnh if -->
-                                                        <span class="stt1">Trạng thái:<h6>Trống</h6></span>
-                                                        <!-- <span class="stt2">Trạng thái:<h6>Đang thuê</h6></span>
-                                                        <span class="stt3">Trạng thái:<h6>Đã cọc</h6></span> -->
+                                                        <span class="stt1">Status:<h6>Processing</h6></span>
+                                                        <!-- <span class="stt2">Trạng thái:<h6>Done</h6></span>
+                                                        <span class="stt3">Trạng thái:<h6>Cancle</h6></span>
+                                                        <span class="stt3">Trạng thái:<h6>In debt</h6></span>-->
                                                     </div>
                                                 </div>
                                                 <div class="card-body">
                                                     <div class="room-title">
                                                         <ul>
                                                             <li>
-                                                                <h6>Người thuê:</h6>
-                                                                <span></span>
-                                                            </li>                                                        
-                                                            <li>
-                                                                <h6>Thông tin phòng:</h6>
-                                                                <span>
-                                                                </span>
+                                                                <h6>FieldTrip Name:</h6>
+                                                                <span>FieldTrip 1</span>
                                                             </li>
                                                             <li>
-                                                                <h6>Dịch vụ sử dụng:</h6>
-                                                                <span>
-                                                                </span>
+                                                                <h6>Registration Deadlines:</h6>
+                                                                <span>16-2-2024</span>
                                                             </li>
                                                             <li>
-                                                                <h6>Mô tả:</h6>
-                                                                <span>
-                                                                </span>
+                                                                <h6>Start Date:</h6>
+                                                                <span>26-1-2024</span>
+                                                                <h6>End Date:</h6>
+                                                                <span>16-2-2024</span>
                                                             </li>
                                                             <li>
-                                                                <h5>Giá:</h5>
-                                                                <span>120,000&dstrok;</span>
+                                                                <h6>Number of participants:</h6>
+                                                                <span>30</span>
+                                                            </li>
+                                                            <li>
+                                                                <h6>Location:</h6>
+                                                                <span>111a,Hai Ba Trung</span>
+                                                            </li>
+                                                            <li>
+                                                                <h6>Description:</h6>
+                                                                <span>Annual Meeting</span>
+                                                            </li>
+                                                            <li>
+                                                                <h6>Note:</h6>
+                                                                <span>Bring your own food, we have free water</span>
                                                             </li>
                                                         </ul>
                                                     </div>
                                                 </div>
                                                 <div class="form-group mx-auto">
-                                                    <button class="btn btn-primary clickable-row" data-href="owner-room-list-details.html">
-                                                        <span>Xem</span> 
+                                                    <button class="btn btn-primary clickable-row" onclick="redirectToDetailPage()">
+                                                        <span>See Detail</span> 
                                                     </button>
-                                                    <button class="btn btn-danger" data-toggle="modal" data-target="#deleteRoom">
-                                                        <span>Xóa Phòng</span> 
+                                                    <button class="btn btn-danger" data-toggle="modal" data-target="#deleteFieldTrip">
+                                                        <span>Delete FieldTrip</span> 
                                                     </button>
                                                 </div>
                                             </div>
@@ -257,186 +256,148 @@
                                         <div class="col-xl-3 col-lg-6 col-sm-6 my-3">
                                             <div class="card card-child">
                                                 <div class="room-name">
-                                                    <span>Room 1</span>
+                                                    <span>FieldTrip</span>
                                                     <div class="status">
                                                         <!-- dùng lệnh if -->
-                                                        <!-- <span class="stt1">Trạng thái:<h6>Trống</h6></span> -->
-                                                        <span class="stt2">Trạng thái:<h6>Đang thuê</h6></span>
-                                                        <!-- <span class="stt3">Trạng thái:<h6>Đã cọc</h6></span> -->
+                                                        <span class="stt1">Status:<h6>Processing</h6></span>
+                                                        <!-- <span class="stt2">Trạng thái:<h6>Done</h6></span>
+                                                        <span class="stt3">Trạng thái:<h6>Cancle</h6></span>
+                                                        <span class="stt3">Trạng thái:<h6>In debt</h6></span>-->
                                                     </div>
                                                 </div>
                                                 <div class="card-body">
                                                     <div class="room-title">
                                                         <ul>
                                                             <li>
-                                                                <h6>Người thuê:</h6>
-                                                                <span>Tran Ngoc Hai</span>
-                                                            </li>                                                        
-                                                            <li>
-                                                                <h6>Thông tin phòng:</h6>
-                                                                <span>Luxury</span>
+                                                                <h6>FieldTrip Name:</h6>
+                                                                <span>FieldTrip 1</span>
                                                             </li>
                                                             <li>
-                                                                <h6>Dịch vụ sử dụng:</h6>
-                                                                <span>04</span>
+                                                                <h6>Registration Deadlines:</h6>
+                                                                <span>16-2-2024</span>
                                                             </li>
                                                             <li>
-                                                                <h6>Mô tả:</h6>
-                                                                <span></span>
+                                                                <h6>Start Date:</h6>
+                                                                <span>26-1-2024</span>
+                                                                <h6>End Date:</h6>
+                                                                <span>16-2-2024</span>
                                                             </li>
                                                             <li>
-                                                                <h5>Giá:</h5>
-                                                                <span>500,000&dstrok;</span>
+                                                                <h6>Number of participants:</h6>
+                                                                <span>30</span>
+                                                            </li>
+                                                            <li>
+                                                                <h6>Location:</h6>
+                                                                <span>111a,Hai Ba Trung</span>
+                                                            </li>
+                                                            <li>
+                                                                <h6>Description:</h6>
+                                                                <span>Annual Meeting</span>
+                                                            </li>
+                                                            <li>
+                                                                <h6>Note:</h6>
+                                                                <span>Bring your own food, we have free water</span>
                                                             </li>
                                                         </ul>
                                                     </div>
                                                 </div>
                                                 <div class="form-group mx-auto">
-                                                    <button class="btn btn-primary clickable-row" data-href="#">
-                                                        <span>Xem</span> 
+                                                    <button class="btn btn-primary clickable-row" onclick="redirectToDetailPage()">
+                                                        <span>See Detail</span> 
                                                     </button>
-                                                    <button class="btn btn-danger" data-toggle="modal" data-target="#removeRoom">
-                                                        <span>Hủy Phòng</span> 
-                                                    </button> 
+                                                    <button class="btn btn-danger" data-toggle="modal" target="#deleteFieldTrip">
+                                                        <span>Delete FieldTrip</span> 
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-xl-3 col-lg-6 col-sm-6 my-3">
                                             <div class="card card-child">
                                                 <div class="room-name">
-                                                    <span>Room 1</span>
+                                                    <span>FieldTrip</span>
                                                     <div class="status">
                                                         <!-- dùng lệnh if -->
-                                                        <!-- <span class="stt1">Trạng thái:<h6>Trống</h6></span> -->
-                                                        <!-- <span class="stt2">Trạng thái:<h6>Đang thuê</h6></span>-->
-                                                        <span class="stt3">Trạng thái:<h6>Đã cọc</h6></span> 
+                                                        <span class="stt1">Status:<h6>Processing</h6></span>
+                                                        <!-- <span class="stt2">Trạng thái:<h6>Done</h6></span>
+                                                        <span class="stt3">Trạng thái:<h6>Cancel</h6></span>-->
                                                     </div>
                                                 </div>
                                                 <div class="card-body">
                                                     <div class="room-title">
                                                         <ul>
                                                             <li>
-                                                                <h6>Người thuê:</h6>
-                                                                <span>Tran Ngoc Hai</span>
-                                                            </li>                                                        
-                                                            <li>
-                                                                <h6>Thông tin phòng:</h6>
-                                                                <span>Normal</span>
+                                                                <h6>FieldTrip Name:</h6>
+                                                                <span>FieldTrip 1</span>
                                                             </li>
                                                             <li>
-                                                                <h6>Dịch vụ sử dụng:</h6>
-                                                                <span>00</span>
+                                                                <h6>Registration Deadlines:</h6>
+                                                                <span>16-2-2024</span>
                                                             </li>
                                                             <li>
-                                                                <h6>Mô tả:</h6>
-                                                                <span></span>
+                                                                <h6>Start Date:</h6>
+                                                                <span>26-1-2024</span>
                                                             </li>
                                                             <li>
-                                                                <h5>Giá:</h5>
-                                                                <span>120,000&dstrok;</span>
+                                                                <h6>End Date:</h6>
+                                                                <span>16-2-2024</span>
+                                                            </li>
+                                                            <li>
+                                                                <h6>Number of participants:</h6>
+                                                                <span>30</span>
+                                                            </li>
+                                                            <li>
+                                                                <h6>Location:</h6>
+                                                                <span>111a,Hai Ba Trung</span>
+                                                            </li>
+                                                            <li>
+                                                                <h6>Description:</h6>
+                                                                <span>Annual Meeting</span>
+                                                            </li>
+                                                            <li>
+                                                                <h6>Note:</h6>
+                                                                <span>Bring your own food, we have free water</span>
                                                             </li>
                                                         </ul>
                                                     </div>
                                                 </div>
                                                 <div class="form-group mx-auto">
-                                                    <button class="btn btn-primary clickable-row" data-href="#">
-                                                        <span>Xem</span> 
+                                                    <button class="btn btn-primary clickable-row" onclick="redirectToDetailPage()">
+                                                        <span>See Detail</span> 
                                                     </button>
-                                                    <button class="btn btn-danger" data-toggle="modal" data-target="#removeRoom">
-                                                        <span>Hủy Phòng</span> 
-                                                    </button> 
+                                                    <button class="btn btn-danger" data-toggle="modal" data-target="#deleteFieldTrip">
+                                                        <span>Delete FieldTrip</span> 
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
 
                                     <div class="pagination d-flex justify-content-center">
-                                        <li class="page-item previous-page disabled"><a href="#" class="page-link">Trước</a></li>
-                                        <li class="page-item dots">...</li>
-                                        <li class="page-item current-page active"><a href="#" class="page-link">2</a></li>
-                                        <li class="page-item current-page"><a href="#" class="page-link">3</a></li>
-                                        <li class="page-item current-page"><a href="#" class="page-link">4</a></li>
-                                        <li class="page-item dots">...</li>
-                                        <li class="page-item next-page"><a href="#" class="page-link">Sau</a></li>
+                                        <!-- <li class="page-item previous-page disabled">
+                        <a class="page-link btn" href="#">Prev</i></a>
+                    </li>
+                    <li class="pages page-item current-page ">
+                        <a class="page page-link" href="#">1</a>
+                    </li>
+                    <li class="pages page-item dots">
+                        <a class="page page-link" href="#">...</a>
+                    </li>
+                    <li class="pages page-item current-page ">
+                        <a class="page page-link" href="#">5</a>
+                    </li>
+                    <li class="pages page-item current-page ">
+                        <a class="page page-link" href="#">6</a>
+                    </li>
+                    <li class="pages page-item dots">
+                        <a class="page page-link" href="#">...</a>
+                    </li>
+                    <li class="pages page-item current-page ">
+                        <a class="page page-link" href="#">10</a>
+                    </li>
+                    <li class="page-item next-page">
+                        <a class="page-link btn" href="#">Next</i></a>
+                    </li> -->
                                     </div>
-                                </div>
-                                <!-- home2 -->
-                                <div class="tab-pane" id="home2" role="tabpanel">
-                                    <div class="search">
-                                        <div class="address-home">
-                                            <span>Địa chỉ: <h5> Chưa có</h5></span>
-                                        </div>
-                                        <form action="#">
-                                            <label>
-                                                <input class="form-control" type="text" name="search" placeholder="Search...">
-                                                <i class='bx bx-search-alt'></i>
-                                            </label>
-                                        </form>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-xl-3 col-lg-6 col-sm-6 my-3">
-                                            <div class="card card-child">
-                                                <div class="card-body add-room">
-                                                    <button class="border-0" data-toggle="modal"  data-target="#addRoom2">
-                                                        <span>Thêm Phòng</span>
-                                                        <i class='bx bx-add-to-queue'></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- dung vong for o day -->
-                                        <div class="col-xl-3 col-lg-6 col-sm-6 my-3">
-                                            <div class="card card-child">
-                                                <div class="room-name">
-                                                    <span>Room 1</span>
-                                                    <div class="status">
-                                                        <!-- dùng lệnh if -->
-                                                        <!-- <span class="stt1">Trạng thái:<h6>Trống</h6></span> -->
-                                                        <!-- <span class="stt2">Trạng thái:<h6>Đang thuê</h6></span>-->
-                                                        <span class="stt3">Trạng thái:<h6>Đã cọc</h6></span> 
-                                                    </div>
-                                                </div>
-                                                <div class="card-body">
-                                                    <div class="room-title">
-                                                        <ul>
-                                                            <li>
-                                                                <h6>Người thuê:</h6>
-                                                                <span>Tran Ngoc Hai</span>
-                                                            </li>                                                        
-                                                            <li>
-                                                                <h6>Thông tin phòng:</h6>
-                                                                <span>Normal</span>
-                                                            </li>
-                                                            <li>
-                                                                <h6>Dịch vụ sử dụng:</h6>
-                                                                <span>00</span>
-                                                            </li>
-                                                            <li>
-                                                                <h6>Mô tả:</h6>
-                                                                <span></span>
-                                                            </li>
-                                                            <li>
-                                                                <h5>Giá:</h5>
-                                                                <span>120,000&dstrok;</span>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group mx-auto">
-                                                    <button class="btn btn-primary clickable-row" data-href="#">
-                                                        <span>Xem</span> 
-                                                    </button>
-                                                    <button class="btn btn-danger" data-toggle="modal" data-target="#removeRoom">
-                                                        <span>Hủy Phòng</span> 
-                                                    </button> 
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-
-                                </div>       
-                            </div>
+                                </div>                               
                             <!-- end tapnet -->
                         </div>
                     </div>
@@ -446,51 +407,46 @@
     </div>
 
     <!-- add new Room -->
-    <div id="addRoom1" class="modal fade" role="dialog">
+    <div id="addFieldTrip1" class="modal fade" role="dialog">
         <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
             <div class="modal-content modal-addRoom">
                 <div class="modal-header">
-                    <h4 class="modal-title">Thêm Phòng Mới</h4>
+                    <h4 class="modal-title">Add new FieldTrip</h4>
                 </div>
                 <div class="modal-body">
                     <form action="#" onsubmit="return submitFunc()" id="form">
                         <div class="row p-4">
                             <div class="col-12">
                                 <div class="row form-group">
-                                    <label for="firstname" class="col-md-3 col-form-label text-md-right">Tên phòng</label>
-                                    <select id="motelid" name="MotelID" class="form-control col-md-7" onchange="myFunc()" required>
-                                        <option value="" disabled selected>Chọn Motel</option>
-                                        <option value="a">ánh dương</option>
-                                        <option value="b">bạch dương</option>
-                                    </select>
+                                    <label  class="col-md-3 col-form-label text-md-right">FieldTrip Name</label>
+                                        <input type="text" name="meetingName" placeholder="FieldTrip Name" required class="form-control col-md-7">
+                                    </div>
+                                    <div class="row form-group">
+                                        <label class="col-md-3 col-form-label mt-2 text-md-right">Choose Picture</label>
+                <input type="file" name="photo" class="form-control col-md-7 mt-2" accept="image/*">
+
+                <label for="deadline" class="col-md-3 col-form-label mt-3 text-md-right">Registration Deadlines</label>
+                <input type="datetime-local" name="registrationDeadline" class="form-control col-md-7 mt-3">
+
+                <label for="startDate" class="col-md-3 col-form-label mt-3 text-md-right">Start Date</label>
+                <input type="datetime-local" name="startDate" class="form-control col-md-7 mt-3">
+
+                <label for="endDate" class="col-md-3 col-form-label mt-3 text-md-right">End Date</label>
+                <input type="datetime-local" name="endDate" class="form-control col-md-7 mt-3">
+
+                <label for="participants" class="col-md-3 col-form-label mt-3 text-md-right">Number of Participants</label>
+                <input type="number" name="numberOfParticipants" class="form-control col-md-7 mt-3">
+
+                <label for="description" class="col-md-3 col-form-label mt-3 text-md-right">Description</label>
+                <textarea type="text" name="roomTypeDesct" placeholder="FieldTrip description..." class="form-control col-md-7 mt-3" rows="3"></textarea>
+
+                <label for="note" class="col-md-3 col-form-label mt-3 text-md-right">Note</label>
+                <textarea type="text" name="roomTypeDesct" placeholder="FieldTrip description..." class="form-control col-md-7 mt-3" rows="3"></textarea>
                                 </div>
-                                
-                                <div class="row form-group">
-                                    <label for="firstname" class="col-md-3 col-form-label text-md-right">Loại phòng</label>
-                                    <select id="typeRoom" name="typeofRoom" class="form-control col-md-7" onchange="other(event)" required>
-                                        <option value="" disabled selected>Chọn loại phòng</option>
-                                        <option data-option="a" value="#">Luxury</option>
-                                        <option data-option="a" value="#">Normal</option>
-                                        <option data-option="b" value="#">L</option>
-                                        <option data-option="b" value="#">n</option>
-                                        <option value="custom">Other</option>
-                                    </select>
-                                    <input type="text" id="otherid" class="offset-md-3 form-control col-md-3 mt-2" style="display: none;"
-                                     placeholder="Loại phòng">
-                                    <input type="text" id="otherid1" name="price" placeholder="Giá Phòng" 
-                                    class="form-control offset-md-1 col-md-3 mt-2" style="display: none;"> 
-                                    <label for="firstname" class="col-md-3 col-form-label text-md-right mt-3" id="labeldecp" style="display: none;">
-                                        Mô tả
-                                        </label>
-                                    <textarea type="text" placeholder="Mô tả phòng..." class="form-control col-md-7 mt-3" 
-                                    rows="3" id="decp" style="display: none;"></textarea>
-                                </div>
-                            </div>                 
-                        </div>
-                        <div class="modal-footer justify-content-center">
-                            <div class="d-flex justify-content-center">
-                                <button class="btn btn-success mr-3" type="submit" >Xác Nhận</button>
-                                <button class="btn btn-danger" type="button" data-dismiss="modal">Hủy</button>
+                            </div>                
+                            <div class="modal-footer justify-content-center">
+                                <button class="btn btn-success" type="submit" name="action" value="createFieldTrip" >Save</button>
+                                <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
                             </div>
                         </div>
                     </form>
@@ -499,98 +455,27 @@
         </div>
     </div>
     
-    <div id="addRoom2" class="modal fade" role="dialog">
-        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
-            <div class="modal-content modal-addRoom">
-                <div class="modal-header">
-                    <h4 class="modal-title">Thêm Phòng Mới</h4>
-                </div>
-                <div class="modal-body">
-                    <form action="#">
-                        <div class="row p-4">
-                            <div class="col-12">
-                                <div class="row form-group">
-                                    <label for="firstname" class="col-md-3 col-form-label text-md-right">Tên phòng</label>
-                                    <select id="motelid" name="MotelID" class="form-control col-md-7">
-                                        <option disabled selected>Chọn Motel</option>
-                                        <option value="a">ánh dương</option>
-                                        <option value="b">bạch dương haaa</option>
-                                    </select>
-                                </div>
-                                <div class="row form-group">
-                                    <label for="firstname" class="col-md-3 col-form-label text-md-right">Loại phòng</label>
-                                    <select id="typyRoom" name="typeofRoom" class="form-control col-md-7" onchange="other(event)">
-                                        <option disabled selected>Chọn loại phòng</option>
-                                        <option data-option="a" value="#">Luxury</option>
-                                        <option data-option="a" value="#">Normal</option>
-                                        <option data-option="b" value="#">L</option>
-                                        <option data-option="b" value="#">n</option>
-                                        <option value="custom">Other</option>
-                                    </select>
-                                    <input type="text" id="otherid" class="offset-md-3 form-control col-md-3 mt-2" style="display: none;"
-                                     placeholder="Loại phòng" required>
-                                    <input type="text" id="otherid1" name="price" placeholder="Giá Phòng" required 
-                                    class="form-control offset-md-1 col-md-3 mt-2" style="display: none;"> 
-                                    <label for="firstname" class="col-md-3 col-form-label text-md-right mt-3" id="labeldecp" style="display: none;">
-                                        Mô tả
-                                        </label>
-                                    <textarea type="text" placeholder="Mô tả phòng..." class="form-control col-md-7 mt-3" 
-                                    rows="3" id="decp" style="display: none;"></textarea>
-                                </div>
-                            </div>
-                            <div class="d-flex justify-content-center">
-                                <button class="btn btn-success" type="submit" >Xác Nhận</button>
-                                <button class="btn btn-danger" type="button" data-dismiss="modal">Hủy</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
     
-    <!-- remove Home -->
-    <div id="deleteRoom" class="modal fade" role="dialog">
+    <!-- remove Meeting -->
+    <div id="deleteFieldTrip" class="modal fade" role="dialog">
         <div class="modal-dialog modal-dialog-centered" role="content">
             <div class="modal-content">
                 <form action="#">
                     <div class="card-body">
                         <div class="del-title">
                             <i class='bx bx-error-circle'></i>
-                            <h2>Bạn muốn xóa phòng ?</h2> 
+                            <h2>Are you sure want to delete ?</h2> 
                         </div>
-                        <div class="del-submit d-flex justify-content-center">
-                            <button type="submit" class="btn btn-success">Xác Nhận</button>
-                            <button class="btn btn-danger" type="button" data-dismiss="modal">Hủy</button>
-                        </div>
+                        <div class="del-submit d-flex justify-content-center">                                 
+                                <button type="submit" name="action" value="DeleteRoom" class="btn btn-success">Save</button>
+                                <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
+                            </div>
                     </div>
                 </form>
             </div>
         </div>
     </div>
-
-    <!-- remove Home -->
-    <div id="removeRoom" class="modal fade" role="dialog">
-        <div class="modal-dialog modal-dialog-centered" role="content">
-            <div class="modal-content">
-                <form action="#">
-                    <div class="card-body">
-                        <div class="del-title">
-                            <i class='bx bx-error-circle'></i>
-                            <h2>Bạn muốn hủy phòng ?</h2> 
-                        </div>
-                        <div class="del-submit d-flex justify-content-center">
-                            <button type="submit" class="btn btn-success">Xác Nhận</button>
-                            <button class="btn btn-danger" type="button" data-dismiss="modal">Hủy</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
     
-
     <!-- jQuery first, then Popper.js, then Bootstrap JS. -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
@@ -598,5 +483,10 @@
     <script src="https://unpkg.com/filepond-plugin-file-poster/dist/filepond-plugin-file-poster.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="~/js/owner-script.js"></script>
+    <script>
+    function redirectToDetailPage() {
+        window.location.href = '@Url.Action("ManagerFieldtripDetail", "Manager")';
+    }
+</script>
 </body>
 </html>
