@@ -699,7 +699,8 @@ namespace DAL.Models
 
             modelBuilder.Entity<MeetingParticipant>(entity =>
             {
-                entity.HasNoKey();
+                /*entity.HasNoKey();*/
+                entity.HasKey(e => new { e.MeetingId, e.MemberId});
 
                 entity.ToTable("MeetingParticipant");
 

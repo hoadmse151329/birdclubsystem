@@ -58,6 +58,16 @@ namespace BAL.AutoMapperProfile
                     dest.ParticipationNo = Int32.Parse(src.ParticipantNo);
                     dest.Incharge = src.Meeting.Incharge;
                 })*/;
+            CreateMap<MeetingParticipant, MeetingParticipantViewModel>()
+                .AfterMap((src, dest) =>
+                {
+                    dest.MemberName = src.Member.FullName;
+                })
+                .ReverseMap()
+                .AfterMap((src, dest) =>
+                {
+                    dest.Member.FullName = src.MemberName;
+                });
             CreateMap<Meeting, MeetingViewModel>()
                 .ReverseMap();
             CreateMap<FieldTrip, FieldTripViewModel>()

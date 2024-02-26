@@ -71,6 +71,54 @@ namespace WebAPI.Controllers
 				});
 			}
 		}
+        [HttpGet("Search")]
+        [ProducesResponseType(typeof(List<MeetingViewModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetMeetingsByName(
+            [FromQuery] int? meetingId,
+            [FromQuery] string? meetingName,
+            [FromQuery] DateTime? registrationDeadline,
+            [FromQuery] DateTime? startDate,
+            [FromQuery] DateTime? endDate,
+            [FromQuery] int? numberOfParticipants,
+            [FromQuery] string? orderBy)
+        {
+            try
+            {
+                var result = _meetingService.GetSortedMeetings(
+                    meetingId: meetingId,
+                    meetingName: meetingName,
+                    registrationDeadline: registrationDeadline,
+                    startDate: startDate,
+                    endDate: endDate,
+                    numberOfParticipants: numberOfParticipants,
+                    orderBy: orderBy);
+                if (result == null)
+                {
+                    return NotFound(new
+                    {
+                        Status = false,
+                        ErrorMessage = "List of Meetings Not Found!"
+                    });
+                }
+
+                return Ok(new
+                {
+                    Status = true,
+                    Data = result
+                });
+            }
+            catch (Exception ex)
+            {
+                // Log the exception if needed
+                return BadRequest(new
+                {
+                    Status = false,
+                    ErrorMessage = ex.Message
+                });
+            }
+        }
 
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(MeetingViewModel), StatusCodes.Status200OK)]
@@ -113,38 +161,19 @@ namespace WebAPI.Controllers
         [ProducesResponseType(typeof(MeetingViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult Create (
-            [Required] string meetingName,
-            [Required] string description,
-            [Required] DateTime registrationDeadline,
-            [Required] DateTime startDate,
-            [Required] DateTime endDate, 
-            [Required] int numberOfParticipants, 
-            [Required] string host, 
-            [Required] string incharge, 
-            [Required] string note,
-            [Required] byte status)
+        public async Task<IActionResult> Create (
+            [Required][FromBody] MeetingViewModel meet)
         {
             try
             {
-                MeetingViewModel value = new MeetingViewModel
-                {
-                    MeetingName = meetingName,
-                    Description = description,
-                    RegistrationDeadline = registrationDeadline,
-                    StartDate = startDate,
-                    EndDate = endDate,
-                    NumberOfParticipants = numberOfParticipants,
-                    Host = host,
-                    Incharge = incharge,
-                    Note = note
-                };
-                _meetingService.Create(value);
+                meet.Status = "Preparing";
+                _meetingService.Create(meet);
+
                 return Ok(new
                 {
                     Status = true,
                     Message = "Meeting Create successfully !",
-                    Data = value
+                    Data = meet
                 });
             }
             catch (Exception ex)
@@ -163,19 +192,11 @@ namespace WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Update(
             [Required][FromRoute] int id,
-            [Required] string meetingname,
-            [Required] string description,
-            [Required] DateTime registrationDeadline,
-            [Required] DateTime startDate,
-            [Required] DateTime endDate,
-            [Required] int numberOfParticipants,
-            [Required] string host,
-            [Required] string incharge,
-            [Required] string note)
+            [Required][FromBody] MeetingViewModel meet)
         {
             try
             {
-                var result = await _meetingService.GetById(id);
+                var result = _meetingService.GetById(id).Result;
                 if (result == null)
                 {
                     return NotFound(new
@@ -184,17 +205,9 @@ namespace WebAPI.Controllers
                         ErrorMessage = "Meeting does not exist!"
                     });
                 }
-                result.MeetingName = meetingname;
-                result.Description = description;
-                result.RegistrationDeadline = registrationDeadline;
-                result.StartDate = startDate;
-                result.EndDate = endDate;
-                result.NumberOfParticipants = numberOfParticipants;
-                result.Host = host;
-                result.Incharge = incharge;
-                result.Note = note;
-                _meetingService.Update(result);
-                result = await _meetingService.GetById(id);
+                meet.MeetingId = id;
+                _meetingService.Update(meet);
+                result = await _meetingService.GetById(meet.MeetingId.Value);
                 return Ok(new
                 {
                     Status = true,
@@ -315,6 +328,41 @@ namespace WebAPI.Controllers
                     Status = true,
                     Data = result,
                     SuccessMessage = "Remove Meeting Participation successfully !",
+                });
+            }
+            catch (Exception ex)
+            {
+                // Log the exception if needed
+                return BadRequest(new
+                {
+                    status = false,
+                    errorMessage = ex.Message
+                });
+            }
+        }
+        [HttpGet("AllParticipants/{id}")]
+        [ProducesResponseType(typeof(List<MeetingParticipantViewModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetAllParticipantByMeetingId(
+            [FromRoute] int id)
+        {
+            try
+            {
+                var result = await _participantService.GetAllByMeetingId(id);
+                if (result == null)
+                {
+                    return NotFound(new
+                    {
+                        status = false,
+                        errorMessage = "Meeting Not Found!"
+                    });
+                }
+
+                return Ok(new
+                {
+                    status = true,
+                    Data = result
                 });
             }
             catch (Exception ex)

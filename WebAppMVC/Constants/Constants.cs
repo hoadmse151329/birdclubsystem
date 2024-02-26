@@ -4,7 +4,7 @@
 	{
 		public static string ADMIN_URL = "../Admin/AdminIndex";
 		public static string MEMBER_URL = "../Home/Index";
-		public static string MANAGER_URL = "../Manager/ManagerIndex";
+		public static string MANAGER_URL = "../Manager/Index";
 		public static string STAFF_URL = "../Staff/StaffIndex";
 		public static string NOTFOUND_URL = "../Auth/NotFound";
 		public static string ADMIN = "Admin";

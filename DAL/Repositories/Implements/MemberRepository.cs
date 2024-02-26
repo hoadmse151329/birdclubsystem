@@ -27,5 +27,10 @@ namespace DAL.Repositories.Implements
         {
             return await _context.Members.AsNoTrackingWithIdentityResolution().Include(mem => mem.MemberUser).SingleOrDefaultAsync(mem => mem.MemberId == id);
         }
+
+        public async Task<string?> GetMemberNameById(string id)
+        {
+            return (await _context.Members.AsNoTrackingWithIdentityResolution().SingleOrDefaultAsync(mem => mem.MemberId == id)).FullName;
+        }
     }
 }

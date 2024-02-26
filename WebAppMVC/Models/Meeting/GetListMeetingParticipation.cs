@@ -1,9 +1,9 @@
-﻿using BAL.ViewModels.Event;
+﻿using BAL.ViewModels;
 
 namespace WebAppMVC.Models.Meeting
 {
     public class GetListMeetingParticipation : DefaultResponseViewModel
     {
-        public List<GetEventParticipation>? Data { get; set; }
+        public List<MeetingParticipantViewModel>? Data { get; set; }
     }
 }

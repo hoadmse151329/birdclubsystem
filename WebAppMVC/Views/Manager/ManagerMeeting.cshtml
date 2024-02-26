@@ -4,6 +4,8 @@
     ViewData["Title"] = "Manager Meeting Page";
     List<BAL.ViewModels.LocationViewModel> locationList = Model.Locations;
     List<BAL.ViewModels.MeetingViewModel> meetingList = Model.Meetings;
+    BAL.ViewModels.MeetingViewModel createMeet = new();
+    string? search = string.Empty;
 }
 <html lang="en">
 <head>
@@ -177,15 +179,14 @@
                                                         <span class="text-danger">@ViewBag.error</span>
                                                     }
                                                 }
-                                                @*<span>Address: </span>
-                                                <h5> 111a,Hai Ba Trung</h5>*@
                                             </div>
                                             <div class="col-sm-6 d-flex justify-content-end">
-                                                <form action="#">
+                                                <form asp-action="ManagerMeeting" asp-controller="Manager" method="get" asp-route-search="@search">
                                                     <div>
                                                         <label>
-                                                            <input class="form-control" type="text" name="search" placeholder="Search...">
-                                                            <i class='bx bx-search-alt'></i>
+                                                            <input asp-for="@search" class="form-control" type="text" name="search" placeholder="Search..." value="@search">
+                                                            <button class="bx bx-search-alt" type="submit"></button>
+                                                            @*<i class='bx bx-search-alt'></i>*@
                                                         </label>
                                                     </div>
                                                 </form>
@@ -222,7 +223,7 @@
                                                         <div class="room-title">
                                                             <ul>
                                                                 <li>
-                                                                    <h6>Meeting Name:></h6>
+                                                                    <h6>Meeting Name:</h6>
                                                                     <span>@data.MeetingName</span>
                                                                 </li>
                                                                 <li>
@@ -267,182 +268,6 @@
                                                 </div>
                                             </div>
                                         }
-                                        @*<!-- dung vong for o day -->
-                                        <div class="col-xl-3 col-lg-6 col-sm-6 my-3">
-                                            <div class="card card-child">
-                                                <div class="room-name">
-                                                    <span>Meeting</span>
-                                                    <div class="status">
-                                                        <!-- dùng lệnh if -->
-                                                        <span class="stt1">Status:<h6>Processing</h6></span>
-                                                        <!-- <span class="stt2">Trạng thái:<h6>Done</h6></span>
-                                                        <span class="stt3">Trạng thái:<h6>Cancle</h6></span>
-                                                        <span class="stt3">Trạng thái:<h6>In debt</h6></span>-->
-                                                    </div>
-                                                </div>
-                                                <div class="card-body">
-                                                    <div class="room-title">
-                                                        <ul>
-                                                            <li>
-                                                                <h6>Meeting Name:</h6>
-                                                                <span>Meeting 1</span>
-                                                            </li>
-                                                            <li>
-                                                                <h6>Registration Deadlines:</h6>
-                                                                <span>16-2-2024</span>
-                                                            </li>
-                                                            <li>
-                                                                <h6>Start Date:</h6>
-                                                                <span>26-1-2024</span>
-                                                                <h6>End Date:</h6>
-                                                                <span>16-2-2024</span>
-                                                            </li>
-                                                            <li>
-                                                                <h6>Number of participants:</h6>
-                                                                <span>30</span>
-                                                            </li>
-                                                            <li>
-                                                                <h6>Location:</h6>
-                                                                <span>111a,Hai Ba Trung</span>
-                                                            </li>
-                                                            <li>
-                                                                <h6>Description:</h6>
-                                                                <span>Annual Meeting</span>
-                                                            </li>
-                                                            <li>
-                                                                <h6>Note:</h6>
-                                                                <span>Bring your own food, we have free water</span>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group mx-auto">
-                                                    <button class="btn btn-primary clickable-row" onclick="redirectToDetailPage()">
-                                                        <span>See Detail</span> 
-                                                    </button>
-                                                    <button class="btn btn-danger" data-toggle="modal" data-target="#deleteMeeting">
-                                                        <span>Delete Meeting</span> 
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-xl-3 col-lg-6 col-sm-6 my-3">
-                                            <div class="card card-child">
-                                                <div class="room-name">
-                                                    <span>Meeting</span>
-                                                    <div class="status">
-                                                        <!-- dùng lệnh if -->
-                                                        <span class="stt1">Status:<h6>Processing</h6></span>
-                                                        <!-- <span class="stt2">Trạng thái:<h6>Done</h6></span>
-                                                        <span class="stt3">Trạng thái:<h6>Cancle</h6></span>
-                                                        <span class="stt3">Trạng thái:<h6>In debt</h6></span>-->
-                                                    </div>
-                                                </div>
-                                                <div class="card-body">
-                                                    <div class="room-title">
-                                                        <ul>
-                                                            <li>
-                                                                <h6>Meeting Name:</h6>
-                                                                <span>Meeting 1</span>
-                                                            </li>
-                                                            <li>
-                                                                <h6>Registration Deadlines:</h6>
-                                                                <span>16-2-2024</span>
-                                                            </li>
-                                                            <li>
-                                                                <h6>Start Date:</h6>
-                                                                <span>26-1-2024</span>
-                                                                <h6>End Date:</h6>
-                                                                <span>16-2-2024</span>
-                                                            </li>
-                                                            <li>
-                                                                <h6>Number of participants:</h6>
-                                                                <span>30</span>
-                                                            </li>
-                                                            <li>
-                                                                <h6>Location:</h6>
-                                                                <span>111a,Hai Ba Trung</span>
-                                                            </li>
-                                                            <li>
-                                                                <h6>Description:</h6>
-                                                                <span>Annual Meeting</span>
-                                                            </li>
-                                                            <li>
-                                                                <h6>Note:</h6>
-                                                                <span>Bring your own food, we have free water</span>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group mx-auto">
-                                                    <button class="btn btn-primary clickable-row" onclick="redirectToDetailPage()">
-                                                        <span>See Detail</span> 
-                                                    </button>
-                                                    <button class="btn btn-danger" data-toggle="modal" target="#deleteMeeting">
-                                                        <span>Delete Meeting</span> 
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-xl-3 col-lg-6 col-sm-6 my-3">
-                                            <div class="card card-child">
-                                                <div class="room-name">
-                                                    <span>Meeting</span>
-                                                    <div class="status">
-                                                        <!-- dùng lệnh if -->
-                                                        <span class="stt1">Status:<h6>Processing</h6></span>
-                                                        <!-- <span class="stt2">Trạng thái:<h6>Done</h6></span>
-                                                        <span class="stt3">Trạng thái:<h6>Cancel</h6></span>-->
-                                                    </div>
-                                                </div>
-                                                <div class="card-body">
-                                                    <div class="room-title">
-                                                        <ul>
-                                                            <li>
-                                                                <h6>Meeting Name:</h6>
-                                                                <span>Meeting 1</span>
-                                                            </li>
-                                                            <li>
-                                                                <h6>Registration Deadlines:</h6>
-                                                                <span>16-2-2024</span>
-                                                            </li>
-                                                            <li>
-                                                                <h6>Start Date:</h6>
-                                                                <span>26-1-2024</span>
-                                                            </li>
-                                                            <li>
-                                                                <h6>End Date:</h6>
-                                                                <span>16-2-2024</span>
-                                                            </li>
-                                                            <li>
-                                                                <h6>Number of participants:</h6>
-                                                                <span>30</span>
-                                                            </li>
-                                                            <li>
-                                                                <h6>Location:</h6>
-                                                                <span>111a,Hai Ba Trung</span>
-                                                            </li>
-                                                            <li>
-                                                                <h6>Description:</h6>
-                                                                <span>Annual Meeting</span>
-                                                            </li>
-                                                            <li>
-                                                                <h6>Note:</h6>
-                                                                <span>Bring your own food, we have free water</span>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group mx-auto">
-                                                    <button class="btn btn-primary clickable-row" onclick="redirectToDetailPage()">
-                                                        <span>See Detail</span> 
-                                                    </button>
-                                                    <button class="btn btn-danger" data-toggle="modal" data-target="#deleteMeeting">
-                                                        <span>Delete Meeting</span> 
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>*@
 
                                     <div class="pagination d-flex justify-content-center">
                                         <li class="page-item previous-page disabled"><a href="#" class="page-link">Previous</a></li>
@@ -470,34 +295,64 @@
                     <h4 class="modal-title">Add new meeting</h4>
                 </div>
                 <div class="modal-body">
-                    <form action="#" onsubmit="return submitFunc()" id="form">
+                    @*<form asp-action="ManagerCreateMeeting" asp-controller="Manager" method="get" onsubmit="return submitFunc()" id="form">*@
+                    <form asp-action="ManagerCreateMeeting" asp-controller="Manager" method="post" id="form">
                         <div class="row p-4">
                             <div class="col-12">
                                 <div class="row form-group">
-                                    <label  class="col-md-3 col-form-label text-md-right">Meeting Name</label>
-                                        <input type="text" name="meetingName" placeholder="Meeting Name" required class="form-control col-md-7">
-                                    </div>
-                                    <div class="row form-group">
-                                        <label class="col-md-3 col-form-label mt-2 text-md-right">Choose Picture</label>
-                <input type="file" name="photo" class="form-control col-md-7 mt-2" accept="image/*">
+                                    <label asp-for="@createMeet.MeetingName" class="col-md-3 col-form-label text-md-right">Meeting Name</label>
+                                    <input asp-for="@createMeet.MeetingName" value="@createMeet.MeetingName" type="text" name="meetingname" placeholder="Meeting Name" required class="form-control col-md-7">
+                                    <span asp-validation-for="@createMeet.MeetingName" id="error_message"
+                                          class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                </div>
+                                <div class="row form-group">
+                                    <label class="col-md-3 col-form-label mt-2 text-md-right">Choose Picture</label>
+                                    <input type="file" name="photo" class="form-control col-md-7 mt-2" accept="image/*">
 
-                <label for="deadline" class="col-md-3 col-form-label mt-3 text-md-right">Registration Deadlines</label>
-                <input type="datetime-local" name="registrationDeadline" class="form-control col-md-7 mt-3">
+                                    <label asp-for="@createMeet.RegistrationDeadline" class="col-md-3 col-form-label mt-3 text-md-right">Registration Deadlines</label>
+                                    <input asp-for="@createMeet.RegistrationDeadline" value="@createMeet.RegistrationDeadline" type="datetime-local" name="registrationDeadline" required class="form-control col-md-7 mt-3">
+                                    <span asp-validation-for="@createMeet.RegistrationDeadline" id="error_message"
+                                          class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
-                <label for="startDate" class="col-md-3 col-form-label mt-3 text-md-right">Start Date</label>
-                <input type="datetime-local" name="startDate" class="form-control col-md-7 mt-3">
+                                    <label asp-for="@createMeet.StartDate" class="col-md-3 col-form-label mt-3 text-md-right">Start Date</label>
+                                    <input asp-for="@createMeet.StartDate" value="@createMeet.StartDate" type="datetime-local" name="startDate" required class="form-control col-md-7 mt-3">
+                                    <span asp-validation-for="@createMeet.StartDate" id="error_message"
+                                            class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
-                <label for="endDate" class="col-md-3 col-form-label mt-3 text-md-right">End Date</label>
-                <input type="datetime-local" name="endDate" class="form-control col-md-7 mt-3">
+                                    <label asp-for="@createMeet.EndDate" class="col-md-3 col-form-label mt-3 text-md-right">End Date</label>
+                                    <input asp-for="@createMeet.EndDate" value="@createMeet.EndDate" type="datetime-local" name="endDate" required class="form-control col-md-7 mt-3">
+                                    <span asp-validation-for="@createMeet.EndDate" id="error_message"
+                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
-                <label for="participants" class="col-md-3 col-form-label mt-3 text-md-right">Number of Participants</label>
-                <input type="number" name="numberOfParticipants" class="form-control col-md-7 mt-3">
+                                    <label asp-for="@createMeet.NumberOfParticipants"  class="col-md-3 col-form-label mt-3 text-md-right">Number of Participants</label>
+                                    <input asp-for="@createMeet.NumberOfParticipants" value="@createMeet.NumberOfParticipants" type="number" name="numberOfParticipants" class="form-control col-md-7 mt-3" required>
+                                    <span asp-validation-for="@createMeet.NumberOfParticipants" id="error_message"
+                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
-                <label for="description" class="col-md-3 col-form-label mt-3 text-md-right">Description</label>
-                <textarea type="text" name="roomTypeDesct" placeholder="Meeting description..." class="form-control col-md-7 mt-3" rows="3"></textarea>
+                                    <label asp-for="@createMeet.Host" class="col-md-3 col-form-label mt-3 text-md-right">Host</label>
+                                    <input asp-for="@createMeet.Host" value="@createMeet.Host" type="text" name="host" placeholder="Meeting Host" class="form-control col-md-7 mt-3" rows="3" required>
+                                    <span asp-validation-for="@createMeet.Host" id="error_message"
+                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
-                <label for="note" class="col-md-3 col-form-label mt-3 text-md-right">Note</label>
-                <textarea type="text" name="roomTypeDesct" placeholder="Meeting description..." class="form-control col-md-7 mt-3" rows="3"></textarea>
+                                    <label asp-for="@createMeet.Incharge" class="col-md-3 col-form-label mt-3 text-md-right">Incharge</label>
+                                    <input asp-for="@createMeet.Incharge" value="@createMeet.Incharge" type="text" name="incharge" placeholder="Staff incharge of Meeting" class="form-control col-md-7 mt-3" rows="3" required>
+                                    <span asp-validation-for="@createMeet.Incharge" id="error_message"
+                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+
+                                    <label asp-for="@createMeet.Address" class="col-md-3 col-form-label mt-3 text-md-right">Address</label>
+                                    <textarea asp-for="@createMeet.Address" value="@createMeet.Address" type="text" name="address" placeholder="Meeting Address..." class="form-control col-md-7 mt-3" rows="3" required></textarea>
+                                    <span asp-validation-for="@createMeet.Address" id="error_message"
+                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+
+                                    <label asp-for="@createMeet.Description" class="col-md-3 col-form-label mt-3 text-md-right">Description</label>
+                                    <textarea asp-for="@createMeet.Description" value="@createMeet.Description" type="text" name="description" placeholder="Meeting description..." class="form-control col-md-7 mt-3" rows="3" required></textarea>
+                                    <span asp-validation-for="@createMeet.Description" id="error_message"
+                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+
+                                    <label asp-for="@createMeet.Note" class="col-md-3 col-form-label mt-3 text-md-right">Note</label>
+                                    <textarea asp-for="@createMeet.Note" value="@createMeet.Note" type="text" name="note" placeholder="Meeting Note..." class="form-control col-md-7 mt-3" rows="3" required></textarea>
+                                    <span asp-validation-for="@createMeet.Note" id="error_message"
+                                          class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                 </div>
                             </div>                
                             <div class="modal-footer justify-content-center">

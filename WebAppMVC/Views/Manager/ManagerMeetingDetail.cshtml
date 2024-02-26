@@ -1,7 +1,9 @@
-﻿@model BAL.ViewModels.MeetingViewModel
+﻿@model dynamic
 @{
     Layout = null;
     ViewData["Title"] = "Manager Meeting Detail Page";
+    BAL.ViewModels.MeetingViewModel details = Model.MeetingDetails;
+    List<BAL.ViewModels.MeetingParticipantViewModel> parts = Model.MeetingParticipants;
 }
 <html lang="en">
 <head>
@@ -159,7 +161,7 @@
                                             <span>Status:</span>
                                         </div>
                                         <div class="col-sm-7">
-                                            <span class="destroy" style="float: left;">Processing</span>
+                                            <span class="destroy" style="float: left;">@details.Status</span>
 
                                             <!-- Trống in ra dòng dưới -->
                                             <!-- <span class="outcome" style="float: left;">Done</span> -->
@@ -184,7 +186,7 @@
                                             <label for="meeting-name">Meeting Name:</label>
                                         </div>
                                         <div class="col-md-7">
-                                            <span>@Model.MeetingName</span>
+                                            <span>@details.MeetingName</span>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -192,7 +194,7 @@
                                             <label for="customer-name">Registration Deadlines:</label>
                                         </div>
                                         <div class="col-md-7">
-                                            <span>@Model.RegistrationDeadline.Value.ToString("MM/dd/yyyy")</span>
+                                            <span>@details.RegistrationDeadline.Value.ToString("MM/dd/yyyy")</span>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -200,7 +202,7 @@
                                             <label for="customer-name">Start Date:</label>
                                         </div>
                                         <div class="col-md-7">
-                                            <span>@Model.StartDate.Value.ToString("MM/dd/yyyy")</span>
+                                            <span>@details.StartDate.Value.ToString("MM/dd/yyyy")</span>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -208,7 +210,23 @@
                                             <label for="customer-name">End Date:</label>
                                         </div>
                                         <div class="col-md-7">
-                                            <span>@Model.EndDate.Value.ToString("MM/dd/yyyy")</span>
+                                            <span>@details.EndDate.Value.ToString("MM/dd/yyyy")</span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-sm-2">
+                                        <div class="col-sm-5 text-sm-right">
+                                            <span>Host:</span>
+                                        </div>
+                                        <div class="col-sm-7 text-sm-left">
+                                            <span>@details.Host</span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-sm-2">
+                                        <div class="col-sm-5 text-sm-right">
+                                            <span>Incharge:</span>
+                                        </div>
+                                        <div class="col-sm-7 text-sm-left">
+                                            <span>@details.Incharge</span>
                                         </div>
                                     </div>
                                     <div class="row mb-sm-2">
@@ -216,16 +234,23 @@
                                             <span>Number of participants:</span>
                                         </div>
                                         <div class="col-sm-7 text-sm-left">
-                                            <span>@Model.NumberOfParticipants</span>
+                                            <span>@details.NumberOfParticipants</span>
                                         </div>
-
+                                    </div>
+                                    <div class="row mb-sm-2">
+                                        <div class="col-sm-5 text-sm-right">
+                                            <span>Number of participants:</span>
+                                        </div>
+                                        <div class="col-sm-7 text-sm-left">
+                                            <span>@details.NumberOfParticipantsLimit</span>
+                                        </div>
                                     </div>
                                     <div class="row mb-sm-2">
                                         <div class="col-sm-5 text-sm-right">
                                             <span>Location:</span>
                                         </div>
                                         <div class="col-sm-7 text-sm-left">
-                                            <span>@Model.AreaNumber,@Model.Street,@Model.District,@Model.City</span>
+                                            <span>@details.AreaNumber,@details.Street,@details.District,@details.City</span>
                                         </div>
                                     </div>
                                     <div class="row mb-sm-2">
@@ -233,7 +258,7 @@
                                             <span>Description:</span>
                                         </div>
                                         <div class="col-sm-7 text-sm-left">
-                                            <span>@Model.Description</span>
+                                            <span>@details.Description</span>
                                         </div>
                                     </div>
                                     <div class="row mb-sm-2">
@@ -241,7 +266,7 @@
                                             <span>Note:</span>
                                         </div>
                                         <div class="col-sm-7 text-sm-left">
-                                            <span>@Model.Note</span>
+                                            <span>@details.Note</span>
                                         </div>
                                     </div>
                                 </div>
@@ -263,26 +288,13 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>Ho Tran Khanh Duy</td>
-                                        </tr>
-                                        <tr>
-                                            <td>2</td>
-                                            <td>Ho Tran Khanh Duy</td>
-                                        </tr>
-                                        <tr>
-                                            <td>3</td>
-                                            <td>Ho Tran Khanh Duy</td>
-                                        </tr>
-                                        <tr>
-                                            <td>4</td>
-                                            <td>Ho Tran Khanh Duy</td>
-                                        </tr>
-                                        <tr>
-                                            <td>5</td>
-                                            <td>Ho Tran Khanh Duy</td>
-                                        </tr>
+                                        @foreach(var part in parts)
+                                        {
+                                            <tr>
+                                                <td>@part.ParticipantNo</td>
+                                                <td>@part.MemberName</td>
+                                            </tr>
+                                        }
                                         <tr>
                                         </tr>
                                     </tbody>
@@ -304,65 +316,120 @@
                 <div class="modal-header">
                     <h4 class="modal-title">Edit Meeting</h4>
                 </div>
-                <form action="#" class="form-group">
+                <form asp-action="ManagerUpdateMeetingDetail" asp-controller="Manager" method="post" asp-route-id="@details.MeetingId" class="form-group">
                     <div class="modal-body">
                         <div class="row justify-content-center">
                             <div class="col-12 col-md-6">
                                 <div class="form-group row">
-                                    <label for="meetingname" class="col-sm-4 col-form-label">Meeting Name:</label>
+                                    <label asp-for="@details.MeetingName" class="col-sm-4 col-form-label">Meeting Name:</label>
                                     <div class="col-sm-8">
-                                        <input type="text" class="form-control" value="Meeting 1" required>
-                                    </div>
-                                </div>
-                                    <div class="form-group row">
-                                        <label for="registrationdeadlines" class="col-sm-4 col-form-label">Registration Deadlines:</label>
-                                        <div class="col-sm-8">
-                                            <input type="date" class="form-control" value="16/2/2024" required>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="startdate" class="col-sm-4 col-form-label">Start date:</label>
-                                        <div class="col-sm-8">
-                                            <input type="date" class="form-control" value="26/1/2024" required>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="enddate" class="col-sm-4 col-form-label">End date:</label>
-                                        <div class="col-sm-8">
-                                            <input type="date" class="form-control" value="16/2/2024" required>
-                                        </div>
-                                    </div>
-                                    </div>
-                                    <div class="col-12 col-md-6">
-                                    <div class="form-group row">
-                                        <label for="numberofparticipants" class="col-sm-4 col-form-label">Number of participants</label>
-                                        <div class="col-sm-8">
-                                            <input type="number" class="form-control" value="30" required>
-                                        </div>
-                                    </div>
-                                <div class="form-group row">
-                                    <label for="address" class="col-sm-4 col-form-label">Location</label>
-                                    <div class="col-sm-8">
-                                        <input type="text" class="form-control" value="111a,Hai Ba Trung" required>
+                                        <input asp-for="@details.MeetingName" id="meetingname" type="text" name="meetingname"
+                                               value="@details.MeetingName" class="form-control" required>
+                                        <span asp-validation-for="@details.MeetingName" id="error_message"
+                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="description" class="col-sm-4 col-form-label">Description</label>
+                                <label asp-for="@details.RegistrationDeadline" class="col-sm-4 col-form-label">Registration Deadlines:</label>
                                     <div class="col-sm-8">
-                                        <input type="text" class="form-control" value="Annual Meeting" required>
+                                    <input asp-for="@details.RegistrationDeadline" id="RegistrationDeadline" type="date" name="RegistrationDeadline"
+                                               value="@details.RegistrationDeadline.Value.ToString("yyyy-MM-dd")" class="form-control" required>
+                                    <span asp-validation-for="@details.RegistrationDeadline" id="error_message"
+                                            class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="note" class="col-sm-4 col-form-label">Note</label>
+                                <label asp-for="@details.StartDate" class="col-sm-4 col-form-label">Start date:</label>
                                     <div class="col-sm-8">
-                                        <input type="text" class="form-control" value="Bring your own food, we have free water" required>
+                                    <input asp-for="@details.StartDate" id="StartDate" type="date" name="StartDate"
+                                               value="@details.StartDate.Value.ToString("yyyy-MM-dd")" class="form-control" required>
+                                    <span asp-validation-for="@details.StartDate" id="error_message"
+                                            class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                     </div>
+                                </div>
+                                <div class="form-group row">
+                                <label asp-for="@details.EndDate" class="col-sm-4 col-form-label">End date:</label>
+                                    <div class="col-sm-8">
+                                    <input asp-for="@details.EndDate" id="EndDate" type="date" name="EndDate"
+                                            value="@details.EndDate.Value.ToString("yyyy-MM-dd")" class="form-control" required>
+                                    <span asp-validation-for="@details.EndDate" id="error_message"
+                                            class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                     </div>
+                                </div>
+                                <div class="form-group row">
+                                <label asp-for="@details.Host" class="col-sm-4 col-form-label">Host:</label>
+                                    <div class="col-sm-8">
+                                    <input asp-for="@details.Host" id="Host" type="text" name="Host"
+                                            value="@details.Host" class="form-control" required>
+                                    <span asp-validation-for="@details.Host" id="error_message"
+                                            class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                <label asp-for="@details.Incharge" class="col-sm-4 col-form-label">Incharge:</label>
+                                    <div class="col-sm-8">
+                                    <input asp-for="@details.Incharge" id="Incharge" type="text" name="Incharge"
+                                            value="@details.Incharge" class="form-control" required>
+                                    <span asp-validation-for="@details.Incharge" id="error_message"
+                                            class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="form-group row">
+                                    <label asp-for="@details.NumberOfParticipants" class="col-sm-4 col-form-label">Number of participants</label>
+                                        <div class="col-sm-8">
+                                        <input asp-for="@details.NumberOfParticipants" id="NumberOfParticipants" type="number" name="NumberOfParticipants"
+                                               value="@details.NumberOfParticipants" class="form-control" required>
+                                        <span asp-validation-for="@details.NumberOfParticipants" id="error_message"
+                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                        </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label asp-for="@details.Address" class="col-sm-4 col-form-label">Location</label>
+                                    <div class="col-sm-8">
+                                        <input asp-for="@details.Address" id="Address" type="text" name="Address"
+                                               value="@details.Address" class="form-control" required>
+                                        <span asp-validation-for="@details.Address" id="error_message"
+                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label asp-for="@details.Description" class="col-sm-4 col-form-label">Description</label>
+                                    <div class="col-sm-8">
+                                        <input asp-for="@details.Description" id="Description" type="text" name="Description"
+                                               value="@details.Description" class="form-control" required>
+                                        <span asp-validation-for="@details.Description" id="error_message"
+                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label asp-for="@details.Note" class="col-sm-4 col-form-label">Note</label>
+                                    <div class="col-sm-8">
+                                        <input asp-for="@details.Note" id="Note" type="text" name="Note"
+                                               value="@details.Note" class="form-control" required>
+                                        <span asp-validation-for="@details.Note" id="error_message"
+                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                <label asp-for="@details.Status" class="col-sm-4 col-form-label">Status:</label>
+                                    <div class="col-sm-8">
+                                    <input asp-for="@details.Status" id="Status" type="text" name="Status"
+                                            value="@details.Status" class="form-control" required>
+                                    <span asp-validation-for="@details.Status" id="error_message"
+                                            class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                    </div>
+                                </div>
+                                <input asp-for="@details.NumberOfParticipantsLimit" id="NumberOfParticipantsLimit" type="number" name="NumberOfParticipantsLimit"
+                                               value="@details.NumberOfParticipantsLimit" class="form-control" required hidden>
+                                        <span asp-validation-for="@details.NumberOfParticipantsLimit" id="error_message"
+                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                 </div>
                             </div>
                         </div>
                     <div class="modal-footer justify-content-center">
-                        <button class="btn btn-success" type="submit">Save</button>
+                        <button class="btn btn-success" type="submit" value="Update">Save</button>
                         <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
                     </div>
                 </form>

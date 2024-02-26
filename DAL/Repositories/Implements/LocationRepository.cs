@@ -1,6 +1,7 @@
 ﻿using DAL.Infrastructure;
 using DAL.Models;
 using DAL.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,16 +20,29 @@ namespace DAL.Repositories.Implements
 
         public async Task<IEnumerable<string?>> GetAllLocationName()
         {
-            return _context.Locations
+            return _context.Locations.AsNoTracking()
                 .Select(m => m.LocationName)
                 .Distinct()
                 .ToList();
         }
+        public async Task<Location?> GetLocationByName(string locationName)
+        {
+            return _context.Locations.AsNoTracking()
+                .FirstOrDefault(m => m.LocationName.Equals(locationName.Trim()));
+        }
+
+        public async Task<Location?> GetLocationByMeetingId(int meetingId)
+        {
+            var met = await _context.Meetings.AsNoTracking().SingleOrDefaultAsync(m => m.MeetingId.Equals(meetingId));
+
+            return _context.Locations.AsNoTracking()
+                .FirstOrDefault(m => m.LocationId.Equals(met.LocationId));
+        }
 
         public async Task<string?> GetLocationNameById(int id)
         {
-            return _context.Locations
-                .SingleOrDefault(m => m.LocationId.Equals(id))
+            return _context.Locations.AsNoTracking()
+                .SingleOrDefaultAsync(m => m.LocationId.Equals(id)).Result
                 .LocationName;
         }
     }

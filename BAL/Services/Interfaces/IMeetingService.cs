@@ -13,7 +13,7 @@ namespace BAL.Services.Interfaces
         Task<IEnumerable<MeetingViewModel>> GetAll();
         IEnumerable<MeetingViewModel> GetAllByRegistrationDeadline(DateTime registrationDeadline);
         IEnumerable<MeetingViewModel> GetSortedMeetings(
-            int meetingId,
+            int? meetingId,
             string? meetingName,
             DateTime? registrationDeadline,
             DateTime? startDate,

@@ -49,7 +49,7 @@ namespace WebAppMVC.Constants
             string jsonResponse = await response.Content.ReadAsStringAsync();
             if (!response.IsSuccessStatusCode)
             {
-                _logger.LogInformation("Error while processing your request!: " + response.StatusCode + " , Error Message: " + response.Content.ToString());
+                _logger.LogError("Error while processing your request!: " + response.StatusCode + " , Error Message: " + response.Content.ToString());
                 return null;
             };
             var result = JsonSerializer.Deserialize<T>(jsonResponse, options);

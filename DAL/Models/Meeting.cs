@@ -23,7 +23,6 @@ namespace DAL.Models
         public string? Status { get; set; }
         public string? Note { get; set; }
         public int? NumberOfParticipantsLimit { get; set; }
-
         public virtual ICollection<MeetingMedia> MeetingMedia { get; set; }
     }
 }

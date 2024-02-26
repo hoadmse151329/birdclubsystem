@@ -11,6 +11,7 @@ namespace DAL.Repositories.Interfaces
     public interface IMemberRepository : IRepositoryBase<Member>
     {
         Task<Member?> GetByIdNoTracking(string id);
+        Task<string?> GetMemberNameById(string id);
         Task<Member?> GetByEmail(string email);
 
     }

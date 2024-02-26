@@ -53,9 +53,15 @@ namespace BAL.Services.Implements
             if (meet != null)
             {
                 string locationName = await _unitOfWork.LocationRepository.GetLocationNameById(meet.LocationId.Value);
+                if (locationName == null)
+                {
+
+                    return null;
+                }
                 int partAmount = await _unitOfWork.MeetingParticipantRepository.GetCountMeetingParticipantsByMeetId(meet.MeetingId);
                 var meeting = _mapper.Map<MeetingViewModel>(meet);
                 meeting.NumberOfParticipantsLimit = meeting.NumberOfParticipants - partAmount;
+                meeting.Address = locationName;
                 meeting.AreaNumber = locationName[0];
                 meeting.Street = locationName.Split(",")[1];
                 meeting.District = locationName.Split(",")[2];
@@ -65,7 +71,8 @@ namespace BAL.Services.Implements
             return null;
         }
 
-        public IEnumerable<MeetingViewModel> GetSortedMeetings(int meetingId,
+        public IEnumerable<MeetingViewModel> GetSortedMeetings(
+            int? meetingId,
             string? meetingName,
             DateTime? registrationDeadline,
             DateTime? startDate,
@@ -99,7 +106,19 @@ namespace BAL.Services.Implements
 
         public void Update(MeetingViewModel entity)
         {
+            var loc = _unitOfWork.LocationRepository.GetLocationByMeetingId(entity.MeetingId.Value).Result;
+
+            if (!loc.Equals(entity.Address.Trim()))
+            {
+                _unitOfWork.LocationRepository.Update(loc = new Location
+                {
+                    LocationName = entity.Address,
+                    Description = loc.Description
+                });
+                loc = _unitOfWork.LocationRepository.GetLocationByMeetingId(entity.MeetingId.Value).Result;
+            }
             var meeting = _mapper.Map<Meeting>(entity);
+            meeting.LocationId = loc.LocationId;
             _unitOfWork.MeetingRepository.Update(meeting);
             _unitOfWork.Save();
         }

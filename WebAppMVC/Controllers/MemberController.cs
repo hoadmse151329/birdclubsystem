@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Authorization;
 using System.Data;
 using System.Web;
 using DAL.Models;
-using WebAppMVC.Models.Meeting;
 using WebAppMVC.Models.Member;
 using BAL.ViewModels;
 using System.Dynamic;
@@ -141,7 +140,7 @@ namespace WebAppMVC.Controllers
             string MemberMeetingPartAPI_URL = "/api/Meeting/Participation/AllMeetings";
             dynamic registeredModel = new ExpandoObject();
 
-            var memberMeetingPart = await methcall.CallMethodReturnObject<GetListMeetingParticipation>(
+            var memberMeetingPart = await methcall.CallMethodReturnObject<GetListEventParticipation>(
                 _httpClient: _httpClient,
                 options: options,
                 methodName: "POST",

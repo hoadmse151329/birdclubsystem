@@ -20,49 +20,53 @@ namespace DAL.Repositories.Implements
 
         public IEnumerable<Meeting> GetAllByRegistrationDeadline(DateTime registrationDeadline)
         {
-            return _context.Meetings.Where(m => m.RegistrationDeadline == registrationDeadline).ToList();
+            return _context.Meetings.AsNoTracking().Where(m => m.RegistrationDeadline == registrationDeadline).ToList();
         }
 
         public IEnumerable<string> GetAllMeetingName()
         {
-            return _context.Meetings
+            return _context.Meetings.AsNoTracking()
                 .Select(m => m.MeetingName)
                 .Distinct()
                 .ToList();
         }
 
         public IEnumerable<Meeting> GetSortedMeetings(
-            int meetingId,
-            string? meetingName,
-            DateTime? registrationDeadline,
-            DateTime? startDate,
-            DateTime? endDate,
-            int? numberOfParticipants,
-            string? orderBy
+            int? meetingId = null,
+            string? meetingName = null,
+            DateTime? registrationDeadline = null,
+            DateTime? startDate = null,
+            DateTime? endDate = null,
+            int? numberOfParticipants = null,
+            string? orderBy = null
             )
         {
-            var meetings = _context.Meetings.Where(m => m.MeetingId == meetingId);
+            var meetings = _context.Meetings.AsNoTracking();
+            if (meetingId != null)
+            {
+                meetings = meetings.AsNoTracking().Where(m => m.MeetingId.Equals(meetingId));
+            }
 
             if (meetingName != null)
             {
-                meetings = meetings.Where(m => m.MeetingName.Contains(meetingName));
+                meetings = meetings.AsNoTracking().Where(m => m.MeetingName.Contains(meetingName));
             }
 
             if (registrationDeadline != null)
             {
-                meetings = meetings.Where(m => m.RegistrationDeadline == registrationDeadline);
+                meetings = meetings.AsNoTracking().Where(m => m.RegistrationDeadline == registrationDeadline);
             }
             if (startDate != null)
             {
-                meetings = meetings.Where(m => m.StartDate == startDate);
+                meetings = meetings.AsNoTracking().Where(m => m.StartDate == startDate);
             }
             if (endDate != null)
             {
-                meetings = meetings.Where(m => m.EndDate == endDate);
+                meetings = meetings.AsNoTracking().Where(m => m.EndDate == endDate);
             }
             if (numberOfParticipants != null)
             {
-                meetings = meetings.Where(m => m.NumberOfParticipants == numberOfParticipants);
+                meetings = meetings.AsNoTracking().Where(m => m.NumberOfParticipants == numberOfParticipants);
             }
 
             if (!string.IsNullOrEmpty(orderBy))
@@ -104,12 +108,12 @@ namespace DAL.Repositories.Implements
 
         public async Task<IEnumerable<Meeting>> GetMeetings()
         {
-            return _context.Meetings.ToList();
+            return _context.Meetings.AsNoTracking().ToList();
         }
 
         public async Task<Meeting?> GetMeetingById(int id)
         {
-            return _context.Meetings.SingleOrDefault(meet => meet.MeetingId == id);
+            return _context.Meetings.AsNoTracking().SingleOrDefault(meet => meet.MeetingId == id);
         }
     }
 }

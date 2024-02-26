@@ -12,7 +12,7 @@ namespace DAL.Repositories.Interfaces
     {
         IEnumerable<Meeting> GetAllByRegistrationDeadline(DateTime registrationDeadline);
         IEnumerable<Meeting> GetSortedMeetings(
-            int meetingId,
+            int? meetingId,
             string? meetingName,
             DateTime? registrationDeadline,
             DateTime? startDate,

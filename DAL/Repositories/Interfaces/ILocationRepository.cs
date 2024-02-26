@@ -12,5 +12,7 @@ namespace DAL.Repositories.Interfaces
     {
         Task<IEnumerable<string?>> GetAllLocationName();
         Task<string?> GetLocationNameById(int id);
+        Task<Location?> GetLocationByName(string name);
+        Task<Location?> GetLocationByMeetingId(int meetid);
     }
 }

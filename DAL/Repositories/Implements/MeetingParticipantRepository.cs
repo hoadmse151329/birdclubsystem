@@ -42,7 +42,16 @@ namespace DAL.Repositories.Implements
 
         public async Task<IEnumerable<MeetingParticipant>> GetMeetingParticipantsByMeetId(int meetingId)
         {
-            return _context.MeetingParticipants.Where(m => m.MeetingId == meetingId).ToList();
+            return _context.MeetingParticipants
+                .Where(m => m.MeetingId == meetingId).Include(m => m.Member)
+                /*.Select(x => new MeetingParticipant
+                {
+                    MeetingId= x.MeetingId,
+                    MemberId= x.MemberId,
+                    ParticipantNo = x.ParticipantNo,
+                    Member = x.Member
+                })*/
+                .ToList();
         }
 
         public async Task<IEnumerable<MeetingParticipant>> GetMeetingParticipantsByMemberId(string memId)

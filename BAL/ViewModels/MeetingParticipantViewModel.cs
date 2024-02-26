@@ -9,7 +9,8 @@ namespace BAL.ViewModels
     public class MeetingParticipantViewModel
     {
         public int? MeetingId { get; set; }
-        public int? MemberId { get; set; }
+        public string? MemberId { get; set; }
+        public string? MemberName { get; set; }
         public string? ParticipantNo { get; set; }
     }
 }
