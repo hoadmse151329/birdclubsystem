@@ -99,7 +99,19 @@ namespace BAL.Services.Implements
 
         public void Create(MeetingViewModel entity)
         {
+            var loc = _unitOfWork.LocationRepository.GetLocationByName(entity.Address).Result;
+
+            if (!loc.Equals(entity.Address.Trim()))
+            {
+                _unitOfWork.LocationRepository.Update(loc = new Location
+                {
+                    LocationName = entity.Address,
+                    Description = loc.Description
+                });
+                loc = _unitOfWork.LocationRepository.GetLocationByName(entity.Address).Result;
+            }
             var meeting = _mapper.Map<Meeting>(entity);
+            meeting.LocationId = loc.LocationId;
             _unitOfWork.MeetingRepository.Create(meeting);
             _unitOfWork.Save();
         }
