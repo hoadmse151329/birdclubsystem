@@ -2,7 +2,7 @@
 @{
     ViewData["Title"] = "Bird Contest Page";
     List<BAL.ViewModels.LocationViewModel> locationList = Model.Locations;
-    List<BAL.ViewModels.ContestViewModel> fieldtripList = Model.Contests;
+    List<BAL.ViewModels.ContestViewModel> contestList = Model.Contests;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <html>
@@ -68,7 +68,7 @@
                             <span class="text-danger">@ViewBag.error</span>
                         }
                     }
-                    @foreach (var data in meetingList)
+                    @foreach (var data in contestList)
                     {
                         <div class="col-4 p-0">
                             <div class="room-item">
@@ -77,7 +77,7 @@
                                     <img class="img-fluid" src="~/images/meeting.png" alt="nt1">
                                 </a>
                                 <div class="club-title">
-                                    <a href="#" class="text-decoration-none">@data.MeetingName</a>
+                                    <a href="#" class="text-decoration-none">@data.ContestName</a>
                                 </div>
 
                                 <p class="club-price"><i class="fas fa-calendar-alt"></i>
@@ -91,7 +91,7 @@
                                 </div>
                                 <div class="d-flex justify-content-between">
                                     <p class="club-price"><i class="fas fa-comment-alt"></i>@data.Description</p>
-                                    <form asp-action="MeetingPost" asp-controller="Meeting" method="get" asp-route-id="@data.MeetingId">
+                                    <form asp-action="MeetingPost" asp-controller="Meeting" method="get" asp-route-id="@data.ContestId">
                                         <button class="button--primary text-white text-wrapper-16" type="submit">See Now</button>
                                     </form>
                                 </div>
