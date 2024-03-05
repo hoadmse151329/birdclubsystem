@@ -69,7 +69,7 @@
                             <span class="text-danger">@ViewBag.error</span>
                         }
                     }
-                    @foreach (var data in fieldtripList)
+                    @foreach (var data in meetingList)
                     {
                         <div class="col-4 p-0">
                             <div class="room-item">
@@ -78,7 +78,7 @@
                                     <img class="img-fluid" src="~/images/meeting.png" alt="nt1">
                                 </a>
                                 <div class="club-title">
-                                    <a href="#" class="text-decoration-none">@data.TripName</a>
+                                    <a href="#" class="text-decoration-none">@data.MeetingName</a>
                                 </div>
 
                                 <p class="club-price"><i class="fas fa-calendar-alt"></i>
@@ -92,7 +92,7 @@
                                 </div>
                                 <div class="d-flex justify-content-between">
                                     <p class="club-price"><i class="fas fa-comment-alt"></i>@data.Description</p>
-                                    <form asp-action="MeetingPost" asp-controller="Meeting" method="get" asp-route-id="@data.TripId">
+                                    <form asp-action="MeetingPost" asp-controller="Meeting" method="get" asp-route-id="@data.MeetingId">
                                         <button class="button--primary text-white text-wrapper-16" type="submit">See Now</button>
                                     </form>
                                 </div>
