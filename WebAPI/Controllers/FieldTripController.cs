@@ -40,7 +40,7 @@ namespace WebAPI.Controllers
         {
             try
             {
-                var result = await _fieldTripService.GetAllFieldTrips();
+                var result = await _fieldTripService.GetAll();
                 if (result == null)
                 {
                     return NotFound(new
@@ -74,7 +74,7 @@ namespace WebAPI.Controllers
         {
             try
             {
-                var result = await _fieldTripService.GetFieldTripById(id);
+                var result = await _fieldTripService.GetById(id);
                 if (result == null)
                 {
                     return NotFound(new
@@ -106,45 +106,17 @@ namespace WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult Create (
-            [Required] string tripName,
-            [Required] string description,
-            [Required] string details,
-            [Required] DateTime registrationDeadline,
-            [Required] DateTime startDate,
-            [Required] DateTime endDate,
-            [Required] string status,
-            [Required] decimal fee,
-            [Required] int numberOfParticipants,
-            [Required] string host,
-            [Required] string incharge,
-            [Required] string note,
-            [Required] string review
-            )
+            [Required][FromBody] FieldTripViewModel trip)
         {
             try
             {
-                FieldTripViewModel value = new FieldTripViewModel
-                {
-                    TripName = tripName,
-                    Description = description,
-                    Details = details,
-                    RegistrationDeadline = registrationDeadline,
-                    StartDate = startDate,
-                    EndDate = endDate,
-                    Status = status,
-                    Fee = fee,
-                    NumberOfParticipants = numberOfParticipants,
-                    Host = host,
-                    InCharge = incharge,
-                    Note = note,
-                    Review = review
-                };
-                _fieldTripService.Create(value);
+                trip.Status = "Preparing";
+                _fieldTripService.Create(trip);
                 return Ok(new
                 {
                     Status = true,
                     Message = "Field Trip Create successfully!",
-                    Data = value
+                    Data = trip
                 });
             }
             catch (Exception ex)
@@ -164,23 +136,23 @@ namespace WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Register(
             [Required][FromRoute] int id,
-            [Required][FromBody] int usrId)
+            [Required][FromBody] string memId)
         {
             try
             {
-                var trip = await _fieldTripService.GetFieldTripById(id);
+                var trip = await _fieldTripService.GetById(id);
                 if (trip == null) return NotFound(new
                 {
                     Status = false,
                     ErrorMessage = "Field Trip Not Found!"
                 });
-                var mem = await _userService.GetById(usrId);
-                if (mem == null) return NotFound(new
+                var mem = await _memberService.GetBoolById(memId);
+                if (!mem) return NotFound(new
                 {
                     Status = false,
                     ErrorMessage = "Member Not Found!"
                 });
-                int participantNo = await _participantService.Create(mem.MemberId, id);
+                int participantNo = await _participantService.Create(memId, id);
                 return Ok(new
                 {
                     Status = true,
@@ -204,23 +176,23 @@ namespace WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetFieldTripAndParticipantNo(
             [Required][FromRoute] int id,
-            [Required][FromBody] int usrId)
+            [Required][FromBody] string memId)
         {
             try
             {
-                var trip = await _fieldTripService.GetFieldTripById(id);
+                var trip = await _fieldTripService.GetById(id);
                 if (trip == null) return NotFound(new
                 {
                     Status = false,
                     ErrorMessage = "Field Trip Not Found!"
                 });
-                var mem = await _userService.GetById(usrId);
-                if (mem == null) return NotFound(new
+                var mem = await _memberService.GetBoolById(memId);
+                if (!mem) return NotFound(new
                 {
                     Status = false,
                     ErrorMessage = "Member Not Found!"
                 });
-                int participateNo = await _participantService.GetParticipationNo(mem.MemberId, id);
+                int participateNo = await _participantService.GetParticipationNo(memId, id);
                 trip.ParticipationNo = participateNo;
                 return Ok(new
                 {
@@ -245,23 +217,11 @@ namespace WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Update(
             [Required][FromRoute] int id,
-            [Required] string tripName,
-            [Required] string description,
-            [Required] string details,
-            [Required] DateTime registrationDeadline,
-            [Required] DateTime startDate,
-            [Required] DateTime endDate,
-            [Required] string status,
-            [Required] decimal fee,
-            [Required] int numberOfParticipants,
-            [Required] string host,
-            [Required] string incharge,
-            [Required] string note,
-            [Required] string review)
+            [Required][FromBody] FieldTripViewModel trip)
         {
             try
             {
-                var result = await _fieldTripService.GetFieldTripById(id);
+                var result = _fieldTripService.GetById(id).Result;
                 if (result == null)
                 {
                     return NotFound(new
@@ -270,22 +230,9 @@ namespace WebAPI.Controllers
                         ErrorMessage = "Field Trip does not exist!"
                     });
                 }
-                result.TripName = tripName;
-                result.Description = description;
-                result.Details = details;
-                result.NumberOfParticipants = numberOfParticipants;
-                result.RegistrationDeadline = registrationDeadline;
-                result.StartDate = startDate;
-                result.EndDate = endDate;
-                result.Status = status;
-                result.Fee = fee;
-                result.NumberOfParticipants = numberOfParticipants;
-                result.Host = host;
-                result.InCharge = incharge;
-                result.Note = note;
-                result.Review = review;
-                _fieldTripService.Update(result);
-                result = await _fieldTripService.GetFieldTripById(id);
+                trip.TripId = id;
+                _fieldTripService.Update(trip);
+                result = await _fieldTripService.GetById(trip.TripId.Value);
                 return Ok(new
                 {
                     Status = true,
@@ -307,24 +254,25 @@ namespace WebAPI.Controllers
         [ProducesResponseType(typeof(FieldTripParticipantViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> RemoveParticipant(int id, string memId)
+        public async Task<IActionResult> RemoveParticipant(
+            [Required][FromRoute] int id,
+            [Required][FromBody] string memId)
         {
             try
             {
-                var trip = _fieldTripService.GetFieldTripById(id);
-                if (trip == null) return NotFound(new
+                var trip = await _participantService.GetParticipationNo(memId, id);
+                if (trip == 0) return NotFound(new
                 {
                     Status = false,
                     ErrorMessage = "Field Trip Not Found!"
                 });
-                var mem = await _memberService.GetById(memId);
-                if (mem == null) return NotFound(new
-                {
-                    Status = false,
-                    ErrorMessage = "Member Not Found!"
-                });
                 var result = await _participantService.Delete(memId, id);
-                return Ok(result);
+                return Ok(new
+                {
+                    Status = true,
+                    Data = result,
+                    SuccessMessage = "Remove Field Trip Participation successfully!"
+                });
             }
             catch (Exception ex)
             {

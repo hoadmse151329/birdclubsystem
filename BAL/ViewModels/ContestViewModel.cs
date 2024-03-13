@@ -12,7 +12,11 @@ namespace BAL.ViewModels
         public string? ContestName { get; set; }
         public string? Description { get; set; }
         public DateTime? RegistrationDeadline { get; set; }
-        public int? LocationId { get; set; }
+        public string? Address { get; set; }
+        public int? AreaNumber { get; set; }
+        public string? Street { get; set; }
+        public string? District { get; set; }
+        public string? City { get; set; }
         public string? Status { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
