@@ -55,7 +55,6 @@ namespace BAL.Services.Implements
                 string locationName = await _unitOfWork.LocationRepository.GetLocationNameById(meet.LocationId.Value);
                 if (locationName == null)
                 {
-
                     return null;
                 }
                 int partAmount = await _unitOfWork.MeetingParticipantRepository.GetCountMeetingParticipantsByMeetId(meet.MeetingId);

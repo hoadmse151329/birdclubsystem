@@ -9,8 +9,8 @@ namespace BAL.Services.Interfaces
 {
     public interface IFieldTripService
     {
-        Task<FieldTripViewModel?> GetFieldTripById(int id);
-        Task<IEnumerable<FieldTripViewModel>> GetAllFieldTrips();
+        Task<FieldTripViewModel?> GetById(int id);
+        Task<IEnumerable<FieldTripViewModel>> GetAll();
         void Create(FieldTripViewModel entity);
         void Update(FieldTripViewModel entity);
     }

@@ -1,6 +1,7 @@
 ﻿using DAL.Infrastructure;
 using DAL.Models;
 using DAL.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,11 +19,11 @@ namespace DAL.Repositories.Implements
         }
         public async Task<IEnumerable<FieldTrip>> GetAllFieldTrips()
         {
-            return _context.FieldTrips.ToList();
+            return _context.FieldTrips.AsNoTracking().ToList();
         }
         public async Task<FieldTrip?> GetFieldTripById(int id)
         {
-            return _context.FieldTrips.SingleOrDefault(trip => trip.TripId == id);
+            return _context.FieldTrips.AsNoTracking().SingleOrDefault(trip => trip.TripId == id);
         }
     }
 }
