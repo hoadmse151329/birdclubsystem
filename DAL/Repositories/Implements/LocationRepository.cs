@@ -28,7 +28,7 @@ namespace DAL.Repositories.Implements
         public async Task<Location?> GetLocationByName(string locationName)
         {
             return _context.Locations.AsNoTracking()
-                .FirstOrDefault(m => m.LocationName.Equals(locationName));
+                .FirstOrDefault(m => m.LocationName.Equals(locationName.Trim()));
         }
 
         public async Task<Location?> GetLocationByMeetingId(int meetingId)
