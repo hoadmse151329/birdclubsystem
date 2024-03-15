@@ -15,7 +15,7 @@ namespace BAL.ViewModels
         public DateTime? RegistrationDeadline { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
-        public int? LocationId { get; set; }
+        public string? Address { get; set; }
         public int? AreaNumber { get; set; }
         public string? Street {  get; set; }
         public string? District { get; set; }

@@ -111,25 +111,25 @@
         <section class="club container spacing">
         <div class="d-flex justify-content-between align-items-center">
             <h3 class="heading"><i class="fa fa-newspaper"></i> Latest News</h3>
-            <a href="user-club-list.html" class="view-club-list">See All <i class="fa fa-angle-right"></i></a>
         </div>
         <div class="club__content">
             <h5><i class="fa fa-sort-amount-down"></i> Meetings</h5>
+            <a href="@Url.Action("Index","Meeting")"> See All <i class="fa fa-angle-right"></i></a>
             <div class="famousList-carousel owl-carousel owl-theme">
                 @foreach (var data in meetingList)
                 {
-                        <div class="room-item">
-                            <a href="#" class="motel-image">
+                        <div class="club-item">
+                            <a href="#" class="club-image">
                                 <img class="img-fluid" src="~/images/meeting.png" alt="nt1">
                             </a>
-                            <div class="motel-title">
+                            <div class="club-title">
                                 <a href="#" class="text-decoration-none">Meeting</a>
                             </div>
                             <div class="d-flex justify-content-between">
                                 <p>@data.MeetingName</p>
                             </div>
                             <div class="d-flex justify-content-between">
-                                    <p class="motel-price"><i class="fas fa-calendar"></i> 
+                                    <p class="club-price"><i class="fas fa-calendar"></i> 
                                         From @data.StartDate.Value.ToString("MM/dd/yyyy") 
                                         to @data.EndDate.Value.ToString("MM/dd/yyyy")</p>
                                 <button class="button--primary"><a class="text-decoration-none text-white"
@@ -139,21 +139,22 @@
                 }
             </div>
             <h5><i class="fa fa-sort-amount-down"></i> Field Trips</h5>
+            <a href="@Url.Action("Index", "FieldTrip")"> See All <i class="fa fa-angle-right"></i></a>
             <div class="ratingList-carousel owl-carousel owl-theme">
                 @foreach (var data in fieldtripList)
                 {
-                    <div class="room-item">
-                        <a href="#" class="motel-image">
+                    <div class="club-item">
+                        <a href="#" class="club-image">
                             <img class="img-fluid" src="~/images/meeting.png" alt="nt1">
                         </a>
-                        <div class="motel-title">
+                        <div class="club-title">
                             <a href="#" class="text-decoration-none">Field Trip</a>
                         </div>
                         <div class="d-flex justify-content-between">
                             <p>@data.TripName</p>
                         </div>
                         <div class="d-flex justify-content-between">
-                            <p class="motel-price">
+                            <p class="club-price">
                                 <i class="fas fa-calendar"></i>
                                 From @data.StartDate.Value.ToString("MM/dd/yyyy")
                                 to @data.EndDate.Value.ToString("MM/dd/yyyy")
@@ -167,21 +168,22 @@
                 }
             </div>
             <h5><i class="fa fa-sort-amount-down"></i> Bird Contests</h5>
+            <a href="@Url.Action("Index","Meeting")"> See All <i class="fa fa-angle-right"></i></a>
             <div class="ratingList-carousel owl-carousel owl-theme">
                 @foreach (var data in contestList)
                 {
-                    <div class="room-item">
-                        <a href="#" class="motel-image">
+                    <div class="club-item">
+                        <a href="#" class="club-image">
                             <img class="img-fluid" src="~/images/meeting.png" alt="nt1">
                         </a>
-                        <div class="motel-title">
+                        <div class="club-title">
                             <a href="#" class="text-decoration-none">Contest</a>
                         </div>
                         <div class="d-flex justify-content-between">
                             <p>@data.ContestName</p>
                         </div>
                         <div class="d-flex justify-content-between">
-                                <p class="motel-price"><i class="fas fa-calendar"></i> 
+                                <p class="club-price"><i class="fas fa-calendar"></i> 
                                     From @data.StartDate.Value.ToString("MM/dd/yyyy") 
                                     to @data.EndDate.Value.ToString("MM/dd/yyyy")</p>
                             <button class="button--primary"><a class="text-decoration-none text-white"

@@ -20,20 +20,47 @@ namespace BAL.Services.Implements
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
-        public async Task<FieldTripViewModel?> GetFieldTripById(int id)
+
+        public async Task<IEnumerable<FieldTripViewModel>> GetAll()
+        {
+            string locationName;
+            var listtrip = _unitOfWork.FieldTripRepository.GetAll();
+            var listtripview = _mapper.Map<IEnumerable<FieldTripViewModel>>(listtrip);
+            foreach (var itemview in listtripview)
+            {
+                foreach (var item in listtrip)
+                {
+                    if (item.TripId == itemview.TripId)
+                    {
+                        locationName = await _unitOfWork.LocationRepository.GetLocationNameById(item.LocationId.Value);
+                        itemview.AreaNumber = locationName[0];
+                        itemview.Street = locationName.Split(",")[1];
+                        itemview.District = locationName.Split(",")[2];
+                        itemview.City = locationName.Split(",")[3];
+                    }
+                }
+            }
+            return listtripview;
+        }
+        public async Task<FieldTripViewModel?> GetById(int id)
         {
             var trip = await _unitOfWork.FieldTripRepository.GetFieldTripById(id);
             if (trip != null)
             {
                 string locationName = await _unitOfWork.LocationRepository.GetLocationNameById(trip.LocationId.Value);
+                if (locationName == null)
+                {
+                    return null;
+                }
                 int partAmount = await _unitOfWork.FieldTripParticipantRepository.GetCountFieldTripParticipantsByTripId(trip.TripId);
-                var meeting = _mapper.Map<FieldTripViewModel>(trip);
-                meeting.NumberOfParticipantsLimit = meeting.NumberOfParticipants - partAmount;
-                meeting.AreaNumber = locationName[0];
-                meeting.Street = locationName.Split(",")[1];
-                meeting.District = locationName.Split(",")[2];
-                meeting.City = locationName.Split(",")[3];
-                return meeting;
+                var fieldTrip = _mapper.Map<FieldTripViewModel>(trip);
+                fieldTrip.NumberOfParticipantsLimit = fieldTrip.NumberOfParticipants - partAmount;
+                fieldTrip.Address = locationName;
+                fieldTrip.AreaNumber = locationName[0];
+                fieldTrip.Street = locationName.Split(",")[1];
+                fieldTrip.District = locationName.Split(",")[2];
+                fieldTrip.City = locationName.Split(",")[3];
+                return fieldTrip;
             }
             return null;
         }
@@ -49,28 +76,6 @@ namespace BAL.Services.Implements
             var trip = _mapper.Map<FieldTrip>(entity);
             _unitOfWork.FieldTripRepository.Update(trip);
             _unitOfWork.Save();
-        }
-
-        public async Task<IEnumerable<FieldTripViewModel>> GetAllFieldTrips()
-        {
-            string locationName;
-            var listtrip = await _unitOfWork.FieldTripRepository.GetAllFieldTrips();
-            var listtripview =  _mapper.Map<IEnumerable<FieldTripViewModel>>(listtrip);
-            foreach ( var itemview in listtripview)
-            {
-                foreach (var item in listtrip)
-                {
-                    if (item.TripId == itemview.TripId)
-                    {
-                        locationName = await _unitOfWork.LocationRepository.GetLocationNameById(item.LocationId.Value);
-                        itemview.AreaNumber = locationName[0];
-                        itemview.Street = locationName.Split(",")[1];
-                        itemview.District = locationName.Split(",")[2];
-                        itemview.City = locationName.Split(",")[3];
-                    }
-                }
-            }
-            return listtripview;
         }
     }
 }
