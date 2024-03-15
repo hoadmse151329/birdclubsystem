@@ -31,10 +31,8 @@ namespace BAL.Services.Implements
                 {
                     if(item.MeetingId == itemview.MeetingId)
                     {
-                        int partAmount = await _unitOfWork.MeetingParticipantRepository.GetCountMeetingParticipantsByMeetId(meet.MeetingId);
                         locationName = await _unitOfWork.LocationRepository.GetLocationNameById(item.LocationId.Value);
-                        
-                        itemview.AreaNumber = Int32.Parse(locationName.Split(",")[0]);
+                        itemview.AreaNumber = locationName[0];
                         itemview.Street = locationName.Split(",")[1];
                         itemview.District = locationName.Split(",")[2];
                         itemview.City = locationName.Split(",")[3];
@@ -57,13 +55,14 @@ namespace BAL.Services.Implements
                 string locationName = await _unitOfWork.LocationRepository.GetLocationNameById(meet.LocationId.Value);
                 if (locationName == null)
                 {
+
                     return null;
                 }
                 int partAmount = await _unitOfWork.MeetingParticipantRepository.GetCountMeetingParticipantsByMeetId(meet.MeetingId);
                 var meeting = _mapper.Map<MeetingViewModel>(meet);
                 meeting.NumberOfParticipantsLimit = meeting.NumberOfParticipants - partAmount;
                 meeting.Address = locationName;
-                meeting.AreaNumber = Int32.Parse(locationName.Split(",")[0]);
+                meeting.AreaNumber = locationName[0];
                 meeting.Street = locationName.Split(",")[1];
                 meeting.District = locationName.Split(",")[2];
                 meeting.City = locationName.Split(",")[3];
@@ -100,13 +99,13 @@ namespace BAL.Services.Implements
 
         public void Create(MeetingViewModel entity)
         {
-            var loc = _unitOfWork.LocationRepository.GetLocationByName(entity.Address.Trim()).Result;
+            var loc = _unitOfWork.LocationRepository.GetLocationByName(entity.Address).Result;
 
-            if (loc == null)
+            if (!loc.Equals(entity.Address.Trim()))
             {
                 _unitOfWork.LocationRepository.Update(loc = new Location
                 {
-                    LocationName = entity.Address.Trim(),
+                    LocationName = entity.Address,
                     Description = loc.Description
                 });
                 loc = _unitOfWork.LocationRepository.GetLocationByName(entity.Address).Result;
@@ -121,14 +120,14 @@ namespace BAL.Services.Implements
         {
             var loc = _unitOfWork.LocationRepository.GetLocationByMeetingId(entity.MeetingId.Value).Result;
 
-            if (!loc.LocationName.Equals(entity.Address.Trim()))
+            if (!loc.Equals(entity.Address.Trim()))
             {
                 _unitOfWork.LocationRepository.Update(loc = new Location
                 {
                     LocationName = entity.Address,
-                    Description = "Dunno"
+                    Description = loc.Description
                 });
-                loc = _unitOfWork.LocationRepository.GetLocationByName(entity.Address.Trim()).Result;
+                loc = _unitOfWork.LocationRepository.GetLocationByMeetingId(entity.MeetingId.Value).Result;
             }
             var meeting = _mapper.Map<Meeting>(entity);
             meeting.LocationId = loc.LocationId;

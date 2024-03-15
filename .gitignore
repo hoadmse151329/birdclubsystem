@@ -673,5 +673,3 @@ FodyWeavers.xsd
 /WebAPI/obj/project.nuget.cache
 /WebAPI/obj/WebAPI.csproj.nuget.dgspec.json
 /WebAPI/obj/WebAPI.csproj.nuget.g.props
-/WebAPI/appsettings.json
-/WebAppMVC/appsettings.json

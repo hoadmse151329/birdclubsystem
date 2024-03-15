@@ -261,8 +261,8 @@
                                                         <form asp-action="Meeting" asp-controller="Manager" method="get" asp-route-id="@data.MeetingId">
                                                             <button class="btn btn-primary clickable-row" type="submit">See Detail</button>
                                                         </form>
-                                                        <form asp-action="ManagerCancelMeeting" asp-controller="Manager" method="post" asp-route-id="@data.MeetingId">
-                                                            <button class="btn btn-danger" data-toggle="modal" data-target="#deleteRoom" type="submit">Cancel Meeting</button>
+                                                        <form asp-action="ManagerMeetingDelete" asp-controller="Manager" method="post" asp-route-id="@data.MeetingId">
+                                                            <button class="btn btn-danger" data-toggle="modal" data-target="#deleteRoom" type="submit">Delete Meeting</button>
                                                         </form>
                                                     </div>
                                                 </div>
