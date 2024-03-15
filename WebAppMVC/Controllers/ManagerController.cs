@@ -239,6 +239,48 @@ namespace WebAppMVC.Controllers
             }
             return RedirectToAction("ManagerMeeting");
         }
+
+        [HttpPost("Meeting/Update/Cancel/{id:int}")]
+        public async Task<IActionResult> ManagerCancelMeeting(
+            int id)
+        {
+            ManagerAPI_URL += "Meeting/Update/Cancel/" + id;
+
+            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
+            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+
+            string? role = HttpContext.Session.GetString("ROLE_NAME");
+            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
+            else if (!role.Equals("Manager")) return RedirectToAction("Login", "Auth");
+
+            string? usrId = HttpContext.Session.GetString("USER_ID");
+            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
+
+            TempData["ROLE_NAME"] = role;
+
+            var meetPostResponse = await methcall.CallMethodReturnObject<GetMeetingPostResponse>(
+                                _httpClient: _httpClient,
+                                options: options,
+                                methodName: "GET",
+                                url: ManagerAPI_URL,
+                                accessToken: accToken,
+                                _logger: _logger);
+            if (meetPostResponse == null)
+            {
+                ViewBag.error =
+                    "Error while processing your request! (Updating Meeting!).\n Meeting Not Found!";
+                return RedirectToAction("ManagerMeeting");
+            }
+            if (!meetPostResponse.Status)
+            {
+                _logger.LogInformation("Error while processing your request: " + meetPostResponse.Status + " , Error Message: " + meetPostResponse.ErrorMessage);
+                ViewBag.error =
+                    "Error while processing your request! (Updating Meeting Post!).\n"
+                    + meetPostResponse.ErrorMessage;
+                return RedirectToAction("ManagerMeeting");
+            }
+            return RedirectToAction("ManagerMeeting");
+        }
         public IActionResult ManagerFieldtrip()
         {
             return View();
