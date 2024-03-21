@@ -11,5 +11,6 @@ namespace DAL.Repositories.Interfaces
     public interface ITransactionRepository : IRepositoryBase<Transaction>
     {
         public Task<Transaction?> GetTransactionById(int id);
+        public Task<IEnumerable<Transaction>> GetAllTransactionsByUserId(int id);
     }
 }

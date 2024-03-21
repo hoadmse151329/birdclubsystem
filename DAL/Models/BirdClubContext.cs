@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.Extensions.Configuration;
 
 namespace DAL.Models
 {
@@ -51,10 +50,7 @@ namespace DAL.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                IConfiguration config = new ConfigurationBuilder()
-                                        .SetBasePath(Directory.GetCurrentDirectory())
-                                        .AddJsonFile("appsettings.json").Build();
-                optionsBuilder.UseSqlServer(config["ConnectionStrings:DefaultConnection"]);
+                optionsBuilder.UseSqlServer("Data Source=.\\SQLEXPRESS;Initial Catalog=BirdClubFix;Integrated Security=True");
             }
         }
 
@@ -143,18 +139,29 @@ namespace DAL.Models
                 entity.Property(e => e.UserId).HasColumnName("userId");
 
                 entity.Property(e => e.Vote).HasColumnName("vote");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.Blogs)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Blog_Users");
             });
 
             modelBuilder.Entity<ClubInformation>(entity =>
             {
                 entity.HasKey(e => e.ClubId)
-                    .HasName("PK__ClubInfo__DF4AEAB2E6AA9A1E");
+                    .HasName("PK__ClubInfo__DF4AEAB2B69E66D0");
 
                 entity.ToTable("ClubInformation");
 
                 entity.Property(e => e.ClubId).HasColumnName("clubId");
 
                 entity.Property(e => e.ClubLocationId).HasColumnName("clubLocationId");
+
+                entity.HasOne(d => d.ClubLocation)
+                    .WithMany(p => p.ClubInformations)
+                    .HasForeignKey(d => d.ClubLocationId)
+                    .HasConstraintName("FK_ClubInformation_ClubLocation");
             });
 
             modelBuilder.Entity<ClubLocation>(entity =>
@@ -170,6 +177,11 @@ namespace DAL.Models
                 entity.Property(e => e.Description).HasColumnName("description");
 
                 entity.Property(e => e.LocationId).HasColumnName("locationId");
+
+                entity.HasOne(d => d.Location)
+                    .WithMany(p => p.ClubLocations)
+                    .HasForeignKey(d => d.LocationId)
+                    .HasConstraintName("FK_ClubLocation_Location");
             });
 
             modelBuilder.Entity<Comment>(entity =>
@@ -189,6 +201,11 @@ namespace DAL.Models
                 entity.Property(e => e.UserId).HasColumnName("userId");
 
                 entity.Property(e => e.Vote).HasColumnName("vote");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.Comments)
+                    .HasForeignKey(d => d.UserId)
+                    .HasConstraintName("FK_Comment_Users");
             });
 
             modelBuilder.Entity<Contest>(entity =>
@@ -253,7 +270,7 @@ namespace DAL.Models
             modelBuilder.Entity<ContestMedia>(entity =>
             {
                 entity.HasKey(e => e.PictureId)
-                    .HasName("PK__ContestM__769A271AF946BE41");
+                    .HasName("PK__ContestM__769A271A39B431F1");
 
                 entity.Property(e => e.PictureId).HasColumnName("pictureId");
 
@@ -302,7 +319,7 @@ namespace DAL.Models
             modelBuilder.Entity<ContestScore>(entity =>
             {
                 entity.HasKey(e => e.ScoreId)
-                    .HasName("PK__ContestS__B56A0C8DFDEC53A5");
+                    .HasName("PK__ContestS__B56A0C8D0C9E9595");
 
                 entity.ToTable("ContestScore");
 
@@ -323,6 +340,11 @@ namespace DAL.Models
                 entity.Property(e => e.ScoreDate)
                     .HasColumnType("date")
                     .HasColumnName("scoreDate");
+
+                entity.HasOne(d => d.Bird)
+                    .WithMany(p => p.ContestScores)
+                    .HasForeignKey(d => d.BirdId)
+                    .HasConstraintName("FK_ContestScore_Bird");
             });
 
             modelBuilder.Entity<Feedback>(entity =>
@@ -560,7 +582,7 @@ namespace DAL.Models
             modelBuilder.Entity<FieldtripMedia>(entity =>
             {
                 entity.HasKey(e => e.PictureId)
-                    .HasName("PK__Fieldtri__769A271AB98B1861");
+                    .HasName("PK__Fieldtri__769A271A04C48A04");
 
                 entity.Property(e => e.PictureId).HasColumnName("pictureId");
 
@@ -579,10 +601,6 @@ namespace DAL.Models
             modelBuilder.Entity<FieldtripRate>(entity =>
             {
                 entity.HasNoKey();
-
-                entity.Property(e => e.Price)
-                    .HasColumnType("decimal(10, 2)")
-                    .HasColumnName("price");
 
                 entity.Property(e => e.RateId)
                     .ValueGeneratedOnAdd()
@@ -613,11 +631,15 @@ namespace DAL.Models
                     .IsUnicode(false)
                     .HasColumnName("image");
 
-                entity.Property(e => e.PictureId)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("pictureId");
+                entity.Property(e => e.PictureId).HasColumnName("pictureId");
 
                 entity.Property(e => e.UserId).HasColumnName("userId");
+
+                entity.HasOne(d => d.User)
+                    .WithMany()
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Gallery_Users");
             });
 
             modelBuilder.Entity<Location>(entity =>
@@ -681,7 +703,7 @@ namespace DAL.Models
             modelBuilder.Entity<MeetingMedia>(entity =>
             {
                 entity.HasKey(e => e.PictureId)
-                    .HasName("PK__MeetingM__769A271A9BCC2D86");
+                    .HasName("PK__MeetingM__769A271A487B27C0");
 
                 entity.Property(e => e.PictureId).HasColumnName("pictureId");
 
@@ -699,8 +721,7 @@ namespace DAL.Models
 
             modelBuilder.Entity<MeetingParticipant>(entity =>
             {
-                /*entity.HasNoKey();*/
-                entity.HasKey(e => new { e.MeetingId, e.MemberId});
+                entity.HasNoKey();
 
                 entity.ToTable("MeetingParticipant");
 
@@ -799,6 +820,12 @@ namespace DAL.Models
                     .HasColumnName("uploadDate");
 
                 entity.Property(e => e.UserId).HasColumnName("userId");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.News)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_News_Users");
             });
 
             modelBuilder.Entity<Transaction>(entity =>
@@ -830,6 +857,11 @@ namespace DAL.Models
                 entity.Property(e => e.Value)
                     .HasColumnType("decimal(10, 2)")
                     .HasColumnName("value");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.Transactions)
+                    .HasForeignKey(d => d.UserId)
+                    .HasConstraintName("FK_Transactions_Users");
             });
 
             modelBuilder.Entity<User>(entity =>
@@ -839,8 +871,6 @@ namespace DAL.Models
                     .HasColumnName("userId");
 
                 entity.Property(e => e.ClubId).HasColumnName("clubId");
-
-                entity.Property(e => e.ImagePath).HasColumnName("imagePath");
 
                 entity.Property(e => e.MemberId)
                     .HasMaxLength(50)
