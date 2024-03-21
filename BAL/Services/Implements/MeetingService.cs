@@ -31,7 +31,7 @@ namespace BAL.Services.Implements
                 {
                     if(item.MeetingId == itemview.MeetingId)
                     {
-                        int partAmount = await _unitOfWork.MeetingParticipantRepository.GetCountMeetingParticipantsByMeetId(meet.MeetingId);
+                        int partAmount = await _unitOfWork.MeetingParticipantRepository.GetCountMeetingParticipantsByMeetId(item.MeetingId);
                         locationName = await _unitOfWork.LocationRepository.GetLocationNameById(item.LocationId.Value);
                         
                         itemview.AreaNumber = Int32.Parse(locationName.Split(",")[0]);
