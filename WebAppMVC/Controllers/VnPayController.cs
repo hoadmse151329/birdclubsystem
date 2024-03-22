@@ -28,5 +28,11 @@ namespace WebAppMVC.Controllers
 
             return Json(response);
         }
+
+        public IActionResult PaymentConfirm()
+        {
+            var response = _vnPayService.PaymentExecute(Request.Query);
+            return View(response);
+        }
     }
 }
