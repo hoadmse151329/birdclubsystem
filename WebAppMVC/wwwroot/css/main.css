@@ -2,7 +2,11 @@
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover; }
-
+.banner {
+    position: relative;
+    width: 1500px;
+    overflow: hidden;
+}
 .pagination, .pagination .btn, .pagination .pages .page-link {
   display: flex;
   align-items: center;
