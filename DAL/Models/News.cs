@@ -14,5 +14,7 @@ namespace DAL.Models
         public string? Picture { get; set; }
         public string? Filepdf { get; set; }
         public int UserId { get; set; }
+
+        public virtual User User { get; set; } = null!;
     }
 }

@@ -29,5 +29,11 @@ namespace BAL.Services.Implements
             }
             return null;
         }
+
+        public async Task<IEnumerable<TransactionViewModel?>> GetAllTransactionsByUserId(int id)
+        {
+            return _mapper.Map<IEnumerable<TransactionViewModel>>(await
+                _unitOfWork.TransactionRepository.GetAllTransactionsByUserId(id));
+        }
     }
 }

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
+using WebAppMVC.Services;
 
 namespace WebAppMVC
 {
@@ -31,6 +32,8 @@ namespace WebAppMVC
 				options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
 				options.IdleTimeout = TimeSpan.FromMinutes(30); // Adjust the timeout as needed
 			});
+
+			builder.Services.AddScoped<IVnPayService, VnPayService>();
 
 			var app = builder.Build();
 

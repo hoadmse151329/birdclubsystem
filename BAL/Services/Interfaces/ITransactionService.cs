@@ -10,5 +10,6 @@ namespace BAL.Services.Interfaces
     public interface ITransactionService
     {
         Task<TransactionViewModel?> GetTransactionById(int id);
+        Task<IEnumerable<TransactionViewModel>> GetAllTransactionsByUserId(int id);
     }
 }

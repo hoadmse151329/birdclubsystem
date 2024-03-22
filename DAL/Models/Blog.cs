@@ -13,5 +13,7 @@ namespace DAL.Models
         public int Vote { get; set; }
         public string? Image { get; set; }
         public string Status { get; set; } = null!;
+
+        public virtual User User { get; set; } = null!;
     }
 }

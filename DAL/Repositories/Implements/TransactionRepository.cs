@@ -20,5 +20,9 @@ namespace DAL.Repositories.Implements
         {
             return _context.Transactions.SingleOrDefault(trans => trans.TransactionId == id);
         }
+        public async Task<IEnumerable<Transaction?>> GetAllTransactionsByUserId(int id)
+        {
+            return _context.Transactions.Where(t => t.UserId == id).ToList();
+        }
     }
 }

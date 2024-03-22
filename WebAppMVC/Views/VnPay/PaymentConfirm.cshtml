@@ -1,0 +1,24 @@
+﻿@model dynamic
+@{
+    List<WebAppMVC.Models.VnPay.PaymentResponseModel> vnPayResponse = Model.Response;
+    ViewData["Title"] = "Payment Confirm";
+}
+
+<h2 class="display-4">Payment Confirm</h2>
+
+<div class="col-9">
+    <div class="content_list">
+        @foreach (var data in vnPayResponse)
+        {
+            <span class="payment-confirm">@data.PaymentMethod</span>
+            <span class="payment-confirm">@data.OrderDescription</span>
+            <span class="payment-confirm">@data.TransactionId</span>
+            <span class="payment-confirm">@data.DocNo</span>
+            <span class="payment-confirm">@data.Token</span>
+            <span class="payment-confirm">@data.VnPayResponseCode</span>
+            <span class="payment-confirm">@data.Message</span>
+        }
+    </div>
+
+    <a href="/Home/Index">Return to main page</a>
+</div>
