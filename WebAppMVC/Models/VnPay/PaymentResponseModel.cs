@@ -2,7 +2,7 @@
 {
     public class PaymentResponseModel
     {
-        public string TransactionId { get; set; }
+        public long TransactionId { get; set; }
         public string OrderDescription { get; set; }
         public string DocNo { get; set; }
         public string PaymentMethod { get; set; }

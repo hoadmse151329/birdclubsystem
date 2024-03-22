@@ -25,10 +25,10 @@ public class VnPayLibrary
             }
         }
 
-        var transactionId = Convert.ToInt64(vnPay.GetResponseData("vnp_TxnRef"));
-        var vnPayTranId = Convert.ToInt64(vnPay.GetResponseData("vnp_TransactionNo"));
+        long transactionId = Convert.ToInt64(vnPay.GetResponseData("vnp_TxnRef"));
+        long vnPayTranId = Convert.ToInt64(vnPay.GetResponseData("vnp_TransactionNo"));
         string vnpResponseCode = vnPay.GetResponseData("vnp_ResponseCode");
-        var vnpSecureHash =
+        string vnpSecureHash =
             collection.FirstOrDefault(k => k.Key == "vnp_SecureHash").Value; //hash của dữ liệu trả về
         var orderInfo = vnPay.GetResponseData("vnp_OrderInfo");
 
@@ -47,7 +47,7 @@ public class VnPayLibrary
             Success = true,
             PaymentMethod = "VnPay",
             OrderDescription = orderInfo,
-            TransactionId = transactionId.ToString(),
+            TransactionId = transactionId,
             DocNo = vnPayTranId.ToString(),
             Token = vnpSecureHash,
             VnPayResponseCode = vnpResponseCode,

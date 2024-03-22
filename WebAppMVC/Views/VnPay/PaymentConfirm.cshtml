@@ -1,24 +1,59 @@
-﻿@model dynamic
+﻿@model WebAppMVC.Models.VnPay.PaymentResponseModel;
 @{
-    List<WebAppMVC.Models.VnPay.PaymentResponseModel> vnPayResponse = Model.Response;
-    ViewData["Title"] = "Payment Confirm";
+     ViewData["Title"] = "Payment Confirm";
 }
 
-<h2 class="display-4">Payment Confirm</h2>
+<h1 class="display-4">Payment Confirm</h1>
+
+<div>
+    <h4>Payment Details</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PaymentMethod)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PaymentMethod)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.OrderDescription)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.OrderDescription)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TransactionId)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TransactionId)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DocNo)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DocNo)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Token)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Token)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.VnPayResponseCode)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.VnPayResponseCode)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Message)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Message)
+        </dd>
+    </dl>
+</div>
 
 <div class="col-9">
-    <div class="content_list">
-        @foreach (var data in vnPayResponse)
-        {
-            <span class="payment-confirm">@data.PaymentMethod</span>
-            <span class="payment-confirm">@data.OrderDescription</span>
-            <span class="payment-confirm">@data.TransactionId</span>
-            <span class="payment-confirm">@data.DocNo</span>
-            <span class="payment-confirm">@data.Token</span>
-            <span class="payment-confirm">@data.VnPayResponseCode</span>
-            <span class="payment-confirm">@data.Message</span>
-        }
-    </div>
-
     <a href="/Home/Index">Return to main page</a>
 </div>
