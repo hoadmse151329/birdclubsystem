@@ -14,11 +14,14 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,100&family=Roboto+Condensed:wght@400;700&display=swap"
         rel="stylesheet">
-    <!-- FONT AWESOME -->
-    <link rel="stylesheet" href="~/fonts/fontawesome-free-5.15.4-web/css/all.min.css">
+        <!-- FONT AWESOME -->
+        <link rel="stylesheet" href="~/fonts/fontawesome-free-5.15.4-web/css/all.min.css">
+        <!-- owl carousels -->
+        <link rel="stylesheet" href="~/css/owl.carousel.min.css">
+        <link rel="stylesheet" href="~/css/owl.theme.default.min.css">
 
-    <!-- main CSS -->
-    <link rel="stylesheet" href="~/css/main.css">
+        <!-- main CSS -->
+        <link rel="stylesheet" href="~/css/main.css">
   </head>
   <body>
     <hr>
@@ -35,41 +38,40 @@
     <!-- CONTENT -->
     <section class="content__list-room container">
         <div class="row">
-            <div class="content__filter col-3">
-                <div class="content__filter-tabs-left">
-                    <div class="tabs-left-title">
-                        <h3 class="heading">Filter</h3>
-                    </div>
-                    <div class="tabs-left-filter">
-                        <div class="d-flex">
-                            <div class="input-group mb-3 mr-3">
-                                <select class="custom-select" id="inputGroupSelect01">
-                                    <option selected>District</option>
-                                    @for (int i = 0; i < locationList.Count; i++)
-                                    {
-                                        <option value="@i">@locationList[i].District</option>
-                                    }
-                                </select>
-                            </div>
-                            <div class="input-group mb-3 mr-3">
-                                <select class="custom-select" id="inputGroupSelect02">
-                                    <option selected>District</option>
-                                    @for (int i = 0; i < locationList.Count; i++)
-                                    {
-                                        <option value="@i">@locationList[i].District</option>
-                                    }
-                                </select>
-                            </div>
-                            <div class="input-group mb-3">
-                                <select class="custom-select" id="inputGroupSelect03">
-                                    <option selected>District</option>
-                                    @for (int i = 0; i < locationList.Count; i++)
-                                    {
-                                        <option value="@i">@locationList[i].District</option>
-                                    }
-                                </select>
-                            </div>
+                <div class="content__filter col-3">
+                    <div class="content__filter-tabs-left">
+                        <div class="tabs-left-title">
+                            <h3 class="heading">Filter</h3>
                         </div>
+                    <div class="tabs-left-filter" style="background-color:white">
+    <div class="input-group mb-3">
+        <select class="custom-select" name="district" id="inputGroupSelect02">
+            <option value="">District</option>
+            @for (int i = 0; i < locationList.Count; i++)
+            {
+                <option value="@i">@locationList[i].District</option>
+            }
+        </select>
+    </div>
+    <div class="input-group mb-3">
+        <select class="custom-select" name="district" id="inputGroupSelect02">
+            <option value="">District</option>
+            @for (int i = 0; i < locationList.Count; i++)
+            {
+                <option value="@i">@locationList[i].District</option>
+            }
+        </select>
+    </div>
+    <div class="input-group mb-3">
+        <select class="custom-select" name="district" id="inputGroupSelect02">
+            <option value="">District</option>
+            @for (int i = 0; i < locationList.Count; i++)
+            {
+                <option value="@i">@locationList[i].District</option>
+            }
+        </select>
+    </div>
+</div>
                         <div class="filter-search text-center">
                             <button class="button--primary"><i class="fa fa-filter"></i> Filter</button>
                         </div>
