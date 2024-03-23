@@ -1,6 +1,9 @@
-﻿@{
+﻿@model dynamic
+@{
     Layout = null;
-    ViewData["Title"] = "Manager Fieldtrip Detail Page";
+    ViewData["Title"] = "Manager Field Trip Detail Page";
+    BAL.ViewModels.FieldTripViewModel details = Model.FieldTripDetails;
+    List<BAL.ViewModels.FieldTripParticipantViewModel> parts = Model.FieldTripParticipants;
 }
 <html lang="en">
 <head>
@@ -139,232 +142,179 @@
                     <div class="offset-sm-6 col-sm-6  d-flex justify-content-sm-end p-md-0 mt-2 mt-sm-0 ">
                         <ol class="breadcrumb">
                             <li class="breadcrumd-item">
-                                <a href="#">Quản lý</a>
+                                <a href="#">Manage</a>
                             </li>
                             <li class="breadcrumd-item">
                                 <span>/</span>
-                            </li>
-                            <li class="breadcrumd-item">
-                                <a href="owner-room-list.html">Phòng</a>
-                            </li>
-                            <li class="breadcrumd-item">
-                                <span>/</span>
-                            </li>
-                            <li class="breadcrumd-item active">
-                                <a href="#">Chi tiết</a>
                             </li>
                         </ol>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-12 customer-detail">
-                        <div class="col-lg-7 customer-booking">
-                            <div class="card profile mb-4">
+                    <div class="col-7 customer-booking">
+                        <div class="row">
+                            <div class="card profile col-12 mb-4">
                                 <div class="card-header">
-                                    <h4>Thông tin người thuê</h4>
-                                    <div class="edit-info">
-                                        <i class='bx bxs-edit-alt'data-toggle="modal" data-target="#editprofile"></i>
-                                    </div>
-                                </div>
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-md-5 text-md-right">
-                                            <label for="customer-name">Họ và tên:</label>
-                                        </div>
-                                        <div class="col-md-7">
-                                            <span>Trần Ngọc Hải</span>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-5 text-md-right">
-                                            <label for="customer-name">Số điện thoại:</label>
-                                        </div>
-                                        <div class="col-md-7">
-                                            <span>0971520977</span>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-5 text-md-right">
-                                            <label for="customer-name">CCCD/ CMND:</label>
-                                        </div>
-                                        <div class="col-md-7">
-                                            <span>000000000000</span>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-5 text-md-right">
-                                            <label for="customer-name">Địa chỉ:</label>
-                                        </div>
-                                        <div class="col-md-7">
-                                            <span>Q9, Hồ Chí Minh</span>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-sm-2">
-                                        <div class="col-sm-5 text-sm-right">
-                                            <span>Ngày thuê:</span>
-                                        </div>
-                                        <div class="col-sm-7 text-sm-left">
-                                            <span>25/05/2022</span>
-                                        </div>
-                                        
-                                    </div>
-                                    <div class="row mb-sm-2">
-                                        <div class="col-sm-5 text-sm-right">
-                                            <span>Ngày trả:</span>
-                                        </div>
-                                        <div class="col-sm-7 text-sm-left">
-                                            <span>26/05/2022</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card profile mb-4">
-                                <div class="card-header">
-                                    <h4>Thông tin đặt phòng</h4>
+                                    <h4>Field Trip Status</h4>
                                 </div>
                                 <div class="card-body">
                                     <div class="row mb-sm-2">
                                         <div class="col-sm-5 text-sm-right">
-                                            <span>Trạng thái:</span>
+                                            <span>Status:</span>
                                         </div>
                                         <div class="col-sm-7">
-                                            <span class="destroy" style="float: left;">Đang thuê</span>
-
-                                            <!-- Trống in ra dòng dưới -->
-                                            <!-- <span class="outcome" style="float: left;">Trống</span> -->
-                                            <!-- Đã cọc in ra dòng dưới -->
-                                            <!-- <span class="approval" style="float: left;">Đã cọc</span> -->
-                                        </div>
-                                    </div>
-                                    <div class="row mb-sm-2">
-                                        <div class="col-sm-5 text-sm-right">
-                                            <span>Mã đặt phòng:</span>
-                                        </div>
-                                        <div class="col-sm-7 text-sm-left">
-                                            <span>C1</span>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-sm-2">
-                                        <div class="col-sm-5 text-sm-right">
-                                            <span>Mã Phòng:</span>
-                                        </div>
-                                        <div class="col-sm-7 text-sm-left">
-                                            <span>001</span>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-sm-2">
-                                        <div class="col-sm-5 text-sm-right">
-                                            <span>Loại Phòng:</span>
-                                        </div>
-                                        <div class="col-sm-7 text-sm-left">
-                                            <span>Bình thường</span>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-sm-2">
-                                        <div class="col-sm-5 text-sm-right">
-                                            <span>Mã Motel:</span>
-                                        </div>
-                                        <div class="col-sm-7 text-sm-left">
-                                            <span>Motel1</span>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-sm-2">
-                                        <div class="col-sm-5 text-sm-right">
-                                            <span>Địa chỉ:</span>
-                                        </div>
-                                        <div class="col-sm-7 text-sm-left">
-                                            <span>111A - Đình Phong Phú - Q.9 - Hồ Chí Minh</span>
+                                            <span class="destroy" style="float: left;">@details.Status</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-5 total-pay">
-                            <div class="card rating">
+                        <div class="row">
+                            <div class="card profile col-12 mb-4">
+                                <div class="card-header">
+                                    <h4>Meeting Information</h4>
+                                    <div class="edit-info">
+                                        <i class='bx bxs-edit-alt' data-toggle="modal" data-target="#editprofile"></i>
+                                    </div>
+                                </div>
                                 <div class="card-body">
-                                    <div class="d-flex justify-content-center pb-3">
-                                        <h5 >Dịch vụ sử dụng</h5>
-                                    </div>
                                     <div class="row">
-                                        <div class="table-responsive">
-                                            <table id="myTable" class="table table-hover table-borderless">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Mã Dịch vụ</th>
-                                                        <th>Tên Dịch vụ</th>
-                                                        <th>Số tiền</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>D1</td>
-                                                        <td>Thuê xe</td>
-                                                        <td>320,000&#8363;</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>D2</td>
-                                                        <td>Đồ ăn</td>
-                                                        <td>30,000&#8363;</td>
-                                                    </tr>
-                                                </tbody>
-                                                <tfoot style="color: #e74c3c; border-top: 1px solid #ccc;">
-                                                    <tr>
-                                                        <th>Total</th>
-                                                        <th></th>
-                                                        <th>350,000&#8363;</th>
-                                                    </tr>
-                                                </tfoot>
-                                            </table>
+                                        <div class="col-md-5 text-md-right">
+                                            <label for="meeting-name">Meeting Name:</label>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <span>@details.TripName</span>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="card">
-                                <div class="card-body flex-wrap">
-                                    <div class="d-flex justify-content-center pb-3">
-                                        <h5 >Tổng tiền</h5>
+                                    <div class="row">
+                                        <div class="col-md-5 text-md-right">
+                                            <label for="customer-name">Registration Deadlines:</label>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <span>@details.RegistrationDeadline.Value.ToString("MM/dd/yyyy")</span>
+                                        </div>
                                     </div>
                                     <div class="row">
-                                        <div class="table-responsive">
-                                            <table id="myTable" class="table table-hover table-borderless">
-                                                <thead>
-                                                    <tr>
-                                                        <th>STT</th>
-                                                        <th>Nội dung thanh toán</th>
-                                                        <th>Số tiền</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>01</td>
-                                                        <td>Giá Phòng</td>
-                                                        <td>300,000&#8363;</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>02</td>
-                                                        <td>Dịch vụ</td>
-                                                        <td>350,000&#8363;</td>
-                                                    </tr>
-                                                </tbody>
-                                                <tfoot style="color: #e74c3c; border-top: 1px solid #ccc;">
-                                                    <tr>
-                                                        <th>Total</th>
-                                                        <th></th>
-                                                        <th>650,000&#8363;</th>
-                                                    </tr>
-                                                </tfoot>
-                                            </table>
-                                            <div class="d-flex justify-content-end mr-xl-5">
-                                                <form action="#">
-                                                    <button type="submit" class="btn btn-success">Thanh toán</button>
-                                                </form>
-                                            </div>
+                                        <div class="col-md-5 text-md-right">
+                                            <label for="customer-name">Start Date:</label>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <span>@details.StartDate.Value.ToString("MM/dd/yyyy")</span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-5 text-md-right">
+                                            <label for="customer-name">End Date:</label>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <span>@details.EndDate.Value.ToString("MM/dd/yyyy")</span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-sm-2">
+                                        <div class="col-sm-5 text-sm-right">
+                                            <span>Host:</span>
+                                        </div>
+                                        <div class="col-sm-7 text-sm-left">
+                                            <span>@details.Host</span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-sm-2">
+                                        <div class="col-sm-5 text-sm-right">
+                                            <span>Incharge:</span>
+                                        </div>
+                                        <div class="col-sm-7 text-sm-left">
+                                            <span>@details.InCharge</span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-sm-2">
+                                        <div class="col-sm-5 text-sm-right">
+                                            <span>Maximum Participations:</span>
+                                        </div>
+                                        <div class="col-sm-7 text-sm-left">
+                                            <span>@details.NumberOfParticipantsLimit</span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-sm-2">
+                                        <div class="col-sm-5 text-sm-right">
+                                            <span>Remaining Participant Slots:</span>
+                                        </div>
+                                        <div class="col-sm-7 text-sm-left">
+                                            <span>@details.NumberOfParticipants</span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-sm-2">
+                                        <div class="col-sm-5 text-sm-right">
+                                            <span>Location:</span>
+                                        </div>
+                                        <div class="col-sm-7 text-sm-left">
+                                            <span>@details.AreaNumber,@details.Street,@details.District,@details.City</span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-sm-2">
+                                        <div class="col-sm-5 text-sm-right">
+                                            <span>Description:</span>
+                                        </div>
+                                        <div class="col-sm-7 text-sm-left">
+                                            <span>@details.Description</span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-sm-2">
+                                        <div class="col-sm-5 text-sm-right">
+                                            <span>Note:</span>
+                                        </div>
+                                        <div class="col-sm-7 text-sm-left">
+                                            <span>@details.Note</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        
+                        <div class="row">
+                            <div class="card profile col-12 mb-4">
+                                <div class="card-header">
+                                    <h4>Field Trip Rates</h4>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row mb-sm-2">
+                                        <div class="col-sm-5 text-sm-right">
+                                            <span>Status:</span>
+                                        </div>
+                                        <div class="col-sm-7">
+                                            <span class="destroy" style="float: left;">@details.Status</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-5 cardFB">
+                        <div class="card border-0 d-flex">
+                            <div class="card-header">
+                                <h4>Participants</h4>
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-hover table-borderless">
+                                    <thead>
+                                        <tr>
+                                            <th>Participant No:</th>
+                                            <th>Name:</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var part in parts)
+                                        {
+                                            <tr>
+                                                <td>@part.ParticipantNo</td>
+                                                <td>@part.MemberName</td>
+                                            </tr>
+                                        }
+                                        <tr>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
                     </div>
                 </div>
             </div>

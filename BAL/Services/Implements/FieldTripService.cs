@@ -33,7 +33,7 @@ namespace BAL.Services.Implements
                     if (item.TripId == itemview.TripId)
                     {
                         locationName = await _unitOfWork.LocationRepository.GetLocationNameById(item.LocationId.Value);
-                        itemview.AreaNumber = locationName[0];
+                        itemview.AreaNumber = Int32.Parse(locationName.Split(",")[0]);
                         itemview.Street = locationName.Split(",")[1];
                         itemview.District = locationName.Split(",")[2];
                         itemview.City = locationName.Split(",")[3];
@@ -47,6 +47,11 @@ namespace BAL.Services.Implements
             var trip = await _unitOfWork.FieldTripRepository.GetFieldTripById(id);
             if (trip != null)
             {
+                var gettingThere = await _unitOfWork.FieldTripGettingThereRepository.GetFieldTripGettingTheresByTripId(trip.TripId);
+                var rates = await _unitOfWork.FieldTripRateRepository.GetFieldTripRatesByTripId(trip.TripId);
+                var daysByDays = await _unitOfWork.FieldTripDaybyDayRepository.GetAllFieldTripDayByDaysById(trip.TripId);
+                var inclusions = await _unitOfWork.FieldTripInclusionRepository.GetFieldTripInclusionsById(trip.TripId);
+                var media = await _unitOfWork.FieldTripMediaRepository.GetFieldTripMediasByTripId(trip.TripId);
                 string locationName = await _unitOfWork.LocationRepository.GetLocationNameById(trip.LocationId.Value);
                 if (locationName == null)
                 {
@@ -54,9 +59,17 @@ namespace BAL.Services.Implements
                 }
                 int partAmount = await _unitOfWork.FieldTripParticipantRepository.GetCountFieldTripParticipantsByTripId(trip.TripId);
                 var fieldTrip = _mapper.Map<FieldTripViewModel>(trip);
-                fieldTrip.NumberOfParticipantsLimit = fieldTrip.NumberOfParticipants - partAmount;
+
+                fieldTrip.NumberOfParticipants = fieldTrip.NumberOfParticipantsLimit - partAmount;
                 fieldTrip.Address = locationName;
-                fieldTrip.AreaNumber = locationName[0];
+
+                fieldTrip.Inclusions = (inclusions != null) ? _mapper.Map<IEnumerable<FieldtripInclusionViewModel>>(inclusions).ToList() : null;
+                fieldTrip.GettingThere = (gettingThere != null) ? _mapper.Map<IEnumerable<FieldtripGettingThereViewModel>>(gettingThere).ToList() : null;
+                fieldTrip.DaybyDays = (daysByDays != null) ? _mapper.Map<IEnumerable<FieldtripDaybyDayViewModel>>(daysByDays).ToList() : null;
+                fieldTrip.Rates = (rates != null) ? _mapper.Map<IEnumerable<FieldtripRateViewModel>>(rates).ToList() : null;
+                fieldTrip.Media = (media != null) ? _mapper.Map<IEnumerable<FieldtripMediaViewModel>>(media).ToList() : null;
+
+                fieldTrip.AreaNumber = Int32.Parse(locationName.Split(",")[0]);
                 fieldTrip.Street = locationName.Split(",")[1];
                 fieldTrip.District = locationName.Split(",")[2];
                 fieldTrip.City = locationName.Split(",")[3];

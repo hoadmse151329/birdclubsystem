@@ -69,7 +69,7 @@ namespace WebAppMVC.Controllers
                     + listTripResponse.ErrorMessage + "\n" + listLocationResponse.ErrorMessage;
                 Redirect("~/Home/Index");
             }
-            testmodel.Meetings = listTripResponse.Data;
+            testmodel.FieldTrips = listTripResponse.Data;
             testmodel.Locations = listLocationResponse.Data;
             return View(testmodel);
         }

@@ -284,5 +284,40 @@ namespace WebAPI.Controllers
                 });
             }
         }
+        [HttpGet("AllParticipants/{id}")]
+        [ProducesResponseType(typeof(List<MeetingParticipantViewModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetAllParticipantByFieldTripId(
+            [FromRoute] int id)
+        {
+            try
+            {
+                var result = await _participantService.GetAllByTripId(id);
+                if (result == null)
+                {
+                    return NotFound(new
+                    {
+                        status = false,
+                        errorMessage = "Meeting Not Found!"
+                    });
+                }
+
+                return Ok(new
+                {
+                    status = true,
+                    Data = result
+                });
+            }
+            catch (Exception ex)
+            {
+                // Log the exception if needed
+                return BadRequest(new
+                {
+                    status = false,
+                    errorMessage = ex.Message
+                });
+            }
+        }
     }
 }

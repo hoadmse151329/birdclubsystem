@@ -10,5 +10,7 @@ namespace DAL.Repositories.Interfaces
 {
     public interface IFieldtripRateRepository : IRepositoryBase<FieldtripRate>
     {
+        Task<FieldtripRate> GetFieldTripRateById(int tripId, int rateId);
+        Task<IEnumerable<FieldtripRate>> GetFieldTripRatesByTripId(int tripId);
     }
 }

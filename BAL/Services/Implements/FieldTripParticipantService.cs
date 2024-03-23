@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BAL.Services.Interfaces;
 using BAL.ViewModels;
+using BAL.ViewModels.Event;
 using DAL.Infrastructure;
 using DAL.Models;
 using System;
@@ -61,6 +62,25 @@ namespace BAL.Services.Implements
             _unitOfWork.FieldTripParticipantRepository.Delete(fieldTripParticipant);
             _unitOfWork.Save();
             return true;
+        }
+        public async Task<IEnumerable<FieldTripParticipantViewModel>> GetAllByMemberId(string memberId)
+        {
+
+            return _mapper.Map<IEnumerable<FieldTripParticipantViewModel>>(await
+                _unitOfWork.FieldTripParticipantRepository.GetFieldTripParticipantsByMemberId(memberId));
+        }
+
+        public async Task<IEnumerable<GetEventParticipation>> GetAllByMemberIdInclude(string memberId)
+        {
+
+            return _mapper.Map<IEnumerable<GetEventParticipation>>(await
+                _unitOfWork.FieldTripParticipantRepository.GetFieldTripParticipantsByMemberIdInclude(memberId));
+        }
+
+        public async Task<IEnumerable<FieldTripParticipantViewModel>> GetAllByTripId(int tripId)
+        {
+            return _mapper.Map<IEnumerable<FieldTripParticipantViewModel>>(await
+                _unitOfWork.FieldTripParticipantRepository.GetFieldTripParticipantsByTripId(tripId));
         }
     }
 }

@@ -21,6 +21,7 @@ namespace DAL.Models
         public string? Status { get; set; }
         public decimal? Fee { get; set; }
         public int? NumberOfParticipants { get; set; }
+        public int? NumberOfParticipantsLimit { get; set; }
         public string? Host { get; set; }
         public string? InCharge { get; set; }
         public string? Note { get; set; }

@@ -17,6 +17,11 @@ namespace DAL.Infrastructure
         ILocationRepository LocationRepository { get; }
         ITransactionRepository TransactionRepository { get; }
         IFieldTripRepository FieldTripRepository { get; }
+        IFieldtripDaybyDayRepository FieldTripDaybyDayRepository { get; }
+        IFieldtripGettingThereRepository FieldTripGettingThereRepository { get; }
+        IFieldtripInclusionRepository FieldTripInclusionRepository { get; }
+        IFieldtripMediaRepository FieldTripMediaRepository { get; }
+        IFieldtripRateRepository FieldTripRateRepository { get; }
         IFieldTripParticipantRepository FieldTripParticipantRepository { get; }
         IContestRepository ContestRepository { get; }
         void Save();

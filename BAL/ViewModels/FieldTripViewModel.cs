@@ -29,5 +29,11 @@ namespace BAL.ViewModels
         public string? InCharge { get; set; }
         public string? Note { get; set; }
         public string? Review { get; set; }
+
+        public List<FieldtripGettingThereViewModel>? GettingThere { get; set; }
+        public List<FieldtripRateViewModel>? Rates { get; set; }
+        public List<FieldtripMediaViewModel>? Media { get; set; }
+        public List<FieldtripInclusionViewModel>? Inclusions { get; set; }
+        public List<FieldtripDaybyDayViewModel>? DaybyDays { get; set; }
     }
 }

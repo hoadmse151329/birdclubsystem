@@ -197,7 +197,7 @@
                                         <div class="col-xl-3 col-lg-6 col-sm-6 my-3 item">
                                             <div class="card card-child">
                                                 <div class="card-body add-room">
-                                                    <button class="border-0" data-toggle="modal"  data-target="#addMeeting1">
+                                                    <button class="border-0" data-toggle="modal"  data-target="#addMeeting">
                                                         <span>Add Meeting</span>
                                                         <i class='bx bx-add-to-queue'></i>
                                                     </button>
@@ -239,8 +239,8 @@
                                                                     <span>@data.EndDate.Value.ToString("MM/dd/yyyy")</span>
                                                                 </li>
                                                                 <li>
-                                                                    <h6>Number of participants:</h6>
-                                                                    <span>@data.NumberOfParticipants</span>
+                                                                    <h6>Maximum Participants:</h6>
+                                                                    <span>@data.NumberOfParticipantsLimit</span>
                                                                 </li>
                                                                 <li>
                                                                     <h6>Location:</h6>
@@ -288,7 +288,7 @@
     </div>
 
     <!-- add new Room -->
-    <div id="addMeeting1" class="modal fade" role="dialog">
+    <div id="addMeeting" class="modal fade" role="dialog">
         <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
             <div class="modal-content modal-addRoom">
                 <div class="modal-header">
@@ -324,9 +324,9 @@
                                     <span asp-validation-for="@createMeet.EndDate" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
-                                    <label asp-for="@createMeet.NumberOfParticipants"  class="col-md-3 col-form-label mt-3 text-md-right">Number of Participants</label>
-                                    <input asp-for="@createMeet.NumberOfParticipants" value="@createMeet.NumberOfParticipants" type="number" name="numberOfParticipants" class="form-control col-md-7 mt-3" required>
-                                    <span asp-validation-for="@createMeet.NumberOfParticipants" id="error_message"
+                                    <label asp-for="@createMeet.NumberOfParticipantsLimit"  class="col-md-3 col-form-label mt-3 text-md-right">Maximum Participants</label>
+                                    <input asp-for="@createMeet.NumberOfParticipantsLimit" value="@createMeet.NumberOfParticipantsLimit" type="number" name="NumberOfParticipantsLimit" class="form-control col-md-7 mt-3" required>
+                                    <span asp-validation-for="@createMeet.NumberOfParticipantsLimit" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
                                     <label asp-for="@createMeet.Host" class="col-md-3 col-form-label mt-3 text-md-right">Host</label>

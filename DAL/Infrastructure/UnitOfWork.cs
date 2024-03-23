@@ -20,6 +20,11 @@ namespace DAL.Infrastructure
         private ILocationRepository _locationRepository;
         private ITransactionRepository _transactionRepository;
         private IFieldTripRepository _fieldTripRepository;
+        private IFieldtripDaybyDayRepository _fieldTripDaybyDayRepository;
+        private IFieldtripGettingThereRepository _fieldTripGettingThereRepository;
+        private IFieldtripInclusionRepository _fieldTripInclusionRepository;
+        private IFieldtripMediaRepository _fieldTripMediaRepository;
+        private IFieldtripRateRepository _fieldTripRateRepository;
         private IFieldTripParticipantRepository _fieldTripParticipantRepository;
         private IContestRepository _contestRepository;
 		public UnitOfWork(BirdClubContext context)
@@ -36,6 +41,16 @@ namespace DAL.Infrastructure
         public IFieldTripRepository FieldTripRepository => _fieldTripRepository ??= new FieldTripRepository(_context);
         public IFieldTripParticipantRepository FieldTripParticipantRepository => _fieldTripParticipantRepository ??= new FieldTripParticipantRepository(_context);
         public IContestRepository ContestRepository => _contestRepository ??= new ContestRepository(_context);
+
+        public IFieldtripDaybyDayRepository FieldTripDaybyDayRepository => _fieldTripDaybyDayRepository ??= new FIeldtripDaybyDayRepository(_context);
+
+        public IFieldtripGettingThereRepository FieldTripGettingThereRepository => _fieldTripGettingThereRepository ??= new FieldtripGettingThereRepository(_context);
+
+        public IFieldtripInclusionRepository FieldTripInclusionRepository => _fieldTripInclusionRepository ??= new FieldtripInclusionRepository(_context);
+
+        public IFieldtripMediaRepository FieldTripMediaRepository => _fieldTripMediaRepository ??= new FieldtripMediaRepository(_context);
+
+        public IFieldtripRateRepository FieldTripRateRepository => _fieldTripRateRepository ??= new FieldtripRateRepository(_context);
 
         public void Dispose()
         {
