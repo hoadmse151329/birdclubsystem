@@ -31,13 +31,15 @@ namespace BAL.Services.Implements
                 {
                     if(item.MeetingId == itemview.MeetingId)
                     {
-                        int partAmount = await _unitOfWork.MeetingParticipantRepository.GetCountMeetingParticipantsByMeetId(item.MeetingId);
+                        //int partAmount = await _unitOfWork.MeetingParticipantRepository.GetCountMeetingParticipantsByMeetId(meet.MeetingId);
                         locationName = await _unitOfWork.LocationRepository.GetLocationNameById(item.LocationId.Value);
                         
-                        itemview.AreaNumber = Int32.Parse(locationName.Split(",")[0]);
-                        itemview.Street = locationName.Split(",")[1];
-                        itemview.District = locationName.Split(",")[2];
-                        itemview.City = locationName.Split(",")[3];
+                        string[] temp = locationName.Split(",");
+
+                        itemview.AreaNumber = Int32.Parse(temp[0]);
+                        itemview.Street = temp[1];
+                        itemview.District = temp[2];
+                        itemview.City = temp[3];
                     }
                 }
             }
@@ -60,13 +62,17 @@ namespace BAL.Services.Implements
                     return null;
                 }
                 int partAmount = await _unitOfWork.MeetingParticipantRepository.GetCountMeetingParticipantsByMeetId(meet.MeetingId);
+                
                 var meeting = _mapper.Map<MeetingViewModel>(meet);
-                meeting.NumberOfParticipantsLimit = meeting.NumberOfParticipants - partAmount;
+                meeting.NumberOfParticipants = meeting.NumberOfParticipantsLimit - partAmount;
                 meeting.Address = locationName;
-                meeting.AreaNumber = Int32.Parse(locationName.Split(",")[0]);
-                meeting.Street = locationName.Split(",")[1];
-                meeting.District = locationName.Split(",")[2];
-                meeting.City = locationName.Split(",")[3];
+
+                string[] temp = locationName.Split(",");
+
+                meeting.AreaNumber = Int32.Parse(temp[0]);
+                meeting.Street = temp[1];
+                meeting.District = temp[2];
+                meeting.City = temp[3];
                 return meeting;
             }
             return null;

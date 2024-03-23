@@ -1,4 +1,5 @@
 ﻿using BAL.ViewModels;
+using BAL.ViewModels.Event;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,5 +15,8 @@ namespace BAL.Services.Interfaces
         Task<int> GetCurrentParticipantAmounts(int tripId);
         Task<int> GetParticipationNo(string memId, int tripId);
         Task<bool> Delete(string memId, int tripId);
+        Task<IEnumerable<FieldTripParticipantViewModel>> GetAllByMemberId(string memberId);
+        Task<IEnumerable<GetEventParticipation>> GetAllByMemberIdInclude(string memberId);
+        Task<IEnumerable<FieldTripParticipantViewModel>> GetAllByTripId(int tripId);
     }
 }

@@ -5,6 +5,7 @@ using System.Dynamic;
 using System.Net.Http.Headers;
 using System.Text.Json;
 using WebAppMVC.Constants;
+using WebAppMVC.Models.FieldTrip;
 using WebAppMVC.Models.Location;
 using WebAppMVC.Models.Meeting;
 // thêm crud của meeting, fieldtrip, contest.
@@ -133,6 +134,7 @@ namespace WebAppMVC.Controllers
                                 options: options,
                                 methodName: "GET",
                                 url: ManagerMeetingDetailAPI_URL,
+                                accessToken: accToken,
                                 _logger: _logger);
             if (meetPostResponse == null)
             {
@@ -281,13 +283,113 @@ namespace WebAppMVC.Controllers
             }
             return RedirectToAction("ManagerMeeting");
         }
-        public IActionResult ManagerFieldtrip()
+        [HttpGet("FieldTrip")]
+        public async Task<IActionResult> ManagerFieldtrip([FromQuery] string search)
         {
-            return View();
+            _logger.LogInformation(search);
+            string LocationAPI_URL_All = ManagerAPI_URL + "Location/All";
+            if (search != null || !string.IsNullOrEmpty(search))
+            {
+                search = search.Trim();
+                ManagerAPI_URL += "FieldTrip/Search?tripName=" + search;
+            }
+            else ManagerAPI_URL += "FieldTrip/All";
+
+            dynamic testmodel = new ExpandoObject();
+
+            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
+            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+
+            string? role = HttpContext.Session.GetString("ROLE_NAME");
+            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
+            else if (!role.Equals("Manager")) return RedirectToAction("Login", "Auth");
+
+            string? usrId = HttpContext.Session.GetString("USER_ID");
+            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
+            TempData["ROLE_NAME"] = role;
+
+            var listLocationResponse = await methcall.CallMethodReturnObject<GetLocationResponseByList>(
+                _httpClient: _httpClient,
+                options: options,
+                methodName: "GET",
+                url: LocationAPI_URL_All,
+                _logger: _logger);
+
+            var listFieldTripResponse = await methcall.CallMethodReturnObject<GetFieldTripResponseByList>(
+                _httpClient: _httpClient,
+                options: options,
+                methodName: "GET",
+                url: ManagerAPI_URL,
+                _logger: _logger);
+
+            if (listFieldTripResponse == null || listLocationResponse == null)
+            {
+                _logger.LogInformation(
+                    "Error while processing your request! (Getting List FieldTrip!). List was Empty!: " + listFieldTripResponse);
+                ViewBag.error =
+                    "Error while processing your request! (Getting List FieldTrip!).\n List was Empty!";
+                return View("ManagerIndex");
+            }
+            else
+            if (!listFieldTripResponse.Status || !listLocationResponse.Status)
+            {
+                ViewBag.error =
+                    "Error while processing your request! (Getting List FieldTrip!).\n"
+                    + listFieldTripResponse.ErrorMessage + "\n" + listLocationResponse.ErrorMessage;
+                return View("ManagerIndex");
+            }
+            testmodel.FieldTrips = listFieldTripResponse.Data;
+            testmodel.Locations = listLocationResponse.Data;
+            return View(testmodel);
         }
-        public IActionResult ManagerFieldtripDetail()
+        [HttpGet("FieldTrip/{id:int}")]
+        public async Task<IActionResult> ManagerFieldtripDetail(int id)
         {
-            return View();
+            string ManagerFieldTripDetailAPI_URL = ManagerAPI_URL + "FieldTrip/AllParticipants/" + id;
+            ManagerAPI_URL += "FieldTrip/" + id;
+            dynamic fieldtripDetailBigModel = new ExpandoObject();
+
+            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
+            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+
+            string? role = HttpContext.Session.GetString("ROLE_NAME");
+            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
+            else if (!role.Equals("Manager")) return RedirectToAction("Login", "Auth");
+
+            string? usrId = HttpContext.Session.GetString("USER_ID");
+            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
+
+            TempData["ROLE_NAME"] = role;
+
+            var fieldtripPostResponse = await methcall.CallMethodReturnObject<GetFieldTripPostResponse>(
+                                _httpClient: _httpClient,
+                                options: options,
+                                methodName: "GET",
+                                url: ManagerAPI_URL,
+                                _logger: _logger);
+            var fieldtrippartPostResponse = await methcall.CallMethodReturnObject<GetListFieldTripParticipation>(
+                                _httpClient: _httpClient,
+                                options: options,
+                                methodName: "GET",
+                                url: ManagerFieldTripDetailAPI_URL,
+                                _logger: _logger);
+            if (fieldtripPostResponse == null)
+            {
+                ViewBag.error =
+                    "Error while processing your request! (Getting Field Trip!).\n Field Trip Not Found!";
+                return RedirectToAction("ManagerFieldTrip");
+            }
+            if (!fieldtripPostResponse.Status)
+            {
+                _logger.LogInformation("Error while processing your request: " + fieldtripPostResponse.Status + " , Error Message: " + fieldtripPostResponse.ErrorMessage);
+                ViewBag.error =
+                    "Error while processing your request! (Getting Field Trip Post!).\n"
+                    + fieldtripPostResponse.ErrorMessage;
+                return RedirectToAction("ManagerFieldTrip");
+            }
+            fieldtripDetailBigModel.FieldTripDetails = fieldtripPostResponse.Data;
+            fieldtripDetailBigModel.FieldTripParticipants = fieldtrippartPostResponse.Data;
+            return View(fieldtripDetailBigModel);
         }
         public IActionResult ManagerBirdContest()
         {

@@ -16,6 +16,8 @@ namespace DAL.Repositories.Interfaces
         Task<int> GetParticipantNoFieldTripParticipantById(int tripId, string memberId);
         Task<FieldTripParticipant> GetFieldTripParticipantById(int tripId, string memberId);
         Task<IEnumerable<FieldTripParticipant>> GetFieldTripParticipantsByMemberId(string memId);
+        Task<IEnumerable<FieldTripParticipant>> GetFieldTripParticipantsByMemberIdInclude(string memId);
         Task<int> GetCountFieldTripParticipantsByMemberId(string memId);
+
     }
 }

@@ -1,6 +1,7 @@
-﻿﻿@{
+﻿@model dynamic﻿
+@{
     ViewData["Title"] = "Field Trip Page";
-        List<BAL.ViewModels.LocationViewModel> locationList = Model.Locations;
+    List<BAL.ViewModels.LocationViewModel> locationList = Model.Locations;
     List<BAL.ViewModels.FieldTripViewModel> fieldtripList = Model.FieldTrips;
 }
 
@@ -26,7 +27,7 @@
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")" class="text-decoration-none">Home</a></li>
-                <li class="breadcrumb-item active" aria-current="page">All Meetings</li>
+                <li class="breadcrumb-item active" aria-current="page">All FieldTrips</li>
             </ol>
         </nav>
     </div>

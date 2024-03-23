@@ -380,6 +380,7 @@ namespace WebAPI.Controllers
             }
         }
         [HttpGet("AllParticipants/{id}")]
+        [Authorize(Roles = "Manager")]
         [ProducesResponseType(typeof(List<MeetingParticipantViewModel>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -415,7 +416,7 @@ namespace WebAPI.Controllers
             }
         }
         [HttpPost("Participation/AllMeetings")]
-        [Authorize(Roles = "Member,Staff")]
+        [Authorize(Roles = "Member")]
         [ProducesResponseType(typeof(List<GetEventParticipation>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
