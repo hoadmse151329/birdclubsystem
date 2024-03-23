@@ -270,17 +270,103 @@
                         <div class="row">
                             <div class="card profile col-12 mb-4">
                                 <div class="card-header">
-                                    <h4>Field Trip Rates</h4>
+                                    <h4>Rates</h4>
                                 </div>
                                 <div class="card-body">
-                                    <div class="row mb-sm-2">
-                                        <div class="col-sm-5 text-sm-right">
-                                            <span>Status:</span>
+                                    @foreach (var rate in details.Rates)
+                                    {
+                                        <div class="row mb-sm-2">
+                                            <div class="col-sm-5 text-sm-right">
+                                                <span>@rate.RateType</span>
+                                            </div>
+                                            <div class="col-sm-7 text-sm-left">
+                                                <span>@rate.Price</span>
+                                            </div>
+                                        </div>                                        
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="card profile col-12 mb-4">
+                                <div class="card-header">
+                                    <h4>Getting There</h4>
+                                </div>
+                                <div class="card-body">
+                                    @foreach (var gett in details.GettingThere)
+                                    {
+                                        <div class="row mb-sm-2">
+                                            <div class="col-sm-12 text-sm">
+                                                <span>@gett.GettingThereText</span>
+                                            </div>
                                         </div>
-                                        <div class="col-sm-7">
-                                            <span class="destroy" style="float: left;">@details.Status</span>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="card profile col-12 mb-4">
+                                <div class="card-header">
+                                    <h4>Day By Day</h4>
+                                </div>
+                                <div class="card-body">
+                                    @foreach (var day in details.DaybyDays)
+                                    {
+                                        <div class="row mb-sm-2">
+                                            <div class="col-sm-2 text-sm-left">
+                                                <span>@day.Day</span>
+                                            </div>
+                                            <div class="col-sm-7 text-sm">
+                                                <span>@day.Description</span>
+                                            </div>
+                                            <div class="col-sm-3 text-sm-right">
+                                                <span>@day.PictureId</span>
+                                            </div>
                                         </div>
-                                    </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="card profile col-12 mb-4">
+                                <div class="card-header">
+                                    <h4>Inclusions</h4>
+                                </div>
+                                <div class="card-body">
+                                    @foreach (var inc in details.Inclusions)
+                                    {
+                                        <div class="row mb-sm-2">
+                                            <div class="col-sm-4 text-sm-left">
+                                                <span>@inc.Title</span>
+                                            </div>
+                                            <div class="col-sm-3 text-sm">
+                                                <span>@inc.Type</span>
+                                            </div>
+                                            <div class="col-sm-5 text-sm-right">
+                                                <span>@inc.InclusionText</span>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="card profile col-12 mb-4">
+                                <div class="card-header">
+                                    <h4>Medias</h4>
+                                </div>
+                                <div class="card-body">
+                                    @foreach (var pic in details.Media)
+                                    {
+                                        <div class="row mb-sm-6">
+                                            <div class="col-sm-4 text-sm-left">
+                                                <span>@pic.Image</span>
+                                            </div>
+                                            <div class="col-sm-6 text-sm">
+                                                <span>@pic.Description</span>
+                                            </div>
+                                        </div>
+                                    }
                                 </div>
                             </div>
                         </div>

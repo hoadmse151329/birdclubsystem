@@ -298,13 +298,13 @@
                 </div>
                 <div class="modal-body">
                     @*<form asp-action="ManagerCreateMeeting" asp-controller="Manager" method="get" onsubmit="return submitFunc()" id="form">*@
-                    <form asp-action="ManagerCreateMeeting" asp-controller="Manager" method="post" id="form">
+                    <form asp-action="ManagerCreateFieldTrip" asp-controller="Manager" method="post" id="form">
                         <div class="row p-4">
                             <div class="col-12">
-                                <div class="row form-group">
-                                    <label asp-for="@createFieldTrip.TripName" class="col-md-3 col-form-label text-md-right">Meeting Name</label>
-                                    <input asp-for="@createFieldTrip.TripName" value="@createFieldTrip.TripName" type="text" name="meetingname" placeholder="Meeting Name" required class="form-control col-md-7">
-                                    <span asp-validation-for="@createFieldTrip.TripName" id="error_message"
+                                @* <div class="row form-group">
+                                    <label asp-for="@createFieldTrip.MeetingName" class="col-md-3 col-form-label text-md-right">Meeting Name</label>
+                                    <input asp-for="@createFieldTrip.MeetingName" value="@createFieldTrip.MeetingName" type="text" name="meetingname" placeholder="Meeting Name" required class="form-control col-md-7">
+                                    <span asp-validation-for="@createFieldTrip.MeetingName" id="error_message"
                                           class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                 </div>
                                 <div class="row form-group">
@@ -312,50 +312,50 @@
                                     <input type="file" name="photo" class="form-control col-md-7 mt-2" accept="image/*">
 
                                     <label asp-for="@createFieldTrip.RegistrationDeadline" class="col-md-3 col-form-label mt-3 text-md-right">Registration Deadlines</label>
-                                    <input asp-for="@createFieldTrip.RegistrationDeadline" value="@createFieldTrip.RegistrationDeadline" type="datetime-local" name="registrationDeadline" required class="form-control col-md-7 mt-3">
+                                    <input asp-for="@createFieldTrip.RegistrationDeadline" value="@createMeet.RegistrationDeadline" type="datetime-local" name="registrationDeadline" required class="form-control col-md-7 mt-3">
                                     <span asp-validation-for="@createFieldTrip.RegistrationDeadline" id="error_message"
                                           class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
-                                    <label asp-for="@createFieldTrip.StartDate" class="col-md-3 col-form-label mt-3 text-md-right">Start Date</label>
-                                    <input asp-for="@createFieldTrip.StartDate" value="@createFieldTrip.StartDate" type="datetime-local" name="startDate" required class="form-control col-md-7 mt-3">
-                                    <span asp-validation-for="@createFieldTrip.StartDate" id="error_message"
+                                    <label asp-for="@createMeet.StartDate" class="col-md-3 col-form-label mt-3 text-md-right">Start Date</label>
+                                    <input asp-for="@createMeet.StartDate" value="@createMeet.StartDate" type="datetime-local" name="startDate" required class="form-control col-md-7 mt-3">
+                                    <span asp-validation-for="@createMeet.StartDate" id="error_message"
                                             class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
-                                    <label asp-for="@createFieldTrip.EndDate" class="col-md-3 col-form-label mt-3 text-md-right">End Date</label>
-                                    <input asp-for="@createFieldTrip.EndDate" value="@createFieldTrip.EndDate" type="datetime-local" name="endDate" required class="form-control col-md-7 mt-3">
-                                    <span asp-validation-for="@createFieldTrip.EndDate" id="error_message"
+                                    <label asp-for="@createMeet.EndDate" class="col-md-3 col-form-label mt-3 text-md-right">End Date</label>
+                                    <input asp-for="@createMeet.EndDate" value="@createMeet.EndDate" type="datetime-local" name="endDate" required class="form-control col-md-7 mt-3">
+                                    <span asp-validation-for="@createMeet.EndDate" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
-                                    <label asp-for="@createFieldTrip.NumberOfParticipants"  class="col-md-3 col-form-label mt-3 text-md-right">Number of Participants</label>
-                                    <input asp-for="@createFieldTrip.NumberOfParticipants" value="@createFieldTrip.NumberOfParticipants" type="number" name="numberOfParticipants" class="form-control col-md-7 mt-3" required>
-                                    <span asp-validation-for="@createFieldTrip.NumberOfParticipants" id="error_message"
+                                    <label asp-for="@createMeet.NumberOfParticipants"  class="col-md-3 col-form-label mt-3 text-md-right">Number of Participants</label>
+                                    <input asp-for="@createMeet.NumberOfParticipants" value="@createMeet.NumberOfParticipants" type="number" name="numberOfParticipants" class="form-control col-md-7 mt-3" required>
+                                    <span asp-validation-for="@createMeet.NumberOfParticipants" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
-                                    <label asp-for="@createFieldTrip.Host" class="col-md-3 col-form-label mt-3 text-md-right">Host</label>
-                                    <input asp-for="@createFieldTrip.Host" value="@createFieldTrip.Host" type="text" name="host" placeholder="Meeting Host" class="form-control col-md-7 mt-3" rows="3" required>
-                                    <span asp-validation-for="@createFieldTrip.Host" id="error_message"
+                                    <label asp-for="@createMeet.Host" class="col-md-3 col-form-label mt-3 text-md-right">Host</label>
+                                    <input asp-for="@createMeet.Host" value="@createMeet.Host" type="text" name="host" placeholder="Meeting Host" class="form-control col-md-7 mt-3" rows="3" required>
+                                    <span asp-validation-for="@createMeet.Host" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
-                                    <label asp-for="@createFieldTrip.InCharge" class="col-md-3 col-form-label mt-3 text-md-right">Incharge</label>
-                                    <input asp-for="@createFieldTrip.InCharge" value="@createFieldTrip.InCharge" type="text" name="incharge" placeholder="Staff incharge of Meeting" class="form-control col-md-7 mt-3" rows="3" required>
-                                    <span asp-validation-for="@createFieldTrip.InCharge" id="error_message"
+                                    <label asp-for="@createMeet.Incharge" class="col-md-3 col-form-label mt-3 text-md-right">Incharge</label>
+                                    <input asp-for="@createMeet.Incharge" value="@createMeet.Incharge" type="text" name="incharge" placeholder="Staff incharge of Meeting" class="form-control col-md-7 mt-3" rows="3" required>
+                                    <span asp-validation-for="@createMeet.Incharge" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
-                                    <label asp-for="@createFieldTrip.Address" class="col-md-3 col-form-label mt-3 text-md-right">Address</label>
-                                    <textarea asp-for="@createFieldTrip.Address" value="@createFieldTrip.Address" type="text" name="address" placeholder="Meeting Address..." class="form-control col-md-7 mt-3" rows="3" required></textarea>
-                                    <span asp-validation-for="@createFieldTrip.Address" id="error_message"
+                                    <label asp-for="@createMeet.Address" class="col-md-3 col-form-label mt-3 text-md-right">Address</label>
+                                    <textarea asp-for="@createMeet.Address" value="@createMeet.Address" type="text" name="address" placeholder="Meeting Address..." class="form-control col-md-7 mt-3" rows="3" required></textarea>
+                                    <span asp-validation-for="@createMeet.Address" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
-                                    <label asp-for="@createFieldTrip.Description" class="col-md-3 col-form-label mt-3 text-md-right">Description</label>
-                                    <textarea asp-for="@createFieldTrip.Description" value="@createFieldTrip.Description" type="text" name="description" placeholder="Meeting description..." class="form-control col-md-7 mt-3" rows="3" required></textarea>
-                                    <span asp-validation-for="@createFieldTrip.Description" id="error_message"
+                                    <label asp-for="@createMeet.Description" class="col-md-3 col-form-label mt-3 text-md-right">Description</label>
+                                    <textarea asp-for="@createMeet.Description" value="@createMeet.Description" type="text" name="description" placeholder="Meeting description..." class="form-control col-md-7 mt-3" rows="3" required></textarea>
+                                    <span asp-validation-for="@createMeet.Description" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
-                                    <label asp-for="@createFieldTrip.Note" class="col-md-3 col-form-label mt-3 text-md-right">Note</label>
-                                    <textarea asp-for="@createFieldTrip.Note" value="@createFieldTrip.Note" type="text" name="note" placeholder="Meeting Note..." class="form-control col-md-7 mt-3" rows="3" required></textarea>
-                                    <span asp-validation-for="@createFieldTrip.Note" id="error_message"
+                                    <label asp-for="@createMeet.Note" class="col-md-3 col-form-label mt-3 text-md-right">Note</label>
+                                    <textarea asp-for="@createMeet.Note" value="@createMeet.Note" type="text" name="note" placeholder="Meeting Note..." class="form-control col-md-7 mt-3" rows="3" required></textarea>
+                                    <span asp-validation-for="@createMeet.Note" id="error_message"
                                           class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                </div>
+                                </div> *@
                             </div>                
                             <div class="modal-footer justify-content-center">
                                 <button class="btn btn-success" type="submit" name="action" value="createRoom" >Save</button>
@@ -363,7 +363,6 @@
                             </div>
                         </div>
                     </form>
-                </div>
                 </div>
             </div>
         </div>
@@ -373,7 +372,7 @@
     <div id="deleteRoom" class="modal fade" role="dialog">
         <div class="modal-dialog modal-dialog-centered" role="content">
             <div class="modal-content">
-                <form action="#">
+                <form asp-action="#">
                     <div class="card-body">
                         <div class="del-title">
                             <i class='bx bx-error-circle'></i>
@@ -393,7 +392,7 @@
     <div id="removeRoom" class="modal fade" role="dialog">
         <div class="modal-dialog modal-dialog-centered" role="content">
             <div class="modal-content">
-                <form action="#">
+                <form asp-action="#">
                     <div class="card-body">
                         <div class="del-title">
                             <i class='bx bx-error-circle'></i>
@@ -452,7 +451,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script>
     function redirectToDetailPage() {
-        window.location.href = '@Url.Action("ManagerFieldtripDetail", "Manager")';
+        window.location.href = '@Url.Action("ManagerMeetingDetail", "Manager")';
     }
 </script>
 </body>
