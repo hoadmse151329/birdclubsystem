@@ -842,6 +842,9 @@
         position: absolute;
         width: 768px;
         height: 1603px;
+        border-radius: 10px;
+        border: 1px solid black;
+        box-shadow: 1px 1px 5px #b0b0b0;
         top: 0;
         left: 0;
     }
@@ -1020,6 +1023,10 @@
 
     .member-meeting-post .info {
         position: absolute;
+        background-color: white;
+        border-radius: 10px;
+        border: 1px solid black;
+        box-shadow: 1px 1px 5px #b0b0b0;
         width: 532px;
         height: 1132px;
         top: 100px;

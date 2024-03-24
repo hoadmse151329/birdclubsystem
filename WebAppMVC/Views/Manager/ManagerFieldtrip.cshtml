@@ -263,22 +263,33 @@
                                                             <button class="btn btn-primary clickable-row" type="submit">See Detail</button>
                                                         </form>
                                                         <form asp-action="ManagerCancelFieldTrip" asp-controller="Manager" method="post" asp-route-id="@data.TripId">
-                                                            <button class="btn btn-danger" data-toggle="modal" data-target="#deleteRoom" type="submit">Cancel FieldTrip</button>
+                                                            <button class="btn btn-danger" data-toggle="modal" data-target="#deleteFieldTrip" type="submit">Cancel FieldTrip</button>
                                                         </form>
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div id="deleteFieldTrip" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="content">
+            <div class="modal-content">
+                <form action="#">
+                    <div class="card-body">
+                        <div class="del-title">
+                            <i class='bx bx-error-circle'></i>
+                            <h2>Are you sure want to delete ?</h2> 
+                        </div>
+                        <div class="del-submit d-flex justify-content-center">       
+                            <form asp-action="ManagerCancelFieldTrip" asp-controller="Manager" method="post" asp-route-id="@data.TripId">
+                                <button type="submit" name="action" value="deleteFieldTrip" class="btn btn-success">Save</button>
+                                </form>
+                                <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
+                            </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
                                         }
 
-                                    <div class="pagination d-flex justify-content-center">
-                                        <li class="page-item previous-page disabled"><a href="#" class="page-link">Trước</a></li>
-                                        <li class="page-item dots">...</li>
-                                        <li class="page-item current-page active"><a href="#" class="page-link">2</a></li>
-                                        <li class="page-item current-page"><a href="#" class="page-link">3</a></li>
-                                        <li class="page-item current-page"><a href="#" class="page-link">4</a></li>
-                                        <li class="page-item dots">...</li>
-                                        <li class="page-item next-page"><a href="#" class="page-link">Sau</a></li>
-                                    </div>
                                 </div>
                             </div>
                             <!-- end tapnet -->
@@ -294,7 +305,7 @@
         <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
             <div class="modal-content modal-addRoom">
                 <div class="modal-header">
-                    <h4 class="modal-title">Add new meeting</h4>
+                    <h4 class="modal-title">Add new FieldTrip</h4>
                 </div>
                 <div class="modal-body">
                     @*<form asp-action="ManagerCreateMeeting" asp-controller="Manager" method="get" onsubmit="return submitFunc()" id="form">*@
@@ -368,47 +379,9 @@
         </div>
     </div>
     
-    <!-- remove Home -->
-    <div id="deleteRoom" class="modal fade" role="dialog">
-        <div class="modal-dialog modal-dialog-centered" role="content">
-            <div class="modal-content">
-                <form asp-action="#">
-                    <div class="card-body">
-                        <div class="del-title">
-                            <i class='bx bx-error-circle'></i>
-                            <h2>Bạn muốn xóa phòng ?</h2> 
-                        </div>
-                        <div class="del-submit d-flex justify-content-center">
-                            <button type="submit" class="btn btn-success">Xác Nhận</button>
-                            <button class="btn btn-danger" type="button" data-dismiss="modal">Hủy</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- remove Home -->
-    <div id="removeRoom" class="modal fade" role="dialog">
-        <div class="modal-dialog modal-dialog-centered" role="content">
-            <div class="modal-content">
-                <form asp-action="#">
-                    <div class="card-body">
-                        <div class="del-title">
-                            <i class='bx bx-error-circle'></i>
-                            <h2>Bạn muốn hủy phòng ?</h2> 
-                        </div>
-                        <div class="del-submit d-flex justify-content-center">
-                            <button type="submit" class="btn btn-success">Xác Nhận</button>
-                            <button class="btn btn-danger" type="button" data-dismiss="modal">Hủy</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+ 
        
-    <!-- jQuery first, then Popper.js, then Bootstrap JS. -->
+        <!-- jQuery first, then Popper.js, then Bootstrap JS. -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
         referrerpolicy="no-referrer"></script>
         <!-- Jquery Waypoint -->
@@ -417,31 +390,6 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.5/umd/popper.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- BS4 carousels -->
-        <script>
-            $('.carousel').carousel({
-                interval: 3000
-            });
-        </script>
-        <!-- owl carousels -->
-        <script src="./assets/js/owl.carousel.min.js"></script>
-        <script>
-            $('.clubList-carousel').owlCarousel({
-                loop: true,
-                margin: 10,
-                nav: false,
-                responsive: {
-                    0: {
-                        items: 1
-                    },
-                    576: {
-                        items: 2
-                    },
-                    1200: {
-                        items: 4
-                    }
-                }
-            });
-        </script>
         <!-- main js -->
         <script src="~/js/user-script.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
@@ -451,7 +399,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script>
     function redirectToDetailPage() {
-        window.location.href = '@Url.Action("ManagerMeetingDetail", "Manager")';
+        window.location.href = '@Url.Action("ManagerFieldtripDetail", "Manager")';
     }
 </script>
 </body>
