@@ -210,7 +210,7 @@
                                             <div class="col-xl-3 col-lg-6 col-sm-6 my-3">
                                                 <div class="card card-child">
                                                     <div class="room-name">
-                                                        <span>Meeting</span>
+                                                        <span>FieldTrip</span>
                                                         <div class="status">
                                                             <!-- dùng lệnh if -->
                                                             @*<span class="stt1">Status:<h6>Processing</h6></span>*@
@@ -224,7 +224,7 @@
                                                         <div class="room-title">
                                                             <ul>
                                                                 <li>
-                                                                    <h6>Meeting Name:</h6>
+                                                                    <h6>FieldTrip Name:</h6>
                                                                     <span>@data.TripName</span>
                                                                 </li>
                                                                 <li>
@@ -308,7 +308,7 @@
                     <h4 class="modal-title">Add new FieldTrip</h4>
                 </div>
                 <div class="modal-body">
-                    @*<form asp-action="ManagerCreateMeeting" asp-controller="Manager" method="get" onsubmit="return submitFunc()" id="form">*@
+                    @*<form asp-action="ManagerCreateFieldTrip" asp-controller="Manager" method="get" onsubmit="return submitFunc()" id="form">*@
                     <form asp-action="ManagerCreateFieldTrip" asp-controller="Manager" method="post" id="form">
                         <div class="row p-4">
                             <div class="col-12">
@@ -378,10 +378,7 @@
             </div>
         </div>
     </div>
-    
- 
-       
-        <!-- jQuery first, then Popper.js, then Bootstrap JS. -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS. -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
         referrerpolicy="no-referrer"></script>
         <!-- Jquery Waypoint -->
@@ -390,6 +387,31 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.5/umd/popper.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- BS4 carousels -->
+        <script>
+            $('.carousel').carousel({
+                interval: 3000
+            });
+        </script>
+        <!-- owl carousels -->
+        <script src="./assets/js/owl.carousel.min.js"></script>
+        <script>
+            $('.clubList-carousel').owlCarousel({
+                loop: true,
+                margin: 10,
+                nav: false,
+                responsive: {
+                    0: {
+                        items: 1
+                    },
+                    576: {
+                        items: 2
+                    },
+                    1200: {
+                        items: 4
+                    }
+                }
+            });
+        </script>
         <!-- main js -->
         <script src="~/js/user-script.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
@@ -399,7 +421,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script>
     function redirectToDetailPage() {
-        window.location.href = '@Url.Action("ManagerFieldtripDetail", "Manager")';
+        window.location.href = '@Url.Action("ManagerFieldTripDetail", "Manager")';
     }
 </script>
 </body>

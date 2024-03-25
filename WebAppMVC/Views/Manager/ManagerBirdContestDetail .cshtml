@@ -2,8 +2,8 @@
 @{
     Layout = null;
     ViewData["Title"] = "Manager Bird Contest Detail Page";
-    BAL.ViewModels.MeetingViewModel details = Model.MeetingDetails;
-    List<BAL.ViewModels.MeetingParticipantViewModel> parts = Model.MeetingParticipants;
+    BAL.ViewModels.ContestViewModel details = Model.ContestDetails;
+    List<BAL.ViewModels.ContestParticipantViewModel> parts = Model.ContestParticipants;
 }
 <html lang="en">
 <head>
@@ -178,10 +178,10 @@
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-md-5 text-md-right">
-                                            <label for="meeting-name">Meeting Name:</label>
+                                            <label for="meeting-name">Contest Name:</label>
                                         </div>
                                         <div class="col-md-7">
-                                            <span>@details.TripName</span>
+                                            <span>@details.ContestName</span>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -221,7 +221,7 @@
                                             <span>Incharge:</span>
                                         </div>
                                         <div class="col-sm-7 text-sm-left">
-                                            <span>@details.InCharge</span>
+                                            <span>@details.Incharge</span>
                                         </div>
                                     </div>
                                     <div class="row mb-sm-2">
@@ -267,109 +267,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="card profile col-12 mb-4">
-                                <div class="card-header">
-                                    <h4>Rates</h4>
-                                </div>
-                                <div class="card-body">
-                                    @foreach (var rate in details.Rates)
-                                    {
-                                        <div class="row mb-sm-2">
-                                            <div class="col-sm-5 text-sm-right">
-                                                <span>@rate.RateType</span>
-                                            </div>
-                                            <div class="col-sm-7 text-sm-left">
-                                                <span>@rate.Price</span>
-                                            </div>
-                                        </div>                                        
-                                    }
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="card profile col-12 mb-4">
-                                <div class="card-header">
-                                    <h4>Getting There</h4>
-                                </div>
-                                <div class="card-body">
-                                    @foreach (var gett in details.GettingThere)
-                                    {
-                                        <div class="row mb-sm-2">
-                                            <div class="col-sm-12 text-sm">
-                                                <span>@gett.GettingThereText</span>
-                                            </div>
-                                        </div>
-                                    }
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="card profile col-12 mb-4">
-                                <div class="card-header">
-                                    <h4>Day By Day</h4>
-                                </div>
-                                <div class="card-body">
-                                    @foreach (var day in details.DaybyDays)
-                                    {
-                                        <div class="row mb-sm-2">
-                                            <div class="col-sm-2 text-sm-left">
-                                                <span>@day.Day</span>
-                                            </div>
-                                            <div class="col-sm-7 text-sm">
-                                                <span>@day.Description</span>
-                                            </div>
-                                            <div class="col-sm-3 text-sm-right">
-                                                <span>@day.PictureId</span>
-                                            </div>
-                                        </div>
-                                    }
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="card profile col-12 mb-4">
-                                <div class="card-header">
-                                    <h4>Inclusions</h4>
-                                </div>
-                                <div class="card-body">
-                                    @foreach (var inc in details.Inclusions)
-                                    {
-                                        <div class="row mb-sm-2">
-                                            <div class="col-sm-4 text-sm-left">
-                                                <span>@inc.Title</span>
-                                            </div>
-                                            <div class="col-sm-3 text-sm">
-                                                <span>@inc.Type</span>
-                                            </div>
-                                            <div class="col-sm-5 text-sm-right">
-                                                <span>@inc.InclusionText</span>
-                                            </div>
-                                        </div>
-                                    }
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="card profile col-12 mb-4">
-                                <div class="card-header">
-                                    <h4>Medias</h4>
-                                </div>
-                                <div class="card-body">
-                                    @foreach (var pic in details.Media)
-                                    {
-                                        <div class="row mb-sm-6">
-                                            <div class="col-sm-4 text-sm-left">
-                                                <span>@pic.Image</span>
-                                            </div>
-                                            <div class="col-sm-6 text-sm">
-                                                <span>@pic.Description</span>
-                                            </div>
-                                        </div>
-                                    }
-                                </div>
-                            </div>
-                        </div>
                     </div>
                     <div class="col-lg-5 cardFB">
                         <div class="card border-0 d-flex">
@@ -389,7 +286,7 @@
                                         {
                                             <tr>
                                                 <td>@part.ParticipantNo</td>
-                                                <td>@part.MemberName</td>
+                                                <td>@part.BirdId</td>
                                             </tr>
                                         }
                                         <tr>
