@@ -1,5 +1,6 @@
-﻿@{
-    ViewData["Title"] = "Field Trip Post Day By Day Page";
+﻿@model BAL.ViewModels.FieldTripViewModel
+@{
+    ViewData["Title"] = "Field Trip Details Page";
 }
 
 <html lang="en">
@@ -36,7 +37,7 @@
                   </p>
                   <p class="span-wrapper">
                     <span class="span">
-                        Description
+                        @Model.Description
                     </span>
                   </p>
                 </div>
@@ -46,16 +47,17 @@
                   </p>
                   <p class="p">
                     <span class="span">
-                        Note
+                        @Model.Note
                     </span>
                   </p>
                 </div>
                 <div class="tittle">
-                    <div class="div-wrapper"><div class="text-wrapper-3">Register</div></div>
+                    <div class="div-wrapper"><div class="text-wrapper-3">Field Trip Details</div></div>
                   </div>
                 <img
                   class="soi-noi-hoi-thi-chim"
-                  src="~/images/meeting.png"
+                  @* src="~/images/meeting.png" *@
+                  src="@Model.Media.FirstOrDefault().Image"
                 />
               </div>
             </div>
@@ -63,9 +65,9 @@
               <div class="overlap-3"> 
                 <div id="map-container"></div>
                 <div class="tittle">
-                  <div class="overlap-group-2"><p class="text-wrapper-4">@Model.MeetingName</p></div>
+                  <div class="overlap-group-2"><p class="text-wrapper-4">@Model.TripName</p></div>
                 </div>
-                <div class="text-wrapper-5">From StartDate to EndDate</div>
+                            <div class="text-wrapper-5">From @Model.StartDate.Value.ToString("MM/dd/yyyy") to @Model.EndDate.Value.ToString("MM/dd/syyyy")</div>
 
 
                 <div class="group-2">
@@ -79,107 +81,127 @@
 
 
                 <div class="group-3">
-                  <div class="text-wrapper-11">AreaNumber,Street,District,City</div>
-                  @*<div class="text-wrapper-11">@Model.Street</div>*@
-                  <p class="text-wrapper-12">NumberOfParticipantsLimit</p>
-                  <div class="text-wrapper-13">RegistrationDeadline</div>
-                  <div class="text-wrapper-14">ChaoMaoClub@gmail.com</div>
-                  <div class="text-wrapper-15">Host</div>
+                    <div class="text-wrapper-11">@Model.AreaNumber,@Model.Street,@Model.District,@Model.City</div>
+                    @*<div class="text-wrapper-11">@Model.Street</div>*@
+                    <p class="text-wrapper-12">@Model.NumberOfParticipantsLimit</p>
+                    <div class="text-wrapper-13">@Model.RegistrationDeadline</div>
+                    <div class="text-wrapper-14">ChaoMaoClub@gmail.com</div>
+                    <div class="text-wrapper-15">@Model.Host</div>
                 </div>
                 <div class="register">
+                    @{
+                        if (Model.ParticipationNo != 0 && Model.ParticipationNo != null)
+                        {
                             <div class="overlap-group-3 text-wrapper-16">
-                                <span class="text-success">PartNumber</span>
+                                <span class="text-success">@ViewBag.PartNumber</span>
                             </div>
-                            <form asp-action="MeetingDeRegister" asp-controller="Meeting" method="post" asp-route-meetingId="MeetingId">
+                            <form asp-action="FieldTripDeRegister" asp-controller="FieldTrip" method="post" asp-route-fieldtripId="@Model.TripId">
                                 <button class="overlap-group-3 text-wrapper-16" type="submit">Sign Out</button>
-                            </form> 
+                            </form>
+                        }
+                        else
+                        {
+                            <form asp-action="FieldTripRegister" asp-controller="FieldTrip" method="post" asp-route-fieldtripId="@Model.TripId">
+                                <button class="overlap-group-3 text-wrapper-16" type="submit">Register</button>
+                            </form>
+                        }
+                    }
                 </div>
                 <ul class="nav nav-tabs">
-                                <!-- dung vong for o day -->
-                                <li class="nav-item">
-                                    <a class="nav-link active" data-toggle="tab" href="#home1">
-                                        <i class='bx bx-home-alt-2'></i>
-                                        <span>Overview</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" data-toggle="tab" href="#home2">
-                                        <i class='bx bx-home-alt-2'></i>
-                                        <span>DayByDay</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" data-toggle="tab" href="#home3">
-                                        <i class='bx bx-home-alt-2'></i>
-                                        <span>Rates</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" data-toggle="tab" href="#home4">
-                                        <i class='bx bx-home-alt-2'></i>
-                                        <span>Inclusions</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" data-toggle="tab" href="#home5">
-                                        <i class='bx bx-home-alt-2'></i>
-                                        <span>GettingThere</span>
-                                    </a>
-                                </li>
+                    <!-- dung vong for o day -->
+                    <li class="nav-item">
+                        <a class="nav-link active" data-toggle="tab" href="#home1">
+                            <i class='bx bx-home-alt-2'></i>
+                            <span>Overview</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#home2">
+                            <i class='bx bx-home-alt-2'></i>
+                            <span>DayByDay</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#home3">
+                            <i class='bx bx-home-alt-2'></i>
+                            <span>Rates</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#home4">
+                            <i class='bx bx-home-alt-2'></i>
+                            <span>Inclusions</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#home5">
+                            <i class='bx bx-home-alt-2'></i>
+                            <span>GettingThere</span>
+                        </a>
+                    </li>
                 </ul>
                 <div id="home1" role="tabpanel" data-title="Tanzania Safari: 4-Day Magoroto and Lushoto Trip">  
-    <div class="tour__content__block tour__content__block--routemap tour__route">
-        <h2>Route</h2>
-        </div>
-            </div>
-</div>                        <div class="tour__flow__container tour__route-list" data-role="tour-route-list" style="height: 394px; max-height: none;">
+                    <div class="tour__content__block tour__content__block--routemap tour__route">
+                        <h2>Route</h2>
+                    </div>
+                </div>
+              </div>                        
+            <div class="tour__flow__container tour__route-list" data-role="tour-route-list" style="height: 394px; max-height: none;">
                 <div class="tour__route-list-inner">
                     <table class="route__flow avoid-break-p">
-                                                                                    <tbody><tr class="country">
-                                    <td colspan="2"><a href="https://www.safaribookings.com/tanzania" target="_blank"><strong>Tanzania</strong></a> <img src="https://cfstatic.safaribookings.com/images/flags/tz.png" alt="" class="flag"></td>
+                        <tbody>
+                                        @* <tr class="country">
+                                <td colspan="2">
+                                    <a href="https://www.safaribookings.com/tanzania" target="_blank">
+                                        <strong>Tanzania</strong>
+                                    </a> 
+                                    <img src="https://cfstatic.safaribookings.com/images/flags/tz.png" alt="" class="flag">
+                                </td>
+                            </tr> *@
+                        @foreach (var day in Model.DaybyDays){
+                            if (day.Equals(Model.DaybyDays.Last()))
+                            {
+                                <tr class="last">
+                                    <td>@day.Day</td>
+                                    <td>@day.Description</td>
                                 </tr>
-                                                                                                                <tr>
-                                    <td>Start</td>
-                                    <td>Arusha <strong>(Day 1)</strong></td>
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td>@day.Day</td>
+                                    <td>@day.Description</td>
                                 </tr>
-                                                                                                                <tr>
-                                    <td>Day 1</td>
-                                    <td>Lushoto <span>(Town)</span></td>
-                                </tr>
-                                                                                                                <tr>
-                                    <td>Day 2</td>
-                                    <td>Irente Viewpoint <span>(Usambaras)</span></td>
-                                </tr>
-                                                                                                                <tr>
-                                    <td>Day 3</td>
-                                    <td>Amani NR <span>(Usambaras)</span></td>
-                                </tr>
-                                                                                                                <tr class="last">
-                                    <td>End</td>
-                                    <td>Arusha <span>(City)</span> <strong>(Day 4)</strong></td>
-                                </tr>
-                                                                        </tbody></table>
+                            }
+                        }
+                        </tbody>
+                    </table>
                 </div>
-                <button class="tour__route-list-toggle" data-role="tour-route-list-expand">
-                    Show More Days
-                    <span class="tour__route-list-toggle-arrow">&gt;</span>
-                </button>
             </div>
         </div>
     </div>
 
     <div class="tour__content__block tour__content__block--consider avoid-break-p">
-        <h2>Tour Features</h2>
-
+        <h2>Tour Rates</h2>
         <div class="row">
-                        <div class="col col-12 col-t-6 item  ">
+            @foreach (var day in Model.Rates)
+            {
+                <div class="col col-12 col-t-6 item">
+                    <div class="svg-box">
+                        <img src="https://cfstatic.safaribookings.com/img/svg/icons-red/icon-accomodation-mid.svg" alt="">
+                    </div>
+                    <h4>Mid-range tour</h4>
+                    <p>This mid-range tour uses lodges and tented camps.</p>
+                </div>
+            }
+            <div class="col col-12 col-t-6 item  ">
                 <div class="svg-box">
                     <img src="https://cfstatic.safaribookings.com/img/svg/icons-red/icon-accomodation-mid.svg" alt="">
                                     </div>
                 <h4>Mid-range tour</h4>
                 <p>This mid-range tour uses lodges and tented camps.</p>
             </div>
-                        <div class="col col-12 col-t-6 item  ">
+            <div class="col col-12 col-t-6 item  ">
                 <div class="svg-box">
                     <img src="https://cfstatic.safaribookings.com/img/svg/icons-red/icon-group-small.svg" alt="">
                                     </div>
@@ -214,8 +236,53 @@
                 <h4>Minimum age of 3 years</h4>
                 <p>The minimum age for this tour is 3 years.</p>
             </div>
-                    </div>
+        </div>
 
+    </div>
+    <div class="tour__content__block tour__content__block--consider avoid-break-p">
+        <h2>Tour Rates</h2>
+        <div class="row">
+            @foreach (var day in Model.Rates)
+            {
+                <div class="col col-12 col-t-6 item">
+                    <div class="svg-box">
+                        <img src="https://cfstatic.safaribookings.com/img/svg/icons-red/icon-accomodation-mid.svg" alt="">
+                    </div>
+                    <h4>Mid-range tour</h4>
+                    <p>This mid-range tour uses lodges and tented camps.</p>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="tour__content__block tour__content__block--consider avoid-break-p">
+        <h2>Tour Rates</h2>
+        <div class="row">
+            @foreach (var day in Model.Inclusions)
+            {
+                <div class="col col-12 col-t-6 item">
+                    <div class="svg-box">
+                        <img src="https://cfstatic.safaribookings.com/img/svg/icons-red/icon-accomodation-mid.svg" alt="">
+                    </div>
+                    <h4>Mid-range tour</h4>
+                    <p>This mid-range tour uses lodges and tented camps.</p>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="tour__content__block tour__content__block--consider avoid-break-p">
+        <h2>Tour Rates</h2>
+        <div class="row">
+            @foreach (var day in Model.GettingThere)
+            {
+                <div class="col col-12 col-t-6 item">
+                    <div class="svg-box">
+                        <img src="https://cfstatic.safaribookings.com/img/svg/icons-red/icon-accomodation-mid.svg" alt="">
+                    </div>
+                    <h4>Mid-range tour</h4>
+                    <p>This mid-range tour uses lodges and tented camps.</p>
+                </div>
+            }
+        </div>
     </div>
 
     

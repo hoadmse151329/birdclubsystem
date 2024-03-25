@@ -81,10 +81,60 @@ namespace WebAppMVC.Controllers
 		{
 			return View();
 		}
-		public IActionResult FieldTripPostDayByDay()
+        [HttpGet("{id:int}")]
+        [Route("FieldTrip/FieldTripPost/{id:int}")]
+        public async Task<IActionResult> FieldTripPost(int id)
 		{
-			return View();
-		}
+            FieldTripAPI_URL += "/";
+            string? role = HttpContext.Session.GetString("ROLE_NAME");
+            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
+            string? usrId = HttpContext.Session.GetString("USER_ID");
+
+            TempData["ROLE_NAME"] = role;
+
+            GetFieldTripPostResponse? fieldtripPostResponse = new();
+
+            if (!string.IsNullOrEmpty(accToken) && !string.IsNullOrEmpty(usrId))
+            {
+                FieldTripAPI_URL += "Participant/" + id;
+                fieldtripPostResponse = await methcall.CallMethodReturnObject<GetFieldTripPostResponse>(
+                                   _httpClient: _httpClient,
+                                   options: options,
+                                   methodName: "POST",
+                                   url: FieldTripAPI_URL,
+                                   _logger: _logger,
+                                   inputType: usrId,
+                                   accessToken: accToken);
+            }
+            else
+            {
+                FieldTripAPI_URL += id;
+                fieldtripPostResponse = await methcall.CallMethodReturnObject<GetFieldTripPostResponse>(
+                                   _httpClient: _httpClient,
+                                   options: options,
+                                   methodName: "GET",
+                                   url: FieldTripAPI_URL,
+                                   _logger: _logger);
+            }
+            if (fieldtripPostResponse == null)
+            {
+                //_logger.LogInformation("Username or Password is invalid: " + meetPostResponse.Status + " , Error Message: " + meetPostResponse.ErrorMessage);
+                ViewBag.error =
+                    "Error while processing your request! (Getting Meeting!).\n Meeting Not Found!";
+                View("Index");
+            }
+
+            var fieldtripmodel = fieldtripPostResponse.Data;
+            if (!fieldtripPostResponse.Status)
+            {
+                _logger.LogInformation("Username or Password is invalid: " + fieldtripPostResponse.Status + " , Error Message: " + fieldtripPostResponse.ErrorMessage);
+                ViewBag.error =
+                    "Error while processing your request! (Getting Meeting Post!).\n"
+                    + fieldtripPostResponse.ErrorMessage;
+                View("Index");
+            }
+            return View(fieldtripmodel);
+        }
 		public IActionResult FieldTripPostGettingThere()
 		{
 			return View();
