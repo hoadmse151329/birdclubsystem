@@ -4,6 +4,7 @@
     {
         public long TransactionId { get; set; }
         public string OrderDescription { get; set; }
+        public decimal Value { get; set; }
         public string DocNo { get; set; }
         public string PaymentMethod { get; set; }
         public bool Success { get; set; }

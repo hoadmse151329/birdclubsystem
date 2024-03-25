@@ -74,5 +74,11 @@ namespace DAL.Repositories.Implements
         {
             return await _context.Users.AsNoTrackingWithIdentityResolution().SingleOrDefaultAsync(usr => usr.MemberId == memid);
         }
+
+        public async Task<User?> GetIdByUsername(string username)
+        {
+            //return await _context.Users
+            return null;
+        }
     }
 }

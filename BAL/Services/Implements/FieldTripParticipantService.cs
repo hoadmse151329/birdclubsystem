@@ -23,7 +23,7 @@ namespace BAL.Services.Implements
 
         public async Task<int> Create(string memId, int tripId)
         {
-            int partNo = await _unitOfWork.FieldTripParticipantRepository.GetParticipantNoFieldTripParticipantById(tripId, memId);
+            int partNo = await _unitOfWork.FieldTripParticipantRepository.GetParticipationNoFieldTripParticipantById(tripId, memId);
             if (partNo > 0) return partNo;
             int trippartCount = await _unitOfWork.FieldTripParticipantRepository.GetCountFieldTripParticipantsByTripId(tripId);
             if (trippartCount.Equals(0)) partNo = 1; else partNo = trippartCount + 1;

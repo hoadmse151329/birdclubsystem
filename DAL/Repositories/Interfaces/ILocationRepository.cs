@@ -14,5 +14,7 @@ namespace DAL.Repositories.Interfaces
         Task<string?> GetLocationNameById(int id);
         Task<Location?> GetLocationByName(string name);
         Task<Location?> GetLocationByMeetingId(int meetid);
+        Task<Location?> GetLocationByTripId(int tripId);
+        Task<Location?> GetLocationByContestId(int contestId);
     }
 }

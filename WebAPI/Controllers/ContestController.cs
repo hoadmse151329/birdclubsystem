@@ -13,10 +13,15 @@ namespace WebAPI.Controllers
     public class ContestController : ControllerBase
     {
         private readonly IContestService _contestService;
+        private readonly IContestParticipantService _participantService;
         private readonly IConfiguration _config;
-        public ContestController(IContestService contestService, IConfiguration config)
+        public ContestController(
+            IContestService contestService,
+            IContestParticipantService contestParticipantService,
+            IConfiguration config)
         {
             _contestService = contestService;
+            _participantService = contestParticipantService;
             _config = config;
         }
 
@@ -29,7 +34,7 @@ namespace WebAPI.Controllers
         {
             try
             {
-                var result = await _contestService.GetAllContests();
+                var result = await _contestService.GetAll();
                 if (result == null)
                 {
                     return NotFound(new
@@ -63,7 +68,7 @@ namespace WebAPI.Controllers
         {
             try
             {
-                var result = await _contestService.GetContestById(id);
+                var result = await _contestService.GetById(id);
                 if (result == null)
                 {
                     return NotFound(new
