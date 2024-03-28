@@ -26,8 +26,8 @@ namespace WebAppMVC.Controllers
 			_httpClient = new HttpClient();
 			var contentType = new MediaTypeWithQualityHeaderValue("application/json");
             _httpClient.DefaultRequestHeaders.Accept.Add(contentType);
-            _httpClient.BaseAddress = new Uri("https://localhost:7022");
-			FieldTripAPI_URL = "/api/FieldTrip";
+            _httpClient.BaseAddress = new Uri("https://birdclubsystem.azurewebsites.net");
+			FieldTripAPI_URL = "/webapi/api/FieldTrip";
         }
 
 		[HttpGet]
@@ -35,7 +35,7 @@ namespace WebAppMVC.Controllers
 		public async Task<IActionResult> Index()
 		{
 			FieldTripAPI_URL += "/All";
-			string LocationAPI_URL_All = "/api/Location/All";
+			string LocationAPI_URL_All = "/webapi/api/Location/All";
             dynamic testmodel = new ExpandoObject();
             TempData["ROLE_NAME"] = HttpContext.Session.GetString("ROLE_NAME");
 

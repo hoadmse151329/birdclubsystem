@@ -31,8 +31,8 @@ namespace WebAppMVC.Controllers
 			client = new HttpClient();
 			var contentType = new MediaTypeWithQualityHeaderValue("application/json");
 			client.DefaultRequestHeaders.Accept.Add(contentType);
-			client.BaseAddress = new Uri("https://localhost:7022");
-			AuthenAPI_URL = "/api/User";
+			client.BaseAddress = new Uri("https://birdclubsystem.azurewebsites.net");
+			AuthenAPI_URL = "/webapi/api/User";
 		}
 		public IActionResult Register()
 		{

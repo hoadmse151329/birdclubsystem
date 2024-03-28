@@ -29,8 +29,8 @@ namespace WebAppMVC.Controllers
             _httpClient = new HttpClient();
             var contentType = new MediaTypeWithQualityHeaderValue("application/json");
             _httpClient.DefaultRequestHeaders.Accept.Add(contentType);
-            _httpClient.BaseAddress = new Uri("https://localhost:7022");
-            ManagerAPI_URL = "/api/";
+            _httpClient.BaseAddress = new Uri("https://birdclubsystem.azurewebsites.net");
+            ManagerAPI_URL = "/webapi/api/";
         }
 
         // GET: ManagerController

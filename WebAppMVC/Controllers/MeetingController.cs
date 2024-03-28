@@ -29,8 +29,8 @@ namespace WebAppMVC.Controllers
 			_httpClient = new HttpClient();
 			var contentType = new MediaTypeWithQualityHeaderValue("application/json");
 			_httpClient.DefaultRequestHeaders.Accept.Add(contentType);
-			_httpClient.BaseAddress = new Uri("https://localhost:7022");
-			MeetingAPI_URL = "/api/Meeting";
+			_httpClient.BaseAddress = new Uri("https://birdclubsystem.azurewebsites.net");
+			MeetingAPI_URL = "/webapi/api/Meeting";
 		}
 
 		[HttpGet]
@@ -38,7 +38,7 @@ namespace WebAppMVC.Controllers
 		public async Task<IActionResult> Index()
 		{
             MeetingAPI_URL += "/All";
-			string LocationAPI_URL_All = "/api/Location/All";
+			string LocationAPI_URL_All = "/webapi/api/Location/All";
 			dynamic testmodel = new ExpandoObject();
             TempData["ROLE_NAME"] = HttpContext.Session.GetString("ROLE_NAME");
 
