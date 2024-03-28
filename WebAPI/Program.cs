@@ -38,7 +38,7 @@ namespace WebAPI
             {
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
-                    Title = "API Documentation",
+                    Title = "Bird Club API Documentation",
                     Version = "v1",
                 });
                 // Configuring JWT Validation for Swagger
@@ -116,14 +116,16 @@ namespace WebAPI
             builder.Services.AddAutoMapper(typeof(MappingProfile));
             var app = builder.Build();
 
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/webapi/swagger/v1/swagger.json", "ProjectAPI v1");
+            });
+
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
-                app.UseSwagger();
-                app.UseSwaggerUI(c =>
-                {
-                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "ProjectAPI v1");
-                });
+                app.UseDeveloperExceptionPage();
             }
 
             app.UseHttpsRedirection();
