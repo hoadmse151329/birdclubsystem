@@ -7,12 +7,14 @@ using WebAppMVC.Constants;
 using WebAppMVC.Models.FieldTrip;
 using WebAppMVC.Models.Location;
 using WebAppMVC.Models.Meeting;
+using static Org.BouncyCastle.Math.EC.ECCurve;
 
 namespace WebAppMVC.Controllers
 {
 	public class FieldTripController : Controller
 	{
 		private readonly ILogger<FieldTripController> _logger;
+        private readonly IConfiguration _config;
 		private readonly HttpClient _httpClient = null;
 		private string FieldTripAPI_URL = "";
 		private readonly JsonSerializerOptions options = new JsonSerializerOptions
@@ -20,13 +22,14 @@ namespace WebAppMVC.Controllers
 			PropertyNameCaseInsensitive = true,
 		};
 		private MethodCaller methcall = new();
-		public FieldTripController(ILogger<FieldTripController> logger)
+		public FieldTripController(ILogger<FieldTripController> logger, IConfiguration config)
 		{
 			_logger = logger;
+            _config = config;
 			_httpClient = new HttpClient();
 			var contentType = new MediaTypeWithQualityHeaderValue("application/json");
             _httpClient.DefaultRequestHeaders.Accept.Add(contentType);
-            _httpClient.BaseAddress = new Uri("https://localhost:7022");
+            _httpClient.BaseAddress = new Uri(config.GetSection("DefaultApiUrl:ConnectionString").Value);
 			FieldTripAPI_URL = "/api/FieldTrip";
         }
 

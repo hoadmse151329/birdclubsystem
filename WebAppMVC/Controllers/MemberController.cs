@@ -20,6 +20,7 @@ namespace WebAppMVC.Controllers
     public class MemberController : Controller
     {
         private readonly ILogger<MemberController> _logger;
+        private readonly IConfiguration _config;
         private readonly HttpClient _httpClient = null;
         private string MemberInfoAPI_URL = "";
         private JsonSerializerOptions options = new JsonSerializerOptions
@@ -28,13 +29,14 @@ namespace WebAppMVC.Controllers
         };
         private MethodCaller methcall = new();
 
-        public MemberController(ILogger<MemberController> logger)
+        public MemberController(ILogger<MemberController> logger, IConfiguration config)
         {
             _logger = logger;
+            _config = config;
             _httpClient = new HttpClient();
             var contentType = new MediaTypeWithQualityHeaderValue("application/json");
             _httpClient.DefaultRequestHeaders.Accept.Add(contentType);
-            _httpClient.BaseAddress = new Uri("https://localhost:7022");
+            _httpClient.BaseAddress = new Uri(config.GetSection("DefaultApiUrl:ConnectionString").Value);
             MemberInfoAPI_URL = "/api/Member";
         }
 
