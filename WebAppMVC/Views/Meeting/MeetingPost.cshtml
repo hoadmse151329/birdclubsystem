@@ -58,10 +58,11 @@
                   </p>
                 </div>
                 <div class="tittle">
-                    <div class="div-wrapper"><div class="text-wrapper-3">Register</div></div>
+                    <div class="div-wrapper"><div class="text-wrapper-3">Meeting Details</div></div>
                   </div>
                 <img
                   class="soi-noi-hoi-thi-chim"
+                  @* src="@Model.Media.FirstOrDefault().Image" *@
                   src="~/images/meeting.png"
                 />
               </div>
@@ -86,12 +87,12 @@
 
 
                 <div class="group-3">
-                  <div class="text-wrapper-11">@Model.AreaNumber,@Model.Street,@Model.District,@Model.City</div>
-                  @*<div class="text-wrapper-11">@Model.Street</div>*@
-                  <p class="text-wrapper-12">@Model.NumberOfParticipantsLimit</p>
-                  <div class="text-wrapper-13">@Model.RegistrationDeadline</div>
-                  <div class="text-wrapper-14">ChaoMaoClub@gmail.com</div>
-                  <div class="text-wrapper-15">@Model.Host</div>
+                      <div class="text-wrapper-11">@Model.AreaNumber,@Model.Street,@Model.District,@Model.City</div>
+                      @*<div class="text-wrapper-11">@Model.Street</div>*@
+                      <p class="text-wrapper-12">@Model.NumberOfParticipantsLimit</p>
+                      <div class="text-wrapper-13">@Model.RegistrationDeadline</div>
+                      <div class="text-wrapper-14">ChaoMaoClub@gmail.com</div>
+                      <div class="text-wrapper-15">@Model.Host</div>
                 </div>
                 <div class="register">
                     @{
