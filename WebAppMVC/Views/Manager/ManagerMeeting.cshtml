@@ -157,7 +157,6 @@
                         <div class="card-body">
                             <!-- Nav tabs -->
                             <ul class="nav nav-tabs">
-                                <!-- dung vong for o day -->
                                 <li class="nav-item">
                                     <a class="nav-link active" data-toggle="tab" href="#home1">
                                         <i class='bx bx-home-alt-2'></i>
@@ -182,13 +181,15 @@
                                             </div>
                                             <div class="col-sm-6 d-flex justify-content-end">
                                                 <form asp-action="ManagerMeeting" asp-controller="Manager" method="get" asp-route-search="@search">
-                                                    <div>
-                                                        <label>
+                   
+                                                        <label for="search" class="header__search-inputlabel">Search</label>
                                                             <input asp-for="@search" class="form-control" type="text" name="search" placeholder="Search..." value="@search">
-                                                            <button class="bx bx-search-alt" type="submit"></button>
+                                                            <button class="bx bx-search-alt" type="submit">
+                                                                <i class="sbi sbi--search mirrored header__search-submit-icon"></i>
+                                                            </button>
                                                             @*<i class='bx bx-search-alt'></i>*@
-                                                        </label>
-                                                    </div>
+                                                        
+                                                    
                                                 </form>
                                             </div>
                                         </div>
@@ -287,33 +288,6 @@
         </div>
     </div>
                                         }
-
-                                    <div class="pagination mb-3">
-                    <!-- <li class="page-item previous-page disabled">
-                        <a class="page-link btn" href="#">Prev</i></a>
-                    </li>
-                    <li class="pages page-item current-page ">
-                        <a class="page page-link" href="#">1</a>
-                    </li>
-                    <li class="pages page-item dots">
-                        <a class="page page-link" href="#">...</a>
-                    </li>
-                    <li class="pages page-item current-page ">
-                        <a class="page page-link" href="#">5</a>
-                    </li>
-                    <li class="pages page-item current-page ">
-                        <a class="page page-link" href="#">6</a>
-                    </li>
-                    <li class="pages page-item dots">
-                        <a class="page page-link" href="#">...</a>
-                    </li>
-                    <li class="pages page-item current-page ">
-                        <a class="page page-link" href="#">10</a>
-                    </li>
-                    <li class="page-item next-page">
-                        <a class="page-link btn" href="#">Next</i></a>
-                    </li> -->
-                </div>
                                 </div>                               
                             <!-- end tapnet -->
                         </div>
@@ -411,31 +385,6 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.5/umd/popper.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- BS4 carousels -->
-        <script>
-            $('.carousel').carousel({
-                interval: 3000
-            });
-        </script>
-        <!-- owl carousels -->
-        <script src="./assets/js/owl.carousel.min.js"></script>
-        <script>
-            $('.clubList-carousel').owlCarousel({
-                loop: true,
-                margin: 10,
-                nav: false,
-                responsive: {
-                    0: {
-                        items: 1
-                    },
-                    576: {
-                        items: 2
-                    },
-                    1200: {
-                        items: 4
-                    }
-                }
-            });
-        </script>
         <!-- main js -->
         <script src="~/js/user-script.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

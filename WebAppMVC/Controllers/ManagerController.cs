@@ -343,7 +343,8 @@ namespace WebAppMVC.Controllers
             return View(testmodel);
         }
         [HttpGet("FieldTrip/{id:int}")]
-        public async Task<IActionResult> ManagerFieldtripDetail(int id)
+        /*[Route("Manager/FieldTrip/{id:int}")]*/
+        public async Task<IActionResult> ManagerFieldTripDetail(int id)
         {
             string ManagerFieldTripDetailAPI_URL = ManagerAPI_URL + "FieldTrip/AllParticipants/" + id;
             ManagerAPI_URL += "FieldTrip/" + id;
@@ -358,6 +359,7 @@ namespace WebAppMVC.Controllers
 
             string? usrId = HttpContext.Session.GetString("USER_ID");
             if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
+
 
             TempData["ROLE_NAME"] = role;
 
@@ -390,6 +392,135 @@ namespace WebAppMVC.Controllers
             fieldtripDetailBigModel.FieldTripDetails = fieldtripPostResponse.Data;
             fieldtripDetailBigModel.FieldTripParticipants = fieldtrippartPostResponse.Data;
             return View(fieldtripDetailBigModel);
+        }
+        [HttpPost("FieldTrip/Update/{id:int}")]
+        /*[Route("Manager/FieldTrip/Update/{id:int}")]*/
+        public async Task<IActionResult> ManagerUpdateFieldTripDetail(
+            int id,
+            FieldTripViewModel fieldtripView
+            )
+        {
+            ManagerAPI_URL += "FieldTrip/Update/" + id;
+
+            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
+            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+
+            string? role = HttpContext.Session.GetString("ROLE_NAME");
+            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
+            else if (!role.Equals("Manager")) return RedirectToAction("Login", "Auth");
+
+            string? usrId = HttpContext.Session.GetString("USER_ID");
+            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
+
+            TempData["ROLE_NAME"] = role;
+
+            var fieldtripPostResponse = await methcall.CallMethodReturnObject<GetFieldTripPostResponse>(
+                                _httpClient: _httpClient,
+                                options: options,
+                                methodName: "PUT",
+                                url: ManagerAPI_URL,
+                                inputType: fieldtripView,
+                                accessToken: accToken,
+                                _logger: _logger);
+            if (fieldtripPostResponse == null)
+            {
+                ViewBag.error =
+                    "Error while processing your request! (Updating FieldTrip!).\n FieldTrip Not Found!";
+                return RedirectToAction("ManagerFieldTrip");
+            }
+            if (!fieldtripPostResponse.Status)
+            {
+                _logger.LogInformation("Error while processing your request: " + fieldtripPostResponse.Status + " , Error Message: " + fieldtripPostResponse.ErrorMessage);
+                ViewBag.error =
+                    "Error while processing your request! (Updating FieldTrip Post!).\n"
+                    + fieldtripPostResponse.ErrorMessage;
+                return RedirectToAction("ManagerFieldTrip");
+            }
+            return RedirectToAction("ManagerFieldTripDetail", "Manager", new { id = id });
+        }
+        [HttpPost("FieldTrip/Create")]
+        /*[Route("Manager/Meeting/Update/{id:int}")]*/
+        public async Task<IActionResult> ManagerCreateFieldTrip(FieldTripViewModel fieldtripView)
+        {
+            ManagerAPI_URL += "FieldTrip/Create";
+
+            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
+            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+
+            string? role = HttpContext.Session.GetString("ROLE_NAME");
+            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
+            else if (!role.Equals("Manager")) return RedirectToAction("Login", "Auth");
+
+            string? usrId = HttpContext.Session.GetString("USER_ID");
+            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
+
+            TempData["ROLE_NAME"] = role;
+
+            var fieldtripPostResponse = await methcall.CallMethodReturnObject<GetFieldTripPostResponse>(
+                                _httpClient: _httpClient,
+                                options: options,
+                                methodName: "POST",
+                                url: ManagerAPI_URL,
+                                inputType: fieldtripView,
+                                accessToken: accToken,
+                                _logger: _logger);
+            if (fieldtripPostResponse == null)
+            {
+                ViewBag.error =
+                    "Error while processing your request! (Create FieldTrip!).\n Meeting Not Found!";
+                return RedirectToAction("ManagerFieldTrip");
+            }
+            if (!fieldtripPostResponse.Status)
+            {
+                _logger.LogInformation("Error while processing your request: " + fieldtripPostResponse.Status + " , Error Message: " + fieldtripPostResponse.ErrorMessage);
+                ViewBag.error =
+                    "Error while processing your request! (Create Meeting Post!).\n"
+                    + fieldtripPostResponse.ErrorMessage;
+                return RedirectToAction("ManagerFieldTrip");
+            }
+            return RedirectToAction("ManagerFieldTrip");
+        }
+
+        [HttpPost("FieldTrip/Update/Cancel/{id:int}")]
+        public async Task<IActionResult> ManagerCancelFieldTrip(
+            int id)
+        {
+            ManagerAPI_URL += "FieldTrip/Update/Cancel/" + id;
+
+            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
+            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+
+            string? role = HttpContext.Session.GetString("ROLE_NAME");
+            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
+            else if (!role.Equals("Manager")) return RedirectToAction("Login", "Auth");
+
+            string? usrId = HttpContext.Session.GetString("USER_ID");
+            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
+
+            TempData["ROLE_NAME"] = role;
+
+            var fieldtripPostResponse = await methcall.CallMethodReturnObject<GetMeetingPostResponse>(
+                                _httpClient: _httpClient,
+                                options: options,
+                                methodName: "GET",
+                                url: ManagerAPI_URL,
+                                accessToken: accToken,
+                                _logger: _logger);
+            if (fieldtripPostResponse == null)
+            {
+                ViewBag.error =
+                    "Error while processing your request! (Updating FieldTrip!).\n Meeting Not Found!";
+                return RedirectToAction("ManagerFieldTrip");
+            }
+            if (!fieldtripPostResponse.Status)
+            {
+                _logger.LogInformation("Error while processing your request: " + fieldtripPostResponse.Status + " , Error Message: " + fieldtripPostResponse.ErrorMessage);
+                ViewBag.error =
+                    "Error while processing your request! (Updating FieldTrip Post!).\n"
+                    + fieldtripPostResponse.ErrorMessage;
+                return RedirectToAction("ManagerFieldTrip");
+            }
+            return RedirectToAction("ManagerFieldTrip");
         }
         public IActionResult ManagerBirdContest()
         {

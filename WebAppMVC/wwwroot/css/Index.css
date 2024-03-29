@@ -1,7 +1,13 @@
 ﻿.main-container {
     overflow: hidden;
 }
-
+.carouselBanner Bird-banner {
+    position: relative;
+    width: 1000px;
+    height: 550px;
+    overflow: hidden;
+    margin: auto;
+}
     .main-container,
     .main-container * {
         box-sizing: border-box;
