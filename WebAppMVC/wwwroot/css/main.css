@@ -11,7 +11,13 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box; }
-
+.carousel-Banner{
+    position: relative;
+    width: 1000px;
+    height: 550px;
+    overflow: hidden;
+    margin: auto;
+}
 html,
 body {
   font-family: 'Roboto', sans-serif;
