@@ -1,7 +1,7 @@
 ﻿@model dynamic
 @{
     Layout = null;
-    ViewData["Title"] = "Manager Bird Contest Detail Page";
+    ViewData["Title"] = "Manager Contest Detail Page";
     BAL.ViewModels.ContestViewModel details = Model.ContestDetails;
     List<BAL.ViewModels.ContestParticipantViewModel> parts = Model.ContestParticipants;
 }
@@ -57,7 +57,7 @@
                                 </a>
                             </li>
                             <li data-toggle="tooltip" data-placement="right" title="Manage Bird Contest">
-                                <a href="@Url.Action("ManagerBirdContest", "Manager")" li class="dropdown-item">
+                                <a href="@Url.Action("ManagerContest", "Manager")" li class="dropdown-item">
                                     <i class='bx bx-cloud-rain'></i>
                                     <span class="title">Bird Contest</span>
                                 </a>
@@ -153,7 +153,7 @@
                         <div class="row">
                             <div class="card profile col-12 mb-4">
                                 <div class="card-header">
-                                    <h4>Field Trip Status</h4>
+                                    <h4>Contest Status</h4>
                                 </div>
                                 <div class="card-body">
                                     <div class="row mb-sm-2">
