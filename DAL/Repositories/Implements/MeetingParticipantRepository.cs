@@ -61,7 +61,7 @@ namespace DAL.Repositories.Implements
 
         public async Task<IEnumerable<MeetingParticipant>> GetMeetingParticipantsByMemberIdInclude(string memId)
         {
-            return _context.MeetingParticipants.Where(m => m.MemberId == memId).Include(n => n.Meeting).ToList();
+            return _context.MeetingParticipants.Where(m => m.MemberId == memId).Include(m => m.Meeting).ToList();
         }
 
         public async Task<int> GetParticipationNoMeetingParticipantById(int meetingId, string memberId)

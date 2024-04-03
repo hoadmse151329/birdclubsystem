@@ -7,7 +7,11 @@ namespace DAL.Models
     {
         public User()
         {
+            Blogs = new HashSet<Blog>();
+            Comments = new HashSet<Comment>();
             Feedbacks = new HashSet<Feedback>();
+            News = new HashSet<News>();
+            Transactions = new HashSet<Transaction>();
         }
 
         public int UserId { get; set; }
@@ -19,6 +23,10 @@ namespace DAL.Models
         public string? ImagePath { get; set; }
 
         public virtual Member? Member { get; set; }
+        public virtual ICollection<Blog> Blogs { get; set; }
+        public virtual ICollection<Comment> Comments { get; set; }
         public virtual ICollection<Feedback> Feedbacks { get; set; }
+        public virtual ICollection<News> News { get; set; }
+        public virtual ICollection<Transaction> Transactions { get; set; }
     }
 }

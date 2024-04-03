@@ -1,0 +1,40 @@
+﻿@{
+    ViewData["Title"] = "Pay with VnPay";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Pay with VnPay</h1>
+</div>
+
+<div class="table-responsive">
+    <form action="/VnPay/CreatePaymentUrl" id="frmCreateTransaction" method="post">
+        <div class="form-group">
+            <label for="transactiontype">Transaction Type</label>
+            <select name="TransactionType" id="transactiontype" class="form-control">
+                <option value="membership-renewal">Membership Renewal</option>
+                <option value="event-registration">Event Registration</option>
+                <option value="donation">Donation</option>
+            </select>
+        </div>
+        <br/>
+        <div class="form-group">
+            <label for="Name">User Name</label>
+            <input class="form-control"
+                    id="Name"
+                    name="Name"
+                    type="text"
+                    value="Nguyen Van A" />
+        </div>
+        <br/>
+        <div class="form-group">
+            <label for="Value">Value</label>
+            <input class="form-control"
+                   id="Value"
+                   name="Value"
+                   type="text"
+                   value="20000000">
+        </div>
+        <br/>
+        <button type="submit" class="btn btn-primary">Checkout</button>
+    </form>
+</div>

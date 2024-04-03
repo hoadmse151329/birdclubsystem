@@ -13,5 +13,7 @@ namespace DAL.Models
         public DateTime? TransactionDate { get; set; }
         public string? Status { get; set; }
         public string? DocNo { get; set; }
+
+        public virtual User? User { get; set; }
     }
 }

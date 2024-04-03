@@ -79,14 +79,38 @@ namespace BAL.Services.Implements
         }
         public void Create(FieldTripViewModel entity)
         {
+            var loc = _unitOfWork.LocationRepository.GetLocationByName(entity.Address).Result;
+
+            if (!loc.Equals(entity.Address.Trim()))
+            {
+                _unitOfWork.LocationRepository.Update(loc = new Location
+                {
+                    LocationName = entity.Address,
+                    Description = loc.Description
+                });
+                loc = _unitOfWork.LocationRepository.GetLocationByName(entity.Address).Result;
+            }
             var trip = _mapper.Map<FieldTrip>(entity);
+            trip.LocationId = loc.LocationId;
             _unitOfWork.FieldTripRepository.Create(trip);
             _unitOfWork.Save();
         }
 
         public void Update(FieldTripViewModel entity)
         {
+            var loc = _unitOfWork.LocationRepository.GetLocationByTripId(entity.TripId.Value).Result;
+
+            if (!loc.Equals(entity.Address.Trim()))
+            {
+                _unitOfWork.LocationRepository.Update(loc = new Location
+                {
+                    LocationName = entity.Address,
+                    Description = loc.Description
+                });
+                loc = _unitOfWork.LocationRepository.GetLocationByTripId(entity.TripId.Value).Result;
+            }
             var trip = _mapper.Map<FieldTrip>(entity);
+            trip.LocationId = loc.LocationId;
             _unitOfWork.FieldTripRepository.Update(trip);
             _unitOfWork.Save();
         }

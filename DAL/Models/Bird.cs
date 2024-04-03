@@ -8,6 +8,7 @@ namespace DAL.Models
         public Bird()
         {
             BirdMedia = new HashSet<BirdMedia>();
+            ContestScores = new HashSet<ContestScore>();
         }
 
         public int BirdId { get; set; }
@@ -24,5 +25,6 @@ namespace DAL.Models
 
         public virtual Member Member { get; set; } = null!;
         public virtual ICollection<BirdMedia> BirdMedia { get; set; }
+        public virtual ICollection<ContestScore> ContestScores { get; set; }
     }
 }

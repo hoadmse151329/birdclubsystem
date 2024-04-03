@@ -39,6 +39,22 @@ namespace DAL.Repositories.Implements
                 .FirstOrDefault(m => m.LocationId.Equals(met.LocationId));
         }
 
+        public async Task<Location?> GetLocationByTripId(int tripId)
+        {
+            var trip = await _context.FieldTrips.AsNoTracking().SingleOrDefaultAsync(f => f.TripId.Equals(tripId));
+
+            return _context.Locations.AsNoTracking()
+                .FirstOrDefault(f => f.LocationId.Equals(trip.LocationId));
+        }
+
+        public async Task<Location?> GetLocationByContestId(int contestId)
+        {
+            var con = await _context.Contests.AsNoTracking().SingleOrDefaultAsync(c => c.ContestId.Equals(contestId));
+
+            return _context.Locations.AsNoTracking()
+                .FirstOrDefault(c => c.LocationId.Equals(con.LocationId));
+        }
+
         public async Task<string?> GetLocationNameById(int id)
         {
             return _context.Locations.AsNoTracking()

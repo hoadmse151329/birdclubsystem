@@ -45,16 +45,21 @@ namespace DAL.Repositories.Implements
             return _context.FieldTripParticipants.Where(trip => trip.TripId == tripId).Include(f => f.Member).ToList();
         }
 
-        public async Task<IEnumerable<FieldTripParticipant>> GetFieldTripParticipantsByMemberId(string memId)
+        public async Task<IEnumerable<FieldTripParticipant>> GetFieldTripParticipantsByMemberId(string memberId)
         {
-            return _context.FieldTripParticipants.Where(m => m.MemberId == memId).ToList();
+            return _context.FieldTripParticipants.Where(m => m.MemberId == memberId).ToList();
         }
         public async Task<IEnumerable<FieldTripParticipant>> GetFieldTripParticipantsByMemberIdInclude(string memId)
         {
             return _context.FieldTripParticipants.Where(m => m.MemberId == memId).Include(f => f.Trip).ToList();
         }
 
-        public async Task<int> GetParticipantNoFieldTripParticipantById(int tripId, string memberId)
+        public async Task<IEnumerable<FieldTripParticipant>> GetFieldTripParticipantsByMemberIdInclude(string memberId)
+        {
+            return _context.FieldTripParticipants.Where(m => m.MemberId == memberId).Include(f => f.Trip).ToList();
+        }
+
+        public async Task<int> GetParticipationNoFieldTripParticipantById(int tripId, string memberId)
         {
             var mempart = _context.FieldTripParticipants.Find(tripId, memberId);
             if (mempart != null) return Int32.Parse(mempart.ParticipantNo);

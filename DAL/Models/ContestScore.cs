@@ -12,5 +12,7 @@ namespace DAL.Models
         public decimal? Score { get; set; }
         public DateTime? ScoreDate { get; set; }
         public string? Comment { get; set; }
+
+        public virtual Bird? Bird { get; set; }
     }
 }
