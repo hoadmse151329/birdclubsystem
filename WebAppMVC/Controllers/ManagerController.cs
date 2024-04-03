@@ -8,6 +8,7 @@ using WebAppMVC.Constants;
 using WebAppMVC.Models.FieldTrip;
 using WebAppMVC.Models.Location;
 using WebAppMVC.Models.Meeting;
+using WebAppMVC.Models.Contest;
 // thêm crud của meeting, fieldtrip, contest.
 namespace WebAppMVC.Controllers
 {
@@ -295,7 +296,7 @@ namespace WebAppMVC.Controllers
             }
             else ManagerAPI_URL += "FieldTrip/All";
 
-            dynamic testmodel = new ExpandoObject();
+            dynamic testmodel2 = new ExpandoObject();
 
             string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
             if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
@@ -338,9 +339,9 @@ namespace WebAppMVC.Controllers
                     + listFieldTripResponse.ErrorMessage + "\n" + listLocationResponse.ErrorMessage;
                 return View("ManagerIndex");
             }
-            testmodel.FieldTrips = listFieldTripResponse.Data;
-            testmodel.Locations = listLocationResponse.Data;
-            return View(testmodel);
+            testmodel2.FieldTrips = listFieldTripResponse.Data;
+            testmodel2.Locations = listLocationResponse.Data;
+            return View(testmodel2);
         }
         [HttpGet("FieldTrip/{id:int}")]
         /*[Route("Manager/FieldTrip/{id:int}")]*/
@@ -360,7 +361,6 @@ namespace WebAppMVC.Controllers
             string? usrId = HttpContext.Session.GetString("USER_ID");
             if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
 
-
             TempData["ROLE_NAME"] = role;
 
             var fieldtripPostResponse = await methcall.CallMethodReturnObject<GetFieldTripPostResponse>(
@@ -374,23 +374,24 @@ namespace WebAppMVC.Controllers
                                 options: options,
                                 methodName: "GET",
                                 url: ManagerFieldTripDetailAPI_URL,
+                                accessToken: accToken,
                                 _logger: _logger);
             if (fieldtripPostResponse == null)
             {
                 ViewBag.error =
-                    "Error while processing your request! (Getting Field Trip!).\n Field Trip Not Found!";
+                    "Error while processing your request! (Getting FieldTrip!).\n FieldTrip Not Found!";
                 return RedirectToAction("ManagerFieldTrip");
             }
             if (!fieldtripPostResponse.Status)
             {
                 _logger.LogInformation("Error while processing your request: " + fieldtripPostResponse.Status + " , Error Message: " + fieldtripPostResponse.ErrorMessage);
                 ViewBag.error =
-                    "Error while processing your request! (Getting Field Trip Post!).\n"
+                    "Error while processing your request! (Getting FieldTrip Post!).\n"
                     + fieldtripPostResponse.ErrorMessage;
                 return RedirectToAction("ManagerFieldTrip");
             }
             fieldtripDetailBigModel.FieldTripDetails = fieldtripPostResponse.Data;
-            fieldtripDetailBigModel.FieldTripParticipants = fieldtrippartPostResponse.Data;
+            fieldtripDetailBigModel.FieldTripParticipants = fieldtripPostResponse.Data;
             return View(fieldtripDetailBigModel);
         }
         [HttpPost("FieldTrip/Update/{id:int}")]
@@ -522,14 +523,245 @@ namespace WebAppMVC.Controllers
             }
             return RedirectToAction("ManagerFieldTrip");
         }
-        public IActionResult ManagerBirdContest()
-        {
-            return View();
-        }
-        public IActionResult ManagerBirdContestDetail()
-        {
-            return View();
-        }
+            [HttpGet("Contest")]
+            public async Task<IActionResult> ManagerContest([FromQuery] string search)
+            {
+                _logger.LogInformation(search);
+                string LocationAPI_URL_All = ManagerAPI_URL + "Location/All";
+                if (search != null || !string.IsNullOrEmpty(search))
+                {
+                    search = search.Trim();
+                    ManagerAPI_URL += "Contest/Search?contestName=" + search;
+                }
+                else ManagerAPI_URL += "Contest/All";
+
+                dynamic testmodel3 = new ExpandoObject();
+
+                string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
+                if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+
+                string? role = HttpContext.Session.GetString("ROLE_NAME");
+                if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
+                else if (!role.Equals("Manager")) return RedirectToAction("Login", "Auth");
+
+                string? usrId = HttpContext.Session.GetString("USER_ID");
+                if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
+                TempData["ROLE_NAME"] = role;
+
+                var listLocationResponse = await methcall.CallMethodReturnObject<GetLocationResponseByList>(
+                    _httpClient: _httpClient,
+                    options: options,
+                    methodName: "GET",
+                    url: LocationAPI_URL_All,
+                    _logger: _logger);
+
+                var listContestResponse = await methcall.CallMethodReturnObject<GetContestResponseByList>(
+                    _httpClient: _httpClient,
+                    options: options,
+                    methodName: "GET",
+                    url: ManagerAPI_URL,
+                    _logger: _logger);
+
+                if (listContestResponse == null || listLocationResponse == null)
+                {
+                    _logger.LogInformation(
+                        "Error while processing your request! (Getting List Contest!). List was Empty!: " + listContestResponse);
+                    ViewBag.error =
+                        "Error while processing your request! (Getting List Contest!).\n List was Empty!";
+                    return View("ManagerIndex");
+                }
+                else
+                if (!listContestResponse.Status || !listLocationResponse.Status)
+                {
+                    ViewBag.error =
+                        "Error while processing your request! (Getting List Meeting!).\n"
+                        + listContestResponse.ErrorMessage + "\n" + listLocationResponse.ErrorMessage;
+                    return View("ManagerIndex");
+                }
+                testmodel3.Contests = listContestResponse.Data;
+                testmodel3.Locations = listLocationResponse.Data;
+                return View(testmodel3);
+            }
+            [HttpGet("Contest/{id:int}")]
+            /*[Route("Manager/Contest/{id:int}")]*/
+            public async Task<IActionResult> ManagerContestDetail(int id)
+            {
+                string ManagerContestDetailAPI_URL = ManagerAPI_URL + "Contest/AllParticipants/" + id;
+                ManagerAPI_URL += "Contest/" + id;
+                dynamic contestDetailBigModel = new ExpandoObject();
+
+                string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
+                if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+
+                string? role = HttpContext.Session.GetString("ROLE_NAME");
+                if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
+                else if (!role.Equals("Manager")) return RedirectToAction("Login", "Auth");
+
+                string? usrId = HttpContext.Session.GetString("USER_ID");
+                if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
+
+                TempData["ROLE_NAME"] = role;
+
+                var contestPostResponse = await methcall.CallMethodReturnObject<GetContestPostResponse>(
+                                    _httpClient: _httpClient,
+                                    options: options,
+                                    methodName: "GET",
+                                    url: ManagerAPI_URL,
+                                    _logger: _logger);
+                var contestpartPostResponse = await methcall.CallMethodReturnObject<GetListContestParticipation>(
+                                    _httpClient: _httpClient,
+                                    options: options,
+                                    methodName: "GET",
+                                    url: ManagerContestDetailAPI_URL,
+                                    accessToken: accToken,
+                                    _logger: _logger);
+                if (contestPostResponse == null)
+                {
+                    ViewBag.error =
+                        "Error while processing your request! (Getting Contest!).\n Contest Not Found!";
+                    return RedirectToAction("ManagerContest");
+                }
+                if (!contestPostResponse.Status)
+                {
+                    _logger.LogInformation("Error while processing your request: " + contestPostResponse.Status + " , Error Message: " + contestPostResponse.ErrorMessage);
+                    ViewBag.error =
+                        "Error while processing your request! (Getting Contest Post!).\n"
+                        + contestPostResponse.ErrorMessage;
+                    return RedirectToAction("ManagerContest");
+                }
+                contestDetailBigModel.ContestDetails = contestPostResponse.Data;
+                contestDetailBigModel.ContestParticipants = contestpartPostResponse.Data;
+                return View(contestDetailBigModel);
+            }
+            [HttpPost("Contest/Update/{id:int}")]
+            /*[Route("Manager/Contest/Update/{id:int}")]*/
+            public async Task<IActionResult> ManagerUpdateContestDetail(
+                int id,
+                ContestViewModel meetView
+                )
+            {
+                ManagerAPI_URL += "Contest/Update/" + id;
+
+                string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
+                if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+
+                string? role = HttpContext.Session.GetString("ROLE_NAME");
+                if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
+                else if (!role.Equals("Manager")) return RedirectToAction("Login", "Auth");
+
+                string? usrId = HttpContext.Session.GetString("USER_ID");
+                if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
+
+                TempData["ROLE_NAME"] = role;
+
+                var contestPostResponse = await methcall.CallMethodReturnObject<GetContestPostResponse>(
+                                    _httpClient: _httpClient,
+                                    options: options,
+                                    methodName: "PUT",
+                                    url: ManagerAPI_URL,
+                                    inputType: meetView,
+                                    accessToken: accToken,
+                                    _logger: _logger);
+                if (contestPostResponse == null)
+                {
+                    ViewBag.error =
+                        "Error while processing your request! (Updating Contest!).\n Contest Not Found!";
+                    return RedirectToAction("ManagerContest");
+                }
+                if (!contestPostResponse.Status)
+                {
+                    _logger.LogInformation("Error while processing your request: " + contestPostResponse.Status + " , Error Message: " + contestPostResponse.ErrorMessage);
+                    ViewBag.error =
+                        "Error while processing your request! (Updating Contest Post!).\n"
+                        + contestPostResponse.ErrorMessage;
+                    return RedirectToAction("ManagerContest");
+                }
+                return RedirectToAction("ManagerContestDetail", "Manager", new { id = id });
+            }
+            [HttpPost("Contest/Create")]
+            /*[Route("Manager/Contest/Update/{id:int}")]*/
+            public async Task<IActionResult> ManagerCreateContest(ContestViewModel contestView)
+            {
+                ManagerAPI_URL += "Contest/Create";
+
+                string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
+                if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+
+                string? role = HttpContext.Session.GetString("ROLE_NAME");
+                if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
+                else if (!role.Equals("Manager")) return RedirectToAction("Login", "Auth");
+
+                string? usrId = HttpContext.Session.GetString("USER_ID");
+                if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
+
+                TempData["ROLE_NAME"] = role;
+
+                var contestPostResponse = await methcall.CallMethodReturnObject<GetContestPostResponse>(
+                                    _httpClient: _httpClient,
+                                    options: options,
+                                    methodName: "POST",
+                                    url: ManagerAPI_URL,
+                                    inputType: contestView,
+                                    accessToken: accToken,
+                                    _logger: _logger);
+                if (contestPostResponse == null)
+                {
+                    ViewBag.error =
+                        "Error while processing your request! (Create Contest!).\n Contest Not Found!";
+                    return RedirectToAction("ManagerContest");
+                }
+                if (!contestPostResponse.Status)
+                {
+                    _logger.LogInformation("Error while processing your request: " + contestPostResponse.Status + " , Error Message: " + contestPostResponse.ErrorMessage);
+                    ViewBag.error =
+                        "Error while processing your request! (Create Contest Post!).\n"
+                        + contestPostResponse.ErrorMessage;
+                    return RedirectToAction("ManagerContest");
+                }
+                return RedirectToAction("ManagerContest");
+            }
+
+            [HttpPost("Contest/Update/Cancel/{id:int}")]
+            public async Task<IActionResult> ManagerCancelContest(
+                int id)
+            {
+                ManagerAPI_URL += "Contest/Update/Cancel/" + id;
+
+                string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
+                if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+
+                string? role = HttpContext.Session.GetString("ROLE_NAME");
+                if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
+                else if (!role.Equals("Manager")) return RedirectToAction("Login", "Auth");
+
+                string? usrId = HttpContext.Session.GetString("USER_ID");
+                if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
+
+                TempData["ROLE_NAME"] = role;
+
+                var contestPostResponse = await methcall.CallMethodReturnObject<GetContestPostResponse>(
+                                    _httpClient: _httpClient,
+                                    options: options,
+                                    methodName: "GET",
+                                    url: ManagerAPI_URL,
+                                    accessToken: accToken,
+                                    _logger: _logger);
+                if (contestPostResponse == null)
+                {
+                    ViewBag.error =
+                        "Error while processing your request! (Updating Contest!).\n Contest Not Found!";
+                    return RedirectToAction("ManagerContest");
+                }
+                if (!contestPostResponse.Status)
+                {
+                    _logger.LogInformation("Error while processing your request: " + contestPostResponse.Status + " , Error Message: " + contestPostResponse.ErrorMessage);
+                    ViewBag.error =
+                        "Error while processing your request! (Updating Contest Post!).\n"
+                        + contestPostResponse.ErrorMessage;
+                    return RedirectToAction("ManagerContest");
+                }
+                return RedirectToAction("ManagerContest");
+            }
         public IActionResult ManagerProfile()
         {
             return View();

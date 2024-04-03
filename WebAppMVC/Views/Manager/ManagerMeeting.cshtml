@@ -59,7 +59,7 @@
                                 </a>
                             </li> 
                             <li data-toggle="tooltip"data-placement="right" title="Manage Bird Contest">
-                                <a href="@Url.Action("ManagerBirdContest", "Manager")" li class="dropdown-item">
+                                <a href="@Url.Action("ManagerContest", "Manager")" li class="dropdown-item">
                                     <i class='bx bx-cloud-rain'></i>
                                     <span class="title">Bird Contest</span>
                                 </a>
@@ -182,7 +182,6 @@
                                             <div class="col-sm-6 d-flex justify-content-end">
                                                 <form asp-action="ManagerMeeting" asp-controller="Manager" method="get" asp-route-search="@search">
                    
-                                                        <label for="search" class="header__search-inputlabel">Search</label>
                                                             <input asp-for="@search" class="form-control" type="text" name="search" placeholder="Search..." value="@search">
                                                             <button class="bx bx-search-alt" type="submit">
                                                                 <i class="sbi sbi--search mirrored header__search-submit-icon"></i>
