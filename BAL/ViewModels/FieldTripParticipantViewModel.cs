@@ -10,6 +10,7 @@ namespace BAL.ViewModels
     {
         public int? TripId { get; set; }
         public int? MemberId { get; set; }
+        public string? MemberName { get; set; }
         public string? ParticipantNo { get; set; }
     }
 }

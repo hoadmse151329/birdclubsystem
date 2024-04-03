@@ -413,6 +413,8 @@ namespace DAL.Models
 
                 entity.Property(e => e.NumberOfParticipants).HasColumnName("numberOfParticipants");
 
+                entity.Property(e => e.NumberOfParticipantsLimit).HasColumnName("numberOfParticipantsLimit");
+
                 entity.Property(e => e.RegistrationDeadline)
                     .HasColumnType("date")
                     .HasColumnName("registrationDeadline");

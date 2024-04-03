@@ -59,7 +59,7 @@
                                 </a>
                             </li> 
                             <li data-toggle="tooltip"data-placement="right" title="Manage Bird Contest">
-                                <a href="@Url.Action("ManagerBirdContest", "Manager")" li class="dropdown-item">
+                                <a href="@Url.Action("ManagerContest", "Manager")" li class="dropdown-item">
                                     <i class='bx bx-cloud-rain'></i>
                                     <span class="title">Bird Contest</span>
                                 </a>
@@ -157,7 +157,6 @@
                         <div class="card-body">
                             <!-- Nav tabs -->
                             <ul class="nav nav-tabs">
-                                <!-- dung vong for o day -->
                                 <li class="nav-item">
                                     <a class="nav-link active" data-toggle="tab" href="#home1">
                                         <i class='bx bx-home-alt-2'></i>
@@ -182,13 +181,14 @@
                                             </div>
                                             <div class="col-sm-6 d-flex justify-content-end">
                                                 <form asp-action="ManagerMeeting" asp-controller="Manager" method="get" asp-route-search="@search">
-                                                    <div>
-                                                        <label>
+                   
                                                             <input asp-for="@search" class="form-control" type="text" name="search" placeholder="Search..." value="@search">
-                                                            <button class="bx bx-search-alt" type="submit"></button>
+                                                            <button class="bx bx-search-alt" type="submit">
+                                                                <i class="sbi sbi--search mirrored header__search-submit-icon"></i>
+                                                            </button>
                                                             @*<i class='bx bx-search-alt'></i>*@
-                                                        </label>
-                                                    </div>
+                                                        
+                                                    
                                                 </form>
                                             </div>
                                         </div>
@@ -197,7 +197,7 @@
                                         <div class="col-xl-3 col-lg-6 col-sm-6 my-3 item">
                                             <div class="card card-child">
                                                 <div class="card-body add-room">
-                                                    <button class="border-0" data-toggle="modal"  data-target="#addMeeting1">
+                                                    <button class="border-0" data-toggle="modal"  data-target="#addMeeting">
                                                         <span>Add Meeting</span>
                                                         <i class='bx bx-add-to-queue'></i>
                                                     </button>
@@ -239,8 +239,8 @@
                                                                     <span>@data.EndDate.Value.ToString("MM/dd/yyyy")</span>
                                                                 </li>
                                                                 <li>
-                                                                    <h6>Number of participants:</h6>
-                                                                    <span>@data.NumberOfParticipants</span>
+                                                                    <h6>Maximum Participants:</h6>
+                                                                    <span>@data.NumberOfParticipantsLimit</span>
                                                                 </li>
                                                                 <li>
                                                                     <h6>Location:</h6>
@@ -260,24 +260,33 @@
                                                     <div class="form-group mx-auto">
                                                         <form asp-action="Meeting" asp-controller="Manager" method="get" asp-route-id="@data.MeetingId">
                                                             <button class="btn btn-primary clickable-row" type="submit">See Detail</button>
-                                                        </form>
-                                                        <form asp-action="ManagerMeetingDelete" asp-controller="Manager" method="post" asp-route-id="@data.MeetingId">
-                                                            <button class="btn btn-danger" data-toggle="modal" data-target="#deleteRoom" type="submit">Delete Meeting</button>
-                                                        </form>
+                                                        </form>                                                        
+                                                            <button class="btn btn-danger" data-toggle="modal" data-target="#deleteMeeting" type="submit">Cancel Meeting</button>
                                                     </div>
                                                 </div>
                                             </div>
+                                                <!-- remove Meeting -->
+    <div id="deleteMeeting" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="content">
+            <div class="modal-content">
+                <form action="#">
+                    <div class="card-body">
+                        <div class="del-title">
+                            <i class='bx bx-error-circle'></i>
+                            <h2>Are you sure want to delete ?</h2> 
+                        </div>
+                        <div class="del-submit d-flex justify-content-center">       
+                            <form asp-action="ManagerCancelMeeting" asp-controller="Manager" method="post" asp-route-id="@data.MeetingId">
+                                <button type="submit" name="action" value="deleteMeeting" class="btn btn-success">Save</button>
+                                </form>
+                                <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
+                            </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
                                         }
-
-                                    <div class="pagination d-flex justify-content-center">
-                                        <li class="page-item previous-page disabled"><a href="#" class="page-link">Previous</a></li>
-                                        <li class="page-item dots">...</li>
-                                        <li class="page-item current-page active"><a href="#" class="page-link">2</a></li>
-                                        <li class="page-item current-page"><a href="#" class="page-link">3</a></li>
-                                        <li class="page-item current-page"><a href="#" class="page-link">4</a></li>
-                                        <li class="page-item dots">...</li>
-                                        <li class="page-item next-page"><a href="#" class="page-link">Posterior</a></li>
-                                    </div>
                                 </div>                               
                             <!-- end tapnet -->
                         </div>
@@ -288,7 +297,7 @@
     </div>
 
     <!-- add new Room -->
-    <div id="addMeeting1" class="modal fade" role="dialog">
+    <div id="addMeeting" class="modal fade" role="dialog">
         <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
             <div class="modal-content modal-addRoom">
                 <div class="modal-header">
@@ -324,9 +333,9 @@
                                     <span asp-validation-for="@createMeet.EndDate" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
-                                    <label asp-for="@createMeet.NumberOfParticipants"  class="col-md-3 col-form-label mt-3 text-md-right">Number of Participants</label>
-                                    <input asp-for="@createMeet.NumberOfParticipants" value="@createMeet.NumberOfParticipants" type="number" name="numberOfParticipants" class="form-control col-md-7 mt-3" required>
-                                    <span asp-validation-for="@createMeet.NumberOfParticipants" id="error_message"
+                                    <label asp-for="@createMeet.NumberOfParticipantsLimit"  class="col-md-3 col-form-label mt-3 text-md-right">Maximum Participants</label>
+                                    <input asp-for="@createMeet.NumberOfParticipantsLimit" value="@createMeet.NumberOfParticipantsLimit" type="number" name="NumberOfParticipantsLimit" class="form-control col-md-7 mt-3" required>
+                                    <span asp-validation-for="@createMeet.NumberOfParticipantsLimit" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
                                     <label asp-for="@createMeet.Host" class="col-md-3 col-form-label mt-3 text-md-right">Host</label>
@@ -365,35 +374,23 @@
             </div>
         </div>
     </div>
-    
-    
-    <!-- remove Meeting -->
-    <div id="deleteMeeting" class="modal fade" role="dialog">
-        <div class="modal-dialog modal-dialog-centered" role="content">
-            <div class="modal-content">
-                <form action="#">
-                    <div class="card-body">
-                        <div class="del-title">
-                            <i class='bx bx-error-circle'></i>
-                            <h2>Are you sure want to delete ?</h2> 
-                        </div>
-                        <div class="del-submit d-flex justify-content-center">                                 
-                                <button type="submit" name="action" value="DeleteRoom" class="btn btn-success">Save</button>
-                                <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
-                            </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    
+       
     <!-- jQuery first, then Popper.js, then Bootstrap JS. -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+        referrerpolicy="no-referrer"></script>
+        <!-- Jquery Waypoint -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>
+        <!-- BS4 JS -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.5/umd/popper.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- BS4 carousels -->
+        <!-- main js -->
+        <script src="~/js/user-script.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js"></script>
     <script src="https://unpkg.com/filepond-plugin-file-poster/dist/filepond-plugin-file-poster.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="~/js/owner-script.js"></script>
     <script>
     function redirectToDetailPage() {
         window.location.href = '@Url.Action("ManagerMeetingDetail", "Manager")';

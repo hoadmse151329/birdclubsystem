@@ -7,12 +7,14 @@ using WebAppMVC.Constants;
 using WebAppMVC.Models.FieldTrip;
 using WebAppMVC.Models.Location;
 using WebAppMVC.Models.Meeting;
+using static Org.BouncyCastle.Math.EC.ECCurve;
 
 namespace WebAppMVC.Controllers
 {
 	public class FieldTripController : Controller
 	{
 		private readonly ILogger<FieldTripController> _logger;
+        private readonly IConfiguration _config;
 		private readonly HttpClient _httpClient = null;
 		private string FieldTripAPI_URL = "";
 		private readonly JsonSerializerOptions options = new JsonSerializerOptions
@@ -20,13 +22,14 @@ namespace WebAppMVC.Controllers
 			PropertyNameCaseInsensitive = true,
 		};
 		private MethodCaller methcall = new();
-		public FieldTripController(ILogger<FieldTripController> logger)
+		public FieldTripController(ILogger<FieldTripController> logger, IConfiguration config)
 		{
 			_logger = logger;
+            _config = config;
 			_httpClient = new HttpClient();
 			var contentType = new MediaTypeWithQualityHeaderValue("application/json");
             _httpClient.DefaultRequestHeaders.Accept.Add(contentType);
-            _httpClient.BaseAddress = new Uri("https://localhost:7022");
+            _httpClient.BaseAddress = new Uri(config.GetSection("DefaultApiUrl:ConnectionString").Value);
 			FieldTripAPI_URL = "/api/FieldTrip";
         }
 
@@ -69,7 +72,7 @@ namespace WebAppMVC.Controllers
                     + listTripResponse.ErrorMessage + "\n" + listLocationResponse.ErrorMessage;
                 Redirect("~/Home/Index");
             }
-            testmodel.Meetings = listTripResponse.Data;
+            testmodel.FieldTrips = listTripResponse.Data;
             testmodel.Locations = listLocationResponse.Data;
             return View(testmodel);
         }
@@ -81,10 +84,60 @@ namespace WebAppMVC.Controllers
 		{
 			return View();
 		}
-		public IActionResult FieldTripPostDayByDay()
+        [HttpGet("{id:int}")]
+        [Route("FieldTrip/FieldTripPost/{id:int}")]
+        public async Task<IActionResult> FieldTripPost(int id)
 		{
-			return View();
-		}
+            FieldTripAPI_URL += "/";
+            string? role = HttpContext.Session.GetString("ROLE_NAME");
+            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
+            string? usrId = HttpContext.Session.GetString("USER_ID");
+
+            TempData["ROLE_NAME"] = role;
+
+            GetFieldTripPostResponse? fieldtripPostResponse = new();
+
+            if (!string.IsNullOrEmpty(accToken) && !string.IsNullOrEmpty(usrId))
+            {
+                FieldTripAPI_URL += "Participant/" + id;
+                fieldtripPostResponse = await methcall.CallMethodReturnObject<GetFieldTripPostResponse>(
+                                   _httpClient: _httpClient,
+                                   options: options,
+                                   methodName: "POST",
+                                   url: FieldTripAPI_URL,
+                                   _logger: _logger,
+                                   inputType: usrId,
+                                   accessToken: accToken);
+            }
+            else
+            {
+                FieldTripAPI_URL += id;
+                fieldtripPostResponse = await methcall.CallMethodReturnObject<GetFieldTripPostResponse>(
+                                   _httpClient: _httpClient,
+                                   options: options,
+                                   methodName: "GET",
+                                   url: FieldTripAPI_URL,
+                                   _logger: _logger);
+            }
+            if (fieldtripPostResponse == null)
+            {
+                //_logger.LogInformation("Username or Password is invalid: " + meetPostResponse.Status + " , Error Message: " + meetPostResponse.ErrorMessage);
+                ViewBag.error =
+                    "Error while processing your request! (Getting Meeting!).\n Meeting Not Found!";
+                View("Index");
+            }
+
+            var fieldtripmodel = fieldtripPostResponse.Data;
+            if (!fieldtripPostResponse.Status)
+            {
+                _logger.LogInformation("Username or Password is invalid: " + fieldtripPostResponse.Status + " , Error Message: " + fieldtripPostResponse.ErrorMessage);
+                ViewBag.error =
+                    "Error while processing your request! (Getting Meeting Post!).\n"
+                    + fieldtripPostResponse.ErrorMessage;
+                View("Index");
+            }
+            return View(fieldtripmodel);
+        }
 		public IActionResult FieldTripPostGettingThere()
 		{
 			return View();

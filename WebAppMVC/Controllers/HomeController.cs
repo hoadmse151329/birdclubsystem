@@ -15,6 +15,7 @@ namespace WebAppMVC.Controllers
 	public class HomeController : Controller
 	{
         private readonly ILogger<HomeController> _logger;
+        private readonly IConfiguration _config;
         private readonly HttpClient _httpClient = null;
         private string HomeAPI_URL = "";
         private JsonSerializerOptions options = new JsonSerializerOptions
@@ -23,13 +24,14 @@ namespace WebAppMVC.Controllers
         };
         private MethodCaller methcall = new();
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IConfiguration config)
 		{
             _logger = logger;
+            _config = config;
             _httpClient = new HttpClient();
             var contentType = new MediaTypeWithQualityHeaderValue("application/json");
             _httpClient.DefaultRequestHeaders.Accept.Add(contentType);
-            _httpClient.BaseAddress = new Uri("https://localhost:7022");
+            _httpClient.BaseAddress = new Uri(config.GetSection("DefaultApiUrl:ConnectionString").Value);
             HomeAPI_URL = "/api/";
         }
         [HttpGet]

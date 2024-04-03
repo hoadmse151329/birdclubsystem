@@ -1,5 +1,8 @@
-﻿﻿@{
+﻿@model dynamic﻿
+@{
     ViewData["Title"] = "Field Trip Page";
+    List<BAL.ViewModels.LocationViewModel> locationList = Model.Locations;
+    List<BAL.ViewModels.FieldTripViewModel> fieldtripList = Model.FieldTrips;
 }
 
 <html lang="en">
@@ -24,7 +27,7 @@
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")" class="text-decoration-none">Home</a></li>
-                <li class="breadcrumb-item active" aria-current="page">All Meetings</li>
+                <li class="breadcrumb-item active" aria-current="page">All FieldTrips</li>
             </ol>
         </nav>
     </div>
@@ -38,30 +41,35 @@
                     <div class="tabs-left-title">
                         <h3 class="heading">Filter</h3>
                     </div>
-                    <div class="tabs-left-filter">
-                        <div class="d-flex">
-    <div class="input-group mb-3 mr-3">
-        <select class="custom-select" id="inputGroupSelect01">
-            <option selected>District</option>
-        </select>
-    </div>
-    <div class="input-group mb-3 mr-3">
-        <select class="custom-select" id="inputGroupSelect02">
-            <option selected>District</option>
-            
+                    <div class="tabs-left-filter" style="background-color:white">
+    <div class="input-group mb-3">
+        <select class="custom-select" name="district" id="inputGroupSelect02">
+            <option value="">District</option>
+            @for (int i = 0; i < locationList.Count; i++)
+            {
+                <option value="@i">@locationList[i].District</option>
+            }
         </select>
     </div>
     <div class="input-group mb-3">
-        <select class="custom-select" id="inputGroupSelect03">
-            <option selected>District</option>
-            
+        <select class="custom-select" name="district" id="inputGroupSelect02">
+            <option value="">District</option>
+            @for (int i = 0; i < locationList.Count; i++)
+            {
+                <option value="@i">@locationList[i].District</option>
+            }
+        </select>
+    </div>
+    <div class="input-group mb-3">
+        <select class="custom-select" name="district" id="inputGroupSelect02">
+            <option value="">District</option>
+            @for (int i = 0; i < locationList.Count; i++)
+            {
+                <option value="@i">@locationList[i].District</option>
+            }
         </select>
     </div>
 </div>
-                        <div class="filter-search text-center">
-                            <button class="button--primary"><i class="fa fa-filter"></i> Filter</button>
-                        </div>
-                    </div>
                     <div class="col-bg">
                         <img class="bg-1" src="~/images/chao-mao.png"></img>
                         <img class="bg-2" src="~/images/chao-mao-2.png"></img>
@@ -71,6 +79,14 @@
 
             <div class="col-9">
                 <div class="content__list row">
+                    @{
+                        if (ViewBag.error != null)
+                        {
+                            <span class="text-danger">@ViewBag.error</span>
+                        }
+                    }
+                    @foreach (var data in fieldtripList)
+                    {
                         <div class="col-4 p-0">
                             <div class="room-item">
 
@@ -78,20 +94,21 @@
                                     <img class="img-fluid" src="~/images/meeting.png" alt="nt1">
                                 </a>
                                 <div class="club-title">
-                                    <a href="#" class="text-decoration-none">MeetingName</a>
+                                    <a href="#" class="text-decoration-none">@data.TripName</a>
                                 </div>
 
                                 <p class="club-price"><i class="fas fa-calendar-alt"></i>
-                                    
+                                    From @data.StartDate.Value.ToString("MM-dd-yyyy") 
+                                    to @data.EndDate.Value.ToString("MM-dd-yyyy")</p>
                                 <div class="club-address" data-toggle="tooltip" data-placement="auto"
-                                    title="City">
+                                    title="@data.City">
                                     <p class="address truncate">
                                         <i class="fas fa-map-marker-alt"></i>
-                                        <span class="district">Address District</span>, <span class="city">City</span></p>
+                                        <span class="district">Address @data.District</span>, <span class="city">@data.City</span></p>
                                 </div>
                                 <div class="d-flex justify-content-between">
-                                    <p class="club-price"><i class="fas fa-comment-alt"></i>Description</p>
-                                    <form asp-action="MeetingPost" asp-controller="Meeting" method="get" asp-route-id="MeetingId">
+                                    <p class="club-price"><i class="fas fa-comment-alt"></i>@data.Description</p>
+                                    <form asp-action="FieldTripPost" asp-controller="FieldTrip" method="get" asp-route-id="@data.TripId">
                                         <button class="button--primary text-white text-wrapper-16" type="submit">See Now</button>
                                     </form>
                                 </div>

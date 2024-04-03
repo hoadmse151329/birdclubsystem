@@ -10,5 +10,6 @@ namespace DAL.Repositories.Interfaces
 {
     public interface IFieldtripInclusionRepository : IRepositoryBase<FieldtripInclusion>
     {
+        Task<IEnumerable<FieldtripInclusion>> GetFieldTripInclusionsById(int tripId);
     }
 }

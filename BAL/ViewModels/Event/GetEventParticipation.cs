@@ -14,6 +14,8 @@ namespace BAL.ViewModels.Event
         public DateTime? RegistrationDeadline { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
+        public string? EventHost { get; set; }
+        public string? EventStaff {  get; set; }
         public int? ParticipationNo { get; set; }
         public int? Fee { get; set; }
         public string? Status { get; set; }

@@ -12,10 +12,13 @@
 }
 
 .light-green {
-    background-color: #c0eaa6;
+    background-color: lightgreen;
     color: black;
 }
-
+.reg-button:hover {
+    background-color: lawngreen;
+    transition: 0.7s;
+}
 .transparent {
     opacity: 0.8;
 }

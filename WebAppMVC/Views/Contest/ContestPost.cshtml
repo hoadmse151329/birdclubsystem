@@ -1,5 +1,6 @@
 ﻿@{
-    ViewData["Title"] = "Field Trip Post Day By Day Page";
+    ViewData["Title"] = "Contest Post Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <html lang="en">
@@ -87,33 +88,26 @@
                   <div class="text-wrapper-15">Host</div>
                 </div>
                 <div class="register">
+                    @{
+                        if (Model.ParticipationNo != 0 && Model.ParticipationNo != null)
+                        {
                             <div class="overlap-group-3 text-wrapper-16">
-                                <span class="text-success">PartNumber</span>
+                                <span class="text-success">@ViewBag.PartNumber</span>
                             </div>
-                            <form asp-action="MeetingDeRegister" asp-controller="Meeting" method="post" asp-route-meetingId="MeetingId">
+                            <form asp-action="MeetingDeRegister" asp-controller="Meeting" method="post" asp-route-meetingId="@Model.MeetingId">
                                 <button class="overlap-group-3 text-wrapper-16" type="submit">Sign Out</button>
                             </form> 
-                </div>
-                <ul class="nav nav-tabs">
-                                <!-- dung vong for o day -->
-                                <li class="nav-item">
-                                    <a class="nav-link active" data-toggle="tab" href="#home1">
-                                        <i class='bx bx-home-alt-2'></i>
-                                        <span>Home 1</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" data-toggle="tab" href="#home2">
-                                        <i class='bx bx-home-alt-2'></i>
-                                        <span>Home 2</span>
-                                    </a>
-                                </li>                
-                            </ul>
+                        }
+                        else
+                        {
+                            <form asp-action="MeetingRegister" asp-controller="Meeting" method="post" asp-route-meetingId="@Model.MeetingId">
+                                <button class="overlap-group-3 text-wrapper-16" type="submit">Register</button>
+                            </form>             
+                        }
+                    }
+                </div>      
+</div>
               </div>
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
   </body>
 </html>

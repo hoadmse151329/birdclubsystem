@@ -2,12 +2,17 @@
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover; }
-
 .pagination, .pagination .btn, .pagination .pages .page-link {
   display: flex;
   align-items: center;
   justify-content: center; }
-
+.carousel-Banner{
+    position: relative;
+    width: 1000px;
+    height: 550px;
+    overflow: hidden;
+    margin: auto;
+}
 * {
   margin: 0;
   padding: 0;

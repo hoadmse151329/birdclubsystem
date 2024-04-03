@@ -224,6 +224,45 @@ namespace WebAPI.Controllers
                 });
             }
         }
+        [Authorize(Roles = "Manager")]
+        [HttpGet("Update/Cancel/{id}")]
+        [ProducesResponseType(typeof(MeetingViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> UpdateCancelMeeting(
+            [Required][FromRoute] int id)
+        {
+            try
+            {
+                var result = _meetingService.GetById(id).Result;
+                if (result == null)
+                {
+                    return NotFound(new
+                    {
+                        Status = false,
+                        ErrorMessage = "Meeting does not exist!"
+                    });
+                }
+                result.MeetingId = id;
+                result.Status = "Cancelled";
+                _meetingService.Update(result);
+                result = await _meetingService.GetById(id);
+                return Ok(new
+                {
+                    Status = true,
+                    Data = result
+                });
+            }
+            catch (Exception ex)
+            {
+                // Log the exception if needed
+                return BadRequest(new
+                {
+                    Status = false,
+                    ErrorMessage = ex.Message
+                });
+            }
+        }
         [HttpPost("Register/{id}")]
         [Authorize(Roles = "Member")]
         [ProducesResponseType(typeof(MeetingParticipantViewModel), StatusCodes.Status200OK)]
@@ -341,6 +380,7 @@ namespace WebAPI.Controllers
             }
         }
         [HttpGet("AllParticipants/{id}")]
+        [Authorize(Roles = "Manager")]
         [ProducesResponseType(typeof(List<MeetingParticipantViewModel>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -376,7 +416,7 @@ namespace WebAPI.Controllers
             }
         }
         [HttpPost("Participation/AllMeetings")]
-        [Authorize(Roles = "Member,Staff")]
+        [Authorize(Roles = "Member")]
         [ProducesResponseType(typeof(List<GetEventParticipation>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

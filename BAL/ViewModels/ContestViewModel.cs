@@ -30,6 +30,7 @@ namespace BAL.ViewModels
         public string? Review { get; set; }
         public int? NumberOfParticipants { get; set; }
         public int? NumberOfParticipantsLimit { get; set; }
+        public int? ParticipationNo { get; set; }
         public int? ClubId { get; set; }
     }
 }

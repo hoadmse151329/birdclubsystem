@@ -18,6 +18,7 @@ namespace WebAppMVC.Controllers
 	public class AuthController : Controller
 	{
 		private readonly ILogger<AuthController> _logger;
+		private readonly IConfiguration _config;
 		private readonly HttpClient client = null;
 		private string AuthenAPI_URL = "";
         private MethodCaller methcall = new();
@@ -25,13 +26,14 @@ namespace WebAppMVC.Controllers
         {
             PropertyNameCaseInsensitive = true,
         };
-        public AuthController(ILogger<AuthController> logger)
+        public AuthController(ILogger<AuthController> logger, IConfiguration config)
 		{
 			_logger = logger;
+			_config = config;
 			client = new HttpClient();
 			var contentType = new MediaTypeWithQualityHeaderValue("application/json");
 			client.DefaultRequestHeaders.Accept.Add(contentType);
-			client.BaseAddress = new Uri("https://localhost:7022");
+			client.BaseAddress = new Uri(config.GetSection("DefaultApiUrl:ConnectionString").Value);
 			AuthenAPI_URL = "/api/User";
 		}
 		public IActionResult Register()
