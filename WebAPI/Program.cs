@@ -112,6 +112,7 @@ namespace WebAPI
             builder.Services.AddScoped<IContestService, ContestService>();
             builder.Services.AddScoped<IContestParticipantService, ContestParticipantService>();
             builder.Services.AddScoped<ITransactionService, TransactionService>();
+            builder.Services.AddScoped<IMediaService, MediaService>();
 
             builder.Services.AddAutoMapper(typeof(MappingProfile));
             var app = builder.Build();
