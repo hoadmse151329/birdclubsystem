@@ -47,6 +47,7 @@ namespace BAL.Services.Implements
                 {
                     UserId = user.MemberId,
                     RoleName = user.Role,
+                    UserName = user.UserName,
                     AccessToken = accessToken
                 };
             }
@@ -63,6 +64,7 @@ namespace BAL.Services.Implements
                 {
                     UserId = user.MemberId,
                     RoleName = user.Member.Role,
+                    UserName = user.UserName,
                     AccessToken = accessToken
                 };
             }

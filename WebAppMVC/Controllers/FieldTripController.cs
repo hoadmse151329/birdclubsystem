@@ -40,7 +40,13 @@ namespace WebAppMVC.Controllers
 			FieldTripAPI_URL += "/All";
 			string LocationAPI_URL_All = "/api/Location/All";
             dynamic testmodel = new ExpandoObject();
-            TempData["ROLE_NAME"] = HttpContext.Session.GetString("ROLE_NAME");
+
+            string? role = HttpContext.Session.GetString("ROLE_NAME");
+
+            string? usrname = HttpContext.Session.GetString("USER_NAME");
+
+            TempData["ROLE_NAME"] = role;
+            TempData["USER_NAME"] = usrname;
 
             var listLocationResponse = await methcall.CallMethodReturnObject<GetLocationResponseByList>(
                 _httpClient: _httpClient,
@@ -89,11 +95,17 @@ namespace WebAppMVC.Controllers
         public async Task<IActionResult> FieldTripPost(int id)
 		{
             FieldTripAPI_URL += "/";
-            string? role = HttpContext.Session.GetString("ROLE_NAME");
+
             string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
+
+            string? role = HttpContext.Session.GetString("ROLE_NAME");
+
             string? usrId = HttpContext.Session.GetString("USER_ID");
 
+            string? usrname = HttpContext.Session.GetString("USER_NAME");
+
             TempData["ROLE_NAME"] = role;
+            TempData["USER_NAME"] = usrname;
 
             GetFieldTripPostResponse? fieldtripPostResponse = new();
 

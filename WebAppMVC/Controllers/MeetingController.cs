@@ -43,7 +43,14 @@ namespace WebAppMVC.Controllers
             MeetingAPI_URL += "/All";
 			string LocationAPI_URL_All = "/api/Location/All";
 			dynamic testmodel = new ExpandoObject();
-            TempData["ROLE_NAME"] = HttpContext.Session.GetString("ROLE_NAME");
+
+
+            string? role = HttpContext.Session.GetString("ROLE_NAME");
+
+            string? usrname = HttpContext.Session.GetString("USER_NAME");
+
+            TempData["ROLE_NAME"] = role;
+            TempData["USER_NAME"] = usrname;
 
             var listLocationResponse = await methcall.CallMethodReturnObject<GetLocationResponseByList>(
                 _httpClient: _httpClient,
@@ -85,11 +92,17 @@ namespace WebAppMVC.Controllers
 		public async Task<IActionResult> MeetingPost(int id)
 		{
 			MeetingAPI_URL += "/";
-            string? role = HttpContext.Session.GetString("ROLE_NAME");
+
             string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
-			string? usrId = HttpContext.Session.GetString("USER_ID");
+
+            string? role = HttpContext.Session.GetString("ROLE_NAME");
+
+            string? usrId = HttpContext.Session.GetString("USER_ID");
+
+            string? usrname = HttpContext.Session.GetString("USER_NAME");
 
             TempData["ROLE_NAME"] = role;
+            TempData["USER_NAME"] = usrname;
 
             GetMeetingPostResponse? meetPostResponse = new();
 
@@ -148,14 +161,17 @@ namespace WebAppMVC.Controllers
             if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
 
             string? role = HttpContext.Session.GetString("ROLE_NAME");
-			if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-			else if (!role.Equals("Member")) return View("Index");
+            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
+            else if (!role.Equals("Member")) return View("Index");
 
             string? usrId = HttpContext.Session.GetString("USER_ID");
-			if(string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
+            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
 
+            string? usrname = HttpContext.Session.GetString("USER_NAME");
+            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
 
             TempData["ROLE_NAME"] = role;
+            TempData["USER_NAME"] = usrname;
 
             var participationNo = await methcall.CallMethodReturnObject<GetMeetingParticipationNo>(
                 _httpClient: _httpClient,
@@ -200,7 +216,11 @@ namespace WebAppMVC.Controllers
             string? usrId = HttpContext.Session.GetString("USER_ID");
             if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
 
+            string? usrname = HttpContext.Session.GetString("USER_NAME");
+            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
+
             TempData["ROLE_NAME"] = role;
+            TempData["USER_NAME"] = usrname;
 
             var participationNo = await methcall.CallMethodReturnObject<GetMeetingPostDeRegister>(
                 _httpClient: _httpClient,
