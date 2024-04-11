@@ -288,7 +288,7 @@ namespace DAL.Models
 
             modelBuilder.Entity<ContestParticipant>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(e => new { e.BirdId, e.ContestId });
 
                 entity.Property(e => e.BirdId).HasColumnName("birdId");
 
@@ -483,8 +483,7 @@ namespace DAL.Models
 
             modelBuilder.Entity<FieldTripParticipant>(entity =>
             {
-                entity.HasNoKey();
-
+                entity.HasKey(e => new { e.MemberId, e.TripId });
                 entity.Property(e => e.MemberId)
                     .HasMaxLength(50)
                     .HasColumnName("memberId");
@@ -506,6 +505,7 @@ namespace DAL.Models
                     .HasForeignKey(d => d.TripId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__FieldTripPa__FID__1332DBDC");
+
             });
 
             modelBuilder.Entity<FieldtripDaybyDay>(entity =>
@@ -723,7 +723,7 @@ namespace DAL.Models
 
             modelBuilder.Entity<MeetingParticipant>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(e => new { e.MemberId, e.MeetingId });
 
                 entity.ToTable("MeetingParticipant");
 

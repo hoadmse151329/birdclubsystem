@@ -13,6 +13,9 @@ namespace BAL.ViewModels.Authenticates
         [PasswordPropertyText]
         [DataType(DataType.Password)]
         public string UserId { get; set; }
+        [PasswordPropertyText]
+        [DataType(DataType.Password)]
+        public string? UserName { get; set; }
         public string? RoleName { get; set; }
         [PasswordPropertyText]
         [DataType(DataType.Password)]

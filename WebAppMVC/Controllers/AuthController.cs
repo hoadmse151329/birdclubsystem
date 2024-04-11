@@ -83,29 +83,29 @@ namespace WebAppMVC.Controllers
 				return View("Register");
 			}
 
-			var reponseAuthen = authenResponse.Data;
+			var responseAuth = authenResponse.Data;
 
 			if (authenResponse.Status)
 			{
-				HttpContext.Session.SetString("ACCESS_TOKEN", reponseAuthen.AccessToken);
-				HttpContext.Session.SetString("ROLE_NAME", reponseAuthen.RoleName);
-				HttpContext.Session.SetString("USER_ID", reponseAuthen.UserId);
-				client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", reponseAuthen.AccessToken);
-				TempData["ACCESS_TOKEN"] = reponseAuthen.AccessToken;
-				TempData["ROLE_NAME"] = reponseAuthen.RoleName;
-				TempData["USER_ID"] = reponseAuthen.UserId;
+				HttpContext.Session.SetString("ACCESS_TOKEN", responseAuth.AccessToken);
+				HttpContext.Session.SetString("ROLE_NAME", responseAuth.RoleName);
+				HttpContext.Session.SetString("USER_ID", responseAuth.UserId);
+				client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", responseAuth.AccessToken);
+				TempData["ACCESS_TOKEN"] = responseAuth.AccessToken;
+				TempData["ROLE_NAME"] = responseAuth.RoleName;
+				TempData["USER_ID"] = responseAuth.UserId;
 			}
-			if (reponseAuthen!.RoleName == Constants.Constants.ADMIN)
+			if (responseAuth!.RoleName == Constants.Constants.ADMIN)
 			{
 				_logger.LogInformation("Admin Register Successful: " + TempData["ROLE_NAME"] + " , Id: " + TempData["USER_ID"]);
 				return base.Redirect(Constants.Constants.ADMIN_URL);
 			}
-			else if (reponseAuthen!.RoleName == Constants.Constants.MANAGER)
+			else if (responseAuth!.RoleName == Constants.Constants.MANAGER)
 			{
 				_logger.LogInformation("Manager Register Successful: " + TempData["ROLE_NAME"] + " , Id: " + TempData["USER_ID"]);
 				return base.Redirect(Constants.Constants.MANAGER_URL);
 			}
-			else if (reponseAuthen!.RoleName == Constants.Constants.STAFF)
+			else if (responseAuth!.RoleName == Constants.Constants.STAFF)
 			{
 				_logger.LogInformation("Staff Register Successful: " + TempData["ROLE_NAME"] + " , Id: " + TempData["USER_ID"]);
 				return base.Redirect(Constants.Constants.STAFF_URL);
@@ -151,30 +151,32 @@ namespace WebAppMVC.Controllers
                 ViewBag.error = "Username or Password is invalid.";
 				return View("Login");
 			}
-			var reponseAuthen = authenResponse.Data;
+			var responseAuth = authenResponse.Data;
 
 			if (authenResponse.Status)
 			{
-				HttpContext.Session.SetString("ACCESS_TOKEN", reponseAuthen.AccessToken);
-				HttpContext.Session.SetString("ROLE_NAME", reponseAuthen.RoleName);
-				HttpContext.Session.SetString("USER_ID", reponseAuthen.UserId);
-				client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", reponseAuthen.AccessToken);
+				HttpContext.Session.SetString("ACCESS_TOKEN", responseAuth.AccessToken);
+				HttpContext.Session.SetString("ROLE_NAME", responseAuth.RoleName);
+				HttpContext.Session.SetString("USER_ID", responseAuth.UserId);
+                HttpContext.Session.SetString("USER_NAME", responseAuth.UserName);
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", responseAuth.AccessToken);
 
-				TempData["ACCESS_TOKEN"] = reponseAuthen.AccessToken;
-				TempData["ROLE_NAME"] = reponseAuthen.RoleName;
-				TempData["USER_ID"] = reponseAuthen.UserId;
+				TempData["ACCESS_TOKEN"] = responseAuth.AccessToken;
+				TempData["ROLE_NAME"] = responseAuth.RoleName;
+				TempData["USER_ID"] = responseAuth.UserId;
+				TempData["USER_NAME"] = responseAuth.UserName;
 			}
-			if (reponseAuthen!.RoleName == Constants.Constants.ADMIN)
+			if (responseAuth!.RoleName == Constants.Constants.ADMIN)
 			{
 				_logger.LogInformation("Admin Login Successful: " + TempData["ROLE_NAME"] + " , Id: " + TempData["USER_ID"]);
 				return base.Redirect(Constants.Constants.ADMIN_URL);
 			}
-			else if (reponseAuthen!.RoleName == Constants.Constants.MANAGER)
+			else if (responseAuth!.RoleName == Constants.Constants.MANAGER)
 			{
                 _logger.LogInformation("Manager Login Successful: " + TempData["ROLE_NAME"] + " , Id: " + TempData["USER_ID"]);
                 return base.Redirect(Constants.Constants.MANAGER_URL);
 			}
-			else if (reponseAuthen!.RoleName == Constants.Constants.STAFF)
+			else if (responseAuth!.RoleName == Constants.Constants.STAFF)
 			{
                 _logger.LogInformation("Staff Login Successful: " + TempData["ROLE_NAME"] + " , Id: " + TempData["USER_ID"]);
                 return base.Redirect(Constants.Constants.STAFF_URL);
@@ -205,29 +207,33 @@ namespace WebAppMVC.Controllers
 				return View("Register");
 			}
 
-			var reponseAuthen = authenResponse.Data;
+			var responseAuth = authenResponse.Data;
 
 			if (authenResponse.Status)
 			{
-				HttpContext.Session.SetString("ACCESS_TOKEN", reponseAuthen.AccessToken);
-				HttpContext.Session.SetString("ROLE_NAME", reponseAuthen.RoleName);
-				HttpContext.Session.SetString("USER_ID", reponseAuthen.UserId);
-				client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", reponseAuthen.AccessToken);
-				TempData["ACCESS_TOKEN"] = reponseAuthen.AccessToken;
-				TempData["ROLE_NAME"] = reponseAuthen.RoleName;
-				TempData["USER_ID"] = reponseAuthen.UserId;
-			}
-            if (reponseAuthen!.RoleName == Constants.Constants.ADMIN)
+                HttpContext.Session.SetString("ACCESS_TOKEN", responseAuth.AccessToken);
+                HttpContext.Session.SetString("ROLE_NAME", responseAuth.RoleName);
+                HttpContext.Session.SetString("USER_ID", responseAuth.UserId);
+                HttpContext.Session.SetString("USER_NAME", responseAuth.UserName);
+
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", responseAuth.AccessToken);
+
+                TempData["ACCESS_TOKEN"] = responseAuth.AccessToken;
+                TempData["ROLE_NAME"] = responseAuth.RoleName;
+                TempData["USER_ID"] = responseAuth.UserId;
+                TempData["USER_NAME"] = responseAuth.UserName;
+            }
+            if (responseAuth!.RoleName == Constants.Constants.ADMIN)
             {
                 _logger.LogInformation("Admin Register Successful: " + TempData["ROLE_NAME"] + " , Id: " + TempData["USER_ID"]);
                 return base.Redirect(Constants.Constants.ADMIN_URL);
             }
-            else if (reponseAuthen!.RoleName == Constants.Constants.MANAGER)
+            else if (responseAuth!.RoleName == Constants.Constants.MANAGER)
             {
                 _logger.LogInformation("Manager Register Successful: " + TempData["ROLE_NAME"] + " , Id: " + TempData["USER_ID"]);
                 return base.Redirect(Constants.Constants.MANAGER_URL);
             }
-            else if (reponseAuthen!.RoleName == Constants.Constants.STAFF)
+            else if (responseAuth!.RoleName == Constants.Constants.STAFF)
             {
                 _logger.LogInformation("Staff Register Successful: " + TempData["ROLE_NAME"] + " , Id: " + TempData["USER_ID"]);
                 return base.Redirect(Constants.Constants.STAFF_URL);

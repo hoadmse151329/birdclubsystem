@@ -113,9 +113,10 @@ namespace BAL.Services.Implements
                 _unitOfWork.LocationRepository.Update(loc = new Location
                 {
                     LocationName = entity.Address.Trim(),
-                    Description = loc.Description
+                    Description = ""
                 });
-                loc = _unitOfWork.LocationRepository.GetLocationByName(entity.Address).Result;
+                _unitOfWork.Save();
+                loc = _unitOfWork.LocationRepository.GetLocationByName(entity.Address.Trim()).Result;
             }
             var meeting = _mapper.Map<Meeting>(entity);
             meeting.LocationId = loc.LocationId;

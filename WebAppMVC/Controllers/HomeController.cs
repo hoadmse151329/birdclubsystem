@@ -41,7 +41,13 @@ namespace WebAppMVC.Controllers
             string FieldTripAPI_URL_All = HomeAPI_URL + "FieldTrip/All";
             string ContestAPI_URL_All = HomeAPI_URL + "Contest/All";
             dynamic testmodel = new ExpandoObject();
-            TempData["ROLE_NAME"] = HttpContext.Session.GetString("ROLE_NAME");
+
+            string? role = HttpContext.Session.GetString("ROLE_NAME");
+
+            string? usrname = HttpContext.Session.GetString("USER_NAME");
+
+            TempData["ROLE_NAME"] = role;
+            TempData["USER_NAME"] = usrname;
 
             var listFieldTripResponse = await methcall.CallMethodReturnObject<GetFieldTripResponseByList>(
                 _httpClient: _httpClient,

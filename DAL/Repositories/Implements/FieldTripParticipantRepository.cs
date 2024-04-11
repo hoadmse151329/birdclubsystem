@@ -54,11 +54,6 @@ namespace DAL.Repositories.Implements
             return _context.FieldTripParticipants.Where(m => m.MemberId == memId).Include(f => f.Trip).ToList();
         }
 
-        public async Task<IEnumerable<FieldTripParticipant>> GetFieldTripParticipantsByMemberIdInclude(string memberId)
-        {
-            return _context.FieldTripParticipants.Where(m => m.MemberId == memberId).Include(f => f.Trip).ToList();
-        }
-
         public async Task<int> GetParticipationNoFieldTripParticipantById(int tripId, string memberId)
         {
             var mempart = _context.FieldTripParticipants.Find(tripId, memberId);

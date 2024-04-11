@@ -201,11 +201,12 @@
                                                                         <div class="d-flex justify-content-around">
                                                                             <!--<a href="UserManager?action=feedback?userId=hai03&motelID=785146827" class="btn btn-info m-b-xs shadow btn-xs sharp me-1" data-bs-toggle="tooltip">Đánh giá</a>-->
                                                                             <div class="rating-room">
-                                                                                <a href="@Url.Action(events[i].EventType + "Post", events[i].EventType,new {id = events[i].EventId})" ></a>
+                                                                                <a class="button--primary btn-info bg-info shadow btn-xs text-white"
+                                                                                href="@Url.Action(events[i].EventType + "Post", events[i].EventType,new {id = events[i].EventId})">Details</a>
                                                                             </div>
                                                                             @switch (events[i].Status)
                                                                             {
-                                                                                case "InPreperation":
+                                                                                case "Preparing":
                                                                                     {
                                                                                         <form asp-action="@(events[i].EventType)Deregister" asp-controller="@events[i].EventType" method="post" asp-route-meetingId="@events[i].EventId">
                                                                                             <div class="report-room">
@@ -214,16 +215,36 @@
                                                                                         </form>
                                                                                         break;
                                                                                     }
+                                                                                case "Open":
                                                                                 case "OnGoing":
+                                                                                    {
+                                                                                        <form asp-action="@(events[i].EventType)Deregister" asp-controller="@events[i].EventType" method="post" asp-route-meetingId="@events[i].EventId">
+                                                                                            <div class="report-room">
+                                                                                                <button class="button--primary btn-danger bg-danger shadow btn-xs text-white" type="submit">Sign Out</button>
+                                                                                            </div>
+                                                                                        </form>
+                                                                                        break;
+                                                                                    }
                                                                                 case "Ended":
                                                                                     {
                                                                                         <div class="report-room">
-                                                                                <button data-toggle="modal"
-                                                                                    data-target="#report"
-                                                                                    class="button--primary btn-danger shadow btn-xs sharp text-white bg-danger">
-                                                                                    <span>Report</span>
-                                                                                </button>
-                                                                            </div>
+                                                                                            <button data-toggle="modal"
+                                                                                                data-target="#report"
+                                                                                                class="button--primary btn-danger shadow btn-xs sharp text-white bg-danger">
+                                                                                                <span>Report</span>
+                                                                                            </button>
+                                                                                        </div>
+                                                                                        break;
+                                                                                    }
+                                                                                case "Cancelled":
+                                                                                    {
+                                                                                        <div class="report-room">
+                                                                                            <button data-toggle="modal"
+                                                                                                    data-target="#report"
+                                                                                                    class="button--primary btn-danger shadow btn-xs sharp text-white bg-danger">
+                                                                                                <span>Report</span>
+                                                                                            </button>
+                                                                                        </div>
                                                                                         break;
                                                                                     }
                                                                             }

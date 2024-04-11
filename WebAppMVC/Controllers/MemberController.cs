@@ -14,6 +14,7 @@ using System.Dynamic;
 using Microsoft.AspNetCore.Identity;
 using System;
 using BAL.ViewModels.Member;
+using System.Text.Encodings.Web;
 
 namespace WebAppMVC.Controllers
 {
@@ -25,6 +26,7 @@ namespace WebAppMVC.Controllers
         private string MemberInfoAPI_URL = "";
         private JsonSerializerOptions options = new JsonSerializerOptions
         {
+            Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
             PropertyNameCaseInsensitive = true,
         };
         private MethodCaller methcall = new();
@@ -55,7 +57,12 @@ namespace WebAppMVC.Controllers
 
             string? usrId = HttpContext.Session.GetString("USER_ID");
             if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
+
+            string? usrname = HttpContext.Session.GetString("USER_NAME");
+            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
+
             TempData["ROLE_NAME"] = role;
+            TempData["USER_NAME"] = usrname;
 
             var memberDetails = await methcall.CallMethodReturnObject<GetMemberProfileResponse>(
                 _httpClient: _httpClient,
@@ -96,7 +103,12 @@ namespace WebAppMVC.Controllers
 
             string? usrId = HttpContext.Session.GetString("USER_ID");
             if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
+
+            string? usrname = HttpContext.Session.GetString("USER_NAME");
+            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
+
             TempData["ROLE_NAME"] = role;
+            TempData["USER_NAME"] = usrname;
 
             memberDetail.MemberId = usrId;
             memberDetail.Status = "Active";
@@ -113,7 +125,7 @@ namespace WebAppMVC.Controllers
             {
                 ViewBag.error =
                     "Error while processing your request! (Getting Member Profile!).\n Member Details Not Found!";
-                return Redirect("~/Member/Profile");
+                return RedirectToAction("MemberProfile");
             }
             else
             if (!memberDetailupdate.Status)
@@ -121,11 +133,11 @@ namespace WebAppMVC.Controllers
                 ViewBag.error =
                     "Error while processing your request! (Getting Member Profile!).\n Member Details Not Found!"
                 + memberDetailupdate.ErrorMessage;
-                return Redirect("~/Member/Profile");
+                return RedirectToAction("MemberProfile");
             }
             return RedirectToAction("MemberProfile");
         }
-
+        [HttpGet]
         public async Task<IActionResult> MemberHistoryEvent()
         {
             string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
@@ -138,7 +150,12 @@ namespace WebAppMVC.Controllers
             string? usrId = HttpContext.Session.GetString("USER_ID");
             if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
 
+            string? usrname = HttpContext.Session.GetString("USER_NAME");
+            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
+
             TempData["ROLE_NAME"] = role;
+            TempData["USER_NAME"] = usrname;
+
             string MemberMeetingPartAPI_URL = "/api/Meeting/Participation/AllMeetings";
             dynamic registeredModel = new ExpandoObject();
 
@@ -154,7 +171,7 @@ namespace WebAppMVC.Controllers
             {
                 ViewBag.error =
                     "Error while processing your request! (Getting Member Profile!).\n Member Details Not Found!";
-                return Redirect("~/Member/Profile");
+                return RedirectToAction("MemberProfile");
             }
             else
             if (!memberMeetingPart.Status)
@@ -162,7 +179,7 @@ namespace WebAppMVC.Controllers
                 ViewBag.error =
                     "Error while processing your request! (Getting Member Profile!).\n Member Details Not Found!"
                 + memberMeetingPart.ErrorMessage;
-                return Redirect("~/Member/Profile");
+                return RedirectToAction("MemberProfile");
             }
             registeredModel.RegisteredEvents = memberMeetingPart.Data;
             return View(registeredModel);
@@ -180,6 +197,12 @@ namespace WebAppMVC.Controllers
 
             string? usrId = HttpContext.Session.GetString("USER_ID");
             if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
+
+            string? usrname = HttpContext.Session.GetString("USER_NAME");
+            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
+
+            TempData["ROLE_NAME"] = role;
+            TempData["USER_NAME"] = usrname;
 
             string MemberAvatarAPI_URL = "api/User/Upload";
 
@@ -237,7 +260,13 @@ namespace WebAppMVC.Controllers
 
             string? usrId = HttpContext.Session.GetString("USER_ID");
             if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
+
+            string? usrname = HttpContext.Session.GetString("USER_NAME");
+            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
+
             TempData["ROLE_NAME"] = role;
+            TempData["USER_NAME"] = usrname;
+
             memberPassword.userId = usrId;
 
             var memberDetailupdate = await methcall.CallMethodReturnObject<GetMemberPasswordChangeResponse>(
@@ -252,7 +281,7 @@ namespace WebAppMVC.Controllers
             {
                 ViewBag.error =
                     "Error while processing your request! (Getting Member Profile!).\n Member Details Not Found!";
-                return Redirect("~/Member/Profile");
+                return RedirectToAction("MemberProfile");
             }
             else
             if (!memberDetailupdate.Status)
@@ -260,7 +289,7 @@ namespace WebAppMVC.Controllers
                 ViewBag.error =
                     "Error while processing your request! (Getting Member Profile!).\n Member Details Not Found!"
                 + memberDetailupdate.ErrorMessage;
-                return Redirect("~/Member/Profile");
+                return RedirectToAction("MemberProfile");
             }
             return RedirectToAction("MemberProfile");
         }
