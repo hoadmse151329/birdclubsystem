@@ -1,6 +1,7 @@
-﻿﻿@{
+﻿@model dynamic
+@{
     ViewData["Title"] = "Bird Contest Page";
-        List<BAL.ViewModels.LocationViewModel> locationList = Model.Locations;
+    List<BAL.ViewModels.LocationViewModel> locationList = Model.Locations;
     List<BAL.ViewModels.ContestViewModel> contestList = Model.Contests;
 }
 
@@ -107,7 +108,7 @@
                                 </div>
                                 <div class="d-flex justify-content-between">
                                     <p class="club-price"><i class="fas fa-comment-alt"></i>@data.Description</p>
-                                    <form asp-action="FieldTripPost" asp-controller="FieldTrip" method="get" asp-route-id="@data.ContestId">
+                                    <form asp-action="ContestPost" asp-controller="Contest" method="get" asp-route-id="@data.ContestId">
                                         <button class="button--primary text-white text-wrapper-16" type="submit">See Now</button>
                                     </form>
                                 </div>
