@@ -827,15 +827,12 @@ namespace WebAppMVC.Controllers
             }
             return RedirectToAction("ManagerContest");
         }
+        [HttpGet("Profile")]
         public IActionResult ManagerProfile()
         {
             return View();
         }
         public IActionResult ManagerFeedBack()
-        {
-            return View();
-        }
-        public IActionResult ManagerStatical()
         {
             return View();
         }

@@ -1,7 +1,7 @@
 ﻿@model dynamic
 @{
     Layout = null;
-    ViewData["Title"] = "Manager Contest Detail Page";
+    ViewData["Title"] = "Staff Contest Detail Page";
     BAL.ViewModels.ContestViewModel details = Model.ContestDetails;
     List<BAL.ViewModels.ContestParticipantViewModel> parts = Model.ContestParticipants;
 }
@@ -24,15 +24,15 @@
     <!-- sidebar -->
     <div class="sidebar">
         <div class="container">
-            <div class="navigation">
+            <div class="navigation">  
                 <ul class="slide-menu">
                     <div class="logo">
-                        <a href="@Url.Action("ManagerIndex", "Manager")">
+                        <a href="@Url.Action("StaffIndex", "Staff")">
                             <img class="logo" src="~/images/Red_whiskered_bulbul_bird_logo_eps_10_generated 1.png" alt="logo">
                         </a>
                     </div>
-                    <li class="active" data-toggle="tooltip" data-placement="right" title="Overview">
-                        <a href="@Url.Action("ManagerIndex", "Manager")">
+                    <li class="active" data-toggle="tooltip"data-placement="right" title="Overview">
+                        <a href="@Url.Action("StaffIndex", "Staff")">
                             <span><i class='bx bx-tachometer'></i></span>
                             <span class="title">Overview</span>
                         </a>
@@ -45,47 +45,30 @@
                         </a>
                         <ul class="collapse sub-menu" id="collapseOne">
                             <li data-toggle="tooltip"data-placement="right" title="Manage Meeting">
-                                <a href="@Url.Action("Meeting", "Manager")" li class="dropdown-item">
+                                <a href="@Url.Action("StaffMeeting", "Staff")" li class="dropdown-item">
                                     <i class='bx bx-home-alt-2'></i>
                                     <span class="title">Meeting</span>
-                                </a>
+                                </a> 
                             </li>
-                            <li data-toggle="tooltip" data-placement="right" title="Manage Fieldtrip">
-                                <a href="@Url.Action("ManagerFieldtrip", "Manager")" li class="dropdown-item">
+                            <li data-toggle="tooltip"data-placement="right" title="Manage Fieldtrip">
+                                <a href="@Url.Action("StaffFieldTrip", "Staff")" li class="dropdown-item">
                                     <i class='bx bx-calendar-edit'></i>
                                     <span class="title">Fieldtrip</span>
                                 </a>
-                            </li>
-                            <li data-toggle="tooltip" data-placement="right" title="Manage Bird Contest">
-                                <a href="@Url.Action("ManagerContest", "Manager")" li class="dropdown-item">
+                            </li> 
+                            <li data-toggle="tooltip"data-placement="right" title="Manage Bird Contest">
+                                <a href="@Url.Action("StaffContest", "Staff")" li class="dropdown-item">
                                     <i class='bx bx-cloud-rain'></i>
                                     <span class="title">Bird Contest</span>
                                 </a>
                             </li>
                         </ul>
                     </li>
-                    <li data-toggle="tooltip" data-placement="right" title="History Events">
-                        <a href="@Url.Action("ManagerHistoryEvents", "Manager")">
-                            <span><i class='bx bx-history'></i></span>
-                            <span class="title">HistoryEvents</span>
-                        </a>
                     </li>
-                    <li data-toggle="tooltip" data-placement="right" title="Manage Notification">
-                        <a href="@Url.Action("ManagerNotification", "Manager")">
-                            <span><i class='bx bx-bell'></i></span>
-                            <span class="title">Notification</span>
-                        </a>
-                    </li>
-                    <li data-toggle="tooltip" data-placement="right" title="Manage Feedback">
-                        <a href="@Url.Action("ManagerFeedback", "Manager")">
-                            <span><i class="bx bx-detail"></i></span>
-                            <span class="title">Feedback</span>
-                        </a>
-                    </li>
-                    <li data-toggle="tooltip" data-placement="right" title="Manager Profile">
-                        <a href="@Url.Action("ManagerProfile", "Manager")">
+                    <li data-toggle="tooltip"data-placement="right" title="Staff Profile">
+                        <a href="@Url.Action("StaffProfile", "Staff")">
                             <span><i class='bx bx-user'></i></span>
-                            <span class="title">Manager Profile</span>
+                            <span class="title">Staff Profile</span>
                         </a>
                     </li>
                 </ul>
@@ -95,20 +78,21 @@
     <!-- End sidebar -->
     <!-- Header -->
     <div class="header">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="toggle float-left">
-                        <i class='bx bx-menu'></i>
-                    </div>
-                    <div class="float-left">
-                        <div class="dashboard_bar d-flex">
-                            Home
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="toggle float-left">
+                            <i class='bx bx-menu'></i>
                         </div>
-                    </div>
-                    <div class="float-right">
-                        <div class="btn-group me-1 mb-1">
-                             @if (TempData["ROLE_NAME"] != null)
+                        <div class="float-left">
+                            <div class="dashboard_bar d-flex">
+                                Home
+                            </div>
+                        </div>
+                        <div class="float-right">
+                            <div class="btn-group me-1 mb-1">
+                                <div class="dropdown">
+                                    @if (TempData["ROLE_NAME"] != null)
                                     {
                                     <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         @TempData["USER_NAME"]
@@ -120,12 +104,13 @@
                                         <a class="dropdown-item" href="@Url.Action("Logout", "Auth")">Logout</a>
                                     </div>
                                     }
-                        </div>
+                                </div>  
+                            </div>
+                        </div>   
                     </div>
                 </div>
             </div>
         </div>
-    </div>
     <!-- End header -->
     <!-- List room -->
     <div class="main-content">
@@ -166,9 +151,6 @@
                             <div class="card profile col-12 mb-4">
                                 <div class="card-header">
                                     <h4>Meeting Information</h4>
-                                    <div class="edit-info">
-                                        <i class='bx bxs-edit-alt' data-toggle="modal" data-target="#editprofile"></i>
-                                    </div>
                                 </div>
                                 <div class="card-body">
                                     <div class="row">
@@ -267,6 +249,9 @@
                         <div class="card border-0 d-flex">
                             <div class="card-header">
                                 <h4>Participants</h4>
+                                <div class="edit-info">
+                                        <i class='bx bxs-edit-alt' data-toggle="modal" data-target="#editstatus"></i>
+                                    </div>
                             </div>
                             <div class="card-body">
                                 <table class="table table-hover table-borderless">
@@ -274,6 +259,7 @@
                                         <tr>
                                             <th>Participant No:</th>
                                             <th>Name:</th>
+                                            <th>CheckInStatus:</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -282,6 +268,7 @@
                                             <tr>
                                                 <td>@part.ParticipantNo</td>
                                                 <td>@part.BirdId</td>
+                                                <td>@part.CheckInStatus</td>
                                             </tr>
                                         }
                                         <tr>
@@ -298,57 +285,23 @@
     </div>
 
     <!-- edit Room -->
-    <div id="editprofile" class="modal fade" role="dialog">
+                    <div id="editstatus" class="modal fade" role="dialog">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
             <div class="modal-content modal-addRoom">
                 <div class="modal-header">
-                    <h4 class="modal-title">Edit Contest</h4>
+                    <h4 class="modal-title">Edit Status</h4>
                 </div>
-                <form action="#" class="form-group">
+                <form asp-action="StaffUpdateFieldTripDetail" asp-controller="Staff" method="post" asp-route-id="@details.ContestId" class="form-group">
                     <div class="modal-body">
                         <div class="row justify-content-center">
                             <div class="col-12 col-md-8">
-                                <div class="form-group row">
-                                    <label asp-for="@details.Address" class="col-sm-4 col-form-label">Location</label>
+                                @foreach (var part in parts){
+                                <label asp-for="@part.CheckInStatus" class="col-sm-4 col-form-label">CheckInStatus</label>
                                     <div class="col-sm-8">
-                                        <input asp-for="@details.Address" id="Address" type="text" name="Address"
-                                               value="@details.Address" class="form-control" required>
-                                        <span asp-validation-for="@details.Address" id="error_message"
-                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                        <input asp-for="@part.CheckInStatus" id="CheckInStatus" type="checkbox" name="CheckInStatus"
+                                               value="@part.CheckInStatus" class="form-control" required>
                                     </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label asp-for="@details.Description" class="col-sm-4 col-form-label">Description</label>
-                                    <div class="col-sm-8">
-                                        <input asp-for="@details.Description" id="Description" type="text" name="Description"
-                                               value="@details.Description" class="form-control" required>
-                                        <span asp-validation-for="@details.Description" id="error_message"
-                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label asp-for="@details.Note" class="col-sm-4 col-form-label">Note</label>
-                                    <div class="col-sm-8">
-                                        <input asp-for="@details.Note" id="Note" type="text" name="Note"
-                                               value="@details.Note" class="form-control" required>
-                                        <span asp-validation-for="@details.Note" id="error_message"
-                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                <label asp-for="@details.Status" class="col-sm-4 col-form-label">Status:</label>
-                                    <div class="col-sm-8">
-                                    <input asp-for="@details.Status" id="Status" type="text" name="Status"
-                                            value="@details.Status" class="form-control" required>
-                                    <span asp-validation-for="@details.Status" id="error_message"
-                                            class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                    </div>
-                                </div>
-                                <input asp-for="@details.NumberOfParticipantsLimit" id="NumberOfParticipantsLimit" type="number" name="NumberOfParticipantsLimit"
-                                       value="@details.NumberOfParticipantsLimit" class="form-control" required hidden>
-                                <span asp-validation-for="@details.NumberOfParticipantsLimit" id="error_message"
-                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                            </div>
+                                    }
                         </div>
                     </div>
                     <div class="modal-footer justify-content-center">
@@ -358,7 +311,6 @@
                 </form>
             </div>
         </div>
-
 
         <!-- jQuery first, then Popper.js, then Bootstrap JS. -->
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

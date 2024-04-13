@@ -1,7 +1,7 @@
 ﻿@model dynamic
 @{
     Layout = null;
-    ViewData["Title"] = "Manager Contest Page";
+    ViewData["Title"] = "Staff Contest Page";
     List<BAL.ViewModels.LocationViewModel> locationList = Model.Locations;
     List<BAL.ViewModels.ContestViewModel> contestList = Model.Contests;
     BAL.ViewModels.ContestViewModel createContest = new();
@@ -29,12 +29,12 @@
             <div class="navigation">  
                 <ul class="slide-menu">
                     <div class="logo">
-                        <a href="@Url.Action("ManagerIndex", "Manager")">
+                        <a href="@Url.Action("StaffIndex", "Staff")">
                             <img class="logo" src="~/images/Red_whiskered_bulbul_bird_logo_eps_10_generated 1.png" alt="logo">
                         </a>
                     </div>
                     <li class="active" data-toggle="tooltip"data-placement="right" title="Overview">
-                        <a href="@Url.Action("ManagerIndex", "Manager")">
+                        <a href="@Url.Action("StaffIndex", "Staff")">
                             <span><i class='bx bx-tachometer'></i></span>
                             <span class="title">Overview</span>
                         </a>
@@ -47,47 +47,30 @@
                         </a>
                         <ul class="collapse sub-menu" id="collapseOne">
                             <li data-toggle="tooltip"data-placement="right" title="Manage Meeting">
-                                <a href="@Url.Action("Meeting", "Manager")" li class="dropdown-item">
+                                <a href="@Url.Action("StaffMeeting", "Staff")" li class="dropdown-item">
                                     <i class='bx bx-home-alt-2'></i>
                                     <span class="title">Meeting</span>
                                 </a> 
                             </li>
                             <li data-toggle="tooltip"data-placement="right" title="Manage Fieldtrip">
-                                <a href="@Url.Action("ManagerFieldtrip", "Manager")" li class="dropdown-item">
+                                <a href="@Url.Action("StaffFieldTrip", "Staff")" li class="dropdown-item">
                                     <i class='bx bx-calendar-edit'></i>
                                     <span class="title">Fieldtrip</span>
                                 </a>
                             </li> 
                             <li data-toggle="tooltip"data-placement="right" title="Manage Bird Contest">
-                                <a href="@Url.Action("ManagerContest", "Manager")" li class="dropdown-item">
+                                <a href="@Url.Action("StaffContest", "Staff")" li class="dropdown-item">
                                     <i class='bx bx-cloud-rain'></i>
                                     <span class="title">Bird Contest</span>
                                 </a>
                             </li>
                         </ul>
                     </li>
-                    <li data-toggle="tooltip"data-placement="right" title="History Events">
-                        <a href="@Url.Action("ManagerHistoryEvents", "Manager")">
-                            <span><i class='bx bx-history'></i></span>
-                            <span class="title">HistoryEvents</span>
-                        </a>
                     </li>
-                    <li data-toggle="tooltip"data-placement="right" title="Manage Notification">
-                        <a href="@Url.Action("ManagerNotification", "Manager")">
-                            <span><i class='bx bx-bell'></i></span>
-                            <span class="title">Notification</span>
-                        </a>
-                    </li>
-                    <li data-toggle="tooltip"data-placement="right" title="Manage Feedback">
-                        <a href="@Url.Action("ManagerFeedback", "Manager")">
-                            <span><i class="bx bx-detail"></i></span>
-                            <span class="title">Feedback</span>
-                        </a>
-                    </li>
-                    <li data-toggle="tooltip"data-placement="right" title="Manager Profile">
-                        <a href="@Url.Action("ManagerProfile", "Manager")">
+                    <li data-toggle="tooltip"data-placement="right" title="Staff Profile">
+                        <a href="@Url.Action("StaffProfile", "Staff")">
                             <span><i class='bx bx-user'></i></span>
-                            <span class="title">Manager Profile</span>
+                            <span class="title">Staff Profile</span>
                         </a>
                     </li>
                 </ul>
@@ -111,7 +94,8 @@
                         </div>
                         <div class="float-right">
                             <div class="btn-group me-1 mb-1">
-                                 @if (TempData["ROLE_NAME"] != null)
+                                <div class="dropdown">
+                                    @if (TempData["ROLE_NAME"] != null)
                                     {
                                     <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         @TempData["USER_NAME"]
@@ -122,7 +106,8 @@
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="@Url.Action("Logout", "Auth")">Logout</a>
                                     </div>
-                                    }  
+                                    }
+                                </div>  
                             </div>
                         </div>   
                     </div>
@@ -176,15 +161,14 @@
                                                 }
                                             </div>
                                             <div class="col-sm-6 d-flex justify-content-end">
-                                                <form asp-action="ManagerMeeting" asp-controller="Manager" method="get" asp-route-search="@search">
-                   
+                                                <form asp-action="StaffContest" asp-controller="Staff" method="get" asp-route-search="@search">
+                                                    <div>
+                                                        <label>
                                                             <input asp-for="@search" class="form-control" type="text" name="search" placeholder="Search..." value="@search">
-                                                            <button class="bx bx-search-alt header__search-submit" type="submit">
-                                                                <i class="sbi sbi--search mirrored header__search-submit-icon"></i>
-                                                            </button>
+                                                            <button class="bx bx-search-alt" type="submit"></button>
                                                             @*<i class='bx bx-search-alt'></i>*@
-                                                        
-                                                    
+                                                        </label>
+                                                    </div>
                                                 </form>
                                             </div>
                                         </div>
@@ -255,7 +239,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="form-group mx-auto">
-                                                        <form asp-action="Contest" asp-controller="Manager" method="get" asp-route-id="@data.ContestId">
+                                                        <form asp-action="Contest" asp-controller="Staff" method="get" asp-route-id="@data.ContestId">
                                                             <button class="btn btn-primary clickable-row" type="submit">See Detail</button>
                                                         </form>
                                                             <button class="btn btn-danger" data-toggle="modal" data-target="#deleteContest" type="submit">Cancel Contest</button>
@@ -272,7 +256,7 @@
                             <h2>Are you sure want to delete ?</h2> 
                         </div>
                         <div class="del-submit d-flex justify-content-center">       
-                            <form asp-action="ManagerCancelContest" asp-controller="Manager" method="post" asp-route-id="@data.ContestId">
+                            <form asp-action="StaffCancelContest" asp-controller="Staff" method="post" asp-route-id="@data.ContestId">
                                 <button type="submit" name="action" value="deleteContest" class="btn btn-success">Save</button>
                                 </form>
                                 <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
@@ -300,8 +284,8 @@
                     <h4 class="modal-title">Add new contest</h4>
                 </div>
                 <div class="modal-body">
-                    @*<form asp-action="ManagerCreateContest" asp-controller="Manager" method="get" onsubmit="return submitFunc()" id="form">*@
-                    <form asp-action="ManagerCreateContest" asp-controller="Manager" method="post" id="form">
+                    @*<form asp-action="StaffCreateContest" asp-controller="Staff" method="get" onsubmit="return submitFunc()" id="form">*@
+                    <form asp-action="StaffCreateContest" asp-controller="Staff" method="post" id="form">
                         <div class="row p-4">
                             <div class="col-12">
                                  <div class="row form-group">
@@ -389,7 +373,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script>
     function redirectToDetailPage() {
-        window.location.href = '@Url.Action("ManagerContestDetail", "Manager")';
+        window.location.href = '@Url.Action("StaffContestDetail", "Staff")';
     }
     </script>
 </body>

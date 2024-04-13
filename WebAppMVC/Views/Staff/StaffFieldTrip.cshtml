@@ -1,10 +1,15 @@
 ﻿@model dynamic
 @{
     Layout = null;
-    ViewData["Title"] = "Manager Contest Page";
+    ViewData["Title"] = "Staff Meeting Page";
     List<BAL.ViewModels.LocationViewModel> locationList = Model.Locations;
-    List<BAL.ViewModels.ContestViewModel> contestList = Model.Contests;
-    BAL.ViewModels.ContestViewModel createContest = new();
+    List<BAL.ViewModels.FieldTripViewModel> fieldtripList = Model.FieldTrips;
+    BAL.ViewModels.FieldTripViewModel createFieldTrip = new();
+    BAL.ViewModels.FieldtripDaybyDayViewModel createFieldTripDayByDay = new();
+    BAL.ViewModels.FieldtripRateViewModel createFieldTripRates = new();
+    BAL.ViewModels.FieldtripMediaViewModel createFieldTripMedia = new();
+    BAL.ViewModels.FieldtripInclusionViewModel createFieldTripInclsion = new();
+    BAL.ViewModels.FieldtripGettingThereViewModel createFieldTripGettingthere = new();
     string? search = string.Empty;
 }
 <html lang="en">
@@ -21,6 +26,10 @@
     <link rel='stylesheet' href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css'>
     <!-- Other-->
     <link rel="stylesheet" href="https://unpkg.com/filepond-plugin-file-poster/dist/filepond-plugin-file-poster.css" >
+            <link rel="stylesheet" href="~/css/owl.carousel.min.css">
+        <link rel="stylesheet" href="~/css/owl.theme.default.min.css">
+        <!-- main CSS -->
+        <link rel="stylesheet" href="~/css/main.css">
 </head>
 <body>
     <!-- sidebar -->
@@ -29,12 +38,12 @@
             <div class="navigation">  
                 <ul class="slide-menu">
                     <div class="logo">
-                        <a href="@Url.Action("ManagerIndex", "Manager")">
+                        <a href="@Url.Action("StaffIndex", "Staff")">
                             <img class="logo" src="~/images/Red_whiskered_bulbul_bird_logo_eps_10_generated 1.png" alt="logo">
                         </a>
                     </div>
                     <li class="active" data-toggle="tooltip"data-placement="right" title="Overview">
-                        <a href="@Url.Action("ManagerIndex", "Manager")">
+                        <a href="@Url.Action("StaffIndex", "Staff")">
                             <span><i class='bx bx-tachometer'></i></span>
                             <span class="title">Overview</span>
                         </a>
@@ -47,47 +56,30 @@
                         </a>
                         <ul class="collapse sub-menu" id="collapseOne">
                             <li data-toggle="tooltip"data-placement="right" title="Manage Meeting">
-                                <a href="@Url.Action("Meeting", "Manager")" li class="dropdown-item">
+                                <a href="@Url.Action("StaffMeeting", "Staff")" li class="dropdown-item">
                                     <i class='bx bx-home-alt-2'></i>
                                     <span class="title">Meeting</span>
                                 </a> 
                             </li>
                             <li data-toggle="tooltip"data-placement="right" title="Manage Fieldtrip">
-                                <a href="@Url.Action("ManagerFieldtrip", "Manager")" li class="dropdown-item">
+                                <a href="@Url.Action("StaffFieldTrip", "Staff")" li class="dropdown-item">
                                     <i class='bx bx-calendar-edit'></i>
                                     <span class="title">Fieldtrip</span>
                                 </a>
                             </li> 
                             <li data-toggle="tooltip"data-placement="right" title="Manage Bird Contest">
-                                <a href="@Url.Action("ManagerContest", "Manager")" li class="dropdown-item">
+                                <a href="@Url.Action("StaffContest", "Staff")" li class="dropdown-item">
                                     <i class='bx bx-cloud-rain'></i>
                                     <span class="title">Bird Contest</span>
                                 </a>
                             </li>
                         </ul>
                     </li>
-                    <li data-toggle="tooltip"data-placement="right" title="History Events">
-                        <a href="@Url.Action("ManagerHistoryEvents", "Manager")">
-                            <span><i class='bx bx-history'></i></span>
-                            <span class="title">HistoryEvents</span>
-                        </a>
                     </li>
-                    <li data-toggle="tooltip"data-placement="right" title="Manage Notification">
-                        <a href="@Url.Action("ManagerNotification", "Manager")">
-                            <span><i class='bx bx-bell'></i></span>
-                            <span class="title">Notification</span>
-                        </a>
-                    </li>
-                    <li data-toggle="tooltip"data-placement="right" title="Manage Feedback">
-                        <a href="@Url.Action("ManagerFeedback", "Manager")">
-                            <span><i class="bx bx-detail"></i></span>
-                            <span class="title">Feedback</span>
-                        </a>
-                    </li>
-                    <li data-toggle="tooltip"data-placement="right" title="Manager Profile">
-                        <a href="@Url.Action("ManagerProfile", "Manager")">
+                    <li data-toggle="tooltip"data-placement="right" title="Staff Profile">
+                        <a href="@Url.Action("StaffProfile", "Staff")">
                             <span><i class='bx bx-user'></i></span>
-                            <span class="title">Manager Profile</span>
+                            <span class="title">Staff Profile</span>
                         </a>
                     </li>
                 </ul>
@@ -111,7 +103,8 @@
                         </div>
                         <div class="float-right">
                             <div class="btn-group me-1 mb-1">
-                                 @if (TempData["ROLE_NAME"] != null)
+                                <div class="dropdown">
+                                    @if (TempData["ROLE_NAME"] != null)
                                     {
                                     <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         @TempData["USER_NAME"]
@@ -122,7 +115,8 @@
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="@Url.Action("Logout", "Auth")">Logout</a>
                                     </div>
-                                    }  
+                                    }
+                                </div>  
                             </div>
                         </div>   
                     </div>
@@ -156,7 +150,7 @@
                                 <li class="nav-item">
                                     <a class="nav-link active" data-toggle="tab" href="#home1">
                                         <i class='bx bx-home-alt-2'></i>
-                                        <span>Contest</span>
+                                        <span>FieldTrip</span>
                                     </a>
                                 </li>             
                             </ul>
@@ -176,15 +170,14 @@
                                                 }
                                             </div>
                                             <div class="col-sm-6 d-flex justify-content-end">
-                                                <form asp-action="ManagerMeeting" asp-controller="Manager" method="get" asp-route-search="@search">
-                   
+                                                <form asp-action="StaffFieldTrip" asp-controller="Staff" method="get" asp-route-search="@search">
+                                                    <div>
+                                                        <label>
                                                             <input asp-for="@search" class="form-control" type="text" name="search" placeholder="Search..." value="@search">
-                                                            <button class="bx bx-search-alt header__search-submit" type="submit">
-                                                                <i class="sbi sbi--search mirrored header__search-submit-icon"></i>
-                                                            </button>
+                                                            <button class="bx bx-search-alt" type="submit"></button>
                                                             @*<i class='bx bx-search-alt'></i>*@
-                                                        
-                                                    
+                                                        </label>
+                                                    </div>
                                                 </form>
                                             </div>
                                         </div>
@@ -193,20 +186,20 @@
                                         <div class="col-xl-3 col-lg-6 col-sm-6 my-3 item">
                                             <div class="card card-child">
                                                 <div class="card-body add-room">
-                                                    <button class="border-0" data-toggle="modal"  data-target="#addContest">
-                                                        <span>Add Contest</span>
+                                                    <button class="border-0" data-toggle="modal"  data-target="#addFieldTrip">
+                                                        <span>Add FieldTrip</span>
                                                         <i class='bx bx-add-to-queue'></i>
                                                     </button>
                                                 </div>
                                             </div>
                                         </div>
                                         <!-- dung vong for o day -->
-                                        @foreach (var data in contestList)
+                                        @foreach (var data in fieldtripList)
                                         {
                                             <div class="col-xl-3 col-lg-6 col-sm-6 my-3">
                                                 <div class="card card-child">
                                                     <div class="room-name">
-                                                        <span>Contest</span>
+                                                        <span>FieldTrip</span>
                                                         <div class="status">
                                                             <!-- dùng lệnh if -->
                                                             @*<span class="stt1">Status:<h6>Processing</h6></span>*@
@@ -220,8 +213,8 @@
                                                         <div class="room-title">
                                                             <ul>
                                                                 <li>
-                                                                    <h6>Contest Name:</h6>
-                                                                    <span>@data.ContestName</span>
+                                                                    <h6>FieldTrip Name:</h6>
+                                                                    <span>@data.TripName</span>
                                                                 </li>
                                                                 <li>
                                                                     <h6>Registration Deadlines:</h6>
@@ -255,14 +248,14 @@
                                                         </div>
                                                     </div>
                                                     <div class="form-group mx-auto">
-                                                        <form asp-action="Contest" asp-controller="Manager" method="get" asp-route-id="@data.ContestId">
+                                                        <form asp-action="FieldTrip" asp-controller="Staff" method="get" asp-route-id="@data.TripId">
                                                             <button class="btn btn-primary clickable-row" type="submit">See Detail</button>
                                                         </form>
-                                                            <button class="btn btn-danger" data-toggle="modal" data-target="#deleteContest" type="submit">Cancel Contest</button>
-                                                            </div>
+                                                            <button class="btn btn-danger" data-toggle="modal" data-target="#deleteFieldTrip" type="submit">Cancel FieldTrip</button>
+                                                    </div>
                                                 </div>
                                             </div>
-    <div id="deleteContest" class="modal fade" role="dialog">
+    <div id="deleteFieldTrip" class="modal fade" role="dialog">
         <div class="modal-dialog modal-dialog-centered" role="content">
             <div class="modal-content">
                 <form action="#">
@@ -272,8 +265,8 @@
                             <h2>Are you sure want to delete ?</h2> 
                         </div>
                         <div class="del-submit d-flex justify-content-center">       
-                            <form asp-action="ManagerCancelContest" asp-controller="Manager" method="post" asp-route-id="@data.ContestId">
-                                <button type="submit" name="action" value="deleteContest" class="btn btn-success">Save</button>
+                            <form asp-action="StaffCancelFieldTrip" asp-controller="Staff" method="post" asp-route-id="@data.TripId">
+                                <button type="submit" name="action" value="deleteFieldTrip" class="btn btn-success">Save</button>
                                 </form>
                                 <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
                             </div>
@@ -283,7 +276,9 @@
         </div>
     </div>
                                         }
-                                </div>                               
+
+                                </div>
+                            </div>
                             <!-- end tapnet -->
                         </div>
                     </div>
@@ -293,71 +288,125 @@
     </div>
 
     <!-- add new Room -->
-    <div id="addContest" class="modal fade" role="dialog">
+    <div id="addFieldTrip" class="modal fade" role="dialog">
         <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
             <div class="modal-content modal-addRoom">
                 <div class="modal-header">
-                    <h4 class="modal-title">Add new contest</h4>
+                    <h4 class="modal-title">Add new FieldTrip</h4>
                 </div>
                 <div class="modal-body">
-                    @*<form asp-action="ManagerCreateContest" asp-controller="Manager" method="get" onsubmit="return submitFunc()" id="form">*@
-                    <form asp-action="ManagerCreateContest" asp-controller="Manager" method="post" id="form">
+                    @*<form asp-action="StaffCreateFieldTrip" asp-controller="Staff" method="get" onsubmit="return submitFunc()" id="form">*@
+                    <form asp-action="StaffCreateFieldTrip" asp-controller="Staff" method="post" id="form">
                         <div class="row p-4">
                             <div class="col-12">
                                  <div class="row form-group">
-                                    <label asp-for="@createContest.ContestName" class="col-md-3 col-form-label text-md-right">Contest Name</label>
-                                    <input asp-for="@createContest.ContestName" value="@createContest.ContestName" type="text" name="contestname" placeholder="Contest Name" required class="form-control col-md-7">
-                                    <span asp-validation-for="@createContest.ContestName" id="error_message"
+                                    <label asp-for="@createFieldTrip.TripName" class="col-md-3 col-form-label text-md-right">FieldTrip Name</label>
+                                    <input asp-for="@createFieldTrip.TripName" value="@createFieldTrip.TripName" type="text" name="fieldtripname" placeholder="Meeting Name" required class="form-control col-md-7">
+                                    <span asp-validation-for="@createFieldTrip.TripName" id="error_message"
                                           class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                 </div>
                                 <div class="row form-group">
                                     <label class="col-md-3 col-form-label mt-2 text-md-right">Choose Picture</label>
                                     <input type="file" name="photo" class="form-control col-md-7 mt-2" accept="image/*">
 
-                                    <label asp-for="@createContest.RegistrationDeadline" class="col-md-3 col-form-label mt-3 text-md-right">Registration Deadlines</label>
-                                    <input asp-for="@createContest.RegistrationDeadline" value="@createContest.RegistrationDeadline" type="datetime-local" name="registrationDeadline" required class="form-control col-md-7 mt-3">
-                                    <span asp-validation-for="@createContest.RegistrationDeadline" id="error_message"
+                                    <label asp-for="@createFieldTrip.RegistrationDeadline" class="col-md-3 col-form-label mt-3 text-md-right">Registration Deadlines</label>
+                                    <input asp-for="@createFieldTrip.RegistrationDeadline" value="@createFieldTrip.RegistrationDeadline" type="datetime-local" name="registrationDeadline" required class="form-control col-md-7 mt-3">
+                                    <span asp-validation-for="@createFieldTrip.RegistrationDeadline" id="error_message"
                                           class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
-                                    <label asp-for="@createContest.StartDate" class="col-md-3 col-form-label mt-3 text-md-right">Start Date</label>
-                                    <input asp-for="@createContest.StartDate" value="@createContest.StartDate" type="datetime-local" name="startDate" required class="form-control col-md-7 mt-3">
-                                    <span asp-validation-for="@createContest.StartDate" id="error_message"
+                                    <label asp-for="@createFieldTrip.StartDate" class="col-md-3 col-form-label mt-3 text-md-right">Start Date</label>
+                                    <input asp-for="@createFieldTrip.StartDate" value="@createFieldTrip.StartDate" type="datetime-local" name="startDate" required class="form-control col-md-7 mt-3">
+                                    <span asp-validation-for="@createFieldTrip.StartDate" id="error_message"
                                             class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
-                                    <label asp-for="@createContest.EndDate" class="col-md-3 col-form-label mt-3 text-md-right">End Date</label>
-                                    <input asp-for="@createContest.EndDate" value@createContest.EndDate" type="datetime-local" name="endDate" required class="form-control col-md-7 mt-3">
-                                    <span asp-validation-for="@createContest.EndDate" id="error_message"
+                                    <label asp-for="@createFieldTrip.EndDate" class="col-md-3 col-form-label mt-3 text-md-right">End Date</label>
+                                    <input asp-for="@createFieldTrip.EndDate" value="@createFieldTrip.EndDate" type="datetime-local" name="endDate" required class="form-control col-md-7 mt-3">
+                                    <span asp-validation-for="@createFieldTrip.EndDate" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
-                                    <label asp-for="@createContest.NumberOfParticipants"  class="col-md-3 col-form-label mt-3 text-md-right">Number of Participants</label>
-                                    <input asp-for="@createContest.NumberOfParticipants" value="@createContest.NumberOfParticipants" type="number" name="numberOfParticipants" class="form-control col-md-7 mt-3" required>
-                                    <span asp-validation-for="@createContest.NumberOfParticipants" id="error_message"
+                                    <label asp-for="@createFieldTrip.NumberOfParticipants"  class="col-md-3 col-form-label mt-3 text-md-right">Number of Participants</label>
+                                    <input asp-for="@createFieldTrip.NumberOfParticipants" value="@createFieldTrip.NumberOfParticipants" type="number" name="numberOfParticipants" class="form-control col-md-7 mt-3" required>
+                                    <span asp-validation-for="@createFieldTrip.NumberOfParticipants" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
-                                    <label asp-for="@createContest.Host" class="col-md-3 col-form-label mt-3 text-md-right">Host</label>
-                                    <input asp-for="@createContest.Host" value="@createContest.Host" type="text" name="host" placeholder="Meeting Host" class="form-control col-md-7 mt-3" rows="3" required>
-                                    <span asp-validation-for="@createContest.Host" id="error_message"
+                                    <label asp-for="@createFieldTrip.Host" class="col-md-3 col-form-label mt-3 text-md-right">Host</label>
+                                    <input asp-for="@createFieldTrip.Host" value="@createFieldTrip.Host" type="text" name="host" placeholder="Meeting Host" class="form-control col-md-7 mt-3" rows="3" required>
+                                    <span asp-validation-for="@createFieldTrip.Host" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
-                                    <label asp-for="@createContest.Incharge" class="col-md-3 col-form-label mt-3 text-md-right">Incharge</label>
-                                    <input asp-for="@createContest.Incharge" value="@createContest.Incharge" type="text" name="incharge" placeholder="Staff incharge of Meeting" class="form-control col-md-7 mt-3" rows="3" required>
-                                    <span asp-validation-for="@createContest.Incharge" id="error_message"
+                                    <label asp-for="@createFieldTrip.InCharge" class="col-md-3 col-form-label mt-3 text-md-right">Incharge</label>
+                                    <input asp-for="@createFieldTrip.InCharge" value="@createFieldTrip.InCharge" type="text" name="incharge" placeholder="Staff incharge of Meeting" class="form-control col-md-7 mt-3" rows="3" required>
+                                    <span asp-validation-for="@createFieldTrip.InCharge" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
-                                    <label asp-for="@createContest.Address" class="col-md-3 col-form-label mt-3 text-md-right">Address</label>
-                                    <textarea asp-for="@createContest.Address" value="@createContest.Address" type="text" name="address" placeholder="Meeting Address..." class="form-control col-md-7 mt-3" rows="3" required></textarea>
-                                    <span asp-validation-for="@createContest.Address" id="error_message"
+                                    <label asp-for="@createFieldTrip.Address" class="col-md-3 col-form-label mt-3 text-md-right">Address</label>
+                                    <textarea asp-for="@createFieldTrip.Address" value="@createFieldTrip.Address" type="text" name="address" placeholder="Meeting Address..." class="form-control col-md-7 mt-3" rows="3" required></textarea>
+                                    <span asp-validation-for="@createFieldTrip.Address" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
-                                    <label asp-for="@createContest.Description" class="col-md-3 col-form-label mt-3 text-md-right">Description</label>
-                                    <textarea asp-for="@createContest.Description" value="@createContest.Description" type="text" name="description" placeholder="Meeting description..." class="form-control col-md-7 mt-3" rows="3" required></textarea>
-                                    <span asp-validation-for="@createContest.Description" id="error_message"
+                                    <label asp-for="@createFieldTrip.Description" class="col-md-3 col-form-label mt-3 text-md-right">Description</label>
+                                    <textarea asp-for="@createFieldTrip.Description" value="@createFieldTrip.Description" type="text" name="description" placeholder="Meeting description..." class="form-control col-md-7 mt-3" rows="3" required></textarea>
+                                    <span asp-validation-for="@createFieldTrip.Description" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
-                                    <label asp-for="@createContest.Note" class="col-md-3 col-form-label mt-3 text-md-right">Note</label>
-                                    <textarea asp-for="@createContest.Note" value="@createContest.Note" type="text" name="note" placeholder="Meeting Note..." class="form-control col-md-7 mt-3" rows="3" required></textarea>
-                                    <span asp-validation-for="@createContest.Note" id="error_message"
+                                    <label asp-for="@createFieldTrip.Note" class="col-md-3 col-form-label mt-3 text-md-right">Note</label>
+                                    <textarea asp-for="@createFieldTrip.Note" value="@createFieldTrip.Note" type="text" name="note" placeholder="Meeting Note..." class="form-control col-md-7 mt-3" rows="3" required></textarea>
+                                    <span asp-validation-for="@createFieldTrip.Note" id="error_message"
                                           class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+
+                                    <label asp-for="@createFieldTripRates.RateType" class="col-md-3 col-form-label mt-3 text-md-right">Rate Type</label>                    
+                                    <textarea asp-for="@createFieldTripRates.RateType" value="@createFieldTripRates.RateType" type="text" name="ratetype" placeholder="Rate Type..." class="form-control col-md-7 mt-3" rows="3" required></textarea>
+                                    <span asp-validation-for="@createFieldTripRates.RateType" id="error_message"
+                                          class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+
+                                    <label asp-for="@createFieldTripRates.Price" class="col-md-3 col-form-label mt-3 text-md-right">Price</label>
+                                    <textarea asp-for="@createFieldTripRates.Price" value="@createFieldTripRates.Price" type="text" name="price" placeholder="FieldTrip Price..." class="form-control col-md-7 mt-3" rows="3" required></textarea>
+                                    <span asp-validation-for="@createFieldTripRates.Price" id="error_message"
+                                          class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+
+                                    <label asp-for="@createFieldTripGettingthere.GettingThereText" class="col-md-3 col-form-label mt-3 text-md-right">GettingThereText</label>
+                                    <textarea asp-for="@createFieldTripGettingthere.GettingThereText" value="@createFieldTripGettingthere.GettingThereText" type="text" name="gettingtheretext" placeholder="GettingThereText..." class="form-control col-md-7 mt-3" rows="3" required></textarea>
+                                    <span asp-validation-for="@createFieldTripGettingthere.GettingThereText" id="error_message"
+                                          class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+
+                                    <label asp-for="@createFieldTripDayByDay.Description" class="col-md-3 col-form-label mt-3 text-md-right">Description</label>
+                                    <textarea asp-for="@createFieldTripDayByDay.Description" value="@createFieldTripDayByDay.Description" type="text" name="description" placeholder="Description..." class="form-control col-md-7 mt-3" rows="3" required></textarea>
+                                    <span asp-validation-for="@createFieldTripDayByDay.Description" id="error_message"
+                                          class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+
+                                    <label asp-for="@createFieldTripDayByDay.PictureId" class="col-md-3 col-form-label mt-3 text-md-right">Picture ID</label>
+                                    <textarea asp-for="@createFieldTripDayByDay.PictureId" value="@createFieldTripDayByDay.PictureId" type="text" name="picturid" placeholder="Pictur ID..." class="form-control col-md-7 mt-3" rows="3" required></textarea>
+                                    <span asp-validation-for="@createFieldTripDayByDay.PictureId" id="error_message"
+                                          class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+
+                                    <label asp-for="@createFieldTripDayByDay.Day" class="col-md-3 col-form-label mt-3 text-md-right">Day</label>
+                                    <textarea asp-for="@createFieldTripDayByDay.Day" value="@createFieldTripDayByDay.Day" type="datetime-local" name="day" required class="form-control col-md-7 mt-3"></textarea>
+                                    <span asp-validation-for="@createFieldTripDayByDay.Day" id="error_message"
+                                          class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+
+                                    <label asp-for="@createFieldTripInclsion.Title" class="col-md-3 col-form-label mt-3 text-md-right">Title</label>
+                                    <textarea asp-for="@createFieldTripInclsion.Title" value="@createFieldTripInclsion.Title" type="text" name="title" placeholder="Title..." class="form-control col-md-7 mt-3" rows="3" required></textarea>
+                                    <span asp-validation-for="@createFieldTripInclsion.Title" id="error_message"
+                                          class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+
+                                    <label asp-for="@createFieldTripInclsion.Type" class="col-md-3 col-form-label mt-3 text-md-right">Type</label>
+                                    <textarea asp-for="@createFieldTripInclsion.Type" value="@createFieldTripInclsion.Type" type="text" name="type" placeholder="Type..." class="form-control col-md-7 mt-3" rows="3" required></textarea>
+                                    <span asp-validation-for="@createFieldTripInclsion.Type" id="error_message"
+                                          class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+
+                                    <label asp-for="@createFieldTripInclsion.InclusionText" class="col-md-3 col-form-label mt-3 text-md-right">Inclusion Text</label>
+                                    <textarea asp-for="@createFieldTripInclsion.InclusionText" value="@createFieldTripInclsion.InclusionText" type="text" name="inclusiontext" placeholder="Inclusion Text..." class="form-control col-md-7 mt-3" rows="3" required></textarea>
+                                    <span asp-validation-for="@createFieldTripInclsion.InclusionText" id="error_message"
+                                          class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+
+                                    <label class="col-md-3 col-form-label mt-2 text-md-right">Choose Media Picture</label>
+                                    <input type="file" name="mediaphoto" class="form-control col-md-7 mt-2" accept="image/*">
+
+                                    <label asp-for="@createFieldTripMedia.Description" class="col-md-3 col-form-label mt-3 text-md-right">Media Description</label>
+                                    <textarea asp-for="@createFieldTripMedia.Description" value="@createFieldTripMedia.Description" type="text" name="description" placeholder="Media Description..." class="form-control col-md-7 mt-3" rows="3" required></textarea>
+                                    <span asp-validation-for="@createFieldTripMedia.Description" id="error_message"
+                                          class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+
                                 </div> 
                             </div>                
                             <div class="modal-footer justify-content-center">
@@ -370,8 +419,7 @@
             </div>
         </div>
     </div>
-       
-        <!-- jQuery first, then Popper.js, then Bootstrap JS. -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS. -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
         referrerpolicy="no-referrer"></script>
         <!-- Jquery Waypoint -->
@@ -380,6 +428,31 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.5/umd/popper.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- BS4 carousels -->
+        <script>
+            $('.carousel').carousel({
+                interval: 3000
+            });
+        </script>
+        <!-- owl carousels -->
+        <script src="./assets/js/owl.carousel.min.js"></script>
+        <script>
+            $('.clubList-carousel').owlCarousel({
+                loop: true,
+                margin: 10,
+                nav: false,
+                responsive: {
+                    0: {
+                        items: 1
+                    },
+                    576: {
+                        items: 2
+                    },
+                    1200: {
+                        items: 4
+                    }
+                }
+            });
+        </script>
         <!-- main js -->
         <script src="~/js/user-script.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
@@ -389,8 +462,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script>
     function redirectToDetailPage() {
-        window.location.href = '@Url.Action("ManagerContestDetail", "Manager")';
+        window.location.href = '@Url.Action("StaffFieldTripDetail", "Staff")';
     }
-    </script>
+</script>
 </body>
 </html>
