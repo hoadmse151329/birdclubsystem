@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DAL.Models;
+using Microsoft.AspNetCore.Mvc;
 using System.Dynamic;
 using System.Net.Http.Headers;
 using System.Text.Json;
@@ -178,5 +179,105 @@ namespace WebAppMVC.Controllers
 		{
 			return View();
 		}
-	}
+
+        [HttpPost]
+        [Route("FieldTrip/FieldTripRegister/{tripId:int}")]
+        public async Task<IActionResult> FieldTripRegister(int tripId)
+        {
+            FieldTripAPI_URL += "/Register/" + tripId;
+
+            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
+            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+
+            string? role = HttpContext.Session.GetString("ROLE_NAME");
+            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
+            else if (!role.Equals("Member")) return View("Index");
+
+            string? usrId = HttpContext.Session.GetString("USER_ID");
+            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
+
+            string? usrname = HttpContext.Session.GetString("USER_NAME");
+            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
+
+            TempData["ROLE_NAME"] = role;
+            TempData["USER_NAME"] = usrname;
+
+            var participationNo = await methcall.CallMethodReturnObject<GetFieldTripParticipationNo>(
+                _httpClient: _httpClient,
+                options: options,
+                methodName: "POST",
+                url: FieldTripAPI_URL,
+                _logger: _logger,
+                inputType: usrId,
+                accessToken: accToken);
+
+            if (participationNo == null)
+            {
+                _logger.LogInformation("Error while processing your request! (Registering Field Trip Participation!): Field Trip Not Found!");
+                ViewBag.error =
+                    "Error while processing your request! (Registering Field Trip Participation!).\n Field Trip Not Found!";
+                RedirectToAction("FieldTripPost", new { id = tripId });
+            }
+            else
+            if (!participationNo.Status)
+            {
+                _logger.LogInformation("Error while processing your request! (Registering Field Trip Participation!): " + participationNo.Status + " , Error Message: " + participationNo.ErrorMessage);
+                ViewBag.error =
+                    "Error while processing your request! (Registering Field Trip Participation!).\n"
+                    + participationNo.ErrorMessage;
+                RedirectToAction("FieldTripPost", new { id = tripId });
+            }
+
+            return RedirectToAction("FieldTripPost", new { id = tripId });
+        }
+        [HttpPost]
+        [Route("FieldTrip/FieldTripDeRegister/{tripId:int}")]
+        public async Task<IActionResult> FieldTripDeRegister(int tripId)
+        {
+            FieldTripAPI_URL += "/RemoveParticipant/" + tripId;
+
+            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
+            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+
+            string? role = HttpContext.Session.GetString("ROLE_NAME");
+            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
+            else if (!role.Equals("Member")) return View("Index");
+
+            string? usrId = HttpContext.Session.GetString("USER_ID");
+            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
+
+            string? usrname = HttpContext.Session.GetString("USER_NAME");
+            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
+
+            TempData["ROLE_NAME"] = role;
+            TempData["USER_NAME"] = usrname;
+
+            var participationNo = await methcall.CallMethodReturnObject<GetFieldTripPostDeRegister>(
+                _httpClient: _httpClient,
+                options: options,
+                methodName: "POST",
+                url: FieldTripAPI_URL,
+                _logger: _logger,
+                inputType: usrId,
+                accessToken: accToken);
+            if (participationNo == null)
+            {
+                _logger.LogInformation("Error while processing your request! (Remove Field Trip Participation Registration!): Field Trip Participation Not Found!");
+                ViewBag.error =
+                    "Error while processing your request! (Remove Field Trip Participation Registration!).\n Field Trip Participation Not Found!";
+                RedirectToAction("FieldTripPost", new { id = tripId });
+            }
+            else
+            if (!participationNo.Status)
+            {
+                _logger.LogInformation("Error while processing your request! (Remove Field Trip Participation Registration!): " + participationNo.Status + " , Error Message: " + participationNo.ErrorMessage);
+                ViewBag.error =
+                    "Error while processing your request! (Remove Field Trip Participation Registration!).\n"
+                    + participationNo.ErrorMessage;
+                RedirectToAction("FieldTripPost", new { id = tripId });
+            }
+
+            return RedirectToAction("FieldTripPost", new { id = tripId });
+        }
+    }
 }

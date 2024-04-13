@@ -1,4 +1,5 @@
-﻿@{
+﻿@model BAL.ViewModels.ContestViewModel
+@{
     ViewData["Title"] = "Contest Post Page";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -32,12 +33,17 @@
               <div class="overlap-2">
                 <div class="flexcontainer">
                   <p class="text">
-
+                        @{
+                            if (ViewBag.error != null)
+                            {
+                              <span class="text-danger">@ViewBag.error</span>
+                            }
+                         }
                     <span class="text-wrapper">Content<br /></span>
                   </p>
                   <p class="span-wrapper">
                     <span class="span">
-                        Description
+                        @Model.Description
                     </span>
                   </p>
                 </div>
@@ -47,7 +53,7 @@
                   </p>
                   <p class="p">
                     <span class="span">
-                        Note
+                        @Model.Note
                     </span>
                   </p>
                 </div>
@@ -64,9 +70,9 @@
               <div class="overlap-3"> 
                 <div id="map-container"></div>
                 <div class="tittle">
-                  <div class="overlap-group-2"><p class="text-wrapper-4">@Model.MeetingName</p></div>
+                  <div class="overlap-group-2"><p class="text-wrapper-4">@Model.ContestName</p></div>
                 </div>
-                <div class="text-wrapper-5">From StartDate to EndDate</div>
+                <div class="text-wrapper-5">From @Model.StartDate.Value.ToString("MM/dd/yyyy") to @Model.EndDate.Value.ToString("MM/dd/syyyy")</div>
 
 
                 <div class="group-2">
@@ -80,12 +86,12 @@
 
 
                 <div class="group-3">
-                  <div class="text-wrapper-11">AreaNumber,Street,District,City</div>
+                  <div class="text-wrapper-11">@Model.AreaNumber,@Model.Street,@Model.District,@Model.City</div>
                   @*<div class="text-wrapper-11">@Model.Street</div>*@
-                  <p class="text-wrapper-12">NumberOfParticipantsLimit</p>
-                  <div class="text-wrapper-13">RegistrationDeadline</div>
+                  <p class="text-wrapper-12">@Model.NumberOfParticipantsLimit</p>
+                  <div class="text-wrapper-13">@Model.RegistrationDeadline</div>
                   <div class="text-wrapper-14">ChaoMaoClub@gmail.com</div>
-                  <div class="text-wrapper-15">Host</div>
+                  <div class="text-wrapper-15">@Model.Host</div>
                 </div>
                 <div class="register">
                     @{
@@ -94,13 +100,13 @@
                             <div class="overlap-group-3 text-wrapper-16">
                                 <span class="text-success">@ViewBag.PartNumber</span>
                             </div>
-                            <form asp-action="MeetingDeRegister" asp-controller="Meeting" method="post" asp-route-meetingId="@Model.MeetingId">
+                            <form asp-action="ContestDeRegister" asp-controller="Contest" method="post" asp-route-contestId="@Model.ContestId">
                                 <button class="overlap-group-3 text-wrapper-16" type="submit">Sign Out</button>
                             </form> 
                         }
                         else
                         {
-                            <form asp-action="MeetingRegister" asp-controller="Meeting" method="post" asp-route-meetingId="@Model.MeetingId">
+                            <form asp-action="ContestRegister" asp-controller="Contest" method="post" asp-route-contestId="@Model.ContestId">
                                 <button class="overlap-group-3 text-wrapper-16" type="submit">Register</button>
                             </form>             
                         }

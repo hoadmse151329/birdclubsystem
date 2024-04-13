@@ -78,12 +78,6 @@
                             <span class="title">Feedback</span>
                         </a>
                     </li>
-                    <li data-toggle="tooltip"data-placement="right" title="Manage Statical">
-                        <a href="@Url.Action("ManagerStatical", "Manager")">
-                            <span><i class='bx bx-line-chart'></i></span>
-                            <span class="title">Statical</span>
-                        </a>
-                    </li>
                     <li data-toggle="tooltip"data-placement="right" title="Manager Profile">
                         <a href="@Url.Action("ManagerProfile", "Manager")">
                             <span><i class='bx bx-user'></i></span>
@@ -112,15 +106,18 @@
                         <div class="float-right">
                             <div class="btn-group me-1 mb-1">
                                 <div class="dropdown">
+                                    @if (TempData["ROLE_NAME"] != null)
+                                    {
                                     <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        Hồ Trần Khánh Duy
+                                        @TempData["USER_NAME"]
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                         <a class="dropdown-item" href="@Url.Action("ManagerProfile", "Manager")"><i class='bx bx-user'></i>Manager Profile</a> <!--thêm theo user id và role-->
                                         <a class="dropdown-item" href="@Url.Action("ManagerNotification", "Manager")"><i class='bx bx-bell'></i>Notification</a>
                                         <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="@Url.Action("Logout", "Auth")"><i class='bx bx-log-out-circle'></i>Logout</a>
+                                        <a class="dropdown-item" href="@Url.Action("Logout", "Auth")">Logout</a>
                                     </div>
+                                    }
                                 </div>  
                             </div>
                         </div>   

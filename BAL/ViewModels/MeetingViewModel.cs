@@ -26,5 +26,7 @@ namespace BAL.ViewModels
         public string? District { get; set; }
         public string? City { get; set; }
         public string? Status { get; set; }
+
+        public List<MeetingMediaViewModel>? Media { get; set; }
     }
 }
