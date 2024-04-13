@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.Data;
 using static Org.BouncyCastle.Math.EC.ECCurve;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Text.Encodings.Web;
 
 namespace WebAppMVC.Controllers
 {
@@ -24,6 +25,7 @@ namespace WebAppMVC.Controllers
 		private string MeetingAPI_URL = "";
         private readonly JsonSerializerOptions options = new JsonSerializerOptions
         {
+            Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
             PropertyNameCaseInsensitive = true,
         };
 		private MethodCaller methcall = new();

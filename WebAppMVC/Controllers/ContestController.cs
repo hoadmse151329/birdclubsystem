@@ -1,7 +1,9 @@
 ﻿using DAL.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Dynamic;
 using System.Net.Http.Headers;
+using System.Text.Encodings.Web;
 using System.Text.Json;
 using WebAppMVC.Constants;
 using WebAppMVC.Models.Contest;
@@ -18,6 +20,7 @@ namespace WebAppMVC.Controllers
         private string ContestAPI_URL = "";
         private readonly JsonSerializerOptions options = new JsonSerializerOptions
         {
+            Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
             PropertyNameCaseInsensitive = true,
         };
         private MethodCaller methcall = new();
@@ -37,7 +40,9 @@ namespace WebAppMVC.Controllers
         public async Task<IActionResult> Index()
 		{
             ContestAPI_URL += "/All";
-            string LocationAPI_URL_All = "/api/Location/All";
+            string LocationAPI_URL_All_Road = "/api/Location/AllAddressRoads";
+            string LocationAPI_URL_All_District = "/api/Location/AllAddressDistricts";
+            string LocationAPI_URL_All_City = "/api/Location/AllAddressCities";
             dynamic testmodel = new ExpandoObject();
 
 
@@ -48,11 +53,23 @@ namespace WebAppMVC.Controllers
             TempData["ROLE_NAME"] = role;
             TempData["USER_NAME"] = usrname;
 
-            var listLocationResponse = await methcall.CallMethodReturnObject<GetLocationResponseByList>(
+            var listLocationRoadResponse = await methcall.CallMethodReturnObject<GetLocationResponseByList>(
                 _httpClient: _httpClient,
                 options: options,
                 methodName: "GET",
-                url: LocationAPI_URL_All,
+                url: LocationAPI_URL_All_Road,
+                _logger: _logger);
+            var listLocationDistrictResponse = await methcall.CallMethodReturnObject<GetLocationResponseByList>(
+                _httpClient: _httpClient,
+                options: options,
+                methodName: "GET",
+                url: LocationAPI_URL_All_District,
+                _logger: _logger);
+            var listLocationCityResponse = await methcall.CallMethodReturnObject<GetLocationResponseByList>(
+                _httpClient: _httpClient,
+                options: options,
+                methodName: "GET",
+                url: LocationAPI_URL_All_City,
                 _logger: _logger);
 
             var listContestResponse = await methcall.CallMethodReturnObject<GetContestResponseByList>(
@@ -62,7 +79,7 @@ namespace WebAppMVC.Controllers
                 url: ContestAPI_URL,
                 _logger: _logger);
 
-            if (listContestResponse == null || listLocationResponse == null)
+            if (listContestResponse == null || listLocationRoadResponse == null || listLocationDistrictResponse == null || listLocationCityResponse == null)
             {
                 _logger.LogInformation(
                     "Error while processing your request! (Getting List Contest!). List was Empty!: " + listContestResponse + " , Error Message: " + listContestResponse.ErrorMessage);
@@ -71,15 +88,36 @@ namespace WebAppMVC.Controllers
                 Redirect("~/Home/Index");
             }
             else
-            if (!listContestResponse.Status || !listLocationResponse.Status)
+            if (!listContestResponse.Status || !listLocationRoadResponse.Status || !listLocationDistrictResponse.Status || !listLocationCityResponse.Status)
             {
                 ViewBag.error =
                     "Error while processing your request! (Getting List Meeting!).\n"
-                    + listContestResponse.ErrorMessage + "\n" + listLocationResponse.ErrorMessage;
+                    + listContestResponse.ErrorMessage + "\n" + listLocationRoadResponse.ErrorMessage;
                 Redirect("~/Home/Index");
             }
+
+            List<SelectListItem> roads = new();
+            foreach (var road in listLocationRoadResponse.Data)
+            {
+                roads.Add(new SelectListItem(text: road, value: road));
+            }
+            testmodel.Roads = roads;
+
+            List<SelectListItem> districts = new();
+            foreach (var district in listLocationDistrictResponse.Data)
+            {
+                districts.Add(new SelectListItem(text: district, value: district));
+            }
+            testmodel.Districts = districts;
+
+            List<SelectListItem> cities = new();
+            foreach (var city in listLocationCityResponse.Data)
+            {
+                cities.Add(new SelectListItem(text: city, value: city));
+            }
+            testmodel.Cities = cities;
+
             testmodel.Contests = listContestResponse.Data;
-            testmodel.Locations = listLocationResponse.Data;
             return View(testmodel);
 		}
 

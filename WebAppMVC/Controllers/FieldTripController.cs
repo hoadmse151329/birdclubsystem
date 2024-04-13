@@ -1,7 +1,9 @@
 ﻿using DAL.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Dynamic;
 using System.Net.Http.Headers;
+using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using WebAppMVC.Constants;
@@ -20,7 +22,8 @@ namespace WebAppMVC.Controllers
 		private string FieldTripAPI_URL = "";
 		private readonly JsonSerializerOptions options = new JsonSerializerOptions
 		{
-			PropertyNameCaseInsensitive = true,
+            Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+            PropertyNameCaseInsensitive = true,
 		};
 		private MethodCaller methcall = new();
 		public FieldTripController(ILogger<FieldTripController> logger, IConfiguration config)
@@ -93,10 +96,29 @@ namespace WebAppMVC.Controllers
                     + listTripResponse.ErrorMessage + "\n" + listLocationRoadResponse.ErrorMessage;
                 Redirect("~/Home/Index");
             }
+
+            List<SelectListItem> roads = new();
+            foreach (var road in listLocationRoadResponse.Data)
+            {
+                roads.Add(new SelectListItem(text: road, value: road));
+            }
+            testmodel.Roads = roads;
+
+            List<SelectListItem> districts = new();
+            foreach (var district in listLocationDistrictResponse.Data)
+            {
+                districts.Add(new SelectListItem(text: district, value: district));
+            }
+            testmodel.Districts = districts;
+
+            List<SelectListItem> cities = new();
+            foreach (var city in listLocationCityResponse.Data)
+            {
+                cities.Add(new SelectListItem(text: city, value: city));
+            }
+            testmodel.Cities = cities;
+
             testmodel.FieldTrips = listTripResponse.Data;
-            testmodel.Roads = listLocationRoadResponse.Data;
-            testmodel.Districts = listLocationDistrictResponse.Data;
-            testmodel.Cities = listLocationCityResponse.Data;
             return View(testmodel);
         }
 		public IActionResult FieldTripRegister()
