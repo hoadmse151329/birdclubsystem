@@ -11,9 +11,11 @@ using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using System.Data;
 using static Org.BouncyCastle.Math.EC.ECCurve;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace WebAppMVC.Controllers
 {
+    [Route("Meeting")]
 	public class MeetingController : Controller
 	{
 		private readonly ILogger<MeetingController> _logger;
@@ -36,14 +38,32 @@ namespace WebAppMVC.Controllers
 			MeetingAPI_URL = "/api/Meeting";
 		}
 
-		[HttpGet]
-		[Route("Meeting/Index")]
-		public async Task<IActionResult> Index()
+		[HttpGet("Index")]
+		public async Task<IActionResult> Index(
+            [FromQuery] string meetingName, 
+            [FromQuery] string locationAddress)
 		{
-            MeetingAPI_URL += "/All";
-			string LocationAPI_URL_All = "/api/Location/All";
-			dynamic testmodel = new ExpandoObject();
+            if (string.IsNullOrEmpty(meetingName) && string.IsNullOrEmpty(locationAddress)) MeetingAPI_URL += "/All";
+            else MeetingAPI_URL += "/Search?";
 
+            _logger.LogInformation(locationAddress);
+
+            if (!string.IsNullOrEmpty(meetingName))
+            {
+                meetingName = meetingName.Trim();
+                MeetingAPI_URL += "meetingName=" + meetingName + "&";
+            }
+            if (!string.IsNullOrEmpty(locationAddress))
+            {
+                locationAddress = locationAddress.Trim();
+                MeetingAPI_URL += "locationAddress=" + locationAddress + "&";
+            }
+            if(MeetingAPI_URL.Contains("Search")) MeetingAPI_URL.Substring(0,MeetingAPI_URL.Length - 1);
+            
+            string LocationAPI_URL_All_Road = "/api/Location/AllAddressRoads";
+            string LocationAPI_URL_All_District = "/api/Location/AllAddressDistricts";
+            string LocationAPI_URL_All_City = "/api/Location/AllAddressCities";
+            dynamic testmodel = new ExpandoObject();
 
             string? role = HttpContext.Session.GetString("ROLE_NAME");
 
@@ -52,12 +72,25 @@ namespace WebAppMVC.Controllers
             TempData["ROLE_NAME"] = role;
             TempData["USER_NAME"] = usrname;
 
-            var listLocationResponse = await methcall.CallMethodReturnObject<GetLocationResponseByList>(
+            var listLocationRoadResponse = await methcall.CallMethodReturnObject<GetLocationResponseByList>(
                 _httpClient: _httpClient,
                 options: options,
                 methodName: "GET",
-                url: LocationAPI_URL_All,
+                url: LocationAPI_URL_All_Road,
                 _logger: _logger);
+            var listLocationDistrictResponse = await methcall.CallMethodReturnObject<GetLocationResponseByList>(
+                _httpClient: _httpClient,
+                options: options,
+                methodName: "GET",
+                url: LocationAPI_URL_All_District,
+                _logger: _logger);
+            var listLocationCityResponse = await methcall.CallMethodReturnObject<GetLocationResponseByList>(
+                _httpClient: _httpClient,
+                options: options,
+                methodName: "GET",
+                url: LocationAPI_URL_All_City,
+                _logger: _logger);
+
 
             var listMeetResponse = await methcall.CallMethodReturnObject<GetMeetingResponseByList>(
 				_httpClient: _httpClient,
@@ -66,7 +99,7 @@ namespace WebAppMVC.Controllers
 				url: MeetingAPI_URL,
                 _logger: _logger);
 
-			if(listMeetResponse == null || listLocationResponse == null)
+			if(listMeetResponse == null || listLocationRoadResponse == null || listLocationDistrictResponse == null || listLocationCityResponse == null)
 			{
                 _logger.LogInformation(
                     "Error while processing your request! (Getting List Meeting!). List was Empty!: " + listMeetResponse + " , Error Message: " + listMeetResponse.ErrorMessage);
@@ -75,20 +108,41 @@ namespace WebAppMVC.Controllers
                 Redirect("~/Home/Index");
             }
 			else
-			if(!listMeetResponse.Status || !listLocationResponse.Status)
+			if(!listMeetResponse.Status || !listLocationRoadResponse.Status || !listLocationDistrictResponse.Status || !listLocationCityResponse.Status)
 			{
 				ViewBag.error =
 					"Error while processing your request! (Getting List Meeting!).\n"
-					+ listMeetResponse.ErrorMessage + "\n" + listLocationResponse.ErrorMessage;
+					+ listMeetResponse.ErrorMessage + "\n" + listLocationRoadResponse.ErrorMessage;
                 Redirect("~/Home/Index");
             }
             testmodel.Meetings = listMeetResponse.Data;
-			testmodel.Locations = listLocationResponse.Data;
+
+            List<SelectListItem> roads = new();
+            foreach(var road in listLocationRoadResponse.Data)
+            {
+                roads.Add(new SelectListItem(text: road, value: road));
+            }
+			testmodel.Roads = roads;
+
+            List<SelectListItem> districts = new();
+            foreach (var district in listLocationDistrictResponse.Data)
+            {
+                districts.Add(new SelectListItem(text: district, value: district));
+            }
+            testmodel.Districts = districts;
+
+            List<SelectListItem> cities = new();
+            foreach (var city in listLocationCityResponse.Data)
+            {
+                cities.Add(new SelectListItem(text: city, value: city));
+            }
+            testmodel.Cities = cities;
+
             return View(testmodel);
 		}
 
-		[HttpGet("{id:int}")]
-		[Route("Meeting/MeetingPost/{id:int}")]
+
+		[HttpGet("MeetingPost/{id:int}")]
 		public async Task<IActionResult> MeetingPost(int id)
 		{
 			MeetingAPI_URL += "/";
@@ -150,9 +204,8 @@ namespace WebAppMVC.Controllers
             return View(meetmodel);
 		}
 
-		[HttpPost]
+		[HttpPost("MeetingRegister/{meetingId:int}")]
         //[Authorize(Roles = "Member")]
-        [Route("Meeting/MeetingRegister/{meetingId:int}")]
         public async Task<IActionResult> MeetingRegister(int meetingId)
 		{
             MeetingAPI_URL += "/Register/" + meetingId;
@@ -199,8 +252,7 @@ namespace WebAppMVC.Controllers
 
             return RedirectToAction("MeetingPost", new { id = meetingId });
         }
-        [HttpPost]
-        [Route("Meeting/MeetingDeRegister/{meetingId:int}")]
+        [HttpPost("MeetingDeRegister/{meetingId:int}")]
         //[Authorize(Roles = "Member")]
         public async Task<IActionResult> MeetingDeRegister(int meetingId)
         {

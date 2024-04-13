@@ -311,7 +311,7 @@ namespace WebAppMVC.Controllers
         public async Task<IActionResult> ManagerFieldtrip([FromQuery] string search)
         {
             _logger.LogInformation(search);
-            string LocationAPI_URL_All = ManagerAPI_URL + "Location/All";
+            string LocationAPI_URL_All = ManagerAPI_URL + "Location/AllAddress";
             if (search != null || !string.IsNullOrEmpty(search))
             {
                 search = search.Trim();

@@ -75,13 +75,14 @@ namespace WebAPI.Controllers
         [ProducesResponseType(typeof(List<MeetingViewModel>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> GetMeetingsByName(
+        public async Task<IActionResult> GetMeetingsByAttributes(
             [FromQuery] int? meetingId,
             [FromQuery] string? meetingName,
             [FromQuery] DateTime? registrationDeadline,
             [FromQuery] DateTime? startDate,
             [FromQuery] DateTime? endDate,
             [FromQuery] int? numberOfParticipants,
+            [FromQuery] string? locationAddress,
             [FromQuery] string? orderBy)
         {
             try
@@ -93,6 +94,7 @@ namespace WebAPI.Controllers
                     startDate: startDate,
                     endDate: endDate,
                     numberOfParticipants: numberOfParticipants,
+                    locationAddress: locationAddress,
                     orderBy: orderBy);
                 if (result == null)
                 {

@@ -1,7 +1,9 @@
 ﻿@model dynamic﻿
 @{
     ViewData["Title"] = "Field Trip Page";
-    List<BAL.ViewModels.LocationViewModel> locationList = Model.Locations;
+    List<string> roadList = Model.Roads;
+    List<string> districtList = Model.Districts;
+    List<string> cityList = Model.Cities;
     List<BAL.ViewModels.FieldTripViewModel> fieldtripList = Model.FieldTrips;
 }
 
@@ -44,29 +46,29 @@
                     <div class="tabs-left-filter" style="background-color:white">
     <div class="input-group mb-3">
         <select class="custom-select" name="district" id="inputGroupSelect02">
-            <option value="">District</option>
-            @for (int i = 0; i < locationList.Count; i++)
-            {
-                <option value="@i">@locationList[i].District</option>
-            }
+            <option value="">Roads</option>
+                                @for (int i = 0; i < roadList.Count; i++)
+                                {
+                                    <option value="@i">@roadList[i]</option>
+                                }
         </select>
     </div>
     <div class="input-group mb-3">
         <select class="custom-select" name="district" id="inputGroupSelect02">
             <option value="">District</option>
-            @for (int i = 0; i < locationList.Count; i++)
-            {
-                <option value="@i">@locationList[i].District</option>
-            }
+                                @for (int i = 0; i < districtList.Count; i++)
+                                {
+                                    <option value="@i">@districtList[i]</option>
+                                }
         </select>
     </div>
     <div class="input-group mb-3">
         <select class="custom-select" name="district" id="inputGroupSelect02">
-            <option value="">District</option>
-            @for (int i = 0; i < locationList.Count; i++)
-            {
-                <option value="@i">@locationList[i].District</option>
-            }
+            <option value="">City</option>
+                                @for (int i = 0; i < cityList.Count; i++)
+                                {
+                                    <option value="@i">@cityList[i]</option>
+                                }
         </select>
     </div>
 </div>

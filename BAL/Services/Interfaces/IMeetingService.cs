@@ -19,6 +19,7 @@ namespace BAL.Services.Interfaces
             DateTime? startDate,
             DateTime? endDate,
             int? numberOfParticipants,
+            string? locationAddress,
             string? orderBy
             );
         List<string> GetAllMeetingName();

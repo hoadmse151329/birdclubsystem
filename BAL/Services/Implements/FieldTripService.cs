@@ -88,6 +88,7 @@ namespace BAL.Services.Implements
                     LocationName = entity.Address,
                     Description = loc.Description
                 });
+                _unitOfWork.Save();
                 loc = _unitOfWork.LocationRepository.GetLocationByName(entity.Address).Result;
             }
             var trip = _mapper.Map<FieldTrip>(entity);
@@ -107,6 +108,7 @@ namespace BAL.Services.Implements
                     LocationName = entity.Address,
                     Description = loc.Description
                 });
+                _unitOfWork.Save();
                 loc = _unitOfWork.LocationRepository.GetLocationByTripId(entity.TripId.Value).Result;
             }
             var trip = _mapper.Map<FieldTrip>(entity);
