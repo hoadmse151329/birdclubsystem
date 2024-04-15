@@ -10,6 +10,7 @@ using WebAppMVC.Models.Location;
 using WebAppMVC.Models.Meeting;
 using WebAppMVC.Models.Contest;
 using System.Text.Encodings.Web;
+using static Org.BouncyCastle.Math.EC.ECCurve;
 // thêm crud của meeting, fieldtrip, contest.
 namespace WebAppMVC.Controllers
 {
@@ -18,6 +19,7 @@ namespace WebAppMVC.Controllers
     {
 
         private readonly ILogger<MeetingController> _logger;
+        private readonly IConfiguration _config;
         private readonly HttpClient _httpClient = null;
         private string ManagerAPI_URL = "";
         private readonly JsonSerializerOptions options = new JsonSerializerOptions
@@ -27,13 +29,14 @@ namespace WebAppMVC.Controllers
         };
         private MethodCaller methcall = new();
 
-        public ManagerController(ILogger<MeetingController> logger)
+        public ManagerController(ILogger<MeetingController> logger, IConfiguration config)
         {
             _logger = logger;
+            _config = config;
             _httpClient = new HttpClient();
             var contentType = new MediaTypeWithQualityHeaderValue("application/json");
             _httpClient.DefaultRequestHeaders.Accept.Add(contentType);
-            _httpClient.BaseAddress = new Uri("https://localhost:7022");
+            _httpClient.BaseAddress = new Uri(config.GetSection("DefaultApiUrl:ConnectionString").Value);
             ManagerAPI_URL = "/api/";
         }
 
