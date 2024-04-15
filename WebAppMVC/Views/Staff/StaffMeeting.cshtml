@@ -1,10 +1,10 @@
 ﻿@model dynamic
 @{
     Layout = null;
-    ViewData["Title"] = "Manager Contest Page";
+    ViewData["Title"] = "Staff Meeting Page";
     List<BAL.ViewModels.LocationViewModel> locationList = Model.Locations;
-    List<BAL.ViewModels.ContestViewModel> contestList = Model.Contests;
-    BAL.ViewModels.ContestViewModel createContest = new();
+    List<BAL.ViewModels.MeetingViewModel> meetingList = Model.Meetings;
+    BAL.ViewModels.MeetingViewModel createMeet = new();
     string? search = string.Empty;
 }
 <html lang="en">
@@ -29,12 +29,12 @@
             <div class="navigation">  
                 <ul class="slide-menu">
                     <div class="logo">
-                        <a href="@Url.Action("ManagerIndex", "Manager")">
+                        <a href="@Url.Action("StaffIndex", "Staff")">
                             <img class="logo" src="~/images/Red_whiskered_bulbul_bird_logo_eps_10_generated 1.png" alt="logo">
                         </a>
                     </div>
                     <li class="active" data-toggle="tooltip"data-placement="right" title="Overview">
-                        <a href="@Url.Action("ManagerIndex", "Manager")">
+                        <a href="@Url.Action("StaffIndex", "Staff")">
                             <span><i class='bx bx-tachometer'></i></span>
                             <span class="title">Overview</span>
                         </a>
@@ -47,47 +47,30 @@
                         </a>
                         <ul class="collapse sub-menu" id="collapseOne">
                             <li data-toggle="tooltip"data-placement="right" title="Manage Meeting">
-                                <a href="@Url.Action("Meeting", "Manager")" li class="dropdown-item">
+                                <a href="@Url.Action("StaffMeeting", "Staff")" li class="dropdown-item">
                                     <i class='bx bx-home-alt-2'></i>
                                     <span class="title">Meeting</span>
                                 </a> 
                             </li>
                             <li data-toggle="tooltip"data-placement="right" title="Manage Fieldtrip">
-                                <a href="@Url.Action("ManagerFieldtrip", "Manager")" li class="dropdown-item">
+                                <a href="@Url.Action("StaffFieldTrip", "Staff")" li class="dropdown-item">
                                     <i class='bx bx-calendar-edit'></i>
                                     <span class="title">Fieldtrip</span>
                                 </a>
                             </li> 
                             <li data-toggle="tooltip"data-placement="right" title="Manage Bird Contest">
-                                <a href="@Url.Action("ManagerContest", "Manager")" li class="dropdown-item">
+                                <a href="@Url.Action("StaffContest", "Staff")" li class="dropdown-item">
                                     <i class='bx bx-cloud-rain'></i>
                                     <span class="title">Bird Contest</span>
                                 </a>
                             </li>
                         </ul>
                     </li>
-                    <li data-toggle="tooltip"data-placement="right" title="History Events">
-                        <a href="@Url.Action("ManagerHistoryEvents", "Manager")">
-                            <span><i class='bx bx-history'></i></span>
-                            <span class="title">HistoryEvents</span>
-                        </a>
                     </li>
-                    <li data-toggle="tooltip"data-placement="right" title="Manage Notification">
-                        <a href="@Url.Action("ManagerNotification", "Manager")">
-                            <span><i class='bx bx-bell'></i></span>
-                            <span class="title">Notification</span>
-                        </a>
-                    </li>
-                    <li data-toggle="tooltip"data-placement="right" title="Manage Feedback">
-                        <a href="@Url.Action("ManagerFeedback", "Manager")">
-                            <span><i class="bx bx-detail"></i></span>
-                            <span class="title">Feedback</span>
-                        </a>
-                    </li>
-                    <li data-toggle="tooltip"data-placement="right" title="Manager Profile">
-                        <a href="@Url.Action("ManagerProfile", "Manager")">
+                    <li data-toggle="tooltip"data-placement="right" title="Staff Profile">
+                        <a href="@Url.Action("StaffProfile", "Staff")">
                             <span><i class='bx bx-user'></i></span>
-                            <span class="title">Manager Profile</span>
+                            <span class="title">Staff Profile</span>
                         </a>
                     </li>
                 </ul>
@@ -111,7 +94,8 @@
                         </div>
                         <div class="float-right">
                             <div class="btn-group me-1 mb-1">
-                                 @if (TempData["ROLE_NAME"] != null)
+                                <div class="dropdown">
+                                    @if (TempData["ROLE_NAME"] != null)
                                     {
                                     <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         @TempData["USER_NAME"]
@@ -122,7 +106,8 @@
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="@Url.Action("Logout", "Auth")">Logout</a>
                                     </div>
-                                    }  
+                                    }
+                                </div>  
                             </div>
                         </div>   
                     </div>
@@ -152,13 +137,12 @@
                         <div class="card-body">
                             <!-- Nav tabs -->
                             <ul class="nav nav-tabs">
-                                <!-- dung vong for o day -->
                                 <li class="nav-item">
                                     <a class="nav-link active" data-toggle="tab" href="#home1">
                                         <i class='bx bx-home-alt-2'></i>
-                                        <span>Contest</span>
+                                        <span>Meeting</span>
                                     </a>
-                                </li>             
+                                </li>              
                             </ul>
                             
                             <!-- Tab panes -->
@@ -176,10 +160,10 @@
                                                 }
                                             </div>
                                             <div class="col-sm-6 d-flex justify-content-end">
-                                                <form asp-action="ManagerContest" asp-controller="Manager" method="get" asp-route-search="@search">
+                                                <form asp-action="StaffMeeting" asp-controller="Staff" method="get" asp-route-search="@search">
                    
                                                             <input asp-for="@search" class="form-control" type="text" name="search" placeholder="Search..." value="@search">
-                                                            <button class="bx bx-search-alt header__search-submit" type="submit">
+                                                            <button class="bx bx-search-alt" type="submit">
                                                                 <i class="sbi sbi--search mirrored header__search-submit-icon"></i>
                                                             </button>
                                                             @*<i class='bx bx-search-alt'></i>*@
@@ -193,20 +177,19 @@
                                         <div class="col-xl-3 col-lg-6 col-sm-6 my-3 item">
                                             <div class="card card-child">
                                                 <div class="card-body add-room">
-                                                    <button class="border-0" data-toggle="modal"  data-target="#addContest">
-                                                        <span>Add Contest</span>
+                                                    <button class="border-0" data-toggle="modal"  data-target="#addMeeting">
+                                                        <span>Add Meeting</span>
                                                         <i class='bx bx-add-to-queue'></i>
                                                     </button>
                                                 </div>
                                             </div>
                                         </div>
-                                        <!-- dung vong for o day -->
-                                        @foreach (var data in contestList)
+                                        @foreach(var data in meetingList)
                                         {
                                             <div class="col-xl-3 col-lg-6 col-sm-6 my-3">
                                                 <div class="card card-child">
                                                     <div class="room-name">
-                                                        <span>Contest</span>
+                                                        <span>Meeting</span>
                                                         <div class="status">
                                                             <!-- dùng lệnh if -->
                                                             @*<span class="stt1">Status:<h6>Processing</h6></span>*@
@@ -220,8 +203,8 @@
                                                         <div class="room-title">
                                                             <ul>
                                                                 <li>
-                                                                    <h6>Contest Name:</h6>
-                                                                    <span>@data.ContestName</span>
+                                                                    <h6>Meeting Name:</h6>
+                                                                    <span>@data.MeetingName</span>
                                                                 </li>
                                                                 <li>
                                                                     <h6>Registration Deadlines:</h6>
@@ -255,14 +238,15 @@
                                                         </div>
                                                     </div>
                                                     <div class="form-group mx-auto">
-                                                        <form asp-action="Contest" asp-controller="Manager" method="get" asp-route-id="@data.ContestId">
+                                                        <form asp-action="Meeting" asp-controller="Staff" method="get" asp-route-id="@data.MeetingId">
                                                             <button class="btn btn-primary clickable-row" type="submit">See Detail</button>
-                                                        </form>
-                                                            <button class="btn btn-danger" data-toggle="modal" data-target="#deleteContest" type="submit">Cancel Contest</button>
-                                                            </div>
+                                                        </form>                                                        
+                                                            <button class="btn btn-danger" data-toggle="modal" data-target="#deleteMeeting" type="submit">Cancel Meeting</button>
+                                                    </div>
                                                 </div>
                                             </div>
-    <div id="deleteContest" class="modal fade" role="dialog">
+                                                <!-- remove Meeting -->
+    <div id="deleteMeeting" class="modal fade" role="dialog">
         <div class="modal-dialog modal-dialog-centered" role="content">
             <div class="modal-content">
                 <form action="#">
@@ -272,8 +256,8 @@
                             <h2>Are you sure want to delete ?</h2> 
                         </div>
                         <div class="del-submit d-flex justify-content-center">       
-                            <form asp-action="ManagerCancelContest" asp-controller="Manager" method="post" asp-route-id="@data.ContestId">
-                                <button type="submit" name="action" value="deleteContest" class="btn btn-success">Save</button>
+                            <form asp-action="StaffCancelMeeting" asp-controller="Staff" method="post" asp-route-id="@data.MeetingId">
+                                <button type="submit" name="action" value="deleteMeeting" class="btn btn-success">Save</button>
                                 </form>
                                 <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
                             </div>
@@ -293,72 +277,72 @@
     </div>
 
     <!-- add new Room -->
-    <div id="addContest" class="modal fade" role="dialog">
+    <div id="addMeeting" class="modal fade" role="dialog">
         <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
             <div class="modal-content modal-addRoom">
                 <div class="modal-header">
-                    <h4 class="modal-title">Add new contest</h4>
+                    <h4 class="modal-title">Add new meeting</h4>
                 </div>
                 <div class="modal-body">
-                    @*<form asp-action="ManagerCreateContest" asp-controller="Manager" method="get" onsubmit="return submitFunc()" id="form">*@
-                    <form asp-action="ManagerCreateContest" asp-controller="Manager" method="post" id="form">
+                    @*<form asp-action="StaffCreateMeeting" asp-controller="Staff" method="get" onsubmit="return submitFunc()" id="form">*@
+                    <form asp-action="StaffCreateMeeting" asp-controller="Staff" method="post" id="form">
                         <div class="row p-4">
                             <div class="col-12">
-                                 <div class="row form-group">
-                                    <label asp-for="@createContest.ContestName" class="col-md-3 col-form-label text-md-right">Contest Name</label>
-                                    <input asp-for="@createContest.ContestName" value="@createContest.ContestName" type="text" name="contestname" placeholder="Contest Name" required class="form-control col-md-7">
-                                    <span asp-validation-for="@createContest.ContestName" id="error_message"
+                                <div class="row form-group">
+                                    <label asp-for="@createMeet.MeetingName" class="col-md-3 col-form-label text-md-right">Meeting Name</label>
+                                    <input asp-for="@createMeet.MeetingName" value="@createMeet.MeetingName" type="text" name="meetingname" placeholder="Meeting Name" required class="form-control col-md-7">
+                                    <span asp-validation-for="@createMeet.MeetingName" id="error_message"
                                           class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                 </div>
                                 <div class="row form-group">
                                     <label class="col-md-3 col-form-label mt-2 text-md-right">Choose Picture</label>
                                     <input type="file" name="photo" class="form-control col-md-7 mt-2" accept="image/*">
 
-                                    <label asp-for="@createContest.RegistrationDeadline" class="col-md-3 col-form-label mt-3 text-md-right">Registration Deadlines</label>
-                                    <input asp-for="@createContest.RegistrationDeadline" value="@createContest.RegistrationDeadline" type="datetime-local" name="registrationDeadline" required class="form-control col-md-7 mt-3">
-                                    <span asp-validation-for="@createContest.RegistrationDeadline" id="error_message"
+                                    <label asp-for="@createMeet.RegistrationDeadline" class="col-md-3 col-form-label mt-3 text-md-right">Registration Deadlines</label>
+                                    <input asp-for="@createMeet.RegistrationDeadline" value="@createMeet.RegistrationDeadline" type="datetime-local" name="registrationDeadline" required class="form-control col-md-7 mt-3">
+                                    <span asp-validation-for="@createMeet.RegistrationDeadline" id="error_message"
                                           class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
-                                    <label asp-for="@createContest.StartDate" class="col-md-3 col-form-label mt-3 text-md-right">Start Date</label>
-                                    <input asp-for="@createContest.StartDate" value="@createContest.StartDate" type="datetime-local" name="startDate" required class="form-control col-md-7 mt-3">
-                                    <span asp-validation-for="@createContest.StartDate" id="error_message"
+                                    <label asp-for="@createMeet.StartDate" class="col-md-3 col-form-label mt-3 text-md-right">Start Date</label>
+                                    <input asp-for="@createMeet.StartDate" value="@createMeet.StartDate" type="datetime-local" name="startDate" required class="form-control col-md-7 mt-3">
+                                    <span asp-validation-for="@createMeet.StartDate" id="error_message"
                                             class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
-                                    <label asp-for="@createContest.EndDate" class="col-md-3 col-form-label mt-3 text-md-right">End Date</label>
-                                    <input asp-for="@createContest.EndDate" value@createContest.EndDate" type="datetime-local" name="endDate" required class="form-control col-md-7 mt-3">
-                                    <span asp-validation-for="@createContest.EndDate" id="error_message"
+                                    <label asp-for="@createMeet.EndDate" class="col-md-3 col-form-label mt-3 text-md-right">End Date</label>
+                                    <input asp-for="@createMeet.EndDate" value="@createMeet.EndDate" type="datetime-local" name="endDate" required class="form-control col-md-7 mt-3">
+                                    <span asp-validation-for="@createMeet.EndDate" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
-                                    <label asp-for="@createContest.NumberOfParticipants"  class="col-md-3 col-form-label mt-3 text-md-right">Number of Participants</label>
-                                    <input asp-for="@createContest.NumberOfParticipants" value="@createContest.NumberOfParticipants" type="number" name="numberOfParticipants" class="form-control col-md-7 mt-3" required>
-                                    <span asp-validation-for="@createContest.NumberOfParticipants" id="error_message"
+                                    <label asp-for="@createMeet.NumberOfParticipantsLimit"  class="col-md-3 col-form-label mt-3 text-md-right">Maximum Participants</label>
+                                    <input asp-for="@createMeet.NumberOfParticipantsLimit" value="@createMeet.NumberOfParticipantsLimit" type="number" name="NumberOfParticipantsLimit" class="form-control col-md-7 mt-3" required>
+                                    <span asp-validation-for="@createMeet.NumberOfParticipantsLimit" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
-                                    <label asp-for="@createContest.Host" class="col-md-3 col-form-label mt-3 text-md-right">Host</label>
-                                    <input asp-for="@createContest.Host" value="@createContest.Host" type="text" name="host" placeholder="Meeting Host" class="form-control col-md-7 mt-3" rows="3" required>
-                                    <span asp-validation-for="@createContest.Host" id="error_message"
+                                    <label asp-for="@createMeet.Host" class="col-md-3 col-form-label mt-3 text-md-right">Host</label>
+                                    <input asp-for="@createMeet.Host" value="@createMeet.Host" type="text" name="host" placeholder="Meeting Host" class="form-control col-md-7 mt-3" rows="3" required>
+                                    <span asp-validation-for="@createMeet.Host" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
-                                    <label asp-for="@createContest.Incharge" class="col-md-3 col-form-label mt-3 text-md-right">Incharge</label>
-                                    <input asp-for="@createContest.Incharge" value="@createContest.Incharge" type="text" name="incharge" placeholder="Staff incharge of Meeting" class="form-control col-md-7 mt-3" rows="3" required>
-                                    <span asp-validation-for="@createContest.Incharge" id="error_message"
+                                    <label asp-for="@createMeet.Incharge" class="col-md-3 col-form-label mt-3 text-md-right">Incharge</label>
+                                    <input asp-for="@createMeet.Incharge" value="@createMeet.Incharge" type="text" name="incharge" placeholder="Staff incharge of Meeting" class="form-control col-md-7 mt-3" rows="3" required>
+                                    <span asp-validation-for="@createMeet.Incharge" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
-                                    <label asp-for="@createContest.Address" class="col-md-3 col-form-label mt-3 text-md-right">Address</label>
-                                    <textarea asp-for="@createContest.Address" value="@createContest.Address" type="text" name="address" placeholder="Meeting Address..." class="form-control col-md-7 mt-3" rows="3" required></textarea>
-                                    <span asp-validation-for="@createContest.Address" id="error_message"
+                                    <label asp-for="@createMeet.Address" class="col-md-3 col-form-label mt-3 text-md-right">Address</label>
+                                    <textarea asp-for="@createMeet.Address" value="@createMeet.Address" type="text" name="address" placeholder="Meeting Address..." class="form-control col-md-7 mt-3" rows="3" required></textarea>
+                                    <span asp-validation-for="@createMeet.Address" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
-                                    <label asp-for="@createContest.Description" class="col-md-3 col-form-label mt-3 text-md-right">Description</label>
-                                    <textarea asp-for="@createContest.Description" value="@createContest.Description" type="text" name="description" placeholder="Meeting description..." class="form-control col-md-7 mt-3" rows="3" required></textarea>
-                                    <span asp-validation-for="@createContest.Description" id="error_message"
+                                    <label asp-for="@createMeet.Description" class="col-md-3 col-form-label mt-3 text-md-right">Description</label>
+                                    <textarea asp-for="@createMeet.Description" value="@createMeet.Description" type="text" name="description" placeholder="Meeting description..." class="form-control col-md-7 mt-3" rows="3" required></textarea>
+                                    <span asp-validation-for="@createMeet.Description" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
-                                    <label asp-for="@createContest.Note" class="col-md-3 col-form-label mt-3 text-md-right">Note</label>
-                                    <textarea asp-for="@createContest.Note" value="@createContest.Note" type="text" name="note" placeholder="Meeting Note..." class="form-control col-md-7 mt-3" rows="3" required></textarea>
-                                    <span asp-validation-for="@createContest.Note" id="error_message"
+                                    <label asp-for="@createMeet.Note" class="col-md-3 col-form-label mt-3 text-md-right">Note</label>
+                                    <textarea asp-for="@createMeet.Note" value="@createMeet.Note" type="text" name="note" placeholder="Meeting Note..." class="form-control col-md-7 mt-3" rows="3" required></textarea>
+                                    <span asp-validation-for="@createMeet.Note" id="error_message"
                                           class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                </div> 
+                                </div>
                             </div>                
                             <div class="modal-footer justify-content-center">
                                 <button class="btn btn-success" type="submit" name="action" value="createRoom" >Save</button>
@@ -371,7 +355,7 @@
         </div>
     </div>
        
-        <!-- jQuery first, then Popper.js, then Bootstrap JS. -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS. -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
         referrerpolicy="no-referrer"></script>
         <!-- Jquery Waypoint -->
@@ -389,8 +373,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script>
     function redirectToDetailPage() {
-        window.location.href = '@Url.Action("ManagerContestDetail", "Manager")';
+        window.location.href = '@Url.Action("StaffMeetingDetail", "Staff")';
     }
-    </script>
+</script>
 </body>
 </html>

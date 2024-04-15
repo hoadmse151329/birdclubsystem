@@ -76,6 +76,7 @@ namespace BAL.Services.Implements
                     LocationName = entity.Address,
                     Description = loc.Description
                 });
+                _unitOfWork.Save();
                 loc = _unitOfWork.LocationRepository.GetLocationByName(entity.Address).Result;
             }
             var contest = _mapper.Map<Contest>(entity);
@@ -95,6 +96,7 @@ namespace BAL.Services.Implements
                     LocationName = entity.Address,
                     Description = loc.Description
                 });
+                _unitOfWork.Save();
                 loc = _unitOfWork.LocationRepository.GetLocationByContestId(entity.ContestId.Value).Result;
             }
             var contest = _mapper.Map<Contest>(entity);

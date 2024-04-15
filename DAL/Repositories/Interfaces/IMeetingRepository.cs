@@ -18,6 +18,7 @@ namespace DAL.Repositories.Interfaces
             DateTime? startDate,
             DateTime? endDate,
             int? numberOfParticipants,
+            string? locationAddress,
             string? orderBy
             );
         IEnumerable<string> GetAllMeetingName();

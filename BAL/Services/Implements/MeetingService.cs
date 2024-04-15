@@ -85,6 +85,7 @@ namespace BAL.Services.Implements
             DateTime? startDate,
             DateTime? endDate,
             int? numberOfParticipants,
+            string? locationAddress,
             string? orderBy)
         {
             return _mapper.Map<IEnumerable<MeetingViewModel>>(_unitOfWork.MeetingRepository.GetSortedMeetings(
@@ -94,6 +95,7 @@ namespace BAL.Services.Implements
                 startDate,
                 endDate,
                 numberOfParticipants,
+                locationAddress,
                 orderBy
                 ));
         }
@@ -135,6 +137,7 @@ namespace BAL.Services.Implements
                     LocationName = entity.Address,
                     Description = "Dunno"
                 });
+                _unitOfWork.Save();
                 loc = _unitOfWork.LocationRepository.GetLocationByName(entity.Address.Trim()).Result;
             }
             var meeting = _mapper.Map<Meeting>(entity);

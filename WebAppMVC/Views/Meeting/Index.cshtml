@@ -1,7 +1,12 @@
 ﻿@model dynamic
 @{
     ViewData["Title"] = "Meeting Page";
-    List<BAL.ViewModels.LocationViewModel> locationList = Model.Locations;
+    string locationSearchName = string.Empty;
+    string locationSearchAddress = string.Empty;
+    string locationSearchRoad = string.Empty;
+    string locationSearchDistrict = string.Empty;
+    string locationSearchCity = string.Empty;
+
     List<BAL.ViewModels.MeetingViewModel> meetingList = Model.Meetings;
 }
 
@@ -41,41 +46,35 @@
         <div class="row">
                 <div class="content__filter col-3">
                     <div class="content__filter-tabs-left">
-                        <div class="tabs-left-title">
-                            <h3 class="heading">Filter</h3>
-                        </div>
-                    <div class="tabs-left-filter" style="background-color:white">
-    <div class="input-group mb-3">
-        <select class="custom-select" name="district" id="inputGroupSelect02">
-            <option value="">District</option>
-            @for (int i = 0; i < locationList.Count; i++)
-            {
-                <option value="@i">@locationList[i].District</option>
-            }
-        </select>
-    </div>
-    <div class="input-group mb-3">
-        <select class="custom-select" name="district" id="inputGroupSelect02">
-            <option value="">District</option>
-            @for (int i = 0; i < locationList.Count; i++)
-            {
-                <option value="@i">@locationList[i].District</option>
-            }
-        </select>
-    </div>
-    <div class="input-group mb-3">
-        <select class="custom-select" name="district" id="inputGroupSelect02">
-            <option value="">District</option>
-            @for (int i = 0; i < locationList.Count; i++)
-            {
-                <option value="@i">@locationList[i].District</option>
-            }
-        </select>
-    </div>
-</div>
-                        <div class="filter-search text-center">
-                            <button class="button--primary"><i class="fa fa-filter"></i> Filter</button>
-                        </div>
+                        <form asp-action="Index" asp-controller="Meeting" method="get" asp-route-locationAddress="@locationSearchAddress">
+                            <div class="tabs-left-title">
+                                <h3 class="heading">Filter</h3>
+                            </div>
+                            <div class="tabs-left-filter" style="background-color:white">
+                                <div class="input-group mb-3">
+                                    <select asp-for="@locationSearchRoad" asp-items="@Model.Roads" class="custom-select" name="road" id="road">
+                                        <option value="">Road</option>
+                                    </select>
+                                </div>
+                                <div class="input-group mb-3">
+                                    <select asp-for="@locationSearchDistrict" asp-items="@Model.Districts" class="custom-select" name="district" id="district">
+                                        <option value="">District</option>
+                                    </select>
+                                </div>
+                                <div class="input-group mb-3">
+                                    <select asp-for="@locationSearchCity" asp-items="@Model.Cities" class="custom-select" name="city" id="city">
+                                        <option value="">City</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="filter-search text-center">
+                                @{
+                                    locationSearchAddress = "," + locationSearchRoad + "," + locationSearchDistrict + "," + locationSearchCity;
+                                }
+                                <input asp-for="@locationSearchAddress" class="form-control" type="text" name="locationAddress" value="@locationSearchAddress" hidden>
+                                <button class="button--primary" type="submit"><i class="fa fa-filter"></i> Filter</button>
+                            </div>
+                        </form>
                     </div>
                     <div class="col-bg">
                         <img class="bg-1" src="~/images/chao-mao.png"></img>

@@ -1,7 +1,9 @@
 ﻿using DAL.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Dynamic;
 using System.Net.Http.Headers;
+using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using WebAppMVC.Constants;
@@ -20,7 +22,8 @@ namespace WebAppMVC.Controllers
 		private string FieldTripAPI_URL = "";
 		private readonly JsonSerializerOptions options = new JsonSerializerOptions
 		{
-			PropertyNameCaseInsensitive = true,
+            Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+            PropertyNameCaseInsensitive = true,
 		};
 		private MethodCaller methcall = new();
 		public FieldTripController(ILogger<FieldTripController> logger, IConfiguration config)
@@ -39,7 +42,9 @@ namespace WebAppMVC.Controllers
 		public async Task<IActionResult> Index()
 		{
 			FieldTripAPI_URL += "/All";
-			string LocationAPI_URL_All = "/api/Location/All";
+            string LocationAPI_URL_All_Road = "/api/Location/AllAddressRoads";
+            string LocationAPI_URL_All_District = "/api/Location/AllAddressDistricts";
+            string LocationAPI_URL_All_City = "/api/Location/AllAddressCities";
             dynamic testmodel = new ExpandoObject();
 
             string? role = HttpContext.Session.GetString("ROLE_NAME");
@@ -49,11 +54,23 @@ namespace WebAppMVC.Controllers
             TempData["ROLE_NAME"] = role;
             TempData["USER_NAME"] = usrname;
 
-            var listLocationResponse = await methcall.CallMethodReturnObject<GetLocationResponseByList>(
+            var listLocationRoadResponse = await methcall.CallMethodReturnObject<GetLocationResponseByList>(
                 _httpClient: _httpClient,
                 options: options,
                 methodName: "GET",
-                url: LocationAPI_URL_All,
+                url: LocationAPI_URL_All_Road,
+                _logger: _logger);
+            var listLocationDistrictResponse = await methcall.CallMethodReturnObject<GetLocationResponseByList>(
+                _httpClient: _httpClient,
+                options: options,
+                methodName: "GET",
+                url: LocationAPI_URL_All_District,
+                _logger: _logger);
+            var listLocationCityResponse = await methcall.CallMethodReturnObject<GetLocationResponseByList>(
+                _httpClient: _httpClient,
+                options: options,
+                methodName: "GET",
+                url: LocationAPI_URL_All_City,
                 _logger: _logger);
 
             var listTripResponse = await methcall.CallMethodReturnObject<GetFieldTripResponseByList>(
@@ -63,8 +80,8 @@ namespace WebAppMVC.Controllers
                 url: FieldTripAPI_URL,
                 _logger: _logger);
 
-			if (listTripResponse == null || listLocationResponse == null)
-			{
+			if (listTripResponse == null || listLocationRoadResponse == null || listLocationDistrictResponse == null || listLocationCityResponse == null)
+            {
                 _logger.LogInformation(
                     "Error while processing your request! (Getting List Field Trip!). List was Empty!: " + listTripResponse + " , Error Message: " + listTripResponse.ErrorMessage);
                 ViewBag.error =
@@ -72,15 +89,36 @@ namespace WebAppMVC.Controllers
                 Redirect("~/Home/Index");
             }
             else
-            if (!listTripResponse.Status || !listLocationResponse.Status)
+            if (!listTripResponse.Status || !listLocationRoadResponse.Status || !listLocationDistrictResponse.Status || !listLocationCityResponse.Status)
             {
                 ViewBag.error =
                     "Error while processing your request! (Getting List Field Trip!).\n"
-                    + listTripResponse.ErrorMessage + "\n" + listLocationResponse.ErrorMessage;
+                    + listTripResponse.ErrorMessage + "\n" + listLocationRoadResponse.ErrorMessage;
                 Redirect("~/Home/Index");
             }
+
+            List<SelectListItem> roads = new();
+            foreach (var road in listLocationRoadResponse.Data)
+            {
+                roads.Add(new SelectListItem(text: road, value: road));
+            }
+            testmodel.Roads = roads;
+
+            List<SelectListItem> districts = new();
+            foreach (var district in listLocationDistrictResponse.Data)
+            {
+                districts.Add(new SelectListItem(text: district, value: district));
+            }
+            testmodel.Districts = districts;
+
+            List<SelectListItem> cities = new();
+            foreach (var city in listLocationCityResponse.Data)
+            {
+                cities.Add(new SelectListItem(text: city, value: city));
+            }
+            testmodel.Cities = cities;
+
             testmodel.FieldTrips = listTripResponse.Data;
-            testmodel.Locations = listLocationResponse.Data;
             return View(testmodel);
         }
 		public IActionResult FieldTripRegister()

@@ -9,6 +9,7 @@ using WebAppMVC.Models.Location;
 using WebAppMVC.Models.Meeting;
 using WebAppMVC.Models.FieldTrip;
 using WebAppMVC.Models.Contest;
+using System.Text.Encodings.Web;
 
 namespace WebAppMVC.Controllers
 {
@@ -20,6 +21,7 @@ namespace WebAppMVC.Controllers
         private string HomeAPI_URL = "";
         private JsonSerializerOptions options = new JsonSerializerOptions
         {
+            Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
             PropertyNameCaseInsensitive = true,
         };
         private MethodCaller methcall = new();

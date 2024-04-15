@@ -38,6 +38,7 @@ namespace DAL.Repositories.Implements
             DateTime? startDate = null,
             DateTime? endDate = null,
             int? numberOfParticipants = null,
+            string? locationAddress = null,
             string? orderBy = null
             )
         {
@@ -67,6 +68,21 @@ namespace DAL.Repositories.Implements
             if (numberOfParticipants != null)
             {
                 meetings = meetings.AsNoTracking().Where(m => m.NumberOfParticipants == numberOfParticipants);
+            }
+            if (locationAddress != null)
+            {
+                var locationAddressCut = locationAddress.Split(",");
+                for(int i = 0; i < locationAddressCut.Length; i++)
+                {
+                    
+                }
+                /*var list = _context.Locations.Where(l => l.LocationName.Contains(locationAddress)).ToList();
+
+                foreach(var location in list)
+                {
+                    meetings = meetings.AsNoTracking().DistinctBy(m => m.LocationId);
+                }*/
+
             }
 
             if (!string.IsNullOrEmpty(orderBy))
