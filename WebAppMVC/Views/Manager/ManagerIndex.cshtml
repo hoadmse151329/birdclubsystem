@@ -91,40 +91,7 @@
     <!-- End sidebar -->
 
     <!-- Header -->
-    <div class="header">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-sm-12">
-                        <div class="toggle float-left">
-                            <i class='bx bx-menu'></i>
-                        </div>
-                        <div class="float-left">
-                            <div class="dashboard_bar d-flex">
-                                Home
-                            </div>
-                        </div>
-                        <div class="float-right">
-                            <div class="btn-group me-1 mb-1">
-                                <div class="dropdown">
-                                    @if (TempData["ROLE_NAME"] != null)
-                                    {
-                                    <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        @TempData["USER_NAME"]
-                                    </button>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item" href="@Url.Action("ManagerProfile", "Manager")"><i class='bx bx-user'></i>Manager Profile</a> <!--thêm theo user id và role-->
-                                        <a class="dropdown-item" href="@Url.Action("ManagerNotification", "Manager")"><i class='bx bx-bell'></i>Notification</a>
-                                        <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="@Url.Action("Logout", "Auth")">Logout</a>
-                                    </div>
-                                    }
-                                </div>  
-                            </div>
-                        </div>   
-                    </div>
-                </div>
-            </div>
-        </div>
+    
     <!-- End header -->
 
     <!-- Main Content -->
@@ -317,6 +284,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>  
     <script src="~/js/owner-script.js"></script>
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
 
 </html>

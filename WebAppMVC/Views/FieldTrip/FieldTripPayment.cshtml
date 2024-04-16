@@ -1,5 +1,6 @@
 ﻿@{
     ViewData["Title"] = "Field Trip Post Payment Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <html lang="en">
@@ -123,6 +124,41 @@
         </div>
       </div>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+        referrerpolicy="no-referrer"></script>
+        <!-- Jquery Waypoint -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>
+        <!-- BS4 JS -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.5/umd/popper.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- BS4 carousels -->
+        <script>
+            $('.carousel').carousel({
+                interval: 3000
+            });
+        </script>
+        <!-- owl carousels -->
+        <script src="./assets/js/owl.carousel.min.js"></script>
+        <script>
+            $('.clubList-carousel').owlCarousel({
+                loop: true,
+                margin: 10,
+                nav: false,
+                responsive: {
+                    0: {
+                        items: 1
+                    },
+                    576: {
+                        items: 2
+                    },
+                    1200: {
+                        items: 4
+                    }
+                }
+            });
+        </script>
+        <!-- main js -->
+        <script src="~/js/user-script.js"></script>
   </body>
 </html>
 
