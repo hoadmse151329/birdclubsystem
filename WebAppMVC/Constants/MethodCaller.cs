@@ -53,7 +53,7 @@ namespace WebAppMVC.Constants
                 return null;
             };
             var result = JsonSerializer.Deserialize<T>(jsonResponse, options);
-            _logger.LogInformation("Processing your Request Successfully!: " + response.StatusCode + " , Success Message: " + result);
+            _logger.LogInformation("Processing your Request Successfully!: " + response.StatusCode + " , Success Message: " + jsonResponse);
             return result;
         }
     }

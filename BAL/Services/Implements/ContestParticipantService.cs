@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using BAL.Services.Interfaces;
+using BAL.ViewModels;
+using BAL.ViewModels.Event;
 using DAL.Infrastructure;
 using System;
 using System.Collections.Generic;
@@ -17,6 +19,46 @@ namespace BAL.Services.Implements
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+        }
+
+        public Task<int> Create(string memId, int contestId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> Delete(string memId, int contestId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<ContestParticipantViewModel>> GetAll()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<ContestParticipantViewModel>> GetAllByContestId(int contestId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<ContestParticipantViewModel>> GetAllByMemberId(string memberId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<GetEventParticipation>> GetAllByMemberIdInclude(string memberId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<int> GetCurrentParticipantAmounts(int contestId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<int> GetParticipationNo(string memId, int contestId)
+        {
+            throw new NotImplementedException();
         }
     }
 }

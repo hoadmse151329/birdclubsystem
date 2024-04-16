@@ -92,13 +92,13 @@
                                         <div class="overlap-group-3 text-wrapper-16">
                                             <span class="text-success">@ViewBag.PartNumber</span>
                                         </div>
-                                        <form asp-action="FieldTripDeRegister" asp-controller="FieldTrip" method="post" asp-route-fieldtripId="@Model.TripId">
+                                                <form asp-action="FieldTripDeRegister" asp-controller="FieldTrip" method="post" asp-route-tripId="@Model.TripId">
                                             <button class="overlap-group-3 text-wrapper-16" type="submit">Sign Out</button>
                                         </form>
                                     }
                                     else
                                     {
-                                        <form asp-action="FieldTripRegister" asp-controller="FieldTrip" method="post" asp-route-fieldtripId="@Model.TripId">
+                                        <form asp-action="FieldTripRegister" asp-controller="FieldTrip" method="post" asp-route-tripId="@Model.TripId">
                                             <button class="overlap-group-3 text-wrapper-16" type="submit">Register</button>
                                         </form>
                                     }

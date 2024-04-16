@@ -8,6 +8,7 @@ namespace DAL.Models
         public int TripId { get; set; }
         public string MemberId { get; set; } = null!;
         public string ParticipantNo { get; set; } = null!;
+        public string CheckInStatus { get; set; } = null!;
 
         public virtual Member Member { get; set; } = null!;
         public virtual FieldTrip Trip { get; set; } = null!;

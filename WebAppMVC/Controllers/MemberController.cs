@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Identity;
 using System;
 using BAL.ViewModels.Member;
 using System.Text.Encodings.Web;
+using BAL.ViewModels.Event;
 
 namespace WebAppMVC.Controllers
 {
@@ -157,6 +158,8 @@ namespace WebAppMVC.Controllers
             TempData["USER_NAME"] = usrname;
 
             string MemberMeetingPartAPI_URL = "/api/Meeting/Participation/AllMeetings";
+            string MemberFieldTripPartAPI_URL = "/api/FieldTrip/Participation/AllFieldTrips";
+            
             dynamic registeredModel = new ExpandoObject();
 
             var memberMeetingPart = await methcall.CallMethodReturnObject<GetListEventParticipation>(
@@ -167,21 +170,37 @@ namespace WebAppMVC.Controllers
                 _logger: _logger,
                 inputType: usrId,
                 accessToken: accToken);
-            if (memberMeetingPart == null)
+
+            var memberFieldTripPart = await methcall.CallMethodReturnObject<GetListEventParticipation>(
+                _httpClient: _httpClient,
+                options: options,
+                methodName: "POST",
+                url: MemberFieldTripPartAPI_URL,
+                _logger: _logger,
+                inputType: usrId,
+                accessToken: accToken);
+
+            if (memberMeetingPart == null || memberFieldTripPart == null)
             {
                 ViewBag.error =
-                    "Error while processing your request! (Getting Member Profile!).\n Member Details Not Found!";
+                    "Error while processing your request! (Getting Member Participation History!).\n Member Participation History Not Found!\n"
+                    + memberMeetingPart + "\n" + memberFieldTripPart;
                 return RedirectToAction("MemberProfile");
             }
             else
-            if (!memberMeetingPart.Status)
+            if (!memberMeetingPart.Status || !memberFieldTripPart.Status)
             {
                 ViewBag.error =
-                    "Error while processing your request! (Getting Member Profile!).\n Member Details Not Found!"
-                + memberMeetingPart.ErrorMessage;
+                    "Error while processing your request! (Getting Member Participation History!).\n Member Participation History Not Found!"
+                + memberMeetingPart + "\n" + memberFieldTripPart;
                 return RedirectToAction("MemberProfile");
             }
-            registeredModel.RegisteredEvents = memberMeetingPart.Data;
+
+            List<GetEventParticipation> registeredEvents = new();
+            registeredEvents.AddRange(memberMeetingPart.Data);
+            registeredEvents.AddRange(memberFieldTripPart.Data);
+
+            registeredModel.RegisteredEvents = registeredEvents;
             return View(registeredModel);
         }
         [HttpPost("Upload")]

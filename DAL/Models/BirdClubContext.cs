@@ -493,6 +493,10 @@ namespace DAL.Models
                     .HasMaxLength(50)
                     .HasColumnName("participantNo");
 
+                entity.Property(e => e.CheckInStatus)
+                    .HasMaxLength(50)
+                    .HasColumnName("checkInStatus");
+
                 entity.Property(e => e.TripId).HasColumnName("tripId");
 
                 entity.HasOne(d => d.Member)
