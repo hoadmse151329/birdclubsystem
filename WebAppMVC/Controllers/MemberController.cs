@@ -170,14 +170,14 @@ namespace WebAppMVC.Controllers
             if (memberMeetingPart == null)
             {
                 ViewBag.error =
-                    "Error while processing your request! (Getting Member Profile!).\n Member Details Not Found!";
+                    "Error while processing your request! (Getting Member History Event!).\n Member History Event Not Found!";
                 return RedirectToAction("MemberProfile");
             }
             else
             if (!memberMeetingPart.Status)
             {
                 ViewBag.error =
-                    "Error while processing your request! (Getting Member Profile!).\n Member Details Not Found!"
+                    "Error while processing your request! (Getting Member History Event!).\n Member History Event Not Found!"
                 + memberMeetingPart.ErrorMessage;
                 return RedirectToAction("MemberProfile");
             }
