@@ -2,7 +2,7 @@
 @{
     Layout = null;
     ViewData["Title"] = "Manager Meeting Page";
-    List<BAL.ViewModels.LocationViewModel> locationList = Model.Locations;
+    List<string> locationList = Model.Locations;
     List<BAL.ViewModels.FieldTripViewModel> fieldtripList = Model.FieldTrips;
     BAL.ViewModels.FieldTripViewModel createFieldTrip = new();
     BAL.ViewModels.FieldtripDaybyDayViewModel createFieldTripDayByDay = new();

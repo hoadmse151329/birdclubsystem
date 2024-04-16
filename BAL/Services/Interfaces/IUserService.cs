@@ -23,6 +23,7 @@ namespace BAL.Services.Interfaces
         void Create(UserViewModel entity, CreateNewMember newmem = null);
         /*void Update(UserViewModel entity);*/
         void Update(UserViewModel entity);
+        void UpdatePassword(UserViewModel entity);
         Task<UserViewModel?> GetByEmailModel(string email);
     }
 }

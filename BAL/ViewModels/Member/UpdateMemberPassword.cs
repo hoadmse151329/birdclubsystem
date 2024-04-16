@@ -28,5 +28,9 @@ namespace BAL.ViewModels.Member
         [DataType(DataType.Password)]
         [PasswordPropertyText]
         public string NewConfirmPassword { get; set; }
+        [EmailAddress]
+        [DataType(DataType.EmailAddress)]
+        [RegularExpression(@"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$", ErrorMessage = "Email is invalid")]
+        public string? Email { get; set; }
     }
 }
