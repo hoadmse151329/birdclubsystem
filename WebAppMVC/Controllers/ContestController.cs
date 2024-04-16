@@ -140,7 +140,7 @@ namespace WebAppMVC.Controllers
 
             GetContestPostResponse? contestPostResponse = new();
 
-            if (!string.IsNullOrEmpty(accToken) && !string.IsNullOrEmpty(usrId))
+            if (!string.IsNullOrEmpty(accToken) && !string.IsNullOrEmpty(usrId) && role.Equals(Constants.Constants.MEMBER))
             {
                 ContestAPI_URL += "Participant/" + id;
                 contestPostResponse = await methcall.CallMethodReturnObject<GetContestPostResponse>(

@@ -216,7 +216,6 @@
                                                                                         break;
                                                                                     }
                                                                                 case "Open":
-                                                                                case "OnGoing":
                                                                                     {
                                                                                         <form asp-action="@(events[i].EventType)Deregister" asp-controller="@events[i].EventType" method="post" asp-route-meetingId="@events[i].EventId">
                                                                                             <div class="report-room">
@@ -225,13 +224,17 @@
                                                                                         </form>
                                                                                         break;
                                                                                     }
+                                                                                case "OnGoing":
+                                                                                    {
+                                                                                        break;
+                                                                                    }
                                                                                 case "Ended":
                                                                                     {
                                                                                         <div class="report-room">
                                                                                             <button data-toggle="modal"
                                                                                                 data-target="#report"
                                                                                                 class="button--primary btn-danger shadow btn-xs sharp text-white bg-danger">
-                                                                                                <span>Report</span>
+                                                                                                <span>Feedback</span>
                                                                                             </button>
                                                                                         </div>
                                                                                         break;
@@ -242,7 +245,7 @@
                                                                                             <button data-toggle="modal"
                                                                                                     data-target="#report"
                                                                                                     class="button--primary btn-danger shadow btn-xs sharp text-white bg-danger">
-                                                                                                <span>Report</span>
+                                                                                                <span>Feedback</span>
                                                                                             </button>
                                                                                         </div>
                                                                                         break;

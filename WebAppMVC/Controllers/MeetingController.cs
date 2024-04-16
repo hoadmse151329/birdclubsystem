@@ -162,7 +162,7 @@ namespace WebAppMVC.Controllers
 
             GetMeetingPostResponse? meetPostResponse = new();
 
-            if (!string.IsNullOrEmpty(accToken) && !string.IsNullOrEmpty(usrId))
+            if (!string.IsNullOrEmpty(accToken) && !string.IsNullOrEmpty(usrId) && role.Equals(Constants.Constants.MEMBER))
 			{
                 MeetingAPI_URL += "Participant/" + id;
                 meetPostResponse = await methcall.CallMethodReturnObject<GetMeetingPostResponse>(

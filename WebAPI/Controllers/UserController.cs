@@ -436,7 +436,7 @@ namespace WebAPI.Controllers
                     });
                 }
                 result.Password = upPass.Newpassword;
-                _userService.Update(result);
+                _userService.UpdatePassword(result);
                 return Ok(new
                 {
 					Status = true,
