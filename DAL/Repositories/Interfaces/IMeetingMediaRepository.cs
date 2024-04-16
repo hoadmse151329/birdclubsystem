@@ -10,5 +10,7 @@ namespace DAL.Repositories.Interfaces
 {
     public interface IMeetingMediaRepository : IRepositoryBase<MeetingMedia>
     {
+        Task<MeetingMedia> GetMeetingMediaById(int meetingId, int pictureId);
+        Task<IEnumerable<MeetingMedia>> GetMeetingMediasByMeetingId(int meetingId);
     }
 }

@@ -48,7 +48,8 @@ namespace BAL.Services.Implements
                     UserId = user.MemberId,
                     RoleName = user.Role,
                     UserName = user.UserName,
-                    AccessToken = accessToken
+                    AccessToken = accessToken,
+                    ImagePath = user.ImagePath
                 };
             }
             return null;
@@ -65,7 +66,8 @@ namespace BAL.Services.Implements
                     UserId = user.MemberId,
                     RoleName = user.Member.Role,
                     UserName = user.UserName,
-                    AccessToken = accessToken
+                    AccessToken = accessToken,
+                    ImagePath = user.ImagePath
                 };
             }
 
@@ -175,6 +177,19 @@ namespace BAL.Services.Implements
                 usr.Role= entity.Role;
                 usr.Member = usrmem;
 			}
+            _unitOfWork.UserRepository.Update(usr);
+            _unitOfWork.Save();
+        }
+
+        public void UpdatePassword(UserViewModel entity)
+        {
+            var usr = _mapper.Map<User>(entity);
+            if (usr.MemberId != null)
+            {
+                var usrmem = _unitOfWork.MemberRepository.GetByIdNoTracking(usr.MemberId).Result;
+                usr.Role = entity.Role;
+                usr.Member = usrmem;
+            }
             _unitOfWork.UserRepository.Update(usr);
             _unitOfWork.Save();
         }

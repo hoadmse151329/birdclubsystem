@@ -17,5 +17,6 @@ namespace BAL.ViewModels.Authenticates
         [DataType(DataType.Password)]
         [Required(ErrorMessage = "Password is required")]
         public string Password { get; set; }
+        public string? ImagePath { get; set; }
     }
 }

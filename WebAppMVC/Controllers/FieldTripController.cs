@@ -14,7 +14,8 @@ using static Org.BouncyCastle.Math.EC.ECCurve;
 
 namespace WebAppMVC.Controllers
 {
-	public class FieldTripController : Controller
+    [Route("FieldTrip")]
+    public class FieldTripController : Controller
 	{
 		private readonly ILogger<FieldTripController> _logger;
         private readonly IConfiguration _config;
@@ -37,8 +38,7 @@ namespace WebAppMVC.Controllers
 			FieldTripAPI_URL = "/api/FieldTrip";
         }
 
-		[HttpGet]
-		[Route("FieldTrip/Index")]
+		[HttpGet("Index")]
 		public async Task<IActionResult> Index()
 		{
 			FieldTripAPI_URL += "/All";
@@ -125,8 +125,7 @@ namespace WebAppMVC.Controllers
 		{
 			return View();
 		}
-        [HttpGet("{id:int}")]
-        [Route("FieldTrip/FieldTripPost/{id:int}")]
+        [HttpGet("FieldTripPost/{id:int}")]
         public async Task<IActionResult> FieldTripPost(int id)
 		{
             FieldTripAPI_URL += "/";
@@ -144,7 +143,7 @@ namespace WebAppMVC.Controllers
 
             GetFieldTripPostResponse? fieldtripPostResponse = new();
 
-            if (!string.IsNullOrEmpty(accToken) && !string.IsNullOrEmpty(usrId))
+            if (!string.IsNullOrEmpty(accToken) && !string.IsNullOrEmpty(usrId) && role.Equals(Constants.Constants.MEMBER))
             {
                 FieldTripAPI_URL += "Participant/" + id;
                 fieldtripPostResponse = await methcall.CallMethodReturnObject<GetFieldTripPostResponse>(
@@ -198,8 +197,7 @@ namespace WebAppMVC.Controllers
 			return View();
 		}
 
-        [HttpPost]
-        [Route("FieldTrip/FieldTripRegister/{tripId:int}")]
+        [HttpPost("FieldTripRegister/{tripId:int}")]
         public async Task<IActionResult> FieldTripRegister(int tripId)
         {
             FieldTripAPI_URL += "/Register/" + tripId;
@@ -248,8 +246,7 @@ namespace WebAppMVC.Controllers
 
             return RedirectToAction("FieldTripPost", new { id = tripId });
         }
-        [HttpPost]
-        [Route("FieldTrip/FieldTripDeRegister/{tripId:int}")]
+        [HttpPost("FieldTripDeRegister/{tripId:int}")]
         public async Task<IActionResult> FieldTripDeRegister(int tripId)
         {
             FieldTripAPI_URL += "/RemoveParticipant/" + tripId;
