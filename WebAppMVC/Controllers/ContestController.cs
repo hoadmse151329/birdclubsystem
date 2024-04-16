@@ -53,19 +53,19 @@ namespace WebAppMVC.Controllers
             TempData["ROLE_NAME"] = role;
             TempData["USER_NAME"] = usrname;
 
-            var listLocationRoadResponse = await methcall.CallMethodReturnObject<GetLocationResponseByList>(
+            var listLocationRoadResponse = await methcall.CallMethodReturnObject<GetLocationAddressResponseByList>(
                 _httpClient: _httpClient,
                 options: options,
                 methodName: "GET",
                 url: LocationAPI_URL_All_Road,
                 _logger: _logger);
-            var listLocationDistrictResponse = await methcall.CallMethodReturnObject<GetLocationResponseByList>(
+            var listLocationDistrictResponse = await methcall.CallMethodReturnObject<GetLocationAddressResponseByList>(
                 _httpClient: _httpClient,
                 options: options,
                 methodName: "GET",
                 url: LocationAPI_URL_All_District,
                 _logger: _logger);
-            var listLocationCityResponse = await methcall.CallMethodReturnObject<GetLocationResponseByList>(
+            var listLocationCityResponse = await methcall.CallMethodReturnObject<GetLocationAddressResponseByList>(
                 _httpClient: _httpClient,
                 options: options,
                 methodName: "GET",

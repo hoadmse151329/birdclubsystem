@@ -55,13 +55,23 @@ namespace WebAPI.Controllers
 			}
 			catch (Exception ex)
 			{
-				// Log the exception if needed
-				return BadRequest(new
-				{
-					Status = false,
-					ErrorMessage = ex.Message
-				});
-			}
+                // Log the exception if needed
+                if (ex.InnerException != null)
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = ex.Message,
+                        InnerExceptionMessage = ex.InnerException.Message
+                    });
+                }
+                // Log the exception if needed
+                return BadRequest(new
+                {
+                    Status = false,
+                    ErrorMessage = ex.Message
+                });
+            }
 		}
         /// <summary>
         /// Get member informations by Member ID
@@ -96,6 +106,15 @@ namespace WebAPI.Controllers
             }
             catch (Exception ex)
             {
+                if (ex.InnerException != null)
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = ex.Message,
+                        InnerExceptionMessage = ex.InnerException.Message
+                    });
+                }
                 // Log the exception if needed
                 return BadRequest(new
                 {
@@ -139,13 +158,22 @@ namespace WebAPI.Controllers
 			}
 			catch (Exception ex)
 			{
-				// Log the exception if needed
-				return BadRequest(new
-				{
-					Status = false,
-					ErrorMessage = ex.Message
-				});
-			}
+                if (ex.InnerException != null)
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = ex.Message,
+                        InnerExceptionMessage = ex.InnerException.Message
+                    });
+                }
+                // Log the exception if needed
+                return BadRequest(new
+                {
+                    Status = false,
+                    ErrorMessage = ex.Message
+                });
+            }
 		}
 
     }

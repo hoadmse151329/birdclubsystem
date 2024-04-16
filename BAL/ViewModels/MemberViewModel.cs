@@ -21,7 +21,7 @@ namespace BAL.ViewModels
         public string? Email { get; set; }
         [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Gender is invalid")]
         public string? Gender { get; set; }
-        [RegularExpression(@"^[a-zA-Z0-9]+$", ErrorMessage = "Address is invalid")]
+        /*[RegularExpression(@"^[a-zA-Z0-9]+$", ErrorMessage = "Address is invalid")]*/
         public string? Address { get; set; }
         [Phone]
         [DataType(DataType.PhoneNumber)]

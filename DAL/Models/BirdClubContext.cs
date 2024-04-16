@@ -738,6 +738,10 @@ namespace DAL.Models
                     .HasMaxLength(50)
                     .HasColumnName("participantNo");
 
+                entity.Property(e => e.CheckInStatus)
+                    .HasMaxLength(50)
+                    .HasColumnName("checkInStatus");
+
                 entity.HasOne(d => d.Meeting)
                     .WithMany()
                     .HasForeignKey(d => d.MeetingId)

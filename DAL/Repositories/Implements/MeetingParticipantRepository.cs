@@ -20,7 +20,7 @@ namespace DAL.Repositories.Implements
 
         public async Task<bool> GetBoolMeetingParticipantById(int meetingId, string memberId)
         {
-            var mempart = _context.MeetingParticipants.Find(meetingId, memberId);
+            var mempart = _context.MeetingParticipants.FirstOrDefault(m => m.MeetingId == meetingId && m.MemberId == memberId);
             if (mempart != null) return true;
             return false;
         }
@@ -37,7 +37,7 @@ namespace DAL.Repositories.Implements
 
         public async Task<MeetingParticipant> GetMeetingParticipantById(int meetingId, string memberId)
         {
-            return _context.MeetingParticipants.Find(meetingId, memberId);
+            return _context.MeetingParticipants.FirstOrDefault(m => m.MeetingId == meetingId && m.MemberId == memberId);
         }
 
         public async Task<IEnumerable<MeetingParticipant>> GetMeetingParticipantsByMeetId(int meetingId)

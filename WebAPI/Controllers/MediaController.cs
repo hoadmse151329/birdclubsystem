@@ -10,6 +10,25 @@ namespace WebAPI.Controllers
     public class MediaController : ControllerBase
     {
         public readonly IMediaService _mediaService;
+
+
+        private string GenerateFileName(string fileName, string userId)
+        {
+            try
+            {
+                string strFileName = string.Empty;
+                string[] strName = fileName.Split('.');
+                strFileName = userId + DateTime.Now.ToUniversalTime().ToString("yyyy-MM-dd") + "/"
+                   + DateTime.Now.ToUniversalTime().ToString("yyyyMMdd\\THHmmssfff") + "." +
+                   strName[strName.Length - 1];
+                return strFileName;
+            }
+            catch (Exception ex)
+            {
+                return fileName;
+            }
+        }
+
         public MediaController(IMediaService mediaService)
         {
             _mediaService = mediaService;

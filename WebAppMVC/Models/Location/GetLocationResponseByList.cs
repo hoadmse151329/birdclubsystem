@@ -4,6 +4,6 @@ namespace WebAppMVC.Models.Location
 {
     public class GetLocationResponseByList : DefaultResponseViewModel
     {
-        public List<string> Data { get; set; }
+        public List<LocationViewModel> Data { get; set; }
     }
 }
