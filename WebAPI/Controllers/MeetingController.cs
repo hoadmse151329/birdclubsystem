@@ -63,13 +63,22 @@ namespace WebAPI.Controllers
 			}
 			catch (Exception ex)
 			{
-				// Log the exception if needed
-				return BadRequest(new
-				{
-					Status = false,
-					ErrorMessage = ex.Message
-				});
-			}
+                if (ex.InnerException != null)
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = ex.Message,
+                        InnerExceptionMessage = ex.InnerException.Message
+                    });
+                }
+                // Log the exception if needed
+                return BadRequest(new
+                {
+                    Status = false,
+                    ErrorMessage = ex.Message
+                });
+            }
 		}
         [HttpGet("Search")]
         [ProducesResponseType(typeof(List<MeetingViewModel>), StatusCodes.Status200OK)]
@@ -113,6 +122,15 @@ namespace WebAPI.Controllers
             }
             catch (Exception ex)
             {
+                if (ex.InnerException != null)
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = ex.Message,
+                        InnerExceptionMessage = ex.InnerException.Message
+                    });
+                }
                 // Log the exception if needed
                 return BadRequest(new
                 {
@@ -149,11 +167,20 @@ namespace WebAPI.Controllers
             }
             catch (Exception ex)
             {
+                if (ex.InnerException != null)
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = ex.Message,
+                        InnerExceptionMessage = ex.InnerException.Message
+                    });
+                }
                 // Log the exception if needed
                 return BadRequest(new
                 {
-                    status = false,
-                    errorMessage = ex.Message
+                    Status = false,
+                    ErrorMessage = ex.Message
                 });
             }
         }
@@ -180,6 +207,16 @@ namespace WebAPI.Controllers
             }
             catch (Exception ex)
             {
+                if (ex.InnerException != null)
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = ex.Message,
+                        InnerExceptionMessage = ex.InnerException.Message
+                    });
+                }
+                // Log the exception if needed
                 return BadRequest(new
                 {
                     Status = false,
@@ -218,6 +255,15 @@ namespace WebAPI.Controllers
             }
             catch (Exception ex)
             {
+                if (ex.InnerException != null)
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = ex.Message,
+                        InnerExceptionMessage = ex.InnerException.Message
+                    });
+                }
                 // Log the exception if needed
                 return BadRequest(new
                 {
@@ -257,6 +303,15 @@ namespace WebAPI.Controllers
             }
             catch (Exception ex)
             {
+                if (ex.InnerException != null)
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = ex.Message,
+                        InnerExceptionMessage = ex.InnerException.Message
+                    });
+                }
                 // Log the exception if needed
                 return BadRequest(new
                 {
@@ -298,6 +353,16 @@ namespace WebAPI.Controllers
             }
             catch (Exception ex)
             {
+                if (ex.InnerException != null)
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = ex.Message,
+                        InnerExceptionMessage = ex.InnerException.Message
+                    });
+                }
+                // Log the exception if needed
                 return BadRequest(new
                 {
                     Status = false,
@@ -339,6 +404,16 @@ namespace WebAPI.Controllers
             }
             catch (Exception ex)
             {
+                if (ex.InnerException != null)
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = ex.Message,
+                        InnerExceptionMessage = ex.InnerException.Message
+                    });
+                }
+                // Log the exception if needed
                 return BadRequest(new
                 {
                     Status = false,
@@ -373,11 +448,20 @@ namespace WebAPI.Controllers
             }
             catch (Exception ex)
             {
+                if(ex.InnerException != null)
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = ex.Message,
+                        InnerExceptionMessage = ex.InnerException.Message
+                    });
+                }
                 // Log the exception if needed
                 return BadRequest(new
                 {
-                    status = false,
-                    errorMessage = ex.Message
+                    Status = false,
+                    ErrorMessage = ex.Message
                 });
             }
         }
@@ -409,11 +493,20 @@ namespace WebAPI.Controllers
             }
             catch (Exception ex)
             {
+                if (ex.InnerException != null)
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = ex.Message,
+                        InnerExceptionMessage = ex.InnerException.Message
+                    });
+                }
                 // Log the exception if needed
                 return BadRequest(new
                 {
-                    status = false,
-                    errorMessage = ex.Message
+                    Status = false,
+                    ErrorMessage = ex.Message
                 });
             }
         }
@@ -445,6 +538,15 @@ namespace WebAPI.Controllers
             }
             catch (Exception ex)
             {
+                if (ex.InnerException != null)
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = ex.Message,
+                        InnerExceptionMessage = ex.InnerException.Message
+                    });
+                }
                 // Log the exception if needed
                 return BadRequest(new
                 {

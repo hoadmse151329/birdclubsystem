@@ -45,6 +45,16 @@ namespace WebAPI.Controllers
             }
             catch (Exception ex)
             {
+                if (ex.InnerException != null)
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = ex.Message,
+                        InnerExceptionMessage = ex.InnerException.Message
+                    });
+                }
+                // Log the exception if needed
                 return BadRequest(new
                 {
                     Status = false,
@@ -85,6 +95,16 @@ namespace WebAPI.Controllers
             }
             catch (Exception ex)
             {
+                if (ex.InnerException != null)
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = ex.Message,
+                        InnerExceptionMessage = ex.InnerException.Message
+                    });
+                }
+                // Log the exception if needed
                 return BadRequest(new
                 {
                     Status = false,

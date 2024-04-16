@@ -48,6 +48,7 @@ namespace WebAppMVC.Controllers
         {
             _logger.LogInformation(search);
             string LocationAPI_URL_All = ManagerAPI_URL + "Location/All";
+
             if (search != null || !string.IsNullOrEmpty(search))
             {
                 search = search.Trim();
@@ -103,8 +104,8 @@ namespace WebAppMVC.Controllers
                     + listMeetResponse.ErrorMessage + "\n" + listLocationResponse.ErrorMessage;
                 return View("ManagerIndex");
             }
-            testmodel.Meetings = listMeetResponse.Data;
             testmodel.Locations = listLocationResponse.Data;
+            testmodel.Meetings = listMeetResponse.Data;
             return View(testmodel);
         }
         public IActionResult ManagerNotification()
@@ -311,7 +312,7 @@ namespace WebAppMVC.Controllers
         public async Task<IActionResult> ManagerFieldtrip([FromQuery] string search)
         {
             _logger.LogInformation(search);
-            string LocationAPI_URL_All = ManagerAPI_URL + "Location/AllAddress";
+            string LocationAPI_URL_All = ManagerAPI_URL + "Location/AllAddresses";
             if (search != null || !string.IsNullOrEmpty(search))
             {
                 search = search.Trim();
@@ -337,7 +338,7 @@ namespace WebAppMVC.Controllers
             TempData["ROLE_NAME"] = role;
             TempData["USER_NAME"] = usrname;
 
-            var listLocationResponse = await methcall.CallMethodReturnObject<GetLocationResponseByList>(
+            var listLocationResponse = await methcall.CallMethodReturnObject<GetLocationAddressResponseByList>(
                 _httpClient: _httpClient,
                 options: options,
                 methodName: "GET",
@@ -354,7 +355,7 @@ namespace WebAppMVC.Controllers
             if (listFieldTripResponse == null || listLocationResponse == null)
             {
                 _logger.LogInformation(
-                    "Error while processing your request! (Getting List FieldTrip!). List was Empty!: " + listFieldTripResponse);
+                    "Error while processing your request! (Getting List FieldTrip!). List was Empty!: " + listLocationResponse + ",\n" + listFieldTripResponse);
                 ViewBag.error =
                     "Error while processing your request! (Getting List FieldTrip!).\n List was Empty!";
                 return View("ManagerIndex");
