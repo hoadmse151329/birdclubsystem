@@ -75,18 +75,6 @@
                             </li>
                         </ul>
                     </li>
-                    <li data-toggle="tooltip"data-placement="right" title="History Events">
-                        <a href="@Url.Action("ManagerHistoryEvents", "Manager")">
-                            <span><i class='bx bx-history'></i></span>
-                            <span class="title">HistoryEvents</span>
-                        </a>
-                    </li>
-                    <li data-toggle="tooltip"data-placement="right" title="Manage Notification">
-                        <a href="@Url.Action("ManagerNotification", "Manager")">
-                            <span><i class='bx bx-bell'></i></span>
-                            <span class="title">Notification</span>
-                        </a>
-                    </li>
                     <li data-toggle="tooltip"data-placement="right" title="Manage Feedback">
                         <a href="@Url.Action("ManagerFeedback", "Manager")">
                             <span><i class="bx bx-detail"></i></span>
@@ -483,5 +471,8 @@
         window.location.href = '@Url.Action("ManagerFieldTripDetail", "Manager")';
     }
 </script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
 </body>
 </html>

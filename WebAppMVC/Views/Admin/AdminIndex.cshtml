@@ -3,226 +3,310 @@
     ViewData["Title"] = "Admin Index Page";
 }
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Admin account</title>
-        <link rel="shortcut icon" href="assets/img/logo2.png">
-        <!-- CSS -->
-        <!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css">
-        <!--Boxicons-->
-        <link rel='stylesheet' href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css'>
-        <!-- Data-Table -->
-        <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
-        <link rel="stylesheet" href="assets/css/owner-style.css">
-
-        <link rel="stylesheet" href="assets/css/admin.css">
-    </head>
-    <body>
-        <%
-            UserDTO loginUser = (UserDTO) session.getAttribute("LOGIN_USER");
-            if (loginUser == null || !loginUser.getRole().equals("AD")) {
-                response.sendRedirect("login.jsp");
-                return;
-            }
-
-        %>
-
-        <!-- sidebar -->
-
-        <div class="sidebar">
-            <div class="container">
-                <div class="navigation">
-
-                    <ul class="slide-menu">
-                        <div class="logo">
-                            <a href="AdminShowOverview">
-                                <img class="logo" src="assets/img/logo2.png" alt="logo">
-                            </a>
-                        </div>
-                        <li>
-                            <a href="AdminShowOverview">
-                                <span><i class='bx bx-tachometer'></i></span>
-                                <span class="title">Tổng quan</span>
-                            </a>
-                        </li> 
-                        <li  class="active acc">
-                            <a href="AdminListAccount">
-                                <span><i class='bx bxs-user-rectangle'></i></span>
-                                <span class="title">Quản lý tài khoản</span>
-                            </a>
-                        </li>
-                        <li >
-                            <a href="MotelManager?action=all">
-                                <span><i class='bx bx-home'></i></span>
-                                <span class="title">Quản lý Motel</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="AdminReportManager">
-                                <span><i class='bx bx-bell'></i></span>
-                                <span class="title">Report</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="MainController?action=ShowProfile&userID=<%=loginUser.getUserId()%>&role=<%=loginUser.getRole()%>">
-                                <span><i class='bx bx-user'></i></span>
-                                <span class="title">Tài khoản</span>
-                            </a>
-                        </li>
-
-                    </ul>
-                </div>
-
-
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Bird Club System</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="~/css/owner-style.css">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css">
+    <!--Boxicons-->
+    <link rel='stylesheet' href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css'>
+</head>
+<body>
+    <!-- sidebar -->
+    <div class="sidebar">
+        <div class="container">
+            <div class="navigation">  
+                <ul class="slide-menu">
+                    <div class="logo">
+                        <a href="@Url.Action("ManagerIndex", "Manager")">
+                            <img class="logo" src="~/images/Red_whiskered_bulbul_bird_logo_eps_10_generated 1.png" alt="logo">
+                        </a>
+                    </div>
+                    <li class="active" data-toggle="tooltip"data-placement="right" title="Overview">
+                        <a href="@Url.Action("ManagerIndex", "Manager")">
+                            <span><i class='bx bx-tachometer'></i></span>
+                            <span class="title">Overview</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                            <i class='bx bx-bookmarks'></i>
+                            <span class="title">Manage</span>
+                            <i class='bx bxs-chevron-down drop'></i>
+                        </a>
+                        <ul class="collapse sub-menu" id="collapseOne">
+                            <li data-toggle="tooltip"data-placement="right" title="Manage Meeting">
+                                <a href="@Url.Action("ManagerMeeting", "Manager")" li class="dropdown-item">
+                                    <i class='bx bx-home-alt-2'></i>
+                                    <span class="title">Meeting</span>
+                                </a> 
+                            </li>
+                            <li data-toggle="tooltip"data-placement="right" title="Manage Fieldtrip">
+                                <a href="@Url.Action("ManagerFieldtrip", "Manager")" li class="dropdown-item">
+                                    <i class='bx bx-calendar-edit'></i>
+                                    <span class="title">Fieldtrip</span>
+                                </a>
+                            </li> 
+                            <li data-toggle="tooltip"data-placement="right" title="Manage Bird Contest">
+                                <a href="@Url.Action("ManagerContest", "Manager")" li class="dropdown-item">
+                                    <i class='bx bx-cloud-rain'></i>
+                                    <span class="title">Bird Contest</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li data-toggle="tooltip"data-placement="right" title="Manage Feedback">
+                        <a href="@Url.Action("ManagerFeedback", "Manager")">
+                            <span><i class="bx bx-detail"></i></span>
+                            <span class="title">Feedback</span>
+                        </a>
+                    </li>
+                    <li data-toggle="tooltip"data-placement="right" title="Manager Profile">
+                        <a href="@Url.Action("ManagerProfile", "Manager")">
+                            <span><i class='bx bx-user'></i></span>
+                            <span class="title">Manager Profile</span>
+                        </a>
+                    </li>
+                </ul>
             </div>
         </div>
-        <!-- End sidebar -->
+    </div>
+    <!-- End sidebar -->
 
-        <div class="header">
+    <!-- Header -->
+    <div class="header">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="toggle float-left">
-                            <i class="bx bx-menu"></i>
+                            <i class='bx bx-menu'></i>
                         </div>
                         <div class="float-left">
                             <div class="dashboard_bar d-flex">
-                                Quản lý tài khoản
+                                Home
                             </div>
                         </div>
                         <div class="float-right">
                             <div class="btn-group me-1 mb-1">
                                 <div class="dropdown">
+                                    @if (TempData["ROLE_NAME"] != null)
+                                    {
                                     <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        ${sessionScope.LOGIN_USER.fullName}
+                                        @TempData["USER_NAME"]
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item" href="MainController?action=ShowProfile&userID=${sessionScope.LOGIN_USER.userId}&role=AD"><i class="bx bx-user"></i>Tài khoản</a>
+                                        <a class="dropdown-item" href="@Url.Action("ManagerProfile", "Manager")"><i class='bx bx-user'></i>Manager Profile</a> <!--thêm theo user id và role-->
+                                        <a class="dropdown-item" href="@Url.Action("ManagerNotification", "Manager")"><i class='bx bx-bell'></i>Notification</a>
                                         <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="MainController?action=Logout"><i class="bx bx-log-out-circle"></i>Thoát</a>
+                                        <a class="dropdown-item" href="@Url.Action("Logout", "Auth")">Logout</a>
                                     </div>
+                                    }
                                 </div>  
-                            </div>  
+                            </div>
                         </div>   
                     </div>
                 </div>
             </div>
         </div>
-        <div class="main-content">
-            <div class="main spacing">
-                <div class="container-fluid">
-                    <section>
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="typeaccount"> 
-                                            <form action="UserManager">
-                                                <label for="seleaccount">Role:</label>
-                                                <select id="seleaccount" name="role">
-                                                    <option value="US">Người thuê</option>
-                                                    <option value="OW">Chủ trọ</option>
-                                                    <option value="AD">Admin</option>
-                                                </select>
-                                                <button class="btn btn-info m-b-xs shadow btn-xs" type="submit" name="action" value="filter"><i
-                                                        class='bx bx-search'></i>
-                                                </button>
-                                            </form>
-                                        </div>
-                                        <div class="table-responsive">
-                                            <div id="myTable_wrapper" class="dataTables_wrapper no-footer">
-                                                <table id="myTable" class="table table-hover table-bordered dataTable no-footer" aria-describedby="myTable_info">     
-                                                    <thead>
-                                                        <tr>
-                                                            <th class="sorting sorting_asc" tabindex="0" aria-controls="myTable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Mã Đặt Phòng: activate to sort column descending" style="width: 80.15px;">ID</th>
+    <!-- End header -->
 
-                                                            <th class="sorting" tabindex="0" aria-controls="myTable" rowspan="1" colspan="1" aria-label="Mã Motel: activate to sort column ascending" style="width: 100px;">Hình ảnh</th>
-                                                            <th class="sorting" tabindex="0" aria-controls="myTable" rowspan="1" colspan="1" aria-label="Mã Phòng: activate to sort column ascending" style="width: 100.3875px;">Họ & Tên</th>
-                                                            <th class="sorting" tabindex="0" aria-controls="myTable" rowspan="1" colspan="1" aria-label="Trạng Thái: activate to sort column ascending" >SDT </th>
-                                                            <th class="sorting" tabindex="0" aria-controls="myTable" rowspan="1" colspan="1" aria-label="Số Dịch Vụ: activate to sort column ascending"style="width: 50.3875px;">Gmail</th>
-                                                            <th class="sorting" tabindex="0" aria-controls="myTable" rowspan="1" colspan="1" aria-label="PT Thanh Toán: activate to sort column ascending" style="width: 450.025px;">Địa chỉ</th>
-                                                            <th class="sorting" tabindex="0" aria-controls="myTable" rowspan="1" colspan="1" aria-label="Ngày Nhận Phòng: activate to sort column ascending"style="width: 150.3875px;">Role</th>
-                                                            <th class="sorting" tabindex="0" aria-controls="myTable" rowspan="1" colspan="1" aria-label="Ngày Nhận Phòng: activate to sort column ascending">Trạng thái</th>
-                                                            <th class="sorting" tabindex="0" aria-controls="myTable" rowspan="1" colspan="1" aria-label="Tổng Tiền: activate to sort column ascending" style="width: 90px;">Action</th>
-                                                        </tr>
-                                                    </thead>
-
-                                                    <c:if test="${requestScope.LIST_ACC != null}">
-                                                        <c:if test="${not empty requestScope.LIST_ACC}">
-                                                            <tbody>
-                                                                <c:forEach var="o" varStatus="counter" items="${requestScope.LIST_ACC}">
-                                                                    <tr class="clickable-row odd" data-href="UserManager?action=detail&role=${o.role}&userId=${o.userId}" data-bs-toggle="tooltip" data-bs-placement="right" title="Nhấn để xem chi tiết">
-                                                                        <td class="sorting_1">${o.userId}</td>
-                                                                        <td><img src="${o.image}"></td>
-                                                                        <td>${o.fullName}</td>
-                                                                        <td>${o.phone}</td>
-                                                                        <td>${o.gmail}</td>
-                                                                        <td>${o.address}</td>
-                                                                        <td><span class="role fs-16 font-w500 text-end d-block">
-                                                                                <c:if test="${o.role.equals('US')}">
-                                                                                    Khách
-                                                                                </c:if> 
-                                                                                <c:if test="${o.role.equals('OW')}">
-                                                                                    Chủ thuê
-                                                                                </c:if> 
-                                                                                <c:if test="${o.role.equals('AD')}">
-                                                                                    Admin
-                                                                                </c:if> 
-                                                                            </span></td>
-                                                                        <td><c:if test="${o.status == 0}">
-                                                                                <span class="badge badge-danger">Extended</span>
-                                                                            </c:if> 
-                                                                            <c:if test="${o.status == 1}">
-                                                                                <span class="badge badge-success">Activity</span>
-                                                                            </c:if> </td>
-                                                                        <td>
-                                                                            <div class="d-flex">
-                                                                                <a href="UserManager?action=detail&role=${o.role}&userId=${o.userId}" class="btn btn-info m-b-xs  shadow btn-xs sharp"><i class='bx bxs-user-detail'></i></a>
-
-                                                                                <a href="UserManager?action=delete&role=${o.role}&userId=${o.userId}" class="btn btn-danger shadow btn-xs sharp me-1"><i class='bx bxs-trash'></i></a>
-                                                                            </div>  
-
-                                                                        </td>
-
-                                                                    </tr>
-                                                                </c:forEach>
-                                                            </tbody>
-                                                        </c:if>
-                                                    </c:if>
-                                                </table>
-                                                ${requestScope.ERROR_MESSAGE}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- /# card -->
-                            </div>
-                            <!-- /# column -->
-                        </div>
-                    </section>
+    <!-- Main Content -->
+    <div class="main-content"> 
+        <!-- num of data -->
+        <div class="cardBox">
+            <div class="card room">
+                <div class="inconBx">
+                    <i class='bx bx-home-heart'></i>
+                </div>
+                <div>
+                    <div class="number">1,504</div>
+                    <div class="cardName">Total Events</div>
                 </div>
             </div>
-            <c:if test="${requestScope.MESSAGE != null}">
-                <c:if test="${not empty requestScope.MESSAGE}">
-                    <div class="alert alert-success alert-dismissible fade show" id="notif">
-                        <i class='bx bx-message-alt-check p-1'></i>
-                        <strong class="mr-1">${requestScope.MESSAGE}!</strong>
-
-                        <button type="button" class="close h-100" data-dismiss="alert" aria-label="Close">
-                            <span><i class='bx bx-x'></i></span>
-                        </button>
-                    </div>
-                </c:if>
-            </c:if>
+            <div class="card feedback">
+                <div class="inconBx">
+                    <i class='bx bx-conversation'></i>
+                </div>
+                <div>
+                    <div class="number">1,504</div>
+                    <div class="cardName">Feedback</div>
+                </div>
+            </div>
+            <div class="card turnover">
+                <div class="inconBx">
+                    <i class='bx bx-money'></i>
+                </div>
+                <div>
+                    <div class="number">&#8363;1,512.250</div>
+                    <div class="cardName">Total income</div>
+                </div>
+            </div>
         </div>
-        <!-- jQuery first, then Popper.js, then Bootstrap JS. -->
-        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js"></script>
-        <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
-        <script src="assets/js/owner-script.js"></script>
-    </body>
+        <!-- chart -->
+        <section class="chartBox">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between p-4">
+                            <h4>Weekly Fee</h4>
+                            <a href="#" class="btn-title float-right">Detail</a>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="chart-Dashboard" width="300" height="100"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- order detail list -->
+        <div class="details">       
+            
+            <!-- New Info -->
+            <div class="cardInfo">
+                <div class="card border-0 d-flex">
+                    <div class="card-header">
+                        <h4>News</h4>
+                        <a href="#" class="btn-title">See All</a>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-hover">
+                            <thead >
+                                <tr>
+                                    <th>Full Name</th>
+                                    <th>Fee (&#8363;)</th>
+                                    <th>Events</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Dang Hoang Minh</td>
+                                    <td>600,000</td>
+                                    <td>001</td>
+                                    <td><div class="demise">Processing</div></td>
+                                </tr>
+                                <tr>
+                                    <td>Dao Minh Hoa</td>
+                                    <td>300,000</td>
+                                    <td>002</td>
+                                    <td><div class="outcome">Success</div></td>
+                                </tr>
+                                <tr>
+                                    <td>Ho Tran Khanh Duy</td>
+                                    <td>700,000</td>
+                                    <td>003</td>
+                                    <td><div class="destroy">Cancel</div></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                </div>
+            </div>
+
+            <!-- Rating -->
+            <div class="cardFB">
+                <div class="card border-0 d-flex">
+                    <div class="card-header">
+                        <h4>Feedback</h4>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-hover table-borderless">
+                            <thead >
+                                <tr>
+                                    <th></th>
+                                    <th>Name</th>
+                                    <th>Rating</th> 
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><div class="imgBx"><img src="~/images/avatar2.png" alt=""></div></td>
+                                    <td>Ho Tran Khanh Duy</td>
+                                    <td>
+                                        <i class='bx bx-star'></i>
+                                        <i class='bx bxs-star yellow'></i>
+                                        <i class='bx bxs-star yellow'></i>
+                                        <i class='bx bxs-star yellow'></i>
+                                        <i class='bx bxs-star yellow'></i>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><div class="imgBx"><img src="~/images/avatar2.png" alt=""></div></td>
+                                    <td>Ho Tran Khanh Duy</td>
+                                    <td>
+                                        <i class='bx bx-star'></i>
+                                        <i class='bx bx-star'></i>
+                                        <i class='bx bxs-star yellow'></i>
+                                        <i class='bx bxs-star yellow'></i>
+                                        <i class='bx bxs-star yellow'></i>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><div class="imgBx"><img src="~/images/avatar2.png" alt=""></div></td>
+                                    <td>Ho Tran Khanh Duy</td>
+                                    <td>
+                                        <i class='bx bx-star'></i>
+                                        <i class='bx bxs-star yellow'></i>
+                                        <i class='bx bxs-star yellow'></i>
+                                        <i class='bx bxs-star yellow'></i>
+                                        <i class='bx bxs-star yellow'></i>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><div class="imgBx"><img src="~/images/avatar2.png" alt=""></div></td>
+                                    <td>Ho Tran Khanh Duy</td>
+                                    <td>
+                                        <i class='bx bxs-star yellow'></i>
+                                        <i class='bx bxs-star yellow'></i>
+                                        <i class='bx bxs-star yellow'></i>
+                                        <i class='bx bxs-star yellow'></i>
+                                        <i class='bx bxs-star yellow'></i>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><div class="imgBx"><img src="~/images/avatar2.png" alt=""></div></td>
+                                    <td>Ho Tran Khanh Duy</td>
+                                    <td>
+                                        <i class='bx bx-star'></i>
+                                        <i class='bx bxs-star yellow'></i>
+                                        <i class='bx bxs-star yellow'></i>
+                                        <i class='bx bxs-star yellow'></i>
+                                        <i class='bx bxs-star yellow'></i>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    
+                                    <td>Total</td>
+                                    <td></td>
+                                    <td>4/5<i class='bx bxs-star yellow'></i></td>
+                                    
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                </div> 
+            </div>
+            
+        </div>
+    </div>
+
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS. -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>  
+    <script src="~/js/owner-script.js"></script>
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+</body>
+
 </html>
