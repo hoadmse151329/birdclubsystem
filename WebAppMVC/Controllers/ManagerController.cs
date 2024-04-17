@@ -278,11 +278,11 @@ namespace WebAppMVC.Controllers
             return RedirectToAction("ManagerMeeting");
         }
 
-        [HttpPost("Meeting/Update/Cancel/{id:int}")]
+        [HttpPost("Meeting/Cancel")]
         public async Task<IActionResult> ManagerCancelMeeting(
-            int id)
+            int meetId)
         {
-            ManagerAPI_URL += "Meeting/Update/Cancel/" + id;
+            ManagerAPI_URL += "Meeting/Update/Cancel/" + meetId;
 
             string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
             if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
