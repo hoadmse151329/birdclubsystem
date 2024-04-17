@@ -24,7 +24,7 @@ namespace BAL.Services.Implements
 		public void Create(MemberViewModel entity)
 		{
 			var mem = _mapper.Map<Member>(entity);
-			mem.Status = "Active";
+			mem.Status = 1;
 			mem.Role = "Member";
 			_unitOfWork.MemberRepository.Create(mem);
 			_unitOfWork.Save();

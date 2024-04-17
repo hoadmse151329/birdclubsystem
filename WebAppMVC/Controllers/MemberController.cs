@@ -19,6 +19,7 @@ using BAL.ViewModels.Event;
 
 namespace WebAppMVC.Controllers
 {
+    [Route("Member")]
     public class MemberController : Controller
     {
         private readonly ILogger<MemberController> _logger;
@@ -40,21 +41,21 @@ namespace WebAppMVC.Controllers
             var contentType = new MediaTypeWithQualityHeaderValue("application/json");
             _httpClient.DefaultRequestHeaders.Accept.Add(contentType);
             _httpClient.BaseAddress = new Uri(config.GetSection("DefaultApiUrl:ConnectionString").Value);
-            MemberInfoAPI_URL = "/api/Member";
+            MemberInfoAPI_URL = "/api/Member/";
         }
 
         [HttpGet]
         //[Authorize(Roles = "Member")]
         public async Task<IActionResult> MemberProfile()
         {
-            MemberInfoAPI_URL += "/Profile";
+            MemberInfoAPI_URL += "Profile";
 
             string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
             if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
 
             string? role = HttpContext.Session.GetString("ROLE_NAME");
             if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Member")) return View("Index");
+            else if (!role.Equals("Member")) return RedirectToAction("Index", "Home");
 
             string? usrId = HttpContext.Session.GetString("USER_ID");
             if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
@@ -93,14 +94,14 @@ namespace WebAppMVC.Controllers
         //[Authorize(Roles = "Member")]
         public async Task<IActionResult> MemberUpdate(MemberViewModel memberDetail)
         {
-            MemberInfoAPI_URL += "/Update";
+            MemberInfoAPI_URL += "Update";
 
             string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
             if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
 
             string? role = HttpContext.Session.GetString("ROLE_NAME");
             if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Member")) return View("Index");
+            else if (!role.Equals("Member")) return RedirectToAction("Index", "Home");
 
             string? usrId = HttpContext.Session.GetString("USER_ID");
             if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
@@ -146,7 +147,7 @@ namespace WebAppMVC.Controllers
 
             string? role = HttpContext.Session.GetString("ROLE_NAME");
             if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Member")) return View("Index");
+            else if (!role.Equals("Member")) return RedirectToAction("Index", "Home");
 
             string? usrId = HttpContext.Session.GetString("USER_ID");
             if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
@@ -212,7 +213,7 @@ namespace WebAppMVC.Controllers
 
             string? role = HttpContext.Session.GetString("ROLE_NAME");
             if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Member")) return View("Index");
+            else if (!role.Equals("Member")) return RedirectToAction("Index", "Home");
 
             string? usrId = HttpContext.Session.GetString("USER_ID");
             if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
@@ -223,7 +224,7 @@ namespace WebAppMVC.Controllers
             TempData["ROLE_NAME"] = role;
             TempData["USER_NAME"] = usrname;
 
-            string MemberAvatarAPI_URL = "api/User/Upload";
+            string MemberAvatarAPI_URL = "/api/User/Upload";
 
             if (photo != null && photo.Length > 0)
             {
@@ -275,7 +276,7 @@ namespace WebAppMVC.Controllers
 
             string? role = HttpContext.Session.GetString("ROLE_NAME");
             if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Member")) return View("Index");
+            else if (!role.Equals("Member")) return RedirectToAction("Index", "Home");
 
             string? usrId = HttpContext.Session.GetString("USER_ID");
             if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");

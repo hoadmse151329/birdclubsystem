@@ -10,6 +10,7 @@ using WebAppMVC.Models.Location;
 using WebAppMVC.Models.Meeting;
 using WebAppMVC.Models.Contest;
 using System.Text.Encodings.Web;
+using WebAppMVC.Models.Member;
 // thêm crud của meeting, fieldtrip, contest.
 namespace WebAppMVC.Controllers
 {
@@ -46,7 +47,7 @@ namespace WebAppMVC.Controllers
 
             string? role = HttpContext.Session.GetString("ROLE_NAME");
             if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Manager")) return View("Index");
+            else if (!role.Equals("Manager")) return RedirectToAction("Index","Home");
 
             string? usrId = HttpContext.Session.GetString("USER_ID");
             if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
@@ -78,7 +79,7 @@ namespace WebAppMVC.Controllers
 
             string? role = HttpContext.Session.GetString("ROLE_NAME");
             if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Manager")) return View("Index");
+            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
 
             string? usrId = HttpContext.Session.GetString("USER_ID");
             if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
@@ -140,7 +141,7 @@ namespace WebAppMVC.Controllers
 
             string? role = HttpContext.Session.GetString("ROLE_NAME");
             if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Manager")) return View("Index");
+            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
 
             string? usrId = HttpContext.Session.GetString("USER_ID");
             if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
@@ -196,7 +197,7 @@ namespace WebAppMVC.Controllers
 
             string? role = HttpContext.Session.GetString("ROLE_NAME");
             if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Manager")) return View("Index");
+            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
 
             string? usrId = HttpContext.Session.GetString("USER_ID");
             if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
@@ -242,7 +243,7 @@ namespace WebAppMVC.Controllers
 
             string? role = HttpContext.Session.GetString("ROLE_NAME");
             if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Manager")) return View("Index");
+            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
 
             string? usrId = HttpContext.Session.GetString("USER_ID");
             if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
@@ -289,7 +290,7 @@ namespace WebAppMVC.Controllers
 
             string? role = HttpContext.Session.GetString("ROLE_NAME");
             if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Manager")) return View("Index");
+            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
 
             string? usrId = HttpContext.Session.GetString("USER_ID");
             if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
@@ -342,7 +343,7 @@ namespace WebAppMVC.Controllers
 
             string? role = HttpContext.Session.GetString("ROLE_NAME");
             if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Manager")) return View("Index");
+            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
 
             string? usrId = HttpContext.Session.GetString("USER_ID");
             if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
@@ -400,7 +401,7 @@ namespace WebAppMVC.Controllers
 
             string? role = HttpContext.Session.GetString("ROLE_NAME");
             if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Manager")) return View("Index");
+            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
 
             string? usrId = HttpContext.Session.GetString("USER_ID");
             if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
@@ -456,7 +457,7 @@ namespace WebAppMVC.Controllers
 
             string? role = HttpContext.Session.GetString("ROLE_NAME");
             if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Manager")) return View("Index");
+            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
 
             string? usrId = HttpContext.Session.GetString("USER_ID");
             if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
@@ -502,7 +503,7 @@ namespace WebAppMVC.Controllers
 
             string? role = HttpContext.Session.GetString("ROLE_NAME");
             if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Manager")) return View("Index");
+            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
 
             string? usrId = HttpContext.Session.GetString("USER_ID");
             if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
@@ -549,7 +550,7 @@ namespace WebAppMVC.Controllers
 
             string? role = HttpContext.Session.GetString("ROLE_NAME");
             if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Manager")) return View("Index");
+            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
 
             string? usrId = HttpContext.Session.GetString("USER_ID");
             if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
@@ -602,7 +603,7 @@ namespace WebAppMVC.Controllers
 
             string? role = HttpContext.Session.GetString("ROLE_NAME");
             if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Manager")) return View("Index");
+            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
 
             string? usrId = HttpContext.Session.GetString("USER_ID");
             if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
@@ -660,7 +661,7 @@ namespace WebAppMVC.Controllers
 
             string? role = HttpContext.Session.GetString("ROLE_NAME");
             if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Manager")) return View("Index");
+            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
 
             string? usrId = HttpContext.Session.GetString("USER_ID");
             if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
@@ -716,7 +717,7 @@ namespace WebAppMVC.Controllers
 
             string? role = HttpContext.Session.GetString("ROLE_NAME");
             if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Manager")) return View("Index");
+            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
 
             string? usrId = HttpContext.Session.GetString("USER_ID");
             if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
@@ -762,7 +763,7 @@ namespace WebAppMVC.Controllers
 
             string? role = HttpContext.Session.GetString("ROLE_NAME");
             if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Manager")) return View("Index");
+            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
 
             string? usrId = HttpContext.Session.GetString("USER_ID");
             if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
@@ -809,7 +810,7 @@ namespace WebAppMVC.Controllers
 
             string? role = HttpContext.Session.GetString("ROLE_NAME");
             if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Manager")) return View("Index");
+            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
 
             string? usrId = HttpContext.Session.GetString("USER_ID");
             if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
@@ -844,9 +845,49 @@ namespace WebAppMVC.Controllers
             return RedirectToAction("ManagerContest");
         }
         [HttpGet("Profile")]
-        public IActionResult ManagerProfile()
+        public async Task<IActionResult> ManagerProfile()
         {
-            return View();
+            ManagerAPI_URL += "Manager/Profile";
+
+            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
+            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+
+            string? role = HttpContext.Session.GetString("ROLE_NAME");
+            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
+            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
+
+            string? usrId = HttpContext.Session.GetString("USER_ID");
+            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
+
+            string? usrname = HttpContext.Session.GetString("USER_NAME");
+            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
+
+            TempData["ROLE_NAME"] = role;
+            TempData["USER_NAME"] = usrname;
+
+            var memberDetails = await methcall.CallMethodReturnObject<GetMemberProfileResponse>(
+                _httpClient: _httpClient,
+                options: options,
+                methodName: "POST",
+                url: ManagerAPI_URL,
+                _logger: _logger,
+                inputType: usrId,
+                accessToken: accToken);
+            if (memberDetails == null)
+            {
+                ViewBag.error =
+                    "Error while processing your request! (Getting Manager Profile!).\n Manager Details Not Found!";
+                return RedirectToAction("Index");
+            }
+            else
+            if (!memberDetails.Status)
+            {
+                ViewBag.error =
+                    "Error while processing your request! (Getting Manager Profile!).\n Manager Details Not Found!"
+                + memberDetails.ErrorMessage;
+                return RedirectToAction("Index");
+            }
+            return View(memberDetails.Data);
         }
         public IActionResult ManagerFeedBack()
         {

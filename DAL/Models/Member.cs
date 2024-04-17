@@ -20,7 +20,7 @@ namespace DAL.Models
         public string? Address { get; set; }
         public string? Phone { get; set; }
         public string? Description { get; set; }
-        public string? Status { get; set; }
+        public int Status { get; set; }
         public int? ClubId { get; set; }
 
         public virtual ICollection<Bird> Birds { get; set; }

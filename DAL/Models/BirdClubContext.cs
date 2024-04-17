@@ -294,8 +294,6 @@ namespace DAL.Models
                 entity.Property(e => e.BirdId).HasColumnName("birdId");
 
                 entity.Property(e => e.CheckInStatus)
-                    .HasMaxLength(50)
-                    .IsUnicode(false)
                     .HasColumnName("checkInStatus");
 
                 entity.Property(e => e.ContestId).HasColumnName("contestId");
@@ -494,7 +492,6 @@ namespace DAL.Models
                     .HasColumnName("participantNo");
 
                 entity.Property(e => e.CheckInStatus)
-                    .HasMaxLength(50)
                     .HasColumnName("checkInStatus");
 
                 entity.Property(e => e.TripId).HasColumnName("tripId");
@@ -743,7 +740,6 @@ namespace DAL.Models
                     .HasColumnName("participantNo");
 
                 entity.Property(e => e.CheckInStatus)
-                    .HasMaxLength(50)
                     .HasColumnName("checkInStatus");
 
                 entity.HasOne(d => d.Meeting)
@@ -792,7 +788,6 @@ namespace DAL.Models
                     .HasColumnName("role");
 
                 entity.Property(e => e.Status)
-                    .HasMaxLength(20)
                     .HasColumnName("status");
 
                 entity.Property(e => e.UserName)

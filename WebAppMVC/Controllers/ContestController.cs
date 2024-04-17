@@ -195,7 +195,7 @@ namespace WebAppMVC.Controllers
 
             string? role = HttpContext.Session.GetString("ROLE_NAME");
             if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Member")) return View("Index");
+            else if (!role.Equals("Member")) return RedirectToAction("Index", "Home");
 
             string? usrId = HttpContext.Session.GetString("USER_ID");
             if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
@@ -244,7 +244,7 @@ namespace WebAppMVC.Controllers
 
             string? role = HttpContext.Session.GetString("ROLE_NAME");
             if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Member")) return View("Index");
+            else if (!role.Equals("Member")) return RedirectToAction("Index", "Home");
 
             string? usrId = HttpContext.Session.GetString("USER_ID");
             if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");

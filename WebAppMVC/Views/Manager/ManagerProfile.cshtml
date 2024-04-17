@@ -1,4 +1,7 @@
-﻿@{
+﻿@model BAL.ViewModels.MemberViewModel
+@{
+    IFormFile? formFile = null;
+    BAL.ViewModels.Member.UpdateMemberPassword memberPassword = new();
     Layout = null;
     ViewData["Title"] = "Manager Profile Page";
 }
@@ -151,7 +154,7 @@
                                             <i class='bx bxs-camera-plus'></i>
                                         </div>
                                     </div>
-                                    <div class="profile-name">Lê Minh Quân</div>
+                                    <div class="profile-name">@Model.FullName</div>
                                 </div>
                                 <div class="col-lg-8">                                
                                     <div class="profile-content">
