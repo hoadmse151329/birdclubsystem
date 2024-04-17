@@ -124,10 +124,6 @@ namespace WebAppMVC.Controllers
             testmodel.Meetings = listMeetResponse.Data;
             return View(testmodel);
         }
-        public IActionResult ManagerNotification()
-        {
-            return View();
-        }
         [HttpGet("Meeting/{id:int}")]
         /*[Route("Manager/Meeting/{id:int}")]*/
         public async Task<IActionResult> ManagerMeetingDetail(int id)
@@ -889,15 +885,56 @@ namespace WebAppMVC.Controllers
             }
             return View(memberDetails.Data);
         }
+        [HttpPost("Profile")]
+        //[Authorize(Roles = "Member")]
+        public async Task<IActionResult> ManagerProfileUpdate(MemberViewModel memberDetail)
+        {
+            ManagerAPI_URL += "Manager/Profile/Update";
+
+            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
+            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+
+            string? role = HttpContext.Session.GetString("ROLE_NAME");
+            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
+            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
+
+            string? usrId = HttpContext.Session.GetString("USER_ID");
+            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
+
+            string? usrname = HttpContext.Session.GetString("USER_NAME");
+            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
+
+            TempData["ROLE_NAME"] = role;
+            TempData["USER_NAME"] = usrname;
+
+            memberDetail.MemberId = usrId;
+            memberDetail.Status = 1;
+
+            var memberDetailupdate = await methcall.CallMethodReturnObject<GetMemberProfileResponse>(
+                _httpClient: _httpClient,
+                options: options,
+                methodName: "PUT",
+                url: ManagerAPI_URL,
+                _logger: _logger,
+                inputType: memberDetail,
+                accessToken: accToken);
+            if (memberDetailupdate == null)
+            {
+                ViewBag.error =
+                    "Error while processing your request! (Getting Member Profile!).\n Member Details Not Found!";
+                return RedirectToAction("ManagerProfile");
+            }
+            else
+            if (!memberDetailupdate.Status)
+            {
+                ViewBag.error =
+                    "Error while processing your request! (Getting Member Profile!).\n Member Details Not Found!"
+                + memberDetailupdate.ErrorMessage;
+                return RedirectToAction("ManagerProfile");
+            }
+            return RedirectToAction("ManagerProfile");
+        }
         public IActionResult ManagerFeedBack()
-        {
-            return View();
-        }
-        public IActionResult ManagerHistoryEventsDetail()
-        {
-            return View();
-        }
-        public IActionResult ManagerHistoryEvents()
         {
             return View();
         }

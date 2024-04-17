@@ -64,18 +64,6 @@
                             </li>
                         </ul>
                     </li>
-                    <li data-toggle="tooltip" data-placement="right" title="History Events">
-                        <a href="@Url.Action("ManagerHistoryEvents", "Manager")">
-                            <span><i class='bx bx-history'></i></span>
-                            <span class="title">HistoryEvents</span>
-                        </a>
-                    </li>
-                    <li data-toggle="tooltip" data-placement="right" title="Manage Notification">
-                        <a href="@Url.Action("ManagerNotification", "Manager")">
-                            <span><i class='bx bx-bell'></i></span>
-                            <span class="title">Notification</span>
-                        </a>
-                    </li>
                     <li data-toggle="tooltip" data-placement="right" title="Manage Feedback">
                         <a href="@Url.Action("ManagerFeedback", "Manager")">
                             <span><i class="bx bx-detail"></i></span>
@@ -116,7 +104,6 @@
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                         <a class="dropdown-item" href="@Url.Action("ManagerProfile", "Manager")"><i class='bx bx-user'></i>Manager Profile</a> <!--thêm theo user id và role-->
-                                        <a class="dropdown-item" href="@Url.Action("ManagerNotification", "Manager")"><i class='bx bx-bell'></i>Notification</a>
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="@Url.Action("Logout", "Auth")">Logout</a>
                                     </div>

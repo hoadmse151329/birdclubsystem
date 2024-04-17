@@ -67,18 +67,6 @@
                             </li>
                         </ul>
                     </li>
-                    <li data-toggle="tooltip"data-placement="right" title="History Events">
-                        <a href="@Url.Action("ManagerHistoryEvents", "Manager")">
-                            <span><i class='bx bx-history'></i></span>
-                            <span class="title">HistoryEvents</span>
-                        </a>
-                    </li>
-                    <li data-toggle="tooltip"data-placement="right" title="Manage Notification">
-                        <a href="@Url.Action("ManagerNotification", "Manager")">
-                            <span><i class='bx bx-bell'></i></span>
-                            <span class="title">Notification</span>
-                        </a>
-                    </li>
                     <li data-toggle="tooltip"data-placement="right" title="Manage Feedback">
                         <a href="@Url.Action("ManagerFeedback", "Manager")">
                             <span><i class="bx bx-detail"></i></span>
@@ -120,7 +108,6 @@
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                         <a class="dropdown-item" href="@Url.Action("ManagerProfile", "Manager")"><i class='bx bx-user'></i>Manager Profile</a> <!--thêm theo user id và role-->
-                                        <a class="dropdown-item" href="@Url.Action("ManagerNotification", "Manager")"><i class='bx bx-bell'></i>Notification</a>
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="@Url.Action("Logout", "Auth")">Logout</a>
                                     </div>
@@ -179,14 +166,11 @@
                                             </div>
                                             <div class="col-sm-6 d-flex justify-content-end col col-0 header--col-search col-t-2-5 col-w-3">
                                                 <form asp-action="ManagerMeeting" asp-controller="Manager" method="get" asp-route-search="@search">
-                   
-                                                            <input asp-for="@search" class="form-control" type="text" name="search" placeholder="Search..." value="@search">
-                                                            <button class="bx bx-search-alt" type="submit">
-                                                                <i class="sbi sbi--search mirrored header__search-submit-icon"></i>
-                                                            </button>
-                                                            @*<i class='bx bx-search-alt'></i>*@
-                                                        
-                                                    
+                                                    <input asp-for="@search" class="form-control" type="text" name="search" placeholder="Search..." value="@search">
+                                                    <button class="bx bx-search-alt" type="submit">
+                                                        <i class="sbi sbi--search mirrored header__search-submit-icon"></i>
+                                                    </button>
+                                                    @*<i class='bx bx-search-alt'></i>*@
                                                 </form>
                                             </div>
                                         </div>

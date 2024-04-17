@@ -44,7 +44,7 @@ namespace WebAppMVC.Controllers
             MemberInfoAPI_URL = "/api/Member/";
         }
 
-        [HttpGet]
+        [HttpGet("Profile")]
         //[Authorize(Roles = "Member")]
         public async Task<IActionResult> MemberProfile()
         {
@@ -74,6 +74,7 @@ namespace WebAppMVC.Controllers
                 _logger: _logger,
                 inputType: usrId,
                 accessToken: accToken);
+
             if (memberDetails == null)
             {
                 ViewBag.error =
@@ -90,7 +91,7 @@ namespace WebAppMVC.Controllers
             }
             return View(memberDetails.Data);
         }
-        [HttpPost]
+        [HttpPost("Update")]
         //[Authorize(Roles = "Member")]
         public async Task<IActionResult> MemberUpdate(MemberViewModel memberDetail)
         {
@@ -113,7 +114,7 @@ namespace WebAppMVC.Controllers
             TempData["USER_NAME"] = usrname;
 
             memberDetail.MemberId = usrId;
-            memberDetail.Status = "Active";
+            memberDetail.Status = 1;
 
             var memberDetailupdate = await methcall.CallMethodReturnObject<GetMemberProfileResponse>(
                 _httpClient: _httpClient,
@@ -139,7 +140,7 @@ namespace WebAppMVC.Controllers
             }
             return RedirectToAction("MemberProfile");
         }
-        [HttpGet]
+        [HttpGet("HistoryEvent")]
         public async Task<IActionResult> MemberHistoryEvent()
         {
             string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
@@ -265,7 +266,7 @@ namespace WebAppMVC.Controllers
             }
             return RedirectToAction("Error");
         }
-        [HttpPost]
+        [HttpPost("ChangePassword")]
         //[Authorize(Roles = "Member")]
         public async Task<IActionResult> ChangePassword(UpdateMemberPassword memberPassword)
         {

@@ -11,7 +11,7 @@ namespace BAL.ViewModels
     {
         public string? MemberId { get; set; }
 
-        [RegularExpression(@"^[a-zA-Z0-9]+$", ErrorMessage = "Username is invalid")]
+        [RegularExpression(@"^[a-zA-Z0-9_]+$", ErrorMessage = "Username is invalid")]
         public string? UserName { get; set; }
         [RegularExpression(@"^[a-zA-Z\s]+$", ErrorMessage = "Fullname is invalid")]
         public string? FullName { get; set; }
@@ -28,6 +28,6 @@ namespace BAL.ViewModels
         public string? Phone { get; set; }
         public string? ImagePath { get; set; }
         public string? Description { get; set; }
-        public string? Status { get; set; }
+        public int Status { get; set; }
     }
 }

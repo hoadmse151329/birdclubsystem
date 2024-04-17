@@ -9,6 +9,7 @@ using DAL.Repositories.Implements;
 using BAL.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using BAL.Services.Interfaces;
+using System.ComponentModel.DataAnnotations;
 
 namespace WebAPI.Controllers
 {
@@ -87,6 +88,58 @@ namespace WebAPI.Controllers
                     });
                 }
 
+                return Ok(new
+                {
+                    Status = true,
+                    Data = result
+                });
+            }
+            catch (Exception ex)
+            {
+                if (ex.InnerException != null)
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = ex.Message,
+                        InnerExceptionMessage = ex.InnerException.Message
+                    });
+                }
+                // Log the exception if needed
+                return BadRequest(new
+                {
+                    Status = false,
+                    ErrorMessage = ex.Message
+                });
+            }
+        }
+        /// <summary>
+        /// Get member informations by Member ID
+        /// </summary>
+        /// <returns>Return result of action and error message</returns>
+        // GET api/<UserController>/5
+        [HttpPut("Profile/Update")]
+        [Authorize(Roles = "Manager,Admin")]
+        [ProducesResponseType(typeof(MemberViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> UpdateManagerDetails(
+            [Required][FromBody] MemberViewModel member
+            )
+        {
+            try
+            {
+                var result = await _memberService.GetById(member.MemberId);
+                if (result == null)
+                {
+                    return NotFound(new
+                    {
+                        Status = false,
+                        ErrorMessage = "Manager Details Not Found!"
+                    });
+                }
+                _memberService.Update(member);
+                result = await _memberService.GetById(member.MemberId);
                 return Ok(new
                 {
                     Status = true,

@@ -4,6 +4,19 @@
     BAL.ViewModels.Member.UpdateMemberPassword memberPassword = new();
     Layout = null;
     ViewData["Title"] = "Manager Profile Page";
+    List<SelectListItem> genders = new()
+    {
+        new SelectListItem {Text = "Male",Value = "Male"},
+        new SelectListItem {Text = "Female",Value = "Female"},
+        new SelectListItem {Text = "Other",Value = "Other"}
+    };
+    foreach(var gender in genders)
+    {
+        if (Model.Gender.Equals(gender.Text))
+        {
+            gender.Selected = true;
+        }
+    }
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -65,18 +78,6 @@
                             </li>
                         </ul>
                     </li>
-                    <li data-toggle="tooltip"data-placement="right" title="History Events">
-                        <a href="@Url.Action("ManagerHistoryEvents", "Manager")">
-                            <span><i class='bx bx-history'></i></span>
-                            <span class="title">HistoryEvents</span>
-                        </a>
-                    </li>
-                    <li data-toggle="tooltip"data-placement="right" title="Manage Notification">
-                        <a href="@Url.Action("ManagerNotification", "Manager")">
-                            <span><i class='bx bx-bell'></i></span>
-                            <span class="title">Notification</span>
-                        </a>
-                    </li>
                     <li data-toggle="tooltip"data-placement="right" title="Manage Feedback">
                         <a href="@Url.Action("ManagerFeedback", "Manager")">
                             <span><i class="bx bx-detail"></i></span>
@@ -117,7 +118,6 @@
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                         <a class="dropdown-item" href="@Url.Action("ManagerProfile", "Manager")"><i class='bx bx-user'></i>Manager Profile</a> <!--thêm theo user id và role-->
-                                        <a class="dropdown-item" href="@Url.Action("ManagerNotification", "Manager")"><i class='bx bx-bell'></i>Notification</a>
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="@Url.Action("Logout", "Auth")">Logout</a>
                                     </div>
@@ -138,7 +138,7 @@
                     <h5 class="mb-0">
                         <button class="btn btn-link" data-toggle="collapse" data-target="#profile"
                             aria-expanded="true" aria-controls="profile">
-                            Hồ sơ của tôi <i class='bx bx-chevron-right'></i>
+                            My Profile <i class='bx bx-chevron-right'></i>
                         </button>
                     </h5>
                 </div>
@@ -150,7 +150,7 @@
                                     <div class="profile-pic">
                                         <img src="assets/img/avatar.jpg" id="output" width="200"/>
                                         <div class="upload">
-                                            <button class="btn btn-warning" data-toggle="modal" data-target="#uploadImg">Chi Tiết</button>                                                   
+                                            <button class="btn btn-warning" data-toggle="modal" data-target="#uploadImg">Details</button>                                                   
                                             <i class='bx bxs-camera-plus'></i>
                                         </div>
                                     </div>
@@ -160,41 +160,65 @@
                                     <div class="profile-content">
                                         <div class="contact-infor">
                                             <div class="info-title">
-                                                <h4>Thông tin cá nhân</h4>
+                                                <h4>Personal Information</h4>
                                             </div>
                                             <div class="info-content">
-                                                <form action="#" class="form-check">
+                                                <form asp-action="ManagerProfileUpdate" asp-controller="Manager" class="form-check">
+                                                    <div class="row username-content">
+                                                        <label class="contact-title col-md-5 col-sm-4 mt-3">Username: </label>
+
+                                                        <input asp-for="UserName" id="userName" type="text" name="username"
+                                                               class="form-control col-md-5 col-sm-8 mt-2" readonly
+                                                               value="@Model.UserName">
+                                                        <span asp-validation-for="UserName" id="error_message"
+                                                              class="error-message col-md-2 mt-3"></span>
+
+                                                    </div>
+                                                    <div class="row fullname-content">
+                                                        <label class="contact-title col-md-5 col-sm-4 mt-3">Full Name: </label>
+
+                                                        <input asp-for="FullName" id="fullName" type="text" name="fullname"
+                                                               class="form-control col-md-5 col-sm-8 mt-2" readonly
+                                                               value="@Model.FullName">
+                                                        <span asp-validation-for="FullName" id="error_message"
+                                                              class="error-message col-md-2 mt-3"></span>
+
+                                                    </div>
                                                     <div class="row phone-content">
-                                                        <label class="contact-title col-md-5 col-sm-4 mt-3">Số điện thoại:</label>
-                                                        <input type="tel" name="telphone" class="form-control col-md-5 col-sm-8 mt-2">
-                                                        <span class="error-message col-md-2 mt-3">...</span>
+                                                        <label class="contact-title col-md-5 col-sm-4 mt-3">Phone Number: </label>
+
+                                                        <input asp-for="Phone" id="phone" type="tel" name="phone" value="@Model.Phone"
+                                                               class="form-control col-md-5 col-sm-8 mt-2">
+                                                        <span asp-validation-for="Phone" id="error_message"
+                                                              class="error-message col-md-2 mt-3"></span>
+
                                                     </div>
                                                     <div class="row address-content">
-                                                        <label class="contact-title col-md-5 col-sm-4 mt-3">Địa chỉ nhà:</label>
-                                                        <input type="text" name="address" class="form-control col-md-5 col-sm-8 mt-2">
-                                                        <span class="error-message col-md-2 mt-3">...</span>
+                                                        <label class="contact-title col-md-5 col-sm-4 mt-3">Address: </label>
+
+                                                        <input asp-for="Address" type="text" name="address" value="@Model.Address"
+                                                               class="form-control col-md-5 col-sm-8 mt-2">
+                                                        <span asp-validation-for="Address" id="error_message"
+                                                              class="error-message col-md-2 mt-3"></span>
+
                                                     </div>
                                                     <div class="row email-content">
-                                                        <label class="contact-title col-md-5 col-sm-4 mt-3">Email:</label>
-                                                        <input type="email" name="email" class="form-control col-md-5 col-sm-8 mt-2">
-                                                        <span class="error-message col-md-2 mt-3">...</span>
-                                                    </div>
-                                                    <div class="row birthday-content">
-                                                        <label class="contact-title col-md-5 col-sm-4 mt-3">Ngày/Tháng/Năm:</label>
-                                                        <input type="date" name="date" class="form-control col-md-5 col-sm-8 mt-2">
-                                                        <span class="error-message col-md-2 mt-3">...</span>
+                                                        <label class="contact-title col-md-5 col-sm-4 mt-3">Email: </label>
+
+                                                        <input asp-for="Email" id="email" type="email" name="email" value="@Model.Email"
+                                                               class="form-control col-md-5 col-sm-8 mt-2">
+                                                        <span asp-validation-for="Email" id="error_message"
+                                                              class="error-message col-md-2 mt-3"></span>
+
                                                     </div>
                                                     <div class="row gender-content">
-                                                        <label class="contact-title col-md-5 col-sm-4 mt-3">Giới tính:</label>
-                                                        <select name="gender" class="form-control col-md-5 col-sm-8 mt-2">
-                                                            <option ></option>
-                                                            <option value="1">Nam</option>
-                                                            <option value="1">Nữ</option>
-                                                            <option value="1">Khác</option>
+                                                        <label class="contact-title col-md-5 col-sm-4 mt-3">Gender: </label>
+                                                        <select class="form-control col-md-5 col-sm-8 mt-2" asp-for="@Model.Gender" asp-items="@genders" class="custom-select" name="gender" id="road">
                                                         </select>
                                                     </div>
+
                                                     <div class="row pt-3 d-flex">
-                                                        <button type="submit" class="offset-3 btn btn-success">Xác nhận</button>
+                                                        <button type="submit" class="offset-3 btn btn-success">Confirm Changes</button>
                                                     </div>
                                                 </form>     
                                             </div>  
@@ -213,7 +237,7 @@
                     <h5 class="mb-0">
                         <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo"
                             aria-expanded="false" aria-controls="collapseTwo">
-                            Thay đổi mật khẩu <i class='bx bx-chevron-right'></i>
+                            Change Password <i class='bx bx-chevron-right'></i>
                         </button>
                     </h5>
                 </div>
@@ -222,20 +246,20 @@
                         <div class="card-group d-block">
                             <form action="#" method="post">
                                 <div class="row form-group">
-                                    <label class="offset-md-3 col-md-2 col-sm-3 col-form-label">Mật khẩu cũ:</label> 
+                                    <label class="offset-md-3 col-md-2 col-sm-3 col-form-label">Old Password:</label> 
                                     <input class="col-md-3 col-sm-5 form-control" type="password" name="oldpassword" required>
                                     <span class="error-message col-sm-3 mt-2">Mật khẩu sai!</span>
                                 </div>
                                 <div class="row form-group">
-                                    <label class="offset-md-3 col-md-2 col-sm-3 col-form-label">Mật khẩu mới:</label>
+                                    <label class="offset-md-3 col-md-2 col-sm-3 col-form-label">New Password:</label>
                                     <input class="col-md-3 col-sm-5 form-control" type="password" name="newpassword" id="password" required>
                                 </div>
                                 <div class="row form-group">
-                                    <label class="offset-md-3 col-md-2 col-sm-3 col-form-label">Xác nhận:</label>
+                                    <label class="offset-md-3 col-md-2 col-sm-3 col-form-label">Confirm NewPassword:</label>
                                     <input class="col-md-3 col-sm-5 form-control" type="password" name="confirm" id="confirm" required>
                                 </div>
                                 <div class="row form-group justify-content-center">
-                                    <button type="submit" class="btn btn-success">Thay đổi</button>
+                                    <button type="submit" class="btn btn-success">Confirm Changes</button>
                                 </div>
                             </form>
                         </div>
