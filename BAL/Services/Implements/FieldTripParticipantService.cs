@@ -51,7 +51,7 @@ namespace BAL.Services.Implements
 
         public async Task<int> GetParticipationNo(string memId, int tripId)
         {
-            return await _unitOfWork.FieldTripParticipantRepository.GetCountFieldTripParticipantsByTripId(tripId);
+            return await _unitOfWork.FieldTripParticipantRepository.GetParticipationNoFieldTripParticipantById(tripId, memId);
         }
 
         public async Task<bool> Delete(string memId, int tripId)

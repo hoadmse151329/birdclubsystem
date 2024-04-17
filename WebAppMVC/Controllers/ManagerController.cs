@@ -41,6 +41,21 @@ namespace WebAppMVC.Controllers
         [HttpGet("Index")]
         public IActionResult ManagerIndex()
         {
+            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
+            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+
+            string? role = HttpContext.Session.GetString("ROLE_NAME");
+            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
+            else if (!role.Equals("Manager")) return View("Index");
+
+            string? usrId = HttpContext.Session.GetString("USER_ID");
+            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
+
+            string? usrname = HttpContext.Session.GetString("USER_NAME");
+            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
+
+            TempData["ROLE_NAME"] = role;
+            TempData["USER_NAME"] = usrname;
             return View();
         }
         [HttpGet("Meeting")]
@@ -48,6 +63,7 @@ namespace WebAppMVC.Controllers
         {
             _logger.LogInformation(search);
             string LocationAPI_URL_All = ManagerAPI_URL + "Location/All";
+
             if (search != null || !string.IsNullOrEmpty(search))
             {
                 search = search.Trim();
@@ -103,8 +119,8 @@ namespace WebAppMVC.Controllers
                     + listMeetResponse.ErrorMessage + "\n" + listLocationResponse.ErrorMessage;
                 return View("ManagerIndex");
             }
-            testmodel.Meetings = listMeetResponse.Data;
             testmodel.Locations = listLocationResponse.Data;
+            testmodel.Meetings = listMeetResponse.Data;
             return View(testmodel);
         }
         public IActionResult ManagerNotification()
@@ -311,7 +327,7 @@ namespace WebAppMVC.Controllers
         public async Task<IActionResult> ManagerFieldtrip([FromQuery] string search)
         {
             _logger.LogInformation(search);
-            string LocationAPI_URL_All = ManagerAPI_URL + "Location/AllAddress";
+            string LocationAPI_URL_All = ManagerAPI_URL + "Location/AllAddresses";
             if (search != null || !string.IsNullOrEmpty(search))
             {
                 search = search.Trim();
@@ -337,7 +353,7 @@ namespace WebAppMVC.Controllers
             TempData["ROLE_NAME"] = role;
             TempData["USER_NAME"] = usrname;
 
-            var listLocationResponse = await methcall.CallMethodReturnObject<GetLocationResponseByList>(
+            var listLocationResponse = await methcall.CallMethodReturnObject<GetLocationAddressResponseByList>(
                 _httpClient: _httpClient,
                 options: options,
                 methodName: "GET",
@@ -354,7 +370,7 @@ namespace WebAppMVC.Controllers
             if (listFieldTripResponse == null || listLocationResponse == null)
             {
                 _logger.LogInformation(
-                    "Error while processing your request! (Getting List FieldTrip!). List was Empty!: " + listFieldTripResponse);
+                    "Error while processing your request! (Getting List FieldTrip!). List was Empty!: " + listLocationResponse + ",\n" + listFieldTripResponse);
                 ViewBag.error =
                     "Error while processing your request! (Getting List FieldTrip!).\n List was Empty!";
                 return View("ManagerIndex");

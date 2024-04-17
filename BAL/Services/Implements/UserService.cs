@@ -179,6 +179,19 @@ namespace BAL.Services.Implements
             _unitOfWork.Save();
         }
 
+        public void UpdatePassword(UserViewModel entity)
+        {
+            var usr = _mapper.Map<User>(entity);
+            if (usr.MemberId != null)
+            {
+                var usrmem = _unitOfWork.MemberRepository.GetByIdNoTracking(usr.MemberId).Result;
+                usr.Role = entity.Role;
+                usr.Member = usrmem;
+            }
+            _unitOfWork.UserRepository.Update(usr);
+            _unitOfWork.Save();
+        }
+
         public async Task<bool> UpdateUserAvatar(string memId, string imagePath)
         {
             var isChanged = await _unitOfWork.UserRepository.ChangeUserAvatar(memId, imagePath);

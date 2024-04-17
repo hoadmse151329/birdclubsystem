@@ -34,7 +34,8 @@ namespace BAL.Services.Implements
             {
                 MeetingId= metId,
                 MemberId= memId,
-                ParticipantNo = partNo.ToString()
+                ParticipantNo = partNo.ToString(),
+                CheckInStatus = "Not Check-In"
             };
             _unitOfWork.MeetingParticipantRepository.Create(meetingParticipant);
             _unitOfWork.Save();

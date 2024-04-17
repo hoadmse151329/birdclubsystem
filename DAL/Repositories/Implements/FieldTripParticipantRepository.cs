@@ -56,7 +56,7 @@ namespace DAL.Repositories.Implements
 
         public async Task<int> GetParticipationNoFieldTripParticipantById(int tripId, string memberId)
         {
-            var mempart = _context.FieldTripParticipants.Find(tripId, memberId);
+            var mempart = _context.FieldTripParticipants.FirstOrDefault(f => f.TripId == tripId && f.MemberId == memberId);
             if (mempart != null) return Int32.Parse(mempart.ParticipantNo);
             return 0;
         }
