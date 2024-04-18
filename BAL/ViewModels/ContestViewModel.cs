@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,7 +13,8 @@ namespace BAL.ViewModels
         public string? ContestName { get; set; }
         public string? Description { get; set; }
         public DateTime? RegistrationDeadline { get; set; }
-        public string? Address { get; set; }
+		[RegularExpression(@"^[a-zA-Z0-9\/?\s?]+,[a-zA-Z0-9\s?]+,[a-zA-Z0-9\s?]+,[a-zA-Z\s?]{4,}$", ErrorMessage = "Address is Invalid, it must be writen in this format:\nArea Number,Street,District,City")]
+		public string? Address { get; set; }
         public int? AreaNumber { get; set; }
         public string? Street { get; set; }
         public string? District { get; set; }
