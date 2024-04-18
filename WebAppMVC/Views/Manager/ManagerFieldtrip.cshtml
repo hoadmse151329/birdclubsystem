@@ -2,7 +2,7 @@
 @{
     Layout = null;
     ViewData["Title"] = "Manager Meeting Page";
-    List<string> locationList = Model.Locations;
+    List<BAL.ViewModels.LocationViewModel> locationList = Model.Locations;
     List<BAL.ViewModels.FieldTripViewModel> fieldtripList = Model.FieldTrips;
     BAL.ViewModels.FieldTripViewModel createFieldTrip = new();
     BAL.ViewModels.FieldtripDaybyDayViewModel createFieldTripDayByDay = new();
@@ -470,5 +470,8 @@
         window.location.href = '@Url.Action("ManagerFieldTripDetail", "Manager")';
     }
 </script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
 </body>
 </html>

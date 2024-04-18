@@ -22,11 +22,6 @@
     <div class="member-meeting-post">
         <div class="overlap-wrapper">
             <div class="overlap">
-                <div class="background">
-                    <div class="overlap-group">
-                        <img class="subtract" src="~/images/Background.png" />
-                    </div>
-                </div>
                 <div class="headlines">
                     <div class="group">
                         <div class="overlap-2">
@@ -103,48 +98,51 @@
                                         </form>
                                     }
                                 }
-                            </div>
-                            <ul class="nav nav-tabs">
+                            </div>                                                       
+                    </div>
+                </div>
+                
+                        <section>
+                    <ul class="nav nav-tabs">
                                 <!-- dung vong for o day -->
                                 <li class="nav-item">
-                                    <a class="nav-link active" data-toggle="tab" href="#home1">
+                                    <a class="nav-link active" data-toggle="tab" href="#overview">
                                         <i class='bx bx-home-alt-2'></i>
                                         <span>Overview</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" data-toggle="tab" href="#home2">
+                                    <a class="nav-link" data-toggle="tab" href="#daybyday">
                                         <i class='bx bx-home-alt-2'></i>
                                         <span>DayByDay</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" data-toggle="tab" href="#home3">
+                                    <a class="nav-link" data-toggle="tab" href="#rates">
                                         <i class='bx bx-home-alt-2'></i>
                                         <span>Rates</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" data-toggle="tab" href="#home4">
+                                    <a class="nav-link" data-toggle="tab" href="#inclusions">
                                         <i class='bx bx-home-alt-2'></i>
                                         <span>Inclusions</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" data-toggle="tab" href="#home5">
+                                    <a class="nav-link" data-toggle="tab" href="#gettingthere">
                                         <i class='bx bx-home-alt-2'></i>
                                         <span>GettingThere</span>
                                     </a>
                                 </li>
-                            </ul>
-                            <div id="home1" role="tabpanel" data-title="Tanzania Safari: 4-Day Magoroto and Lushoto Trip">
-                                <div class="tour__content__block tour__content__block--routemap tour__route">
+                    </ul>
+                    <div class="tab-content">
+                                <!-- home1 -->
+                                <div class="tab-pane active" id="overview" role="tabpanel">
+                                <div class="col-10">
                                     <h2>Route</h2>
                                 </div>
                             </div>
-                        </div>
-                        <div class="tour__flow__container tour__route-list" data-role="tour-route-list" style="height: 394px; max-height: none;">
-                            <div class="tour__route-list-inner">
                                 <table class="route__flow avoid-break-p">
                                     <tbody>
                                         @* <tr class="country">
@@ -175,14 +173,11 @@
                                     </tbody>
                                 </table>
                             </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="tour__content__block tour__content__block--consider avoid-break-p">
+                            </section>
+                                            <div class="tour__content__block tour__content__block--consider avoid-break-p">
                     <h2>Tour Rates</h2>
                     <div class="row">
-                        @foreach (var rate in Model.Rates)
+                        @foreach (var day in Model.Rates)
                         {
                             <div class="col col-12 col-t-6 item">
                                 <div class="svg-box">
@@ -238,6 +233,7 @@
                     </div>
 
                 </div>
+
                 <div class="tour__content__block tour__content__block--consider avoid-break-p">
                     <h2>Tour Rates</h2>
                     <div class="row">
@@ -1213,14 +1209,43 @@
                         <li>If preferred, you can <a href="" class="contact-operator-link">contact</a> the tour operator directly</li>
                     </ul>
                 </div>
-
-
-            </div>
-        </div>
-    </div>
-    </div>
-    </div>
-    </div>
-    </div>
+                </div>
+</div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+        referrerpolicy="no-referrer"></script>
+        <!-- Jquery Waypoint -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>
+        <!-- BS4 JS -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.5/umd/popper.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- BS4 carousels -->
+        <script>
+            $('.carousel').carousel({
+                interval: 3000
+            });
+        </script>
+        <!-- owl carousels -->
+        <script src="./assets/js/owl.carousel.min.js"></script>
+        <script>
+            $('.clubList-carousel').owlCarousel({
+                loop: true,
+                margin: 10,
+                nav: false,
+                responsive: {
+                    0: {
+                        items: 1
+                    },
+                    576: {
+                        items: 2
+                    },
+                    1200: {
+                        items: 4
+                    }
+                }
+            });
+        </script>
+        <!-- main js -->
+        <script src="~/js/user-script.js"></script>
 </body>
 </html>
