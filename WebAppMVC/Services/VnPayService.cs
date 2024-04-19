@@ -27,8 +27,8 @@ namespace WebAppMVC.Services
             pay.AddRequestData("vnp_CurrCode", _configuration["Vnpay:CurrCode"]);
             pay.AddRequestData("vnp_IpAddr", pay.GetIpAddress(context));
             pay.AddRequestData("vnp_Locale", _configuration["Vnpay:Locale"]);
-            pay.AddRequestData("vnp_OrderInfo", $"{model.Name} {model.Value}");
-            pay.AddRequestData("vnp_OrderType", model.TransactionType);
+            pay.AddRequestData("vnp_OrderInfo", $"{model.Name} {model.Value} {model.TransactionType}");
+            pay.AddRequestData("vnp_OrderType", $"{model.TransactionType}");
             pay.AddRequestData("vnp_ReturnUrl", urlCallBack);
             pay.AddRequestData("vnp_TxnRef", tick);
 
