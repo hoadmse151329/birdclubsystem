@@ -4,6 +4,7 @@ using BAL.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 using System.Runtime.CompilerServices;
 
 namespace WebAPI.Controllers
@@ -15,12 +16,15 @@ namespace WebAPI.Controllers
         private readonly IContestService _contestService;
         private readonly IContestParticipantService _participantService;
         private readonly IConfiguration _config;
+        private readonly IMemberService _memberService;
         public ContestController(
             IContestService contestService,
             IContestParticipantService contestParticipantService,
+            IMemberService memberService,
             IConfiguration config)
         {
             _contestService = contestService;
+            _memberService = memberService;
             _participantService = contestParticipantService;
             _config = config;
         }
@@ -91,6 +95,57 @@ namespace WebAPI.Controllers
                 {
                     status = true,
                     Data = result
+                });
+            }
+            catch (Exception ex)
+            {
+                if (ex.InnerException != null)
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = ex.Message,
+                        InnerExceptionMessage = ex.InnerException.Message
+                    });
+                }
+                // Log the exception if needed
+                return BadRequest(new
+                {
+                    Status = false,
+                    ErrorMessage = ex.Message
+                });
+            }
+        }
+        [HttpPost("Participant/{id}")]
+        [Authorize(Roles = "Member")]
+        [ProducesResponseType(typeof(ContestViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetFieldTripAndParticipantNo(
+            [Required][FromRoute] int id,
+            [Required][FromBody] string memId)
+        {
+            try
+            {
+                var trip = await _contestService.GetById(id);
+                if (trip == null) return NotFound(new
+                {
+                    Status = false,
+                    ErrorMessage = "Field Trip Not Found!"
+                });
+                var mem = await _memberService.GetBoolById(memId);
+                if (!mem) return NotFound(new
+                {
+                    Status = false,
+                    ErrorMessage = "Member Not Found!"
+                });
+                int participateNo = await _participantService.GetParticipationNo(memId, id);
+                trip.ParticipationNo = participateNo;
+                return Ok(new
+                {
+                    Status = true,
+                    Message = "Get Field Trip successfully!",
+                    Data = trip
                 });
             }
             catch (Exception ex)

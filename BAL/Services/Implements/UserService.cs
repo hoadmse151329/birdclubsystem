@@ -77,7 +77,7 @@ namespace BAL.Services.Implements
             var usr = _mapper.Map<User>(entity);
 			usr.Member = new Member();
 			usr.Member.MemberId = Guid.NewGuid().ToString();
-			usr.Member.Status = "Active";
+			usr.Member.Status = 1;
 			usr.Member.Email = entity.Email;
 			if (newmem != null)
             {

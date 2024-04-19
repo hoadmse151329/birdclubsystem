@@ -2,7 +2,7 @@
 @{
     Layout = null;
     ViewData["Title"] = "Manager Meeting Page";
-    List<BAL.ViewModels.LocationViewModel> locationList = Model.Locations;
+    List<string> locationList = Model.Locations;
     List<BAL.ViewModels.FieldTripViewModel> fieldtripList = Model.FieldTrips;
     BAL.ViewModels.FieldTripViewModel createFieldTrip = new();
     BAL.ViewModels.FieldtripDaybyDayViewModel createFieldTripDayByDay = new();
@@ -122,7 +122,6 @@
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                         <a class="dropdown-item" href="@Url.Action("ManagerProfile", "Manager")"><i class='bx bx-user'></i>Manager Profile</a> <!--thêm theo user id và role-->
-                                        <a class="dropdown-item" href="@Url.Action("ManagerNotification", "Manager")"><i class='bx bx-bell'></i>Notification</a>
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="@Url.Action("Logout", "Auth")">Logout</a>
                                     </div>

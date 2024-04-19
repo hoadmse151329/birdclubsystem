@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 namespace DAL.Models
 {
@@ -14,7 +16,9 @@ namespace DAL.Models
             Transactions = new HashSet<Transaction>();
         }
 
-        public int UserId { get; set; }
+		[Key]
+		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+		public int UserId { get; set; }
         public int? ClubId { get; set; }
         public string? MemberId { get; set; }
         public string? UserName { get; set; }

@@ -4,6 +4,19 @@
     IFormFile? formFile = null;
     BAL.ViewModels.Member.UpdateMemberPassword memberPassword = new();
     Layout = "~/Views/Shared/_Layout.cshtml";
+    List<SelectListItem> genders = new()
+    {
+        new SelectListItem {Text = "Male",Value = "Male"},
+        new SelectListItem {Text = "Female",Value = "Female"},
+        new SelectListItem {Text = "Other",Value = "Other"}
+    };
+    foreach (var gender in genders)
+    {
+        if (Model.Gender.Equals(gender.Text))
+        {
+            gender.Selected = true;
+        }
+    }
 }
 <html lang="en">
 <head>
@@ -125,59 +138,11 @@
                                                                     class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
                                                             </div>
-                                                            <div class="gender-content row align-items-center">
-                                                                <label class="contact-title col-md-5 col-sm-4 mt-3">Gender</label>
-                                                                <div class="form-check">
-                                                                    @if (Model.Gender.ToLower() == "male")
-                                                                    {
-                                                                        <input asp-for="Gender" class="form-check-input" type="radio"
-                                                                           name="Gender" id="exampleRadios1"
-                                                                           value="Male" checked>
-                                                                    }else{
-                                                                        <input asp-for="Gender" class="form-check-input" type="radio"
-                                                                           name="Gender" id="exampleRadios1"
-                                                                           value="Male">
-                                                                    }
-                                                                    <label class="form-check-label"
-                                                                        for="exampleRadios1">
-                                                                        Male
-                                                                    </label>
-                                                                </div>
-                                                                <div class="form-check">
-                                                                    @if (Model.Gender.ToLower() == "female")
-                                                                    {
-                                                                        <input asp-for="Gender" class="form-check-input" type="radio"
-                                                                           name="Gender" id="exampleRadios1"
-                                                                           value="Female" checked>
-                                                                    }else{
-                                                                        <input asp-for="Gender" class="form-check-input" type="radio"
-                                                                           name="Gender" id="exampleRadios1"
-                                                                           value="Female">
-                                                                    }
-                                                                    <label class="form-check-label"
-                                                                        for="exampleRadios1">
-                                                                        Female
-                                                                    </label>
-                                                                </div>
-                                                                <div class="form-check">
-                                                                    @if (Model.Gender.ToLower() == "other")
-                                                                    {
-                                                                        <input asp-for="Gender" class="form-check-input" type="radio"
-                                                                           name="Gender" id="exampleRadios1"
-                                                                           value="Other" checked>
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        <input asp-for="Gender" class="form-check-input" type="radio"
-                                                                           name="Gender" id="exampleRadios1"
-                                                                           value="Other">
-                                                                    }
-                                                                    <label class="form-check-label"
-                                                                        for="exampleRadios1">
-                                                                        Other
-                                                                    </label>
-                                                                </div>
 
+                                                            <div class="row gender-content">
+                                                                <label class="contact-title col-md-5 col-sm-4 mt-3">Gender</label>
+                                                                <select class="form-control col-md-5 col-sm-8 mt-2" asp-for="@Model.Gender" asp-items="@genders" class="custom-select" name="gender" id="road">
+                                                                </select>
                                                             </div>
 
                                                             <div class="row pt-3 d-flex">

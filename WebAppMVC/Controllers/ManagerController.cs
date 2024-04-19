@@ -10,6 +10,10 @@ using WebAppMVC.Models.Location;
 using WebAppMVC.Models.Meeting;
 using WebAppMVC.Models.Contest;
 using System.Text.Encodings.Web;
+using WebAppMVC.Models.Member;
+using Azure;
+using Microsoft.DotNet.MSIdentity.Shared;
+using System.Security.Policy;
 // thêm crud của meeting, fieldtrip, contest.
 namespace WebAppMVC.Controllers
 {
@@ -46,7 +50,7 @@ namespace WebAppMVC.Controllers
 
             string? role = HttpContext.Session.GetString("ROLE_NAME");
             if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Manager")) return View("Index");
+            else if (!role.Equals("Manager")) return RedirectToAction("Index","Home");
 
             string? usrId = HttpContext.Session.GetString("USER_ID");
             if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
@@ -62,7 +66,7 @@ namespace WebAppMVC.Controllers
         public async Task<IActionResult> ManagerMeeting([FromQuery] string search)
         {
             _logger.LogInformation(search);
-            string LocationAPI_URL_All = ManagerAPI_URL + "Location/All";
+            string LocationAPI_URL_All = ManagerAPI_URL + "Location/AllAddresses";
 
             if (search != null || !string.IsNullOrEmpty(search))
             {
@@ -78,7 +82,7 @@ namespace WebAppMVC.Controllers
 
             string? role = HttpContext.Session.GetString("ROLE_NAME");
             if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Manager")) return View("Index");
+            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
 
             string? usrId = HttpContext.Session.GetString("USER_ID");
             if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
@@ -89,7 +93,7 @@ namespace WebAppMVC.Controllers
             TempData["ROLE_NAME"] = role;
             TempData["USER_NAME"] = usrname;
 
-            var listLocationResponse = await methcall.CallMethodReturnObject<GetLocationResponseByList>(
+            var listLocationResponse = await methcall.CallMethodReturnObject<GetLocationAddressResponseByList>(
                 _httpClient: _httpClient,
                 options: options,
                 methodName: "GET",
@@ -107,14 +111,14 @@ namespace WebAppMVC.Controllers
             {
                 _logger.LogInformation(
                     "Error while processing your request! (Getting List Meeting!). List was Empty!: " + listMeetResponse);
-                ViewBag.error =
+                ViewBag.Error =
                     "Error while processing your request! (Getting List Meeting!).\n List was Empty!";
                 return View("ManagerIndex");
             }
             else
             if (!listMeetResponse.Status || !listLocationResponse.Status)
             {
-                ViewBag.error =
+                ViewBag.Error =
                     "Error while processing your request! (Getting List Meeting!).\n"
                     + listMeetResponse.ErrorMessage + "\n" + listLocationResponse.ErrorMessage;
                 return View("ManagerIndex");
@@ -122,10 +126,6 @@ namespace WebAppMVC.Controllers
             testmodel.Locations = listLocationResponse.Data;
             testmodel.Meetings = listMeetResponse.Data;
             return View(testmodel);
-        }
-        public IActionResult ManagerNotification()
-        {
-            return View();
         }
         [HttpGet("Meeting/{id:int}")]
         /*[Route("Manager/Meeting/{id:int}")]*/
@@ -140,7 +140,7 @@ namespace WebAppMVC.Controllers
 
             string? role = HttpContext.Session.GetString("ROLE_NAME");
             if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Manager")) return View("Index");
+            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
 
             string? usrId = HttpContext.Session.GetString("USER_ID");
             if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
@@ -166,14 +166,14 @@ namespace WebAppMVC.Controllers
                                 _logger: _logger);
             if (meetPostResponse == null)
             {
-                ViewBag.error =
+                ViewBag.Error =
                     "Error while processing your request! (Getting Meeting!).\n Meeting Not Found!";
                 return RedirectToAction("ManagerMeeting");
             }
             if (!meetPostResponse.Status)
             {
                 _logger.LogInformation("Error while processing your request: " + meetPostResponse.Status + " , Error Message: " + meetPostResponse.ErrorMessage);
-                ViewBag.error =
+                ViewBag.Error =
                     "Error while processing your request! (Getting Meeting Post!).\n"
                     + meetPostResponse.ErrorMessage;
                return RedirectToAction("ManagerMeeting");
@@ -191,12 +191,18 @@ namespace WebAppMVC.Controllers
         {
             ManagerAPI_URL += "Meeting/Update/" + id;
 
-            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
+			if (!TryValidateModel(meetView))
+			{
+				ViewBag.Error =
+				"Error while processing your request! (Update Meeting!).\n Validation Failed!";
+				return RedirectToAction("ManagerMeetingDetail",new { id });
+			}
+			string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
             if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
 
             string? role = HttpContext.Session.GetString("ROLE_NAME");
             if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Manager")) return View("Index");
+            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
 
             string? usrId = HttpContext.Session.GetString("USER_ID");
             if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
@@ -217,32 +223,38 @@ namespace WebAppMVC.Controllers
                                 _logger: _logger);
             if (meetPostResponse == null)
             {
-                ViewBag.error =
+                ViewBag.Error =
                     "Error while processing your request! (Updating Meeting!).\n Meeting Not Found!";
                 return RedirectToAction("ManagerMeeting");
             }
             if (!meetPostResponse.Status)
             {
                 _logger.LogInformation("Error while processing your request: " + meetPostResponse.Status + " , Error Message: " + meetPostResponse.ErrorMessage);
-                ViewBag.error =
+                ViewBag.Error =
                     "Error while processing your request! (Updating Meeting Post!).\n"
                     + meetPostResponse.ErrorMessage;
                 return RedirectToAction("ManagerMeeting");
             }
-            return RedirectToAction("ManagerMeetingDetail", "Manager",new { id = id });
+            return RedirectToAction("ManagerMeetingDetail",new { id });
         }
         [HttpPost("Meeting/Create")]
         /*[Route("Manager/Meeting/Update/{id:int}")]*/
         public async Task<IActionResult> ManagerCreateMeeting(MeetingViewModel meetView)
         {
             ManagerAPI_URL += "Meeting/Create";
+            if (!TryValidateModel(meetView))
+            {
+				ViewBag.Error =
+					"Error while processing your request! (Create Meeting!).\n Validation Failed!";
+				return RedirectToAction("ManagerMeeting");
+            }
 
             string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
             if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
 
             string? role = HttpContext.Session.GetString("ROLE_NAME");
             if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Manager")) return View("Index");
+            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
 
             string? usrId = HttpContext.Session.GetString("USER_ID");
             if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
@@ -263,14 +275,14 @@ namespace WebAppMVC.Controllers
                                 _logger: _logger);
             if (meetPostResponse == null)
             {
-                ViewBag.error =
+                ViewBag.Error =
                     "Error while processing your request! (Create Meeting!).\n Meeting Not Found!";
                 return RedirectToAction("ManagerMeeting");
             }
             if (!meetPostResponse.Status)
             {
                 _logger.LogInformation("Error while processing your request: " + meetPostResponse.Status + " , Error Message: " + meetPostResponse.ErrorMessage);
-                ViewBag.error =
+                ViewBag.Error =
                     "Error while processing your request! (Create Meeting Post!).\n"
                     + meetPostResponse.ErrorMessage;
                 return RedirectToAction("ManagerMeeting");
@@ -278,18 +290,18 @@ namespace WebAppMVC.Controllers
             return RedirectToAction("ManagerMeeting");
         }
 
-        [HttpPost("Meeting/Update/Cancel/{id:int}")]
+        [HttpPost("Meeting/Cancel")]
         public async Task<IActionResult> ManagerCancelMeeting(
-            int id)
+            int meetId)
         {
-            ManagerAPI_URL += "Meeting/Update/Cancel/" + id;
+            ManagerAPI_URL += "Meeting/Update/Cancel/" + meetId;
 
             string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
             if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
 
             string? role = HttpContext.Session.GetString("ROLE_NAME");
             if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Manager")) return View("Index");
+            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
 
             string? usrId = HttpContext.Session.GetString("USER_ID");
             if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
@@ -309,14 +321,14 @@ namespace WebAppMVC.Controllers
                                 _logger: _logger);
             if (meetPostResponse == null)
             {
-                ViewBag.error =
+                ViewBag.Error =
                     "Error while processing your request! (Updating Meeting!).\n Meeting Not Found!";
                 return RedirectToAction("ManagerMeeting");
             }
             if (!meetPostResponse.Status)
             {
                 _logger.LogInformation("Error while processing your request: " + meetPostResponse.Status + " , Error Message: " + meetPostResponse.ErrorMessage);
-                ViewBag.error =
+                ViewBag.Error =
                     "Error while processing your request! (Updating Meeting Post!).\n"
                     + meetPostResponse.ErrorMessage;
                 return RedirectToAction("ManagerMeeting");
@@ -342,7 +354,7 @@ namespace WebAppMVC.Controllers
 
             string? role = HttpContext.Session.GetString("ROLE_NAME");
             if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Manager")) return View("Index");
+            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
 
             string? usrId = HttpContext.Session.GetString("USER_ID");
             if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
@@ -371,14 +383,14 @@ namespace WebAppMVC.Controllers
             {
                 _logger.LogInformation(
                     "Error while processing your request! (Getting List FieldTrip!). List was Empty!: " + listLocationResponse + ",\n" + listFieldTripResponse);
-                ViewBag.error =
+                ViewBag.Error =
                     "Error while processing your request! (Getting List FieldTrip!).\n List was Empty!";
                 return View("ManagerIndex");
             }
             else
             if (!listFieldTripResponse.Status || !listLocationResponse.Status)
             {
-                ViewBag.error =
+                ViewBag.Error =
                     "Error while processing your request! (Getting List FieldTrip!).\n"
                     + listFieldTripResponse.ErrorMessage + "\n" + listLocationResponse.ErrorMessage;
                 return View("ManagerIndex");
@@ -400,7 +412,7 @@ namespace WebAppMVC.Controllers
 
             string? role = HttpContext.Session.GetString("ROLE_NAME");
             if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Manager")) return View("Index");
+            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
 
             string? usrId = HttpContext.Session.GetString("USER_ID");
             if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
@@ -426,14 +438,14 @@ namespace WebAppMVC.Controllers
                                 _logger: _logger);
             if (fieldtripPostResponse == null)
             {
-                ViewBag.error =
+                ViewBag.Error =
                     "Error while processing your request! (Getting FieldTrip!).\n FieldTrip Not Found!";
                 return RedirectToAction("ManagerFieldTrip");
             }
             if (!fieldtripPostResponse.Status)
             {
                 _logger.LogInformation("Error while processing your request: " + fieldtripPostResponse.Status + " , Error Message: " + fieldtripPostResponse.ErrorMessage);
-                ViewBag.error =
+                ViewBag.Error =
                     "Error while processing your request! (Getting FieldTrip Post!).\n"
                     + fieldtripPostResponse.ErrorMessage;
                 return RedirectToAction("ManagerFieldTrip");
@@ -456,7 +468,7 @@ namespace WebAppMVC.Controllers
 
             string? role = HttpContext.Session.GetString("ROLE_NAME");
             if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Manager")) return View("Index");
+            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
 
             string? usrId = HttpContext.Session.GetString("USER_ID");
             if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
@@ -477,14 +489,14 @@ namespace WebAppMVC.Controllers
                                 _logger: _logger);
             if (fieldtripPostResponse == null)
             {
-                ViewBag.error =
+                ViewBag.Error =
                     "Error while processing your request! (Updating FieldTrip!).\n FieldTrip Not Found!";
                 return RedirectToAction("ManagerFieldTrip");
             }
             if (!fieldtripPostResponse.Status)
             {
                 _logger.LogInformation("Error while processing your request: " + fieldtripPostResponse.Status + " , Error Message: " + fieldtripPostResponse.ErrorMessage);
-                ViewBag.error =
+                ViewBag.Error =
                     "Error while processing your request! (Updating FieldTrip Post!).\n"
                     + fieldtripPostResponse.ErrorMessage;
                 return RedirectToAction("ManagerFieldTrip");
@@ -502,7 +514,7 @@ namespace WebAppMVC.Controllers
 
             string? role = HttpContext.Session.GetString("ROLE_NAME");
             if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Manager")) return View("Index");
+            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
 
             string? usrId = HttpContext.Session.GetString("USER_ID");
             if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
@@ -523,14 +535,14 @@ namespace WebAppMVC.Controllers
                                 _logger: _logger);
             if (fieldtripPostResponse == null)
             {
-                ViewBag.error =
+                ViewBag.Error =
                     "Error while processing your request! (Create FieldTrip!).\n Meeting Not Found!";
                 return RedirectToAction("ManagerFieldTrip");
             }
             if (!fieldtripPostResponse.Status)
             {
                 _logger.LogInformation("Error while processing your request: " + fieldtripPostResponse.Status + " , Error Message: " + fieldtripPostResponse.ErrorMessage);
-                ViewBag.error =
+                ViewBag.Error =
                     "Error while processing your request! (Create Meeting Post!).\n"
                     + fieldtripPostResponse.ErrorMessage;
                 return RedirectToAction("ManagerFieldTrip");
@@ -549,7 +561,7 @@ namespace WebAppMVC.Controllers
 
             string? role = HttpContext.Session.GetString("ROLE_NAME");
             if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Manager")) return View("Index");
+            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
 
             string? usrId = HttpContext.Session.GetString("USER_ID");
             if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
@@ -569,14 +581,14 @@ namespace WebAppMVC.Controllers
                                 _logger: _logger);
             if (fieldtripPostResponse == null)
             {
-                ViewBag.error =
+                ViewBag.Error =
                     "Error while processing your request! (Updating FieldTrip!).\n Meeting Not Found!";
                 return RedirectToAction("ManagerFieldTrip");
             }
             if (!fieldtripPostResponse.Status)
             {
                 _logger.LogInformation("Error while processing your request: " + fieldtripPostResponse.Status + " , Error Message: " + fieldtripPostResponse.ErrorMessage);
-                ViewBag.error =
+                ViewBag.Error =
                     "Error while processing your request! (Updating FieldTrip Post!).\n"
                     + fieldtripPostResponse.ErrorMessage;
                 return RedirectToAction("ManagerFieldTrip");
@@ -602,7 +614,7 @@ namespace WebAppMVC.Controllers
 
             string? role = HttpContext.Session.GetString("ROLE_NAME");
             if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Manager")) return View("Index");
+            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
 
             string? usrId = HttpContext.Session.GetString("USER_ID");
             if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
@@ -631,14 +643,14 @@ namespace WebAppMVC.Controllers
             {
                 _logger.LogInformation(
                     "Error while processing your request! (Getting List Contest!). List was Empty!: " + listContestResponse);
-                ViewBag.error =
+                ViewBag.Error =
                     "Error while processing your request! (Getting List Contest!).\n List was Empty!";
                 return View("ManagerIndex");
             }
             else
             if (!listContestResponse.Status || !listLocationResponse.Status)
             {
-                ViewBag.error =
+                ViewBag.Error =
                     "Error while processing your request! (Getting List Meeting!).\n"
                     + listContestResponse.ErrorMessage + "\n" + listLocationResponse.ErrorMessage;
                 return View("ManagerIndex");
@@ -660,7 +672,7 @@ namespace WebAppMVC.Controllers
 
             string? role = HttpContext.Session.GetString("ROLE_NAME");
             if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Manager")) return View("Index");
+            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
 
             string? usrId = HttpContext.Session.GetString("USER_ID");
             if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
@@ -686,14 +698,14 @@ namespace WebAppMVC.Controllers
                                 _logger: _logger);
             if (contestPostResponse == null)
             {
-                ViewBag.error =
+                ViewBag.Error =
                     "Error while processing your request! (Getting Contest!).\n Contest Not Found!";
                 return RedirectToAction("ManagerContest");
             }
             if (!contestPostResponse.Status)
             {
                 _logger.LogInformation("Error while processing your request: " + contestPostResponse.Status + " , Error Message: " + contestPostResponse.ErrorMessage);
-                ViewBag.error =
+                ViewBag.Error =
                     "Error while processing your request! (Getting Contest Post!).\n"
                     + contestPostResponse.ErrorMessage;
                 return RedirectToAction("ManagerContest");
@@ -716,7 +728,7 @@ namespace WebAppMVC.Controllers
 
             string? role = HttpContext.Session.GetString("ROLE_NAME");
             if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Manager")) return View("Index");
+            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
 
             string? usrId = HttpContext.Session.GetString("USER_ID");
             if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
@@ -737,14 +749,14 @@ namespace WebAppMVC.Controllers
                                 _logger: _logger);
             if (contestPostResponse == null)
             {
-                ViewBag.error =
+                ViewBag.Error =
                     "Error while processing your request! (Updating Contest!).\n Contest Not Found!";
                 return RedirectToAction("ManagerContest");
             }
             if (!contestPostResponse.Status)
             {
                 _logger.LogInformation("Error while processing your request: " + contestPostResponse.Status + " , Error Message: " + contestPostResponse.ErrorMessage);
-                ViewBag.error =
+                ViewBag.Error =
                     "Error while processing your request! (Updating Contest Post!).\n"
                     + contestPostResponse.ErrorMessage;
                 return RedirectToAction("ManagerContest");
@@ -762,7 +774,7 @@ namespace WebAppMVC.Controllers
 
             string? role = HttpContext.Session.GetString("ROLE_NAME");
             if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Manager")) return View("Index");
+            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
 
             string? usrId = HttpContext.Session.GetString("USER_ID");
             if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
@@ -783,14 +795,14 @@ namespace WebAppMVC.Controllers
                                 _logger: _logger);
             if (contestPostResponse == null)
             {
-                ViewBag.error =
+                ViewBag.Error =
                     "Error while processing your request! (Create Contest!).\n Contest Not Found!";
                 return RedirectToAction("ManagerContest");
             }
             if (!contestPostResponse.Status)
             {
                 _logger.LogInformation("Error while processing your request: " + contestPostResponse.Status + " , Error Message: " + contestPostResponse.ErrorMessage);
-                ViewBag.error =
+                ViewBag.Error =
                     "Error while processing your request! (Create Contest Post!).\n"
                     + contestPostResponse.ErrorMessage;
                 return RedirectToAction("ManagerContest");
@@ -809,7 +821,7 @@ namespace WebAppMVC.Controllers
 
             string? role = HttpContext.Session.GetString("ROLE_NAME");
             if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Manager")) return View("Index");
+            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
 
             string? usrId = HttpContext.Session.GetString("USER_ID");
             if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
@@ -829,14 +841,14 @@ namespace WebAppMVC.Controllers
                                 _logger: _logger);
             if (contestPostResponse == null)
             {
-                ViewBag.error =
+                ViewBag.Error =
                     "Error while processing your request! (Updating Contest!).\n Contest Not Found!";
                 return RedirectToAction("ManagerContest");
             }
             if (!contestPostResponse.Status)
             {
                 _logger.LogInformation("Error while processing your request: " + contestPostResponse.Status + " , Error Message: " + contestPostResponse.ErrorMessage);
-                ViewBag.error =
+                ViewBag.Error =
                     "Error while processing your request! (Updating Contest Post!).\n"
                     + contestPostResponse.ErrorMessage;
                 return RedirectToAction("ManagerContest");
@@ -844,16 +856,105 @@ namespace WebAppMVC.Controllers
             return RedirectToAction("ManagerContest");
         }
         [HttpGet("Profile")]
-        public IActionResult ManagerProfile()
+        public async Task<IActionResult> ManagerProfile()
         {
-            return View();
+            ManagerAPI_URL += "Manager/Profile";
+
+            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
+            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+
+            string? role = HttpContext.Session.GetString("ROLE_NAME");
+            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
+            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
+
+            string? usrId = HttpContext.Session.GetString("USER_ID");
+            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
+
+            string? usrname = HttpContext.Session.GetString("USER_NAME");
+            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
+
+            TempData["ROLE_NAME"] = role;
+            TempData["USER_NAME"] = usrname;
+
+            var memberDetails = await methcall.CallMethodReturnObject<GetMemberProfileResponse>(
+                _httpClient: _httpClient,
+                options: options,
+                methodName: "POST",
+                url: ManagerAPI_URL,
+                _logger: _logger,
+                inputType: usrId,
+                accessToken: accToken);
+            if (memberDetails == null)
+            {
+                ViewBag.Error =
+                    "Error while processing your request! (Getting Manager Profile!).\n Manager Details Not Found!";
+                return RedirectToAction("Index");
+            }
+            else
+            if (!memberDetails.Status)
+            {
+                ViewBag.Error =
+                    "Error while processing your request! (Getting Manager Profile!).\n Manager Details Not Found!"
+                + memberDetails.ErrorMessage;
+                return RedirectToAction("Index");
+            }
+            return View(memberDetails.Data);
+        }
+        [HttpPost("Profile")]
+        //[Authorize(Roles = "Member")]
+        public async Task<IActionResult> ManagerProfileUpdate(MemberViewModel memberDetail)
+        {
+            ManagerAPI_URL += "Manager/Profile/Update";
+
+            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
+            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+
+            string? role = HttpContext.Session.GetString("ROLE_NAME");
+            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
+            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
+
+            string? usrId = HttpContext.Session.GetString("USER_ID");
+            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
+
+            string? usrname = HttpContext.Session.GetString("USER_NAME");
+            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
+
+            TempData["ROLE_NAME"] = role;
+            TempData["USER_NAME"] = usrname;
+
+            memberDetail.MemberId = usrId;
+            memberDetail.Status = 1;
+
+            var memberDetailupdate = await methcall.CallMethodReturnObject<GetMemberProfileResponse>(
+                _httpClient: _httpClient,
+                options: options,
+                methodName: "PUT",
+                url: ManagerAPI_URL,
+                _logger: _logger,
+                inputType: memberDetail,
+                accessToken: accToken);
+            if (memberDetailupdate == null)
+            {
+                ViewBag.Error =
+                    "Error while processing your request! (Getting Member Profile!).\n Member Details Not Found!";
+                return RedirectToAction("ManagerProfile");
+            }
+            else
+            if (!memberDetailupdate.Status)
+            {
+                ViewBag.Error =
+                    "Error while processing your request! (Getting Member Profile!).\n Member Details Not Found!"
+                + memberDetailupdate.ErrorMessage;
+                return RedirectToAction("ManagerProfile");
+            }
+            return RedirectToAction("ManagerProfile");
         }
         [HttpGet("Feedback")]
         public IActionResult ManagerFeedBack()
         {
             return View();
         }
-        [HttpGet("ListOfMember")]
+        [HttpGet("ListOfEvents")]
         public IActionResult ManagerListOfEvents()
         {
             return View();
