@@ -164,13 +164,14 @@
                                                     }
                                                 }
                                             </div>
-                                            <div class="col-sm-6 d-flex justify-content-end col col-0 header--col-search col-t-2-5 col-w-3">
-                                                <form asp-action="ManagerMeeting" asp-controller="Manager" method="get" asp-route-search="@search">
-                                                    <input asp-for="@search" class="form-control" type="text" name="search" placeholder="Search..." value="@search">
-                                                    <button class="bx bx-search-alt" type="submit">
-                                                        <i class="sbi sbi--search mirrored header__search-submit-icon"></i>
-                                                    </button>
-                                                    @*<i class='bx bx-search-alt'></i>*@
+                                            <div class="col-sm-6 d-flex justify-content-end">
+                                                <form asp-action="ManagerFieldTrip" asp-controller="Manager" method="get" asp-route-search="@search">                   
+                                                    <div>
+                                                        <label>
+                                                            <input asp-for="@search" class="form-control" type="text" name="search" placeholder="Search..." value="@search">
+                                                            <i class='bx bx-search-alt'></i>
+                                                        </label>
+                                                    </div>
                                                 </form>
                                             </div>
                                         </div>
