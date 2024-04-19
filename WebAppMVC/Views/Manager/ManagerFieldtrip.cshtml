@@ -81,6 +81,12 @@
                             <span class="title">Feedback</span>
                         </a>
                     </li>
+                    <li data-toggle="tooltip"data-placement="right" title="Manage List Of Events">
+                        <a href="@Url.Action("ManagerListOfEvents", "Manager")">
+                            <span><i class="bx bx-detail"></i></span>
+                            <span class="title">List Of Events</span>
+                        </a>
+                    </li>
                     <li data-toggle="tooltip"data-placement="right" title="Manager Profile">
                         <a href="@Url.Action("ManagerProfile", "Manager")">
                             <span><i class='bx bx-user'></i></span>
@@ -175,15 +181,13 @@
                                                 }
                                             </div>
                                             <div class="col-sm-6 d-flex justify-content-end">
-                                                <form asp-action="ManagerFieldTrip" asp-controller="Manager" method="get" asp-route-search="@search">
-                   
+                                                <form asp-action="ManagerFieldTrip" asp-controller="Manager" method="get" asp-route-search="@search">                   
+                                                    <div>
+                                                        <label>
                                                             <input asp-for="@search" class="form-control" type="text" name="search" placeholder="Search..." value="@search">
-                                                            <button class="bx bx-search-alt" type="submit">
-                                                                <i class="sbi sbi--search mirrored header__search-submit-icon"></i>
-                                                            </button>
-                                                            @*<i class='bx bx-search-alt'></i>*@
-                                                        
-                                                    
+                                                            <i class='bx bx-search-alt'></i>
+                                                        </label>
+                                                    </div>
                                                 </form>
                                             </div>
                                         </div>

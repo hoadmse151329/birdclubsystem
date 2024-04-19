@@ -848,15 +848,13 @@ namespace WebAppMVC.Controllers
         {
             return View();
         }
+        [HttpGet("Feedback")]
         public IActionResult ManagerFeedBack()
         {
             return View();
         }
-        public IActionResult ManagerHistoryEventsDetail()
-        {
-            return View();
-        }
-        public IActionResult ManagerHistoryEvents()
+        [HttpGet("ListOfMember")]
+        public IActionResult ManagerListOfEvents()
         {
             return View();
         }
