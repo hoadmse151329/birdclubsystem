@@ -265,13 +265,15 @@ namespace WebAPI.Controllers
 					UserName = newmem.UserName,
                     Email= newmem.Email,
                     Password= newmem.Password,
-                    Role = "Member"
+                    Role = "Member",
+                    ImagePath = "https://edwinbirdclubstorage.blob.core.windows.net/images/avatar/avatar2.png"
                 };
                 _userService.Create(value,newmem);
                 var loguser = new AuthenRequest()
                 {
                     Username = newmem.UserName,
-                    Password = newmem.Password
+                    Password = newmem.Password,
+                    ImagePath = newmem.ImagePath
                 };
                 var resultaft = await _userService.AuthenticateUser(loguser);
 

@@ -20,5 +20,6 @@ namespace BAL.ViewModels.Authenticates
         [PasswordPropertyText]
         [DataType(DataType.Password)]
         public string? AccessToken { get; set; }
+        public string? ImagePath { get; set; }
     }
 }

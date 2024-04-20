@@ -107,6 +107,8 @@ namespace BAL.AutoMapperProfile
                 });
             CreateMap<Meeting, MeetingViewModel>()
                 .ReverseMap();
+            CreateMap<MeetingMedia, MeetingMediaViewModel>()
+                .ReverseMap();
             CreateMap<FieldTrip, FieldTripViewModel>()
                 .ReverseMap();
             CreateMap<FieldtripDaybyDay, FieldtripDaybyDayViewModel>()

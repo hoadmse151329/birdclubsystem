@@ -1,8 +1,9 @@
 ﻿using AutoMapper;
 using BAL.Services.Interfaces;
-using BAL.ViewModels;
 using BAL.ViewModels.Event;
+using BAL.ViewModels;
 using DAL.Infrastructure;
+using DAL.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,44 +22,63 @@ namespace BAL.Services.Implements
             _mapper = mapper;
         }
 
-        public Task<int> Create(string memId, int contestId)
+        public async Task<int> Create(int birdId, int contestId)
         {
-            throw new NotImplementedException();
+            int partNo = await _unitOfWork.ContestParticipantRepository.GetParticipationNoContestParticipantById(contestId, birdId);
+            if (partNo > 0) return partNo;
+            int contestpartCount = await _unitOfWork.ContestParticipantRepository.GetCountContestParticipantsByContestId(contestId);
+            if (contestpartCount.Equals(0)) partNo = 1; else partNo = contestpartCount + 1;
+            ContestParticipant contestParticipant = new ContestParticipant()
+            {
+                ContestId = contestId,
+                BirdId = birdId,
+                ParticipantNo = partNo.ToString()
+            };
+            _unitOfWork.ContestParticipantRepository.Create(contestParticipant);
+            _unitOfWork.Save();
+            return partNo;
         }
 
-        public Task<bool> Delete(string memId, int contestId)
+        public async Task<IEnumerable<ContestParticipantViewModel>> GetAll()
         {
-            throw new NotImplementedException();
+            return _mapper.Map<IEnumerable<ContestParticipantViewModel>>(_unitOfWork.ContestRepository.GetAll());
         }
 
-        public Task<IEnumerable<ContestParticipantViewModel>> GetAll()
+        public async Task<int> GetCurrentParticipantAmounts(int contestId)
         {
-            throw new NotImplementedException();
+            return await _unitOfWork.ContestParticipantRepository.GetCountContestParticipantsByContestId(contestId);
         }
 
-        public Task<IEnumerable<ContestParticipantViewModel>> GetAllByContestId(int contestId)
+        public async Task<int> GetParticipationNo(int birdId, int contestId)
         {
-            throw new NotImplementedException();
+            return await _unitOfWork.ContestParticipantRepository.GetParticipationNoContestParticipantById(contestId, birdId);
         }
 
-        public Task<IEnumerable<ContestParticipantViewModel>> GetAllByMemberId(string memberId)
+        public async Task<bool> Delete(int birdId, int contestId)
         {
-            throw new NotImplementedException();
+            bool check = await _unitOfWork.ContestParticipantRepository.GetBoolContestParticipantById(contestId, birdId);
+            if (!check) return false;
+            ContestParticipant contestParticipant = await _unitOfWork.ContestParticipantRepository.GetContestParticipantById(contestId, birdId);
+            _unitOfWork.ContestParticipantRepository.Delete(contestParticipant);
+            _unitOfWork.Save();
+            return true;
+        }
+        public async Task<IEnumerable<ContestParticipantViewModel>> GetAllByBirdId(int birdId)
+        {
+            return _mapper.Map<IEnumerable<ContestParticipantViewModel>>(await
+                _unitOfWork.ContestParticipantRepository.GetContestParticipantsByBirdId(birdId));
         }
 
-        public Task<IEnumerable<GetEventParticipation>> GetAllByMemberIdInclude(string memberId)
+        public async Task<IEnumerable<GetEventParticipation>> GetAllByBirdIdInclude(int birdId)
         {
-            throw new NotImplementedException();
+            return _mapper.Map<IEnumerable<GetEventParticipation>>(await
+                _unitOfWork.ContestParticipantRepository.GetContestParticipantsByBirdIdInclude(birdId));
         }
 
-        public Task<int> GetCurrentParticipantAmounts(int contestId)
+        public async Task<IEnumerable<ContestParticipantViewModel>> GetAllByContestId(int contestId)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<int> GetParticipationNo(string memId, int contestId)
-        {
-            throw new NotImplementedException();
+            return _mapper.Map<IEnumerable<ContestParticipantViewModel>>(await
+                _unitOfWork.ContestParticipantRepository.GetContestParticipantsByContestId(contestId));
         }
     }
 }

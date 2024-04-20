@@ -48,7 +48,8 @@ namespace BAL.Services.Implements
                     UserId = user.MemberId,
                     RoleName = user.Role,
                     UserName = user.UserName,
-                    AccessToken = accessToken
+                    AccessToken = accessToken,
+                    ImagePath = user.ImagePath
                 };
             }
             return null;
@@ -65,7 +66,8 @@ namespace BAL.Services.Implements
                     UserId = user.MemberId,
                     RoleName = user.Member.Role,
                     UserName = user.UserName,
-                    AccessToken = accessToken
+                    AccessToken = accessToken,
+                    ImagePath = user.ImagePath
                 };
             }
 
