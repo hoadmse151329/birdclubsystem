@@ -1,6 +1,7 @@
 ﻿using BAL.Services.Implements;
 using BAL.Services.Interfaces;
 using BAL.ViewModels;
+using BAL.ViewModels.Event;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -371,6 +372,51 @@ namespace WebAPI.Controllers
                 return Ok(new
                 {
                     status = true,
+                    Data = result
+                });
+            }
+            catch (Exception ex)
+            {
+                if (ex.InnerException != null)
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = ex.Message,
+                        InnerExceptionMessage = ex.InnerException.Message
+                    });
+                }
+                // Log the exception if needed
+                return BadRequest(new
+                {
+                    Status = false,
+                    ErrorMessage = ex.Message
+                });
+            }
+        }
+        [HttpPost("Participation/AllFieldTrips")]
+        [Authorize(Roles = "Member")]
+        [ProducesResponseType(typeof(List<GetEventParticipation>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetAllFieldTripParticipations(
+            [Required][FromBody] string memId)
+        {
+            try
+            {
+                var result = await _participantService.GetAllByMemberIdInclude(memId);
+                if (result == null)
+                {
+                    return NotFound(new
+                    {
+                        Status = false,
+                        ErrorMessage = "List of Fieldtrip Participations Not Found!"
+                    });
+                }
+
+                return Ok(new
+                {
+                    Status = true,
                     Data = result
                 });
             }

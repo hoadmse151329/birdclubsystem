@@ -9,12 +9,22 @@ html {
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
+}
+
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background: rgba(31.49, 82.87, 0, 0.35);
+    padding: 30px 0; /* Adjust this value to increase/decrease space between content and footer */
 }
 
 body {
-    margin-bottom: 60px;
+    margin-bottom: 100px;
+    padding-bottom: 200px;
     background: url("../images/Background.png") no-repeat center;
     background-size: cover;
 }
@@ -58,6 +68,9 @@ a{
 }
 .button {
     justify-content:center;
+}
+.text-color{
+    color:black;
 }
 .button .bottom-text {
     width: 150px;

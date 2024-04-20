@@ -26,7 +26,7 @@ body {
   color: #2c3e50;
   background-color: #fff; }
 
-.room-item {
+.club-item {
   margin-top: 20px;
   margin-right: 5px;
   margin-bottom: 0;
@@ -39,27 +39,31 @@ body {
   display: table;
   transform: translateY(0);
   transition: 0.5s; }
-  .room-item .club-title {
-    padding-top: 10px; }
-    .room-item .club-title a {
+  .club-item .club-title {
+    padding-top: 10px;
+    width: 180px;
+  }
+    .club-item .club-title a {
       color: #00ccb8;
       transition: all 0.5s; }
-      .room-item .club-title a:hover {
+      .club-item .club-title a:hover {
         color: #ffadd9; }
-  .room-item .club-image {
+  .club-item .club-image {
     display: block;
     border-radius: 10px;
     overflow: hidden; }
-    .room-item .club-image img {
-      height: 100px; }
-  .room-item .club-price {
+    .club-item .club-image img {
+      height: 100%;
+      width: 100%;
+    }
+  .club-item .club-price {
     font-size: 14px; }
-  .room-item:hover {
+  .club-item:hover {
     transform: translateY(-10px);
     box-shadow: 1px 1px 15px #b0b0b0; }
-  .room-item i {
+  .club-item i {
     font-size: 14px; }
-  .room-item p {
+  .club-item p {
     font-size: 15px;
     margin: 0;
     margin: 10px 0; }
@@ -621,7 +625,7 @@ footer {
     box-shadow: none;
     outline: none; }
 
-.content__list .item {
+.content__list .club-item {
   margin-bottom: 20px;
   margin-left: 20px;
   padding: 15px;
@@ -677,15 +681,16 @@ footer {
   display: grid;
   row-gap: 50px;
   margin-top: 10px; }
-  .col-bg .bg-1,
-  .col-bg .bg-2 {
-    width: 100%;
-    background-repeat: no-repeat;
-    background-position: 50% 50%;
-    background-size: cover;
-    height: 425px;
-    border-radius: 10px;
-    border: 1px solid #edebeb75; }
+   .col-bg .bg-1, 
+   .col-bg .bg-2 {
+        width: 100%;
+        background-repeat: no-repeat;
+        background-position: 50% 50%;
+        background-size: cover;
+        height: 525px;
+        border-radius: 10px;
+        border: 1px solid #edebeb75;
+    }
 
 .booking .heading {
   margin-bottom: 20px; }

@@ -64,7 +64,7 @@ namespace BAL.AutoMapperProfile
                 {
                     dest.EventId = src.TripId;
                     dest.EventName = src.Trip.TripName;
-                    dest.EventType = "Meeting";
+                    dest.EventType = "FieldTrip";
                     dest.EventHost = src.Trip.Host;
                     dest.EventStaff = src.Trip.InCharge;
                     dest.StartDate = src.Trip.StartDate;

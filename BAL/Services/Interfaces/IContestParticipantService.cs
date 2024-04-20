@@ -1,4 +1,4 @@
-﻿using BAL.ViewModels.Event;
+using BAL.ViewModels.Event;
 using BAL.ViewModels;
 using System;
 using System.Collections.Generic;
