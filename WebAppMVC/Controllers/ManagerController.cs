@@ -952,7 +952,13 @@ namespace WebAppMVC.Controllers
             }
             return RedirectToAction("ManagerProfile");
         }
+        [HttpGet("Feedback")]
         public IActionResult ManagerFeedBack()
+        {
+            return View();
+        }
+        [HttpGet("ListOfEvents")]
+        public IActionResult ManagerListOfEvents()
         {
             return View();
         }
