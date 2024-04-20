@@ -15,9 +15,11 @@ using Microsoft.AspNetCore.Identity;
 using System;
 using BAL.ViewModels.Member;
 using System.Text.Encodings.Web;
+using BAL.ViewModels.Event;
 
 namespace WebAppMVC.Controllers
 {
+    [Route("Member")]
     public class MemberController : Controller
     {
         private readonly ILogger<MemberController> _logger;
@@ -39,21 +41,21 @@ namespace WebAppMVC.Controllers
             var contentType = new MediaTypeWithQualityHeaderValue("application/json");
             _httpClient.DefaultRequestHeaders.Accept.Add(contentType);
             _httpClient.BaseAddress = new Uri(config.GetSection("DefaultApiUrl:ConnectionString").Value);
-            MemberInfoAPI_URL = "/api/Member";
+            MemberInfoAPI_URL = "/api/Member/";
         }
 
-        [HttpGet]
+        [HttpGet("Profile")]
         //[Authorize(Roles = "Member")]
         public async Task<IActionResult> MemberProfile()
         {
-            MemberInfoAPI_URL += "/Profile";
+            MemberInfoAPI_URL += "Profile";
 
             string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
             if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
 
             string? role = HttpContext.Session.GetString("ROLE_NAME");
             if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Member")) return View("Index");
+            else if (!role.Equals("Member")) return RedirectToAction("Index", "Home");
 
             string? usrId = HttpContext.Session.GetString("USER_ID");
             if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
@@ -72,6 +74,7 @@ namespace WebAppMVC.Controllers
                 _logger: _logger,
                 inputType: usrId,
                 accessToken: accToken);
+
             if (memberDetails == null)
             {
                 ViewBag.error =
@@ -88,18 +91,18 @@ namespace WebAppMVC.Controllers
             }
             return View(memberDetails.Data);
         }
-        [HttpPost]
+        [HttpPost("Update")]
         //[Authorize(Roles = "Member")]
         public async Task<IActionResult> MemberUpdate(MemberViewModel memberDetail)
         {
-            MemberInfoAPI_URL += "/Update";
+            MemberInfoAPI_URL += "Update";
 
             string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
             if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
 
             string? role = HttpContext.Session.GetString("ROLE_NAME");
             if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Member")) return View("Index");
+            else if (!role.Equals("Member")) return RedirectToAction("Index", "Home");
 
             string? usrId = HttpContext.Session.GetString("USER_ID");
             if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
@@ -111,7 +114,7 @@ namespace WebAppMVC.Controllers
             TempData["USER_NAME"] = usrname;
 
             memberDetail.MemberId = usrId;
-            memberDetail.Status = "Active";
+            memberDetail.Status = 1;
 
             var memberDetailupdate = await methcall.CallMethodReturnObject<GetMemberProfileResponse>(
                 _httpClient: _httpClient,
@@ -137,7 +140,7 @@ namespace WebAppMVC.Controllers
             }
             return RedirectToAction("MemberProfile");
         }
-        [HttpGet]
+        [HttpGet("HistoryEvent")]
         public async Task<IActionResult> MemberHistoryEvent()
         {
             string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
@@ -145,7 +148,7 @@ namespace WebAppMVC.Controllers
 
             string? role = HttpContext.Session.GetString("ROLE_NAME");
             if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Member")) return View("Index");
+            else if (!role.Equals("Member")) return RedirectToAction("Index", "Home");
 
             string? usrId = HttpContext.Session.GetString("USER_ID");
             if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
@@ -157,6 +160,8 @@ namespace WebAppMVC.Controllers
             TempData["USER_NAME"] = usrname;
 
             string MemberMeetingPartAPI_URL = "/api/Meeting/Participation/AllMeetings";
+            string MemberFieldTripPartAPI_URL = "/api/FieldTrip/Participation/AllFieldTrips";
+            
             dynamic registeredModel = new ExpandoObject();
 
             var memberMeetingPart = await methcall.CallMethodReturnObject<GetListEventParticipation>(
@@ -167,21 +172,37 @@ namespace WebAppMVC.Controllers
                 _logger: _logger,
                 inputType: usrId,
                 accessToken: accToken);
-            if (memberMeetingPart == null)
+
+            var memberFieldTripPart = await methcall.CallMethodReturnObject<GetListEventParticipation>(
+                _httpClient: _httpClient,
+                options: options,
+                methodName: "POST",
+                url: MemberFieldTripPartAPI_URL,
+                _logger: _logger,
+                inputType: usrId,
+                accessToken: accToken);
+
+            if (memberMeetingPart == null || memberFieldTripPart == null)
             {
                 ViewBag.error =
-                    "Error while processing your request! (Getting Member History Event!).\n Member History Event Not Found!";
+                    "Error while processing your request! (Getting Member Participation History!).\n Member Participation History Not Found!\n"
+                    + memberMeetingPart + "\n" + memberFieldTripPart;
                 return RedirectToAction("MemberProfile");
             }
             else
-            if (!memberMeetingPart.Status)
+            if (!memberMeetingPart.Status || !memberFieldTripPart.Status)
             {
                 ViewBag.error =
-                    "Error while processing your request! (Getting Member History Event!).\n Member History Event Not Found!"
-                + memberMeetingPart.ErrorMessage;
+                    "Error while processing your request! (Getting Member Participation History!).\n Member Participation History Not Found!"
+                + memberMeetingPart + "\n" + memberFieldTripPart;
                 return RedirectToAction("MemberProfile");
             }
-            registeredModel.RegisteredEvents = memberMeetingPart.Data;
+
+            List<GetEventParticipation> registeredEvents = new();
+            registeredEvents.AddRange(memberMeetingPart.Data);
+            registeredEvents.AddRange(memberFieldTripPart.Data);
+
+            registeredModel.RegisteredEvents = registeredEvents;
             return View(registeredModel);
         }
         [HttpPost("Upload")]
@@ -193,7 +214,7 @@ namespace WebAppMVC.Controllers
 
             string? role = HttpContext.Session.GetString("ROLE_NAME");
             if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Member")) return View("Index");
+            else if (!role.Equals("Member")) return RedirectToAction("Index", "Home");
 
             string? usrId = HttpContext.Session.GetString("USER_ID");
             if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
@@ -204,7 +225,7 @@ namespace WebAppMVC.Controllers
             TempData["ROLE_NAME"] = role;
             TempData["USER_NAME"] = usrname;
 
-            string MemberAvatarAPI_URL = "api/User/Upload";
+            string MemberAvatarAPI_URL = "/api/User/Upload";
 
             if (photo != null && photo.Length > 0)
             {
@@ -245,7 +266,7 @@ namespace WebAppMVC.Controllers
             }
             return RedirectToAction("Error");
         }
-        [HttpPost]
+        [HttpPost("ChangePassword")]
         //[Authorize(Roles = "Member")]
         public async Task<IActionResult> ChangePassword(UpdateMemberPassword memberPassword)
         {
@@ -256,7 +277,7 @@ namespace WebAppMVC.Controllers
 
             string? role = HttpContext.Session.GetString("ROLE_NAME");
             if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Member")) return View("Index");
+            else if (!role.Equals("Member")) return RedirectToAction("Index", "Home");
 
             string? usrId = HttpContext.Session.GetString("USER_ID");
             if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");

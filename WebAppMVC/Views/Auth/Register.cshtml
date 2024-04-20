@@ -2,6 +2,12 @@
 @{
 	ViewData["Title"] = "Register Page";
 	Layout = "~/Views/Shared/_Layout.cshtml";
+	List<SelectListItem> genders = new()
+	{
+		new SelectListItem {Text = "Male",Value = "Male"},
+		new SelectListItem {Text = "Female",Value = "Female"},
+		new SelectListItem {Text = "Other",Value = "Other"}
+	};
 }
 <!-- saved from url=(0035)https://themewagon.github.io/furni/ -->
 <html lang="en">
@@ -144,7 +150,10 @@
 									<span asp-validation-for="FullName" class="text-danger"></span>
 								</div>
 								<div class="form-group">
-									<input placeholder="Gender" asp-for="Gender" class="form-control form-data" />
+
+									<select class="form-control form-data custom-select" asp-for="Gender" asp-items="@genders"  name="gender">
+										<option value="">Gender</option>
+									</select>
 
 									<span asp-validation-for="Gender" class="text-danger"></span>
 								</div>
@@ -180,52 +189,6 @@
 						</div>
 						
 					</div>
-					<!-- <div class="row my-5">
-						<div class="col-6 col-md-6">
-							<div class="feature">
-								<div class="icon">
-									<img src="~/images/truck.svg" alt="Image" class="imf-fluid">
-								</div>
-								<h3>Fast &amp; Free Shipping</h3>
-								<p>Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam
-									vulputate.</p>
-							</div>
-						</div>
-
-						<div class="col-6 col-md-6">
-							<div class="feature">
-								<div class="icon">
-									<img src="~/images/bag.svg" alt="Image" class="imf-fluid">
-								</div>
-								<h3>Easy to Shop</h3>
-								<p>Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam
-									vulputate.</p>
-							</div>
-						</div>
-
-						<div class="col-6 col-md-6">
-							<div class="feature">
-								<div class="icon">
-									<img src="~/images/support.svg" alt="Image" class="imf-fluid">
-								</div>
-								<h3>24/7 Support</h3>
-								<p>Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam
-									vulputate.</p>
-							</div>
-						</div>
-
-						<div class="col-6 col-md-6">
-							<div class="feature">
-								<div class="icon">
-									<img src="~/images/return.svg" alt="Image" class="imf-fluid">
-								</div>
-								<h3>Hassle Free Returns</h3>
-								<p>Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam
-									vulputate.</p>
-							</div>
-						</div>
-
-					</div> -->
 				</div>
 				<div class="col-lg-6">
 					<div class="write-container">
@@ -451,6 +414,72 @@
 			</div>
 		</footer> *@
 	</div>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+        referrerpolicy="no-referrer"></script>
+        <!-- Jquery Waypoint -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>
+        <!-- BS4 JS -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.5/umd/popper.min.js"></script>
+        <!-- BS4 carousels -->
+        <script>
+            $('.carousel').carousel({
+                interval: 3000
+            });
+        </script>
+        <!-- owl carousels -->
+        <script src="./assets/js/owl.carousel.min.js"></script>
+        <script>
+            $('.clubList-carousel').owlCarousel({
+                loop: true,
+                margin: 10,
+                nav: false,
+                responsive: {
+                    0: {
+                        items: 1
+                    },
+                    576: {
+                        items: 2
+                    },
+                    1200: {
+                        items: 4
+                    }
+                }
+            });
+        </script>
+        <!-- main js -->
+        <script src="~/js/user-script.js"></script>
 </body>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+        referrerpolicy="no-referrer"></script>
+        <!-- Jquery Waypoint -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>
+        <!-- BS4 JS -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.5/umd/popper.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- BS4 carousels -->
+        <script>
+            $('.carousel').carousel({
+                interval: 3000
+            });
+        </script>
+        <!-- owl carousels -->
+        <script src="./assets/js/owl.carousel.min.js"></script>
+        <script>
+            $('.clubList-carousel').owlCarousel({
+                loop: true,
+                margin: 10,
+                nav: false,
+                responsive: {
+                    0: {
+                        items: 1
+                    },
+                    576: {
+                        items: 2
+                    },
+                    1200: {
+                        items: 4
+                    }
+                }
+            });
+        </script>
 </html>
