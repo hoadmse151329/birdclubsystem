@@ -22,5 +22,6 @@ namespace BAL.ViewModels
         [RegularExpression(@"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$", ErrorMessage = "Email is invalid")]
         public string? Email { get; set; }
         public string? Role { get; set; }
+        public string? ImagePath { get; set; }
     }
 }

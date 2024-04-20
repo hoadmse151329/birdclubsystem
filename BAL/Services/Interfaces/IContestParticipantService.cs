@@ -1,8 +1,5 @@
-﻿using AutoMapper;
 using BAL.ViewModels.Event;
 using BAL.ViewModels;
-using DAL.Infrastructure;
-using DAL.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,12 +11,12 @@ namespace BAL.Services.Interfaces
     public interface IContestParticipantService
     {
         Task<IEnumerable<ContestParticipantViewModel>> GetAll();
-        Task<int> Create(string memId, int contestId);
-        Task<int> GetCurrentParticipantAmounts(int contestId);
-        Task<int> GetParticipationNo(string memId, int contestId);
-        Task<bool> Delete(string memId, int contestId);
-        Task<IEnumerable<ContestParticipantViewModel>> GetAllByMemberId(string memberId);
-        Task<IEnumerable<GetEventParticipation>> GetAllByMemberIdInclude(string memberId);
+        Task<IEnumerable<ContestParticipantViewModel>> GetAllByBirdId(int birdId);
         Task<IEnumerable<ContestParticipantViewModel>> GetAllByContestId(int contestId);
+        Task<IEnumerable<GetEventParticipation>> GetAllByBirdIdInclude(int birdId);
+        Task<int> Create(int birdId, int contestId);
+        Task<int> GetCurrentParticipantAmounts(int contestId);
+        Task<int> GetParticipationNo(int birdId, int contestId);
+        Task<bool> Delete(int birdId, int contestId);
     }
 }

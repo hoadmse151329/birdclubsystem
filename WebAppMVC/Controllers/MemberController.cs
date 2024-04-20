@@ -237,7 +237,7 @@ namespace WebAppMVC.Controllers
                     await photo.CopyToAsync(stream);
                 }
 
-                var image = "../images/" + fileName;
+                var image = "~/images/" + fileName;
                 dynamic imageUpload = new ExpandoObject();
                 imageUpload.ImagePath = image;
                 imageUpload.MemberId = usrId;
