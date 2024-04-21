@@ -121,17 +121,17 @@ namespace WebAPI.Controllers
         [ProducesResponseType(typeof(ContestViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> GetFieldTripAndParticipantNo(
+        public async Task<IActionResult> GetContestAndParticipantNo(
             [Required][FromRoute] int id,
             [Required][FromBody] string memId)
         {
             try
             {
-                var trip = await _contestService.GetById(id);
-                if (trip == null) return NotFound(new
+                var cont = await _contestService.GetById(id);
+                if (cont == null) return NotFound(new
                 {
                     Status = false,
-                    ErrorMessage = "Field Trip Not Found!"
+                    ErrorMessage = "Contest Not Found!"
                 });
                 var mem = await _memberService.GetBoolById(memId);
                 if (!mem) return NotFound(new
@@ -139,13 +139,13 @@ namespace WebAPI.Controllers
                     Status = false,
                     ErrorMessage = "Member Not Found!"
                 });
-                int participateNo = await _participantService.GetParticipationNo(memId, id);
-                trip.ParticipationNo = participateNo;
+                int participateNo = await _participantService.GetParticipationNo(id,memId);
+                cont.ParticipationNo = participateNo;
                 return Ok(new
                 {
                     Status = true,
-                    Message = "Get Field Trip successfully!",
-                    Data = trip
+                    Message = "Get Contest successfully!",
+                    Data = cont
                 });
             }
             catch (Exception ex)

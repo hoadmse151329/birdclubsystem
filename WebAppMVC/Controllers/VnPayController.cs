@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BAL.ViewModels.Member;
+using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
+using WebAppMVC.Constants;
 using WebAppMVC.Models.VnPay;
 using WebAppMVC.Services;
 
@@ -7,7 +10,19 @@ namespace WebAppMVC.Controllers
     public class VnPayController : Controller
     {
         private readonly IVnPayService _vnPayService;
-        public VnPayController(IVnPayService vnPayService)
+		private BirdClubLibrary methcall = new();
+		private readonly JsonSerializerOptions jsonOptions = new JsonSerializerOptions
+		{
+			PropertyNameCaseInsensitive = true,
+		};
+		private readonly CookieOptions cookieOptions = new CookieOptions
+		{
+			Expires = DateTime.Now.AddMinutes(10),
+			MaxAge = TimeSpan.FromMinutes(10),
+			Secure = true,
+			IsEssential = true,
+		};
+		public VnPayController(IVnPayService vnPayService)
         {
             _vnPayService = vnPayService;
         }
@@ -29,10 +44,11 @@ namespace WebAppMVC.Controllers
             return Json(response);
         }
 
-        public IActionResult PaymentConfirm()
+        public async Task<IActionResult> PaymentConfirm()
         {
             var response = _vnPayService.PaymentExecute(Request.Query);
-            return View(response);
+            if (response.TransactionType == Constants.Constants.NEW_MEMBER_REGISTRATION_TRANSACTION_TYPE && response.Success) return RedirectToAction("Registration", "Auth");
+			return View(response);
         }
     }
 }

@@ -1,10 +1,10 @@
-@model BAL.ViewModels.Member.CreateNewMember
+@model WebAppMVC.Models.VnPay.PaymentInformationModel
 @{
-	ViewData["Title"] = "New Member Registration Page";
+	ViewData["Title"] = "Confirm Account Registration Payment Page";
 	Layout = "~/Views/Shared/_Layout.cshtml";
 	List<SelectListItem> genders = new()
 	{
-		new SelectListItem {Text = "Male",Value = "Male"},
+		new SelectListItem {Text = "Membership",Value = "Member"},
 		new SelectListItem {Text = "Female",Value = "Female"},
 		new SelectListItem {Text = "Other",Value = "Other"}
 	};
@@ -44,73 +44,31 @@
 <body>
 	<div
 		style="background-image: url(~/images/Background.png); background-repeat:no-repeat; background-size: 100% 100%;">
+
 		<div class="main-container">
 			<div class="row justify-content-between">
 				<div class="col-lg-6">
 					<div class="box-container">
 						<div class="d-flex justify-content-center box-header light-green">
-							<h5><b>Register</b></h5>
+							<h5><b>Confirm Payment for your Membership</b></h5>
 						</div>
 
 						<div class="d-flex box-body justify-content-center">
-							<form class="reg-form" asp-controller="Auth" asp-action="ConfirmPaymentforRegistration">
+							<form id="frmCreateTransaction" class="reg-form" asp-controller="CreatePaymentUrl" asp-action="VnPay" method="post">
 								@{
-									if (ViewBag.error != null)
+									if (ViewBag.Error != null)
 									{
-										<span class="text-danger">@ViewBag.error</span>
+										<span class="form-group text-danger">@ViewBag.Error</span>
 									}
 								}
 								<div class="form-group">
-									<input type="text" placeholder="Username" asp-for="UserName" class="form-control form-data" />
-
-									<span asp-validation-for="UserName" class="text-danger"></span>
-								</div>
-								<div class="form-group">
-									<input type="text" placeholder="Fullname" asp-for="FullName" class="form-control form-data" />
-
-									<span asp-validation-for="FullName" class="text-danger"></span>
-								</div>
-								<div class="form-group">
-
-									<select class="form-control form-data custom-select" asp-for="Gender" asp-items="@genders"  name="gender">
-										<option value="">Gender</option>
-									</select>
-
-									<span asp-validation-for="Gender" class="text-danger"></span>
-								</div>
-								<div class="form-group">
-									<input type="email" placeholder="Email" asp-for="Email" class="form-control form-data" />
-
-									<span asp-validation-for="Email" class="text-danger"></span>
-								</div>
-								<div class="form-group">
-									<input type="tel" placeholder="Phone" asp-for="Phone" class="form-control form-data" />
-
-									<span asp-validation-for="Phone" class="text-danger"></span>
-								</div>
-								<div class="form-group">
-									<input type="password" placeholder="Password" asp-for="Password" class="form-control" />
-
-									<span asp-validation-for="Password" class="text-danger"></span>
-								</div>
-								<div class="form-group">
-									<input type="password" placeholder="ConfirmPassword" asp-for="ConfirmPassword" class="form-control" />
-									
-									<span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-								</div>
-								<div class="form-group">
 									<h5><b>New Member must buy our Membership to have access to our service</b></h5>
-									<input disabled class="form-control form-data" value="80.000vnd" />
-									<input type="hidden" placeholder="PayAmount" asp-for="PayAmount" class="form-control form-data" value="80000" />
+                                    <input disabled placeholder="PayAmount" asp-for="PayAmount" class="form-control form-data" />
 								</div>
-								<button class="reg-button button light-green" type="submit" value="ConfirmPaymentforRegistration">Register</button>
+								<button class="reg-button button light-green" type="submit" value="SignUp">Checkout</button>
 								<div class="reg-text">
 									Already a Member? <a href="@Url.Action("Login","Auth")" class="link-success">Login</a>
 								</div>
-								<div class="reg-text">
-									Or Login with
-								</div>
-								<img class="google-icon" img src="~/images/google.png">
 							</form>
 						</div>
 						

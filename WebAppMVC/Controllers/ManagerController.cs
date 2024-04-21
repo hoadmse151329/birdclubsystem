@@ -31,7 +31,7 @@ namespace WebAppMVC.Controllers
             Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
             PropertyNameCaseInsensitive = true
         };
-        private MethodCaller methcall = new();
+        private BirdClubLibrary methcall = new();
 
         public ManagerController(ILogger<MeetingController> logger, IConfiguration config)
         {
@@ -952,7 +952,13 @@ namespace WebAppMVC.Controllers
             }
             return RedirectToAction("ManagerProfile");
         }
+        [HttpGet("Feedback")]
         public IActionResult ManagerFeedBack()
+        {
+            return View();
+        }
+        [HttpGet("ListOfEvents")]
+        public IActionResult ManagerListOfEvents()
         {
             return View();
         }

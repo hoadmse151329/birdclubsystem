@@ -7,6 +7,7 @@ namespace DAL.Models
     {
         public int TransactionId { get; set; }
         public int? UserId { get; set; }
+        public string? VnPayId { get; set; }
         public string? TransactionType { get; set; }
         public decimal? Value { get; set; }
         public DateTime? PaymentDate { get; set; }
