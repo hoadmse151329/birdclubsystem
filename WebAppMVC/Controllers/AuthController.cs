@@ -242,6 +242,7 @@ namespace WebAppMVC.Controllers
 				HttpContext.Session.SetString("ROLE_NAME", responseAuth.RoleName);
 				HttpContext.Session.SetString("USER_ID", responseAuth.UserId);
 				HttpContext.Session.SetString("USER_NAME", responseAuth.UserName);
+				HttpContext.Session.SetString("IMAGE_PATH", responseAuth.ImagePath);
 
 				client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", responseAuth.AccessToken);
 
@@ -249,6 +250,7 @@ namespace WebAppMVC.Controllers
 				TempData["ROLE_NAME"] = responseAuth.RoleName;
 				TempData["USER_ID"] = responseAuth.UserId;
 				TempData["USER_NAME"] = responseAuth.UserName;
+				TempData["IMAGE_PATH"] = responseAuth.ImagePath;
 			}
 			if (responseAuth!.RoleName == Constants.Constants.ADMIN)
 			{

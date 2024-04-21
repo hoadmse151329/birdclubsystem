@@ -231,8 +231,11 @@ namespace WebAppMVC.Controllers
             string? usrname = HttpContext.Session.GetString("USER_NAME");
             if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
 
+            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
+
             TempData["ROLE_NAME"] = role;
             TempData["USER_NAME"] = usrname;
+            TempData["IMAGE_PATH"] = imagepath;
 
             var participationNo = await methcall.CallMethodReturnObject<GetMeetingParticipationNo>(
                 _httpClient: _httpClient,
@@ -279,8 +282,11 @@ namespace WebAppMVC.Controllers
             string? usrname = HttpContext.Session.GetString("USER_NAME");
             if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
 
+            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
+
             TempData["ROLE_NAME"] = role;
             TempData["USER_NAME"] = usrname;
+            TempData["IMAGE_PATH"] = imagepath;
 
             var participationNo = await methcall.CallMethodReturnObject<GetMeetingPostDeRegister>(
                 _httpClient: _httpClient,
