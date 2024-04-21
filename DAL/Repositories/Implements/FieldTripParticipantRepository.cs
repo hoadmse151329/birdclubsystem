@@ -20,7 +20,7 @@ namespace DAL.Repositories.Implements
 
         public async Task<bool> GetBoolFieldTripParticipantById(int tripId, string memberId)
         {
-            var mempart = _context.FieldTripParticipants.Find(tripId, memberId);
+            var mempart = _context.FieldTripParticipants.FirstOrDefault(fp => fp.TripId == tripId && fp.MemberId == memberId);
             if (mempart != null) return true;
             return false;
         }
@@ -37,7 +37,7 @@ namespace DAL.Repositories.Implements
 
         public async Task<FieldTripParticipant> GetFieldTripParticipantById(int tripId, string memberId)
         {
-            return _context.FieldTripParticipants.Find(tripId, memberId);
+            return _context.FieldTripParticipants.FirstOrDefault(fp => fp.TripId == tripId && fp.MemberId == memberId);
         }
 
         public async Task<IEnumerable<FieldTripParticipant>> GetFieldTripParticipantsByTripId(int tripId)

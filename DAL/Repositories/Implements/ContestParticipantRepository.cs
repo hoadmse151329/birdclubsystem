@@ -18,13 +18,6 @@ namespace DAL.Repositories.Implements
             _context = context;
         }
 
-        public async Task<bool> GetBoolContestParticipantById(int contestId, int birdId)
-        {
-            var birdpart = _context.ContestParticipants.Find(contestId, birdId);
-            if (birdpart != null) return true;
-            return false;
-        }
-
         public async Task<int> GetCountContestParticipantsByContestId(int contestId)
         {
             return _context.ContestParticipants.Count(con => con.ContestId == contestId);
@@ -33,11 +26,6 @@ namespace DAL.Repositories.Implements
         public async Task<int> GetCountContestParticipantsByBirdId(int birdId)
         {
             return _context.ContestParticipants.Count(b => b.BirdId == birdId);
-        }
-
-        public async Task<ContestParticipant> GetContestParticipantById(int contestId, int birdId)
-        {
-            return _context.ContestParticipants.Find(contestId, birdId);
         }
 
         public async Task<IEnumerable<ContestParticipant>> GetContestParticipantsByContestId(int contestId)
@@ -55,11 +43,48 @@ namespace DAL.Repositories.Implements
             return _context.ContestParticipants.Where(b => b.BirdId == birdId).Include(c => c.Contest).ToList();
         }
 
-        public async Task<int> GetParticipationNoContestParticipantById(int contestId, int birdId)
-        {
-            var birdpart = _context.ContestParticipants.Find(contestId, birdId);
-            if (birdpart != null) return Int32.Parse(birdpart.ParticipantNo);
-            return 0;
-        }
-    }
+		public async Task<IEnumerable<ContestParticipant>> GetContestParticipantsByMemberId(string memberId)
+		{
+			return _context.ContestParticipants.Where(cp => cp.MemberId == memberId).ToList();
+		}
+
+		public async Task<IEnumerable<ContestParticipant>> GetContestParticipantsByMemberIdInclude(string memberId)
+		{
+            return _context.ContestParticipants.Where(cp => cp.MemberId == memberId).ToList();
+		}
+
+		public async Task<int> GetCountContestParticipantsByMemberId(string memberId)
+		{
+			return _context.ContestParticipants.Count(b => b.MemberId == memberId);
+		}
+
+		public async Task<bool> GetBoolContestParticipantById(int contestId, string memberId, int? birdId = null)
+		{
+            ContestParticipant cp = null;
+            if(birdId.HasValue)
+            {
+                cp = _context.ContestParticipants.FirstOrDefault(b => b.ContestId == contestId && b.MemberId == memberId && b.BirdId == birdId);
+                if(cp != null)
+                    return true;
+                return false;
+			}
+			cp = _context.ContestParticipants.FirstOrDefault(b => b.ContestId == contestId && b.MemberId == memberId);
+            if (cp != null) return true;
+            return false;
+
+		}
+
+		public async Task<int> GetParticipationNoContestParticipantById(int contestId, string memberId, int? birdId = null)
+		{
+            var cp = _context.ContestParticipants.FirstOrDefault(cp => cp.ContestId == contestId && cp.MemberId == memberId);
+            if (cp == null) return 0;
+            return Int32.Parse(cp.ParticipantNo);
+		}
+
+		public async Task<ContestParticipant> GetContestParticipantById(int contestId, string memberId, int? birdId = null)
+		{
+            if (birdId != null) return _context.ContestParticipants.FirstOrDefault(b => b.ContestId == contestId && b.MemberId == memberId && b.BirdId == birdId);
+			return _context.ContestParticipants.FirstOrDefault(b => b.ContestId == contestId && b.MemberId == memberId);
+		}
+	}
 }

@@ -289,9 +289,13 @@ namespace DAL.Models
 
             modelBuilder.Entity<ContestParticipant>(entity =>
             {
-                entity.HasKey(e => new { e.BirdId, e.ContestId });
+                entity.HasKey(e => new { e.MemberId, e.ContestId });
 
-                entity.Property(e => e.BirdId).HasColumnName("birdId");
+				entity.Property(e => e.MemberId)
+                    .HasMaxLength(50)
+                    .HasColumnName("memberId");
+
+				entity.Property(e => e.BirdId).HasColumnName("birdId");
 
                 entity.Property(e => e.CheckInStatus)
                     .HasColumnName("checkInStatus");
@@ -313,7 +317,12 @@ namespace DAL.Models
                     .WithMany()
                     .HasForeignKey(d => d.ContestId)
                     .HasConstraintName("FK__TournamentP__TID__0D7A0286");
-            });
+
+				entity.HasOne(d => d.Member)
+					.WithMany()
+					.HasForeignKey(d => d.MemberId)
+					.HasConstraintName("FK__TournamentP__MID");
+			});
 
             modelBuilder.Entity<ContestScore>(entity =>
             {
@@ -846,7 +855,11 @@ namespace DAL.Models
                     .HasColumnType("date")
                     .HasColumnName("paymentDate");
 
-                entity.Property(e => e.Status)
+				entity.Property(e => e.VnPayId)
+					.HasMaxLength(255)
+					.HasColumnName("vnPayId");
+
+				entity.Property(e => e.Status)
                     .HasMaxLength(255)
                     .HasColumnName("status");
 

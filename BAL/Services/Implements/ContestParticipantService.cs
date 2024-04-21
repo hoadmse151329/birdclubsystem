@@ -22,9 +22,9 @@ namespace BAL.Services.Implements
             _mapper = mapper;
         }
 
-        public async Task<int> Create(int birdId, int contestId)
+        public async Task<int> Create(string memberId, int contestId, int? birdId = null)
         {
-            int partNo = await _unitOfWork.ContestParticipantRepository.GetParticipationNoContestParticipantById(contestId, birdId);
+            int partNo = await _unitOfWork.ContestParticipantRepository.GetParticipationNoContestParticipantById(contestId, memberId, birdId);
             if (partNo > 0) return partNo;
             int contestpartCount = await _unitOfWork.ContestParticipantRepository.GetCountContestParticipantsByContestId(contestId);
             if (contestpartCount.Equals(0)) partNo = 1; else partNo = contestpartCount + 1;
@@ -49,16 +49,11 @@ namespace BAL.Services.Implements
             return await _unitOfWork.ContestParticipantRepository.GetCountContestParticipantsByContestId(contestId);
         }
 
-        public async Task<int> GetParticipationNo(int birdId, int contestId)
+        public async Task<bool> Delete(string memberId, int contestId, int? birdId = null)
         {
-            return await _unitOfWork.ContestParticipantRepository.GetParticipationNoContestParticipantById(contestId, birdId);
-        }
-
-        public async Task<bool> Delete(int birdId, int contestId)
-        {
-            bool check = await _unitOfWork.ContestParticipantRepository.GetBoolContestParticipantById(contestId, birdId);
+            bool check = await _unitOfWork.ContestParticipantRepository.GetBoolContestParticipantById(contestId,memberId, birdId);
             if (!check) return false;
-            ContestParticipant contestParticipant = await _unitOfWork.ContestParticipantRepository.GetContestParticipantById(contestId, birdId);
+            ContestParticipant contestParticipant = await _unitOfWork.ContestParticipantRepository.GetContestParticipantById(contestId,memberId, birdId);
             _unitOfWork.ContestParticipantRepository.Delete(contestParticipant);
             _unitOfWork.Save();
             return true;
@@ -80,5 +75,22 @@ namespace BAL.Services.Implements
             return _mapper.Map<IEnumerable<ContestParticipantViewModel>>(await
                 _unitOfWork.ContestParticipantRepository.GetContestParticipantsByContestId(contestId));
         }
-    }
+
+		public async Task<IEnumerable<ContestParticipantViewModel>> GetAllByMemberId(string memberId)
+		{
+			return _mapper.Map<IEnumerable<ContestParticipantViewModel>>(await
+				_unitOfWork.ContestParticipantRepository.GetContestParticipantsByMemberId(memberId));
+		}
+
+		public async Task<IEnumerable<GetEventParticipation>> GetAllByMemberIdInclude(string memberId)
+		{
+			return _mapper.Map<IEnumerable<GetEventParticipation>>(await
+				_unitOfWork.ContestParticipantRepository.GetContestParticipantsByMemberIdInclude(memberId));
+		}
+
+		public async Task<int> GetParticipationNo(int contestId, string memberId, int? birdId = null)
+		{
+			return await _unitOfWork.ContestParticipantRepository.GetParticipationNoContestParticipantById(contestId,memberId,birdId);
+		}
+	}
 }

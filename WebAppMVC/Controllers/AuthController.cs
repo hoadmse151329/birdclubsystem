@@ -17,6 +17,7 @@ using WebAppMVC.Models.VnPay;
 
 namespace WebAppMVC.Controllers
 {
+	[Route("Auth")]
 	public class AuthController : Controller
 	{
 		private readonly ILogger<AuthController> _logger;
@@ -47,10 +48,12 @@ namespace WebAppMVC.Controllers
 			client.BaseAddress = new Uri(config.GetSection("DefaultApiUrl:ConnectionString").Value);
 			AuthenAPI_URL = "/api/User";
 		}
+		[HttpGet("Register")]
 		public IActionResult Register()
 		{
 			return View();
 		}
+		[HttpGet("Login")]
 		public IActionResult Login()
 		{
 			return View();
@@ -131,8 +134,7 @@ namespace WebAppMVC.Controllers
 		}*/
         #endregion
 
-        [HttpGet]
-        [Route("Auth/Logout")]
+        [HttpGet("Logout")]
         public IActionResult Logout()
         {
 			client.DefaultRequestHeaders.Authorization = null;
@@ -146,7 +148,7 @@ namespace WebAppMVC.Controllers
 
             return RedirectToAction(actionName: "Index", controllerName:"Home");
         }
-		[HttpPost]
+		[HttpPost("Authorize")]
 		public async Task<IActionResult> Authorize(AuthenRequest authenRequest)
 		{
             AuthenAPI_URL += "/Login";
@@ -203,7 +205,73 @@ namespace WebAppMVC.Controllers
                 return base.Redirect(Constants.Constants.MEMBER_URL);
 			}
 		}
-		[HttpPost]
+		[HttpGet("Registration")]
+		public async Task<IActionResult> FinishingRegistration()
+		{
+			AuthenAPI_URL += "/Register";
+
+			var newmemRequest = await methcall.GetCookie<CreateNewMember>(Request, "memRequest", jsonOptions);
+
+			if (newmemRequest == null)
+			{
+				_logger.LogInformation("Error while registering your new account ! Please Try Again");
+				ViewBag.error = "Error while registering your new account ! ";
+				return View("Register");
+			}
+
+			var authenResponse = await methcall.CallMethodReturnObject<GetAuthenResponse>(
+				_httpClient: client,
+				options: jsonOptions,
+				methodName: "POST",
+				url: AuthenAPI_URL,
+				inputType: newmemRequest,
+				_logger: _logger);
+
+			if (authenResponse == null)
+			{
+				_logger.LogInformation("Error while registering your new account: ");
+				ViewBag.error = "Error while registering your new account ! ";
+				return View("Register");
+			}
+
+			var responseAuth = authenResponse.Data;
+
+			if (authenResponse.Status)
+			{
+				HttpContext.Session.SetString("ACCESS_TOKEN", responseAuth.AccessToken);
+				HttpContext.Session.SetString("ROLE_NAME", responseAuth.RoleName);
+				HttpContext.Session.SetString("USER_ID", responseAuth.UserId);
+				HttpContext.Session.SetString("USER_NAME", responseAuth.UserName);
+
+				client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", responseAuth.AccessToken);
+
+				TempData["ACCESS_TOKEN"] = responseAuth.AccessToken;
+				TempData["ROLE_NAME"] = responseAuth.RoleName;
+				TempData["USER_ID"] = responseAuth.UserId;
+				TempData["USER_NAME"] = responseAuth.UserName;
+			}
+			if (responseAuth!.RoleName == Constants.Constants.ADMIN)
+			{
+				_logger.LogInformation("Admin Register Successful: " + TempData["ROLE_NAME"] + " , Id: " + TempData["USER_ID"]);
+				return base.Redirect(Constants.Constants.ADMIN_URL);
+			}
+			else if (responseAuth!.RoleName == Constants.Constants.MANAGER)
+			{
+				_logger.LogInformation("Manager Register Successful: " + TempData["ROLE_NAME"] + " , Id: " + TempData["USER_ID"]);
+				return base.Redirect(Constants.Constants.MANAGER_URL);
+			}
+			else if (responseAuth!.RoleName == Constants.Constants.STAFF)
+			{
+				_logger.LogInformation("Staff Register Successful: " + TempData["ROLE_NAME"] + " , Id: " + TempData["USER_ID"]);
+				return base.Redirect(Constants.Constants.STAFF_URL);
+			}
+			else
+			{
+				_logger.LogInformation("Member Register Successful: " + TempData["ROLE_NAME"] + " , Id: " + TempData["USER_ID"]);
+				return base.Redirect(Constants.Constants.MEMBER_URL);
+			}
+		}
+		[HttpPost("ConfirmRegistration")]
 		public IActionResult ConfirmPaymentforRegistration(CreateNewMember newmemRequest)
 		{
 			methcall.SetCookie(Response, "memRequest", newmemRequest, cookieOptions, jsonOptions, 15);
@@ -216,7 +284,7 @@ namespace WebAppMVC.Controllers
 			var url = _vnPayService.CreatePaymentUrl(model, HttpContext);
 			return Redirect(url);
 		}
-		[HttpPost]
+		[HttpPost("SignUp")]
 		public async Task<IActionResult> SignUp(CreateNewMember newmemRequest)
 		{
 			AuthenAPI_URL += "/Register";

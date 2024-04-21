@@ -27,7 +27,7 @@ namespace WebAppMVC.Services
             pay.AddRequestData("vnp_CurrCode", _configuration["Vnpay:CurrCode"]);
             pay.AddRequestData("vnp_IpAddr", pay.GetIpAddress(context));
             pay.AddRequestData("vnp_Locale", _configuration["Vnpay:Locale"]);
-            pay.AddRequestData("vnp_OrderInfo", $"{model.Fullname} {model.PayAmount}");
+            pay.AddRequestData("vnp_OrderInfo", $"{model.Fullname},{model.PayAmount},{model.TransactionType}");
             pay.AddRequestData("vnp_OrderType", model.TransactionType);
             pay.AddRequestData("vnp_ReturnUrl", urlCallBack);
             pay.AddRequestData("vnp_TxnRef", tick);
@@ -42,7 +42,6 @@ namespace WebAppMVC.Services
         {
             var pay = new VnPayLibrary();
             var response = pay.GetFullResponseData(collections, _configuration["Vnpay:HashSecret"]);
-
             return response;
         }
     }

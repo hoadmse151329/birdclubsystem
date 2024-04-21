@@ -5,18 +5,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DAL.Models;
 
 namespace BAL.Services.Interfaces
 {
     public interface IContestParticipantService
     {
-        Task<IEnumerable<ContestParticipantViewModel>> GetAll();
+        Task<int> Create(string memberId, int contestId, int? birdId = null);
+        Task<bool> Delete(string memberId, int contestId, int? birdId = null);
+		Task<IEnumerable<ContestParticipantViewModel>> GetAll();
         Task<IEnumerable<ContestParticipantViewModel>> GetAllByBirdId(int birdId);
-        Task<IEnumerable<ContestParticipantViewModel>> GetAllByContestId(int contestId);
-        Task<IEnumerable<GetEventParticipation>> GetAllByBirdIdInclude(int birdId);
-        Task<int> Create(int birdId, int contestId);
+		Task<IEnumerable<GetEventParticipation>> GetAllByBirdIdInclude(int birdId);
+		Task<IEnumerable<ContestParticipantViewModel>> GetAllByContestId(int contestId);
+		Task<IEnumerable<ContestParticipantViewModel>> GetAllByMemberId(string memberId);
+		Task<IEnumerable<GetEventParticipation>> GetAllByMemberIdInclude(string memberId);
         Task<int> GetCurrentParticipantAmounts(int contestId);
-        Task<int> GetParticipationNo(int birdId, int contestId);
-        Task<bool> Delete(int birdId, int contestId);
-    }
+        Task<int> GetParticipationNo(int contestId, string memberId, int? birdId = null);
+
+	}
 }

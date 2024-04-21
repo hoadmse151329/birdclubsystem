@@ -273,7 +273,7 @@ namespace WebAPI.Controllers
                 {
                     Username = newmem.UserName,
                     Password = newmem.Password,
-                    ImagePath = newmem.ImagePath
+                    ImagePath = value.ImagePath
                 };
                 var resultaft = await _userService.AuthenticateUser(loguser);
 
