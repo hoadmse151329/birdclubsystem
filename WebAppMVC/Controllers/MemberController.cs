@@ -320,6 +320,16 @@ namespace WebAppMVC.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-    // GET: MemberController
+        // GET: MemberController
+        [HttpGet("Bird")]
+        public IActionResult MemberBird()
+        {
+            return View();
+        }
+        [HttpGet("Payment")]
+        public IActionResult MemberPayment()
+        {
+            return View();
+        }
     }
 }
