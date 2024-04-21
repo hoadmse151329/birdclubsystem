@@ -8,7 +8,6 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="~/css/bootstrap.min.css">
         <!-- FONT -->
         <link
             href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,100&family=Roboto+Condensed:wght@400;700&display=swap"
@@ -16,8 +15,6 @@
         <!-- FONT AWESOME -->
         <link rel="stylesheet" href="~/fonts/fontawesome-free-5.15.4-web/css/all.min.css">
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
     <!--Boxicons-->
     <link rel='stylesheet' href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css'>
     <!-- Other-->
@@ -408,39 +405,7 @@
                                     </div>
                                 </div>       
                                 <!-- home1 -->
-                                <div class="tab-pane active" id="home1" role="tabpanel">
-                                    <div class="col-10">
-                                    <h2>Route</h2>
-                                </div>
-                                <table class="route__flow avoid-break-p">
-                                    <tbody>
-                                        @* <tr class="country">
-                                                <td colspan="2">
-                                                    <a href="https://www.safaribookings.com/tanzania" target="_blank">
-                                                        <strong>Tanzania</strong>
-                                                    </a>
-                                                    <img src="https://cfstatic.safaribookings.com/images/flags/tz.png" alt="" class="flag">
-                                                </td>
-                                            </tr> *@
-                                        @foreach (var day in Model.DaybyDays)
-                                        {
-                                            if (day.Equals(Model.DaybyDays.Last()))
-                                            {
-                                                <tr class="last">
-                                                    <td>@day.Day</td>
-                                                    <td>@day.Description</td>
-                                                </tr>
-                                            }
-                                            else
-                                            {
-                                                <tr>
-                                                    <td>@day.Day</td>
-                                                    <td>@day.Description</td>
-                                                </tr>
-                                            }
-                                        }
-                                    </tbody>
-                                </table>
+                                <div class="tab-pane active" id="home1" role="tabpanel">                           
                                             <div class="tour__content__block tour__content__block--consider avoid-break-p">
                     <h2>Tour Rates</h2>
                     <div class="row">
@@ -453,14 +418,7 @@
                                 <h4>Mid-range tour</h4>
                                 <p>This mid-range tour uses lodges and tented camps.</p>
                             </div>
-                        }
-                        <div class="col col-12 col-t-6 item  ">
-                            <div class="svg-box">
-                                <img src="https://cfstatic.safaribookings.com/img/svg/icons-red/icon-accomodation-mid.svg" alt="">
-                            </div>
-                            <h4>Mid-range tour</h4>
-                            <p>This mid-range tour uses lodges and tented camps.</p>
-                        </div>
+                        }                       
                         <div class="col col-12 col-t-6 item  ">
                             <div class="svg-box">
                                 <img src="https://cfstatic.safaribookings.com/img/svg/icons-red/icon-group-small.svg" alt="">
@@ -500,54 +458,6 @@
                     </div>
 
                 </div>
-
-                <div class="tour__content__block tour__content__block--consider avoid-break-p">
-                    <h2>Tour Rates</h2>
-                    <div class="row">
-                        @foreach (var day in Model.Rates)
-                        {
-                            <div class="col col-12 col-t-6 item">
-                                <div class="svg-box">
-                                    <img src="https://cfstatic.safaribookings.com/img/svg/icons-red/icon-accomodation-mid.svg" alt="">
-                                </div>
-                                <h4>Mid-range tour</h4>
-                                <p>This mid-range tour uses lodges and tented camps.</p>
-                            </div>
-                        }
-                    </div>
-                </div>
-                <div class="tour__content__block tour__content__block--consider avoid-break-p">
-                    <h2>Tour Rates</h2>
-                    <div class="row">
-                        @foreach (var day in Model.Inclusions)
-                        {
-                            <div class="col col-12 col-t-6 item">
-                                <div class="svg-box">
-                                    <img src="https://cfstatic.safaribookings.com/img/svg/icons-red/icon-accomodation-mid.svg" alt="">
-                                </div>
-                                <h4>Mid-range tour</h4>
-                                <p>This mid-range tour uses lodges and tented camps.</p>
-                            </div>
-                        }
-                    </div>
-                </div>
-                <div class="tour__content__block tour__content__block--consider avoid-break-p">
-                    <h2>Tour Rates</h2>
-                    <div class="row">
-                        @foreach (var day in Model.GettingThere)
-                        {
-                            <div class="col col-12 col-t-6 item">
-                                <div class="svg-box">
-                                    <img src="https://cfstatic.safaribookings.com/img/svg/icons-red/icon-accomodation-mid.svg" alt="">
-                                </div>
-                                <h4>Mid-range tour</h4>
-                                <p>This mid-range tour uses lodges and tented camps.</p>
-                            </div>
-                        }
-                    </div>
-                </div>
-
-
                 <div class="tour__content__block tour__content__block--activities avoid-break-p">
                     <h2>Activities &amp; Transportation</h2>
 
