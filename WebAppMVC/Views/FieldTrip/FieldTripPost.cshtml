@@ -22,6 +22,7 @@
         <!-- main CSS -->
         <link rel="stylesheet" href="~/css/main.css">
             <link rel="stylesheet" href="~/css/FieldTrip.css">
+          
     <!-- main CSS -->
 </head>
 <body>
@@ -118,292 +119,37 @@
                                 <li class="nav-item">
                                     <a class="nav-link active" data-toggle="tab" href="#home1">
                                         <i class='bx bx-home-alt-2'></i>
-                                        <span>Home 1</span>
+                                        <span>Overview</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" data-toggle="tab" href="#home2">
                                         <i class='bx bx-home-alt-2'></i>
-                                        <span>Home 2</span>
+                                        <span>Day By Day</span>
+                                    </a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#home5">
+                                        <i class='bx bx-home-alt-2'></i>
+                                        <span>Rates</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" data-toggle="tab" href="#home3">
+                                    <a class="nav-link" data-toggle="tab" href="#home6">
                                         <i class='bx bx-home-alt-2'></i>
-                                        <span>Home 3</span>
+                                        <span>Inclusions</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" data-toggle="tab" href="#home4">
+                                    <a class="nav-link" data-toggle="tab" href="#home7">
                                         <i class='bx bx-home-alt-2'></i>
-                                        <span>Home 4</span>
+                                        <span>Getting There</span>
                                     </a>
                                 </li>
-                                
                     </ul>
                     <div class="tab-content">
-                                <!-- home1 -->
-                                <div class="tab-pane" id="home3" role="tabpanel">
-                                    <div class="row search">
-                                        <div class="col-sm-12 d-flex">
-                                            <div class="col-sm-6 d-flex address-home">
-                                                <span>Địa chỉ: </span>
-                                                <h5> 111a,Đình phong phú</h5>
-                                            </div>
-                                            <div class="col-sm-6 d-flex justify-content-end">
-                                                <form action="#">
-                                                    <div>
-                                                        <label>
-                                                            <input class="form-control" type="text" name="search" placeholder="Search...">
-                                                            <i class='bx bx-search-alt'></i>
-                                                        </label>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row card-content">
-                                        <div class="col-xl-3 col-lg-6 col-sm-6 my-3 item">
-                                            <div class="card card-child">
-                                                <div class="card-body add-room">
-                                                    <button class="border-0" data-toggle="modal"  data-target="#addRoom1">
-                                                        <span>Thêm Phòng</span>
-                                                        <i class='bx bx-add-to-queue'></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- dung vong for o day -->
-                                        <div class="col-xl-3 col-lg-6 col-sm-6 my-3">
-                                            <div class="card card-child">
-                                                <div class="room-name">
-                                                    <span>Room 1</span>
-                                                    <div class="status">
-                                                        <!-- dùng lệnh if -->
-                                                        <span class="stt1">Trạng thái:<h6>Trống</h6></span>
-                                                        <!-- <span class="stt2">Trạng thái:<h6>Đang thuê</h6></span>
-                                                        <span class="stt3">Trạng thái:<h6>Đã cọc</h6></span> -->
-                                                    </div>
-                                                </div>
-                                                <div class="card-body">
-                                                    <div class="room-title">
-                                                        <ul>
-                                                            <li>
-                                                                <h6>Người thuê:</h6>
-                                                                <span></span>
-                                                            </li>                                                        
-                                                            <li>
-                                                                <h6>Thông tin phòng:</h6>
-                                                                <span>
-                                                                </span>
-                                                            </li>
-                                                            <li>
-                                                                <h6>Dịch vụ sử dụng:</h6>
-                                                                <span>
-                                                                </span>
-                                                            </li>
-                                                            <li>
-                                                                <h6>Mô tả:</h6>
-                                                                <span>
-                                                                </span>
-                                                            </li>
-                                                            <li>
-                                                                <h5>Giá:</h5>
-                                                                <span>120,000&dstrok;</span>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group mx-auto">
-                                                    <button class="btn btn-primary clickable-row" data-href="owner-room-list-details.html">
-                                                        <span>Xem</span> 
-                                                    </button>
-                                                    <button class="btn btn-danger" data-toggle="modal" data-target="#deleteRoom">
-                                                        <span>Xóa Phòng</span> 
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-xl-3 col-lg-6 col-sm-6 my-3">
-                                            <div class="card card-child">
-                                                <div class="room-name">
-                                                    <span>Room 1</span>
-                                                    <div class="status">
-                                                        <!-- dùng lệnh if -->
-                                                        <!-- <span class="stt1">Trạng thái:<h6>Trống</h6></span> -->
-                                                        <span class="stt2">Trạng thái:<h6>Đang thuê</h6></span>
-                                                        <!-- <span class="stt3">Trạng thái:<h6>Đã cọc</h6></span> -->
-                                                    </div>
-                                                </div>
-                                                <div class="card-body">
-                                                    <div class="room-title">
-                                                        <ul>
-                                                            <li>
-                                                                <h6>Người thuê:</h6>
-                                                                <span>Tran Ngoc Hai</span>
-                                                            </li>                                                        
-                                                            <li>
-                                                                <h6>Thông tin phòng:</h6>
-                                                                <span>Luxury</span>
-                                                            </li>
-                                                            <li>
-                                                                <h6>Dịch vụ sử dụng:</h6>
-                                                                <span>04</span>
-                                                            </li>
-                                                            <li>
-                                                                <h6>Mô tả:</h6>
-                                                                <span></span>
-                                                            </li>
-                                                            <li>
-                                                                <h5>Giá:</h5>
-                                                                <span>500,000&dstrok;</span>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group mx-auto">
-                                                    <button class="btn btn-primary clickable-row" data-href="#">
-                                                        <span>Xem</span> 
-                                                    </button>
-                                                    <button class="btn btn-danger" data-toggle="modal" data-target="#removeRoom">
-                                                        <span>Hủy Phòng</span> 
-                                                    </button> 
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-xl-3 col-lg-6 col-sm-6 my-3">
-                                            <div class="card card-child">
-                                                <div class="room-name">
-                                                    <span>Room 1</span>
-                                                    <div class="status">
-                                                        <!-- dùng lệnh if -->
-                                                        <!-- <span class="stt1">Trạng thái:<h6>Trống</h6></span> -->
-                                                        <!-- <span class="stt2">Trạng thái:<h6>Đang thuê</h6></span>-->
-                                                        <span class="stt3">Trạng thái:<h6>Đã cọc</h6></span> 
-                                                    </div>
-                                                </div>
-                                                <div class="card-body">
-                                                    <div class="room-title">
-                                                        <ul>
-                                                            <li>
-                                                                <h6>Người thuê:</h6>
-                                                                <span>Tran Ngoc Hai</span>
-                                                            </li>                                                        
-                                                            <li>
-                                                                <h6>Thông tin phòng:</h6>
-                                                                <span>Normal</span>
-                                                            </li>
-                                                            <li>
-                                                                <h6>Dịch vụ sử dụng:</h6>
-                                                                <span>00</span>
-                                                            </li>
-                                                            <li>
-                                                                <h6>Mô tả:</h6>
-                                                                <span></span>
-                                                            </li>
-                                                            <li>
-                                                                <h5>Giá:</h5>
-                                                                <span>120,000&dstrok;</span>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group mx-auto">
-                                                    <button class="btn btn-primary clickable-row" data-href="#">
-                                                        <span>Xem</span> 
-                                                    </button>
-                                                    <button class="btn btn-danger" data-toggle="modal" data-target="#removeRoom">
-                                                        <span>Hủy Phòng</span> 
-                                                    </button> 
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="pagination d-flex justify-content-center">
-                                        <li class="page-item previous-page disabled"><a href="#" class="page-link">Trước</a></li>
-                                        <li class="page-item dots">...</li>
-                                        <li class="page-item current-page active"><a href="#" class="page-link">2</a></li>
-                                        <li class="page-item current-page"><a href="#" class="page-link">3</a></li>
-                                        <li class="page-item current-page"><a href="#" class="page-link">4</a></li>
-                                        <li class="page-item dots">...</li>
-                                        <li class="page-item next-page"><a href="#" class="page-link">Sau</a></li>
-                                    </div>
-                                </div>
-                                <!-- home2 -->
-                                <div class="tab-pane" id="home4" role="tabpanel">
-                                    <div class="search">
-                                        <div class="address-home">
-                                            <span>Địa chỉ: <h5> Chưa có</h5></span>
-                                        </div>
-                                        <form action="#">
-                                            <label>
-                                                <input class="form-control" type="text" name="search" placeholder="Search...">
-                                                <i class='bx bx-search-alt'></i>
-                                            </label>
-                                        </form>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-xl-3 col-lg-6 col-sm-6 my-3">
-                                            <div class="card card-child">
-                                                <div class="card-body add-room">
-                                                    <button class="border-0" data-toggle="modal"  data-target="#addRoom2">
-                                                        <span>Thêm Phòng</span>
-                                                        <i class='bx bx-add-to-queue'></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- dung vong for o day -->
-                                        <div class="col-xl-3 col-lg-6 col-sm-6 my-3">
-                                            <div class="card card-child">
-                                                <div class="room-name">
-                                                    <span>Room 1</span>
-                                                    <div class="status">
-                                                        <!-- dùng lệnh if -->
-                                                        <!-- <span class="stt1">Trạng thái:<h6>Trống</h6></span> -->
-                                                        <!-- <span class="stt2">Trạng thái:<h6>Đang thuê</h6></span>-->
-                                                        <span class="stt3">Trạng thái:<h6>Đã cọc</h6></span> 
-                                                    </div>
-                                                </div>
-                                                <div class="card-body">
-                                                    <div class="room-title">
-                                                        <ul>
-                                                            <li>
-                                                                <h6>Người thuê:</h6>
-                                                                <span>Tran Ngoc Hai</span>
-                                                            </li>                                                        
-                                                            <li>
-                                                                <h6>Thông tin phòng:</h6>
-                                                                <span>Normal</span>
-                                                            </li>
-                                                            <li>
-                                                                <h6>Dịch vụ sử dụng:</h6>
-                                                                <span>00</span>
-                                                            </li>
-                                                            <li>
-                                                                <h6>Mô tả:</h6>
-                                                                <span></span>
-                                                            </li>
-                                                            <li>
-                                                                <h5>Giá:</h5>
-                                                                <span>120,000&dstrok;</span>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group mx-auto">
-                                                    <button class="btn btn-primary clickable-row" data-href="#">
-                                                        <span>Xem</span> 
-                                                    </button>
-                                                    <button class="btn btn-danger" data-toggle="modal" data-target="#removeRoom">
-                                                        <span>Hủy Phòng</span> 
-                                                    </button> 
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>       
+                                       
                                 <!-- home1 -->
                                 <div class="tab-pane active" id="home1" role="tabpanel">                           
                                             <div class="tour__content__block tour__content__block--consider avoid-break-p">
@@ -658,23 +404,7 @@
                     </ul>
                 </div>
 
-                <div class="tour__content__block tour__content__block--quotereq hide show-t">
-                    <h2>Interested in This Tour?</h2>
-
-                    <p>
-
-
-                        <a href="https://www.safaribookings.com/request-quote/t56551" class="btn btn--autowidth btn--autowidth--wide btn--reqquote btn--next btn--orange">Get a Free Quote</a>
-
-
-                    </p>
-
-                    <ul class="list list--icon list--icon-arrow list--icon-nopadding txt--small txt--grey">
-                        <li>We advise <b>requesting quotes</b> from <b>3 operators</b> (<a href="#" class="a--dotted help textual" data-help="People who request quotes from three tour operators have proven to be the most successful in finding the deal they’re looking for. This is especially the case when compared to people who contact only one or two operators.">Learn why</a>)</li>
-                        <li>Requests are sent directly to the tour operator</li>
-                        <li>If preferred, you can <a href="" class="contact-operator-link">contact</a> the tour operator directly</li>
-                    </ul>
-                </div>
+                
 
 
             </div>
@@ -1054,32 +784,14 @@
                     </div>
 
 
-                </div>
-
-                <div class="tour__content__block tour__content__block--quotereq hide show-t">
-                    <h2>Interested in This Tour?</h2>
-
-                    <p>
-
-
-                        <a href="https://www.safaribookings.com/request-quote/t56551" class="btn btn--autowidth btn--autowidth--wide btn--reqquote btn--next btn--orange">Get a Free Quote</a>
-
-
-                    </p>
-
-                    <ul class="list list--icon list--icon-arrow list--icon-nopadding txt--small txt--grey">
-                        <li>We advise <b>requesting quotes</b> from <b>3 operators</b> (<a href="#" class="a--dotted help textual" data-help="People who request quotes from three tour operators have proven to be the most successful in finding the deal they’re looking for. This is especially the case when compared to people who contact only one or two operators.">Learn why</a>)</li>
-                        <li>Requests are sent directly to the tour operator</li>
-                        <li>If preferred, you can <a href="" class="contact-operator-link">contact</a> the tour operator directly</li>
-                    </ul>
-                </div>
+                </div>              
 
 
             </div>           
 
 
 
-            <div class="tab-pane" id="rates" role="tabpanel">
+            <div class="tab-pane" id="home5" role="tabpanel">
 
 
                 <div class="tour__content__block tour__content__block--rates">
@@ -1264,7 +976,7 @@
             </div>
 
 
-            <div class="tab-pane" id="inclusions" role="tabpanel">
+            <div class="tab-pane" id="home6" role="tabpanel">
 
                 <div class="tour__content__block tour__content__block--inclusions">
                     <h2 class="with-icon"><span><i class="sbi sbi--plus"></i> Included</span></h2>
@@ -1294,30 +1006,13 @@
                     </ul>
                 </div>
 
-                <div class="tour__content__block tour__content__block--quotereq hide show-t">
-                    <h2>Interested in This Tour?</h2>
-
-                    <p>
-
-
-                        <a href="https://www.safaribookings.com/request-quote/t56551" class="btn btn--autowidth btn--autowidth--wide btn--reqquote btn--next btn--orange">Get a Free Quote</a>
-
-
-                    </p>
-
-                    <ul class="list list--icon list--icon-arrow list--icon-nopadding txt--small txt--grey">
-                        <li>We advise <b>requesting quotes</b> from <b>3 operators</b> (<a href="#" class="a--dotted help textual" data-help="People who request quotes from three tour operators have proven to be the most successful in finding the deal they’re looking for. This is especially the case when compared to people who contact only one or two operators.">Learn why</a>)</li>
-                        <li>Requests are sent directly to the tour operator</li>
-                        <li>If preferred, you can <a href="" class="contact-operator-link">contact</a> the tour operator directly</li>
-                    </ul>
-                </div>
 
 
             </div>
 
 
 
-            <div class="tab-pane" id="gettingthere" role="tabpanel">
+            <div class="tab-pane" id="home7" role="tabpanel">
 
                 <div class="tour__content__block tour__content__block--gettingthere">
 
@@ -1376,24 +1071,6 @@
                         </li>
                     </ul>
 
-                </div>
-
-                <div class="tour__content__block tour__content__block--quotereq hide show-t">
-                    <h2>Interested in This Tour?</h2>
-
-                    <p>
-
-
-                        <a href="https://www.safaribookings.com/request-quote/t56551" class="btn btn--autowidth btn--autowidth--wide btn--reqquote btn--next btn--orange">Get a Free Quote</a>
-
-
-                    </p>
-
-                    <ul class="list list--icon list--icon-arrow list--icon-nopadding txt--small txt--grey">
-                        <li>We advise <b>requesting quotes</b> from <b>3 operators</b> (<a href="#" class="a--dotted help textual" data-help="People who request quotes from three tour operators have proven to be the most successful in finding the deal they’re looking for. This is especially the case when compared to people who contact only one or two operators.">Learn why</a>)</li>
-                        <li>Requests are sent directly to the tour operator</li>
-                        <li>If preferred, you can <a href="" class="contact-operator-link">contact</a> the tour operator directly</li>
-                    </ul>
                 </div>
                 </div>
                 </div>
