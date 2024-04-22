@@ -220,5 +220,10 @@ namespace BAL.Services.Implements
             if (isChanged) return true;
             return false;
         }
+
+        public async Task<int> GetIdByUsername(string username)
+        {
+            return await _unitOfWork.UserRepository.GetIdByUsername(username);
+        }
     }
 }

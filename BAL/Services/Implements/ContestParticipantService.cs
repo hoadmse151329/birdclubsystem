@@ -51,9 +51,9 @@ namespace BAL.Services.Implements
 
         public async Task<bool> Delete(string memberId, int contestId, int? birdId = null)
         {
-            bool check = await _unitOfWork.ContestParticipantRepository.GetBoolContestParticipantById(contestId,memberId, birdId);
+            bool check = await _unitOfWork.ContestParticipantRepository.GetBoolContestParticipantById(contestId, memberId, birdId);
             if (!check) return false;
-            ContestParticipant contestParticipant = await _unitOfWork.ContestParticipantRepository.GetContestParticipantById(contestId,memberId, birdId);
+            ContestParticipant contestParticipant = await _unitOfWork.ContestParticipantRepository.GetContestParticipantById(contestId, memberId, birdId);
             _unitOfWork.ContestParticipantRepository.Delete(contestParticipant);
             _unitOfWork.Save();
             return true;
@@ -76,21 +76,21 @@ namespace BAL.Services.Implements
                 _unitOfWork.ContestParticipantRepository.GetContestParticipantsByContestId(contestId));
         }
 
-		public async Task<IEnumerable<ContestParticipantViewModel>> GetAllByMemberId(string memberId)
-		{
-			return _mapper.Map<IEnumerable<ContestParticipantViewModel>>(await
-				_unitOfWork.ContestParticipantRepository.GetContestParticipantsByMemberId(memberId));
-		}
+        public async Task<IEnumerable<ContestParticipantViewModel>> GetAllByMemberId(string memberId)
+        {
+            return _mapper.Map<IEnumerable<ContestParticipantViewModel>>(await
+                _unitOfWork.ContestParticipantRepository.GetContestParticipantsByMemberId(memberId));
+        }
 
-		public async Task<IEnumerable<GetEventParticipation>> GetAllByMemberIdInclude(string memberId)
-		{
-			return _mapper.Map<IEnumerable<GetEventParticipation>>(await
-				_unitOfWork.ContestParticipantRepository.GetContestParticipantsByMemberIdInclude(memberId));
-		}
+        public async Task<IEnumerable<GetEventParticipation>> GetAllByMemberIdInclude(string memberId)
+        {
+            return _mapper.Map<IEnumerable<GetEventParticipation>>(await
+                _unitOfWork.ContestParticipantRepository.GetContestParticipantsByMemberIdInclude(memberId));
+        }
 
-		public async Task<int> GetParticipationNo(int contestId, string memberId, int? birdId = null)
-		{
-			return await _unitOfWork.ContestParticipantRepository.GetParticipationNoContestParticipantById(contestId,memberId,birdId);
-		}
-	}
+        public async Task<int> GetParticipationNo(int contestId, string memberId, int? birdId = null)
+        {
+            return await _unitOfWork.ContestParticipantRepository.GetParticipationNoContestParticipantById(contestId, memberId, birdId);
+        }
+    }
 }

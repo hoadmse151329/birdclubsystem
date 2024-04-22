@@ -4,6 +4,15 @@
       "type": "mssql",
       "connectionId": "ConnectionStrings:DefaultConnection",
       "dynamicId": null
+    },
+    "storage1": {
+      "type": "storage",
+      "connectionId": "ConnectionStrings:DefaultConnection",
+      "dynamicId": null
+    },
+    "secrets1": {
+      "type": "secrets",
+      "connectionId": null
     }
   }
 }

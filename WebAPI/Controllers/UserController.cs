@@ -589,6 +589,47 @@ namespace WebAPI.Controllers
                 });
             }
         }
+
+        [HttpGet("GetId")]
+        [Authorize(Roles = "Admin,Member")]
+        [ProducesResponseType(typeof(UserViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetIdByUsername(
+            [FromQuery][Required] string username)
+        {
+            try
+            {
+                var result = await _userService.GetIdByUsername(username);
+                if (result == 0)
+                {
+                    throw new Exception("Member does not exist!");
+                }
+                return Ok(new
+                {
+                    Status = true,
+                    result
+                });
+            }
+            catch (Exception ex)
+            {
+                if (ex.InnerException != null)
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = ex.Message,
+                        InnerExceptionMessage = ex.InnerException.Message
+                    });
+                }
+                // Log the exception if needed
+                return BadRequest(new
+                {
+                    Status = false,
+                    ErrorMessage = ex.Message
+                });
+            }
+        }
         #region old code reset password
         /*// PUT api/<UserController>/5
         /// <summary>

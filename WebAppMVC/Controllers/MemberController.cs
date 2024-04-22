@@ -63,8 +63,11 @@ namespace WebAppMVC.Controllers
             string? usrname = HttpContext.Session.GetString("USER_NAME");
             if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
 
+            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
+
             TempData["ROLE_NAME"] = role;
             TempData["USER_NAME"] = usrname;
+            TempData["IMAGE_PATH"] = imagepath;
 
             var memberDetails = await methcall.CallMethodReturnObject<GetMemberProfileResponse>(
                 _httpClient: _httpClient,
@@ -110,8 +113,11 @@ namespace WebAppMVC.Controllers
             string? usrname = HttpContext.Session.GetString("USER_NAME");
             if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
 
+            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
+
             TempData["ROLE_NAME"] = role;
             TempData["USER_NAME"] = usrname;
+            TempData["IMAGE_PATH"] = imagepath;
 
             memberDetail.MemberId = usrId;
             memberDetail.Status = 1;
@@ -156,8 +162,11 @@ namespace WebAppMVC.Controllers
             string? usrname = HttpContext.Session.GetString("USER_NAME");
             if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
 
+            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
+
             TempData["ROLE_NAME"] = role;
             TempData["USER_NAME"] = usrname;
+            TempData["IMAGE_PATH"] = imagepath;
 
             string MemberMeetingPartAPI_URL = "/api/Meeting/Participation/AllMeetings";
             string MemberFieldTripPartAPI_URL = "/api/FieldTrip/Participation/AllFieldTrips";
@@ -222,8 +231,11 @@ namespace WebAppMVC.Controllers
             string? usrname = HttpContext.Session.GetString("USER_NAME");
             if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
 
+            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
+
             TempData["ROLE_NAME"] = role;
             TempData["USER_NAME"] = usrname;
+            TempData["IMAGE_PATH"] = imagepath;
 
             string MemberAvatarAPI_URL = "/api/User/Upload";
 
@@ -285,8 +297,11 @@ namespace WebAppMVC.Controllers
             string? usrname = HttpContext.Session.GetString("USER_NAME");
             if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
 
+            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
+
             TempData["ROLE_NAME"] = role;
             TempData["USER_NAME"] = usrname;
+            TempData["IMAGE_PATH"] = imagepath;
 
             memberPassword.userId = usrId;
 
