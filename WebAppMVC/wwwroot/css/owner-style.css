@@ -1328,6 +1328,7 @@ line-height: 35px;
 }
 
 .notification .nav-tabs {
+    padding-top: 50px;
     border-bottom: 1px solid #dee2e6;
 }
 
