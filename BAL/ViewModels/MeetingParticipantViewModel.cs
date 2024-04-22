@@ -12,6 +12,6 @@ namespace BAL.ViewModels
         public string? MemberId { get; set; }
         public string? MemberName { get; set; }
         public string? ParticipantNo { get; set; }
-        public string? CheckInStatus { get; set; }
+        public bool CheckInStatus { get; set; }
     }
 }

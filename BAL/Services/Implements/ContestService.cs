@@ -26,6 +26,7 @@ namespace BAL.Services.Implements
             var con = await _unitOfWork.ContestRepository.GetContestById(id);
             if (con != null)
             {
+                var media = await _unitOfWork.ContestMediaRepository.GetContestMediasByContestId(con.ContestId);
                 string locationName = await _unitOfWork.LocationRepository.GetLocationNameById(con.LocationId.Value);
                 if (locationName == null)
                 {
@@ -35,6 +36,9 @@ namespace BAL.Services.Implements
                 var contest = _mapper.Map<ContestViewModel>(con);
                 contest.NumberOfParticipantsLimit = contest.NumberOfParticipants - partAmount;
                 contest.Address = locationName;
+
+                contest.Media = (media != null) ? _mapper.Map<IEnumerable<ContestMediaViewModel>>(media).ToList() : null;
+
                 contest.AreaNumber = locationName[0];
                 contest.Street = locationName.Split(",")[1];
                 contest.District = locationName.Split(",")[2];
@@ -54,6 +58,9 @@ namespace BAL.Services.Implements
                 {
                     if (item.ContestId == itemview.ContestId)
                     {
+                        var media = await _unitOfWork.ContestMediaRepository.GetContestMediasByContestId(item.ContestId);
+                        itemview.Media = (media != null) ? _mapper.Map<IEnumerable<ContestMediaViewModel>>(media).ToList() : null;
+
                         locationName = await _unitOfWork.LocationRepository.GetLocationNameById(item.LocationId.Value);
                         itemview.AreaNumber = locationName[0];
                         itemview.Street = locationName.Split(",")[1];

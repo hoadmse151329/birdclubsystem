@@ -37,7 +37,11 @@ namespace DAL.Repositories.Implements
 
         public async Task<MeetingParticipant> GetMeetingParticipantById(int meetingId, string memberId)
         {
-            return _context.MeetingParticipants.FirstOrDefault(m => m.MeetingId == meetingId && m.MemberId == memberId);
+            return _context.MeetingParticipants
+                .Where(m => m.MeetingId == meetingId && m.MemberId == memberId)
+                .Include(m => m.Member)
+                .Include(m => m.Meeting)
+                .FirstOrDefault();
         }
 
         public async Task<IEnumerable<MeetingParticipant>> GetMeetingParticipantsByMeetId(int meetingId)

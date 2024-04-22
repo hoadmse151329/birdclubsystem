@@ -35,7 +35,7 @@ namespace BAL.Services.Implements
                 MeetingId= metId,
                 MemberId= memId,
                 ParticipantNo = partNo.ToString(),
-                CheckInStatus = 0
+                CheckInStatus = false
             };
             _unitOfWork.MeetingParticipantRepository.Create(meetingParticipant);
             _unitOfWork.Save();
@@ -85,6 +85,24 @@ namespace BAL.Services.Implements
         {
             return _mapper.Map<IEnumerable<MeetingParticipantViewModel>>(await
                 _unitOfWork.MeetingParticipantRepository.GetMeetingParticipantsByMeetId(meetId));
+        }
+
+        public async Task<MeetingParticipantViewModel?> GetById(string memberId, int meetId)
+        {
+            var meetpart = await _unitOfWork.MeetingParticipantRepository.GetMeetingParticipantById(meetId, memberId);
+            if (meetpart != null)
+            {
+                var meetingpart = _mapper.Map<MeetingParticipantViewModel>(meetpart);
+                return meetingpart;
+            }
+            return null;
+        }
+
+        public void Update(MeetingParticipantViewModel entity)
+        {
+            var meetpart = _mapper.Map<MeetingParticipant>(entity);
+            _unitOfWork.MeetingParticipantRepository.Update(meetpart);
+            _unitOfWork.Save();
         }
     }
 }

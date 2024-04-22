@@ -34,5 +34,7 @@ namespace BAL.ViewModels
         public int? NumberOfParticipantsLimit { get; set; }
         public int? ParticipationNo { get; set; }
         public int? ClubId { get; set; }
+
+        public List<ContestMediaViewModel>? Media { get; set; }
     }
 }

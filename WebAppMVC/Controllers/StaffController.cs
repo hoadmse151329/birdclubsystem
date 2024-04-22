@@ -167,7 +167,7 @@ namespace WebAppMVC.Controllers
             MeetingViewModel meetView
             )
         {
-            StaffAPI_URL += "Meeting/Update/" + id;
+            StaffAPI_URL += "Meeting/UpdateParticipants/" + id;
 
             string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
             if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");

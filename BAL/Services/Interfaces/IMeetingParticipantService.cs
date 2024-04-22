@@ -18,5 +18,7 @@ namespace BAL.Services.Interfaces
         Task<int> GetCurrentParticipantAmounts(int metId);
         Task<int> GetParticipationNo(string memId, int metId);
         Task<bool> Delete(string memId, int metId);
+        Task<MeetingParticipantViewModel?> GetById(string memId, int metId);
+        void Update(MeetingParticipantViewModel entity);
     }
 }
