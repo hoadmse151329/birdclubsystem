@@ -22,12 +22,12 @@
             <div class="navigation">  
                 <ul class="slide-menu">
                     <div class="logo">
-                        <a href="@Url.Action("ManagerIndex", "Manager")">
+                        <a href="@Url.Action("Index", "Home")">
                             <img class="logo" src="~/images/Red_whiskered_bulbul_bird_logo_eps_10_generated 1.png" alt="logo">
                         </a>
                     </div>
                     <li class="active" data-toggle="tooltip"data-placement="right" title="Overview">
-                        <a href="@Url.Action("ManagerIndex", "Manager")">
+                        <a href="@Url.Action("AdminIndex", "Admin")">
                             <span><i class='bx bx-tachometer'></i></span>
                             <span class="title">Overview</span>
                         </a>
@@ -38,35 +38,15 @@
                             <span class="title">Manage</span>
                             <i class='bx bxs-chevron-down drop'></i>
                         </a>
-                        <ul class="collapse sub-menu" id="collapseOne">
-                            <li data-toggle="tooltip"data-placement="right" title="Manage Meeting">
-                                <a href="@Url.Action("ManagerMeeting", "Manager")" li class="dropdown-item">
-                                    <i class='bx bx-home-alt-2'></i>
-                                    <span class="title">Meeting</span>
-                                </a> 
-                            </li>
-                            <li data-toggle="tooltip"data-placement="right" title="Manage Fieldtrip">
-                                <a href="@Url.Action("ManagerFieldtrip", "Manager")" li class="dropdown-item">
-                                    <i class='bx bx-calendar-edit'></i>
-                                    <span class="title">Fieldtrip</span>
-                                </a>
-                            </li> 
-                            <li data-toggle="tooltip"data-placement="right" title="Manage Bird Contest">
-                                <a href="@Url.Action("ManagerContest", "Manager")" li class="dropdown-item">
-                                    <i class='bx bx-cloud-rain'></i>
-                                    <span class="title">Bird Contest</span>
-                                </a>
-                            </li>
-                        </ul>
                     </li>
                     <li data-toggle="tooltip"data-placement="right" title="Manage Feedback">
-                        <a href="@Url.Action("ManagerFeedback", "Manager")">
+                        <a href="@Url.Action("AdminList", "Admin")">
                             <span><i class="bx bx-detail"></i></span>
                             <span class="title">Feedback</span>
                         </a>
                     </li>
                     <li data-toggle="tooltip"data-placement="right" title="Manager Profile">
-                        <a href="@Url.Action("ManagerProfile", "Manager")">
+                        <a href="@Url.Action("AdminProfile", "Admin")">
                             <span><i class='bx bx-user'></i></span>
                             <span class="title">Manager Profile</span>
                         </a>
@@ -99,8 +79,7 @@
                                         @TempData["USER_NAME"]
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item" href="@Url.Action("ManagerProfile", "Manager")"><i class='bx bx-user'></i>Manager Profile</a> <!--thêm theo user id và role-->
-                                        <a class="dropdown-item" href="@Url.Action("ManagerNotification", "Manager")"><i class='bx bx-bell'></i>Notification</a>
+                                        <a class="dropdown-item" href="@Url.Action("AdminProfile", "Admin")"><i class='bx bx-user'></i>Manager Profile</a> <!--thêm theo user id và role-->
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="@Url.Action("Logout", "Auth")">Logout</a>
                                     </div>
