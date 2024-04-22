@@ -109,7 +109,7 @@ namespace WebAPI.Controllers
 						ErrorMessage = "User Not Found!"
                     });
                 }
-				if (result.Status != 1)
+				if (result.Status == "Inactive")
 				{
 					return BadRequest(new
 					{
@@ -495,7 +495,7 @@ namespace WebAPI.Controllers
         /// </remarks>
         /// <returns>Return result of action and error message</returns>
         [HttpPut("ChangePassword")]
-        [Authorize(Roles ="Admin,Member")]
+        [Authorize(Roles ="Admin,Manager,Staff,Member")]
         [ProducesResponseType(typeof(UserViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

@@ -120,7 +120,6 @@ namespace WebAppMVC.Controllers
             TempData["IMAGE_PATH"] = imagepath;
 
             memberDetail.MemberId = usrId;
-            memberDetail.Status = 1;
 
             var memberDetailupdate = await methcall.CallMethodReturnObject<GetMemberProfileResponse>(
                 _httpClient: _httpClient,
@@ -249,7 +248,7 @@ namespace WebAppMVC.Controllers
                     await photo.CopyToAsync(stream);
                 }
 
-                var image = "~/images/" + fileName;
+                var image = "/images/" + fileName;
                 dynamic imageUpload = new ExpandoObject();
                 imageUpload.ImagePath = image;
                 imageUpload.MemberId = usrId;
