@@ -109,7 +109,15 @@ namespace WebAPI.Controllers
 						ErrorMessage = "User Not Found!"
                     });
                 }
-                return Ok(new
+				if (result.Status != 1)
+				{
+					return BadRequest(new
+					{
+						Status = false,
+						ErrorMessage = "User Account is Currently InActivated!"
+					});
+				}
+				return Ok(new
                 {
                     Status = true,
                     Data = result
@@ -312,31 +320,107 @@ namespace WebAPI.Controllers
                 });
             }
         }
-        // PUT api/<UserController>/5
-        // PUT api/<UserController>/Update/5
-        /// <summary>
-        /// Update User Account informations by ID
-        /// aliases: api/User/{id} or api/User/Update/{id}
-        /// </summary>
-        /// <param name="id">Account ID</param>
-        /// <remarks>
-        /// Sample request:
-        /// 
-        ///     PUT 
-        ///     {
-        ///         "id": 1,
-        ///         "username": "ExampleMan123",
-        ///         "password": "example123",
-        ///         "confirmPassword": "example123",
-        ///         "fullName": "Mr. ExampleMan",
-        ///         "email": "example123@gmail.com",
-        ///         "phone": "0123456789",
-        ///         "address": "123, Brooklyn, New York City, USA"
-        ///     } 
-        ///     
-        /// </remarks>
-        /// <returns>Return result of action and error message</returns>
-        [HttpPut("{id}")]
+		[HttpPost("RegisterTempMember")]
+		[ProducesResponseType(typeof(UserViewModel), StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status500InternalServerError)]
+		[ProducesResponseType(StatusCodes.Status400BadRequest)]
+		public async Task<IActionResult> CreateTempUser(
+			[FromBody][Required] CreateNewMember newmem)
+		{
+			try
+			{
+				if (newmem.Password == null || newmem.Password == string.Empty)
+				{
+					return BadRequest(new
+					{
+						Status = false,
+						ErrorMessage = "Password is Empty !"
+					});
+				}
+				var result = await _userService.GetByEmailModel(newmem.Email);
+				if (result != null)
+				{
+					return BadRequest(new
+					{
+						Status = false,
+						ErrorMessage = "Email has already registered !"
+					});
+				}
+				if (!newmem.Password.Equals(newmem.ConfirmPassword))
+				{
+					return BadRequest(new
+					{
+						Status = false,
+						ErrorMessage = "Password and Confirm Password are not the same !"
+					});
+				}
+				var loguser = new AuthenRequest()
+				{
+					Username = newmem.UserName,
+					Password = newmem.Password
+				};
+				var resultaft = await _userService.CreateTemporaryNewUser(loguser);
+
+				if (resultaft == null)
+				{
+					return StatusCode(StatusCodes.Status500InternalServerError, new
+					{
+						Status = false,
+						ErrorMessage = "Error while Registering your Temp Account !"
+
+					});
+				}
+				return Ok(new
+				{
+					Status = true,
+					SuccessMessage = "Temp Account Create successfully !",
+					Data = resultaft
+				});
+			}
+			catch (Exception ex)
+			{
+				if (ex.InnerException != null)
+				{
+					return BadRequest(new
+					{
+						Status = false,
+						ErrorMessage = ex.Message,
+						InnerExceptionMessage = ex.InnerException.Message
+					});
+				}
+				// Log the exception if needed
+				return BadRequest(new
+				{
+					Status = false,
+					ErrorMessage = ex.Message
+				});
+			}
+		}
+		// PUT api/<UserController>/5
+		// PUT api/<UserController>/Update/5
+		/// <summary>
+		/// Update User Account informations by ID
+		/// aliases: api/User/{id} or api/User/Update/{id}
+		/// </summary>
+		/// <param name="id">Account ID</param>
+		/// <remarks>
+		/// Sample request:
+		/// 
+		///     PUT 
+		///     {
+		///         "id": 1,
+		///         "username": "ExampleMan123",
+		///         "password": "example123",
+		///         "confirmPassword": "example123",
+		///         "fullName": "Mr. ExampleMan",
+		///         "email": "example123@gmail.com",
+		///         "phone": "0123456789",
+		///         "address": "123, Brooklyn, New York City, USA"
+		///     } 
+		///     
+		/// </remarks>
+		/// <returns>Return result of action and error message</returns>
+		[HttpPut("{id}")]
         [Authorize(Roles ="Admin,Member")]
         [HttpPut("Update/{id}")]
         [ProducesResponseType(typeof(UserViewModel), StatusCodes.Status200OK)]

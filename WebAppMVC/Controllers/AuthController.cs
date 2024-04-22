@@ -14,6 +14,9 @@ using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using WebAppMVC.Services;
 using WebAppMVC.Models.VnPay;
+using Microsoft.AspNetCore.Authorization;
+using WebAppMVC.Models.Transaction;
+using BAL.ViewModels;
 
 namespace WebAppMVC.Controllers
 {
@@ -59,7 +62,7 @@ namespace WebAppMVC.Controllers
 			return View();
 		}
 
-        #region Old Google Login Code (Obsolete)
+        #region Old Google Login Code (Deprecated)
         /*public async Task GoogleLogin()
 		{
 			await HttpContext.ChallengeAsync(GoogleDefaults.AuthenticationScheme,
@@ -205,10 +208,13 @@ namespace WebAppMVC.Controllers
                 return base.Redirect(Constants.Constants.MEMBER_URL);
 			}
 		}
-		[HttpGet("Registration")]
-		public async Task<IActionResult> FinishingRegistration()
+		[HttpGet("ConfirmRegister")]
+		//[Authorize(Roles = "TempMember")]
+		public async Task<IActionResult> ConfirmRegister()
 		{
 			AuthenAPI_URL += "/Register";
+
+			string TransactionAPI_URL = "/api/Transaction/UpdateUser";
 
 			var newmemRequest = await methcall.GetCookie<CreateNewMember>(Request, "memRequest", jsonOptions);
 
@@ -218,6 +224,8 @@ namespace WebAppMVC.Controllers
 				ViewBag.error = "Error while registering your new account ! ";
 				return View("Register");
 			}
+
+			methcall.RemoveCookie(Response, "memRequest", cookieOptions, jsonOptions);
 
 			var authenResponse = await methcall.CallMethodReturnObject<GetAuthenResponse>(
 				_httpClient: client,
@@ -229,13 +237,47 @@ namespace WebAppMVC.Controllers
 
 			if (authenResponse == null)
 			{
-				_logger.LogInformation("Error while registering your new account: ");
+				_logger.LogError("Error while registering your new account");
 				ViewBag.error = "Error while registering your new account ! ";
 				return View("Register");
 			}
 
 			var responseAuth = authenResponse.Data;
 
+			var tran = await methcall.GetCookie<TransactionViewModel>(Request,"tranKey",jsonOptions);
+
+			if (tran == null)
+			{
+				_logger.LogError("Error while registering your new account: Transaction not found!");
+				ViewBag.error = "Error while registering your new account Transaction not found!";
+				return View("Register");
+			}
+
+			methcall.RemoveCookie(Response, "tranKey", cookieOptions, jsonOptions);
+
+			UpdateNewMemberTransactionRequest unmtr = new UpdateNewMemberTransactionRequest()
+			{
+				MemberId = responseAuth.UserId,
+				TransactionId = tran.TransactionId
+			};
+
+			string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
+
+			var transactionResponse = await methcall.CallMethodReturnObject<GetTransactionResponse>(
+				_httpClient: client,
+				options: jsonOptions,
+				methodName: "PUT",
+				url: TransactionAPI_URL,
+				inputType: unmtr,
+				accessToken: accToken,
+				_logger: _logger);
+
+			if (transactionResponse == null)
+			{
+				_logger.LogError("Error while registering your new account: User Transaction Saving Failed!");
+				ViewBag.error = "Error while registering your new account: User Transaction Saving Failed!";
+				return View("Register");
+			}
 			if (authenResponse.Status)
 			{
 				HttpContext.Session.SetString("ACCESS_TOKEN", responseAuth.AccessToken);
@@ -271,10 +313,42 @@ namespace WebAppMVC.Controllers
 				return base.Redirect(Constants.Constants.MEMBER_URL);
 			}
 		}
-		[HttpPost("ConfirmRegistration")]
-		public IActionResult ConfirmPaymentforRegistration(CreateNewMember newmemRequest)
+		[HttpPost("Register")]
+		public async Task<IActionResult> RegisterMember(CreateNewMember newmemRequest)
 		{
-			methcall.SetCookie(Response, "memRequest", newmemRequest, cookieOptions, jsonOptions, 15);
+			AuthenAPI_URL += "/RegisterTempMember";
+
+			var authenResponse = await methcall.CallMethodReturnObject<GetAuthenResponse>(
+				_httpClient: client,
+				options: jsonOptions,
+				methodName: "POST",
+				url: AuthenAPI_URL,
+				inputType: newmemRequest,
+				_logger: _logger);
+
+			if (authenResponse == null)
+			{
+				_logger.LogInformation("Error while registering your new account: ");
+				ViewBag.error = "Error while registering your new account ! ";
+				return View("Register");
+			}
+
+			var responseAuth = authenResponse.Data;
+
+			if (authenResponse.Status)
+			{
+				HttpContext.Session.SetString("ACCESS_TOKEN", responseAuth.AccessToken);
+				HttpContext.Session.SetString("ROLE_NAME", responseAuth.RoleName);
+				HttpContext.Session.SetString("USER_NAME", responseAuth.UserName);
+
+				client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", responseAuth.AccessToken);
+
+				TempData["ACCESS_TOKEN"] = responseAuth.AccessToken;
+				TempData["ROLE_NAME"] = responseAuth.RoleName;
+				TempData["USER_NAME"] = responseAuth.UserName;
+			}
+
+			methcall.SetCookie(Response, "memRequest", newmemRequest, cookieOptions, jsonOptions, 20);
 			PaymentInformationModel model = new PaymentInformationModel()
 			{
 				Fullname = newmemRequest.FullName,
@@ -284,7 +358,8 @@ namespace WebAppMVC.Controllers
 			var url = _vnPayService.CreatePaymentUrl(model, HttpContext);
 			return Redirect(url);
 		}
-		[HttpPost("SignUp")]
+		#region Old SignUp Code (Deprecated)
+		/*[HttpPost("SignUp")]
 		public async Task<IActionResult> SignUp(CreateNewMember newmemRequest)
 		{
 			AuthenAPI_URL += "/Register";
@@ -340,6 +415,7 @@ namespace WebAppMVC.Controllers
 				_logger.LogInformation("Member Register Successful: " + TempData["ROLE_NAME"] + " , Id: " + TempData["USER_ID"]);
 				return base.Redirect(Constants.Constants.MEMBER_URL);
 			}
-		}
+		}*/
+		#endregion
 	}
 }

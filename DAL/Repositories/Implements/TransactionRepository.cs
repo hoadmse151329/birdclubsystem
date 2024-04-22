@@ -1,6 +1,7 @@
 ﻿using DAL.Infrastructure;
 using DAL.Models;
 using DAL.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,11 +19,16 @@ namespace DAL.Repositories.Implements
         }
         public async Task<Transaction?> GetTransactionById(int id)
         {
-            return _context.Transactions.SingleOrDefault(trans => trans.TransactionId == id);
+            return _context.Transactions.AsNoTracking().SingleOrDefault(trans => trans.TransactionId == id);
         }
         public async Task<IEnumerable<Transaction?>> GetAllTransactionsByUserId(int id)
         {
-            return _context.Transactions.Where(t => t.UserId == id).ToList();
+            return _context.Transactions.AsNoTracking().Where(t => t.UserId == id).ToList();
         }
-    }
+
+		public async Task<Transaction?> GetTransactionByVnPayId(string? vnPayid)
+		{
+			return _context.Transactions.AsNoTracking().SingleOrDefault(t => t.VnPayId == vnPayid);
+		}
+	}
 }

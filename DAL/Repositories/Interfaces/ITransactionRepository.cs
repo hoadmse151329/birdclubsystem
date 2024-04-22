@@ -10,7 +10,8 @@ namespace DAL.Repositories.Interfaces
 {
     public interface ITransactionRepository : IRepositoryBase<Transaction>
     {
-        public Task<Transaction?> GetTransactionById(int id);
-        public Task<IEnumerable<Transaction>> GetAllTransactionsByUserId(int id);
+        Task<Transaction?> GetTransactionById(int id);
+		Task<Transaction?> GetTransactionByVnPayId(string? vnPayid);
+		Task<IEnumerable<Transaction>> GetAllTransactionsByUserId(int id);
     }
 }

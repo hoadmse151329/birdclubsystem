@@ -53,7 +53,7 @@
 						</div>
 
 						<div class="d-flex box-body justify-content-center">
-							<form class="reg-form" asp-controller="Auth" asp-action="ConfirmPaymentforRegistration">
+							<form class="reg-form" asp-controller="Auth" asp-action="Register">
 								@{
 									if (ViewBag.error != null)
 									{
@@ -100,10 +100,10 @@
 								</div>
 								<div class="form-group">
 									<h5><b>New Member must buy our Membership to have access to our service</b></h5>
-									<input disabled class="form-control form-data" value="80.000vnd" />
-									<input type="hidden" placeholder="PayAmount" asp-for="PayAmount" class="form-control form-data" value="80000" />
+									<input disabled class="form-control form-data" value="30.000vnd" />
+									<input type="hidden" placeholder="PayAmount" asp-for="PayAmount" class="form-control form-data" value="30000" />
 								</div>
-								<button class="reg-button button light-green" type="submit" value="ConfirmPaymentforRegistration">Register</button>
+								<button class="reg-button button light-green" type="submit" value="Register">Register</button>
 								<div class="reg-text">
 									Already a Member? <a href="@Url.Action("Login","Auth")" class="link-success">Login</a>
 								</div>

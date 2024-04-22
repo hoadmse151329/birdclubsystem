@@ -21,5 +21,6 @@ namespace BAL.ViewModels.Authenticates
         [DataType(DataType.Password)]
         public string? AccessToken { get; set; }
         public string? ImagePath { get; set; }
-    }
+		public int? Status { get; set; }
+	}
 }
