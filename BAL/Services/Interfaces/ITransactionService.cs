@@ -10,6 +10,10 @@ namespace BAL.Services.Interfaces
     public interface ITransactionService
     {
         Task<TransactionViewModel?> GetTransactionById(int id);
-        Task<IEnumerable<TransactionViewModel>> GetAllTransactionsByUserId(int id);
-    }
+		Task<TransactionViewModel?> GetTransactionByVnPayId(string? vnPayId);
+		Task<IEnumerable<TransactionViewModel>> GetAllTransactionsByUserId(int userId);
+        void Create(TransactionViewModel transaction);
+		void Update(TransactionViewModel transaction);
+		Task<bool> UpdateUserId(int id, int userId);
+	}
 }

@@ -11,12 +11,15 @@ namespace DAL.Repositories.Interfaces
     public interface IContestParticipantRepository : IRepositoryBase<ContestParticipant>
     {
         Task<IEnumerable<ContestParticipant>> GetContestParticipantsByContestId(int contestId);
-        Task<int> GetCountContestParticipantsByContestId(int contestId);
-        Task<bool> GetBoolContestParticipantById(int contestId, int birdId);
-        Task<int> GetParticipationNoContestParticipantById(int contestId, int birdId);
-        Task<ContestParticipant> GetContestParticipantById(int contestId, int birdId);
-        Task<IEnumerable<ContestParticipant>> GetContestParticipantsByBirdId(int birdId);
-        Task<IEnumerable<ContestParticipant>> GetContestParticipantsByBirdIdInclude(int birdId);
-        Task<int> GetCountContestParticipantsByBirdId(int birdId);
+		Task<IEnumerable<ContestParticipant>> GetContestParticipantsByBirdId(int birdId);
+		Task<IEnumerable<ContestParticipant>> GetContestParticipantsByBirdIdInclude(int birdId);
+		Task<IEnumerable<ContestParticipant>> GetContestParticipantsByMemberId(string memberId);
+		Task<IEnumerable<ContestParticipant>> GetContestParticipantsByMemberIdInclude(string memberId);
+		Task<int> GetCountContestParticipantsByContestId(int contestId);
+		Task<int> GetCountContestParticipantsByBirdId(int birdId);
+		Task<int> GetCountContestParticipantsByMemberId(string memberId);
+		Task<bool> GetBoolContestParticipantById(int contestId, string memberId, int? birdId = null);
+        Task<int> GetParticipationNoContestParticipantById(int contestId, string memberId, int? birdId = null);
+        Task<ContestParticipant> GetContestParticipantById(int contestId, string memberId, int? birdId = null);
     }
 }

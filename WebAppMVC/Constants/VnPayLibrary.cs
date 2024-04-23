@@ -30,7 +30,8 @@ public class VnPayLibrary
         string vnpResponseCode = vnPay.GetResponseData("vnp_ResponseCode");
         string vnpSecureHash =
             collection.FirstOrDefault(k => k.Key == "vnp_SecureHash").Value; //hash của dữ liệu trả về
-        var orderInfo = vnPay.GetResponseData("vnp_OrderInfo");
+        string orderInfo = vnPay.GetResponseData("vnp_OrderInfo");
+        var orderInfos = orderInfo.Split(",");
         decimal amount = Convert.ToDecimal(vnPay.GetResponseData("vnp_Amount"));
 
         var checkSignature =
@@ -50,7 +51,8 @@ public class VnPayLibrary
             OrderDescription = orderInfo,
             Value = amount,
             TransactionId = transactionId,
-            DocNo = vnPayTranId.ToString(),
+            TransactionType = orderInfos[2],
+			DocNo = vnPayTranId.ToString(),
             Token = vnpSecureHash,
             VnPayResponseCode = vnpResponseCode,
             Message = "Payment Success"

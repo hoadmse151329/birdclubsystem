@@ -1,7 +1,11 @@
-﻿using BAL.Services.Interfaces;
+﻿using BAL.Services.Implements;
+using BAL.Services.Interfaces;
 using BAL.ViewModels;
+using BAL.ViewModels.Authenticates;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace WebAPI.Controllers
 {
@@ -63,7 +67,56 @@ namespace WebAPI.Controllers
             }
         }
 
-        [HttpGet("AllTransactions/{id}")]
+		[HttpPost("Create")]
+		[Authorize(Roles = "Member,TempMember")]
+		[ProducesResponseType(typeof(OkObjectResult), StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
+		[ProducesResponseType(StatusCodes.Status400BadRequest)]
+		public async Task<IActionResult> CreateTransaction(
+            [Required][FromBody] TransactionViewModel newTransaction
+            )
+		{
+			try
+			{
+				_transactionService.Create(newTransaction);
+
+				var result = await _transactionService.GetTransactionByVnPayId(newTransaction.VnPayId);
+				if (result == null)
+				{
+					return NotFound(new
+					{
+						Status = false,
+						ErrorMessage = "Transaction Create Failed!"
+					});
+				}
+				return Ok(new
+				{
+					Status = true,
+					Message = "Transaction Create successfully !",
+					Data = result
+				});
+			}
+			catch (Exception ex)
+			{
+				if (ex.InnerException != null)
+				{
+					return BadRequest(new
+					{
+						Status = false,
+						ErrorMessage = ex.Message,
+						InnerExceptionMessage = ex.InnerException.Message
+					});
+				}
+				// Log the exception if needed
+				return BadRequest(new
+				{
+					Status = false,
+					ErrorMessage = ex.Message
+				});
+			}
+		}
+
+		[HttpGet("AllTransactions/{id}")]
         [ProducesResponseType(typeof(List<TransactionViewModel>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -112,5 +165,117 @@ namespace WebAPI.Controllers
                 });
             }
         }
-    }
+		[Authorize(Roles = "Manager")]
+		[HttpPut("Update/{id}")]
+		[ProducesResponseType(typeof(TransactionViewModel), StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
+		[ProducesResponseType(StatusCodes.Status400BadRequest)]
+		public async Task<IActionResult> Update(
+			[Required][FromRoute] int id,
+			[Required][FromBody] TransactionViewModel tran)
+		{
+			try
+			{
+				var result = _transactionService.GetTransactionById(id).Result;
+				if (result == null)
+				{
+					return NotFound(new
+					{
+						Status = false,
+						ErrorMessage = "Transaction does not exist!"
+					});
+				}
+				tran.TransactionId = id;
+				_transactionService.Update(tran);
+				result = await _transactionService.GetTransactionById(tran.TransactionId.Value);
+				return Ok(new
+				{
+					Status = true,
+					Data = result
+				});
+			}
+			catch (Exception ex)
+			{
+				if (ex.InnerException != null)
+				{
+					return BadRequest(new
+					{
+						Status = false,
+						ErrorMessage = ex.Message,
+						InnerExceptionMessage = ex.InnerException.Message
+					});
+				}
+				// Log the exception if needed
+				return BadRequest(new
+				{
+					Status = false,
+					ErrorMessage = ex.Message
+				});
+			}
+		}
+		[Authorize(Roles = "TempMember")]
+		[HttpPut("UpdateUser")]
+		[ProducesResponseType(typeof(TransactionViewModel), StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
+		[ProducesResponseType(StatusCodes.Status400BadRequest)]
+		public async Task<IActionResult> UpdateRegisterTransaction(
+			[Required][FromBody] UpdateNewMemberTransactionRequest tran)
+		{
+			try
+			{
+				var result = await _transactionService.GetTransactionById(tran.TransactionId.Value);
+				if (result == null)
+				{
+					return NotFound(new
+					{
+						Status = false,
+						ErrorMessage = "Transaction does not exist!"
+					});
+				}
+				var usr = await _userService.GetByMemberId(tran.MemberId);
+				if (usr == null)
+				{
+					return NotFound(new
+					{
+						Status = false,
+						ErrorMessage = "User does not exist!"
+					});
+				}
+				bool isSuccess = await _transactionService.UpdateUserId(result.TransactionId.Value, usr.UserId.Value);
+
+				result = await _transactionService.GetTransactionById(tran.TransactionId.Value);
+
+				if (isSuccess)
+				{
+					return Ok(new
+					{
+						Status = true,
+						Data = result
+					});
+				}
+				return StatusCode(StatusCodes.Status500InternalServerError,new
+				{
+					Status = false
+				});
+			}
+			catch (Exception ex)
+			{
+				if (ex.InnerException != null)
+				{
+					return BadRequest(new
+					{
+						Status = false,
+						ErrorMessage = ex.Message,
+						InnerExceptionMessage = ex.InnerException.Message
+					});
+				}
+				// Log the exception if needed
+				return BadRequest(new
+				{
+					Status = false,
+					ErrorMessage = ex.Message
+				});
+			}
+		}
+	}
 }

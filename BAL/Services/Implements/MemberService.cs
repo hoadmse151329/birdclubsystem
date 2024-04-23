@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BAL.Services.Interfaces;
 using BAL.ViewModels;
+using BAL.ViewModels.Manager;
 using DAL.Infrastructure;
 using DAL.Models;
 using System;
@@ -24,11 +25,16 @@ namespace BAL.Services.Implements
 		public void Create(MemberViewModel entity)
 		{
 			var mem = _mapper.Map<Member>(entity);
-			mem.Status = 1;
+			mem.Status = "Inactive";
 			mem.Role = "Member";
 			_unitOfWork.MemberRepository.Create(mem);
 			_unitOfWork.Save();
 		}
+
+        public async Task<IEnumerable<GetMemberStatus?>> GetAllMemberStatus()
+        {
+			return _mapper.Map<IEnumerable<GetMemberStatus>>(_unitOfWork.MemberRepository.GetAll());
+        }
 
         public async Task<bool> GetBoolById(string id)
         {

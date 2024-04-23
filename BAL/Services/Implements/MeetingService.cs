@@ -25,6 +25,7 @@ namespace BAL.Services.Implements
             string locationName;
             var listmeet = _unitOfWork.MeetingRepository.GetAll();
             var listmeetview = _mapper.Map<IEnumerable<MeetingViewModel>>(listmeet);
+            
             foreach (var itemview in listmeetview)
             {
                 foreach(var item in listmeet)
@@ -32,6 +33,9 @@ namespace BAL.Services.Implements
                     if(item.MeetingId == itemview.MeetingId)
                     {
                         //int partAmount = await _unitOfWork.MeetingParticipantRepository.GetCountMeetingParticipantsByMeetId(meet.MeetingId);
+                        var media = await _unitOfWork.MeetingMediaRepository.GetMeetingMediasByMeetingId(item.MeetingId);
+                        itemview.Media = (media != null) ? _mapper.Map<IEnumerable<MeetingMediaViewModel>>(media).ToList() : null;
+
                         locationName = await _unitOfWork.LocationRepository.GetLocationNameById(item.LocationId.Value);
                         
                         string[] temp = locationName.Split(",");
@@ -55,6 +59,7 @@ namespace BAL.Services.Implements
             var meet = await _unitOfWork.MeetingRepository.GetMeetingById(id);
             if (meet != null)
             {
+                var media = await _unitOfWork.MeetingMediaRepository.GetMeetingMediasByMeetingId(meet.MeetingId);
                 string locationName = await _unitOfWork.LocationRepository.GetLocationNameById(meet.LocationId.Value);
                 if (locationName == null)
                 {
@@ -65,6 +70,8 @@ namespace BAL.Services.Implements
                 var meeting = _mapper.Map<MeetingViewModel>(meet);
                 meeting.NumberOfParticipants = meeting.NumberOfParticipantsLimit - partAmount;
                 meeting.Address = locationName;
+
+                meeting.Media = (media != null) ? _mapper.Map<IEnumerable<MeetingMediaViewModel>>(media).ToList() : null;
 
                 string[] temp = locationName.Split(",");
 

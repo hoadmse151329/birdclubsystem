@@ -24,7 +24,7 @@ namespace WebAppMVC.Controllers
             Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
             PropertyNameCaseInsensitive = true,
         };
-        private MethodCaller methcall = new();
+        private BirdClubLibrary methcall = new();
 
         public HomeController(ILogger<HomeController> logger, IConfiguration config)
 		{
@@ -48,8 +48,11 @@ namespace WebAppMVC.Controllers
 
             string? usrname = HttpContext.Session.GetString("USER_NAME");
 
+            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
+
             TempData["ROLE_NAME"] = role;
             TempData["USER_NAME"] = usrname;
+            TempData["IMAGE_PATH"] = imagepath;
 
             var listFieldTripResponse = await methcall.CallMethodReturnObject<GetFieldTripResponseByList>(
                 _httpClient: _httpClient,

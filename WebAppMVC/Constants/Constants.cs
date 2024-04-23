@@ -7,11 +7,15 @@
 		public static string MANAGER_URL = "../Manager/Index";
 		public static string STAFF_URL = "../Staff/Index";
 		public static string NOTFOUND_URL = "../Auth/NotFound";
+		public static string LOGIN_URL = "../Auth/Login";
+		public static string NEW_MEMBER_CONFIRM_REGISTRATION_URL = "../Auth/SignUp";
+
+		public static string NEW_MEMBER_REGISTRATION_TRANSACTION_TYPE = "New-Membership-Registration";
 		public static string ADMIN = "Admin";
 		public static string MEMBER = "Member";
+		public static string TEMPMEMBER = "TempMember";
 		public readonly static string STAFF = "Staff";
 		public readonly static string MANAGER = "Manager";
-		public static string LOGIN_URL = "../Auth/Login";
 		public static string GET_METHOD = "GET";
         public static string POST_METHOD = "POST";
 		public static string PUT_METHOD = "PUT";

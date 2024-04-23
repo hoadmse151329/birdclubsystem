@@ -1,0 +1,162 @@
+@model WebAppMVC.Models.VnPay.PaymentInformationModel
+@{
+	ViewData["Title"] = "Confirm Account Registration Payment Page";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+	List<SelectListItem> genders = new()
+	{
+		new SelectListItem {Text = "Membership",Value = "Member"},
+		new SelectListItem {Text = "Female",Value = "Female"},
+		new SelectListItem {Text = "Other",Value = "Other"}
+	};
+}
+<!-- saved from url=(0035)https://themewagon.github.io/furni/ -->
+<html lang="en">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="author" content="Untree.co">
+	<link rel="shortcut icon" href="#">
+
+	<meta name="description" content="">
+	<meta name="keywords" content="bootstrap, bootstrap4">
+
+	<!-- Bootstrap CSS -->
+	<link href="~/css/bootstrap.min.css" rel="stylesheet">
+	<link href="~/css/all.min.css" rel="stylesheet">
+	<link href="~/css/tiny-slider.css" rel="stylesheet">
+	<link href="~/css/style.css" rel="stylesheet">
+	<link href="~/css/register.css" rel="stylesheet">
+	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css">
+    <!-- FONT -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,100&family=Roboto+Condensed:wght@400;700&display=swap"
+        rel="stylesheet">
+    <!-- FONT AWESOME -->
+    <link rel="stylesheet" href="~/fonts/fontawesome-free-5.15.4-web/css/all.min.css">
+
+    <!-- main CSS -->
+    <link rel="stylesheet" href="~/css/main.css">
+	<title>Register</title>
+</head>
+
+<body>
+	<div
+		style="background-image: url(~/images/Background.png); background-repeat:no-repeat; background-size: 100% 100%;">
+
+		<div class="main-container">
+			<div class="row justify-content-between">
+				<div class="col-lg-6">
+					<div class="box-container">
+						<div class="d-flex justify-content-center box-header light-green">
+							<h5><b>Confirm Payment for your Membership</b></h5>
+						</div>
+
+						<div class="d-flex box-body justify-content-center">
+							<form id="frmCreateTransaction" class="reg-form" asp-controller="CreatePaymentUrl" asp-action="VnPay" method="post">
+								@{
+									if (ViewBag.Error != null)
+									{
+										<span class="form-group text-danger">@ViewBag.Error</span>
+									}
+								}
+								<div class="form-group">
+									<h5><b>New Member must buy our Membership to have access to our service</b></h5>
+                                    <input disabled placeholder="PayAmount" asp-for="PayAmount" class="form-control form-data" />
+								</div>
+								<button class="reg-button button light-green" type="submit" value="SignUp">Checkout</button>
+								<div class="reg-text">
+									Already a Member? <a href="@Url.Action("Login","Auth")" class="link-success">Login</a>
+								</div>
+							</form>
+						</div>
+						
+					</div>
+				</div>
+				<div class="col-lg-6">
+					<div class="write-container">
+						<div class="write-title">ChaoMao BirdClub</div>
+					</div>
+					<div class="write-text">
+						Join us for an amazing Bird Lovers Community
+					</div>
+					<div class="row">
+						<div class="d-flex justify-content-center">
+							<img class="bird-image" src="~/images/bulbul.jpg">
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+        referrerpolicy="no-referrer"></script>
+        <!-- Jquery Waypoint -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>
+        <!-- BS4 JS -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.5/umd/popper.min.js"></script>
+        <!-- BS4 carousels -->
+        <script>
+            $('.carousel').carousel({
+                interval: 3000
+            });
+        </script>
+        <!-- owl carousels -->
+        <script src="./assets/js/owl.carousel.min.js"></script>
+        <script>
+            $('.clubList-carousel').owlCarousel({
+                loop: true,
+                margin: 10,
+                nav: false,
+                responsive: {
+                    0: {
+                        items: 1
+                    },
+                    576: {
+                        items: 2
+                    },
+                    1200: {
+                        items: 4
+                    }
+                }
+            });
+        </script>
+        <!-- main js -->
+        <script src="~/js/user-script.js"></script>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+        referrerpolicy="no-referrer"></script>
+        <!-- Jquery Waypoint -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>
+        <!-- BS4 JS -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.5/umd/popper.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- BS4 carousels -->
+        <script>
+            $('.carousel').carousel({
+                interval: 3000
+            });
+        </script>
+        <!-- owl carousels -->
+        <script src="./assets/js/owl.carousel.min.js"></script>
+        <script>
+            $('.clubList-carousel').owlCarousel({
+                loop: true,
+                margin: 10,
+                nav: false,
+                responsive: {
+                    0: {
+                        items: 1
+                    },
+                    576: {
+                        items: 2
+                    },
+                    1200: {
+                        items: 4
+                    }
+                }
+            });
+        </script>
+</html>

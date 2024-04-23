@@ -31,7 +31,7 @@
                                         <button class="btn-user-dropdown text-white btn dropdown-toggle" type="button"
                                                 id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             <span>Xin chào, @TempData["USER_NAME"]</span>
-                                            <span><img id="profile-pic" class="img-fluid" src="~/images/avatar2.png" alt="fullname"></span>
+                                            <span><img id="profile-pic" class="img-fluid" src=@TempData["IMAGE_PATH"] alt="fullname"></span>
                                         </button>
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                             <a class="dropdown-item" href="@Url.Action("MemberProfile", "Member")">

@@ -34,6 +34,6 @@ namespace BAL.ViewModels
 		public string? Phone { get; set; }
         public string? ImagePath { get; set; }
         public string? Description { get; set; }
-        public int Status { get; set; }
+        public string? Status { get; set; }
     }
 }

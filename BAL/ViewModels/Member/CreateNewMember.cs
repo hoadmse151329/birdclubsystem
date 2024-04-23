@@ -39,5 +39,10 @@ namespace BAL.ViewModels.Member
 		[DataType(DataType.Password)]
 		[Required(ErrorMessage = "Confirm Password is required")]
 		public string? ConfirmPassword { get; set; }
+		[DataType(DataType.Currency)]
+		[Range(1, int.MaxValue, ErrorMessage = "Payment Amount must be more than 0")]
+		[Required(ErrorMessage = "Payment Amount is Required")]
+		public decimal PayAmount { get; set; }
+		public string? ImagePath { get; set; }
 	}
 }

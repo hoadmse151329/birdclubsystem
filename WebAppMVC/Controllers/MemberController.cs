@@ -31,7 +31,7 @@ namespace WebAppMVC.Controllers
             Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
             PropertyNameCaseInsensitive = true,
         };
-        private MethodCaller methcall = new();
+        private BirdClubLibrary methcall = new();
 
         public MemberController(ILogger<MemberController> logger, IConfiguration config)
         {
@@ -63,8 +63,11 @@ namespace WebAppMVC.Controllers
             string? usrname = HttpContext.Session.GetString("USER_NAME");
             if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
 
+            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
+
             TempData["ROLE_NAME"] = role;
             TempData["USER_NAME"] = usrname;
+            TempData["IMAGE_PATH"] = imagepath;
 
             var memberDetails = await methcall.CallMethodReturnObject<GetMemberProfileResponse>(
                 _httpClient: _httpClient,
@@ -110,11 +113,13 @@ namespace WebAppMVC.Controllers
             string? usrname = HttpContext.Session.GetString("USER_NAME");
             if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
 
+            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
+
             TempData["ROLE_NAME"] = role;
             TempData["USER_NAME"] = usrname;
+            TempData["IMAGE_PATH"] = imagepath;
 
             memberDetail.MemberId = usrId;
-            memberDetail.Status = 1;
 
             var memberDetailupdate = await methcall.CallMethodReturnObject<GetMemberProfileResponse>(
                 _httpClient: _httpClient,
@@ -156,8 +161,11 @@ namespace WebAppMVC.Controllers
             string? usrname = HttpContext.Session.GetString("USER_NAME");
             if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
 
+            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
+
             TempData["ROLE_NAME"] = role;
             TempData["USER_NAME"] = usrname;
+            TempData["IMAGE_PATH"] = imagepath;
 
             string MemberMeetingPartAPI_URL = "/api/Meeting/Participation/AllMeetings";
             string MemberFieldTripPartAPI_URL = "/api/FieldTrip/Participation/AllFieldTrips";
@@ -222,8 +230,11 @@ namespace WebAppMVC.Controllers
             string? usrname = HttpContext.Session.GetString("USER_NAME");
             if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
 
+            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
+
             TempData["ROLE_NAME"] = role;
             TempData["USER_NAME"] = usrname;
+            TempData["IMAGE_PATH"] = imagepath;
 
             string MemberAvatarAPI_URL = "/api/User/Upload";
 
@@ -237,7 +248,7 @@ namespace WebAppMVC.Controllers
                     await photo.CopyToAsync(stream);
                 }
 
-                var image = "../images/" + fileName;
+                var image = "/images/" + fileName;
                 dynamic imageUpload = new ExpandoObject();
                 imageUpload.ImagePath = image;
                 imageUpload.MemberId = usrId;
@@ -285,8 +296,11 @@ namespace WebAppMVC.Controllers
             string? usrname = HttpContext.Session.GetString("USER_NAME");
             if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
 
+            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
+
             TempData["ROLE_NAME"] = role;
             TempData["USER_NAME"] = usrname;
+            TempData["IMAGE_PATH"] = imagepath;
 
             memberPassword.userId = usrId;
 

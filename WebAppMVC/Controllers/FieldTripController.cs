@@ -26,7 +26,7 @@ namespace WebAppMVC.Controllers
             Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
             PropertyNameCaseInsensitive = true,
 		};
-		private MethodCaller methcall = new();
+		private BirdClubLibrary methcall = new();
 		public FieldTripController(ILogger<FieldTripController> logger, IConfiguration config)
 		{
 			_logger = logger;
@@ -121,11 +121,6 @@ namespace WebAppMVC.Controllers
             testmodel.FieldTrips = listTripResponse.Data;
             return View(testmodel);
         }
-
-		public IActionResult FieldTripRegister()
-		{
-			return View();
-		}
 		public IActionResult FieldTripPayment()
 		{
 			return View();
