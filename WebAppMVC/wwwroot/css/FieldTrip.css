@@ -5477,11 +5477,6 @@ li .besttime-blocks, .blog__sidebar .besttime-blocks {
         top: .1875rem
     }
 
-    .btn i, .btn .btn__icon {
-        position: absolute;
-        margin-left: -1.875rem;
-        margin-top: .125rem
-    }
 
     .btn.behind-field {
         display: inline-block;

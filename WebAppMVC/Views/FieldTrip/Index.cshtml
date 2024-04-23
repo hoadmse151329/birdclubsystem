@@ -65,12 +65,12 @@
                             </div>
                         </div>
                         <div class="filter-search text-center">
-                            @{
-                                locationSearchAddress = "," + locationSearchRoad + "," + locationSearchDistrict + "," + locationSearchCity;
-                            }
-                            <input asp-for="@locationSearchAddress" class="form-control" type="text" name="locationAddress" value="@locationSearchAddress" hidden>
-                            <button class="button--primary" type="submit"><i class="fa fa-filter"></i> Filter</button>
-                        </div>
+                                @{
+                                    locationSearchAddress = "," + locationSearchRoad + "," + locationSearchDistrict + "," + locationSearchCity;
+                                }
+                                
+                                <button class="button--primary" type="submit"><i class="fa fa-filter"></i> Filter</button>
+                            </div>
                     </form>
                 </div>
                 <div class="col-bg">
