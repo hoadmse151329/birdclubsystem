@@ -31,6 +31,7 @@ namespace WebAppMVC.Controllers
 		private BirdClubLibrary methcall = new();
         public MeetingController(ILogger<MeetingController> logger, IConfiguration config)
 		{
+
 			_logger = logger;
             _config = config;
 			_httpClient = new HttpClient();
@@ -39,8 +40,29 @@ namespace WebAppMVC.Controllers
 			_httpClient.BaseAddress = new Uri(config.GetSection("DefaultApiUrl:ConnectionString").Value);
 			MeetingAPI_URL = "/api/Meeting";
 		}
+        private async Task<bool> UpdateMeetingStatus(int? meetingId, string newStatus)
+        {
+            // Prepare the API URL
+            string apiUrl = $"{_config["DefaultApiUrl:ConnectionString"]}/api/Meeting/{meetingId}/{newStatus}";
 
-		[HttpGet("Index")]
+            // Prepare the HTTP client
+            HttpClient httpClient = new HttpClient();
+            httpClient.BaseAddress = new Uri(_config["DefaultApiUrl:ConnectionString"]);
+
+            // Send the HTTP request
+            HttpResponseMessage response = await httpClient.PutAsync(apiUrl, null);
+
+            // Check the response status code
+            if (response.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        [HttpGet("Index")]
 		public async Task<IActionResult> Index(
             [FromQuery] string meetingName, 
             [FromQuery] string locationAddress)
@@ -104,23 +126,60 @@ namespace WebAppMVC.Controllers
 				url: MeetingAPI_URL,
                 _logger: _logger);
 
-			if(listMeetResponse == null || listLocationRoadResponse == null || listLocationDistrictResponse == null || listLocationCityResponse == null)
-			{
+            if (listMeetResponse == null || listLocationRoadResponse == null || listLocationDistrictResponse == null || listLocationCityResponse == null)
+            {
                 _logger.LogInformation(
                     "Error while processing your request! (Getting List Meeting!). List was Empty!: " + listMeetResponse + " , Error Message: " + listMeetResponse.ErrorMessage);
                 ViewBag.error =
                     "Error while processing your request! (Getting List Meeting!).\n List was Empty!";
                 Redirect("~/Home/Index");
             }
-			else
-			if(!listMeetResponse.Status || !listLocationRoadResponse.Status || !listLocationDistrictResponse.Status || !listLocationCityResponse.Status)
-			{
-				ViewBag.error =
-					"Error while processing your request! (Getting List Meeting!).\n"
-					+ listMeetResponse.ErrorMessage + "\n" + listLocationRoadResponse.ErrorMessage;
+            else
+            if (!listMeetResponse.Status || !listLocationRoadResponse.Status || !listLocationDistrictResponse.Status || !listLocationCityResponse.Status)
+            {
+                ViewBag.error =
+                    "Error while processing your request! (Getting List Meeting!).\n"
+                    + listMeetResponse.ErrorMessage + "\n" + listLocationRoadResponse.ErrorMessage;
                 Redirect("~/Home/Index");
             }
-            testmodel.Meetings = listMeetResponse.Data;
+            else
+            {
+                foreach (var meeting in listMeetResponse.Data)
+                {
+                    // Check if the current date and time is between the start and end dates of the meeting
+                    if (DateTime.Now >= meeting.StartDate && DateTime.Now <= meeting.EndDate)
+                    {
+                        // If the current date and time is between the start and end dates of the meeting, update the status to 'open registration'
+                        if (meeting.Status == "on hold")
+                        {
+                            bool success = await UpdateMeetingStatus(meeting.MeetingId, "open registration");
+
+                            if (!success)
+                            {
+                                ViewBag.error =
+                    "Error while processing your request! (Contact Manager!).\n";
+                                View("Index");
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // If the current date and time is not between the start and end dates of the meeting, update the status to 'end registration'
+                        if (meeting.Status == "open registration")
+                        {
+                            bool success = await UpdateMeetingStatus(meeting.MeetingId, "end registration");
+
+                            if (!success)
+                            {
+                                ViewBag.error =
+                    "Error while processing your request! (Contact Manager!).\n";
+                                View("Index");
+                            }
+                        }
+                    }
+                }
+            }
+                testmodel.Meetings = listMeetResponse.Data;
 
             List<SelectListItem> roads = new();
             foreach(var road in listLocationRoadResponse.Data)

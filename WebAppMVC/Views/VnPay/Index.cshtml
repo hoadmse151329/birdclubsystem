@@ -1,25 +1,30 @@
 ﻿@{
     ViewData["Title"] = "Pay with VnPay";
     Layout = "~/Views/Shared/_Layout.cshtml";
-}
-
+}<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css">
+    <!--Boxicons-->
+    <link rel='stylesheet' href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css'>
+    <!-- FONT AWESOME -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
+    <link rel='stylesheet prefetch' href='https://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css'>
+<link rel="stylesheet" href="~/css/main.css">
 <div class="text-center">
-    <h1 class="display-4">Pay with VnPay</h1>
+    <h1 class="display-4" style="font-weight: bold;    margin-left: 10px;    background: -webkit-linear-gradient(0.25turn, #00ecd5, #ffadd9); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-align:center">Pay with VnPay</h1>
 </div>
 
-<div class="table-responsive">
+<div class="table-responsive" style="padding-top: 70px;">
     <form action="/VnPay/CreatePaymentUrl" id="frmCreateTransaction" method="post">
         <div class="form-group">
-            <label for="TransactionType">Transaction Type</label>
-            <select name="TransactionType" id="TransactionType" class="form-control">
-                <option value="Membership Renewal">Membership Renewal</option>
-                <option value="Event Registration">Event Registration</option>
-                <option value="Donation">Donation</option>
+            <label for="transactiontype" style="font-weight: bold;    margin-left: 10px;    background: -webkit-linear-gradient(0.25turn, #00ecd5, #ffadd9); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Transaction Type</label>
+            <select name="TransactionType" id="transactiontype" class="form-control">
+                <option value="membership-renewal">Membership Renewal</option>
+                <option value="event-registration">Event Registration</option>
+                <option value="donation">Donation</option>
             </select>
         </div>
         <br/>
         <div class="form-group">
-            <label for="Name">User Name</label>
+            <label for="Name" style="font-weight: bold;    margin-left: 10px;    background: -webkit-linear-gradient(0.25turn, #00ecd5, #ffadd9); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">User Name</label>
             <input class="form-control"
                     id="Name"
                     name="Name"
@@ -28,15 +33,15 @@
         </div>
         <br/>
         <div class="form-group">
-            <label for="Value">Value</label>
+            <label for="Value" style="font-weight: bold;    margin-left: 10px;    background: -webkit-linear-gradient(0.25turn, #00ecd5, #ffadd9); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Value</label>
             <input class="form-control"
                    id="Value"
                    name="Value"
                    type="text"
-                   value="20000000">
+                   value="20000">
         </div>
         <br/>
-        <button type="submit" class="btn btn-primary">Checkout</button>
+        <button type="submit" class="offset-5 button--primary text-white px-3" style="margin-left:50%">Checkout</button>
     </form>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
