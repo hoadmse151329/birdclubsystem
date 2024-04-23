@@ -15,6 +15,7 @@ using WebAppMVC.Models.Member;
 using Azure;
 using Microsoft.DotNet.MSIdentity.Shared;
 using System.Security.Policy;
+using BAL.ViewModels.Member;
 // thêm crud của meeting, fieldtrip, contest.
 namespace WebAppMVC.Controllers
 {
@@ -926,7 +927,6 @@ namespace WebAppMVC.Controllers
             TempData["USER_NAME"] = usrname;
 
             memberDetail.MemberId = usrId;
-            memberDetail.Status = 1;
 
             var memberDetailupdate = await methcall.CallMethodReturnObject<GetMemberProfileResponse>(
                 _httpClient: _httpClient,
@@ -952,7 +952,58 @@ namespace WebAppMVC.Controllers
             }
             return RedirectToAction("ManagerProfile");
         }
-        [HttpGet("Feedback")]
+		[HttpPost("ChangePassword")]
+		//[Authorize(Roles = "Member")]
+		public async Task<IActionResult> ChangePassword(UpdateMemberPassword memberPassword)
+		{
+			string ManagerChangePasswordAPI_URL = "/api/User/ChangePassword";
+
+			string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
+			if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+
+			string? role = HttpContext.Session.GetString("ROLE_NAME");
+			if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
+			else if (!role.Equals("Member")) return RedirectToAction("Index", "Home");
+
+			string? usrId = HttpContext.Session.GetString("USER_ID");
+			if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
+
+			string? usrname = HttpContext.Session.GetString("USER_NAME");
+			if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
+
+			string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
+
+			TempData["ROLE_NAME"] = role;
+			TempData["USER_NAME"] = usrname;
+			TempData["IMAGE_PATH"] = imagepath;
+
+			memberPassword.userId = usrId;
+
+			var memberDetailupdate = await methcall.CallMethodReturnObject<GetMemberPasswordChangeResponse>(
+				_httpClient: _httpClient,
+				options: options,
+				methodName: "PUT",
+				url: ManagerChangePasswordAPI_URL,
+				_logger: _logger,
+				inputType: memberPassword,
+				accessToken: accToken);
+			if (memberDetailupdate == null)
+			{
+				ViewBag.error =
+					"Error while processing your request! (Getting Manager Profile!).\n Manager Details Not Found!";
+				return RedirectToAction("ManagerProfile");
+			}
+			else
+			if (!memberDetailupdate.Status)
+			{
+				ViewBag.error =
+					"Error while processing your request! (Getting Member Profile!).\n Member Details Not Found!"
+				+ memberDetailupdate.ErrorMessage;
+				return RedirectToAction("ManagerProfile");
+			}
+			return RedirectToAction("ManagerProfile");
+		}
+		[HttpGet("Feedback")]
         public IActionResult ManagerFeedBack()
         {
             return View();

@@ -187,7 +187,7 @@ namespace WebAPI.Controllers
 
         [HttpPost("Create")]
         [Authorize(Roles = "Manager")]
-        [ProducesResponseType(typeof(MeetingViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(OkObjectResult), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Create (

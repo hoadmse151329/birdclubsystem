@@ -148,6 +148,10 @@ namespace WebAPI.Controllers
 						ErrorMessage = "Member Details Not Found!"
 					});
 				}
+                if(member.Status == null)
+                {
+					member.Status = result.Status;
+				}
 				_memberService.Update(member);
 				result = await _memberService.GetById(member.MemberId);
 				return Ok(new

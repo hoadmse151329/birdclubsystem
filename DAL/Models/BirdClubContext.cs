@@ -797,7 +797,8 @@ namespace DAL.Models
                     .HasColumnName("role");
 
                 entity.Property(e => e.Status)
-                    .HasColumnName("status");
+				    .HasMaxLength(50)
+					.HasColumnName("status");
 
                 entity.Property(e => e.UserName)
                     .HasMaxLength(50)

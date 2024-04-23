@@ -250,22 +250,27 @@
                 <div class="collapse" id="collapseTwo" aria-labelledby="headingTwo" data-parent="#accordion">
                     <div class="card-body">
                         <div class="card-group d-block">
-                            <form action="#" method="post">
+                            <form asp-action="ChangePassword" asp-controller="Manager" method="post">
                                 <div class="row form-group">
-                                    <label class="offset-md-3 col-md-2 col-sm-3 col-form-label">Old Password:</label> 
-                                    <input class="col-md-3 col-sm-5 form-control" type="password" name="oldpassword" required>
-                                    <span class="error-message col-sm-3 mt-2">Mật khẩu sai!</span>
+                                    <label asp-for=@memberPassword.password class="offset-md-3 col-md-2 col-sm-3 col-form-label">Old Password</label>
+                                    <input asp-for=@memberPassword.password class="col-md-3 col-sm-5 form-control" type="password"
+                                           name="password" required value=@memberPassword.password>
+                                    <span asp-validation-for=@memberPassword.password class="error-message col-sm-3 mt-2"></span>
                                 </div>
                                 <div class="row form-group">
-                                    <label class="offset-md-3 col-md-2 col-sm-3 col-form-label">New Password:</label>
-                                    <input class="col-md-3 col-sm-5 form-control" type="password" name="newpassword" id="password" required>
+                                    <label asp-for=@memberPassword.Newpassword class="offset-md-3 col-md-2 col-sm-3 col-form-label">New Password</label>
+                                    <input asp-for=@memberPassword.Newpassword class="col-md-3 col-sm-5 form-control" type="newpassword"
+                                           name="Newpassword" id="password" required value=@memberPassword.Newpassword>
+                                    <span asp-validation-for=@memberPassword.Newpassword class="error-message col-sm-3 mt-2"></span>
                                 </div>
                                 <div class="row form-group">
-                                    <label class="offset-md-3 col-md-2 col-sm-3 col-form-label">Confirm NewPassword:</label>
-                                    <input class="col-md-3 col-sm-5 form-control" type="password" name="confirm" id="confirm" required>
+                                    <label asp-for=@memberPassword.NewConfirmPassword class="offset-md-3 col-md-2 col-sm-3 col-form-label">Confirm</label>
+                                    <input asp-for=@memberPassword.NewConfirmPassword class="col-md-3 col-sm-5 form-control" type="password" name="newconfirmpassword"
+                                           id="confirm" required value=@memberPassword.NewConfirmPassword>
+                                    <span asp-validation-for=@memberPassword.NewConfirmPassword class="error-message col-sm-3 mt-2"></span>
                                 </div>
                                 <div class="row form-group justify-content-center">
-                                    <button type="submit" class="btn btn-success">Confirm Changes</button>
+                                    <button type="submit" class="btn btn-success">Confirm Change</button>
                                 </div>
                             </form>
                         </div>

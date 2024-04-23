@@ -68,7 +68,7 @@
                             @{
                                 locationSearchAddress = "," + locationSearchRoad + "," + locationSearchDistrict + "," + locationSearchCity;
                             }
-                            <input asp-for="@locationSearchAddress" class="form-control" type="text" name="locationAddress" value="@locationSearchAddress" hidden>
+                            <input asp-for="@locationSearchAddress" class="form-control" type="text" name="locationAddress" value="@locationSearchAddress" >
                             <button class="button--primary" type="submit"><i class="fa fa-filter"></i> Filter</button>
                         </div>
                     </form>
@@ -110,7 +110,7 @@
                                     </p>
                                 </div>
                                 <div class="d-flex justify-content-between">
-                                    <p class="club-price"><i class="fas fa-comment-alt"></i>@data.Description</p>
+                                    <p class="address truncate"><i class="fas fa-comment-alt"></i>@data.Description</p>
                                     <form asp-action="ContestPost" asp-controller="Contest" method="get" asp-route-id="@data.ContestId">
                                         <button class="button--primary text-white text-wrapper-16" type="submit">See Now</button>
                                     </form>

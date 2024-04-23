@@ -39,8 +39,16 @@ namespace BAL.Services.Implements
         public async Task<AuthenResponse> AuthenticateUser(AuthenRequest request)
         {
             var user = await _unitOfWork.UserRepository.GetByLogin(request.Username, request.Password);
-            if (user != null)
+            if (user != null && user.Member != null)
             {
+                if(user.Member.Status == "Inactive")
+                {
+                    return new AuthenResponse()
+                    {
+                        UserName = request.Username,
+                        Status = user.Member.Status
+                    };
+                }
                 //var role = _unitOfWork.UserRepository
                 var accessToken = _jwtService.GenerateJWTToken(user.MemberId, user.UserName, user.Role, _configuration);
                 return new AuthenResponse()
@@ -49,7 +57,8 @@ namespace BAL.Services.Implements
                     RoleName = user.Role,
                     UserName = user.UserName,
                     AccessToken = accessToken,
-                    ImagePath = user.ImagePath
+                    ImagePath = user.ImagePath,
+                    Status = user.Member.Status
                 };
             }
             return null;
@@ -74,12 +83,23 @@ namespace BAL.Services.Implements
             return null;
         }
 
-        public void Create(UserViewModel entity, CreateNewMember newmem = null)
+		public async Task<AuthenResponse> CreateTemporaryNewUser(AuthenRequest request)
+		{
+			var accessToken = _jwtService.GenerateJWTToken(request.Username, "TempMember", _configuration);
+			return new AuthenResponse()
+			{
+				RoleName = "TempMember",
+				UserName = request.Username,
+				AccessToken = accessToken
+			};
+		}
+
+		public void Create(UserViewModel entity, CreateNewMember newmem = null)
         {
             var usr = _mapper.Map<User>(entity);
 			usr.Member = new Member();
 			usr.Member.MemberId = Guid.NewGuid().ToString();
-			usr.Member.Status = 1;
+			usr.Member.Status = "Inactive";
 			usr.Member.Email = entity.Email;
 			if (newmem != null)
             {

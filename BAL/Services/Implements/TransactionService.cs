@@ -2,6 +2,7 @@
 using BAL.Services.Interfaces;
 using BAL.ViewModels;
 using DAL.Infrastructure;
+using DAL.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,10 +31,43 @@ namespace BAL.Services.Implements
             return null;
         }
 
-        public async Task<IEnumerable<TransactionViewModel?>> GetAllTransactionsByUserId(int id)
+        public async Task<IEnumerable<TransactionViewModel?>> GetAllTransactionsByUserId(int userId)
         {
             return _mapper.Map<IEnumerable<TransactionViewModel>>(await
-                _unitOfWork.TransactionRepository.GetAllTransactionsByUserId(id));
+                _unitOfWork.TransactionRepository.GetAllTransactionsByUserId(userId));
         }
-    }
+
+		public void Create(TransactionViewModel transaction)
+		{
+            var tran = _mapper.Map<Transaction>(transaction);
+            _unitOfWork.TransactionRepository.Create(tran);
+            _unitOfWork.Save();
+		}
+
+		public async Task<TransactionViewModel?> GetTransactionByVnPayId(string? vnPayId)
+		{
+			return _mapper.Map<TransactionViewModel>(await
+				_unitOfWork.TransactionRepository.GetTransactionByVnPayId(vnPayId));
+		}
+
+		public void Update(TransactionViewModel transaction)
+		{
+			var tran = _mapper.Map<Transaction>(transaction);
+			_unitOfWork.TransactionRepository.Update(tran);
+			_unitOfWork.Save();
+		}
+
+		public async Task<bool> UpdateUserId(int id, int userId)
+		{
+			var trans = await _unitOfWork.TransactionRepository.GetTransactionById(id);
+			if (trans != null)
+			{
+                trans.UserId = userId;
+				_unitOfWork.TransactionRepository.Update(trans);
+				_unitOfWork.Save();
+                return true;
+			}
+            return false;
+		}
+	}
 }

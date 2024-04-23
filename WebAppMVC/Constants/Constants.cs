@@ -13,6 +13,7 @@
 		public static string NEW_MEMBER_REGISTRATION_TRANSACTION_TYPE = "New-Membership-Registration";
 		public static string ADMIN = "Admin";
 		public static string MEMBER = "Member";
+		public static string TEMPMEMBER = "TempMember";
 		public readonly static string STAFF = "Staff";
 		public readonly static string MANAGER = "Manager";
 		public static string GET_METHOD = "GET";
