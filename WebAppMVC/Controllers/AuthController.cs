@@ -280,7 +280,10 @@ namespace WebAppMVC.Controllers
 			}
 			if (authenResponse.Status)
 			{
-				HttpContext.Session.SetString("ACCESS_TOKEN", responseAuth.AccessToken);
+				HttpContext.Session.Remove("ACCESS_TOKEN");
+				HttpContext.Session.Remove("USER_NAME");
+				HttpContext.Session.Remove("ROLE_NAME");
+				/*HttpContext.Session.SetString("ACCESS_TOKEN", responseAuth.AccessToken);
 				HttpContext.Session.SetString("ROLE_NAME", responseAuth.RoleName);
 				HttpContext.Session.SetString("USER_ID", responseAuth.UserId);
 				HttpContext.Session.SetString("USER_NAME", responseAuth.UserName);
@@ -292,28 +295,10 @@ namespace WebAppMVC.Controllers
 				TempData["ROLE_NAME"] = responseAuth.RoleName;
 				TempData["USER_ID"] = responseAuth.UserId;
 				TempData["USER_NAME"] = responseAuth.UserName;
-				TempData["IMAGE_PATH"] = responseAuth.ImagePath;
+				TempData["IMAGE_PATH"] = responseAuth.ImagePath;*/
+
 			}
-			if (responseAuth!.RoleName == Constants.Constants.ADMIN)
-			{
-				_logger.LogInformation("Admin Register Successful: " + TempData["ROLE_NAME"] + " , Id: " + TempData["USER_ID"]);
-				return base.Redirect(Constants.Constants.ADMIN_URL);
-			}
-			else if (responseAuth!.RoleName == Constants.Constants.MANAGER)
-			{
-				_logger.LogInformation("Manager Register Successful: " + TempData["ROLE_NAME"] + " , Id: " + TempData["USER_ID"]);
-				return base.Redirect(Constants.Constants.MANAGER_URL);
-			}
-			else if (responseAuth!.RoleName == Constants.Constants.STAFF)
-			{
-				_logger.LogInformation("Staff Register Successful: " + TempData["ROLE_NAME"] + " , Id: " + TempData["USER_ID"]);
-				return base.Redirect(Constants.Constants.STAFF_URL);
-			}
-			else
-			{
-				_logger.LogInformation("Member Register Successful: " + TempData["ROLE_NAME"] + " , Id: " + TempData["USER_ID"]);
-				return base.Redirect(Constants.Constants.MEMBER_URL);
-			}
+			return RedirectToAction("Index", "Home");
 		}
 		[HttpPost("Register")]
 		public async Task<IActionResult> RegisterMember(CreateNewMember newmemRequest)

@@ -114,7 +114,7 @@ namespace WebAPI.Controllers
                 });
             }
         }
-        [HttpGet("AllMemberStatus")]
+        [HttpGet("MemberStatus")]
         [Authorize(Roles = "Manager")]
         [ProducesResponseType(typeof(IEnumerable<GetMemberStatus>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -130,6 +130,49 @@ namespace WebAPI.Controllers
                     {
                         Status = false,
                         ErrorMessage = "All Member Status Not Found!"
+                    });
+                }
+                return Ok(new
+                {
+                    Status = true,
+                    Data = result
+                });
+            }
+            catch (Exception ex)
+            {
+                if (ex.InnerException != null)
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = ex.Message,
+                        InnerExceptionMessage = ex.InnerException.Message
+                    });
+                }
+                // Log the exception if needed
+                return BadRequest(new
+                {
+                    Status = false,
+                    ErrorMessage = ex.Message
+                });
+            }
+        }
+        [HttpPut("MemberStatus/Update")]
+        [Authorize(Roles = "Manager")]
+        [ProducesResponseType(typeof(IEnumerable<GetMemberStatus>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> UpdateAllMemberStatus([Required][FromBody] List<GetMemberStatus> listMem)
+        {
+            try
+            {
+                var result = await _memberService.UpdateAllMemberStatus(listMem);
+                if (!result)
+                {
+                    return NotFound(new
+                    {
+                        Status = false,
+                        ErrorMessage = "All Member Status Updating failed!"
                     });
                 }
                 return Ok(new
@@ -181,6 +224,14 @@ namespace WebAPI.Controllers
                         Status = false,
                         ErrorMessage = "Manager Details Not Found!"
                     });
+                }
+                if (member.Status == null)
+                {
+                    member.Status = result.Status;
+                }
+                if (member.ImagePath == null)
+                {
+                    member.ImagePath = result.ImagePath;
                 }
                 _memberService.Update(member);
                 result = await _memberService.GetById(member.MemberId);

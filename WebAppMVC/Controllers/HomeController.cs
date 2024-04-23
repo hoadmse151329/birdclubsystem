@@ -43,6 +43,19 @@ namespace WebAppMVC.Controllers
             string FieldTripAPI_URL_All = HomeAPI_URL + "FieldTrip/All";
             string ContestAPI_URL_All = HomeAPI_URL + "Contest/All";
             dynamic testmodel = new ExpandoObject();
+            if(_httpClient.DefaultRequestHeaders.Authorization != null)
+            {
+                var token = _httpClient.DefaultRequestHeaders.Authorization.Parameter;
+            }
+            /*string? role = HttpContext.Session.GetString("ROLE_NAME");
+            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
+            else if (!role.Equals("Member")) return RedirectToAction("Logout", "Home");
+
+            string? usrId = HttpContext.Session.GetString("USER_ID");
+            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
+
+            string? usrname = HttpContext.Session.GetString("USER_NAME");
+            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");*/
 
             string? role = HttpContext.Session.GetString("ROLE_NAME");
 

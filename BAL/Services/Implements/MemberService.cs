@@ -108,5 +108,16 @@ namespace BAL.Services.Implements
 			_unitOfWork.MemberRepository.Update(mem);
 			_unitOfWork.Save();
 		}
-	}
+
+        public async Task<bool> UpdateAllMemberStatus(List<GetMemberStatus> listMem)
+        {
+			var mems = await _unitOfWork.MemberRepository.UpdateAllMemberStatus(_mapper.Map<List<Member>>(listMem));
+			if (mems != null)
+			{
+				_unitOfWork.Save();
+				return true;
+			}
+			return false;
+        }
+    }
 }

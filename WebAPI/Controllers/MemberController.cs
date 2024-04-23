@@ -152,7 +152,11 @@ namespace WebAPI.Controllers
                 {
 					member.Status = result.Status;
 				}
-				_memberService.Update(member);
+                if (member.Status == null)
+                {
+                    member.Status = result.Status;
+                }
+                _memberService.Update(member);
 				result = await _memberService.GetById(member.MemberId);
 				return Ok(new
 				{

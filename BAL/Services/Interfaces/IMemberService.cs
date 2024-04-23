@@ -20,6 +20,7 @@ namespace BAL.Services.Interfaces
 		void Create(MemberViewModel entity);
 		/*void Update(UserViewModel entity);*/
 		void Update(MemberViewModel entity);
+		Task<bool> UpdateAllMemberStatus (List<GetMemberStatus> listMem);
 		Task<MemberViewModel?> GetByEmailModel(string email);
 	}
 }

@@ -4,6 +4,7 @@ using DAL.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,6 +32,24 @@ namespace DAL.Repositories.Implements
         public async Task<string?> GetMemberNameById(string id)
         {
             return (await _context.Members.AsNoTrackingWithIdentityResolution().SingleOrDefaultAsync(mem => mem.MemberId == id)).FullName;
+        }
+
+        public async Task<IEnumerable<Member>> UpdateAllMemberStatus(List<Member> members)
+        {
+            foreach(var memberViewModel in members)
+            {
+                var mem = _context.Members.SingleOrDefault(mem => mem.MemberId == memberViewModel.MemberId);
+                if (mem != null)
+                {
+                    if (mem.Status != memberViewModel.Status)
+                    {
+                        mem.Status = memberViewModel.Status;
+                        _context.Update(mem);
+                    }
+
+                }
+            }
+            return members;
         }
     }
 }

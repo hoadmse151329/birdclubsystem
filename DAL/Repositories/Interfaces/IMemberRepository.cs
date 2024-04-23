@@ -13,6 +13,7 @@ namespace DAL.Repositories.Interfaces
         Task<Member?> GetByIdNoTracking(string id);
         Task<string?> GetMemberNameById(string id);
         Task<Member?> GetByEmail(string email);
+        Task<IEnumerable<Member>> UpdateAllMemberStatus(List<Member> members);
 
     }
 }
