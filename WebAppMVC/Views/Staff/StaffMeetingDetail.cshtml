@@ -4,6 +4,11 @@
     ViewData["Title"] = "Staff Meeting Detail Page";
     BAL.ViewModels.MeetingViewModel details = Model.MeetingDetails;
     List<BAL.ViewModels.MeetingParticipantViewModel> parts = Model.MeetingParticipants;
+    List<SelectListItem> checkInStatus = new()
+    {
+        new SelectListItem {Text = "Not Checked-In", Value = "Not Checked-In"},
+        new SelectListItem {Text = "Checked-In", Value = "Checked-In"}
+    };
 }
 <html lang="en">
 <head>
@@ -97,8 +102,7 @@
                                         @TempData["USER_NAME"]
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item" href="@Url.Action("ManagerProfile", "Manager")"><i class='bx bx-user'></i>Manager Profile</a> <!--thêm theo user id và role-->
-                                        <a class="dropdown-item" href="@Url.Action("ManagerNotification", "Manager")"><i class='bx bx-bell'></i>Notification</a>
+                                        <a class="dropdown-item" href="@Url.Action("StaffProfile", "Staff")"><i class='bx bx-user'></i>Manager Profile</a> <!--thêm theo user id và role-->
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="@Url.Action("Logout", "Auth")">Logout</a>
                                     </div>
@@ -154,9 +158,6 @@
                             <div class="card profile col-12 mb-4">
                                 <div class="card-header">
                                     <h4>Meeting Information</h4>
-                                    <div class="edit-info">
-                                        <i class='bx bxs-edit-alt' data-toggle="modal" data-target="#editstatus"></i>
-                                    </div>
                                 </div>
                                 <div class="card-body">
                                     <div class="row">
@@ -280,7 +281,6 @@
                                     </tbody>
                                 </table>
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -302,7 +302,7 @@
                                 @foreach (var part in parts){
                                 <label asp-for="@part.MemberName" class="col-sm-4 col-form-label">@part.MemberName</label>
                                     <div class="col-sm-8">
-                                        <input asp-for="@part.CheckInStatus" id="CheckInStatus" type="checkbox" name="CheckInStatus"
+                                        <input asp-for="@part.CheckInStatus" id="CheckInStatus" type="text" name="CheckInStatus"
                                                value="@part.CheckInStatus" class="form-control">
                                     </div>
                                     }

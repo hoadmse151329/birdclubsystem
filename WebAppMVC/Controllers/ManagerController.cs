@@ -16,6 +16,8 @@ using Azure;
 using Microsoft.DotNet.MSIdentity.Shared;
 using System.Security.Policy;
 using BAL.ViewModels.Member;
+using WebAppMVC.Models.Manager;
+using BAL.ViewModels.Manager;
 // thêm crud của meeting, fieldtrip, contest.
 namespace WebAppMVC.Controllers
 {
@@ -1008,10 +1010,112 @@ namespace WebAppMVC.Controllers
         {
             return View();
         }
-        [HttpGet("ListOfEvents")]
-        public IActionResult ManagerListOfEvents()
+        [HttpGet("MemberStatus")]
+        public async Task<IActionResult> ManagerMemberStatus([FromQuery] string search)
         {
-            return View();
+            _logger.LogInformation(search);
+
+            /*if (search != null || !string.IsNullOrEmpty(search))
+            {
+                search = search.Trim();
+                ManagerAPI_URL += "Manager/Search?meetingName=" + search;
+            }
+            else */
+                ManagerAPI_URL += "Manager/AllMemberStatus";
+
+            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
+            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+
+            string? role = HttpContext.Session.GetString("ROLE_NAME");
+            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
+            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
+
+            string? usrId = HttpContext.Session.GetString("USER_ID");
+            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
+
+            string? usrname = HttpContext.Session.GetString("USER_NAME");
+            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
+
+            TempData["ROLE_NAME"] = role;
+            TempData["USER_NAME"] = usrname;
+
+            var listMemberStatusResponse = await methcall.CallMethodReturnObject<GetListMemberStatus>(
+                _httpClient: _httpClient,
+                options: options,
+                methodName: "GET",
+                url: ManagerAPI_URL,
+                accessToken: accToken,
+                _logger: _logger);
+
+            if (listMemberStatusResponse == null )
+            {
+                _logger.LogInformation(
+                    "Error while processing your request! (Getting List Member Status!). List was Empty!: " + listMemberStatusResponse);
+                ViewBag.Error =
+                    "Error while processing your request! (Getting List Member Status!).\n List was Empty!";
+                return View("ManagerIndex");
+            }
+            else
+            if (!listMemberStatusResponse.Status)
+            {
+                ViewBag.Error =
+                    "Error while processing your request! (Getting List Member Status!).\n"
+                    + listMemberStatusResponse.ErrorMessage;
+                return View("ManagerIndex");
+            }
+            return View(listMemberStatusResponse.Data);
+        }
+        [HttpPost("MemberStatus/Update")]
+        public async Task<IActionResult> ManagerUpdateMemberStatus(List<GetMemberStatus> models)
+        {
+            ManagerAPI_URL += "Manager/AllMemberStatus";
+
+            dynamic testmodel = new ExpandoObject();
+
+            var listStatus = models;
+
+            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
+            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+
+            string? role = HttpContext.Session.GetString("ROLE_NAME");
+            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
+            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
+
+            string? usrId = HttpContext.Session.GetString("USER_ID");
+            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
+
+            string? usrname = HttpContext.Session.GetString("USER_NAME");
+            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
+
+            TempData["ROLE_NAME"] = role;
+            TempData["USER_NAME"] = usrname;
+
+            var listMemberStatusResponse = await methcall.CallMethodReturnObject<GetListMemberStatus>(
+                _httpClient: _httpClient,
+                options: options,
+                methodName: "GET",
+                url: ManagerAPI_URL,
+                accessToken: accToken,
+                _logger: _logger);
+
+            if (listMemberStatusResponse == null)
+            {
+                _logger.LogInformation(
+                    "Error while processing your request! (Getting List Member Status!). List was Empty!: " + listMemberStatusResponse);
+                ViewBag.Error =
+                    "Error while processing your request! (Getting List Member Status!).\n List was Empty!";
+                return View("ManagerIndex");
+            }
+            else
+            if (!listMemberStatusResponse.Status)
+            {
+                ViewBag.Error =
+                    "Error while processing your request! (Getting List Member Status!).\n"
+                    + listMemberStatusResponse.ErrorMessage;
+                return View("ManagerIndex");
+            }
+            testmodel.MemberStatuses = listMemberStatusResponse.Data;
+            return RedirectToAction("ManagerMemberStatus");
         }
     }
 }

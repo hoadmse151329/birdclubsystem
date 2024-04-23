@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BAL.ViewModels;
 using BAL.ViewModels.Event;
+using BAL.ViewModels.Manager;
 using DAL.Models;
 using System;
 using System.Collections.Generic;
@@ -33,6 +34,7 @@ namespace BAL.AutoMapperProfile
                     dest.MemberUser.ImagePath = src.ImagePath;
                 })
                 ;
+            CreateMap<Member, GetMemberStatus>().ReverseMap();
             CreateMap<MeetingParticipant, GetEventParticipation>()
                 .AfterMap((src, dest) =>
                 {
@@ -43,11 +45,12 @@ namespace BAL.AutoMapperProfile
                     dest.EventStaff = src.Meeting.Incharge;
                     dest.StartDate = src.Meeting.StartDate;
                     dest.EndDate = src.Meeting.EndDate;
+                    dest.Fee = 0;
                     dest.RegistrationDeadline = src.Meeting.RegistrationDeadline;
                     dest.Status = src.Meeting.Status;
                     dest.ParticipationNo = Int32.Parse(src.ParticipantNo);
                 })
-                .ReverseMap()
+                .ReverseMap();
                 /*.AfterMap((src, dest) =>
                 {
                     dest.MeetingId = src.MeetingId;
@@ -73,38 +76,19 @@ namespace BAL.AutoMapperProfile
                     dest.Status = src.Trip.Status;
                     dest.ParticipationNo = Int32.Parse(src.ParticipantNo);
                 })
-                .ReverseMap()
-                /*.AfterMap((src, dest) =>
-                {
-                    dest.MeetingId = src.MeetingId;
-                    dest.MeetingName = src.Meeting.MeetingName;
-                    dest.StartDate = src.Meeting.StartDate;
-                    dest.EndDate = src.Meeting.EndDate;
-                    dest.RegistrationDeadline = src.Meeting.RegistrationDeadline;
-                    dest.Status = src.Meeting.Status == 0 ? "Inactive" : "Active";
-                    dest.ParticipationNo = Int32.Parse(src.ParticipantNo);
-                    dest.Incharge = src.Meeting.Incharge;
-                })*/;
+                .ReverseMap();
             CreateMap<MeetingParticipant, MeetingParticipantViewModel>()
                 .AfterMap((src, dest) =>
                 {
                     dest.MemberName = src.Member.FullName;
                 })
-                .ReverseMap()
-                .AfterMap((src, dest) =>
-                {
-                    
-                });
+                .ReverseMap();
             CreateMap<FieldTripParticipant, FieldTripParticipantViewModel>()
                 .AfterMap((src, dest) =>
                 {
                     dest.MemberName = src.Member.FullName;
                 })
-                .ReverseMap()
-                .AfterMap((src, dest) =>
-                {
-                    
-                });
+                .ReverseMap();
             CreateMap<Meeting, MeetingViewModel>()
                 .ReverseMap();
             CreateMap<MeetingMedia, MeetingMediaViewModel>()
