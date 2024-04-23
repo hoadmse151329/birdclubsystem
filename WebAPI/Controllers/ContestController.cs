@@ -172,50 +172,68 @@ namespace WebAPI.Controllers
         [ProducesResponseType(typeof(ContestViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult Create(
-            string contestName,
-            string description,
-            DateTime registrationDeadline,
-            DateTime startDate,
-            DateTime endDate,
-            int beforeScore,
-            int afterScore,
-            decimal fee,
-            decimal prize,
-            string host,
-            string incharge,
-            string note,
-            string review,
-            int numberOfParticipants,
-            string status
-            )
+        public async Task<IActionResult> Create(
+            [Required][FromBody] ContestViewModel contest)
         {
             try
             {
-                ContestViewModel value = new ContestViewModel
-                {
-                    ContestName = contestName,
-                    Description = description,
-                    RegistrationDeadline = registrationDeadline,
-                    StartDate = startDate,
-                    EndDate = endDate,
-                    BeforeScore = beforeScore,
-                    AfterScore = afterScore,
-                    Status = status,
-                    Fee = fee,
-                    Prize = prize,
-                    NumberOfParticipants = numberOfParticipants,
-                    Host = host,
-                    Incharge = incharge,
-                    Note = note,
-                    Review = review
-                };
-                _contestService.Create(value);
+                contest.Status = "Preparing";
+                _contestService.Create(contest);
+
                 return Ok(new
                 {
                     Status = true,
                     Message = "Contest Create successfully!",
-                    Data = value
+                    Data = contest
+                });
+            }
+            catch (Exception ex)
+            {
+                if (ex.InnerException != null)
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = ex.Message,
+                        InnerExceptionMessage = ex.InnerException.Message
+                    });
+                }
+                // Log the exception if needed
+                return BadRequest(new
+                {
+                    Status = false,
+                    ErrorMessage = ex.Message
+                });
+            }
+        }
+
+        [HttpPut("Update/{id}")]
+        [Authorize(Roles = "Manager")]
+        [ProducesResponseType(typeof(ContestViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Update(
+            [Required][FromRoute] int id,
+            [Required][FromBody] ContestViewModel contest)
+        {
+            try
+            {
+                var result = _contestService.GetById(id).Result;
+                if (result == null)
+                {
+                    return NotFound(new
+                    {
+                        Status = false,
+                        ErrorMessage = "Contest does not exist!"
+                    });
+                }
+                contest.ContestId = id;
+                _contestService.Update(contest);
+                result = await _contestService.GetById(contest.ContestId.Value);
+                return Ok(new
+                {
+                    Status = true,
+                    Data = result
                 });
             }
             catch (Exception ex)

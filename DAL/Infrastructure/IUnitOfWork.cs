@@ -25,6 +25,7 @@ namespace DAL.Infrastructure
         IFieldTripParticipantRepository FieldTripParticipantRepository { get; }
         IContestRepository ContestRepository { get; }
         IContestParticipantRepository ContestParticipantRepository { get; }
+        IContestMediaRepository ContestMediaRepository { get; }
         void Save();
     }
 }

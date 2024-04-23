@@ -466,7 +466,7 @@ namespace WebAPI.Controllers
             }
         }
         [HttpGet("AllParticipants/{id}")]
-        [Authorize(Roles = "Manager")]
+        [Authorize(Roles = "Manager, Staff")]
         [ProducesResponseType(typeof(List<MeetingParticipantViewModel>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -530,6 +530,102 @@ namespace WebAPI.Controllers
                     });
                 }
 
+                return Ok(new
+                {
+                    Status = true,
+                    Data = result
+                });
+            }
+            catch (Exception ex)
+            {
+                if (ex.InnerException != null)
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = ex.Message,
+                        InnerExceptionMessage = ex.InnerException.Message
+                    });
+                }
+                // Log the exception if needed
+                return BadRequest(new
+                {
+                    Status = false,
+                    ErrorMessage = ex.Message
+                });
+            }
+        }
+        [HttpGet("Participant/{id}/{memberId}")]
+        [Authorize(Roles = "Manager, Staff")]
+        [ProducesResponseType(typeof(List<MeetingParticipantViewModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetParticipant(
+            [Required][FromRoute] int id,
+            [Required][FromRoute] string memberId)
+        {
+            try
+            {
+                var result = await _participantService.GetById(memberId, id);
+                if (result == null)
+                {
+                    return NotFound(new
+                    {
+                        status = false,
+                        errorMessage = "Meeting Participant Not Found!"
+                    });
+                }
+
+                return Ok(new
+                {
+                    status = true,
+                    Data = result
+                });
+            }
+            catch (Exception ex)
+            {
+                if (ex.InnerException != null)
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = ex.Message,
+                        InnerExceptionMessage = ex.InnerException.Message
+                    });
+                }
+                // Log the exception if needed
+                return BadRequest(new
+                {
+                    Status = false,
+                    ErrorMessage = ex.Message
+                });
+            }
+        }
+        [HttpPut("UpdateParticipants/{id}/{memberId}")]
+        [Authorize(Roles = "Staff")]
+        [ProducesResponseType(typeof(List<MeetingParticipantViewModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> UpdateCheckInStatus(
+            [Required][FromRoute] int id,
+            [Required][FromRoute] string memberId,
+            [Required][FromBody] MeetingParticipantViewModel meet)
+        {
+            try
+            {
+                var result = await _participantService.GetById(memberId, id);
+                if (result == null)
+                {
+                    return NotFound(new
+                    {
+                        status = false,
+                        errorMessage = "Meeting Participant Not Found!"
+                    });
+                }
+                meet.MeetingId = id;
+                meet.MemberId = memberId;
+                _participantService.Update(meet);
+                result = await _participantService.GetById(meet.MemberId, meet.MeetingId.Value);
                 return Ok(new
                 {
                     Status = true,

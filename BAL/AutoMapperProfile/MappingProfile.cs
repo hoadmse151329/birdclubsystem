@@ -107,7 +107,10 @@ namespace BAL.AutoMapperProfile
                 .ReverseMap();
             CreateMap<FieldtripMedia, FieldtripMediaViewModel>()
                 .ReverseMap();
-            CreateMap<Contest, ContestViewModel>().ReverseMap();
+            CreateMap<Contest, ContestViewModel>()
+                .ReverseMap();
+            CreateMap<ContestMedia, ContestMediaViewModel>()
+                .ReverseMap();
             CreateMap<Location, LocationViewModel>()
                 .AfterMap((src, dest) =>
                 {

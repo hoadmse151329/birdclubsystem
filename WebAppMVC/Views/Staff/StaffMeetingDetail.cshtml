@@ -153,6 +153,9 @@
                             <div class="card profile col-12 mb-4">
                                 <div class="card-header">
                                     <h4>Meeting Information</h4>
+                                    <div class="edit-info">
+                                        <i class='bx bxs-edit-alt' data-toggle="modal" data-target="#editstatus"></i>
+                                    </div>
                                 </div>
                                 <div class="card-body">
                                     <div class="row">
@@ -259,7 +262,7 @@
                                         <tr>
                                             <th>Participant No:</th>
                                             <th>Name:</th>
-                                            <th>CheckInStatus:</th>
+                                            <th>Check In Status:</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -285,13 +288,13 @@
     </div>
 
     <!-- edit Room -->
-            <div id="editstatus" class="modal fade" role="dialog">
+    <div id="editstatus" class="modal fade" role="dialog">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
             <div class="modal-content modal-addRoom">
                 <div class="modal-header">
                     <h4 class="modal-title">Edit Status</h4>
                 </div>
-                <form asp-action="StaffUpdateFieldTripDetail" asp-controller="Staff" method="post" asp-route-id="@details.MeetingId" class="form-group">
+                <form asp-action="StaffUpdateMeetingDetail" asp-controller="Staff" method="post" asp-route-id="@details.MeetingId" class="form-group">
                     <div class="modal-body">
                         <div class="row justify-content-center">
                             <div class="col-12 col-md-8">
@@ -299,7 +302,7 @@
                                 <label asp-for="@part.CheckInStatus" class="col-sm-4 col-form-label">CheckInStatus</label>
                                     <div class="col-sm-8">
                                         <input asp-for="@part.CheckInStatus" id="CheckInStatus" type="checkbox" name="CheckInStatus"
-                                               value="@part.CheckInStatus" class="form-control" required>
+                                               value="@part.CheckInStatus" class="form-control">
                                     </div>
                                     }
                         </div>

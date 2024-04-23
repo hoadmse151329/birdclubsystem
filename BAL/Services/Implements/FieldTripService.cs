@@ -32,6 +32,9 @@ namespace BAL.Services.Implements
                 {
                     if (item.TripId == itemview.TripId)
                     {
+                        var media = await _unitOfWork.FieldTripMediaRepository.GetFieldTripMediasByTripId(item.TripId);
+                        itemview.Media = (media != null) ? _mapper.Map<IEnumerable<FieldtripMediaViewModel>>(media).ToList() : null;
+
                         locationName = await _unitOfWork.LocationRepository.GetLocationNameById(item.LocationId.Value);
                         itemview.AreaNumber = Int32.Parse(locationName.Split(",")[0]);
                         itemview.Street = locationName.Split(",")[1];

@@ -10,11 +10,11 @@ namespace DAL.Models
         [Key, Column(Order = 0)]
         public int? MeetingId { get; set; }
         [Key, Column(Order = 1)]
-        public string? MemberId { get; set; }
+        public string MemberId { get; set; } = null!;
         public string ParticipantNo { get; set; } = null!;
-        public int CheckInStatus { get; set; }
+        public bool CheckInStatus { get; set; }
 
-        public virtual Meeting? Meeting { get; set; }
-        public virtual Member? Member { get; set; }
+        public virtual Meeting Meeting { get; set; } = null!;
+        public virtual Member Member { get; set; } = null!;
     }
 }
