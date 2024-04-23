@@ -1066,13 +1066,13 @@ namespace WebAppMVC.Controllers
             return View(listMemberStatusResponse.Data);
         }
         [HttpPost("MemberStatus/Update")]
-        public async Task<IActionResult> ManagerUpdateMemberStatus(List<GetMemberStatus> models)
+        public async Task<IActionResult> ManagerUpdateMemberStatus(List<GetMemberStatus> listRequest)
         {
             ManagerAPI_URL += "Manager/AllMemberStatus";
 
             dynamic testmodel = new ExpandoObject();
 
-            var listStatus = models;
+            var listStatus = listRequest;
 
             string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
             if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");

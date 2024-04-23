@@ -3,6 +3,7 @@
     Layout = null;
     ViewData["Title"] = "Manager Member Status Page";
     string? search = string.Empty;
+    var listRequest = Model;
     List<SelectListItem> defaultStatus = new()
     {
         new SelectListItem {Text = "Inactive", Value = "Inactive"},
@@ -165,119 +166,107 @@
                                 </li>             
                             </ul>
                             
-                            <!-- Tab panes -->
-                            <div class="tab-content">
-                                <!-- home1 -->
-                                <div class="tab-pane active" id="home1" role="tabpanel">
-                                    <div class="row search">
-                                        <div class="col-sm-12 d-flex">
-                                            <div class="col-sm-6 d-flex address-home">
-                                                @{
-                                                    if (ViewBag.error != null)
-                                                    {
-                                                        <span class="text-danger">@ViewBag.error</span>
-                                                    }
+                        <!-- Tab panes -->
+                        <div class="tab-content">
+                            <!-- home1 -->
+                            <div class="tab-pane active" id="home1" role="tabpanel">
+                                <div class="row search">
+                                    <div class="col-sm-12 d-flex">
+                                        <div class="col-sm-6 d-flex address-home">
+                                            @{
+                                                if (ViewBag.error != null)
+                                                {
+                                                    <span class="text-danger">@ViewBag.error</span>
                                                 }
-                                            </div>
-                                            <div class="col-sm-6 d-flex justify-content-end">
-                                                <form asp-action="ManagerMemberStatusSearch" asp-controller="Manager" method="get" asp-route-search="@search">                   
-                                                    <div>
-                                                        <label>
-                                                            <input asp-for="@search" class="form-control" type="text" name="search" placeholder="Search..." value="@search">
-                                                            <i class='bx bx-search-alt'></i>
-                                                        </label>
-                                                    </div>
-                                                </form>
-                                            </div>
+                                            }
+                                        </div>
+                                        <div class="col-sm-6 d-flex justify-content-end">
+                                            <form asp-action="ManagerMemberStatusSearch" asp-controller="Manager" method="get" asp-route-search="@search">                   
+                                                <div>
+                                                    <label>
+                                                        <input asp-for="@search" class="form-control" type="text" name="search" placeholder="Search..." value="@search">
+                                                        <i class='bx bx-search-alt'></i>
+                                                    </label>
+                                                </div>
+                                            </form>
                                         </div>
                                     </div>
+                                </div>
+                                <div id="history-table_wrapper" class="dataTables_wrapper no-footer">
                                     <form asp-action="ManagerUpdateMemberStatus" asp-controller="Manager" method="post">
-                                        <div id="history-table_wrapper" class="dataTables_wrapper no-footer">
-                                            <table id="history-table"
-                                                   class="table table-striped table-bordered dataTable no-footer"
-                                                   aria-describedby="history-table_info">
-                                                <thead>
-                                                    <tr>
-                                                        <th class="sorting sorting_asc" tabindex="0"
-                                                            aria-controls="history-table" rowspan="1"
-                                                            colspan="1" aria-sort="ascending"
-                                                            aria-label="Member ID: activate to sort column descending">
-                                                            Member Id
-                                                        </th>
-                                                        <th class="sorting" tabindex="0"
-                                                            aria-controls="history-table" rowspan="1"
-                                                            colspan="1"
-                                                            aria-label="Member User Name: activate to sort column ascending">
-                                                            Member User name
-                                                        </th>
-                                                        <th class="sorting" tabindex="0"
-                                                            aria-controls="history-table" rowspan="1"
-                                                            colspan="1"
-                                                            aria-label="Member Full Name: activate to sort column ascending">
-                                                            Member Full name
-                                                        </th>
-                                                        <th class="sorting" tabindex="0"
-                                                            aria-controls="history-table" rowspan="1"
-                                                            colspan="1"
-                                                            aria-label="Status: activate to sort column ascending">
-                                                            Status
-                                                        </th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @for (int i = 0; i < Model.Count(); i++)
-                                                    {
-                                                        <tr class="@("clickable-row "+ (i%2 == 0 ? "even" : "odd")) " data-href="#"
-                                                            data-bs-toggle="tooltip" data-bs-placement="right"
-                                                            title="More Details">
-                                                            <td class="sorting_1">
-                                                                <input type="hidden" asp-for="@Model[i].MemberId" name="@Model[i].MemberId" value="@Model[i].MemberId" class="form-control" />
-                                                                @Model[i].MemberId
-                                                            </td>
-                                                            <td>
-                                                                <input type="hidden" asp-for="@Model[i].UserName" name="@Model[i].UserName" value="@Model[i].UserName" class="form-control" />
-                                                                @Model[i].UserName
-                                                            </td>
-                                                            <td>
-                                                                <input type="hidden" asp-for="@Model[i].FullName" name="@Model[i].FullName" value="@Model[i].FullName" class="form-control" />
-                                                                @Model[i].FullName
-                                                            </td>
-                                                            <td>
-                                                                @{
-                                                                    foreach (var status in defaultStatus)
+                                        <table id="history-table"
+                                                class="table table-striped table-bordered dataTable no-footer"
+                                                aria-describedby="history-table_info">
+                                            <thead>
+                                                <tr>
+                                                    <th class="sorting sorting_asc" tabindex="0"
+                                                        aria-controls="history-table" rowspan="1"
+                                                        colspan="1" aria-sort="ascending"
+                                                        aria-label="Member ID: activate to sort column descending">
+                                                        Member Id
+                                                    </th>
+                                                    <th class="sorting" tabindex="0"
+                                                        aria-controls="history-table" rowspan="1"
+                                                        colspan="1"
+                                                        aria-label="Member User Name: activate to sort column ascending">
+                                                        Member User name
+                                                    </th>
+                                                    <th class="sorting" tabindex="0"
+                                                        aria-controls="history-table" rowspan="1"
+                                                        colspan="1"
+                                                        aria-label="Member Full Name: activate to sort column ascending">
+                                                        Member Full name
+                                                    </th>
+                                                    <th class="sorting" tabindex="0"
+                                                        aria-controls="history-table" rowspan="1"
+                                                        colspan="1"
+                                                        aria-label="Status: activate to sort column ascending">
+                                                        Status
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @for (int i = 0; i < listRequest.Count(); i++)
+                                                {
+                                                    <tr class="@("clickable-row "+ (i%2 == 0 ? "even" : "odd")) " data-href="#"
+                                                        data-bs-toggle="tooltip" data-bs-placement="right"
+                                                        title="More Details">
+                                                        <td class="sorting_1">
+                                                                <input type="hidden" asp-for="@listRequest[i].MemberId" name="listRequest[@i].MemberId" value="@listRequest[i].MemberId" class="form-control" />
+                                                            @listRequest[i].MemberId
+                                                        </td>
+                                                        <td>
+                                                                <input type="hidden" asp-for="@listRequest[i].UserName" name="listRequest[@i].UserName" value="@listRequest[i].UserName" class="form-control" />
+                                                            @listRequest[i].UserName
+                                                        </td>
+                                                        <td>
+                                                                <input type="hidden" asp-for="@listRequest[i].FullName" name="listRequest[@i].FullName" value="@listRequest[i].FullName" class="form-control" />
+                                                            @listRequest[i].FullName
+                                                        </td>
+                                                        <td>
+                                                            @{
+                                                                foreach (var status in defaultStatus)
+                                                                {
+                                                                    if (status.Text.Equals(listRequest[i].Status))
                                                                     {
-                                                                        if (status.Text.Equals(Model[i].Status))
-                                                                        {
-                                                                            status.Selected = true;
-                                                                        }
+                                                                        status.Selected = true;
                                                                     }
                                                                 }
-                                                                <select class="form-control" asp-for="@Model[i].Status" asp-items="@defaultStatus" class="custom-select" name="@Model[i].Status" id="status">
-                                                                </select>
-                                                            </td>
-                                                        </tr>
-                                                    }
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <div class="row search">
-                                            <div class="col-sm-12 d-flex">
-                                                <div class="col-sm-6 d-flex address-home">
-                                                    @{
-                                                        if (ViewBag.error != null)
-                                                        {
-                                                            <span class="text-danger">@ViewBag.error</span>
-                                                        }
-                                                    }
-                                                </div>
-                                                <div class="col-sm-6 d-flex justify-content-end">
-                                                    <div class="rating-room">
-                                                        <button class="button--primary btn-danger bg-danger shadow btn-xs text-white" type="submit" >Save Changes</button>
-                                                    </div>
-                                                </div>
+                                                            }
+                                                            <select class="form-control" asp-for="@listRequest[i].Status" asp-items="@defaultStatus" class="custom-select" name="listRequest[@i].Status">
+                                                            </select>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                        <div class="row col-12 d-flex">
+                                            <div class="rating-room">
+                                                <button class="button--primary btn-success bg-success shadow btn-xs text-white" type="submit">Save Changes</button>
                                             </div>
                                         </div>
                                     </form>
+                                </div>
                             </div>
                             <!-- end tapnet -->
                         </div>
