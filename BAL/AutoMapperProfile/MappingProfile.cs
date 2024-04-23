@@ -93,7 +93,7 @@ namespace BAL.AutoMapperProfile
                 .ReverseMap()
                 .AfterMap((src, dest) =>
                 {
-                    dest.Member.FullName = src.MemberName;
+                    
                 });
             CreateMap<FieldTripParticipant, FieldTripParticipantViewModel>()
                 .AfterMap((src, dest) =>
@@ -103,7 +103,7 @@ namespace BAL.AutoMapperProfile
                 .ReverseMap()
                 .AfterMap((src, dest) =>
                 {
-                    dest.Member.FullName = src.MemberName;
+                    
                 });
             CreateMap<Meeting, MeetingViewModel>()
                 .ReverseMap();

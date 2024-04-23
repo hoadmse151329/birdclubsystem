@@ -161,13 +161,20 @@ namespace WebAppMVC.Controllers
             return View(meetingDetailBigModel);
         }
         [HttpPost("Meeting/Update/{id:int}")]
-        /*[Route("Staff/Meeting/Update/{id:int}")]*/
+        /*[Route("Staff/Meeting/Update/{id:int}/{memberId}")]*/
         public async Task<IActionResult> StaffUpdateMeetingDetail(
             int id,
-            MeetingViewModel meetView
+            MeetingParticipantViewModel meetPartView
             )
         {
             StaffAPI_URL += "Meeting/UpdateParticipants/" + id;
+
+            if (!TryValidateModel(meetPartView))
+            {
+                ViewBag.Error =
+                "Error while processing your request! (Update Meeting Participant Status!).\n Validation Failed!";
+                return RedirectToAction("StaffMeetingDetail", new { id });
+            }
 
             string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
             if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
@@ -185,26 +192,26 @@ namespace WebAppMVC.Controllers
             TempData["ROLE_NAME"] = role;
             TempData["USER_NAME"] = usrname;
 
-            var meetPostResponse = await methcall.CallMethodReturnObject<GetMeetingPostResponse>(
+            var meetPartResponse = await methcall.CallMethodReturnObject<GetMeetingParticipantResponse>(
                                 _httpClient: _httpClient,
                                 options: options,
                                 methodName: "PUT",
                                 url: StaffAPI_URL,
-                                inputType: meetView,
+                                inputType: meetPartView,
                                 accessToken: accToken,
                                 _logger: _logger);
-            if (meetPostResponse == null)
+            if (meetPartResponse == null)
             {
                 ViewBag.error =
-                    "Error while processing your request! (Updating Meeting!).\n Meeting Not Found!";
+                    "Error while processing your request! (Updating Meeting Participant!).\n Meeting Not Found!";
                 return RedirectToAction("StaffMeeting");
             }
-            if (!meetPostResponse.Status)
+            if (!meetPartResponse.Status)
             {
-                _logger.LogInformation("Error while processing your request: " + meetPostResponse.Status + " , Error Message: " + meetPostResponse.ErrorMessage);
+                _logger.LogInformation("Error while processing your request: " + meetPartResponse.Status + " , Error Message: " + meetPartResponse.ErrorMessage);
                 ViewBag.error =
-                    "Error while processing your request! (Updating Meeting Post!).\n"
-                    + meetPostResponse.ErrorMessage;
+                    "Error while processing your request! (Updating Meeting Participant!).\n"
+                    + meetPartResponse.ErrorMessage;
                 return RedirectToAction("StaffMeeting");
             }
             return RedirectToAction("StaffMeetingDetail", "Staff", new { id = id });

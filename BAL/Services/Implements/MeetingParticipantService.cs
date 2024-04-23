@@ -100,6 +100,7 @@ namespace BAL.Services.Implements
 
         public void Update(MeetingParticipantViewModel entity)
         {
+
             var meetpart = _mapper.Map<MeetingParticipant>(entity);
             _unitOfWork.MeetingParticipantRepository.Update(meetpart);
             _unitOfWork.Save();

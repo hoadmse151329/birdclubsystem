@@ -37,7 +37,7 @@ namespace DAL.Repositories.Implements
 
         public async Task<MeetingParticipant> GetMeetingParticipantById(int meetingId, string memberId)
         {
-            return _context.MeetingParticipants
+            return _context.MeetingParticipants.AsNoTracking()
                 .Where(m => m.MeetingId == meetingId && m.MemberId == memberId)
                 .Include(m => m.Member)
                 .Include(m => m.Meeting)
