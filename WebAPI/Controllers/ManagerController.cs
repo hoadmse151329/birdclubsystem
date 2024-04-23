@@ -10,6 +10,7 @@ using BAL.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using BAL.Services.Interfaces;
 using System.ComponentModel.DataAnnotations;
+using BAL.ViewModels.Manager;
 
 namespace WebAPI.Controllers
 {
@@ -88,6 +89,49 @@ namespace WebAPI.Controllers
                     });
                 }
 
+                return Ok(new
+                {
+                    Status = true,
+                    Data = result
+                });
+            }
+            catch (Exception ex)
+            {
+                if (ex.InnerException != null)
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = ex.Message,
+                        InnerExceptionMessage = ex.InnerException.Message
+                    });
+                }
+                // Log the exception if needed
+                return BadRequest(new
+                {
+                    Status = false,
+                    ErrorMessage = ex.Message
+                });
+            }
+        }
+        [HttpGet("AllMemberStatus")]
+        [Authorize(Roles = "Manager")]
+        [ProducesResponseType(typeof(IEnumerable<GetMemberStatus>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetAllMemberStatus()
+        {
+            try
+            {
+                var result = await _memberService.GetAllMemberStatus();
+                if (result == null)
+                {
+                    return NotFound(new
+                    {
+                        Status = false,
+                        ErrorMessage = "All Member Status Not Found!"
+                    });
+                }
                 return Ok(new
                 {
                     Status = true,
