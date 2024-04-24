@@ -61,8 +61,16 @@
                             <div class="tittle">
                                 <div class="div-wrapper"><div class="text-wrapper-3">Field Trip</div></div>
                             </div>
-                            <img class="soi-noi-hoi-thi-chim"
-                                 src="@Model.Media.FirstOrDefault().Image" />
+                            @{
+                                if (Model.Media != null)
+                                {
+                                    <img class="soi-noi-hoi-thi-chim" src="@Model.Media.FirstOrDefault().Image" alt="nt1">
+                                }
+                                else
+                                {
+                                    <img class="soi-noi-hoi-thi-chim" src="~/images/meeting.png" alt="nt1">
+                                }
+                            }
                         </div>
                     </div>
                     <div class="info">

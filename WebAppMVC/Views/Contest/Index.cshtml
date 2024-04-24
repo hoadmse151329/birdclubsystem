@@ -93,7 +93,16 @@
                             <div class="club-item">
 
                                 <a href="#" class="club-image">
-                                    <img class="img-fluid" src="~/images/meeting.png" alt="nt1">
+                                    @{
+                                        if (data.Media != null && data.Media.Count() > 0)
+                                        {
+                                            <img class="img-fluid" src="@data.Media.FirstOrDefault().Image" alt="nt1">
+                                        }
+                                        else
+                                        {
+                                            <img class="img-fluid" src="~/images/meeting.png" alt="nt1">
+                                        }
+                                    }
                                 </a>
                                 <div class="club-title">
                                     <a href="#" class="text-decoration-none">@data.ContestName</a>

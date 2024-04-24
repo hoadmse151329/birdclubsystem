@@ -41,7 +41,7 @@ namespace BAL.Services.Implements
             var user = await _unitOfWork.UserRepository.GetByLogin(request.Username, request.Password);
             if (user != null && user.Member != null)
             {
-                if(user.Member.Status == "Inactive")
+                if(user.Member.Status != "Active")
                 {
                     return new AuthenResponse()
                     {

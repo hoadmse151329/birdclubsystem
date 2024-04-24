@@ -73,9 +73,6 @@ namespace WebAppMVC.Controllers
 
 			string? usrname = HttpContext.Session.GetString("USER_NAME");
 
-			TempData["ROLE_NAME"] = role;
-			TempData["USER_NAME"] = usrname;
-
 			var response = _vnPayService.PaymentExecute(Request.Query);
             if (response.TransactionType == Constants.Constants.NEW_MEMBER_REGISTRATION_TRANSACTION_TYPE && response.Success && role == Constants.Constants.TEMPMEMBER)
             {
