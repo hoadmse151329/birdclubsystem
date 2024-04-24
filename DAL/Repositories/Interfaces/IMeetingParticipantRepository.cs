@@ -18,5 +18,6 @@ namespace DAL.Repositories.Interfaces
         Task<IEnumerable<MeetingParticipant>> GetMeetingParticipantsByMemberId(string memId);
         Task<IEnumerable<MeetingParticipant>> GetMeetingParticipantsByMemberIdInclude(string memId);
         Task<int> GetCountMeetingParticipantsByMemberId(string memId);
+        Task<IEnumerable<MeetingParticipant>> UpdateAllMeetingParticipantStatus(List<MeetingParticipant> part);
     }
 }

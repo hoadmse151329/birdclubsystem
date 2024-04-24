@@ -74,5 +74,23 @@ namespace DAL.Repositories.Implements
             if (mempart != null) return Int32.Parse(mempart.ParticipantNo);
             return 0;
         }
+
+        public async Task<IEnumerable<MeetingParticipant>> UpdateAllMeetingParticipantStatus(List<MeetingParticipant> part)
+        {
+            foreach (var participant in part)
+            {
+                var meetpart = _context.MeetingParticipants
+                    .SingleOrDefault(p => p.MeetingId == participant.MeetingId && p.MemberId == participant.MemberId);
+                if (meetpart != null)
+                {
+                    if (meetpart.CheckInStatus != participant.CheckInStatus)
+                    {
+                        meetpart.CheckInStatus = participant.CheckInStatus;
+                        _context.Update(meetpart);
+                    }
+                }
+            }
+            return part;
+        }
     }
 }

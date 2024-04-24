@@ -53,6 +53,7 @@ namespace BAL.AutoMapperProfile
                     dest.RegistrationDeadline = src.Meeting.RegistrationDeadline;
                     dest.Status = src.Meeting.Status;
                     dest.ParticipationNo = Int32.Parse(src.ParticipantNo);
+                    dest.CheckInStatus = src.CheckInStatus;
                 })
                 .ReverseMap();
                 /*.AfterMap((src, dest) =>
@@ -79,6 +80,7 @@ namespace BAL.AutoMapperProfile
                     dest.RegistrationDeadline = src.Trip.RegistrationDeadline;
                     dest.Status = src.Trip.Status;
                     dest.ParticipationNo = Int32.Parse(src.ParticipantNo);
+                    dest.CheckInStatus = src.CheckInStatus;
                 })
                 .ReverseMap();
             CreateMap<MeetingParticipant, MeetingParticipantViewModel>()

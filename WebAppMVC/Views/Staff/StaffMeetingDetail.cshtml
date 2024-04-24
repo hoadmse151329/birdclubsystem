@@ -3,7 +3,7 @@
     Layout = null;
     ViewData["Title"] = "Staff Meeting Detail Page";
     BAL.ViewModels.MeetingViewModel details = Model.MeetingDetails;
-    List<BAL.ViewModels.MeetingParticipantViewModel> parts = Model.MeetingParticipants;
+    List<BAL.ViewModels.MeetingParticipantViewModel> meetPartView = Model.MeetingParticipants;
     List<SelectListItem> checkInStatus = new()
     {
         new SelectListItem {Text = "Not Checked-In", Value = "Not Checked-In"},
@@ -254,68 +254,66 @@
 
                     </div>
                     <div class="col-lg-5 cardFB">
-                        <div class="card border-0 d-flex">
-                            <div class="card-header">
-                                <h4>Participants</h4>
-                            </div>
-                            <div class="card-body">
-                                <table class="table table-hover table-borderless">
-                                    <thead>
-                                        <tr>
-                                            <th>Participant No:</th>
-                                            <th>Name:</th>
-                                            <th>Check In Status:</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach(var part in parts)
-                                        {
+                        <form asp-action="StaffUpdateMeetingDetail" asp-controller="Staff" asp-route-id="@details.MeetingId" method="post">
+                            <div class="card border-0 d-flex">
+                                <div class="card-header">
+                                    <h4>Edit Participant Status</h4>
+                                </div>
+                                <div class="card-body">
+                                    <table class="table table-hover table-borderless">
+                                        <thead>
                                             <tr>
-                                                <td>@part.ParticipantNo</td>
-                                                <td>@part.MemberName</td>
-                                                <td>@part.CheckInStatus</td>
+                                                <th>Participant No:</th>
+                                                <th>Name:</th>
+                                                <th>Check In Status:</th>
                                             </tr>
-                                        }
-                                        <tr>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                        </thead>
+                                        <tbody>
+                                            @for (int i = 0; i < meetPartView.Count(); i++)
+                                            {
+                                                <tr class="@("clickable-row "+ (i%2 == 0 ? "even" : "odd")) " data-href="#"
+                                                    data-bs-toggle="tooltip" data-bs-placement="right"
+                                                    title="More Details">
+                                                    <input type="hidden" asp-for="@meetPartView[i].MeetingId" name="meetPartView[@i].MeetingId" value="@meetPartView[i].MeetingId" class="form-control" />
+                                                    <input type="hidden" asp-for="@meetPartView[i].MemberId" name="meetPartView[@i].MemberId" value="@meetPartView[i].MemberId" class="form-control" />
+                                                    <td class="sorting_1">
+                                                        <input type="hidden" asp-for="@meetPartView[i].ParticipantNo" name="meetPartView[@i].ParticipantNo" value="@meetPartView[i].ParticipantNo" class="form-control" />
+                                                        @meetPartView[i].ParticipantNo
+                                                    </td>
+                                                    <td>
+                                                        <input type="hidden" asp-for="@meetPartView[i].MemberName" name="meetPartView[@i].MemberName" value="@meetPartView[i].MemberName" class="form-control" />
+                                                        @meetPartView[i].MemberName
+                                                    </td>
+                                                    <td>
+                                                        @{
+                                                            foreach (var status in checkInStatus)
+                                                            {
+                                                                if (status.Text.Equals(meetPartView[i].CheckInStatus))
+                                                                {
+                                                                    status.Selected = true;
+                                                                }
+                                                            }
+                                                        }
+                                                        <select class="form-control" asp-for="@meetPartView[i].CheckInStatus" asp-items="@checkInStatus" class="custom-select" name="meetPartView[@i].checkInStatus">
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                    <div class="row col-12 d-flex">
+                                        <div class="rating-room">
+                                            <button class="button--primary btn-success bg-success shadow btn-xs text-white" type="submit">Save Changes</button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-    <!-- edit Room -->
-    <div id="editstatus" class="modal fade" role="dialog">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
-            <div class="modal-content modal-addRoom">
-                <div class="modal-header">
-                    <h4 class="modal-title">Edit Status</h4>
-                </div>
-                <form asp-action="StaffUpdateMeetingDetail" asp-controller="Staff" method="post" asp-route-id="@details.MeetingId" class="form-group">
-                    <div class="modal-body">
-                        <div class="row justify-content-center">
-                            <div class="col-12 col-md-8">
-                                @foreach (var part in parts){
-                                <label asp-for="@part.MemberName" class="col-sm-4 col-form-label">@part.MemberName</label>
-                                    <div class="col-sm-8">
-                                        <input asp-for="@part.CheckInStatus" id="CheckInStatus" type="text" name="CheckInStatus"
-                                               value="@part.CheckInStatus" class="form-control">
-                                    </div>
-                                    }
-                        </div>
-                    </div>
-                    <div class="modal-footer justify-content-center">
-                        <button class="btn btn-success" type="submit" value="Update">Save</button>
-                        <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-
     <!-- jQuery first, then Popper.js, then Bootstrap JS. -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>

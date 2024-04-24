@@ -8,6 +8,8 @@ namespace BAL.ViewModels.Staff
 {
     public class GetMeetingParticipantStatus
     {
-
+        public int MeetingId { get; set; }
+        public string? MemberId { get; set; }
+        public string? ParticipantNo { get; set; }
     }
 }
