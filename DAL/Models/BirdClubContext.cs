@@ -797,6 +797,10 @@ namespace DAL.Models
                     .HasMaxLength(50)
                     .HasColumnName("role");
 
+                entity.Property(e => e.ExpiryDate)
+                    .HasColumnType("datetime")
+                    .HasColumnName("expriyDate");
+
                 entity.Property(e => e.Status)
 				    .HasMaxLength(50)
 					.HasColumnName("status");
