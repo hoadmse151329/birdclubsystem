@@ -1,4 +1,3 @@
-// ====================== Validation ====================
 //Đối tượng
 function Validator(options) {
   var selectorRules = {};
@@ -142,71 +141,8 @@ Validator.isConfirmed = function (selector, getConfirmValue, message) {
   };
 };
 
-// ===================Thuy detail=====================
 
-$(function () {
-  app_a.setUp();
-});
-let vnd = Intl.NumberFormat("vi-VN", {
-  style: "currency",
-  currency: "VND",
-  useGrouping: true,
-});
-var app_a = {
-  tbl: "#app_a",
-  h: "input.hour_val",
-  r: "input.room_val",
-  t: ".row_total",
-  am: ".amount",
-  p: ".price",
-  setUp: function () {
-    var _this = this;
-    _this.amount();
-    $(this.tbl)
-      .find("input")
-      .change(function () {
-        _this.amount();
-      });
-  },
-  amount: function () {
-    var _this = this,
-      am = $(_this.am),
-      amount = 0;
-    $(this.tbl)
-      .find("tbody tr")
-      .each(function () {
-        amount += _this.rowtotal(this);
-      });
-    am.html(_this.toCur(amount));
-  },
-  rowtotal: function (row) {
-    var _this = this,
-      r = $(row),
-      h = r.find(_this.h),
-      p = r.find(_this.p),
-      rm = r.find(_this.r),
-      h_val = h.val(),
-      r_val = rm.val(),
-      p_val = p.val(),
-      t = r.find(_this.t),
-      total = h_val * r_val * p_val;
-    t.html(_this.toCur(total));
-    return total;
-  },
-  toCur: function (val) {
-    return vnd.format(val);
-  },
-};
-function price_format(){
-    $('.price-format').each(function(){
-        var $price = $(this).data('price'),
-            html=vnd.format($price);
-        $(this).html(html);
-    });
-}
-$(function(){
-    price_format();
-});
+
 // ===================Thuy detail=====================
 /***AVATAR SCRIPT***/
 
@@ -337,3 +273,124 @@ $(function () {
     return showPage(currentPage - 1);
   });
 });
+
+//truncate content
+
+$(document).ready(function () {
+  (function () {
+    var showChar = 0;
+    var ellipsestext = "";
+
+    $(".truncate-content").each(function () {
+      var content = $(this).html();
+      if (content.length > showChar) {
+        var c = content.substr(0, showChar);
+        var h = content;
+        var html =
+          '<div class="truncate-text" style="display:block">' +
+          c +
+          '<span class="moreellipses">' +
+          ellipsestext +
+          '&nbsp;&nbsp;<a href="" class="moreless more">Xem thêm</a></span></span></div><div class="truncate-text" style="display:none">' +
+          h +
+          '<a href="" class="moreless less">Thu gọn</a></span></div>';
+
+        $(this).html(html);
+      }
+    });
+    $(".moreless").click(function () {
+      var thisEl = $(this);
+      var cT = thisEl.closest(".truncate-text");
+      var tX = ".truncate-text";
+
+      if (thisEl.hasClass("less")) {
+        cT.prev(tX).toggle();
+        cT.slideToggle();
+      } else {
+        cT.toggle();
+        cT.next(tX).fadeToggle();
+      }
+      return false;
+    });
+    /* end iffe */
+  })();
+
+  /* end ready */
+});
+//data-href
+// $(document).ready(function () {
+//   $(".clickable-row").click(function () {
+//     window.location = $(this).data("href");
+//   });
+// });
+
+ $(document).ready(function () {
+            $(".clickable").click(function () {
+                window.location = $(this).data("href");
+            });
+        });
+        // ===================Thuy detail=====================
+let vnd = Intl.NumberFormat("vi-VN", {
+  style: "currency",
+  currency: "VND",
+  useGrouping: true,
+});
+function price_format() {
+  $(".price-format").each(function () {
+    var $price = $(this).data("price"),
+      html = vnd.format($price);
+    $(this).html(html);
+  });
+}
+$(function () {
+  price_format();
+});
+$(function () {
+  app_a.setUp();
+});
+
+var app_a = {
+  tbl: "#app_a",
+  h: "input.hour_val",
+  r: "input.room_val",
+  t: ".row_total",
+  am: ".amount",
+  p: ".price",
+  setUp: function () {
+    var _this = this;
+    _this.amount();
+    $(this.tbl)
+      .find("input")
+      .change(function () {
+        _this.amount();
+      });
+  },
+  amount: function () {
+    var _this = this,
+      am = $(_this.am),
+      amount = 0;
+    $(this.tbl)
+      .find("tbody tr")
+      .each(function () {
+        amount += _this.rowtotal(this);
+      });
+    am.html(_this.toCur(amount));
+  },
+  rowtotal: function (row) {
+    var _this = this,
+      r = $(row),
+      h = r.find(_this.h),
+      p = r.find(_this.p),
+      rm = r.find(_this.r),
+      h_val = h.val(),
+      r_val = rm.val(),
+      p_val = p.val(),
+      t = r.find(_this.t),
+      total = h_val * r_val * p_val;
+    t.html(_this.toCur(total));
+    return total;
+  },
+  toCur: function (val) {
+    return vnd.format(val);
+  },
+};
