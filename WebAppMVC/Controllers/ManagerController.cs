@@ -965,7 +965,7 @@ namespace WebAppMVC.Controllers
 
 			string? role = HttpContext.Session.GetString("ROLE_NAME");
 			if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-			else if (!role.Equals("Member")) return RedirectToAction("Index", "Home");
+			else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
 
 			string? usrId = HttpContext.Session.GetString("USER_ID");
 			if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
@@ -1021,7 +1021,7 @@ namespace WebAppMVC.Controllers
                 ManagerAPI_URL += "Manager/Search?meetingName=" + search;
             }
             else */
-                ManagerAPI_URL += "Manager/AllMemberStatus";
+                ManagerAPI_URL += "Manager/MemberStatus";
 
             string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
             if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
@@ -1068,11 +1068,7 @@ namespace WebAppMVC.Controllers
         [HttpPost("MemberStatus/Update")]
         public async Task<IActionResult> ManagerUpdateMemberStatus(List<GetMemberStatus> listRequest)
         {
-            ManagerAPI_URL += "Manager/AllMemberStatus";
-
-            dynamic testmodel = new ExpandoObject();
-
-            var listStatus = listRequest;
+            ManagerAPI_URL += "Manager/MemberStatus/Update";
 
             string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
             if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
@@ -1090,10 +1086,11 @@ namespace WebAppMVC.Controllers
             TempData["ROLE_NAME"] = role;
             TempData["USER_NAME"] = usrname;
 
-            var listMemberStatusResponse = await methcall.CallMethodReturnObject<GetListMemberStatus>(
+            var listMemberStatusResponse = await methcall.CallMethodReturnObject<GetListMemberStatusUpdate>(
                 _httpClient: _httpClient,
                 options: options,
-                methodName: "GET",
+                methodName: "PUT",
+                inputType: listRequest,
                 url: ManagerAPI_URL,
                 accessToken: accToken,
                 _logger: _logger);
@@ -1114,7 +1111,6 @@ namespace WebAppMVC.Controllers
                     + listMemberStatusResponse.ErrorMessage;
                 return View("ManagerIndex");
             }
-            testmodel.MemberStatuses = listMemberStatusResponse.Data;
             return RedirectToAction("ManagerMemberStatus");
         }
     }

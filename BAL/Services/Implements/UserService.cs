@@ -45,6 +45,7 @@ namespace BAL.Services.Implements
                 {
                     return new AuthenResponse()
                     {
+                        UserId = user.MemberId,
                         UserName = request.Username,
                         Status = user.Member.Status
                     };
