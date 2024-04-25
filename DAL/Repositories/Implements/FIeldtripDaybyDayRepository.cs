@@ -25,7 +25,7 @@ namespace DAL.Repositories.Implements
 
         public async Task<FieldtripDaybyDay> GetFieldTripDayByDayById(int tripId, int fieldtripId)
         {
-            return _context.FieldtripDaybyDays.AsNoTracking().SingleOrDefault(f => f.TripId.Equals(tripId) && f.DaybyDayId.Equals(fieldtripId));
+            return _context.FieldtripDaybyDays.AsNoTracking().SingleOrDefault(f => f.TripId.Equals(tripId) && f.DayByDayId.Equals(fieldtripId));
         }
     }
 }

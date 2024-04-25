@@ -26,12 +26,12 @@ namespace DAL.Repositories.Implements
 
         public async Task<Member?> GetByIdNoTracking(string id)
         {
-            return await _context.Members.AsNoTrackingWithIdentityResolution().Include(mem => mem.MemberUser).SingleOrDefaultAsync(mem => mem.MemberId == id);
+            return await _context.Members.AsNoTrackingWithIdentityResolution().Include(mem => mem.UserDetail).SingleOrDefaultAsync(mem => mem.MemberId == id);
         }
 
         public async Task<Member?> GetByIdTracking(string id)
         {
-            return await _context.Members.Include(mem => mem.MemberUser).SingleOrDefaultAsync(mem => mem.MemberId == id);
+            return await _context.Members.Include(mem => mem.UserDetail).SingleOrDefaultAsync(mem => mem.MemberId == id);
         }
 
         public async Task<string?> GetMemberNameById(string id)

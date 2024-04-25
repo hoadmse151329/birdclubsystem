@@ -24,7 +24,7 @@ namespace DAL.Infrastructure
         private IFieldtripGettingThereRepository _fieldTripGettingThereRepository;
         private IFieldtripInclusionRepository _fieldTripInclusionRepository;
         private IFieldtripMediaRepository _fieldTripMediaRepository;
-        private IFieldtripRateRepository _fieldTripRateRepository;
+        private IFieldtripAdditionalDetailRepository _fieldtripAddDetailsRepository;
         private IFieldTripParticipantRepository _fieldTripParticipantRepository;
         private IContestRepository _contestRepository;
         private IContestParticipantRepository _contestParticipantRepository;
@@ -53,7 +53,7 @@ namespace DAL.Infrastructure
 
         public IFieldtripMediaRepository FieldTripMediaRepository => _fieldTripMediaRepository ??= new FieldtripMediaRepository(_context);
 
-        public IFieldtripRateRepository FieldTripRateRepository => _fieldTripRateRepository ??= new FieldtripRateRepository(_context);
+        public IFieldtripAdditionalDetailRepository FieldtripAdditionalDetailRepository => _fieldtripAddDetailsRepository ??= new FieldtripAdditionalDetailRepository(_context);
         public IContestMediaRepository ContestMediaRepository => _contestMediaRepository ??= new ContestMediaRepository(_context);
 
         public void Dispose()

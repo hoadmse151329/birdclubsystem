@@ -131,5 +131,15 @@ namespace DAL.Repositories.Implements
         {
             return _context.Meetings.AsNoTracking().SingleOrDefault(meet => meet.MeetingId == id);
         }
+
+        public async Task<bool> GetBoolMeetingId(int id)
+        {
+            var meet = _context.Meetings.SingleOrDefault(m => m.MeetingId == id);
+            if (meet != null)
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }

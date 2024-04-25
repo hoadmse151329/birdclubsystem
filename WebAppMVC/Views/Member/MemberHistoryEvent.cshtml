@@ -42,8 +42,7 @@
             <div class="navigation col-2" style="background:white">
                 <ul class="slide-menu" style="background-color:white">
                     <li>
-                        <a
-                            href="@Url.Action("MemberProfile", "Member")">
+                        <a href="@Url.Action("MemberProfile", "Member")">
                             <span><i class="bx bx-user"></i></span>
                             <span class="title">Account</span>
                         </a>
@@ -190,6 +189,12 @@
                                                                 <th class="sorting" tabindex="0"
                                                                     aria-controls="history-table" rowspan="1"
                                                                     colspan="1"
+                                                                    aria-label="Tình trạng Check-In: activate to sort column ascending">
+                                                                    Check In Status
+                                                                </th>
+                                                                <th class="sorting" tabindex="0"
+                                                                    aria-controls="history-table" rowspan="1"
+                                                                    colspan="1"
                                                                     aria-label="Action: activate to sort column ascending">
                                                                     Options</th>
                                                             </tr>
@@ -209,6 +214,7 @@
                                                                     <td>@events[i].ParticipationNo</td>
                                                                     <td>@events[i].Fee</td>
                                                                     <td>@events[i].Status</td>
+                                                                    <td>@events[i].CheckInStatus</td>
                                                                     <td>
                                                                         <div class="d-flex justify-content-around">
                                                                             <!--<a href="UserManager?action=feedback?userId=hai03&motelID=785146827" class="btn btn-info m-b-xs shadow btn-xs sharp me-1" data-bs-toggle="tooltip">Đánh giá</a>-->

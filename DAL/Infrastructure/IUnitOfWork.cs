@@ -21,7 +21,7 @@ namespace DAL.Infrastructure
         IFieldtripGettingThereRepository FieldTripGettingThereRepository { get; }
         IFieldtripInclusionRepository FieldTripInclusionRepository { get; }
         IFieldtripMediaRepository FieldTripMediaRepository { get; }
-        IFieldtripRateRepository FieldTripRateRepository { get; }
+        IFieldtripAdditionalDetailRepository FieldtripAdditionalDetailRepository { get; }
         IFieldTripParticipantRepository FieldTripParticipantRepository { get; }
         IContestRepository ContestRepository { get; }
         IContestParticipantRepository ContestParticipantRepository { get; }

@@ -1,7 +1,7 @@
 ﻿@model dynamic
 @{
     ViewData["Title"] = "Member History Event Page";
-    List<BAL.ViewModels.Event.GetEventParticipation> events = Model.RegisteredEvents;
+    List<BAL.ViewModels.TransactionViewModel> transactions = Model.MemberPayments;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <html lang="en">
@@ -42,8 +42,7 @@
             <div class="navigation col-2" style="background:white">
                 <ul class="slide-menu" style="background-color:white">
                     <li>
-                        <a
-                            href="@Url.Action("MemberProfile", "Member")">
+                        <a href="@Url.Action("MemberProfile", "Member")">
                             <span><i class="bx bx-user"></i></span>
                             <span class="title">Account</span>
                         </a>
@@ -145,125 +144,65 @@
                                                                 <th class="sorting sorting_asc" tabindex="0"
                                                                     aria-controls="history-table" rowspan="1"
                                                                     colspan="1" aria-sort="ascending"
-                                                                    aria-label="Event ID: activate to sort column descending">
-                                                                    Event ID</th>
+                                                                    aria-label="Transaction ID: activate to sort column descending">
+                                                                    Transaction ID</th>
                                                                 <th class="sorting" tabindex="0"
                                                                     aria-controls="history-table" rowspan="1"
                                                                     colspan="1"
-                                                                    aria-label="Event Name: activate to sort column ascending">
-                                                                    Event Name</th>
+                                                                    aria-label="VnPay ID: activate to sort column ascending">
+                                                                    VnPay ID</th>
                                                                 <th class="sorting" tabindex="0"
                                                                     aria-controls="history-table" rowspan="1"
                                                                     colspan="1"
-                                                                    aria-label="Event Name: activate to sort column ascending">
-                                                                    Event Type</th>
+                                                                    aria-label="User ID: activate to sort column ascending">
+                                                                    User ID</th>
                                                                 <th class="sorting" tabindex="0"
                                                                     aria-controls="history-table" rowspan="1"
                                                                     colspan="1"
-                                                                    aria-label="Date: activate to sort column ascending">
-                                                                    Registration Deadline</th>
+                                                                    aria-label="Transaction Type: activate to sort column ascending">
+                                                                    Transaction Type</th>
                                                                 <th class="sorting" tabindex="0"
                                                                     aria-controls="history-table" rowspan="1"
                                                                     colspan="1"
-                                                                    aria-label="Date: activate to sort column ascending">
-                                                                    Start Date</th>
+                                                                    aria-label="Value: activate to sort column ascending">
+                                                                    Value</th>
                                                                 <th class="sorting" tabindex="0"
                                                                     aria-controls="history-table" rowspan="1"
                                                                     colspan="1"
-                                                                    aria-label="Date: activate to sort column ascending">
-                                                                    End Date</th>
+                                                                    aria-label="Transaction Date: activate to sort column ascending">
+                                                                    Transaction Date</th>
                                                                 <th class="sorting" tabindex="0"
                                                                     aria-controls="history-table" rowspan="1"
                                                                     colspan="1"
-                                                                    aria-label="Date: activate to sort column ascending">
-                                                                    Participation No</th>
+                                                                    aria-label="Payment Date: activate to sort column ascending">
+                                                                    Payment Date</th>
                                                                 <th class="sorting" tabindex="0"
                                                                     aria-controls="history-table" rowspan="1"
                                                                     colspan="1"
-                                                                    aria-label="Fee: activate to sort column ascending">
-                                                                    Fee</th>
-                                                                <th class="sorting" tabindex="0"
-                                                                    aria-controls="history-table" rowspan="1"
-                                                                    colspan="1"
-                                                                    aria-label="Tình trạng: activate to sort column ascending">
+                                                                    aria-label="Status: activate to sort column ascending">
                                                                     Status</th>
                                                                 <th class="sorting" tabindex="0"
                                                                     aria-controls="history-table" rowspan="1"
                                                                     colspan="1"
-                                                                    aria-label="Action: activate to sort column ascending">
-                                                                    Options</th>
+                                                                    aria-label="DocNo: activate to sort column ascending">
+                                                                    DocNo</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            @for(int i = 0; i < events.Count(); i++)
+                                                            @for(int i = 0; i < transactions.Count(); i++)
                                                             {
                                                                 <tr class="@("clickable-row "+ (i%2 == 0 ? "even" : "odd")) " data-href="#"
                                                                 data-bs-toggle="tooltip" data-bs-placement="right"
                                                                 title="More Details">
-                                                                    <td class="sorting_1">@events[i].EventId</td>
-                                                                    <td>@events[i].EventName</td>
-                                                                    <td>@events[i].EventType</td>
-                                                                    <td>@events[i].RegistrationDeadline</td>
-                                                                    <td>@events[i].StartDate</td>
-                                                                    <td>@events[i].EndDate</td>
-                                                                    <td>@events[i].ParticipationNo</td>
-                                                                    <td>@events[i].Fee</td>
-                                                                    <td>@events[i].Status</td>
-                                                                    <td>
-                                                                        <div class="d-flex justify-content-around">
-                                                                            <!--<a href="UserManager?action=feedback?userId=hai03&motelID=785146827" class="btn btn-info m-b-xs shadow btn-xs sharp me-1" data-bs-toggle="tooltip">Đánh giá</a>-->
-                                                                            <div class="rating-room">
-                                                                                <a class="button--primary btn-info bg-info shadow btn-xs text-white"
-                                                                                href="@Url.Action(events[i].EventType + "Post", events[i].EventType,new {id = events[i].EventId})">Details</a>
-                                                                            </div>
-                                                                            @switch (events[i].Status)
-                                                                            {
-                                                                                case "Preparing":
-                                                                                    {
-                                                                                        <form asp-action="@(events[i].EventType)Deregister" asp-controller="@events[i].EventType" method="post" asp-route-meetingId="@events[i].EventId">
-                                                                                            <div class="report-room">
-                                                                                                <button class="button--primary btn-danger bg-danger shadow btn-xs text-white" type="submit">Sign Out</button>
-                                                                                            </div>
-                                                                                        </form>
-                                                                                        break;
-                                                                                    }
-                                                                                case "Open":
-                                                                                case "OnGoing":
-                                                                                    {
-                                                                                        <form asp-action="@(events[i].EventType)Deregister" asp-controller="@events[i].EventType" method="post" asp-route-meetingId="@events[i].EventId">
-                                                                                            <div class="report-room">
-                                                                                                <button class="button--primary btn-danger bg-danger shadow btn-xs text-white" type="submit">Sign Out</button>
-                                                                                            </div>
-                                                                                        </form>
-                                                                                        break;
-                                                                                    }
-                                                                                case "Ended":
-                                                                                    {
-                                                                                        <div class="report-room">
-                                                                                            <button data-toggle="modal"
-                                                                                                data-target="#report"
-                                                                                                class="button--primary btn-danger shadow btn-xs sharp text-white bg-danger">
-                                                                                                <span>Report</span>
-                                                                                            </button>
-                                                                                        </div>
-                                                                                        break;
-                                                                                    }
-                                                                                case "Cancelled":
-                                                                                    {
-                                                                                        <div class="report-room">
-                                                                                            <button data-toggle="modal"
-                                                                                                    data-target="#report"
-                                                                                                    class="button--primary btn-danger shadow btn-xs sharp text-white bg-danger">
-                                                                                                <span>Report</span>
-                                                                                            </button>
-                                                                                        </div>
-                                                                                        break;
-                                                                                    }
-                                                                            }
-                                                                        </div>
-
-
-                                                                    </td>
+                                                                    <td class="sorting_1">@transactions[i].TransactionId</td>
+                                                                    <td>@transactions[i].VnPayId</td>
+                                                                    <td>@transactions[i].UserId</td>
+                                                                    <td>@transactions[i].TransactionDate</td>
+                                                                    <td>@transactions[i].Value</td>
+                                                                    <td>@transactions[i].TransactionDate</td>
+                                                                    <td>@transactions[i].PaymentDate</td>
+                                                                    <td>@transactions[i].Status</td>
+                                                                    <td>@transactions[i].DocNo</td>
                                                                     <!-- feedback -->
                                                                     <!-- end feedback -->
                                                                     <!-- Report -->

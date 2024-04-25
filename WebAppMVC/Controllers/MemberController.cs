@@ -16,6 +16,7 @@ using System;
 using BAL.ViewModels.Member;
 using System.Text.Encodings.Web;
 using BAL.ViewModels.Event;
+using WebAppMVC.Models.Transaction;
 
 namespace WebAppMVC.Controllers
 {
@@ -340,10 +341,56 @@ namespace WebAppMVC.Controllers
         {
             return View();
         }
-        [HttpGet("Payment")]
-        public IActionResult MemberPayment()
+        [HttpGet("Payment/{id:int}")]
+        public async Task<IActionResult> MemberPayment(int id)
         {
-            return View();
+            string MemberPaymentAPI_URL = "/api/Transaction/AllTransactions/" + id;
+
+            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
+            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+
+            string? role = HttpContext.Session.GetString("ROLE_NAME");
+            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
+            else if (!role.Equals("Member")) return RedirectToAction("Index", "Home");
+
+            string? usrId = HttpContext.Session.GetString("USER_ID");
+            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
+
+            string? usrname = HttpContext.Session.GetString("USER_NAME");
+            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
+
+            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
+
+            TempData["ROLE_NAME"] = role;
+            TempData["USER_NAME"] = usrname;
+            TempData["IMAGE_PATH"] = imagepath;
+
+            dynamic transactionModel = new ExpandoObject();
+
+            var memberPayment = await methcall.CallMethodReturnObject<GetUserPaymentResponse>(
+                _httpClient: _httpClient,
+                options: options,
+                methodName: "GET",
+                url: MemberPaymentAPI_URL,
+                _logger: _logger,
+                accessToken: accToken);
+
+            if (memberPayment == null)
+            {
+                ViewBag.Error =
+                    "Error while processing your request! (Getting Member!). \n Member Not Found!";
+                return RedirectToAction("MemberProfile");
+            }
+            if (!memberPayment.Status)
+            {
+                _logger.LogInformation("Error while processing your request: " + memberPayment.Status + " , Error Message: " + memberPayment.ErrorMessage);
+                ViewBag.Error =
+                    "Error while processing your request! (Getting User Payment!). \n"
+                    + memberPayment.ErrorMessage;
+                return RedirectToAction("MemberProfile");
+            }
+            transactionModel.MemberPayments = memberPayment.Data;
+            return View(transactionModel);
         }
     }
 }

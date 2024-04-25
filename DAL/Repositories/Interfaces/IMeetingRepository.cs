@@ -25,5 +25,6 @@ namespace DAL.Repositories.Interfaces
         Task<IEnumerable<Meeting>> GetMeetings();
 
         public Task<Meeting?> GetMeetingById(int id);
+        Task<bool> GetBoolMeetingId(int id);
     }
 }

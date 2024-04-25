@@ -6,7 +6,7 @@
     List<BAL.ViewModels.FieldTripViewModel> fieldtripList = Model.FieldTrips;
     BAL.ViewModels.FieldTripViewModel createFieldTrip = new();
     BAL.ViewModels.FieldtripDaybyDayViewModel createFieldTripDayByDay = new();
-    BAL.ViewModels.FieldtripRateViewModel createFieldTripRates = new();
+    BAL.ViewModels.FieldTripAdditionalDetailViewModel createFieldTripRates = new();
     BAL.ViewModels.FieldtripMediaViewModel createFieldTripMedia = new();
     BAL.ViewModels.FieldtripInclusionViewModel createFieldTripInclsion = new();
     BAL.ViewModels.FieldtripGettingThereViewModel createFieldTripGettingthere = new();
@@ -363,19 +363,9 @@
                                     <span asp-validation-for="@createFieldTrip.Note" id="error_message"
                                           class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
-                                    <label asp-for="@createFieldTripRates.RateType" class="col-md-3 col-form-label mt-3 text-md-right">Rate Type</label>                    
-                                    <textarea asp-for="@createFieldTripRates.RateType" value="@createFieldTripRates.RateType" type="text" name="ratetype" placeholder="Rate Type..." class="form-control col-md-7 mt-3" rows="3" required></textarea>
-                                    <span asp-validation-for="@createFieldTripRates.RateType" id="error_message"
-                                          class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-
-                                    <label asp-for="@createFieldTripRates.Price" class="col-md-3 col-form-label mt-3 text-md-right">Price</label>
-                                    <textarea asp-for="@createFieldTripRates.Price" value="@createFieldTripRates.Price" type="text" name="price" placeholder="FieldTrip Price..." class="form-control col-md-7 mt-3" rows="3" required></textarea>
-                                    <span asp-validation-for="@createFieldTripRates.Price" id="error_message"
-                                          class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-
-                                    <label asp-for="@createFieldTripGettingthere.GettingThereText" class="col-md-3 col-form-label mt-3 text-md-right">GettingThereText</label>
-                                    <textarea asp-for="@createFieldTripGettingthere.GettingThereText" value="@createFieldTripGettingthere.GettingThereText" type="text" name="gettingtheretext" placeholder="GettingThereText..." class="form-control col-md-7 mt-3" rows="3" required></textarea>
-                                    <span asp-validation-for="@createFieldTripGettingthere.GettingThereText" id="error_message"
+                                    <label asp-for="@createFieldTripGettingthere.GettingThereAccommodation" class="col-md-3 col-form-label mt-3 text-md-right">GettingThereAccommodation</label>
+                                    <textarea asp-for="@createFieldTripGettingthere.GettingThereAccommodation" value="@createFieldTripGettingthere.GettingThereAccommodation" type="text" name="gettingtheretext" placeholder="GettingThereAccommodation..." class="form-control col-md-7 mt-3" rows="3" required></textarea>
+                                    <span asp-validation-for="@createFieldTripGettingthere.GettingThereAccommodation" id="error_message"
                                           class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
                                     <label asp-for="@createFieldTripDayByDay.Description" class="col-md-3 col-form-label mt-3 text-md-right">Description</label>

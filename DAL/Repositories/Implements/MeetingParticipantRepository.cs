@@ -37,17 +37,17 @@ namespace DAL.Repositories.Implements
 
         public async Task<MeetingParticipant> GetMeetingParticipantById(int meetingId, string memberId)
         {
-            return _context.MeetingParticipants
+            return _context.MeetingParticipants.AsNoTracking()
                 .Where(m => m.MeetingId == meetingId && m.MemberId == memberId)
-                .Include(m => m.Member)
-                .Include(m => m.Meeting)
+                .Include(m => m.MemberDetail)
+                .Include(m => m.MeetingDetail)
                 .FirstOrDefault();
         }
 
         public async Task<IEnumerable<MeetingParticipant>> GetMeetingParticipantsByMeetId(int meetingId)
         {
             return _context.MeetingParticipants
-                .Where(m => m.MeetingId == meetingId).Include(m => m.Member)
+                .Where(m => m.MeetingId == meetingId).Include(m => m.MemberDetail)
                 /*.Select(x => new MeetingParticipant
                 {
                     MeetingId= x.MeetingId,
@@ -65,7 +65,7 @@ namespace DAL.Repositories.Implements
 
         public async Task<IEnumerable<MeetingParticipant>> GetMeetingParticipantsByMemberIdInclude(string memId)
         {
-            return _context.MeetingParticipants.Where(m => m.MemberId == memId).Include(m => m.Meeting).ToList();
+            return _context.MeetingParticipants.Where(m => m.MemberId == memId).Include(m => m.MeetingDetail).ToList();
         }
 
         public async Task<int> GetParticipationNoMeetingParticipantById(int meetingId, string memberId)
@@ -73,6 +73,24 @@ namespace DAL.Repositories.Implements
             var mempart = _context.MeetingParticipants.SingleOrDefault(m => m.MeetingId.Equals(meetingId) && m.MemberId.Equals(memberId));
             if (mempart != null) return Int32.Parse(mempart.ParticipantNo);
             return 0;
+        }
+
+        public async Task<IEnumerable<MeetingParticipant>> UpdateAllMeetingParticipantStatus(List<MeetingParticipant> part)
+        {
+            foreach (var participant in part)
+            {
+                var meetpart = _context.MeetingParticipants
+                    .SingleOrDefault(p => p.MeetingId == participant.MeetingId && p.MemberId == participant.MemberId);
+                if (meetpart != null)
+                {
+                    if (meetpart.CheckInStatus != participant.CheckInStatus)
+                    {
+                        meetpart.CheckInStatus = participant.CheckInStatus;
+                        _context.Update(meetpart);
+                    }
+                }
+            }
+            return part;
         }
     }
 }

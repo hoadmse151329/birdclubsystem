@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Models
 {
@@ -12,25 +13,47 @@ namespace DAL.Models
             Blogs = new HashSet<Blog>();
             Comments = new HashSet<Comment>();
             Feedbacks = new HashSet<Feedback>();
-            News = new HashSet<News>();
+            Galleries = new HashSet<Gallery>();
+            NewsDetail = new HashSet<News>();
             Transactions = new HashSet<Transaction>();
+            MemberDetail = new Member();
         }
 
-		[Key]
-		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-		public int UserId { get; set; }
+        [Key]
+        [Column("userId")]
+        public int UserId { get; set; }
+        [Column("clubId")]
         public int? ClubId { get; set; }
-        public string? MemberId { get; set; }
-        public string? UserName { get; set; }
-        public string? Password { get; set; }
-        public string? Role { get; set; }
+        [Column("imagePath")]
+        [StringLength(255)]
         public string? ImagePath { get; set; }
+        [Column("memberId")]
+        [StringLength(50)]
+        public string? MemberId { get; set; }
+        [Column("userName")]
+        [StringLength(255)]
+        public string? UserName { get; set; }
+        [Column("password")]
+        [StringLength(255)]
+        public string? Password { get; set; }
+        [Column("role")]
+        [StringLength(50)]
+        public string? Role { get; set; }
 
-        public virtual Member? Member { get; set; }
+        [ForeignKey(nameof(MemberId))]
+        [InverseProperty(nameof(Member.UserDetail))]
+        public virtual Member? MemberDetail { get; set; }
+        [InverseProperty(nameof(Blog.User))]
         public virtual ICollection<Blog> Blogs { get; set; }
+        [InverseProperty(nameof(Comment.User))]
         public virtual ICollection<Comment> Comments { get; set; }
+        [InverseProperty(nameof(Feedback.User))]
         public virtual ICollection<Feedback> Feedbacks { get; set; }
-        public virtual ICollection<News> News { get; set; }
+        [InverseProperty(nameof(Gallery.User))]
+        public virtual ICollection<Gallery> Galleries { get; set; }
+        [InverseProperty(nameof(News.UserDetail))]
+        public virtual ICollection<News> NewsDetail { get; set; }
+        [InverseProperty(nameof(Transaction.User))]
         public virtual ICollection<Transaction> Transactions { get; set; }
     }
 }

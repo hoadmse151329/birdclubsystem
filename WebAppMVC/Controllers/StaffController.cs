@@ -10,13 +10,15 @@ using WebAppMVC.Models.Location;
 using WebAppMVC.Models.Meeting;
 using WebAppMVC.Models.Contest;
 using System.Text.Encodings.Web;
+using static Org.BouncyCastle.Math.EC.ECCurve;
 namespace WebAppMVC.Controllers
 {    
 	[Route("Staff")]
 	public class StaffController : Controller
-	{
-		private readonly ILogger<MeetingController> _logger;
-		private readonly HttpClient _httpClient = null;
+	{   
+        private readonly ILogger<MeetingController> _logger;
+        private readonly IConfiguration _config;
+        private readonly HttpClient _httpClient = null;
 		private string StaffAPI_URL = "";
 		private readonly JsonSerializerOptions options = new JsonSerializerOptions
 		{
@@ -25,14 +27,14 @@ namespace WebAppMVC.Controllers
 		};
 		private BirdClubLibrary methcall = new();
 
-		public StaffController(ILogger<MeetingController> logger)
+		public StaffController(ILogger<MeetingController> logger, IConfiguration config)
 		{
 			_logger = logger;
 			_httpClient = new HttpClient();
 			var contentType = new MediaTypeWithQualityHeaderValue("application/json");
 			_httpClient.DefaultRequestHeaders.Accept.Add(contentType);
-			_httpClient.BaseAddress = new Uri("https://localhost:7022");
-			StaffAPI_URL = "/api/";
+			_httpClient.BaseAddress = new Uri(config.GetSection("DefaultApiUrl:ConnectionString").Value);
+            StaffAPI_URL = "/api/";
 		}
 
 		// GET: StaffController
@@ -161,13 +163,11 @@ namespace WebAppMVC.Controllers
             return View(meetingDetailBigModel);
         }
         [HttpPost("Meeting/Update/{id:int}")]
-        /*[Route("Staff/Meeting/Update/{id:int}")]*/
         public async Task<IActionResult> StaffUpdateMeetingDetail(
             int id,
-            MeetingViewModel meetView
-            )
+            List<MeetingParticipantViewModel> meetPartView)
         {
-            StaffAPI_URL += "Meeting/UpdateParticipants/" + id;
+            StaffAPI_URL += "Staff/MeetingParticipantStatus/Update/" + id;
 
             string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
             if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
@@ -185,27 +185,30 @@ namespace WebAppMVC.Controllers
             TempData["ROLE_NAME"] = role;
             TempData["USER_NAME"] = usrname;
 
-            var meetPostResponse = await methcall.CallMethodReturnObject<GetMeetingPostResponse>(
+            var meetPartStatusResponse = await methcall.CallMethodReturnObject<GetListMeetingParticipantStatusUpdate>(
                                 _httpClient: _httpClient,
                                 options: options,
                                 methodName: "PUT",
                                 url: StaffAPI_URL,
-                                inputType: meetView,
+                                inputType: meetPartView,
                                 accessToken: accToken,
                                 _logger: _logger);
-            if (meetPostResponse == null)
+
+            if (meetPartStatusResponse == null)
             {
-                ViewBag.error =
-                    "Error while processing your request! (Updating Meeting!).\n Meeting Not Found!";
-                return RedirectToAction("StaffMeeting");
+                _logger.LogInformation(
+                    "Error while processing your request! (Getting List Meeting Participant Status!). List was Empty!: " + meetPartStatusResponse);
+                ViewBag.Error =
+                    "Error while processing your request! (Getting List Meeting Participant Status!).\n List was Empty!";
+                return View("StaffIndex");
             }
-            if (!meetPostResponse.Status)
+            else
+            if (!meetPartStatusResponse.Status)
             {
-                _logger.LogInformation("Error while processing your request: " + meetPostResponse.Status + " , Error Message: " + meetPostResponse.ErrorMessage);
-                ViewBag.error =
-                    "Error while processing your request! (Updating Meeting Post!).\n"
-                    + meetPostResponse.ErrorMessage;
-                return RedirectToAction("StaffMeeting");
+                ViewBag.Error =
+                    "Error while processing your request! (Getting List Meeting Participant Status!).\n"
+                    + meetPartStatusResponse.ErrorMessage;
+                return View("StaffIndex");
             }
             return RedirectToAction("StaffMeetingDetail", "Staff", new { id = id });
         }
