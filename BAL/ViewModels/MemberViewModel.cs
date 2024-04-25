@@ -9,6 +9,7 @@ namespace BAL.ViewModels
 {
     public class MemberViewModel
     {
+		public int UserId { get; set; }
         public string? MemberId { get; set; }
 		[Required(ErrorMessage = "Account Username is required")]
 		[RegularExpression(@"^[a-zA-Z0-9_]+$", ErrorMessage = "Username is invalid")]

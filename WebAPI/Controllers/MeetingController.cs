@@ -601,19 +601,19 @@ namespace WebAPI.Controllers
                 });
             }
         }
-        [HttpPut("UpdateParticipants/{id}/{memberId}")]
+        [HttpPut("UpdateParticipants/{id}")]
         [Authorize(Roles = "Staff")]
         [ProducesResponseType(typeof(List<MeetingParticipantViewModel>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> UpdateCheckInStatus(
             [Required][FromRoute] int id,
-            [Required][FromRoute] string memberId,
+            [Required][FromQuery] string memberId,
             [Required][FromBody] MeetingParticipantViewModel meet)
         {
             try
             {
-                var result = await _participantService.GetById(memberId, id);
+                var result = _participantService.GetById(memberId, id).Result;
                 if (result == null)
                 {
                     return NotFound(new
@@ -622,10 +622,10 @@ namespace WebAPI.Controllers
                         errorMessage = "Meeting Participant Not Found!"
                     });
                 }
-                meet.MeetingId = id;
-                meet.MemberId = memberId;
-                _participantService.Update(meet);
-                result = await _participantService.GetById(meet.MemberId, meet.MeetingId.Value);
+
+                result.CheckInStatus = meet.CheckInStatus;
+                _participantService.Update(result);
+                result = await _participantService.GetById(memberId, id);
                 return Ok(new
                 {
                     Status = true,

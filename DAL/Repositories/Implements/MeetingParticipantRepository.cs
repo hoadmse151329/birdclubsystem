@@ -37,7 +37,7 @@ namespace DAL.Repositories.Implements
 
         public async Task<MeetingParticipant> GetMeetingParticipantById(int meetingId, string memberId)
         {
-            return _context.MeetingParticipants
+            return _context.MeetingParticipants.AsNoTracking()
                 .Where(m => m.MeetingId == meetingId && m.MemberId == memberId)
                 .Include(m => m.MemberDetail)
                 .Include(m => m.MeetingDetail)
@@ -73,6 +73,24 @@ namespace DAL.Repositories.Implements
             var mempart = _context.MeetingParticipants.SingleOrDefault(m => m.MeetingId.Equals(meetingId) && m.MemberId.Equals(memberId));
             if (mempart != null) return Int32.Parse(mempart.ParticipantNo);
             return 0;
+        }
+
+        public async Task<IEnumerable<MeetingParticipant>> UpdateAllMeetingParticipantStatus(List<MeetingParticipant> part)
+        {
+            foreach (var participant in part)
+            {
+                var meetpart = _context.MeetingParticipants
+                    .SingleOrDefault(p => p.MeetingId == participant.MeetingId && p.MemberId == participant.MemberId);
+                if (meetpart != null)
+                {
+                    if (meetpart.CheckInStatus != participant.CheckInStatus)
+                    {
+                        meetpart.CheckInStatus = participant.CheckInStatus;
+                        _context.Update(meetpart);
+                    }
+                }
+            }
+            return part;
         }
     }
 }

@@ -151,5 +151,12 @@ namespace BAL.Services.Implements
             _unitOfWork.MeetingRepository.Update(meeting);
             _unitOfWork.Save();
         }
+
+        public async Task<bool> GetBoolMeetingId(int id)
+        {
+            var meet = await _unitOfWork.MeetingRepository.GetBoolMeetingId(id);
+            if (!meet) return false;
+            return true;
+        }
     }
 }

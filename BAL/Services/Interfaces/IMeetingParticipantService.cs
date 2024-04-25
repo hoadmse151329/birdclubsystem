@@ -1,5 +1,6 @@
 ﻿using BAL.ViewModels;
 using BAL.ViewModels.Event;
+using BAL.ViewModels.Staff;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,5 +21,6 @@ namespace BAL.Services.Interfaces
         Task<bool> Delete(string memId, int metId);
         Task<MeetingParticipantViewModel?> GetById(string memId, int metId);
         void Update(MeetingParticipantViewModel entity);
+        Task<bool> UpdateAllMeetingParticipantStatus(List<MeetingParticipantViewModel> listPart);
     }
 }

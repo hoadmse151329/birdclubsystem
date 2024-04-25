@@ -19,5 +19,6 @@ namespace BAL.ViewModels.Event
         public int? ParticipationNo { get; set; }
         public int? Fee { get; set; }
         public string? Status { get; set; }
+        public string? CheckInStatus { get; set; }
     }
 }
