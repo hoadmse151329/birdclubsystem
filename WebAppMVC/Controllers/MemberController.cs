@@ -344,6 +344,10 @@ namespace WebAppMVC.Controllers
         [HttpGet("Payment/{id:int}")]
         public async Task<IActionResult> MemberPayment(int id)
         {
+            if(id == 0)
+            {
+                return View();
+            }
             string MemberPaymentAPI_URL = "/api/Transaction/AllTransactions/" + id;
 
             string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");

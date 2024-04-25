@@ -32,8 +32,8 @@ namespace DAL.Models
         [StringLength(255)]
         public string? DocNo { get; set; }
 
-        [ForeignKey(nameof(UserId))]
-        [InverseProperty("Transactions")]
-        public virtual User User { get; set; } = null!;
+        /*[ForeignKey(nameof(UserId))]
+        [InverseProperty(nameof(User.Transactions))]
+        public virtual User? UserDetail { get; set; };*/
     }
 }

@@ -15,7 +15,7 @@ namespace DAL.Models
             Feedbacks = new HashSet<Feedback>();
             Galleries = new HashSet<Gallery>();
             NewsDetail = new HashSet<News>();
-            Transactions = new HashSet<Transaction>();
+            /*Transactions = new HashSet<Transaction>();*/
             MemberDetail = new Member();
         }
 
@@ -43,17 +43,17 @@ namespace DAL.Models
         [ForeignKey(nameof(MemberId))]
         [InverseProperty(nameof(Member.UserDetail))]
         public virtual Member? MemberDetail { get; set; }
-        [InverseProperty(nameof(Blog.User))]
+        [InverseProperty(nameof(Blog.UserDetail))]
         public virtual ICollection<Blog> Blogs { get; set; }
-        [InverseProperty(nameof(Comment.User))]
+        [InverseProperty(nameof(Comment.UserDetail))]
         public virtual ICollection<Comment> Comments { get; set; }
-        [InverseProperty(nameof(Feedback.User))]
+        [InverseProperty(nameof(Feedback.UserDetail))]
         public virtual ICollection<Feedback> Feedbacks { get; set; }
-        [InverseProperty(nameof(Gallery.User))]
+        [InverseProperty(nameof(Gallery.UserDetail))]
         public virtual ICollection<Gallery> Galleries { get; set; }
         [InverseProperty(nameof(News.UserDetail))]
         public virtual ICollection<News> NewsDetail { get; set; }
-        [InverseProperty(nameof(Transaction.User))]
-        public virtual ICollection<Transaction> Transactions { get; set; }
+        /*[InverseProperty(nameof(Transaction.UserDetail))]
+        public virtual ICollection<Transaction> Transactions { get; set; }*/
     }
 }

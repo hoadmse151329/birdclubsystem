@@ -82,7 +82,7 @@ namespace DAL.Models
 
             modelBuilder.Entity<Blog>(entity =>
             {
-                entity.HasOne(d => d.User)
+                entity.HasOne(d => d.UserDetail)
                     .WithMany(p => p.Blogs)
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
@@ -110,7 +110,7 @@ namespace DAL.Models
 
             modelBuilder.Entity<Comment>(entity =>
             {
-                entity.HasOne(d => d.User)
+                entity.HasOne(d => d.UserDetail)
                     .WithMany(p => p.Comments)
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
@@ -164,7 +164,7 @@ namespace DAL.Models
 
             modelBuilder.Entity<Feedback>(entity =>
             {
-                entity.HasOne(d => d.User)
+                entity.HasOne(d => d.UserDetail)
                     .WithMany(p => p.Feedbacks)
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
@@ -243,7 +243,7 @@ namespace DAL.Models
 
             modelBuilder.Entity<Gallery>(entity =>
             {
-                entity.HasOne(d => d.User)
+                entity.HasOne(d => d.UserDetail)
                     .WithMany(p => p.Galleries)
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
@@ -289,11 +289,11 @@ namespace DAL.Models
 
             modelBuilder.Entity<Transaction>(entity =>
             {
-                entity.HasOne(d => d.User)
+                /*entity.HasOne(d => d.UserDetail)
                     .WithMany(p => p.Transactions)
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Transactions_Users");
+                    .HasConstraintName("FK_Transactions_Users");*/
             });
 
             modelBuilder.Entity<User>(entity =>

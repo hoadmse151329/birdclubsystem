@@ -15,7 +15,6 @@ namespace DAL.Models
             ContestParticipants = new HashSet<ContestParticipant>();
             FieldTripParticipants = new HashSet<FieldTripParticipant>();
             MeetingParticipants = new HashSet<MeetingParticipant>();
-            UserDetail = new User();
         }
 
         [Key]

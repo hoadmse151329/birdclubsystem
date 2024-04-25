@@ -21,7 +21,7 @@ namespace DAL.Models
         public string Image { get; set; } = null!;
 
         [ForeignKey(nameof(UserId))]
-        [InverseProperty("Galleries")]
-        public virtual User User { get; set; } = null!;
+        [InverseProperty(nameof(User.Galleries))]
+        public virtual User UserDetail { get; set; } = null!;
     }
 }
