@@ -119,8 +119,8 @@ namespace BAL.AutoMapperProfile
                 .ReverseMap();
             CreateMap<FieldtripGettingThere, FieldtripGettingThereViewModel>()
                 .ReverseMap();
-            /*CreateMap<FieldTripOverview, FIeldTripOverviewViewModel>()
-                .ReverseMap();*/
+            CreateMap<FieldtripAdditionalDetail, FieldTripAdditionalDetailViewModel>()
+                .ReverseMap();
             CreateMap<FieldtripMedia, FieldtripMediaViewModel>()
                 .ReverseMap();
             CreateMap<Contest, ContestViewModel>()
