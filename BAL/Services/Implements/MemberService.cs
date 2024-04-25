@@ -104,7 +104,7 @@ namespace BAL.Services.Implements
 			}
             var mem = _mapper.Map<Member>(entity);
 			usr.ImagePath = entity.ImagePath;
-			mem.MemberUser = usr;
+			mem.UserDetail = usr;
 			_unitOfWork.MemberRepository.Update(mem);
 			_unitOfWork.Save();
 		}
@@ -118,6 +118,18 @@ namespace BAL.Services.Implements
 				return true;
 			}
 			return false;
+        }
+
+        public void UpdateMembership(string memberId, DateTime membershipDatetime)
+        {
+            var usr = _unitOfWork.MemberRepository.GetByIdTracking(memberId).Result;
+            if (usr == null)
+            {
+                throw new Exception("User not Found!");
+            }
+			usr.ExpiryDate = membershipDatetime;
+			_unitOfWork.MemberRepository.Update(usr);
+			_unitOfWork.Save();
         }
     }
 }

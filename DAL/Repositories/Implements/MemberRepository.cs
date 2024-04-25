@@ -26,7 +26,12 @@ namespace DAL.Repositories.Implements
 
         public async Task<Member?> GetByIdNoTracking(string id)
         {
-            return await _context.Members.AsNoTrackingWithIdentityResolution().Include(mem => mem.MemberUser).SingleOrDefaultAsync(mem => mem.MemberId == id);
+            return await _context.Members.AsNoTrackingWithIdentityResolution().Include(mem => mem.UserDetail).SingleOrDefaultAsync(mem => mem.MemberId == id);
+        }
+
+        public async Task<Member?> GetByIdTracking(string id)
+        {
+            return await _context.Members.Include(mem => mem.UserDetail).SingleOrDefaultAsync(mem => mem.MemberId == id);
         }
 
         public async Task<string?> GetMemberNameById(string id)
@@ -38,7 +43,7 @@ namespace DAL.Repositories.Implements
         {
             foreach(var memberViewModel in members)
             {
-                var mem = _context.Members.SingleOrDefault(mem => mem.MemberId == memberViewModel.MemberId);
+                var mem = await _context.Members.SingleOrDefaultAsync(mem => mem.MemberId == memberViewModel.MemberId);
                 if (mem != null)
                 {
                     if (mem.Status != memberViewModel.Status)

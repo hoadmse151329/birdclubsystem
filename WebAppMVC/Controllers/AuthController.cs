@@ -1,26 +1,20 @@
 ﻿using BAL.ViewModels.Authenticates;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualBasic;
 using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Text;
 using BAL.ViewModels.Member;
 using WebAppMVC.Models.Auth;
-using System.Net.Http;
-using WebAppMVC.Models.Meeting;
 using WebAppMVC.Constants;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Google;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using WebAppMVC.Services;
 using WebAppMVC.Models.VnPay;
-using Microsoft.AspNetCore.Authorization;
 using WebAppMVC.Models.Transaction;
 using BAL.ViewModels;
 
 namespace WebAppMVC.Controllers
 {
-	[Route("Auth")]
+    [Route("Auth")]
 	public class AuthController : Controller
 	{
 		private readonly ILogger<AuthController> _logger;
@@ -238,7 +232,9 @@ namespace WebAppMVC.Controllers
 			if (authenResponse == null)
 			{
 				_logger.LogError("Error while registering your new account");
-				ViewBag.error = "Error while registering your new account ! ";
+
+				ViewBag.error = "Error while registering your new account !";
+
 				return View("Register");
 			}
 
@@ -248,8 +244,11 @@ namespace WebAppMVC.Controllers
 
 			if (tran == null)
 			{
-				_logger.LogError("Error while registering your new account: Transaction not found!");
-				ViewBag.error = "Error while registering your new account Transaction not found!";
+				_logger.LogError("Error while registering your new account: Your Registration Transaction not found!");
+
+				ViewBag.error = "Error while registering your new account: Your Registration Transaction not found! " +
+					"\nPlease contact the birdclub manager for assistance with resolving this issue!";
+
 				return View("Register");
 			}
 
@@ -275,7 +274,10 @@ namespace WebAppMVC.Controllers
 			if (transactionResponse == null)
 			{
 				_logger.LogError("Error while registering your new account: User Transaction Saving Failed!");
-				ViewBag.error = "Error while registering your new account: User Transaction Saving Failed!";
+
+				ViewBag.error = "Error while registering your new account: User Transaction Saving Failed!, " +
+					"\nPlease contact the birdclub manager for assistance with resolving this issue!";
+
 				return View("Register");
 			}
 			if (authenResponse.Status)
@@ -283,6 +285,7 @@ namespace WebAppMVC.Controllers
 				HttpContext.Session.Remove("ACCESS_TOKEN");
 				HttpContext.Session.Remove("USER_NAME");
 				HttpContext.Session.Remove("ROLE_NAME");
+
 				/*HttpContext.Session.SetString("ACCESS_TOKEN", responseAuth.AccessToken);
 				HttpContext.Session.SetString("ROLE_NAME", responseAuth.RoleName);
 				HttpContext.Session.SetString("USER_ID", responseAuth.UserId);
@@ -298,7 +301,9 @@ namespace WebAppMVC.Controllers
 				TempData["IMAGE_PATH"] = responseAuth.ImagePath;*/
 
 			}
-			return RedirectToAction("Index", "Home");
+            ViewBag.Success = "Account Create Successfully, Please contact the manager for your account approval!";
+
+            return RedirectToAction("Login", "Auth");
 		}
 		[HttpPost("Register")]
 		public async Task<IActionResult> RegisterMember(CreateNewMember newmemRequest)
@@ -329,10 +334,6 @@ namespace WebAppMVC.Controllers
 				HttpContext.Session.SetString("USER_NAME", responseAuth.UserName);
 
 				client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", responseAuth.AccessToken);
-
-				TempData["ACCESS_TOKEN"] = responseAuth.AccessToken;
-				TempData["ROLE_NAME"] = responseAuth.RoleName;
-				TempData["USER_NAME"] = responseAuth.UserName;
 			}
 
 			methcall.SetCookie(Response, "memRequest", newmemRequest, cookieOptions, jsonOptions, 20);

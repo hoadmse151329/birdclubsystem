@@ -12,5 +12,7 @@ namespace BAL.ViewModels
         public int? TripId { get; set; }
         public string? Description { get; set; }
         public string? Image { get; set; }
+        public string? Type { get; set; }
+        public int? DayByDayId { get; set; }
     }
 }

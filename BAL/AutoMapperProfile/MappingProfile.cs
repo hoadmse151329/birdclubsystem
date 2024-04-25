@@ -20,38 +20,38 @@ namespace BAL.AutoMapperProfile
                 .ForMember(dest => dest.Email, opt =>
                 {
                     opt.AllowNull();
-                    opt.MapFrom(src => src.Member != null ? src.Member.Email : "");
+                    opt.MapFrom(src => src.MemberDetail != null ? src.MemberDetail.Email : "");
                 })
                 .ReverseMap();
             CreateMap<Member, MemberViewModel>()
                 .AfterMap((src, dest) =>
                 {
-                    dest.UserId = src.MemberUser.UserId;
-                    if(src.MemberUser != null && src.MemberUser.ImagePath != null)
+                    dest.UserId = src.UserDetail.UserId;
+                    if(src.UserDetail != null && src.UserDetail.ImagePath != null)
                     {
-                        dest.ImagePath = src.MemberUser.ImagePath;
+                        dest.ImagePath = src.UserDetail.ImagePath;
                     }
                 })
                 .ReverseMap()
                 .AfterMap((src, dest) =>
                 {
-                    dest.MemberUser = new();
-                    dest.MemberUser.ImagePath = src.ImagePath;
-                });
+                    dest.UserDetail.ImagePath = src.ImagePath;
+                })
+                ;
             CreateMap<Member, GetMemberStatus>().ReverseMap();
             CreateMap<MeetingParticipant, GetEventParticipation>()
                 .AfterMap((src, dest) =>
                 {
                     dest.EventId = src.MeetingId;
-                    dest.EventName = src.Meeting.MeetingName;
+                    dest.EventName = src.MeetingDetail.MeetingName;
                     dest.EventType = "Meeting";
-                    dest.EventHost = src.Meeting.Host;
-                    dest.EventStaff = src.Meeting.Incharge;
-                    dest.StartDate = src.Meeting.StartDate;
-                    dest.EndDate = src.Meeting.EndDate;
+                    dest.EventHost = src.MeetingDetail.Host;
+                    dest.EventStaff = src.MeetingDetail.Incharge;
+                    dest.StartDate = src.MeetingDetail.StartDate;
+                    dest.EndDate = src.MeetingDetail.EndDate;
                     dest.Fee = 0;
-                    dest.RegistrationDeadline = src.Meeting.RegistrationDeadline;
-                    dest.Status = src.Meeting.Status;
+                    dest.RegistrationDeadline = src.MeetingDetail.RegistrationDeadline;
+                    dest.Status = src.MeetingDetail.Status;
                     dest.ParticipationNo = Int32.Parse(src.ParticipantNo);
                     dest.CheckInStatus = src.CheckInStatus;
                 })
@@ -86,13 +86,13 @@ namespace BAL.AutoMapperProfile
             CreateMap<MeetingParticipant, MeetingParticipantViewModel>()
                 .AfterMap((src, dest) =>
                 {
-                    dest.MemberName = src.Member.FullName;
+                    dest.MemberName = src.MemberDetail.FullName;
                 })
                 .ReverseMap()
                 .AfterMap((src, dest) =>
                 {
-                    dest.Member = new();
-                    dest.Member.FullName = src.MemberName;
+                    dest.MemberDetail = new();
+                    dest.MemberDetail.FullName = src.MemberName;
                 })
                 ;
             CreateMap<FieldTripParticipant, FieldTripParticipantViewModel>()
@@ -115,14 +115,12 @@ namespace BAL.AutoMapperProfile
                 .ReverseMap();
             CreateMap<FieldtripDaybyDay, FieldtripDaybyDayViewModel>()
                 .ReverseMap();
-            CreateMap<FieldtripRate, FieldtripRateViewModel>()
-                .ReverseMap();
             CreateMap<FieldtripInclusion, FieldtripInclusionViewModel>()
                 .ReverseMap();
             CreateMap<FieldtripGettingThere, FieldtripGettingThereViewModel>()
                 .ReverseMap();
-            CreateMap<FieldTripOverview, FIeldTripOverviewViewModel>()
-                .ReverseMap();
+            /*CreateMap<FieldTripOverview, FIeldTripOverviewViewModel>()
+                .ReverseMap();*/
             CreateMap<FieldtripMedia, FieldtripMediaViewModel>()
                 .ReverseMap();
             CreateMap<Contest, ContestViewModel>()

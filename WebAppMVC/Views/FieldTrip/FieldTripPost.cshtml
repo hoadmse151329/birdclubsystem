@@ -61,8 +61,16 @@
                             <div class="tittle">
                                 <div class="div-wrapper"><div class="text-wrapper-3">Field Trip</div></div>
                             </div>
-                            <img class="soi-noi-hoi-thi-chim"
-                                 src="@Model.Media.FirstOrDefault().Image" />
+                            @{
+                                if (Model.Media != null)
+                                {
+                                    <img class="soi-noi-hoi-thi-chim" src="@Model.Media.FirstOrDefault().Image" alt="nt1">
+                                }
+                                else
+                                {
+                                    <img class="soi-noi-hoi-thi-chim" src="~/images/meeting.png" alt="nt1">
+                                }
+                            }
                         </div>
                     </div>
                     <div class="info">
@@ -132,7 +140,7 @@
                                 <li class="nav-item">
                                     <a class="nav-link" data-toggle="tab" href="#home5">
                                         <i class='bx bx-home-alt-2'></i>
-                                        <span>Rates</span>
+                                        <span>AddDetails</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
@@ -153,9 +161,9 @@
                                 <!-- home1 -->
                                 <div class="tab-pane active" id="home1" role="tabpanel">                           
                                             <div class="tour__content__block tour__content__block--consider avoid-break-p">
-                    <h2>Tour Rates</h2>
+                    <h2>Tour AddDetails</h2>
                     <div class="row">
-                        @foreach (var day in Model.Rates)
+                        @foreach (var day in Model.AddDetails)
                         {
                             <div class="col col-12 col-t-6 item">
                                 <div class="svg-box">
@@ -799,7 +807,7 @@
 
                     <ul class="list list--icon list--icon-arrow">
                         <li>
-                            Rates are <b>per person</b> and <b>exclude the international flight</b> from/to your home country.
+                            AddDetails are <b>per person</b> and <b>exclude the international flight</b> from/to your home country.
                         </li>
                         <li>
                             This tour <b>is not available to groups larger than 5 people</b>.
@@ -814,12 +822,12 @@
                 <div class="tour__content__block tour__content__block--rates">
 
                     <div class="tabs tabs--countriesparks not-sticky rates-mob-tab hide-430">
-                        <a href="" role="tab" class="active">Rates Per Person</a>
+                        <a href="" role="tab" class="active">AddDetails Per Person</a>
                         <a href="" role="tab">Inclusions</a>
                     </div>
 
                     <div class="tab1">
-                        <h2 class="show-430">Rates Per Person</h2>
+                        <h2 class="show-430">AddDetails Per Person</h2>
 
                         <div class="accordion  container__unpad   show hide-t hide-p  rates-table-block-m " data-accordion="rates">
 
