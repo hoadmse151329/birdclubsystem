@@ -12,7 +12,7 @@ namespace DAL.Models
         [Key, Column(Order = 1)]
         public string MemberId { get; set; } = null!;
         public string ParticipantNo { get; set; } = null!;
-        public bool CheckInStatus { get; set; }
+        public string? CheckInStatus { get; set; }
 
         public virtual Meeting Meeting { get; set; } = null!;
         public virtual Member Member { get; set; } = null!;

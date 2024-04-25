@@ -243,11 +243,10 @@ namespace WebAPI.Controllers
 				}
 				bool isSuccess = await _transactionService.UpdateUserId(result.TransactionId.Value, usr.UserId.Value);
 
-				result = await _transactionService.GetTransactionById(tran.TransactionId.Value);
-
 				if (isSuccess)
 				{
-					return Ok(new
+                    result = await _transactionService.GetTransactionById(tran.TransactionId.Value);
+                    return Ok(new
 					{
 						Status = true,
 						Data = result

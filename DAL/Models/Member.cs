@@ -21,6 +21,7 @@ namespace DAL.Models
         public string? Phone { get; set; }
         public string? Description { get; set; }
         public string? Status { get; set; }
+        public DateTime? ExpiryDate { get; set; }
         public int? ClubId { get; set; }
 
         public virtual ICollection<Bird> Birds { get; set; }

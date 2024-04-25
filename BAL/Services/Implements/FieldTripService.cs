@@ -56,12 +56,14 @@ namespace BAL.Services.Implements
                 var inclusions = await _unitOfWork.FieldTripInclusionRepository.GetFieldTripInclusionsById(trip.TripId);
                 var media = await _unitOfWork.FieldTripMediaRepository.GetFieldTripMediasByTripId(trip.TripId);
                 string locationName = await _unitOfWork.LocationRepository.GetLocationNameById(trip.LocationId.Value);
+
                 if (locationName == null)
                 {
                     return null;
                 }
                 int partAmount = await _unitOfWork.FieldTripParticipantRepository.GetCountFieldTripParticipantsByTripId(trip.TripId);
                 var fieldTrip = _mapper.Map<FieldTripViewModel>(trip);
+
 
                 fieldTrip.NumberOfParticipants = fieldTrip.NumberOfParticipantsLimit - partAmount;
                 fieldTrip.Address = locationName;
