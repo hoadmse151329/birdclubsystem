@@ -26,6 +26,7 @@ namespace BAL.AutoMapperProfile
             CreateMap<Member, MemberViewModel>()
                 .AfterMap((src, dest) =>
                 {
+                    dest.UserId = src.MemberUser.UserId;
                     if(src.MemberUser != null && src.MemberUser.ImagePath != null)
                     {
                         dest.ImagePath = src.MemberUser.ImagePath;
@@ -36,8 +37,7 @@ namespace BAL.AutoMapperProfile
                 {
                     dest.MemberUser = new();
                     dest.MemberUser.ImagePath = src.ImagePath;
-                })
-                ;
+                });
             CreateMap<Member, GetMemberStatus>().ReverseMap();
             CreateMap<MeetingParticipant, GetEventParticipation>()
                 .AfterMap((src, dest) =>

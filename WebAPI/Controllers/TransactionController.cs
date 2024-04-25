@@ -117,6 +117,7 @@ namespace WebAPI.Controllers
 		}
 
 		[HttpGet("AllTransactions/{id}")]
+		[Authorize(Roles = "Member")]
         [ProducesResponseType(typeof(List<TransactionViewModel>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -143,7 +144,7 @@ namespace WebAPI.Controllers
                 return Ok(new
                 {
                     Status = true,
-                    result
+                    Data = result
                 });
             }
             catch (Exception ex)
