@@ -122,14 +122,14 @@ namespace BAL.Services.Implements
 
         public void UpdateMembership(string memberId, DateTime membershipDatetime)
         {
-            var usr = _unitOfWork.MemberRepository.GetByIdTracking(memberId).Result;
-            if (usr == null)
-            {
-                throw new Exception("User not Found!");
-            }
-			usr.
-            _unitOfWork.MemberRepository.Update(mem);
-            _unitOfWork.Save();
+   //         var usr = _unitOfWork.MemberRepository.GetByIdTracking(memberId).Result;
+   //         if (usr == null)
+   //         {
+   //             throw new Exception("User not Found!");
+   //         }
+			//usr.
+   //         _unitOfWork.MemberRepository.Update(mem);
+   //         _unitOfWork.Save();
         }
     }
 }
