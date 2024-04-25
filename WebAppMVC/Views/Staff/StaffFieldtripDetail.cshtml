@@ -4,7 +4,7 @@
     ViewData["Title"] = "Staff Field Trip Detail Page";
     BAL.ViewModels.FieldTripViewModel details = Model.FieldTripDetails;
     BAL.ViewModels.FieldtripDaybyDayViewModel DayByDay = Model.FieldTripDetails;
-    BAL.ViewModels.FieldtripRateViewModel Rates = Model.FieldTripDetails;
+    BAL.ViewModels.FieldTripAdditionalDetailViewModel AddDetails = Model.FieldTripDetails;
     BAL.ViewModels.FieldtripMediaViewModel Media = Model.FieldTripDetails;
     BAL.ViewModels.FieldtripInclusionViewModel Inclusion = Model.FieldTripDetails;
     BAL.ViewModels.FieldtripGettingThereViewModel Gettingthere = Model.FieldTripDetails;
@@ -251,19 +251,19 @@
                         <div class="row">
                             <div class="card profile col-12 mb-4">
                                 <div class="card-header">
-                                    <h4>Rates</h4>
+                                    <h4>AddDetails</h4>
                                 </div>
                                 <div class="card-body">
-                                    @foreach (var rate in details.Rates)
+                                    @foreach (var rate in details.AddDetails)
                                     {
-                                        <div class="row mb-sm-2">
+                                        @* <div class="row mb-sm-2">
                                             <div class="col-sm-5 text-sm-right">
                                                 <span>@rate.RateType</span>
                                             </div>
                                             <div class="col-sm-7 text-sm-left">
                                                 <span>@rate.Price</span>
                                             </div>
-                                        </div>                                        
+                                        </div>  *@                                       
                                     }
                                 </div>
                             </div>
@@ -274,11 +274,11 @@
                                     <h4>Getting There</h4>
                                 </div>
                                 <div class="card-body">
-                                    @foreach (var gett in details.GettingThere)
+                                    @foreach (var gett in details.GettingTheres)
                                     {
                                         <div class="row mb-sm-2">
                                             <div class="col-sm-12 text-sm">
-                                                <span>@gett.GettingThereText</span>
+                                                <span>@gett.GettingThereAccommodation</span>
                                             </div>
                                         </div>
                                     }

@@ -6,25 +6,24 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Models
 {
-    public partial class FieldtripMedia
+    public partial class FieldtripAdditionalDetail
     {
         [Key]
-        [Column("pictureId")]
-        public int PictureId { get; set; }
+        [Column("tripDetailsId")]
+        public int TripDetailsId { get; set; }
         [Column("tripId")]
-        public int? TripId { get; set; }
+        public int TripId { get; set; }
+        [Column("title")]
+        [StringLength(50)]
+        public string? Title { get; set; }
         [Column("description")]
         public string? Description { get; set; }
-        [Column("image")]
-        public string? Image { get; set; }
         [Column("type")]
         [StringLength(50)]
         public string? Type { get; set; }
-        [Column("dayByDayId")]
-        public int? DayByDayId { get; set; }
 
         [ForeignKey(nameof(TripId))]
-        [InverseProperty(nameof(FieldTrip.FieldtripMedia))]
-        public virtual FieldTrip? Trip { get; set; }
+        [InverseProperty(nameof(FieldTrip.FieldtripAdditionalDetails))]
+        public virtual FieldTrip Trip { get; set; } = null!;
     }
 }

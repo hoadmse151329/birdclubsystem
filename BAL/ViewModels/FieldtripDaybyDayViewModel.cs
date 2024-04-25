@@ -12,6 +12,9 @@ namespace BAL.ViewModels
         public int? DaybyDayId { get; set; }
         public int? Day { get; set; }
         public string? Description { get; set; }
+        public string? MainDestination { get; set; }
+        public string? Accommodation { get; set; }
+        public string? MealsAndDrinks { get; set; }
         public string? PictureId { get; set; }
     }
 }

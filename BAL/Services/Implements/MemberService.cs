@@ -104,7 +104,7 @@ namespace BAL.Services.Implements
 			}
             var mem = _mapper.Map<Member>(entity);
 			usr.ImagePath = entity.ImagePath;
-			mem.MemberUser = usr;
+			mem.UserDetail = usr;
 			_unitOfWork.MemberRepository.Update(mem);
 			_unitOfWork.Save();
 		}
@@ -127,9 +127,9 @@ namespace BAL.Services.Implements
             {
                 throw new Exception("User not Found!");
             }
-			usr.
-            _unitOfWork.MemberRepository.Update(mem);
-            _unitOfWork.Save();
+			usr.ExpiryDate = membershipDatetime;
+			_unitOfWork.MemberRepository.Update(usr);
+			_unitOfWork.Save();
         }
     }
 }

@@ -4,7 +4,7 @@
     ViewData["Title"] = "Manager Field Trip Detail Page";
     BAL.ViewModels.FieldTripViewModel details = Model.FieldTripDetails;
     BAL.ViewModels.FieldtripDaybyDayViewModel DayByDay = Model.FieldTripDetails;
-    BAL.ViewModels.FieldtripRateViewModel Rates = Model.FieldTripDetails;
+    BAL.ViewModels.FieldTripAdditionalDetailViewModel AddDetails = Model.FieldTripDetails;
     BAL.ViewModels.FieldtripMediaViewModel Media = Model.FieldTripDetails;
     BAL.ViewModels.FieldtripInclusionViewModel Inclusion = Model.FieldTripDetails;
     BAL.ViewModels.FieldtripGettingThereViewModel Gettingthere = Model.FieldTripDetails;
@@ -265,22 +265,22 @@
                         <div class="row">
                             <div class="card profile col-12 mb-4">
                                 <div class="card-header">
-                                    <h4>Rates</h4>
+                                    <h4>AddDetails</h4>
                                     <div class="edit-info">
                                         <i class='bx bxs-edit-alt' data-toggle="modal" data-target="#editrates"></i>
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    @foreach (var rate in details.Rates)
+                                    @foreach (var rate in details.AddDetails)
                                     {
-                                        <div class="row mb-sm-2">
+                                        @* <div class="row mb-sm-2">
                                             <div class="col-sm-5 text-sm-right">
                                                 <span>@rate.RateType</span>
                                             </div>
                                             <div class="col-sm-7 text-sm-left">
                                                 <span>@rate.Price</span>
                                             </div>
-                                        </div>                                        
+                                        </div>   *@                                      
                                     }
                                 </div>
                             </div>
@@ -294,11 +294,11 @@
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    @foreach (var gett in details.GettingThere)
+                                    @foreach (var gett in details.GettingTheres)
                                     {
                                         <div class="row mb-sm-2">
                                             <div class="col-sm-12 text-sm">
-                                                <span>@gett.GettingThereText</span>
+                                                <span>@gett.GettingThereAccommodation</span>
                                             </div>
                                         </div>
                                     }
@@ -487,24 +487,24 @@
                     <div class="modal-body">
                         <div class="row justify-content-center">
                             <div class="col-12 col-md-8">
-                                <div class="form-group row">
-                                    <label asp-for="@Rates.RateType" class="col-sm-4 col-form-label">RateType</label>
+                                @* <div class="form-group row">
+                                    <label asp-for="@AddDetails.RateType" class="col-sm-4 col-form-label">RateType</label>
                                     <div class="col-sm-8">
-                                        <input asp-for="@Rates.RateType" id="RateType" type="text" name="RateType"
-                                               value="@Rates.RateType" class="form-control" required>
-                                        <span asp-validation-for="@Rates.RateType" id="error_message"
+                                        <input asp-for="@AddDetails.RateType" id="RateType" type="text" name="RateType"
+                                               value="@AddDetails.RateType" class="form-control" required>
+                                        <span asp-validation-for="@AddDetails.RateType" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label asp-for="@Rates.Price" class="col-sm-4 col-form-label">Price</label>
+                                    <label asp-for="@AddDetails.Price" class="col-sm-4 col-form-label">Price</label>
                                     <div class="col-sm-8">
-                                        <input asp-for="@Rates.Price" id="Price" type="text" name="Price"
-                                               value="@Rates.Price" class="form-control" required>
-                                        <span asp-validation-for="@Rates.Price" id="error_message"
+                                        <input asp-for="@AddDetails.Price" id="Price" type="text" name="Price"
+                                               value="@AddDetails.Price" class="form-control" required>
+                                        <span asp-validation-for="@AddDetails.Price" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                     </div>
-                                </div>
+                                </div> *@
                         </div>
                     </div>
                     <div class="modal-footer justify-content-center">
@@ -526,11 +526,11 @@
                         <div class="row justify-content-center">
                             <div class="col-12 col-md-8">
                                 <div class="form-group row">
-                                    <label asp-for="@Gettingthere.GettingThereText" class="col-sm-4 col-form-label">GettingThereText</label>
+                                    <label asp-for="@Gettingthere.GettingThereAccommodation" class="col-sm-4 col-form-label">GettingThereAccommodation</label>
                                     <div class="col-sm-8">
-                                        <input asp-for="@Gettingthere.GettingThereText" id="GettingThereText" type="text" name="GettingThereText"
-                                               value="@Gettingthere.GettingThereText" class="form-control" required>
-                                        <span asp-validation-for="@Gettingthere.GettingThereText" id="error_message"
+                                        <input asp-for="@Gettingthere.GettingThereAccommodation" id="GettingThereAccommodation" type="text" name="GettingThereAccommodation"
+                                               value="@Gettingthere.GettingThereAccommodation" class="form-control" required>
+                                        <span asp-validation-for="@Gettingthere.GettingThereAccommodation" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                     </div>
                                 </div>                               

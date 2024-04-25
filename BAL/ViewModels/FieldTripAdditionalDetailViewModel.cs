@@ -6,13 +6,12 @@ using System.Threading.Tasks;
 
 namespace BAL.ViewModels
 {
-    public class FieldtripInclusionViewModel
+    public class FieldTripAdditionalDetailViewModel
     {
+        public int? TripDetailsId { get; set; }
         public int? TripId { get; set; }
-        public int? InclusionId { get; set; }
         public string? Title { get; set; }
-        public string? InclusionText { get; set; }
+        public string? Description { get; set; }
         public string? Type { get; set; }
-        public string? Inclusiontype { get; set; }
     }
 }

@@ -39,15 +39,15 @@ namespace DAL.Repositories.Implements
         {
             return _context.MeetingParticipants
                 .Where(m => m.MeetingId == meetingId && m.MemberId == memberId)
-                .Include(m => m.Member)
-                .Include(m => m.Meeting)
+                .Include(m => m.MemberDetail)
+                .Include(m => m.MeetingDetail)
                 .FirstOrDefault();
         }
 
         public async Task<IEnumerable<MeetingParticipant>> GetMeetingParticipantsByMeetId(int meetingId)
         {
             return _context.MeetingParticipants
-                .Where(m => m.MeetingId == meetingId).Include(m => m.Member)
+                .Where(m => m.MeetingId == meetingId).Include(m => m.MemberDetail)
                 /*.Select(x => new MeetingParticipant
                 {
                     MeetingId= x.MeetingId,
@@ -65,7 +65,7 @@ namespace DAL.Repositories.Implements
 
         public async Task<IEnumerable<MeetingParticipant>> GetMeetingParticipantsByMemberIdInclude(string memId)
         {
-            return _context.MeetingParticipants.Where(m => m.MemberId == memId).Include(m => m.Meeting).ToList();
+            return _context.MeetingParticipants.Where(m => m.MemberId == memId).Include(m => m.MeetingDetail).ToList();
         }
 
         public async Task<int> GetParticipationNoMeetingParticipantById(int meetingId, string memberId)
