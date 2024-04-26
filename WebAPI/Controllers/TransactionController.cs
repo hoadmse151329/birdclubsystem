@@ -15,12 +15,14 @@ namespace WebAPI.Controllers
     {
         private readonly ITransactionService _transactionService;
         private readonly IUserService _userService;
+        private readonly IMemberService _memberService;
         private readonly IConfiguration _connfig;
 
-        public TransactionController(ITransactionService transactionService, IUserService userService, IConfiguration connfig)
+        public TransactionController(ITransactionService transactionService, IUserService userService, IMemberService memberService, IConfiguration connfig)
         {
             _transactionService = transactionService;
             _userService = userService;
+            _memberService = memberService;
             _connfig = connfig;
         }
 
@@ -116,7 +118,7 @@ namespace WebAPI.Controllers
 			}
 		}
 
-		[HttpGet("AllTransactions/{id}")]
+		/*[HttpGet("AllTransactions/{id}")]
 		[Authorize(Roles = "Member")]
         [ProducesResponseType(typeof(List<TransactionViewModel>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -165,8 +167,58 @@ namespace WebAPI.Controllers
                     ErrorMessage = ex.Message
                 });
             }
-        }
-		[Authorize(Roles = "Manager")]
+        }*/
+        [HttpGet("AllTransactions/{memberId}")]
+        [Authorize(Roles = "Member")]
+        [ProducesResponseType(typeof(List<TransactionViewModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetAllTransactionsByMemberId([FromRoute] string memberId)
+        {
+            try
+            {
+                var usr = await _memberService.GetBoolById(memberId);
+                if (!usr) return NotFound(new
+                {
+                    Status = false,
+                    ErrorMessage = "Member Not Found!"
+
+                });
+                var result = await _transactionService.GetAllTransactionsByMemberId(memberId);
+                if (result == null)
+                {
+                    return NotFound(new
+                    {
+                        Status = false,
+                        ErrorMessage = "No Transactions Found!"
+                    });
+                }
+                return Ok(new
+                {
+                    Status = true,
+                    Data = result
+                });
+            }
+            catch (Exception ex)
+            {
+                if (ex.InnerException != null)
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = ex.Message,
+                        InnerExceptionMessage = ex.InnerException.Message
+                    });
+                }
+                // Log the exception if needed
+                return BadRequest(new
+                {
+                    Status = false,
+                    ErrorMessage = ex.Message
+                });
+            }
+        } 
+        [Authorize(Roles = "Manager")]
 		[HttpPut("Update/{id}")]
 		[ProducesResponseType(typeof(TransactionViewModel), StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
