@@ -17,9 +17,12 @@ namespace DAL.Models
         public string? Description { get; set; }
         [Column("image")]
         public string? Image { get; set; }
+        [Column("type")]
+        [StringLength(50)]
+        public string? Type { get; set; }
 
         [ForeignKey(nameof(ContestId))]
-        [InverseProperty("ContestMedia")]
-        public virtual Contest? Contest { get; set; }
+        [InverseProperty(nameof(Contest.ContestPictures))]
+        public virtual Contest? ContestDetails { get; set; }
     }
 }

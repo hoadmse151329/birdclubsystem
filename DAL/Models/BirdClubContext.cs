@@ -122,8 +122,8 @@ namespace DAL.Models
                 entity.HasKey(e => e.PictureId)
                     .HasName("PK__ContestM__769A271AE03B7758");
 
-                entity.HasOne(d => d.Contest)
-                    .WithMany(p => p.ContestMedia)
+                entity.HasOne(d => d.ContestDetails)
+                    .WithMany(p => p.ContestPictures)
                     .HasForeignKey(d => d.ContestId)
                     .HasConstraintName("FK_Contest");
             });
