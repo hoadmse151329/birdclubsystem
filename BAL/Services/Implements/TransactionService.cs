@@ -50,6 +50,12 @@ namespace BAL.Services.Implements
 				_unitOfWork.TransactionRepository.GetTransactionByVnPayId(vnPayId));
 		}
 
+        public async Task<IEnumerable<TransactionViewModel?>> GetAllTransactionsByMemberId(string memberId)
+        {
+            return _mapper.Map<IEnumerable<TransactionViewModel>>(await
+                _unitOfWork.TransactionRepository.GetAllTransactionsByMemberId(memberId));
+        }
+
 		public void Update(TransactionViewModel transaction)
 		{
 			var tran = _mapper.Map<Transaction>(transaction);

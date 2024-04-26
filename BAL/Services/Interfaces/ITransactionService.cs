@@ -12,6 +12,7 @@ namespace BAL.Services.Interfaces
         Task<TransactionViewModel?> GetTransactionById(int id);
 		Task<TransactionViewModel?> GetTransactionByVnPayId(string? vnPayId);
 		Task<IEnumerable<TransactionViewModel>> GetAllTransactionsByUserId(int userId);
+		Task<IEnumerable<TransactionViewModel>> GetAllTransactionsByMemberId(string memberId);
         void Create(TransactionViewModel transaction);
 		void Update(TransactionViewModel transaction);
 		Task<bool> UpdateUserId(int id, int userId);
