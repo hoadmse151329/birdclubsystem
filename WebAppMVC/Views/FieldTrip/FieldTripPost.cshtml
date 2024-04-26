@@ -2,6 +2,8 @@
 @model BAL.ViewModels.FieldTripViewModel
 ﻿@{
     ViewData["Title"] = "Field Trip Post Page";
+    List<BAL.ViewModels.FieldTripAdditionalDetailViewModel> tourFeatures = Model.AddDetails.Where(f => f.Type == "tour_features").ToList();
+
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <html lang="en">
@@ -62,7 +64,7 @@
                                 <div class="div-wrapper"><div class="text-wrapper-3">Field Trip</div></div>
                             </div>
                             @{
-                                if (Model.Media != null)
+                                if (Model.Media != null && Model.Media.Count > 0)
                                 {
                                     <img class="soi-noi-hoi-thi-chim" src="@Model.Media.FirstOrDefault().Image" alt="nt1">
                                 }
@@ -119,8 +121,8 @@
                                     }
                                 }
                             </div>                                                       
+                        </div>
                     </div>
-                </div>
                 
             <section>
                     <ul class="nav nav-tabs">
@@ -136,21 +138,14 @@
                                         <span>Day By Day</span>
                                     </a>
                                 </li>
-
                                 <li class="nav-item">
                                     <a class="nav-link" data-toggle="tab" href="#home5">
-                                        <i class='bx bx-home-alt-2'></i>
-                                        <span>AddDetails</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" data-toggle="tab" href="#home6">
                                         <i class='bx bx-home-alt-2'></i>
                                         <span>Inclusions</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" data-toggle="tab" href="#home7">
+                                    <a class="nav-link" data-toggle="tab" href="#home6">
                                         <i class='bx bx-home-alt-2'></i>
                                         <span>Getting There</span>
                                     </a>
@@ -161,9 +156,9 @@
                                 <!-- home1 -->
                                 <div class="tab-pane active" id="home1" role="tabpanel">                           
                                             <div class="tour__content__block tour__content__block--consider avoid-break-p">
-                    <h2>Tour AddDetails</h2>
+                    <h2>Tour Features</h2>
                     <div class="row">
-                        @foreach (var day in Model.AddDetails)
+                        @foreach (var detail in Model.AddDetails)
                         {
                             <div class="col col-12 col-t-6 item">
                                 <div class="svg-box">

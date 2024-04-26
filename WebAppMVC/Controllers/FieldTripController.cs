@@ -141,6 +141,8 @@ namespace WebAppMVC.Controllers
             TempData["ROLE_NAME"] = role;
             TempData["USER_NAME"] = usrname;
 
+            dynamic fieldtripDetail = new ExpandoObject();
+
             GetFieldTripPostResponse? fieldtripPostResponse = new();
 
             if (!string.IsNullOrEmpty(accToken) && !string.IsNullOrEmpty(usrId) && role.Equals(Constants.Constants.MEMBER))
@@ -169,20 +171,27 @@ namespace WebAppMVC.Controllers
             {
                 //_logger.LogInformation("Username or Password is invalid: " + meetPostResponse.Status + " , Error Message: " + meetPostResponse.ErrorMessage);
                 ViewBag.error =
-                    "Error while processing your request! (Getting Meeting!).\n Meeting Not Found!";
-                View("Index");
+                    "Error while processing your request! (Getting Fieldtrip Post!).\n Fieldtrip Not Found!";
+                return RedirectToAction("Index");
             }
+            fieldtripDetail.FieldTrip = fieldtripPostResponse.Data;
+            fieldtripDetail.TourFeatures = fieldtripPostResponse.Data.AddDetails.Where(f => f.Type == "tour_features").ToList();
+            fieldtripDetail.ActivitiesAndTransportation = fieldtripPostResponse.Data.AddDetails.Where(f => f.Type == "activities_and_transportation").ToList();
+            fieldtripDetail.ImportantToKnow = fieldtripPostResponse.Data.AddDetails.Where(f => f.Type == "important_to_know").ToList();
+            fieldtripDetail.DayByDays = fieldtripPostResponse.Data.DaybyDays;
+            fieldtripDetail.Inclusions = fieldtripPostResponse.Data.Inclusions;
+            fieldtripDetail.GettingThere = fieldtripPostResponse.Data.GettingTheres;
+            fieldtripDetail.Pictures = fieldtripPostResponse.Data.Media;
 
-            var fieldtripmodel = fieldtripPostResponse.Data;
             if (!fieldtripPostResponse.Status)
             {
-                _logger.LogInformation("Username or Password is invalid: " + fieldtripPostResponse.Status + " , Error Message: " + fieldtripPostResponse.ErrorMessage);
+                //_logger.LogInformation("Username or Password is invalid: " + fieldtripPostResponse.Status + " , Error Message: " + fieldtripPostResponse.ErrorMessage);
                 ViewBag.error =
-                    "Error while processing your request! (Getting Meeting Post!).\n"
+                    "Error while processing your request! (Getting Fieldtrip Post!).\n"
                     + fieldtripPostResponse.ErrorMessage;
-                View("Index");
+                return RedirectToAction("Index");
             }
-            return View(fieldtripmodel);
+            return View(fieldtripDetail);
         }
 		public IActionResult FieldTripPostGettingThere()
 		{
