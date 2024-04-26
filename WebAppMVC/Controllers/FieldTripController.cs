@@ -51,8 +51,11 @@ namespace WebAppMVC.Controllers
 
             string? usrname = HttpContext.Session.GetString("USER_NAME");
 
+            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
+
             TempData["ROLE_NAME"] = role;
             TempData["USER_NAME"] = usrname;
+            TempData["IMAGE_PATH"] = imagepath;
 
             var listLocationRoadResponse = await methcall.CallMethodReturnObject<GetLocationAddressResponseByList>(
                 _httpClient: _httpClient,
@@ -138,8 +141,11 @@ namespace WebAppMVC.Controllers
 
             string? usrname = HttpContext.Session.GetString("USER_NAME");
 
+            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
+
             TempData["ROLE_NAME"] = role;
             TempData["USER_NAME"] = usrname;
+            TempData["IMAGE_PATH"] = imagepath;
 
             dynamic fieldtripDetail = new ExpandoObject();
 
@@ -193,18 +199,6 @@ namespace WebAppMVC.Controllers
             }
             return View(fieldtripDetail);
         }
-		public IActionResult FieldTripPostGettingThere()
-		{
-			return View();
-		}
-		public IActionResult FieldTripPostInclusion()
-		{
-			return View();
-		}
-		public IActionResult FieldTripPostRate()
-		{
-			return View();
-		}
 
         [HttpPost("FieldTripRegister/{tripId:int}")]
         public async Task<IActionResult> FieldTripRegister(int tripId)
@@ -224,8 +218,11 @@ namespace WebAppMVC.Controllers
             string? usrname = HttpContext.Session.GetString("USER_NAME");
             if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
 
+            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
+
             TempData["ROLE_NAME"] = role;
             TempData["USER_NAME"] = usrname;
+            TempData["IMAGE_PATH"] = imagepath;
 
             var participationNo = await methcall.CallMethodReturnObject<GetFieldTripParticipationNo>(
                 _httpClient: _httpClient,
@@ -273,8 +270,11 @@ namespace WebAppMVC.Controllers
             string? usrname = HttpContext.Session.GetString("USER_NAME");
             if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
 
+            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
+
             TempData["ROLE_NAME"] = role;
             TempData["USER_NAME"] = usrname;
+            TempData["IMAGE_PATH"] = imagepath;
 
             var participationNo = await methcall.CallMethodReturnObject<GetFieldTripPostDeRegister>(
                 _httpClient: _httpClient,

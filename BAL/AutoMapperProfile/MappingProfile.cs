@@ -142,11 +142,8 @@ namespace BAL.AutoMapperProfile
                     dest.LocationName = src.AreaNumber + "," + src.Street + "," + src.District + "," + src.City;
                 });
             CreateMap<Transaction, TransactionViewModel>()
-                .AfterMap((src, dest) =>
-                {
-                    dest.MemberId = src.UserDetail.MemberId;
-                })
                 .ReverseMap();
+            CreateMap<Bird, BirdViewModel>() .ReverseMap();
         }
     }
 }

@@ -29,6 +29,7 @@ namespace DAL.Infrastructure
         private IContestRepository _contestRepository;
         private IContestParticipantRepository _contestParticipantRepository;
         private IContestMediaRepository _contestMediaRepository;
+        private IBirdRepository _birdRepository;
 		public UnitOfWork(BirdClubContext context)
 		{
 			_context = context;
@@ -55,6 +56,7 @@ namespace DAL.Infrastructure
 
         public IFieldtripAdditionalDetailRepository FieldtripAdditionalDetailRepository => _fieldtripAddDetailsRepository ??= new FieldtripAdditionalDetailRepository(_context);
         public IContestMediaRepository ContestMediaRepository => _contestMediaRepository ??= new ContestMediaRepository(_context);
+        public IBirdRepository BirdRepository => _birdRepository ??= new BirdRepository(_context);
 
         public void Dispose()
         {

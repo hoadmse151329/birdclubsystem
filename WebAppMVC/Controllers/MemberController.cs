@@ -341,14 +341,10 @@ namespace WebAppMVC.Controllers
         {
             return View();
         }
-        [HttpGet("Payment/{id:int}")]
-        public async Task<IActionResult> MemberPayment(int id)
+        [HttpGet("Payment")]
+        public async Task<IActionResult> MemberPayment()
         {
-            if(id == 0)
-            {
-                return View();
-            }
-            string MemberPaymentAPI_URL = "/api/Transaction/AllTransactions/" + id;
+            string MemberPaymentAPI_URL = "/api/Transaction/AllTransactions";
 
             string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
             if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
@@ -374,9 +370,10 @@ namespace WebAppMVC.Controllers
             var memberPayment = await methcall.CallMethodReturnObject<GetUserPaymentResponse>(
                 _httpClient: _httpClient,
                 options: options,
-                methodName: "GET",
+                methodName: "POST",
                 url: MemberPaymentAPI_URL,
                 _logger: _logger,
+                inputType: usrId,
                 accessToken: accToken);
 
             if (memberPayment == null)
@@ -394,6 +391,7 @@ namespace WebAppMVC.Controllers
                 return RedirectToAction("MemberProfile");
             }
             transactionModel.MemberPayments = memberPayment.Data;
+            //transactionModel.MemberDetail = memberDetails.Data;
             return View(transactionModel);
         }
     }

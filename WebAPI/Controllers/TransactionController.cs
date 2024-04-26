@@ -168,12 +168,12 @@ namespace WebAPI.Controllers
                 });
             }
         }*/
-        [HttpGet("AllTransactions/{memberId}")]
+        [HttpPost("AllTransactions")]
         [Authorize(Roles = "Member")]
         [ProducesResponseType(typeof(List<TransactionViewModel>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> GetAllTransactionsByMemberId([FromRoute] string memberId)
+        public async Task<IActionResult> GetAllTransactionsByMemberId([FromBody] string memberId)
         {
             try
             {
