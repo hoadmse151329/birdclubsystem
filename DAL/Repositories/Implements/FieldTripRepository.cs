@@ -20,15 +20,17 @@ namespace DAL.Repositories.Implements
         public async Task<IEnumerable<FieldTrip>> GetAllFieldTrips()
         {
             return _context.FieldTrips.AsNoTracking()
-                .Include(f => f.FieldtripDaybyDays)
-                .Include(f => f.FieldtripInclusions)
-                .Include(f => f.FieldtripAdditionalDetails)
-                .Include(f => f.FieldtripMedia)
+                .Include(f => f.FieldtripPictures.Where(fm => fm.Type.Equals("Spotlight")))
                 .ToList();
         }
         public async Task<FieldTrip?> GetFieldTripById(int id)
         {
-            return _context.FieldTrips.AsNoTracking().SingleOrDefault(trip => trip.TripId == id);
+            return _context.FieldTrips.AsNoTracking()
+                .Include(f => f.FieldtripDaybyDays)
+                .Include(f => f.FieldtripInclusions)
+                .Include(f => f.FieldtripAdditionalDetails)
+                .Include(f => f.FieldtripPictures)
+                .SingleOrDefault(trip => trip.TripId == id);
         }
     }
 }

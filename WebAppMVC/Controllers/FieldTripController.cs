@@ -182,7 +182,7 @@ namespace WebAppMVC.Controllers
             fieldtripDetail.DayByDays = fieldtripPostResponse.Data.FieldtripDaybyDays;
             fieldtripDetail.Inclusions = fieldtripPostResponse.Data.FieldtripInclusions;
             fieldtripDetail.GettingThere = fieldtripPostResponse.Data.FieldtripGettingTheres;
-            fieldtripDetail.Pictures = fieldtripPostResponse.Data.FieldtripMedia;
+            fieldtripDetail.Pictures = fieldtripPostResponse.Data.FieldtripPictures;
 
             if (!fieldtripPostResponse.Status)
             {
