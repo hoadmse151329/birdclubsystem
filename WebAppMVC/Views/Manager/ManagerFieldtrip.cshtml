@@ -373,10 +373,10 @@
                                     <span asp-validation-for="@createFieldTripDayByDay.Description" id="error_message"
                                           class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
-                                    <label asp-for="@createFieldTripDayByDay.PictureId" class="col-md-3 col-form-label mt-3 text-md-right">Picture ID</label>
+                                    @* <label asp-for="@createFieldTripDayByDay.PictureId" class="col-md-3 col-form-label mt-3 text-md-right">Picture ID</label>
                                     <textarea asp-for="@createFieldTripDayByDay.PictureId" value="@createFieldTripDayByDay.PictureId" type="text" name="picturid" placeholder="Pictur ID..." class="form-control col-md-7 mt-3" rows="3" required></textarea>
                                     <span asp-validation-for="@createFieldTripDayByDay.PictureId" id="error_message"
-                                          class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                          class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span> *@
 
                                     <label asp-for="@createFieldTripDayByDay.Day" class="col-md-3 col-form-label mt-3 text-md-right">Day</label>
                                     <textarea asp-for="@createFieldTripDayByDay.Day" value="@createFieldTripDayByDay.Day" type="datetime-local" name="day" required class="form-control col-md-7 mt-3"></textarea>
