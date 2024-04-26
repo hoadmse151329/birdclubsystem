@@ -1,8 +1,10 @@
 
-@model BAL.ViewModels.FieldTripViewModel
+@model dynamic
 ﻿@{
     ViewData["Title"] = "Field Trip Post Page";
-    List<BAL.ViewModels.FieldTripAdditionalDetailViewModel> tourFeatures = Model.AddDetails.Where(f => f.Type == "tour_features").ToList();
+    List<BAL.ViewModels.FieldTripAdditionalDetailViewModel> tourFeatures = Model.TourFeatures;
+    List<BAL.ViewModels.FieldTripAdditionalDetailViewModel> addAndTransportation = Model.ActivitiesAndTransportation;
+    List<BAL.ViewModels.FieldTripAdditionalDetailViewModel> importantToKnow = Model.ImportantToKnow;
 
     Layout = "~/Views/Shared/_Layout.cshtml";
 }

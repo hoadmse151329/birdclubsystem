@@ -28,20 +28,17 @@ namespace BAL.Services.Implements
             var listtripview = _mapper.Map<IEnumerable<FieldTripViewModel>>(listtrip);
             foreach (var itemview in listtripview)
             {
-                foreach (var item in listtrip)
+                if(itemview.FieldtripMedia != null && itemview.FieldtripMedia.Count > 0)
                 {
-                    if (item.TripId == itemview.TripId)
-                    {
-                        var media = await _unitOfWork.FieldTripMediaRepository.GetFieldTripMediasByTripId(item.TripId);
-                        itemview.Media = (media != null) ? _mapper.Map<IEnumerable<FieldtripMediaViewModel>>(media).ToList() : null;
 
-                        locationName = await _unitOfWork.LocationRepository.GetLocationNameById(item.LocationId.Value);
-                        itemview.AreaNumber = Int32.Parse(locationName.Split(",")[0]);
-                        itemview.Street = locationName.Split(",")[1];
-                        itemview.District = locationName.Split(",")[2];
-                        itemview.City = locationName.Split(",")[3];
-                    }
                 }
+                /*var 
+                locationName = await _unitOfWork.LocationRepository.GetLocationNameById(item.LocationId.Value);
+                itemview.AreaNumber = Int32.Parse(locationName.Split(",")[0]);
+                itemview.Street = locationName.Split(",")[1];
+                itemview.District = locationName.Split(",")[2];
+                itemview.City = locationName.Split(",")[3];*/
+
             }
             return listtripview;
         }
@@ -68,18 +65,29 @@ namespace BAL.Services.Implements
                 fieldTrip.NumberOfParticipants = fieldTrip.NumberOfParticipantsLimit - partAmount;
                 fieldTrip.Address = locationName;
 
-                fieldTrip.Inclusions = (inclusions != null) ? _mapper.Map<IEnumerable<FieldtripInclusionViewModel>>(inclusions).ToList() : null;
-                fieldTrip.GettingTheres = (gettingThere != null) ? _mapper.Map<IEnumerable<FieldtripGettingThereViewModel>>(gettingThere).ToList() : null;
-                fieldTrip.DaybyDays = (daysByDays != null) ? _mapper.Map<IEnumerable<FieldtripDaybyDayViewModel>>(daysByDays).ToList() : null;
+                fieldTrip.FieldtripInclusions = (inclusions != null) ? _mapper.Map<IEnumerable<FieldtripInclusionViewModel>>(inclusions).ToList() : null;
+                fieldTrip.FieldtripGettingTheres = (gettingThere != null) ? _mapper.Map<IEnumerable<FieldtripGettingThereViewModel>>(gettingThere).ToList() : null;
+                fieldTrip.FieldtripDaybyDays = (daysByDays != null) ? _mapper.Map<IEnumerable<FieldtripDaybyDayViewModel>>(daysByDays).ToList() : null;
 
-                fieldTrip.AddDetails = (addDetails != null) ? _mapper.Map<IEnumerable<FieldTripAdditionalDetailViewModel>>(addDetails).ToList() : null;
+                fieldTrip.FieldtripAdditionalDetails = (addDetails != null) ? _mapper.Map<IEnumerable<FieldTripAdditionalDetailViewModel>>(addDetails).ToList() : null;
 
-                fieldTrip.Media = (media != null) ? _mapper.Map<IEnumerable<FieldtripMediaViewModel>>(media).ToList() : null;
+                fieldTrip.FieldtripMedia = (media != null) ? _mapper.Map<IEnumerable<FieldtripMediaViewModel>>(media).ToList() : null;
 
                 fieldTrip.AreaNumber = Int32.Parse(locationName.Split(",")[0]);
                 fieldTrip.Street = locationName.Split(",")[1];
                 fieldTrip.District = locationName.Split(",")[2];
                 fieldTrip.City = locationName.Split(",")[3];
+
+                foreach(var picture in fieldTrip.FieldtripMedia)
+                {
+                    var day = fieldTrip.FieldtripDaybyDays.SingleOrDefault(f => f.DaybyDayId.Value.Equals(picture.DayByDayId.Value));
+                    if(day != null)
+                    {
+                        day.Media.Add(picture);
+                    }
+                    
+                }
+
                 return fieldTrip;
             }
             return null;

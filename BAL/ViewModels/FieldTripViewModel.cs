@@ -30,11 +30,13 @@ namespace BAL.ViewModels
         public string? Host { get; set; }
         public string? InCharge { get; set; }
         public string? Note { get; set; }
+        public FieldtripMediaViewModel? LocationMapImage { get; set; }
+        public FieldtripMediaViewModel? SpotlightImage { get; set; }
 
-        public List<FieldtripGettingThereViewModel>? GettingTheres { get; set; }
-        public List<FieldTripAdditionalDetailViewModel>? AddDetails { get; set; }
-        public List<FieldtripMediaViewModel>? Media { get; set; }
-        public List<FieldtripInclusionViewModel>? Inclusions { get; set; }
-        public List<FieldtripDaybyDayViewModel>? DaybyDays { get; set; }
+        public List<FieldtripGettingThereViewModel>? FieldtripGettingTheres { get; set; }
+        public List<FieldTripAdditionalDetailViewModel>? FieldtripAdditionalDetails { get; set; }
+        public List<FieldtripMediaViewModel>? FieldtripMedia { get; set; }
+        public List<FieldtripInclusionViewModel>? FieldtripInclusions { get; set; }
+        public List<FieldtripDaybyDayViewModel>? FieldtripDaybyDays { get; set; }
     }
 }
