@@ -236,7 +236,7 @@ namespace DAL.Models
                     .HasName("PK__Fieldtri__769A271AD61345EC");
 
                 entity.HasOne(d => d.Trip)
-                    .WithMany(p => p.FieldtripMedia)
+                    .WithMany(p => p.FieldtripPictures)
                     .HasForeignKey(d => d.TripId)
                     .HasConstraintName("FK_FieldtripMedia_FieldTrip");
             });

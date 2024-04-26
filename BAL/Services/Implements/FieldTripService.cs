@@ -23,22 +23,34 @@ namespace BAL.Services.Implements
 
         public async Task<IEnumerable<FieldTripViewModel>> GetAll()
         {
-            string locationName;
-            var listtrip = _unitOfWork.FieldTripRepository.GetAll();
+            string[] locationName;
+            var listtrip = await _unitOfWork.FieldTripRepository.GetAllFieldTrips();
             var listtripview = _mapper.Map<IEnumerable<FieldTripViewModel>>(listtrip);
             foreach (var itemview in listtripview)
             {
-                if(itemview.FieldtripMedia != null && itemview.FieldtripMedia.Count > 0)
+                var trip = listtrip.SingleOrDefault(ft => ft.TripId == itemview.TripId);
+                if(trip != null)
                 {
+                    var locationAddress = await _unitOfWork.LocationRepository.GetLocationNameById(trip.LocationId.Value);
+                    itemview.Address = locationAddress;
 
+                    locationName = itemview.Address.Split(",");
+                    itemview.AreaNumber = Int32.Parse(locationName[0]);
+                    itemview.Street = locationName[1];
+                    itemview.District = locationName[2];
+                    itemview.City = locationName[3];
                 }
-                /*var 
-                locationName = await _unitOfWork.LocationRepository.GetLocationNameById(item.LocationId.Value);
-                itemview.AreaNumber = Int32.Parse(locationName.Split(",")[0]);
-                itemview.Street = locationName.Split(",")[1];
-                itemview.District = locationName.Split(",")[2];
-                itemview.City = locationName.Split(",")[3];*/
-
+                if(itemview.FieldtripPictures.Count > 0)
+                {
+                    foreach (var picture in itemview.FieldtripPictures.ToList())
+                    {
+                        if (picture.Type == "Spotlight")
+                        {
+                            itemview.SpotlightImage = picture;
+                            itemview.FieldtripPictures.Remove(picture);
+                        }
+                    }
+                }
             }
             return listtripview;
         }
@@ -47,12 +59,8 @@ namespace BAL.Services.Implements
             var trip = await _unitOfWork.FieldTripRepository.GetFieldTripById(id);
             if (trip != null)
             {
-                var gettingThere = await _unitOfWork.FieldTripGettingThereRepository.GetFieldTripGettingTheresByTripId(trip.TripId);
-                var addDetails = await _unitOfWork.FieldtripAdditionalDetailRepository.GetFieldTripAdditionalDetailsByTripId(trip.TripId);
-                var daysByDays = await _unitOfWork.FieldTripDaybyDayRepository.GetAllFieldTripDayByDaysById(trip.TripId);
-                var inclusions = await _unitOfWork.FieldTripInclusionRepository.GetFieldTripInclusionsById(trip.TripId);
-                var media = await _unitOfWork.FieldTripMediaRepository.GetFieldTripMediasByTripId(trip.TripId);
-                string locationName = await _unitOfWork.LocationRepository.GetLocationNameById(trip.LocationId.Value);
+                var locationName = await _unitOfWork.LocationRepository.GetLocationNameById(trip.LocationId.Value);
+                var locationSplit = locationName.Split(",");
 
                 if (locationName == null)
                 {
@@ -61,33 +69,35 @@ namespace BAL.Services.Implements
                 int partAmount = await _unitOfWork.FieldTripParticipantRepository.GetCountFieldTripParticipantsByTripId(trip.TripId);
                 var fieldTrip = _mapper.Map<FieldTripViewModel>(trip);
 
-
                 fieldTrip.NumberOfParticipants = fieldTrip.NumberOfParticipantsLimit - partAmount;
-                fieldTrip.Address = locationName;
 
-                fieldTrip.FieldtripInclusions = (inclusions != null) ? _mapper.Map<IEnumerable<FieldtripInclusionViewModel>>(inclusions).ToList() : null;
-                fieldTrip.FieldtripGettingTheres = (gettingThere != null) ? _mapper.Map<IEnumerable<FieldtripGettingThereViewModel>>(gettingThere).ToList() : null;
-                fieldTrip.FieldtripDaybyDays = (daysByDays != null) ? _mapper.Map<IEnumerable<FieldtripDaybyDayViewModel>>(daysByDays).ToList() : null;
+                fieldTrip.AreaNumber = Int32.Parse(locationSplit[0]);
+                fieldTrip.Street = locationSplit[1];
+                fieldTrip.District = locationSplit[2];
+                fieldTrip.City = locationSplit[3];
 
-                fieldTrip.FieldtripAdditionalDetails = (addDetails != null) ? _mapper.Map<IEnumerable<FieldTripAdditionalDetailViewModel>>(addDetails).ToList() : null;
-
-                fieldTrip.FieldtripMedia = (media != null) ? _mapper.Map<IEnumerable<FieldtripMediaViewModel>>(media).ToList() : null;
-
-                fieldTrip.AreaNumber = Int32.Parse(locationName.Split(",")[0]);
-                fieldTrip.Street = locationName.Split(",")[1];
-                fieldTrip.District = locationName.Split(",")[2];
-                fieldTrip.City = locationName.Split(",")[3];
-
-                foreach(var picture in fieldTrip.FieldtripMedia)
+                foreach(var picture in fieldTrip.FieldtripPictures)
                 {
-                    var day = fieldTrip.FieldtripDaybyDays.SingleOrDefault(f => f.DaybyDayId.Value.Equals(picture.DayByDayId.Value));
-                    if(day != null)
+                    if(picture.Type == "Spotlight")
                     {
-                        day.Media.Add(picture);
+                        fieldTrip.SpotlightImage = picture;
+                        fieldTrip.FieldtripPictures.Remove(picture);
+                    } else
+                    if (picture.Type == "LocationMap")
+                    {
+                        fieldTrip.LocationMapImage = picture;
+                        fieldTrip.FieldtripPictures.Remove(picture);
+                    } else
+                    if(picture.Type == "DayByDay")
+                    {
+                        var day = fieldTrip.FieldtripDaybyDays.SingleOrDefault(f => f.DaybyDayId.Value.Equals(picture.DayByDayId.Value));
+                        if (day != null)
+                        {
+                            day.Media.Add(picture);
+                            fieldTrip.FieldtripPictures.Remove(picture);
+                        }
                     }
-                    
                 }
-
                 return fieldTrip;
             }
             return null;

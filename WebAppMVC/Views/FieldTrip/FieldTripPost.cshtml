@@ -5,7 +5,7 @@
     List<BAL.ViewModels.FieldTripAdditionalDetailViewModel> tourFeatures = Model.TourFeatures;
     List<BAL.ViewModels.FieldTripAdditionalDetailViewModel> addAndTransportation = Model.ActivitiesAndTransportation;
     List<BAL.ViewModels.FieldTripAdditionalDetailViewModel> importantToKnow = Model.ImportantToKnow;
-
+    BAL.ViewModels.FieldTripViewModel fieldtripDetails = Model.FieldTrip;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <html lang="en">
@@ -48,7 +48,7 @@
                                 </p>
                                 <p class="span-wrapper">
                                     <span class="span">
-                                        @Model.Description
+                                        @fieldtripDetails.Description
                                     </span>
                                 </p>
                             </div>
@@ -58,7 +58,7 @@
                                 </p>
                                 <p class="p">
                                     <span class="span">
-                                        @Model.Note
+                                        @fieldtripDetails.Note
                                     </span>
                                 </p>
                             </div>
@@ -66,9 +66,9 @@
                                 <div class="div-wrapper"><div class="text-wrapper-3">Field Trip</div></div>
                             </div>
                             @{
-                                if (Model.Media != null && Model.Media.Count > 0)
+                                if (fieldtripDetails.SpotlightImage != null)
                                 {
-                                    <img class="soi-noi-hoi-thi-chim" src="@Model.Media.FirstOrDefault().Image" alt="nt1">
+                                    <img class="soi-noi-hoi-thi-chim" src="@fieldtripDetails.SpotlightImage.Image" alt="nt1">
                                 }
                                 else
                                 {
@@ -81,9 +81,9 @@
                         <div class="overlap-3">
                             <div id="map-container"></div>
                             <div class="tittle">
-                                <div class="overlap-group-2"><p class="text-wrapper-4">@Model.TripName</p></div>
+                                <div class="overlap-group-2"><p class="text-wrapper-4">@fieldtripDetails.TripName</p></div>
                             </div>
-                            <div class="text-wrapper-5">From @Model.StartDate.Value.ToString("MM/dd/yyyy") to @Model.EndDate.Value.ToString("MM/dd/syyyy")</div>
+                            <div class="text-wrapper-5">From @fieldtripDetails.StartDate.Value.ToString("MM/dd/yyyy") to @fieldtripDetails.EndDate.Value.ToString("MM/dd/syyyy")</div>
 
 
                             <div class="group-2">
@@ -97,27 +97,27 @@
 
 
                             <div class="group-3">
-                                <div class="text-wrapper-11">@Model.AreaNumber,@Model.Street,@Model.District,@Model.City</div>
-                                @*<div class="text-wrapper-11">@Model.Street</div>*@
-                                <p class="text-wrapper-12">@Model.NumberOfParticipantsLimit</p>
-                                <div class="text-wrapper-13">@Model.RegistrationDeadline</div>
+                                <div class="text-wrapper-11">@fieldtripDetails.AreaNumber,@fieldtripDetails.Street,@fieldtripDetails.District,@fieldtripDetails.City</div>
+                                @*<div class="text-wrapper-11">@fieldtripDetails.Street</div>*@
+                                <p class="text-wrapper-12">@fieldtripDetails.NumberOfParticipantsLimit</p>
+                                <div class="text-wrapper-13">@fieldtripDetails.RegistrationDeadline</div>
                                 <div class="text-wrapper-14">ChaoMaoClub@gmail.com</div>
-                                <div class="text-wrapper-15">@Model.Host</div>
+                                <div class="text-wrapper-15">@fieldtripDetails.Host</div>
                             </div>
                             <div class="register">
                                 @{
-                                    if (Model.ParticipationNo != 0 && Model.ParticipationNo != null)
+                                    if (fieldtripDetails.ParticipationNo != 0 && fieldtripDetails.ParticipationNo != null)
                                     {
                                         <div class="overlap-group-3 text-wrapper-16">
                                             <span class="text-success">@ViewBag.PartNumber</span>
                                         </div>
-                                                <form asp-action="FieldTripDeRegister" asp-controller="FieldTrip" method="post" asp-route-tripId="@Model.TripId">
+                                                <form asp-action="FieldTripDeRegister" asp-controller="FieldTrip" method="post" asp-route-tripId="@fieldtripDetails.TripId">
                                             <button class="overlap-group-3 text-wrapper-16" type="submit">Sign Out</button>
                                         </form>
                                     }
                                     else
                                     {
-                                        <form asp-action="FieldTripRegister" asp-controller="FieldTrip" method="post" asp-route-tripId="@Model.TripId">
+                                        <form asp-action="FieldTripRegister" asp-controller="FieldTrip" method="post" asp-route-tripId="@fieldtripDetails.TripId">
                                             <button class="overlap-group-3 text-wrapper-16" type="submit">Register</button>
                                         </form>
                                     }
@@ -160,49 +160,49 @@
                                             <div class="tour__content__block tour__content__block--consider avoid-break-p">
                     <h2>Tour Features</h2>
                     <div class="row">
-                        @foreach (var detail in Model.AddDetails)
+                        @foreach (var detail in tourFeatures)
                         {
-                            <div class="col col-12 col-t-6 item">
-                                <div class="svg-box">
+                            <div class="col col-12 col-t-6 item" >
+                                @* <div class="svg-box">
                                     <img src="https://cfstatic.safaribookings.com/img/svg/icons-red/icon-accomodation-mid.svg" alt="">
-                                </div>
+                                </div> *@
                                 <h4>Mid-range tour</h4>
                                 <p>This mid-range tour uses lodges and tented camps.</p>
                             </div>
                         }                       
                         <div class="col col-12 col-t-6 item  ">
-                            <div class="svg-box">
+                            @* <div class="svg-box">
                                 <img src="https://cfstatic.safaribookings.com/img/svg/icons-red/icon-group-small.svg" alt="">
-                            </div>
+                            </div> *@
                             <h4>Shared tour</h4>
                             <p>On this shared tour, you will join a group of other travelers. Max 4 people per vehicle.</p>
                         </div>
-                        <div class="col col-12 col-t-6 item  hide show-t  ">
-                            <div class="svg-box">
+                        <div class="col col-12 col-t-6 item hide show-t  ">
+                            @* <div class="svg-box">
                                 <img src="https://cfstatic.safaribookings.com/img/svg/icons-red/icon-departure-any-day.svg" alt="">
-                            </div>
+                            </div> *@
                             <h4>Can start any day</h4>
                             <p>If availability permits, this tour can start on any day.</p>
                         </div>
                         <div class="col col-12 col-t-6 item  ">
-                            <div class="svg-box">
+                            @* <div class="svg-box">
                                 <img src="https://cfstatic.safaribookings.com/img/svg/icons-red/icon-customize-no.svg" alt="">
-                            </div>
+                            </div> *@
                             <h4>Cannot be customized</h4>
                             <p>The accommodations and destinations of this tour cannot be changed.</p>
                         </div>
                         <div class="col col-12 col-t-6 item  ">
-                            <div class="svg-box">
+                            @* <div class="svg-box">
                                 <img src="https://cfstatic.safaribookings.com/img/svg/icons-red/icon-solo-travelers-yes.svg" alt="">
-                            </div>
+                            </div> *@
                             <h4>Suitable for single travelers</h4>
                             <p>Single travelers can join this group tour.</p>
                         </div>
                         <div class="col col-12 col-t-6 item  ">
-                            <div class="svg-box">
+                            @* <div class="svg-box">
                                 <img src="https://cfstatic.safaribookings.com/img/svg/icons-red/icon-age-plus.svg" alt="">
                                 <span>3</span>
-                            </div>
+                            </div> *@
                             <h4>Minimum age of 3 years</h4>
                             <p>The minimum age for this tour is 3 years.</p>
                         </div>
