@@ -34,7 +34,7 @@ namespace DAL.Models
         public string? Status { get; set; }
 
         [ForeignKey(nameof(UserId))]
-        [InverseProperty("Feedbacks")]
-        public virtual User User { get; set; } = null!;
+        [InverseProperty(nameof(User.Feedbacks))]
+        public virtual User UserDetail { get; set; } = null!;
     }
 }

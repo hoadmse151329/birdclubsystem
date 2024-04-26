@@ -1,7 +1,11 @@
 
-@model BAL.ViewModels.FieldTripViewModel
+@model dynamic
 ﻿@{
     ViewData["Title"] = "Field Trip Post Page";
+    List<BAL.ViewModels.FieldTripAdditionalDetailViewModel> tourFeatures = Model.TourFeatures;
+    List<BAL.ViewModels.FieldTripAdditionalDetailViewModel> addAndTransportation = Model.ActivitiesAndTransportation;
+    List<BAL.ViewModels.FieldTripAdditionalDetailViewModel> importantToKnow = Model.ImportantToKnow;
+
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <html lang="en">
@@ -62,7 +66,7 @@
                                 <div class="div-wrapper"><div class="text-wrapper-3">Field Trip</div></div>
                             </div>
                             @{
-                                if (Model.Media != null)
+                                if (Model.Media != null && Model.Media.Count > 0)
                                 {
                                     <img class="soi-noi-hoi-thi-chim" src="@Model.Media.FirstOrDefault().Image" alt="nt1">
                                 }
@@ -119,8 +123,8 @@
                                     }
                                 }
                             </div>                                                       
+                        </div>
                     </div>
-                </div>
                 
             <section>
                     <ul class="nav nav-tabs">
@@ -135,15 +139,15 @@
                                         <i class='bx bx-home-alt-2'></i>
                                         <span>Day By Day</span>
                                     </a>
-                                </li>                             
+                                </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" data-toggle="tab" href="#home6">
+                                    <a class="nav-link" data-toggle="tab" href="#home5">
                                         <i class='bx bx-home-alt-2'></i>
                                         <span>Inclusions</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" data-toggle="tab" href="#home7">
+                                    <a class="nav-link" data-toggle="tab" href="#home6">
                                         <i class='bx bx-home-alt-2'></i>
                                         <span>Getting There</span>
                                     </a>
@@ -154,9 +158,9 @@
                                 <!-- home1 -->
                                 <div class="tab-pane active" id="home1" role="tabpanel">                           
                                             <div class="tour__content__block tour__content__block--consider avoid-break-p">
-                    <h2>Tour AddDetails</h2>
+                    <h2>Tour Features</h2>
                     <div class="row">
-                        @foreach (var day in Model.AddDetails)
+                        @foreach (var detail in Model.AddDetails)
                         {
                             <div class="col col-12 col-t-6 item">
                                 <div class="svg-box">
@@ -789,6 +793,193 @@
 
 
             </div>           
+
+
+
+            <div class="tab-pane" id="home5" role="tabpanel">
+
+
+                <div class="tour__content__block tour__content__block--rates">
+                    <h2>Important to Know</h2>
+
+                    <ul class="list list--icon list--icon-arrow">
+                        <li>
+                            AddDetails are <b>per person</b> and <b>exclude the international flight</b> from/to your home country.
+                        </li>
+                        <li>
+                            This tour <b>is not available to groups larger than 5 people</b>.
+                        </li>
+                        <li>
+                            This tour accepts children who are <b>3 years and older</b>. Children <b><nobr>under 6</nobr></b> receive a discount.
+                        </li>
+                    </ul>
+                </div>
+
+
+                <div class="tour__content__block tour__content__block--rates">
+
+                    <div class="tabs tabs--countriesparks not-sticky rates-mob-tab hide-430">
+                        <a href="" role="tab" class="active">AddDetails Per Person</a>
+                        <a href="" role="tab">Inclusions</a>
+                    </div>
+
+                    <div class="tab1">
+                        <h2 class="show-430">AddDetails Per Person</h2>
+
+                        <div class="accordion  container__unpad   show hide-t hide-p  rates-table-block-m " data-accordion="rates">
+
+                            <div class="accordion__item rates-table-block__day  ">
+                                <b class="accordion__key">Jan 1, 2024 - Dec 31, 2024</b>
+                                <div class="accordion__value">
+                                    <em class="accordion__col-head">Per person</em>
+
+                                    <div class="accordion__subrow">
+                                        <div class="accordion__col">
+                                            Single
+                                            <span class="txt--xgrey txt--small"> (1 room)</span>
+                                        </div>
+                                        <div class="accordion__col accordion__col--rate">$825</div>
+                                    </div>
+                                    <div class="accordion__subrow">
+                                        <div class="accordion__col">
+                                            2+ people
+                                            <span class="txt--xgrey txt--small"> (Sharing rooms)</span>
+                                        </div>
+                                        <div class="accordion__col accordion__col--rate">$770</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion__item rates-table-block__day  ">
+                                <b class="accordion__key">Jan 1, 2025 - Dec 31, 2025</b>
+                                <div class="accordion__value">
+                                    <em class="accordion__col-head">Per person</em>
+
+                                    <div class="accordion__subrow">
+                                        <div class="accordion__col">
+                                            Single
+                                            <span class="txt--xgrey txt--small"> (1 room)</span>
+                                        </div>
+                                        <div class="accordion__col accordion__col--rate">$825</div>
+                                    </div>
+                                    <div class="accordion__subrow">
+                                        <div class="accordion__col">
+                                            2+ people
+                                            <span class="txt--xgrey txt--small"> (Sharing rooms)</span>
+                                        </div>
+                                        <div class="accordion__col accordion__col--rate">$770</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="rates-table-block rates-table-block-t   hide show-t show-p  ">
+
+                            <table class="table table--sec">
+
+                                <thead>
+
+                                    <tr class="cells-3  txt--small  ">
+
+                                        <th>
+                                            <div class="left">Start dates</div>
+                                        </th>
+
+
+                                        <th>
+                                            Single <span>1 room</span>
+                                        </th>
+
+
+                                        <th>
+                                            2+ people <span>Sharing rooms</span>
+                                        </th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+
+
+                                    <tr class="cells-3  ">
+
+                                        <th>
+                                            Jan 1, 2024 - Dec 31, 2024
+                                        </th>
+
+
+                                        <td data-persons="1">
+                                            $825
+                                        </td>
+
+
+                                        <td data-persons="plus">
+                                            $770
+                                        </td>
+
+                                    </tr>
+
+
+
+                                    <tr class="cells-3  ">
+
+                                        <th>
+                                            Jan 1, 2025 - Dec 31, 2025
+                                        </th>
+
+
+                                        <td data-persons="1">
+                                            $825
+                                        </td>
+
+
+                                        <td data-persons="plus">
+                                            $770
+                                        </td>
+
+                                    </tr>
+
+
+
+
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                    <div class="tab2 hide-430 hide">
+                        <div class="tour__content__block tour__content__block--inclusions">
+                            <h2 class="with-icon"><span><i class="sbi sbi--plus"></i> Included</span></h2>
+
+                            <ul class="list list--icon">
+                                <li>Park fees <span class="txt--xsmall txt--xgrey">(For non-residents)</span></li>
+                                <li>All activities <span class="txt--xsmall txt--xgrey">(Unless labeled as optional)</span></li>
+                                <li>All accommodation <span class="txt--xsmall txt--xgrey">(Unless listed as upgrade)</span></li>
+                                <li>A professional driver/guide</li>
+                                <li>All transportation <span class="txt--xsmall txt--xgrey">(Unless labeled as optional)</span></li>
+                                <li>All Taxes/VAT</li>
+                                <li>Roundtrip airport transfer</li>
+                                <li>Meals <span class="txt--xsmall txt--xgrey">(As specified in the day-by-day section)</span></li>
+                                <li>Drinks <span class="txt--xsmall txt--xgrey">(As specified in the day-by-day section)</span></li>
+                            </ul>
+                        </div>
+
+                        <div class="tour__content__block tour__content__block--inclusions">
+                            <h2 class="with-icon"><span><i class="sbi sbi--minus"></i> Excluded</span></h2>
+
+                            <ul class="list list--icon">
+                                <li>International flights <span class="txt--xsmall txt--xgrey">(From/to home)</span></li>
+                                <li>Additional accommodation before and at the end of the tour</li>
+                                <li>Tips <span class="txt--xsmall txt--xgrey">(Tipping guideline US$10.00 pp per day)</span></li>
+                                <li>Personal items <span class="txt--xsmall txt--xgrey">(Souvenirs, travel insurance, visa fees, etc.)</span></li>
+                                <li>Government imposed increase of taxes and/or park fees</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
 
             <div class="tab-pane" id="home6" role="tabpanel">
 

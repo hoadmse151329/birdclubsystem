@@ -16,5 +16,6 @@ namespace BAL.ViewModels
         public string? Accommodation { get; set; }
         public string? MealsAndDrinks { get; set; }
         public string? PictureId { get; set; }
+        public List<FieldtripMediaViewModel> Media { get; set; }
     }
 }

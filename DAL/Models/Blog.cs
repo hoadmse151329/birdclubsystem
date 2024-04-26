@@ -31,7 +31,7 @@ namespace DAL.Models
         public string Status { get; set; } = null!;
 
         [ForeignKey(nameof(UserId))]
-        [InverseProperty("Blogs")]
-        public virtual User User { get; set; } = null!;
+        [InverseProperty(nameof(User.Blogs))]
+        public virtual User UserDetail { get; set; } = null!;
     }
 }

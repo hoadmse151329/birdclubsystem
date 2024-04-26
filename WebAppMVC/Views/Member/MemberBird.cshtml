@@ -48,20 +48,20 @@
                             <span class="title">Account</span>
                         </a>
                     </li>
-                    <li class="active">
+                    <li>
                         <a href="@Url.Action("MemberHistoryEvent", "Member")">
                             <span><i class="bx bx-history"></i></span>
                             <span class="title">Registered Event</span>
                         </a>
                     </li>
-                    <li>
+                    <li class="active">
                         <a href="@Url.Action("MemberBird", "Member")">
                             <span><i class="bx bx-history"></i></span>
                             <span class="title">Bird</span>
                         </a>
                     </li>
                     <li>
-                        <a href="@Url.Action("MemberPayment", "Member")">
+                        <a href="@Url.Action("MemberPayment", "Member", new { id = Model.UserId})">
                             <span><i class="bx bx-history"></i></span>
                             <span class="title">Payment</span>
                         </a>
