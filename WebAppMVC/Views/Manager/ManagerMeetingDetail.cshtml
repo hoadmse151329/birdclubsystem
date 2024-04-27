@@ -24,14 +24,14 @@
     <!-- sidebar -->
     <div class="sidebar">
         <div class="container">
-            <div class="navigation">
+            <div class="navigation">  
                 <ul class="slide-menu">
                     <div class="logo">
                         <a href="@Url.Action("ManagerIndex", "Manager")">
                             <img class="logo" src="~/images/Red_whiskered_bulbul_bird_logo_eps_10_generated 1.png" alt="logo">
                         </a>
                     </div>
-                    <li class="active" data-toggle="tooltip" data-placement="right" title="Overview">
+                    <li class="active" data-toggle="tooltip"data-placement="right" title="Overview">
                         <a href="@Url.Action("ManagerIndex", "Manager")">
                             <span><i class='bx bx-tachometer'></i></span>
                             <span class="title">Overview</span>
@@ -45,44 +45,50 @@
                         </a>
                         <ul class="collapse sub-menu" id="collapseOne">
                             <li data-toggle="tooltip"data-placement="right" title="Manage Meeting">
-                                <a href="@Url.Action("Meeting", "Manager")" li class="dropdown-item">
+                                <a href="@Url.Action("ManagerMeeting", "Manager")" li class="dropdown-item">
                                     <i class='bx bx-home-alt-2'></i>
                                     <span class="title">Meeting</span>
-                                </a>
+                                </a> 
                             </li>
-                            <li data-toggle="tooltip" data-placement="right" title="Manage Fieldtrip">
+                            <li data-toggle="tooltip"data-placement="right" title="Manage Fieldtrip">
                                 <a href="@Url.Action("ManagerFieldtrip", "Manager")" li class="dropdown-item">
                                     <i class='bx bx-calendar-edit'></i>
                                     <span class="title">Fieldtrip</span>
                                 </a>
-                            </li>
-                            <li data-toggle="tooltip" data-placement="right" title="Manage Bird Contest">
+                            </li> 
+                            <li data-toggle="tooltip"data-placement="right" title="Manage Bird Contest">
                                 <a href="@Url.Action("ManagerContest", "Manager")" li class="dropdown-item">
-                                    <i class='bx bx-cloud-rain'></i>
+                                    <i class='bx bx-trophy'></i>
                                     <span class="title">Bird Contest</span>
                                 </a>
                             </li>
                             <li data-toggle="tooltip" data-placement="right" title="Manage Member Status">
                                 <a href="@Url.Action("ManagerMemberStatus", "Manager")" li class="dropdown-item">
-                                    <i class='bx bx-cloud-rain'></i>
+                                    <i class='bx bx-message-square-check'></i>
                                     <span class="title">Member Status</span>
+                                </a>
+                            </li>
+                            <li data-toggle="tooltip" data-placement="right" title="Manage Member Status">
+                                <a href="@Url.Action("ManagerBlog", "Manager")" li class="dropdown-item">
+                                    <i class='bx bx-conversation'></i>
+                                    <span class="title">Blog</span>
+                                </a>
+                            </li>
+                            <li data-toggle="tooltip" data-placement="right" title="Manage Member Status">
+                                <a href="@Url.Action("ManagerNews", "Manager")" li class="dropdown-item">
+                                    <i class='bx bx-message-square'></i>
+                                    <span class="title">News</span>
                                 </a>
                             </li>
                         </ul>
                     </li>
-                    <li data-toggle="tooltip" data-placement="right" title="Manage Feedback">
+                    <li data-toggle="tooltip"data-placement="right" title="Manage Feedback">
                         <a href="@Url.Action("ManagerFeedback", "Manager")">
                             <span><i class="bx bx-detail"></i></span>
                             <span class="title">Feedback</span>
                         </a>
                     </li>
-                    <li data-toggle="tooltip"data-placement="right" title="Manage List Of Events">
-                        <a href="@Url.Action("ManagerListOfEvents", "Manager")">
-                            <span><i class="bx bx-detail"></i></span>
-                            <span class="title">List Of Events</span>
-                        </a>
-                    </li>
-                    <li data-toggle="tooltip" data-placement="right" title="Manager Profile">
+                    <li data-toggle="tooltip"data-placement="right" title="Manager Profile">
                         <a href="@Url.Action("ManagerProfile", "Manager")">
                             <span><i class='bx bx-user'></i></span>
                             <span class="title">Manager Profile</span>

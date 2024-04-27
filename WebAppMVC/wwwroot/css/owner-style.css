@@ -2622,11 +2622,6 @@ html body {
     background: inherit;
 }
 
-.card .card-child {
-    border-radius: 20px;
-    height: 400px;
-    box-shadow: 0px 5px 5px 0px rgba(100, 41, 174, 0.05);
-}
 
 .card-child .add-room {
     position: relative;
@@ -2721,10 +2716,11 @@ html body {
     align-items: baseline;
     margin-bottom: 5px;
 }
-
-    .room-title ul li:nth-child(2) {
-        display: block;
-    }
+.textarea {
+    resize: none;
+    width: auto;
+    height: 150px;
+}
 
     .room-title ul li:last-child {
         margin-top: 15px;
@@ -2736,14 +2732,6 @@ html body {
         width: 116px;
     }
 
-    .room-title ul li:nth-child(2) span {
-        display: -webkit-box;
-        max-width: 100%;
-        -webkit-line-clamp: 8;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
 
     .room-title ul li:last-child span {
         position: relative;

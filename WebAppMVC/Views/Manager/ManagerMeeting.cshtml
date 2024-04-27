@@ -48,7 +48,7 @@
                         </a>
                         <ul class="collapse sub-menu" id="collapseOne">
                             <li data-toggle="tooltip"data-placement="right" title="Manage Meeting">
-                                <a href="@Url.Action("Meeting", "Manager")" li class="dropdown-item">
+                                <a href="@Url.Action("ManagerMeeting", "Manager")" li class="dropdown-item">
                                     <i class='bx bx-home-alt-2'></i>
                                     <span class="title">Meeting</span>
                                 </a> 
@@ -61,14 +61,26 @@
                             </li> 
                             <li data-toggle="tooltip"data-placement="right" title="Manage Bird Contest">
                                 <a href="@Url.Action("ManagerContest", "Manager")" li class="dropdown-item">
-                                    <i class='bx bx-cloud-rain'></i>
+                                    <i class='bx bx-trophy'></i>
                                     <span class="title">Bird Contest</span>
                                 </a>
                             </li>
                             <li data-toggle="tooltip" data-placement="right" title="Manage Member Status">
                                 <a href="@Url.Action("ManagerMemberStatus", "Manager")" li class="dropdown-item">
-                                    <i class='bx bx-cloud-rain'></i>
+                                    <i class='bx bx-message-square-check'></i>
                                     <span class="title">Member Status</span>
+                                </a>
+                            </li>
+                            <li data-toggle="tooltip" data-placement="right" title="Manage Member Status">
+                                <a href="@Url.Action("ManagerBlog", "Manager")" li class="dropdown-item">
+                                    <i class='bx bx-conversation'></i>
+                                    <span class="title">Blog</span>
+                                </a>
+                            </li>
+                            <li data-toggle="tooltip" data-placement="right" title="Manage Member Status">
+                                <a href="@Url.Action("ManagerNews", "Manager")" li class="dropdown-item">
+                                    <i class='bx bx-message-square'></i>
+                                    <span class="title">News</span>
                                 </a>
                             </li>
                         </ul>
