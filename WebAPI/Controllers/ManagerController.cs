@@ -233,6 +233,10 @@ namespace WebAPI.Controllers
                 {
                     member.ImagePath = result.ImagePath;
                 }
+                if(member.UserId == 0)
+                {
+                    member.UserId = result.UserId;
+                }
                 _memberService.Update(member);
                 result = await _memberService.GetById(member.MemberId);
                 return Ok(new

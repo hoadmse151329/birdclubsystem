@@ -76,12 +76,6 @@
                             <span class="title">Feedback</span>
                         </a>
                     </li>
-                    <li data-toggle="tooltip"data-placement="right" title="Manage List Of Events">
-                        <a href="@Url.Action("ManagerListOfEvents", "Manager")">
-                            <span><i class="bx bx-detail"></i></span>
-                            <span class="title">List Of Events</span>
-                        </a>
-                    </li>
                     <li data-toggle="tooltip" data-placement="right" title="Manager Profile">
                         <a href="@Url.Action("ManagerProfile", "Manager")">
                             <span><i class='bx bx-user'></i></span>
@@ -390,10 +384,19 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
+                                <label asp-for="@details.Status" class="col-sm-4 col-form-label">Status:</label>
+                                    <div class="col-sm-8">
+                                    <input asp-for="@details.Status" id="Status" type="text" name="Status"
+                                            value="@details.Status" class="form-control" required>
+                                    <span asp-validation-for="@details.Status" id="error_message"
+                                            class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
                                     <label asp-for="@details.Description" class="col-sm-4 col-form-label">Description</label>
                                     <div class="col-sm-8">
-                                        <input asp-for="@details.Description" id="Description" type="text" name="Description"
-                                               value="@details.Description" class="form-control" required>
+                                        <textarea asp-for="@details.Description" id="Description" type="text" name="Description"
+                                                  value="@details.Description" class="form-control" required></textarea>
                                         <span asp-validation-for="@details.Description" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                     </div>
@@ -401,19 +404,10 @@
                                 <div class="form-group row">
                                     <label asp-for="@details.Note" class="col-sm-4 col-form-label">Note</label>
                                     <div class="col-sm-8">
-                                        <input asp-for="@details.Note" id="Note" type="text" name="Note"
-                                               value="@details.Note" class="form-control" required>
+                                        <textarea asp-for="@details.Note" id="Note" type="text" name="Note"
+                                                  value="@details.Note" class="form-control" required></textarea>
                                         <span asp-validation-for="@details.Note" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                <label asp-for="@details.Status" class="col-sm-4 col-form-label">Status:</label>
-                                    <div class="col-sm-8">
-                                    <input asp-for="@details.Status" id="Status" type="text" name="Status"
-                                            value="@details.Status" class="form-control" required>
-                                    <span asp-validation-for="@details.Status" id="error_message"
-                                            class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                     </div>
                                 </div>
                                 <input asp-for="@details.NumberOfParticipants" id="NumberOfParticipants" type="number" name="NumberOfParticipants"

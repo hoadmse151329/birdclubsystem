@@ -8,6 +8,11 @@ namespace DAL.Models
 {
     public partial class FieldTripParticipant
     {
+        public FieldTripParticipant()
+        {
+            MemberDetail = new Member();
+            Trip = new FieldTrip();
+        }
         [Key]
         [Column("tripId")]
         public int TripId { get; set; }
@@ -23,8 +28,8 @@ namespace DAL.Models
         public string CheckInStatus { get; set; } = null!;
 
         [ForeignKey(nameof(MemberId))]
-        [InverseProperty("FieldTripParticipants")]
-        public virtual Member Member { get; set; } = null!;
+        [InverseProperty(nameof(FieldTrip.FieldTripParticipants))]
+        public virtual Member MemberDetail { get; set; } = null!;
         [ForeignKey(nameof(TripId))]
         [InverseProperty(nameof(FieldTrip.FieldTripParticipants))]
         public virtual FieldTrip Trip { get; set; } = null!;
