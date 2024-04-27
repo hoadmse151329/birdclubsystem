@@ -33,5 +33,14 @@ namespace DAL.Repositories.Implements
                 .Include(f => f.FieldtripPictures)
                 .SingleOrDefault(trip => trip.TripId == id);
         }
+        public async Task<bool> GetBoolFieldTripId(int id)
+        {
+            var trip = _context.FieldTrips.SingleOrDefault(f => f.TripId == id);
+            if (trip != null)
+            {
+                return true;
+            }
+            else return false;
+        }
     }
 }

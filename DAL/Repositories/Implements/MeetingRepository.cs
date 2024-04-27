@@ -122,9 +122,9 @@ namespace DAL.Repositories.Implements
             return meetings.ToList();
         }
 
-        public async Task<IEnumerable<Meeting>> GetMeetings()
+        public IEnumerable<Meeting> GetOpenMeetings()
         {
-            return _context.Meetings.AsNoTracking().ToList();
+            return _context.Meetings.AsNoTracking().Where(meet => meet.Status == "Open").ToList();
         }
 
         public async Task<Meeting?> GetMeetingById(int id)
@@ -139,7 +139,7 @@ namespace DAL.Repositories.Implements
             {
                 return true;
             }
-            return false;
+            else return false;
         }
     }
 }

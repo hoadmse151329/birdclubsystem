@@ -34,12 +34,12 @@ namespace WebAppMVC.Controllers
             var contentType = new MediaTypeWithQualityHeaderValue("application/json");
             _httpClient.DefaultRequestHeaders.Accept.Add(contentType);
             _httpClient.BaseAddress = new Uri(config.GetSection("DefaultApiUrl:ConnectionString").Value);
-            HomeAPI_URL = "/api/";
+            HomeAPI_URL = config.GetSection("DefaultApiUrl:ApiConnectionString").Value;
         }
         [HttpGet]
         public async Task<IActionResult> Index()
 		{
-            string MeetingAPI_URL = HomeAPI_URL + "Meeting/All";
+            string MeetingAPI_URL = HomeAPI_URL + "Meeting/AllOpen";
             string FieldTripAPI_URL_All = HomeAPI_URL + "FieldTrip/All";
             string ContestAPI_URL_All = HomeAPI_URL + "Contest/All";
             dynamic testmodel = new ExpandoObject();

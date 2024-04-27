@@ -141,5 +141,12 @@ namespace BAL.Services.Implements
             _unitOfWork.FieldTripRepository.Update(trip);
             _unitOfWork.Save();
         }
+
+        public async Task<bool> GetBoolFieldTripId(int id)
+        {
+            var trip = await _unitOfWork.FieldTripRepository.GetBoolFieldTripId(id);
+            if (!trip) return false;
+            return true;
+        }
     }
 }
