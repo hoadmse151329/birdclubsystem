@@ -34,7 +34,7 @@ namespace WebAPI.Controllers
             _config = config;
         }
 
-        [HttpPost("Profile")]
+        /*[HttpPost("Profile")]
         [Authorize(Roles = "Staff")]
         [ProducesResponseType(typeof(MemberViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -76,7 +76,7 @@ namespace WebAPI.Controllers
                     ErrorMessage = ex.Message
                 });
             }
-        }
+        }*/
 
         [HttpPost("Profile")]
         [Authorize(Roles = "Staff")]
