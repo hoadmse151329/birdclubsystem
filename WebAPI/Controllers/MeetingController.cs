@@ -238,7 +238,7 @@ namespace WebAPI.Controllers
         {
             try
             {
-                meet.Status = "Preparing";
+                meet.Status = "OnHold";
                 _meetingService.Create(meet);
 
                 return Ok(new

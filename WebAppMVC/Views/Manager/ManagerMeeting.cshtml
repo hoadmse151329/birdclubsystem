@@ -48,7 +48,7 @@
                         </a>
                         <ul class="collapse sub-menu" id="collapseOne">
                             <li data-toggle="tooltip"data-placement="right" title="Manage Meeting">
-                                <a href="@Url.Action("Meeting", "Manager")" li class="dropdown-item">
+                                <a href="@Url.Action("ManagerMeeting", "Manager")" li class="dropdown-item">
                                     <i class='bx bx-home-alt-2'></i>
                                     <span class="title">Meeting</span>
                                 </a> 
@@ -61,14 +61,26 @@
                             </li> 
                             <li data-toggle="tooltip"data-placement="right" title="Manage Bird Contest">
                                 <a href="@Url.Action("ManagerContest", "Manager")" li class="dropdown-item">
-                                    <i class='bx bx-cloud-rain'></i>
+                                    <i class='bx bx-trophy'></i>
                                     <span class="title">Bird Contest</span>
                                 </a>
                             </li>
                             <li data-toggle="tooltip" data-placement="right" title="Manage Member Status">
                                 <a href="@Url.Action("ManagerMemberStatus", "Manager")" li class="dropdown-item">
-                                    <i class='bx bx-cloud-rain'></i>
+                                    <i class='bx bx-message-square-check'></i>
                                     <span class="title">Member Status</span>
+                                </a>
+                            </li>
+                            <li data-toggle="tooltip" data-placement="right" title="Manage Member Status">
+                                <a href="@Url.Action("ManagerBlog", "Manager")" li class="dropdown-item">
+                                    <i class='bx bx-conversation'></i>
+                                    <span class="title">Blog</span>
+                                </a>
+                            </li>
+                            <li data-toggle="tooltip" data-placement="right" title="Manage Member Status">
+                                <a href="@Url.Action("ManagerNews", "Manager")" li class="dropdown-item">
+                                    <i class='bx bx-message-square'></i>
+                                    <span class="title">News</span>
                                 </a>
                             </li>
                         </ul>
@@ -201,17 +213,30 @@
                                                         <span>Meeting</span>
                                                         <div class="status">
                                                             @{
-                                                                if(data.Status == "Open")
+                                                                switch (data.Status)
                                                                 {
-                                                                    <span class="stt1">Status:<h6>@data.Status</h6></span>
+                                                                    case "Ongoing":
+                                                                    case "CheckingIn":
+                                                                    case "OpenRegistration":
+                                                                        {
+                                                                            <span class="stt1" style="float: left;">Status:<h6>@data.Status</h6></span>
+                                                                            break;
+                                                                        }
+                                                                    case "OnHold":
+                                                                    case "ClosedRegistration":
+                                                                        {
+                                                                            <span class="stt3" style="float: left;">Status:<h6>@data.Status</h6></span>
+                                                                            break;
+                                                                        }
+                                                                    case "Ended":
+                                                                    case "Postponed":
+                                                                    case "Cancelled":
+                                                                        {
+                                                                            <span class="stt2" style="float: left;">Status:<h6>@data.Status</h6></span>
+                                                                            break;
+                                                                        }
                                                                 }
                                                             }
-                                                            @* <!-- dùng lệnh if -->
-                                                            <span class="stt1">Status:<h6>Processing</h6></span>
-                                                            <span class="stt1">Status:<h6>@data.Status</h6></span>
-                                                            <!-- <span class="stt2">Trạng thái:<h6>Done</h6></span>
-                                                            <span class="stt3">Trạng thái:<h6>Cancle</h6></span>
-                                                            <span class="stt3">Trạng thái:<h6>In debt</h6></span>--> *@
                                                         </div>
                                                     </div>
                                                     <div class="card-body">

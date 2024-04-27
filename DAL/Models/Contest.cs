@@ -11,7 +11,7 @@ namespace DAL.Models
     {
         public Contest()
         {
-            ContestMedia = new HashSet<ContestMedia>();
+            ContestPictures = new HashSet<ContestMedia>();
             ContestParticipants = new HashSet<ContestParticipant>();
         }
 
@@ -59,8 +59,8 @@ namespace DAL.Models
         [Column("numberOfParticipantsLimit")]
         public int? NumberOfParticipantsLimit { get; set; }
 
-        [InverseProperty("Contest")]
-        public virtual ICollection<ContestMedia> ContestMedia { get; set; }
+        [InverseProperty(nameof(ContestMedia.ContestDetails))]
+        public virtual ICollection<ContestMedia> ContestPictures { get; set; }
         [InverseProperty(nameof(ContestParticipant.Contest))]
         public virtual ICollection<ContestParticipant> ContestParticipants { get; set; }
     }

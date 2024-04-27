@@ -14,6 +14,5 @@ namespace BAL.ViewModels
         public string? GettingThereFlight { get; set; }
         public string? GettingThereTransportation { get; set; }
         public string? GettingThereAccommodation { get; set; }
-        public string? GettingThereText { get; set; }
     }
 }

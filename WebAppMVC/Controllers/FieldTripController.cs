@@ -180,14 +180,15 @@ namespace WebAppMVC.Controllers
                     "Error while processing your request! (Getting Fieldtrip Post!).\n Fieldtrip Not Found!";
                 return RedirectToAction("Index");
             }
+
             fieldtripDetail.FieldTrip = fieldtripPostResponse.Data;
-            fieldtripDetail.TourFeatures = fieldtripPostResponse.Data.AddDetails.Where(f => f.Type == "tour_features").ToList();
-            fieldtripDetail.ActivitiesAndTransportation = fieldtripPostResponse.Data.AddDetails.Where(f => f.Type == "activities_and_transportation").ToList();
-            fieldtripDetail.ImportantToKnow = fieldtripPostResponse.Data.AddDetails.Where(f => f.Type == "important_to_know").ToList();
-            fieldtripDetail.DayByDays = fieldtripPostResponse.Data.DaybyDays;
-            fieldtripDetail.Inclusions = fieldtripPostResponse.Data.Inclusions;
-            fieldtripDetail.GettingThere = fieldtripPostResponse.Data.GettingTheres;
-            fieldtripDetail.Pictures = fieldtripPostResponse.Data.Media;
+            fieldtripDetail.TourFeatures = fieldtripPostResponse.Data.FieldtripAdditionalDetails.Where(f => f.Type == "tour_features").ToList();
+            fieldtripDetail.ActivitiesAndTransportation = fieldtripPostResponse.Data.FieldtripAdditionalDetails.Where(f => f.Type == "activities_and_transportation").ToList();
+            fieldtripDetail.ImportantToKnow = fieldtripPostResponse.Data.FieldtripAdditionalDetails.Where(f => f.Type == "important_to_know").ToList();
+            fieldtripDetail.DayByDays = fieldtripPostResponse.Data.FieldtripDaybyDays;
+            fieldtripDetail.Inclusions = fieldtripPostResponse.Data.FieldtripInclusions;
+            fieldtripDetail.GettingThere = fieldtripPostResponse.Data.FieldtripGettingTheres;
+            fieldtripDetail.Pictures = fieldtripPostResponse.Data.FieldtripPictures;
 
             if (!fieldtripPostResponse.Status)
             {

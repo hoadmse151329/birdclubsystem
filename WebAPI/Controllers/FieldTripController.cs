@@ -129,7 +129,7 @@ namespace WebAPI.Controllers
         {
             try
             {
-                trip.Status = "Preparing";
+                trip.Status = "OnHold";
                 _fieldTripService.Create(trip);
                 return Ok(new
                 {
@@ -306,8 +306,8 @@ namespace WebAPI.Controllers
                 });
             }
         }
-        [HttpDelete("RemoveParticipant/{id}")]
-        [Authorize(Roles = "Manager")]
+        [HttpPost("RemoveParticipant/{id}")]
+        [Authorize(Roles = "Member,Manager")]
         [ProducesResponseType(typeof(FieldTripParticipantViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
