@@ -20,24 +20,32 @@ namespace DAL.Repositories.Implements
 
         public async Task<bool> GetBoolMeetingParticipantById(int meetingId, string memberId)
         {
-            var mempart = _context.MeetingParticipants.FirstOrDefault(m => m.MeetingId == meetingId && m.MemberId == memberId);
+            var mempart = _context.MeetingParticipants.AsNoTracking().FirstOrDefault(m => m.MeetingId == meetingId && m.MemberId == memberId);
             if (mempart != null) return true;
             return false;
         }
 
         public async Task<int> GetCountMeetingParticipantsByMeetId(int meetingId)
         {
-            return _context.MeetingParticipants.Count(m => m.MeetingId == meetingId);
+            return _context.MeetingParticipants.AsNoTracking().Count(m => m.MeetingId == meetingId);
         }
 
         public async Task<int> GetCountMeetingParticipantsByMemberId(string memId)
         {
-            return _context.MeetingParticipants.Count(m => m.MemberId == memId);
+            return _context.MeetingParticipants.AsNoTracking().Count(m => m.MemberId == memId);
         }
 
         public async Task<MeetingParticipant> GetMeetingParticipantById(int meetingId, string memberId)
         {
             return _context.MeetingParticipants.AsNoTracking()
+                .Where(m => m.MeetingId == meetingId && m.MemberId == memberId)
+                .Include(m => m.MemberDetail)
+                .Include(m => m.MeetingDetail)
+                .FirstOrDefault();
+        }
+        public async Task<MeetingParticipant> GetMeetingParticipantByIdTracking(int meetingId, string memberId)
+        {
+            return _context.MeetingParticipants
                 .Where(m => m.MeetingId == meetingId && m.MemberId == memberId)
                 .Include(m => m.MemberDetail)
                 .Include(m => m.MeetingDetail)
@@ -60,17 +68,17 @@ namespace DAL.Repositories.Implements
 
         public async Task<IEnumerable<MeetingParticipant>> GetMeetingParticipantsByMemberId(string memId)
         {
-            return _context.MeetingParticipants.Where(m => m.MemberId == memId).ToList();
+            return _context.MeetingParticipants.AsNoTracking().Where(m => m.MemberId == memId).ToList();
         }
 
         public async Task<IEnumerable<MeetingParticipant>> GetMeetingParticipantsByMemberIdInclude(string memId)
         {
-            return _context.MeetingParticipants.Where(m => m.MemberId == memId).Include(m => m.MeetingDetail).ToList();
+            return _context.MeetingParticipants.AsNoTracking().Where(m => m.MemberId == memId).Include(m => m.MeetingDetail).ToList();
         }
 
         public async Task<int> GetParticipationNoMeetingParticipantById(int meetingId, string memberId)
         {
-            var mempart = _context.MeetingParticipants.SingleOrDefault(m => m.MeetingId.Equals(meetingId) && m.MemberId.Equals(memberId));
+            var mempart = _context.MeetingParticipants.AsNoTracking().SingleOrDefault(m => m.MeetingId.Equals(meetingId) && m.MemberId.Equals(memberId));
             if (mempart != null) return Int32.Parse(mempart.ParticipantNo);
             return 0;
         }

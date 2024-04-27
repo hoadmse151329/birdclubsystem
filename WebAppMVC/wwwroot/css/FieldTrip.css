@@ -13371,7 +13371,6 @@ h2.with-icon, h3.with-icon {
     }
 
 h2 i, h3 i {
-    position: absolute;
     top: -0.0625rem;
     left: 0;
     margin-right: .3125rem

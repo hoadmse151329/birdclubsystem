@@ -19,11 +19,19 @@ namespace DAL.Repositories.Implements
         }
         public async Task<IEnumerable<FieldTrip>> GetAllFieldTrips()
         {
-            return _context.FieldTrips.AsNoTracking().ToList();
+            return _context.FieldTrips.AsNoTracking()
+                .Include(f => f.FieldtripPictures.Where(fm => fm.Type.Equals("Spotlight")))
+                .ToList();
         }
         public async Task<FieldTrip?> GetFieldTripById(int id)
         {
-            return _context.FieldTrips.AsNoTracking().SingleOrDefault(trip => trip.TripId == id);
+            return _context.FieldTrips.AsNoTracking()
+                .Include(f => f.FieldtripDaybyDays.OrderBy(pic => pic.Day))
+                .Include(f => f.FieldtripInclusions)
+                .Include(f => f.FieldtripGettingTheres)
+                .Include(f => f.FieldtripAdditionalDetails)
+                .Include(f => f.FieldtripPictures)
+                .SingleOrDefault(trip => trip.TripId == id);
         }
         public async Task<bool> GetBoolFieldTripId(int id)
         {

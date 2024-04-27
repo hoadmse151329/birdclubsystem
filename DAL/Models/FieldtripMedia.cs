@@ -24,7 +24,7 @@ namespace DAL.Models
         public int? DayByDayId { get; set; }
 
         [ForeignKey(nameof(TripId))]
-        [InverseProperty(nameof(FieldTrip.FieldtripMedia))]
+        [InverseProperty(nameof(FieldTrip.FieldtripPictures))]
         public virtual FieldTrip? Trip { get; set; }
     }
 }

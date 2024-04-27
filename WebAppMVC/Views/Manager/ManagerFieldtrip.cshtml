@@ -56,7 +56,7 @@
                         </a>
                         <ul class="collapse sub-menu" id="collapseOne">
                             <li data-toggle="tooltip"data-placement="right" title="Manage Meeting">
-                                <a href="@Url.Action("Meeting", "Manager")" li class="dropdown-item">
+                                <a href="@Url.Action("ManagerMeeting", "Manager")" li class="dropdown-item">
                                     <i class='bx bx-home-alt-2'></i>
                                     <span class="title">Meeting</span>
                                 </a> 
@@ -69,14 +69,26 @@
                             </li> 
                             <li data-toggle="tooltip"data-placement="right" title="Manage Bird Contest">
                                 <a href="@Url.Action("ManagerContest", "Manager")" li class="dropdown-item">
-                                    <i class='bx bx-cloud-rain'></i>
+                                    <i class='bx bx-trophy'></i>
                                     <span class="title">Bird Contest</span>
                                 </a>
                             </li>
                             <li data-toggle="tooltip" data-placement="right" title="Manage Member Status">
                                 <a href="@Url.Action("ManagerMemberStatus", "Manager")" li class="dropdown-item">
-                                    <i class='bx bx-cloud-rain'></i>
+                                    <i class='bx bx-message-square-check'></i>
                                     <span class="title">Member Status</span>
+                                </a>
+                            </li>
+                            <li data-toggle="tooltip" data-placement="right" title="Manage Member Status">
+                                <a href="@Url.Action("ManagerBlog", "Manager")" li class="dropdown-item">
+                                    <i class='bx bx-conversation'></i>
+                                    <span class="title">Blog</span>
+                                </a>
+                            </li>
+                            <li data-toggle="tooltip" data-placement="right" title="Manage Member Status">
+                                <a href="@Url.Action("ManagerNews", "Manager")" li class="dropdown-item">
+                                    <i class='bx bx-message-square'></i>
+                                    <span class="title">News</span>
                                 </a>
                             </li>
                         </ul>
@@ -373,10 +385,10 @@
                                     <span asp-validation-for="@createFieldTripDayByDay.Description" id="error_message"
                                           class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
-                                    <label asp-for="@createFieldTripDayByDay.PictureId" class="col-md-3 col-form-label mt-3 text-md-right">Picture ID</label>
+                                    @* <label asp-for="@createFieldTripDayByDay.PictureId" class="col-md-3 col-form-label mt-3 text-md-right">Picture ID</label>
                                     <textarea asp-for="@createFieldTripDayByDay.PictureId" value="@createFieldTripDayByDay.PictureId" type="text" name="picturid" placeholder="Pictur ID..." class="form-control col-md-7 mt-3" rows="3" required></textarea>
                                     <span asp-validation-for="@createFieldTripDayByDay.PictureId" id="error_message"
-                                          class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                          class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span> *@
 
                                     <label asp-for="@createFieldTripDayByDay.Day" class="col-md-3 col-form-label mt-3 text-md-right">Day</label>
                                     <textarea asp-for="@createFieldTripDayByDay.Day" value="@createFieldTripDayByDay.Day" type="datetime-local" name="day" required class="form-control col-md-7 mt-3"></textarea>
