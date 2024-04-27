@@ -4,6 +4,24 @@
     ViewData["Title"] = "Manager Meeting Detail Page";
     BAL.ViewModels.MeetingViewModel details = Model.MeetingDetails;
     List<BAL.ViewModels.MeetingParticipantViewModel> parts = Model.MeetingParticipants;
+    List<SelectListItem> defaultMeetingStatus = new()
+    {
+        new SelectListItem {Text = "On Hold", Value = "OnHold"},
+        new SelectListItem {Text = "Postponed", Value = "Postponed"},
+        new SelectListItem {Text = "Cancelled", Value = "Cancelled"},
+        new SelectListItem {Text = "Open Registration", Value = "OpenRegistration"},
+        new SelectListItem {Text = "Closed Registration", Value = "ClosedRegistration"},
+        new SelectListItem {Text = "Checking In", Value = "CheckingIn"},
+        new SelectListItem {Text = "Ongoing", Value = "Ongoing"},
+        new SelectListItem {Text = "Ended", Value = "Ended"}
+    };
+    foreach(var item in defaultMeetingStatus)
+    {
+        if (details.Status.Equals(item.Value))
+        {
+            item.Selected = true;
+        }
+    }
 }
 <html lang="en">
 <head>
@@ -163,12 +181,31 @@
                                             <span>Status:</span>
                                         </div>
                                         <div class="col-sm-7">
-                                            <span class="destroy" style="float: left;">@details.Status</span>
-
-                                            <!-- Trống in ra dòng dưới -->
-                                            <!-- <span class="outcome" style="float: left;">Done</span> -->
-                                            <!-- Đã cọc in ra dòng dưới -->
-                                            <!-- <span class="approval" style="float: left;">Cancel</span> -->
+                                            @{
+                                                switch (details.Status)
+                                                {
+                                                    case "Ongoing":
+                                                    case "CheckingIn":
+                                                    case "OpenRegistration":
+                                                        {
+                                                            <span class="outcome" style="float: left;">@details.Status</span>
+                                                            break;
+                                                        }
+                                                    case "OnHold":
+                                                    case "ClosedRegistration":
+                                                        {
+                                                            <span class="approval" style="float: left;">@details.Status</span>
+                                                            break;
+                                                        }
+                                                    case "Ended":
+                                                    case "Postponed":
+                                                    case "Cancelled":
+                                                        {
+                                                            <span class="destroy" style="float: left;">@details.Status</span>
+                                                            break;
+                                                        }
+                                                }
+                                            }
                                         </div>
                                     </div>
                                 </div>
@@ -389,10 +426,10 @@
                                 <div class="form-group row">
                                 <label asp-for="@details.Status" class="col-sm-4 col-form-label">Status:</label>
                                     <div class="col-sm-8">
-                                    <input asp-for="@details.Status" id="Status" type="text" name="Status"
-                                            value="@details.Status" class="form-control" required>
+                                    <select class="form-control" asp-for="@details.Status" asp-items="@defaultMeetingStatus" class="custom-select" name="Status"></select>
                                     <span asp-validation-for="@details.Status" id="error_message"
                                             class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+
                                     </div>
                                 </div>
                             </div>

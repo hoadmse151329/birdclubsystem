@@ -129,7 +129,7 @@ namespace WebAPI.Controllers
         {
             try
             {
-                trip.Status = "Preparing";
+                trip.Status = "OnHold";
                 _fieldTripService.Create(trip);
                 return Ok(new
                 {
