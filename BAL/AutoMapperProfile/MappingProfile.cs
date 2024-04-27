@@ -35,6 +35,7 @@ namespace BAL.AutoMapperProfile
                 .ReverseMap()
                 .AfterMap((src, dest) =>
                 {
+                    dest.UserDetail = new();
                     dest.UserDetail.ImagePath = src.ImagePath;
                 })
                 ;
@@ -98,13 +99,12 @@ namespace BAL.AutoMapperProfile
             CreateMap<FieldTripParticipant, FieldTripParticipantViewModel>()
                 .AfterMap((src, dest) =>
                 {
-                    dest.MemberName = src.Member.FullName;
+                    dest.MemberName = src.MemberDetail.FullName;
                 })
                 .ReverseMap()
                 .AfterMap((src, dest) =>
                 {
-                    dest.Member = new();
-                    dest.Member.FullName = src.MemberName;
+                    dest.MemberDetail.FullName = src.MemberName;
                 })
                 ;
             CreateMap<Meeting, MeetingViewModel>()
