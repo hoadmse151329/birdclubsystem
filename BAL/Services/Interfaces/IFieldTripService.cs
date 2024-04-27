@@ -13,5 +13,6 @@ namespace BAL.Services.Interfaces
         Task<IEnumerable<FieldTripViewModel>> GetAll();
         void Create(FieldTripViewModel entity);
         void Update(FieldTripViewModel entity);
+        Task<bool> GetBoolFieldTripId(int id);
     }
 }

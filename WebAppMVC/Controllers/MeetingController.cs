@@ -67,7 +67,7 @@ namespace WebAppMVC.Controllers
             [FromQuery] string meetingName, 
             [FromQuery] string locationAddress)
 		{
-            if (string.IsNullOrEmpty(meetingName) && string.IsNullOrEmpty(locationAddress)) MeetingAPI_URL += "/All";
+            if (string.IsNullOrEmpty(meetingName) && string.IsNullOrEmpty(locationAddress)) MeetingAPI_URL += "/AllOpen";
             else MeetingAPI_URL += "/Search?";
 
             _logger.LogInformation(locationAddress);

@@ -6,13 +6,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Models
 {
+    [Table("FieldTripParticipants")]
     public partial class FieldTripParticipant
     {
-        public FieldTripParticipant()
+        /*public FieldTripParticipant()
         {
             MemberDetail = new Member();
             Trip = new FieldTrip();
-        }
+        }*/
         [Key]
         [Column("tripId")]
         public int TripId { get; set; }

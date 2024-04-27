@@ -980,7 +980,7 @@ html body {
     align-items: baseline;
     margin-bottom: 5px;
 }
-.textarea {
+.editprofile textarea {
     resize: none;
     width: auto;
     height: 150px;

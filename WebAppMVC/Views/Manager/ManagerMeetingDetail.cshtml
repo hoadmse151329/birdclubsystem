@@ -4,6 +4,24 @@
     ViewData["Title"] = "Manager Meeting Detail Page";
     BAL.ViewModels.MeetingViewModel details = Model.MeetingDetails;
     List<BAL.ViewModels.MeetingParticipantViewModel> parts = Model.MeetingParticipants;
+    List<SelectListItem> defaultMeetingStatus = new()
+    {
+        new SelectListItem {Text = "On Hold", Value = "OnHold"},
+        new SelectListItem {Text = "Postponed", Value = "Postponed"},
+        new SelectListItem {Text = "Cancelled", Value = "Cancelled"},
+        new SelectListItem {Text = "Open Registration", Value = "OpenRegistration"},
+        new SelectListItem {Text = "Closed Registration", Value = "ClosedRegistration"},
+        new SelectListItem {Text = "Checking In", Value = "CheckingIn"},
+        new SelectListItem {Text = "Ongoing", Value = "Ongoing"},
+        new SelectListItem {Text = "Ended", Value = "Ended"}
+    };
+    foreach(var item in defaultMeetingStatus)
+    {
+        if (details.Status.Equals(item.Value))
+        {
+            item.Selected = true;
+        }
+    }
 }
 <html lang="en">
 <head>
@@ -163,12 +181,31 @@
                                             <span>Status:</span>
                                         </div>
                                         <div class="col-sm-7">
-                                            <span class="destroy" style="float: left;">@details.Status</span>
-
-                                            <!-- Trống in ra dòng dưới -->
-                                            <!-- <span class="outcome" style="float: left;">Done</span> -->
-                                            <!-- Đã cọc in ra dòng dưới -->
-                                            <!-- <span class="approval" style="float: left;">Cancel</span> -->
+                                            @{
+                                                switch (details.Status)
+                                                {
+                                                    case "Ongoing":
+                                                    case "CheckingIn":
+                                                    case "OpenRegistration":
+                                                        {
+                                                            <span class="outcome" style="float: left;">@details.Status</span>
+                                                            break;
+                                                        }
+                                                    case "OnHold":
+                                                    case "ClosedRegistration":
+                                                        {
+                                                            <span class="approval" style="float: left;">@details.Status</span>
+                                                            break;
+                                                        }
+                                                    case "Ended":
+                                                    case "Postponed":
+                                                    case "Cancelled":
+                                                        {
+                                                            <span class="destroy" style="float: left;">@details.Status</span>
+                                                            break;
+                                                        }
+                                                }
+                                            }
                                         </div>
                                     </div>
                                 </div>
@@ -357,24 +394,6 @@
                                             class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                     </div>
                                 </div>
-                                <div class="form-group row">
-                                <label asp-for="@details.Host" class="col-sm-4 col-form-label">Host:</label>
-                                    <div class="col-sm-8">
-                                    <input asp-for="@details.Host" id="Host" type="text" name="Host"
-                                            value="@details.Host" class="form-control" required>
-                                    <span asp-validation-for="@details.Host" id="error_message"
-                                            class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                <label asp-for="@details.Incharge" class="col-sm-4 col-form-label">Incharge:</label>
-                                    <div class="col-sm-8">
-                                    <input asp-for="@details.Incharge" id="Incharge" type="text" name="Incharge"
-                                            value="@details.Incharge" class="form-control" required>
-                                    <span asp-validation-for="@details.Incharge" id="error_message"
-                                            class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                    </div>
-                                </div>
                             </div>
                             <div class="col-12 col-md-6">
                                 <div class="form-group row">
@@ -387,47 +406,63 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label asp-for="@details.Address" class="col-sm-4 col-form-label">Location</label>
+                                    <label asp-for="@details.Host" class="col-sm-4 col-form-label">Host:</label>
                                     <div class="col-sm-8">
-                                        <input asp-for="@details.Address" id="Address" type="text" name="Address"
-                                               value="@details.Address" class="form-control" required>
-                                        <span asp-validation-for="@details.Address" id="error_message"
+                                        <input asp-for="@details.Host" id="Host" type="text" name="Host"
+                                               value="@details.Host" class="form-control" required>
+                                        <span asp-validation-for="@details.Host" id="error_message"
+                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label asp-for="@details.Incharge" class="col-sm-4 col-form-label">Incharge:</label>
+                                    <div class="col-sm-8">
+                                        <input asp-for="@details.Incharge" id="Incharge" type="text" name="Incharge"
+                                               value="@details.Incharge" class="form-control" required>
+                                        <span asp-validation-for="@details.Incharge" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                 <label asp-for="@details.Status" class="col-sm-4 col-form-label">Status:</label>
                                     <div class="col-sm-8">
-                                    <input asp-for="@details.Status" id="Status" type="text" name="Status"
-                                            value="@details.Status" class="form-control" required>
+                                    <select class="form-control" asp-for="@details.Status" asp-items="@defaultMeetingStatus" class="custom-select" name="Status"></select>
                                     <span asp-validation-for="@details.Status" id="error_message"
                                             class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+
                                     </div>
                                 </div>
-                                <div class="form-group row">
-                                    <label asp-for="@details.Description" class="col-sm-4 col-form-label">Description</label>
-                                    <div class="col-sm-8">
-                                        <textarea asp-for="@details.Description" id="Description" type="text" name="Description"
-                                                  value="@details.Description" class="form-control" required></textarea>
-                                        <span asp-validation-for="@details.Description" id="error_message"
-                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label asp-for="@details.Note" class="col-sm-4 col-form-label">Note</label>
-                                    <div class="col-sm-8">
-                                        <textarea asp-for="@details.Note" id="Note" type="text" name="Note"
-                                                  value="@details.Note" class="form-control" required></textarea>
-                                        <span asp-validation-for="@details.Note" id="error_message"
-                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                    </div>
-                                </div>
-                                <input asp-for="@details.NumberOfParticipants" id="NumberOfParticipants" type="number" name="NumberOfParticipants"
-                                       value="@details.NumberOfParticipants" class="form-control" required hidden>
-                                <span asp-validation-for="@details.NumberOfParticipants" id="error_message"
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label asp-for="@details.Address" class="col-sm-2 col-form-label">Location</label>
+                            <div class="col-sm-10">
+                                <input asp-for="@details.Address" id="Address" type="text" name="Address"
+                                       value="@details.Address" class="form-control" required>
+                                <span asp-validation-for="@details.Address" id="error_message"
                                       class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                             </div>
                         </div>
+                        <div class="form-group row">
+                            <label asp-for="@details.Description" class="col-sm-2 col-form-label">Description</label>
+                            <div class="col-sm-10">
+                                <textarea asp-for="@details.Description" id="Description" type="text" name="Description"
+                                          value="@details.Description" class="form-control" required></textarea>
+                                <span asp-validation-for="@details.Description" id="error_message"
+                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label asp-for="@details.Note" class="col-sm-2 col-form-label">Note</label>
+                            <div class="col-sm-10">
+                                <textarea asp-for="@details.Note" id="Note" type="text" name="Note"
+                                          value="@details.Note" class="form-control" required></textarea>
+                                <span asp-validation-for="@details.Note" id="error_message"
+                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                            </div>
+                        </div>
+                        <input asp-for="@details.NumberOfParticipants" id="NumberOfParticipants" type="number" name="NumberOfParticipants"
+                               value="@details.NumberOfParticipants" required hidden>
                     </div>
                     <div class="modal-footer justify-content-center">
                         <button class="btn btn-success" type="submit" value="Update">Save</button>

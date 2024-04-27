@@ -104,6 +104,7 @@ namespace BAL.AutoMapperProfile
                 .ReverseMap()
                 .AfterMap((src, dest) =>
                 {
+                    dest.MemberDetail = new();
                     dest.MemberDetail.FullName = src.MemberName;
                 })
                 ;
