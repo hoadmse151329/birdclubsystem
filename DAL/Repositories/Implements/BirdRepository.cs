@@ -17,5 +17,15 @@ namespace DAL.Repositories.Implements
         {
             _context = context;
         }
+
+        public async Task<IEnumerable<Bird>> GetBirdsByMemberId(string memberId)
+        {
+            return _context.Birds.Where(m => m.MemberId == memberId).ToList();
+        }
+
+        public async Task<IEnumerable<Bird>> GetBirdsByMemberIdInclude(string memberId)
+        {
+            return _context.Birds.Where(m => m.MemberId == memberId).Include(m => m.Member).ToList();
+        }
     }
 }

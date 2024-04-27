@@ -26,8 +26,9 @@ namespace DAL.Repositories.Implements
         public async Task<FieldTrip?> GetFieldTripById(int id)
         {
             return _context.FieldTrips.AsNoTracking()
-                .Include(f => f.FieldtripDaybyDays)
+                .Include(f => f.FieldtripDaybyDays.OrderBy(pic => pic.Day))
                 .Include(f => f.FieldtripInclusions)
+                .Include(f => f.FieldtripGettingTheres)
                 .Include(f => f.FieldtripAdditionalDetails)
                 .Include(f => f.FieldtripPictures)
                 .SingleOrDefault(trip => trip.TripId == id);

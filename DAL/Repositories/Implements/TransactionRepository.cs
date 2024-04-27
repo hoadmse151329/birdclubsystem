@@ -23,12 +23,21 @@ namespace DAL.Repositories.Implements
         }
         public async Task<IEnumerable<Transaction?>> GetAllTransactionsByUserId(int id)
         {
-            return _context.Transactions.AsNoTracking().Where(t => t.UserId == id).ToList();
+            return _context.Transactions.AsNoTracking()
+                .Include(t => t.UserDetail)
+                .Where(t => t.UserId == id).ToList();
         }
 
 		public async Task<Transaction?> GetTransactionByVnPayId(string? vnPayid)
 		{
 			return _context.Transactions.AsNoTracking().SingleOrDefault(t => t.VnPayId == vnPayid);
 		}
+
+        public async Task<IEnumerable<Transaction?>> GetAllTransactionsByMemberId(string id)
+        {
+            return _context.Transactions.AsNoTracking()
+                .Include(t => t.UserDetail)
+                .Where(t => t.UserDetail.MemberId == id).ToList();
+        }
 	}
 }

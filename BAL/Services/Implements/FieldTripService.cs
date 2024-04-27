@@ -76,7 +76,7 @@ namespace BAL.Services.Implements
                 fieldTrip.District = locationSplit[2];
                 fieldTrip.City = locationSplit[3];
 
-                foreach(var picture in fieldTrip.FieldtripPictures)
+                foreach(var picture in fieldTrip.FieldtripPictures.ToList())
                 {
                     if(picture.Type == "Spotlight")
                     {

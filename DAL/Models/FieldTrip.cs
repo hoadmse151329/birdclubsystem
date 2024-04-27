@@ -14,7 +14,7 @@ namespace DAL.Models
             FieldTripParticipants = new HashSet<FieldTripParticipant>();
             FieldtripAdditionalDetails = new HashSet<FieldtripAdditionalDetail>();
             FieldtripDaybyDays = new HashSet<FieldtripDaybyDay>();
-            FieldtripGettingTheres = new HashSet<FieldtripGettingThere>();
+            FieldtripGettingTheres = new FieldtripGettingThere();
             FieldtripInclusions = new HashSet<FieldtripInclusion>();
             FieldtripPictures = new HashSet<FieldtripMedia>();
         }
@@ -62,7 +62,7 @@ namespace DAL.Models
         [InverseProperty(nameof(FieldtripDaybyDay.Trip))]
         public virtual ICollection<FieldtripDaybyDay> FieldtripDaybyDays { get; set; }
         [InverseProperty(nameof(FieldtripGettingThere.Trip))]
-        public virtual ICollection<FieldtripGettingThere> FieldtripGettingTheres { get; set; }
+        public virtual FieldtripGettingThere FieldtripGettingTheres { get; set; }
         [InverseProperty(nameof(FieldtripInclusion.Trip))]
         public virtual ICollection<FieldtripInclusion> FieldtripInclusions { get; set; }
         [InverseProperty(nameof(FieldtripMedia.Trip))]

@@ -122,8 +122,8 @@ namespace DAL.Models
                 entity.HasKey(e => e.PictureId)
                     .HasName("PK__ContestM__769A271AE03B7758");
 
-                entity.HasOne(d => d.Contest)
-                    .WithMany(p => p.ContestMedia)
+                entity.HasOne(d => d.ContestDetails)
+                    .WithMany(p => p.ContestPictures)
                     .HasForeignKey(d => d.ContestId)
                     .HasConstraintName("FK_Contest");
             });
@@ -215,8 +215,8 @@ namespace DAL.Models
             modelBuilder.Entity<FieldtripGettingThere>(entity =>
             {
                 entity.HasOne(d => d.Trip)
-                    .WithMany(p => p.FieldtripGettingTheres)
-                    .HasForeignKey(d => d.TripId)
+                    .WithOne(p => p.FieldtripGettingTheres)
+                    .HasForeignKey<FieldtripGettingThere>(d => d.TripId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_FieldtripGettingThere_FieldTrip");
             });

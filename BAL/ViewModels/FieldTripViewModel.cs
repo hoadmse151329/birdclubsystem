@@ -12,7 +12,7 @@ namespace BAL.ViewModels
         public FieldTripViewModel()
         {
 
-            FieldtripGettingTheres = new List<FieldtripGettingThereViewModel>();
+            FieldtripGettingTheres = new FieldtripGettingThereViewModel();
             FieldtripAdditionalDetails = new List<FieldTripAdditionalDetailViewModel>();
             FieldtripPictures = new List<FieldtripMediaViewModel>();
             FieldtripInclusions = new List<FieldtripInclusionViewModel>();
@@ -42,7 +42,7 @@ namespace BAL.ViewModels
         public FieldtripMediaViewModel? LocationMapImage { get; set; }
         public FieldtripMediaViewModel? SpotlightImage { get; set; }
 
-        public List<FieldtripGettingThereViewModel> FieldtripGettingTheres { get; set; }
+        public FieldtripGettingThereViewModel FieldtripGettingTheres { get; set; }
         public List<FieldTripAdditionalDetailViewModel> FieldtripAdditionalDetails { get; set; }
         public List<FieldtripMediaViewModel> FieldtripPictures { get; set; }
         public List<FieldtripInclusionViewModel> FieldtripInclusions { get; set; }

@@ -70,10 +70,13 @@ namespace WebAppMVC.Controllers
 			string? usrname = HttpContext.Session.GetString("USER_NAME");
 			if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
 
-			TempData["ROLE_NAME"] = role;
-			TempData["USER_NAME"] = usrname;
+            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
 
-			var listLocationResponse = await methcall.CallMethodReturnObject<GetLocationResponseByList>(
+            TempData["ROLE_NAME"] = role;
+            TempData["USER_NAME"] = usrname;
+            TempData["IMAGE_PATH"] = imagepath;
+
+            var listLocationResponse = await methcall.CallMethodReturnObject<GetLocationResponseByList>(
 				_httpClient: _httpClient,
 				options: options,
 				methodName: "GET",
@@ -128,8 +131,11 @@ namespace WebAppMVC.Controllers
             string? usrname = HttpContext.Session.GetString("USER_NAME");
             if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
 
+            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
+
             TempData["ROLE_NAME"] = role;
             TempData["USER_NAME"] = usrname;
+            TempData["IMAGE_PATH"] = imagepath;
 
             var meetPostResponse = await methcall.CallMethodReturnObject<GetMeetingPostResponse>(
                                 _httpClient: _httpClient,
@@ -182,8 +188,11 @@ namespace WebAppMVC.Controllers
             string? usrname = HttpContext.Session.GetString("USER_NAME");
             if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
 
+            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
+
             TempData["ROLE_NAME"] = role;
             TempData["USER_NAME"] = usrname;
+            TempData["IMAGE_PATH"] = imagepath;
 
             var meetPartStatusResponse = await methcall.CallMethodReturnObject<GetListMeetingParticipantStatusUpdate>(
                                 _httpClient: _httpClient,
@@ -231,8 +240,11 @@ namespace WebAppMVC.Controllers
             string? usrname = HttpContext.Session.GetString("USER_NAME");
             if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
 
+            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
+
             TempData["ROLE_NAME"] = role;
             TempData["USER_NAME"] = usrname;
+            TempData["IMAGE_PATH"] = imagepath;
 
             var meetPostResponse = await methcall.CallMethodReturnObject<GetMeetingPostResponse>(
                                 _httpClient: _httpClient,
@@ -278,8 +290,11 @@ namespace WebAppMVC.Controllers
             string? usrname = HttpContext.Session.GetString("USER_NAME");
             if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
 
+            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
+
             TempData["ROLE_NAME"] = role;
             TempData["USER_NAME"] = usrname;
+            TempData["IMAGE_PATH"] = imagepath;
 
             var meetPostResponse = await methcall.CallMethodReturnObject<GetMeetingPostResponse>(
                                 _httpClient: _httpClient,
@@ -331,8 +346,11 @@ namespace WebAppMVC.Controllers
             string? usrname = HttpContext.Session.GetString("USER_NAME");
             if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
 
+            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
+
             TempData["ROLE_NAME"] = role;
             TempData["USER_NAME"] = usrname;
+            TempData["IMAGE_PATH"] = imagepath;
 
             var listLocationResponse = await methcall.CallMethodReturnObject<GetLocationResponseByList>(
                 _httpClient: _httpClient,
@@ -389,8 +407,11 @@ namespace WebAppMVC.Controllers
             string? usrname = HttpContext.Session.GetString("USER_NAME");
             if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
 
+            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
+
             TempData["ROLE_NAME"] = role;
             TempData["USER_NAME"] = usrname;
+            TempData["IMAGE_PATH"] = imagepath;
 
             var fieldtripPostResponse = await methcall.CallMethodReturnObject<GetFieldTripPostResponse>(
                                 _httpClient: _httpClient,
@@ -445,8 +466,11 @@ namespace WebAppMVC.Controllers
             string? usrname = HttpContext.Session.GetString("USER_NAME");
             if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
 
+            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
+
             TempData["ROLE_NAME"] = role;
             TempData["USER_NAME"] = usrname;
+            TempData["IMAGE_PATH"] = imagepath;
 
             var fieldtripPostResponse = await methcall.CallMethodReturnObject<GetFieldTripPostResponse>(
                                 _httpClient: _httpClient,
@@ -491,8 +515,11 @@ namespace WebAppMVC.Controllers
             string? usrname = HttpContext.Session.GetString("USER_NAME");
             if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
 
+            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
+
             TempData["ROLE_NAME"] = role;
             TempData["USER_NAME"] = usrname;
+            TempData["IMAGE_PATH"] = imagepath;
 
             var fieldtripPostResponse = await methcall.CallMethodReturnObject<GetFieldTripPostResponse>(
                                 _httpClient: _httpClient,
@@ -538,8 +565,11 @@ namespace WebAppMVC.Controllers
             string? usrname = HttpContext.Session.GetString("USER_NAME");
             if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
 
+            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
+
             TempData["ROLE_NAME"] = role;
             TempData["USER_NAME"] = usrname;
+            TempData["IMAGE_PATH"] = imagepath;
 
             var fieldtripPostResponse = await methcall.CallMethodReturnObject<GetMeetingPostResponse>(
                                 _httpClient: _httpClient,
@@ -591,8 +621,11 @@ namespace WebAppMVC.Controllers
             string? usrname = HttpContext.Session.GetString("USER_NAME");
             if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
 
+            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
+
             TempData["ROLE_NAME"] = role;
             TempData["USER_NAME"] = usrname;
+            TempData["IMAGE_PATH"] = imagepath;
 
             var listLocationResponse = await methcall.CallMethodReturnObject<GetLocationResponseByList>(
                 _httpClient: _httpClient,
@@ -649,8 +682,11 @@ namespace WebAppMVC.Controllers
             string? usrname = HttpContext.Session.GetString("USER_NAME");
             if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
 
+            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
+
             TempData["ROLE_NAME"] = role;
             TempData["USER_NAME"] = usrname;
+            TempData["IMAGE_PATH"] = imagepath;
 
             var contestPostResponse = await methcall.CallMethodReturnObject<GetContestPostResponse>(
                                 _httpClient: _httpClient,
@@ -705,8 +741,11 @@ namespace WebAppMVC.Controllers
             string? usrname = HttpContext.Session.GetString("USER_NAME");
             if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
 
+            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
+
             TempData["ROLE_NAME"] = role;
             TempData["USER_NAME"] = usrname;
+            TempData["IMAGE_PATH"] = imagepath;
 
             var contestPostResponse = await methcall.CallMethodReturnObject<GetContestPostResponse>(
                                 _httpClient: _httpClient,
@@ -751,8 +790,11 @@ namespace WebAppMVC.Controllers
             string? usrname = HttpContext.Session.GetString("USER_NAME");
             if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
 
+            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
+
             TempData["ROLE_NAME"] = role;
             TempData["USER_NAME"] = usrname;
+            TempData["IMAGE_PATH"] = imagepath;
 
             var contestPostResponse = await methcall.CallMethodReturnObject<GetContestPostResponse>(
                                 _httpClient: _httpClient,
@@ -798,8 +840,11 @@ namespace WebAppMVC.Controllers
             string? usrname = HttpContext.Session.GetString("USER_NAME");
             if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
 
+            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
+
             TempData["ROLE_NAME"] = role;
             TempData["USER_NAME"] = usrname;
+            TempData["IMAGE_PATH"] = imagepath;
 
             var contestPostResponse = await methcall.CallMethodReturnObject<GetContestPostResponse>(
                                 _httpClient: _httpClient,
