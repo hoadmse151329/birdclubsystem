@@ -1184,5 +1184,10 @@ namespace WebAppMVC.Controllers
         {
             return View();
         }
+        [HttpGet("Notification")]
+        public IActionResult ManagerNotification()
+        {
+            return View();
+        }
     }
 }

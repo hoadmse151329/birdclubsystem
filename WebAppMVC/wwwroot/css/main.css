@@ -202,7 +202,9 @@ body .lb-cancel {
           color: #00ecd5; }
 
 .header__bottom {
-  padding-top: 45px; }
+    padding-top: 45px;
+    background-color: darkgreen;
+}
   .header__bottom .myNavBar {
     padding: 0 2.5rem; }
     .header__bottom .myNavBar .logo {
@@ -354,7 +356,12 @@ footer {
   height: 45px;
   border-radius: 50%; }
 .infor .infor__content .content {
-  margin: 0 10px; }
+    margin: 0 10px;
+    border-radius: 1rem;
+    border-width: 1px;
+    border-style: solid;
+    border-image: initial;
+}
   .infor .infor__content .content h4 {
     font-size: 18px; }
 
@@ -1558,8 +1565,8 @@ footer {
 }
 
 .infor .infor__content img {
-    width: 65px;
-    height: 65px;
+    width: 125px;
+    height: 125px;
     border-radius: 50%;
 }
 
