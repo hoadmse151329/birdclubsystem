@@ -1,4 +1,7 @@
-﻿@{
+﻿@model BAL.ViewModels.MemberViewModel
+@{
+    IFormFile? formFile = null;
+    BAL.ViewModels.Member.UpdateMemberPassword memberPassword = new();
     ViewData["Title"] = "Staff Profile Page";
 }
 <!DOCTYPE html>
@@ -8,7 +11,6 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home On Road</title>
     <link rel="shortcut icon" href="assets/img/logo2.png">
     <!-- CSS -->
     <link rel="stylesheet" href="assets/css/owner-style.css">

@@ -60,5 +60,23 @@ namespace DAL.Repositories.Implements
             if (mempart != null) return Int32.Parse(mempart.ParticipantNo);
             return 0;
         }
+
+        public async Task<IEnumerable<FieldTripParticipant>> UpdateAllFieldTripParticipantStatus(List<FieldTripParticipant> part)
+        {
+            foreach (var participant in part)
+            {
+                var trippart = _context.FieldTripParticipants
+                    .SingleOrDefault(p => p.TripId == participant.TripId && p.MemberId == participant.MemberId);
+                if (trippart != null)
+                {
+                    if (trippart.CheckInStatus != participant.CheckInStatus)
+                    {
+                        trippart.CheckInStatus = participant.CheckInStatus;
+                        _context.Update(trippart);
+                    }
+                }
+            }
+            return part;
+        }
     }
 }

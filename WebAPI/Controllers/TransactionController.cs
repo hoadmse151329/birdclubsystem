@@ -177,8 +177,8 @@ namespace WebAPI.Controllers
         {
             try
             {
-                var usr = await _memberService.GetBoolById(memberId);
-                if (!usr) return NotFound(new
+                var mem = await _memberService.GetBoolById(memberId);
+                if (!mem) return NotFound(new
                 {
                     Status = false,
                     ErrorMessage = "Member Not Found!"

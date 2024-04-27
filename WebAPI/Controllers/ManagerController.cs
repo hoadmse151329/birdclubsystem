@@ -85,7 +85,7 @@ namespace WebAPI.Controllers
                     return NotFound(new
                     {
                         Status = false,
-                        ErrorMessage = "Member Details Not Found!"
+                        ErrorMessage = "Manager Details Not Found!"
                     });
                 }
 

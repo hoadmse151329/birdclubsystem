@@ -18,5 +18,6 @@ namespace BAL.Services.Interfaces
         Task<IEnumerable<FieldTripParticipantViewModel>> GetAllByMemberId(string memberId);
         Task<IEnumerable<GetEventParticipation>> GetAllByMemberIdInclude(string memberId);
         Task<IEnumerable<FieldTripParticipantViewModel>> GetAllByTripId(int tripId);
+        Task<bool> UpdateAllFieldTripParticipantStatus(List<FieldTripParticipantViewModel> listPart);
     }
 }
