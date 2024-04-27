@@ -181,7 +181,7 @@ namespace DAL.Models
             {
                 entity.HasKey(e => new { e.TripId, e.MemberId });
 
-                entity.HasOne(d => d.Member)
+                entity.HasOne(d => d.MemberDetail)
                     .WithMany(p => p.FieldTripParticipants)
                     .HasForeignKey(d => d.MemberId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
