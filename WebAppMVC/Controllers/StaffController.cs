@@ -11,6 +11,8 @@ using WebAppMVC.Models.Meeting;
 using WebAppMVC.Models.Contest;
 using System.Text.Encodings.Web;
 using static Org.BouncyCastle.Math.EC.ECCurve;
+using WebAppMVC.Models.Member;
+using WebAppMVC.Models.Staff;
 namespace WebAppMVC.Controllers
 {    
 	[Route("Staff")]
@@ -194,7 +196,7 @@ namespace WebAppMVC.Controllers
             TempData["USER_NAME"] = usrname;
             TempData["IMAGE_PATH"] = imagepath;
 
-            var meetPartStatusResponse = await methcall.CallMethodReturnObject<GetListMeetingParticipantStatusUpdate>(
+            var meetPartStatusResponse = await methcall.CallMethodReturnObject<GetCheckInStatusUpdate>(
                                 _httpClient: _httpClient,
                                 options: options,
                                 methodName: "PUT",
@@ -221,8 +223,8 @@ namespace WebAppMVC.Controllers
             }
             return RedirectToAction("StaffMeetingDetail", "Staff", new { id = id });
         }
-        [HttpPost("Meeting/Create")]
-        /*[Route("Staff/Meeting/Update/{id:int}")]*/
+        /*[HttpPost("Meeting/Create")]
+        [Route("Staff/Meeting/Update/{id:int}")]
         public async Task<IActionResult> StaffCreateMeeting(MeetingViewModel meetView)
         {
             StaffAPI_URL += "Meeting/Create";
@@ -269,7 +271,7 @@ namespace WebAppMVC.Controllers
                 return RedirectToAction("StaffMeeting");
             }
             return RedirectToAction("StaffMeeting");
-        }
+        }*/
 
         [HttpPost("Meeting/Update/Cancel/{id:int}")]
         public async Task<IActionResult> StaffCancelMeeting(
@@ -445,13 +447,11 @@ namespace WebAppMVC.Controllers
             return View(fieldtripDetailBigModel);
         }
         [HttpPost("FieldTrip/Update/{id:int}")]
-        /*[Route("Staff/FieldTrip/Update/{id:int}")]*/
         public async Task<IActionResult> StaffUpdateFieldTripDetail(
             int id,
-            FieldTripViewModel fieldtripView
-            )
+            List<FieldTripParticipantViewModel> tripPartView)
         {
-            StaffAPI_URL += "FieldTrip/Update/" + id;
+            StaffAPI_URL += "Staff/FieldTripParticipantStatus/Update/" + id;
 
             string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
             if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
@@ -472,30 +472,34 @@ namespace WebAppMVC.Controllers
             TempData["USER_NAME"] = usrname;
             TempData["IMAGE_PATH"] = imagepath;
 
-            var fieldtripPostResponse = await methcall.CallMethodReturnObject<GetFieldTripPostResponse>(
+            var tripPartStatusResponse = await methcall.CallMethodReturnObject<GetCheckInStatusUpdate>(
                                 _httpClient: _httpClient,
                                 options: options,
                                 methodName: "PUT",
                                 url: StaffAPI_URL,
-                                inputType: fieldtripView,
+                                inputType: tripPartView,
                                 accessToken: accToken,
                                 _logger: _logger);
-            if (fieldtripPostResponse == null)
+
+            if (tripPartStatusResponse == null)
             {
-                ViewBag.error =
-                    "Error while processing your request! (Updating FieldTrip!).\n FieldTrip Not Found!";
-                return RedirectToAction("StaffFieldTrip");
+                _logger.LogInformation(
+                    "Error while processing your request! (Getting List Field Trip Participant Status!). List was Empty!: " + tripPartStatusResponse);
+                ViewBag.Error =
+                    "Error while processing your request! (Getting List Field Trip Participant Status!).\n List was Empty!";
+                return View("StaffIndex");
             }
-            if (!fieldtripPostResponse.Status)
+            else
+            if (!tripPartStatusResponse.Status)
             {
-                _logger.LogInformation("Error while processing your request: " + fieldtripPostResponse.Status + " , Error Message: " + fieldtripPostResponse.ErrorMessage);
-                ViewBag.error =
-                    "Error while processing your request! (Updating FieldTrip Post!).\n"
-                    + fieldtripPostResponse.ErrorMessage;
-                return RedirectToAction("StaffFieldTrip");
+                ViewBag.Error =
+                    "Error while processing your request! (Getting List Field Trip Participant Status!).\n"
+                    + tripPartStatusResponse.ErrorMessage;
+                return View("StaffIndex");
             }
             return RedirectToAction("StaffFieldTripDetail", "Staff", new { id = id });
         }
+    
         [HttpPost("FieldTrip/Create")]
         /*[Route("Staff/Meeting/Update/{id:int}")]*/
         public async Task<IActionResult> StaffCreateFieldTrip(FieldTripViewModel fieldtripView)
@@ -875,9 +879,52 @@ namespace WebAppMVC.Controllers
 			return View();
 		}
         [HttpGet("Profile")]
-        public IActionResult StaffProfile()
+        public async Task<IActionResult> StaffProfile()
 		{
-			return View();
+            StaffAPI_URL += "Staff/Profile";
+
+            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
+            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+
+            string? role = HttpContext.Session.GetString("ROLE_NAME");
+            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
+            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
+
+            string? usrId = HttpContext.Session.GetString("USER_ID");
+            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
+
+            string? usrname = HttpContext.Session.GetString("USER_NAME");
+            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
+
+            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
+
+            TempData["ROLE_NAME"] = role;
+            TempData["USER_NAME"] = usrname;
+            TempData["IMAGE_PATH"] = imagepath;
+
+            var memberDetails = await methcall.CallMethodReturnObject<GetMemberProfileResponse>(
+                _httpClient: _httpClient,
+                options: options,
+                methodName: "POST",
+                url: StaffAPI_URL,
+                _logger: _logger,
+                inputType: usrId,
+                accessToken: accToken);
+            if (memberDetails == null)
+            {
+                ViewBag.Error =
+                    "Error while processing your request! (Getting Staff Profile!).\n Manager Details Not Found!";
+                return RedirectToAction("Index");
+            }
+            else
+            if (!memberDetails.Status)
+            {
+                ViewBag.Error =
+                    "Error while processing your request! (Getting Staff Profile!).\n Manager Details Not Found!"
+                + memberDetails.ErrorMessage;
+                return RedirectToAction("Index");
+            }
+            return View(memberDetails.Data);
 		}
 	}
 }

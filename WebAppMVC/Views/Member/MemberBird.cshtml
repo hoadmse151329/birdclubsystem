@@ -1,7 +1,7 @@
 ﻿@model dynamic
 @{
-    ViewData["Title"] = "Member History Event Page";
-    List<BAL.ViewModels.Event.GetEventParticipation> events = Model.RegisteredEvents;
+    ViewData["Title"] = "Member Birds Page";
+    List<BAL.ViewModels.BirdViewModel>? birds = Model.MemberBirds;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <html lang="en">
@@ -30,8 +30,7 @@
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")" class="text-decoration-none">Home</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Member Profile</li>
-
+                <li class="breadcrumb-item active" aria-current="page">Member Birds</li>
             </ol>
         </nav>
     </div>
@@ -61,7 +60,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="@Url.Action("MemberPayment", "Member", new { id = Model.UserId})">
+                        <a href="@Url.Action("MemberPayment", "Member")">
                             <span><i class="bx bx-history"></i></span>
                             <span class="title">Payment</span>
                         </a>
@@ -145,43 +144,38 @@
                                                                 <th class="sorting sorting_asc" tabindex="0"
                                                                     aria-controls="history-table" rowspan="1"
                                                                     colspan="1" aria-sort="ascending"
-                                                                    aria-label="Event ID: activate to sort column descending">
-                                                                    Event ID</th>
+                                                                    aria-label="Bird ID: activate to sort column descending">
+                                                                    Bird ID</th>
                                                                 <th class="sorting" tabindex="0"
                                                                     aria-controls="history-table" rowspan="1"
                                                                     colspan="1"
-                                                                    aria-label="Event Name: activate to sort column ascending">
-                                                                    Event Name</th>
+                                                                    aria-label="Bird Name: activate to sort column ascending">
+                                                                    Bird Name</th>
                                                                 <th class="sorting" tabindex="0"
                                                                     aria-controls="history-table" rowspan="1"
                                                                     colspan="1"
-                                                                    aria-label="Event Name: activate to sort column ascending">
-                                                                    Event Type</th>
+                                                                    aria-label="ELO: activate to sort column ascending">
+                                                                    ELO</th>
                                                                 <th class="sorting" tabindex="0"
                                                                     aria-controls="history-table" rowspan="1"
                                                                     colspan="1"
-                                                                    aria-label="Date: activate to sort column ascending">
-                                                                    Registration Deadline</th>
+                                                                    aria-label="Age: activate to sort column ascending">
+                                                                    Age</th>
                                                                 <th class="sorting" tabindex="0"
                                                                     aria-controls="history-table" rowspan="1"
                                                                     colspan="1"
-                                                                    aria-label="Date: activate to sort column ascending">
-                                                                    Start Date</th>
+                                                                    aria-label="Description: activate to sort column ascending">
+                                                                    Description</th>
                                                                 <th class="sorting" tabindex="0"
                                                                     aria-controls="history-table" rowspan="1"
                                                                     colspan="1"
-                                                                    aria-label="Date: activate to sort column ascending">
-                                                                    End Date</th>
+                                                                    aria-label="Added Date: activate to sort column ascending">
+                                                                    Added Date</th>
                                                                 <th class="sorting" tabindex="0"
                                                                     aria-controls="history-table" rowspan="1"
                                                                     colspan="1"
-                                                                    aria-label="Date: activate to sort column ascending">
-                                                                    Participation No</th>
-                                                                <th class="sorting" tabindex="0"
-                                                                    aria-controls="history-table" rowspan="1"
-                                                                    colspan="1"
-                                                                    aria-label="Fee: activate to sort column ascending">
-                                                                    Fee</th>
+                                                                    aria-label="Color: activate to sort column ascending">
+                                                                    Color</th>
                                                                 <th class="sorting" tabindex="0"
                                                                     aria-controls="history-table" rowspan="1"
                                                                     colspan="1"
@@ -190,80 +184,25 @@
                                                                 <th class="sorting" tabindex="0"
                                                                     aria-controls="history-table" rowspan="1"
                                                                     colspan="1"
-                                                                    aria-label="Action: activate to sort column ascending">
-                                                                    Options</th>
+                                                                    aria-label="Origin: activate to sort column ascending">
+                                                                    Origin</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            @for(int i = 0; i < events.Count(); i++)
+                                                            @for(int i = 0; i < birds.Count(); i++)
                                                             {
                                                                 <tr class="@("clickable-row "+ (i%2 == 0 ? "even" : "odd")) " data-href="#"
                                                                 data-bs-toggle="tooltip" data-bs-placement="right"
                                                                 title="More Details">
-                                                                    <td class="sorting_1">@events[i].EventId</td>
-                                                                    <td>@events[i].EventName</td>
-                                                                    <td>@events[i].EventType</td>
-                                                                    <td>@events[i].RegistrationDeadline</td>
-                                                                    <td>@events[i].StartDate</td>
-                                                                    <td>@events[i].EndDate</td>
-                                                                    <td>@events[i].ParticipationNo</td>
-                                                                    <td>@events[i].Fee</td>
-                                                                    <td>@events[i].Status</td>
-                                                                    <td>
-                                                                        <div class="d-flex justify-content-around">
-                                                                            <!--<a href="UserManager?action=feedback?userId=hai03&motelID=785146827" class="btn btn-info m-b-xs shadow btn-xs sharp me-1" data-bs-toggle="tooltip">Đánh giá</a>-->
-                                                                            <div class="rating-room">
-                                                                                <a class="button--primary btn-info bg-info shadow btn-xs text-white"
-                                                                                href="@Url.Action(events[i].EventType + "Post", events[i].EventType,new {id = events[i].EventId})">Details</a>
-                                                                            </div>
-                                                                            @switch (events[i].Status)
-                                                                            {
-                                                                                case "Preparing":
-                                                                                    {
-                                                                                        <form asp-action="@(events[i].EventType)Deregister" asp-controller="@events[i].EventType" method="post" asp-route-meetingId="@events[i].EventId">
-                                                                                            <div class="report-room">
-                                                                                                <button class="button--primary btn-danger bg-danger shadow btn-xs text-white" type="submit">Sign Out</button>
-                                                                                            </div>
-                                                                                        </form>
-                                                                                        break;
-                                                                                    }
-                                                                                case "Open":
-                                                                                case "OnGoing":
-                                                                                    {
-                                                                                        <form asp-action="@(events[i].EventType)Deregister" asp-controller="@events[i].EventType" method="post" asp-route-meetingId="@events[i].EventId">
-                                                                                            <div class="report-room">
-                                                                                                <button class="button--primary btn-danger bg-danger shadow btn-xs text-white" type="submit">Sign Out</button>
-                                                                                            </div>
-                                                                                        </form>
-                                                                                        break;
-                                                                                    }
-                                                                                case "Ended":
-                                                                                    {
-                                                                                        <div class="report-room">
-                                                                                            <button data-toggle="modal"
-                                                                                                data-target="#report"
-                                                                                                class="button--primary btn-danger shadow btn-xs sharp text-white bg-danger">
-                                                                                                <span>Report</span>
-                                                                                            </button>
-                                                                                        </div>
-                                                                                        break;
-                                                                                    }
-                                                                                case "Cancelled":
-                                                                                    {
-                                                                                        <div class="report-room">
-                                                                                            <button data-toggle="modal"
-                                                                                                    data-target="#report"
-                                                                                                    class="button--primary btn-danger shadow btn-xs sharp text-white bg-danger">
-                                                                                                <span>Report</span>
-                                                                                            </button>
-                                                                                        </div>
-                                                                                        break;
-                                                                                    }
-                                                                            }
-                                                                        </div>
-
-
-                                                                    </td>
+                                                                    <td class="sorting_1">@birds[i].BirdId</td>
+                                                                    <td>@birds[i].BirdName</td>
+                                                                    <td>@birds[i].Elo</td>
+                                                                    <td>@birds[i].Age</td>
+                                                                    <td>@birds[i].Description</td>
+                                                                    <td>@birds[i].AddDate</td>
+                                                                    <td>@birds[i].Color</td>
+                                                                    <td>@birds[i].Status</td>
+                                                                    <td>@birds[i].Origin</td>
                                                                     <!-- feedback -->
                                                                     <!-- end feedback -->
                                                                     <!-- Report -->

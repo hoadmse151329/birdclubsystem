@@ -22,7 +22,7 @@ namespace DAL.Repositories.Interfaces
             string? orderBy
             );
         IEnumerable<string> GetAllMeetingName();
-        Task<IEnumerable<Meeting>> GetMeetings();
+        IEnumerable<Meeting> GetOpenMeetings();
 
         public Task<Meeting?> GetMeetingById(int id);
         Task<bool> GetBoolMeetingId(int id);

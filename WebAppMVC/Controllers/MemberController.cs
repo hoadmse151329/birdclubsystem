@@ -17,6 +17,7 @@ using BAL.ViewModels.Member;
 using System.Text.Encodings.Web;
 using BAL.ViewModels.Event;
 using WebAppMVC.Models.Transaction;
+using WebAppMVC.Models.Bird;
 
 namespace WebAppMVC.Controllers
 {
@@ -337,9 +338,56 @@ namespace WebAppMVC.Controllers
         }
         // GET: MemberController
         [HttpGet("Bird")]
-        public IActionResult MemberBird()
+        public async Task<IActionResult> MemberBird()
         {
-            return View();
+            string MemberBirdAPI_URL = "/api/Bird/AllBirds";
+
+            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
+            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+
+            string? role = HttpContext.Session.GetString("ROLE_NAME");
+            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
+            else if (!role.Equals("Member")) return RedirectToAction("Index", "Home");
+
+            string? usrId = HttpContext.Session.GetString("USER_ID");
+            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
+
+            string? usrname = HttpContext.Session.GetString("USER_NAME");
+            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
+
+            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
+
+            TempData["ROLE_NAME"] = role;
+            TempData["USER_NAME"] = usrname;
+            TempData["IMAGE_PATH"] = imagepath;
+
+            dynamic birdModel = new ExpandoObject();
+
+            var memberBird = await methcall.CallMethodReturnObject<GetListBirdByMemberResponse>(
+                _httpClient: _httpClient,
+                options: options,
+                methodName: "POST",
+                url: MemberBirdAPI_URL,
+                _logger: _logger,
+                inputType: usrId,
+                accessToken: accToken);
+
+            if (memberBird == null)
+            {
+                ViewBag.Error =
+                    "Error while processing your request! (Getting Bird List!). \n Member Not Found!";
+                return RedirectToAction("MemberProfile");
+            }
+            if (!memberBird.Status)
+            {
+                _logger.LogInformation("Error while processing your request: " + memberBird.Status + " , Error Message: " + memberBird.ErrorMessage);
+                ViewBag.Error =
+                    "Error while processing your request! (Getting Bird List!). \n"
+                    + memberBird.ErrorMessage;
+                return RedirectToAction("MemberProfile");
+            }
+            birdModel.MemberBirds = memberBird.Data;
+            return View(birdModel);
         }
         [HttpGet("Payment")]
         public async Task<IActionResult> MemberPayment()

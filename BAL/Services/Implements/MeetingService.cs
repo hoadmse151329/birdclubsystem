@@ -49,6 +49,35 @@ namespace BAL.Services.Implements
             return listmeetview;
         }
 
+        public async Task<IEnumerable<MeetingViewModel>> GetOpenMeetings()
+        {
+            string locationName;
+            var listmeet = _unitOfWork.MeetingRepository.GetOpenMeetings();
+            var listmeetview = _mapper.Map<IEnumerable<MeetingViewModel>>(listmeet);
+
+            foreach (var itemview in listmeetview)
+            {
+                foreach (var item in listmeet)
+                {
+                    if (item.MeetingId == itemview.MeetingId)
+                    {
+                        //int partAmount = await _unitOfWork.MeetingParticipantRepository.GetCountMeetingParticipantsByMeetId(meet.MeetingId);
+                        var media = await _unitOfWork.MeetingMediaRepository.GetMeetingMediasByMeetingId(item.MeetingId);
+                        itemview.Media = (media != null) ? _mapper.Map<IEnumerable<MeetingMediaViewModel>>(media).ToList() : null;
+
+                        locationName = await _unitOfWork.LocationRepository.GetLocationNameById(item.LocationId.Value);
+
+                        string[] temp = locationName.Split(",");
+                        itemview.AreaNumber = Int32.Parse(temp[0]);
+                        itemview.Street = temp[1];
+                        itemview.District = temp[2];
+                        itemview.City = temp[3];
+                    }
+                }
+            }
+            return listmeetview;
+        }
+
         public IEnumerable<MeetingViewModel> GetAllByRegistrationDeadline(DateTime registrationDeadline)
         {
             return _mapper.Map<IEnumerable<MeetingViewModel>>(_unitOfWork.MeetingRepository.GetAllByRegistrationDeadline(registrationDeadline));

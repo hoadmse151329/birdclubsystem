@@ -83,5 +83,16 @@ namespace BAL.Services.Implements
             return _mapper.Map<IEnumerable<FieldTripParticipantViewModel>>(await
                 _unitOfWork.FieldTripParticipantRepository.GetFieldTripParticipantsByTripId(tripId));
         }
+
+        public async Task<bool> UpdateAllFieldTripParticipantStatus(List<FieldTripParticipantViewModel> listPart)
+        {
+            var part = await _unitOfWork.FieldTripParticipantRepository.UpdateAllFieldTripParticipantStatus(_mapper.Map<List<FieldTripParticipant>>(listPart));
+            if (part != null)
+            {
+                _unitOfWork.Save();
+                return true;
+            }
+            return false;
+        }
     }
 }
