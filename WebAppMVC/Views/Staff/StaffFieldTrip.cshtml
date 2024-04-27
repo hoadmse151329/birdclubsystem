@@ -69,7 +69,7 @@
                             </li> 
                             <li data-toggle="tooltip"data-placement="right" title="Manage Bird Contest">
                                 <a href="@Url.Action("StaffContest", "Staff")" li class="dropdown-item">
-                                    <i class='bx bx-cloud-rain'></i>
+                                    <i class='bx bx-trophy'></i>
                                     <span class="title">Bird Contest</span>
                                 </a>
                             </li>
@@ -89,7 +89,7 @@
     <!-- End sidebar -->
 
     <!-- Header -->
-     <div class="header">
+    <div class="header">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-sm-12">
@@ -110,7 +110,7 @@
                                         @TempData["USER_NAME"]
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item" href="@Url.Action("StaffProfile", "Staff")"><i class='bx bx-user'></i>Manager Profile</a> <!--thêm theo user id và role-->
+                                        <a class="dropdown-item" href="@Url.Action("StaffProfile", "Staff")"><i class='bx bx-user'></i>Staff Profile</a> <!--thêm theo user id và role-->
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="@Url.Action("Logout", "Auth")">Logout</a>
                                     </div>

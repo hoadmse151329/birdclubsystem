@@ -17,9 +17,13 @@
     position: relative;
     width: 1440px;
     height: auto;
-    margin: 0 auto;
-    background: #ffffff;
+    margin: 0px auto;
+    background: rgb(166, 247, 145);
     overflow: hidden;
+    border-radius: 1rem;
+    border-width: 1px;
+    border-style: solid;
+    border-image: initial;
 }
 
 .pic {
