@@ -14,18 +14,43 @@
     <header>
         <div class="header__top d-flex justify-content-between align-items-center container-fluid py-2 fixed-top">
         <div class="header__left">
-            <a href="#"><i class="fab fa-facebook-f"></i></a>
-            <a href="#"><i class="fab fa-twitter"></i></a>
-            <a href="mailto:hotrankhanhduy16@gmail.com" class="text-white text-decoration-none"><i
-                    class="fa fa-envelope"></i> hotrankhanhduy16@gmail.com</a>
-            <a href="tel:0888738852" class="text-white mr-4 text-decoration-none"><i class="fas fa-phone-alt"></i>
-                0888738852</a>
+            <a href="#" target="_blank"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://github.com/hoadmse151329/birdclubsystem" target="_blank"><i
+                    class="fab fa-github"></i></a>
+            <a href="mailto:hotrankhanhduy16@gmail.com"
+               class="text-white text-decoration-none"><i class="fa fa-envelope"></i>
+                hotelmanagement.fpt@gmail.com</a>
+            <a href="tel:0396421901" class="text-white mr-4 text-decoration-none"><i
+                    class="fas fa-phone-alt"></i>
+                088 873 8852</a>
         </div>
         <div class="header__right">
             <ul class="nav">
                             @if (TempData["ROLE_NAME"] != null)
                             {
                                 <!-- Display this when the user is logged in -->
+                                <li class="nav-item nav-item-text">
+                                     <div class="notification-dropdown dropdown">
+                                          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="fa fa-bell"></i><span class="notification"><%= noti.getNotificationNumber()%></span>
+                                                     <span type="hidden" name="announcementID" value="${o.announcementID}"></span>  
+                                          </button>
+                                     <div class="dropdown-menu notification-table animate__animated animate__fadeInDown"
+                                     aria-labelledby="dropdownMenuButton">
+                                          <div class="dropdown-header">
+                                                 <span class="triangle"></span>
+                                                 <span class="heading">Thông báo</span>
+                                          </div>
+                                          <div class="dropdown-body">
+                                                 <a class="dropdown-item" href="MainController?action=notifi&userID=<%=loginUser.getUserId()%>&role=<%=loginUser.getRole()%>">
+                                                 <p class="truncate"> Xem tất cả <i class="fa fa-angle-right"></i></p>
+                                                 </a>
+                                                 <a class="dropdown-item" href="MainController?action=notifi1&userID=<%=loginUser.getUserId()%>&role=<%=loginUser.getRole()%>"><p class="truncate">${t.title}</p></a>
+                                          </div>
+                                     </div>
+                                     </div>
+                                </li>
                                 <li class="nav-item nav-item-text">
                                      <div class="user-dropdown dropdown">
                                         <button class="btn-user-dropdown text-white btn dropdown-toggle" type="button"
