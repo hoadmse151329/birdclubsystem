@@ -124,7 +124,7 @@ namespace DAL.Repositories.Implements
 
         public IEnumerable<Meeting> GetOpenMeetings()
         {
-            return _context.Meetings.AsNoTracking().Where(meet => meet.Status == "Open").ToList();
+            return _context.Meetings.AsNoTracking().Where(meet => meet.Status == "OpenRegistration").ToList();
         }
 
         public async Task<Meeting?> GetMeetingById(int id)
