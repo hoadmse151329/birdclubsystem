@@ -29,16 +29,15 @@ namespace WebAPI.Controllers
             _config = config;
         }
 
-        [HttpGet("All")]
-        [HttpGet]
+        [HttpPost("All")]
         [ProducesResponseType(typeof(List<ContestViewModel>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> GetAllContests()
+        public async Task<IActionResult> GetAllContests([Required][FromBody] string role)
         {
             try
             {
-                var result = await _contestService.GetAll();
+                var result = await _contestService.GetAllContests(role);
                 if (result == null)
                 {
                     return NotFound(new

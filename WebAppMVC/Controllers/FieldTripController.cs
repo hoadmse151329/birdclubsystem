@@ -48,6 +48,7 @@ namespace WebAppMVC.Controllers
             dynamic testmodel = new ExpandoObject();
 
             string? role = HttpContext.Session.GetString("ROLE_NAME");
+            if (role == null) role = "Guest";
 
             string? usrname = HttpContext.Session.GetString("USER_NAME");
 
@@ -79,8 +80,9 @@ namespace WebAppMVC.Controllers
             var listTripResponse = await methcall.CallMethodReturnObject<GetFieldTripResponseByList>(
                 _httpClient: _httpClient,
                 options: options,
-                methodName: "GET",
+                methodName: "POST",
                 url: FieldTripAPI_URL,
+                inputType: role,
                 _logger: _logger);
 
 			if (listTripResponse == null || listLocationRoadResponse == null || listLocationDistrictResponse == null || listLocationCityResponse == null)

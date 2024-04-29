@@ -67,7 +67,7 @@ namespace WebAppMVC.Controllers
             [FromQuery] string meetingName, 
             [FromQuery] string locationAddress)
 		{
-            if (string.IsNullOrEmpty(meetingName) && string.IsNullOrEmpty(locationAddress)) MeetingAPI_URL += "/AllOpen";
+            if (string.IsNullOrEmpty(meetingName) && string.IsNullOrEmpty(locationAddress)) MeetingAPI_URL += "/All";
             else MeetingAPI_URL += "/Search?";
 
             _logger.LogInformation(locationAddress);
@@ -90,6 +90,7 @@ namespace WebAppMVC.Controllers
             dynamic testmodel = new ExpandoObject();
 
             string? role = HttpContext.Session.GetString("ROLE_NAME");
+            if (role == null) role = "Guest";
 
             string? usrname = HttpContext.Session.GetString("USER_NAME");
 
@@ -122,8 +123,9 @@ namespace WebAppMVC.Controllers
             var listMeetResponse = await methcall.CallMethodReturnObject<GetMeetingResponseByList>(
 				_httpClient: _httpClient,
 				options: options,
-				methodName: "GET",
+				methodName: "POST",
 				url: MeetingAPI_URL,
+                inputType: role,
                 _logger: _logger);
 
             if (listMeetResponse == null || listLocationRoadResponse == null || listLocationDistrictResponse == null || listLocationCityResponse == null)

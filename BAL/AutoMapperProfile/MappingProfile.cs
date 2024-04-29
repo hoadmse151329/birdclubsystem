@@ -145,6 +145,7 @@ namespace BAL.AutoMapperProfile
             CreateMap<Transaction, TransactionViewModel>()
                 .ReverseMap();
             CreateMap<Bird, BirdViewModel>() .ReverseMap();
+            CreateMap<Notification, NotificationViewModel>() .ReverseMap();
         }
     }
 }

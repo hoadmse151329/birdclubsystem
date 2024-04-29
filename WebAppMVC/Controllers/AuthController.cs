@@ -48,12 +48,24 @@ namespace WebAppMVC.Controllers
 		[HttpGet("Register")]
 		public IActionResult Register()
 		{
-			return View();
+            string? role = HttpContext.Session.GetString("ROLE_NAME");
+
+            if (role == null) role = "Guest";
+
+            TempData["ROLE_NAME"] = role;
+
+            return View();
 		}
 		[HttpGet("Login")]
 		public IActionResult Login()
 		{
-			return View();
+            string? role = HttpContext.Session.GetString("ROLE_NAME");
+
+            if (role == null) role = "Guest";
+
+            TempData["ROLE_NAME"] = role;
+
+            return View();
 		}
 
         #region Old Google Login Code (Deprecated)

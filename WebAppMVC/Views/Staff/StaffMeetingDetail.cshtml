@@ -154,12 +154,31 @@
                                             <span>Status:</span>
                                         </div>
                                         <div class="col-sm-7">
-                                            <span class="destroy" style="float: left;">@details.Status</span>
-
-                                            <!-- Trống in ra dòng dưới -->
-                                            <!-- <span class="outcome" style="float: left;">Done</span> -->
-                                            <!-- Đã cọc in ra dòng dưới -->
-                                            <!-- <span class="approval" style="float: left;">Cancel</span> -->
+                                            @{
+                                                switch (details.Status)
+                                                {
+                                                    case "Ongoing":
+                                                    case "CheckingIn":
+                                                    case "OpenRegistration":
+                                                        {
+                                                            <span class="outcome" style="float: left;">@details.Status</span>
+                                                            break;
+                                                        }
+                                                    case "OnHold":
+                                                    case "ClosedRegistration":
+                                                        {
+                                                            <span class="approval" style="float: left;">@details.Status</span>
+                                                            break;
+                                                        }
+                                                    case "Ended":
+                                                    case "Postponed":
+                                                    case "Cancelled":
+                                                        {
+                                                            <span class="destroy" style="float: left;">@details.Status</span>
+                                                            break;
+                                                        }
+                                                }
+                                            }
                                         </div>
                                     </div>
                                 </div>

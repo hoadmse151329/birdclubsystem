@@ -40,12 +40,12 @@
             <div class="navigation">  
                 <ul class="slide-menu">
                     <div class="logo">
-                        <a href="@Url.Action("StaffIndex", "Staff")">
+                        <a href="@Url.Action("ManagerIndex", "Manager")">
                             <img class="logo" src="~/images/Red_whiskered_bulbul_bird_logo_eps_10_generated 1.png" alt="logo">
                         </a>
                     </div>
                     <li class="active" data-toggle="tooltip"data-placement="right" title="Overview">
-                        <a href="@Url.Action("StaffIndex", "Staff")">
+                        <a href="@Url.Action("ManagerIndex", "Manager")">
                             <span><i class='bx bx-tachometer'></i></span>
                             <span class="title">Overview</span>
                         </a>
@@ -58,37 +58,37 @@
                         </a>
                         <ul class="collapse sub-menu" id="collapseOne">
                             <li data-toggle="tooltip"data-placement="right" title="Manage Meeting">
-                                <a href="@Url.Action("StaffMeeting", "Staff")" li class="dropdown-item">
+                                <a href="@Url.Action("ManagerMeeting", "Manager")" li class="dropdown-item">
                                     <i class='bx bx-home-alt-2'></i>
                                     <span class="title">Meeting</span>
                                 </a> 
                             </li>
                             <li data-toggle="tooltip"data-placement="right" title="Manage Fieldtrip">
-                                <a href="@Url.Action("StaffFieldtrip", "Staff")" li class="dropdown-item">
+                                <a href="@Url.Action("ManagerFieldtrip", "Manager")" li class="dropdown-item">
                                     <i class='bx bx-calendar-edit'></i>
                                     <span class="title">Fieldtrip</span>
                                 </a>
                             </li> 
                             <li data-toggle="tooltip"data-placement="right" title="Manage Bird Contest">
-                                <a href="@Url.Action("StaffContest", "Staff")" li class="dropdown-item">
+                                <a href="@Url.Action("ManagerContest", "Manager")" li class="dropdown-item">
                                     <i class='bx bx-trophy'></i>
                                     <span class="title">Bird Contest</span>
                                 </a>
                             </li>
                             <li data-toggle="tooltip" data-placement="right" title="Manage Member Status">
-                                <a href="@Url.Action("StaffMemberStatus", "Staff")" li class="dropdown-item">
+                                <a href="@Url.Action("ManagerMemberStatus", "Manager")" li class="dropdown-item">
                                     <i class='bx bx-message-square-check'></i>
                                     <span class="title">Member Status</span>
                                 </a>
                             </li>
                             <li data-toggle="tooltip" data-placement="right" title="Manage Member Status">
-                                <a href="@Url.Action("StaffBlog", "Staff")" li class="dropdown-item">
+                                <a href="@Url.Action("ManagerBlog", "Manager")" li class="dropdown-item">
                                     <i class='bx bx-conversation'></i>
                                     <span class="title">Blog</span>
                                 </a>
                             </li>
                             <li data-toggle="tooltip" data-placement="right" title="Manage Member Status">
-                                <a href="@Url.Action("StaffNews", "Staff")" li class="dropdown-item">
+                                <a href="@Url.Action("ManagerNews", "Manager")" li class="dropdown-item">
                                     <i class='bx bx-message-square'></i>
                                     <span class="title">News</span>
                                 </a>
@@ -96,15 +96,15 @@
                         </ul>
                     </li>
                     <li data-toggle="tooltip"data-placement="right" title="Manage Feedback">
-                        <a href="@Url.Action("StaffFeedback", "Staff")">
+                        <a href="@Url.Action("ManagerFeedback", "Manager")">
                             <span><i class="bx bx-detail"></i></span>
                             <span class="title">Feedback</span>
                         </a>
                     </li>
                     <li data-toggle="tooltip"data-placement="right" title="Staff Profile">
-                        <a href="@Url.Action("StaffProfile", "Staff")">
+                        <a href="@Url.Action("ManagerProfile", "Manager")">
                             <span><i class='bx bx-user'></i></span>
-                            <span class="title">Staff Profile</span>
+                            <span class="title">Manager Profile</span>
                         </a>
                     </li>
                 </ul>
@@ -135,7 +135,7 @@
                                         @TempData["USER_NAME"]
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item" href="@Url.Action("StaffProfile", "Staff")"><i class='bx bx-user'></i>Staff Profile</a> <!--thêm theo user id và role-->
+                                        <a class="dropdown-item" href="@Url.Action("ManagerProfile", "Manager")"><i class='bx bx-user'></i>Manager Profile</a> <!--thêm theo user id và role-->
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="@Url.Action("Logout", "Auth")">Logout</a>
                                     </div>

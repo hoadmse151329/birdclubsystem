@@ -47,10 +47,10 @@ namespace BAL.Services.Implements
             }
             return null;
         }
-        public async Task<IEnumerable<ContestViewModel>> GetAll()
+        public async Task<IEnumerable<ContestViewModel>> GetAllContests(string? role)
         {
             string locationName;
-            var listcontest = _unitOfWork.ContestRepository.GetAll();
+            var listcontest = await _unitOfWork.ContestRepository.GetAllContests(role);
             var listcontestview = _mapper.Map<IEnumerable<ContestViewModel>>(listcontest);
             foreach (var itemview in listcontestview)
             {

@@ -32,16 +32,15 @@ namespace WebAPI.Controllers
             _participantService = fieldTripParticipantService;
         }
 
-        [HttpGet("All")]
-        [HttpGet]
+        [HttpPost("All")]
         [ProducesResponseType(typeof(List<FieldTripViewModel>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> GetAllFieldTrips()
+        public async Task<IActionResult> GetAllFieldTrips([Required][FromBody] string role)
         {
             try
             {
-                var result = await _fieldTripService.GetAll();
+                var result = await _fieldTripService.GetAllFieldTrips(role);
                 if (result == null)
                 {
                     return NotFound(new
