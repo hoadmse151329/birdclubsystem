@@ -13,6 +13,7 @@ using System.Text.Encodings.Web;
 using static Org.BouncyCastle.Math.EC.ECCurve;
 using WebAppMVC.Models.Member;
 using WebAppMVC.Models.Staff;
+
 namespace WebAppMVC.Controllers
 {    
 	[Route("Staff")]
@@ -271,8 +272,8 @@ namespace WebAppMVC.Controllers
                 return RedirectToAction("StaffMeeting");
             }
             return RedirectToAction("StaffMeeting");
-            */
-        }
+            
+        }*/
         [HttpGet("FieldTrip")]
         public async Task<IActionResult> StaffFieldtrip([FromQuery] string search)
         {
