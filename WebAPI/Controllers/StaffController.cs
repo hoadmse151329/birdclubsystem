@@ -34,6 +34,50 @@ namespace WebAPI.Controllers
             _config = config;
         }
 
+        /*[HttpPost("Profile")]
+        [Authorize(Roles = "Staff")]
+        [ProducesResponseType(typeof(MemberViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetStaffDetailsByUsrId([FromBody] string memId)
+        {
+            try
+            {
+                var result = await _memberService.GetById(memId);
+                if (result == null)
+                {
+                    return NotFound(new
+                    {
+                        Status = false,
+                        ErrorMessage = "Staff Details Not Found!"
+                    });
+                }
+                return Ok(new
+                {
+                    Status = true,
+                    Data = result
+                });
+            }
+            catch (Exception ex)
+            {
+                if (ex.InnerException != null)
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = ex.Message,
+                        InnerExceptionMessage = ex.InnerException.Message
+                    });
+                }
+                // Log the exception if needed
+                return BadRequest(new
+                {
+                    Status = false,
+                    ErrorMessage = ex.Message
+                });
+            }
+        }*/
+
         [HttpPost("Profile")]
         [Authorize(Roles = "Staff")]
         [ProducesResponseType(typeof(MemberViewModel), StatusCodes.Status200OK)]

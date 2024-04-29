@@ -68,7 +68,7 @@ namespace BAL.Services.Implements
                         locationName = await _unitOfWork.LocationRepository.GetLocationNameById(item.LocationId.Value);
 
                         string[] temp = locationName.Split(",");
-                        itemview.AreaNumber = Int32.Parse(temp[0]);
+                        itemview.AreaNumber = temp[0];
                         itemview.Street = temp[1];
                         itemview.District = temp[2];
                         itemview.City = temp[3];

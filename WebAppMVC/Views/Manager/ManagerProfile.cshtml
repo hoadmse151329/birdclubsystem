@@ -3,7 +3,7 @@
     IFormFile? formFile = null;
     BAL.ViewModels.Member.UpdateMemberPassword memberPassword = new();
     Layout = null;
-    ViewData["Title"] = "Manager Profile Page";
+    ViewData["Title"] = "Staff Profile Page";
     List<SelectListItem> genders = new()
     {
         new SelectListItem {Text = "Male",Value = "Male"},
@@ -30,7 +30,6 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
-    <!--Boxicons-->
     <link rel='stylesheet' href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css'>
 </head>
 
@@ -41,12 +40,12 @@
             <div class="navigation">  
                 <ul class="slide-menu">
                     <div class="logo">
-                        <a href="@Url.Action("ManagerIndex", "Manager")">
+                        <a href="@Url.Action("StaffIndex", "Staff")">
                             <img class="logo" src="~/images/Red_whiskered_bulbul_bird_logo_eps_10_generated 1.png" alt="logo">
                         </a>
                     </div>
                     <li class="active" data-toggle="tooltip"data-placement="right" title="Overview">
-                        <a href="@Url.Action("ManagerIndex", "Manager")">
+                        <a href="@Url.Action("StaffIndex", "Staff")">
                             <span><i class='bx bx-tachometer'></i></span>
                             <span class="title">Overview</span>
                         </a>
@@ -59,37 +58,37 @@
                         </a>
                         <ul class="collapse sub-menu" id="collapseOne">
                             <li data-toggle="tooltip"data-placement="right" title="Manage Meeting">
-                                <a href="@Url.Action("ManagerMeeting", "Manager")" li class="dropdown-item">
+                                <a href="@Url.Action("StaffMeeting", "Staff")" li class="dropdown-item">
                                     <i class='bx bx-home-alt-2'></i>
                                     <span class="title">Meeting</span>
                                 </a> 
                             </li>
                             <li data-toggle="tooltip"data-placement="right" title="Manage Fieldtrip">
-                                <a href="@Url.Action("ManagerFieldtrip", "Manager")" li class="dropdown-item">
+                                <a href="@Url.Action("StaffFieldtrip", "Staff")" li class="dropdown-item">
                                     <i class='bx bx-calendar-edit'></i>
                                     <span class="title">Fieldtrip</span>
                                 </a>
                             </li> 
                             <li data-toggle="tooltip"data-placement="right" title="Manage Bird Contest">
-                                <a href="@Url.Action("ManagerContest", "Manager")" li class="dropdown-item">
+                                <a href="@Url.Action("StaffContest", "Staff")" li class="dropdown-item">
                                     <i class='bx bx-trophy'></i>
                                     <span class="title">Bird Contest</span>
                                 </a>
                             </li>
                             <li data-toggle="tooltip" data-placement="right" title="Manage Member Status">
-                                <a href="@Url.Action("ManagerMemberStatus", "Manager")" li class="dropdown-item">
+                                <a href="@Url.Action("StaffMemberStatus", "Staff")" li class="dropdown-item">
                                     <i class='bx bx-message-square-check'></i>
                                     <span class="title">Member Status</span>
                                 </a>
                             </li>
                             <li data-toggle="tooltip" data-placement="right" title="Manage Member Status">
-                                <a href="@Url.Action("ManagerBlog", "Manager")" li class="dropdown-item">
+                                <a href="@Url.Action("StaffBlog", "Staff")" li class="dropdown-item">
                                     <i class='bx bx-conversation'></i>
                                     <span class="title">Blog</span>
                                 </a>
                             </li>
                             <li data-toggle="tooltip" data-placement="right" title="Manage Member Status">
-                                <a href="@Url.Action("ManagerNews", "Manager")" li class="dropdown-item">
+                                <a href="@Url.Action("StaffNews", "Staff")" li class="dropdown-item">
                                     <i class='bx bx-message-square'></i>
                                     <span class="title">News</span>
                                 </a>
@@ -97,15 +96,15 @@
                         </ul>
                     </li>
                     <li data-toggle="tooltip"data-placement="right" title="Manage Feedback">
-                        <a href="@Url.Action("ManagerFeedback", "Manager")">
+                        <a href="@Url.Action("StaffFeedback", "Staff")">
                             <span><i class="bx bx-detail"></i></span>
                             <span class="title">Feedback</span>
                         </a>
                     </li>
-                    <li data-toggle="tooltip"data-placement="right" title="Manager Profile">
-                        <a href="@Url.Action("ManagerProfile", "Manager")">
+                    <li data-toggle="tooltip"data-placement="right" title="Staff Profile">
+                        <a href="@Url.Action("StaffProfile", "Staff")">
                             <span><i class='bx bx-user'></i></span>
-                            <span class="title">Manager Profile</span>
+                            <span class="title">Staff Profile</span>
                         </a>
                     </li>
                 </ul>
@@ -129,17 +128,19 @@
                         </div>
                         <div class="float-right">
                             <div class="btn-group me-1 mb-1">
-                                 @if (TempData["ROLE_NAME"] != null)
+                                <div class="dropdown">
+                                    @if (TempData["ROLE_NAME"] != null)
                                     {
                                     <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         @TempData["USER_NAME"]
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item" href="@Url.Action("ManagerProfile", "Manager")"><i class='bx bx-user'></i>Manager Profile</a> <!--thêm theo user id và role-->
+                                        <a class="dropdown-item" href="@Url.Action("StaffProfile", "Staff")"><i class='bx bx-user'></i>Staff Profile</a> <!--thêm theo user id và role-->
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="@Url.Action("Logout", "Auth")">Logout</a>
                                     </div>
                                     }
+                                </div>  
                             </div>
                         </div>   
                     </div>
@@ -181,7 +182,7 @@
                                                 <h4>Personal Information</h4>
                                             </div>
                                             <div class="info-content">
-                                                <form asp-action="ManagerProfileUpdate" asp-controller="Manager" class="form-check">
+                                                <form asp-action="StaffProfileUpdate" asp-controller="Staff" class="form-check">
                                                     <div class="row username-content">
                                                         <label class="contact-title col-md-5 col-sm-4 mt-3">Username: </label>
 
@@ -262,7 +263,7 @@
                 <div class="collapse" id="collapseTwo" aria-labelledby="headingTwo" data-parent="#accordion">
                     <div class="card-body">
                         <div class="card-group d-block">
-                            <form asp-action="ChangePassword" asp-controller="Manager" method="post">
+                            <form asp-action="ChangePassword" asp-controller="Staff" method="post">
                                 <div class="row form-group">
                                     <label asp-for=@memberPassword.password class="offset-md-3 col-md-2 col-sm-3 col-form-label">Old Password</label>
                                     <input asp-for=@memberPassword.password class="col-md-3 col-sm-5 form-control" type="password"
@@ -318,10 +319,13 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js"></script>
-    <script src="~/js/owner-script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/owner-script.js"></script>
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
 </body>
 
 </html>
