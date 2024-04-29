@@ -223,8 +223,8 @@ namespace WebAppMVC.Controllers
             }
             return RedirectToAction("StaffMeetingDetail", "Staff", new { id = id });
         }
-        [HttpPost("Meeting/Create")]
-        /*[Route("Staff/Meeting/Update/{id:int}")]*/
+        /*[HttpPost("Meeting/Create")]
+        [Route("Staff/Meeting/Update/{id:int}")]
         public async Task<IActionResult> StaffCreateMeeting(MeetingViewModel meetView)
         {
             StaffAPI_URL += "Meeting/Create";
@@ -271,6 +271,7 @@ namespace WebAppMVC.Controllers
                 return RedirectToAction("StaffMeeting");
             }
             return RedirectToAction("StaffMeeting");
+            */
         }
         [HttpGet("FieldTrip")]
         public async Task<IActionResult> StaffFieldtrip([FromQuery] string search)
@@ -398,13 +399,11 @@ namespace WebAppMVC.Controllers
             return View(fieldtripDetailBigModel);
         }
         [HttpPost("FieldTrip/Update/{id:int}")]
-        /*[Route("Staff/FieldTrip/Update/{id:int}")]*/
         public async Task<IActionResult> StaffUpdateFieldTripDetail(
             int id,
-            FieldTripViewModel fieldtripView
-            )
+            List<FieldTripParticipantViewModel> tripPartView)
         {
-            StaffAPI_URL += "FieldTrip/Update/" + id;
+            StaffAPI_URL += "Staff/FieldTripParticipantStatus/Update/" + id;
 
             string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
             if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
@@ -425,30 +424,34 @@ namespace WebAppMVC.Controllers
             TempData["USER_NAME"] = usrname;
             TempData["IMAGE_PATH"] = imagepath;
 
-            var fieldtripPostResponse = await methcall.CallMethodReturnObject<GetFieldTripPostResponse>(
+            var tripPartStatusResponse = await methcall.CallMethodReturnObject<GetCheckInStatusUpdate>(
                                 _httpClient: _httpClient,
                                 options: options,
                                 methodName: "PUT",
                                 url: StaffAPI_URL,
-                                inputType: fieldtripView,
+                                inputType: tripPartView,
                                 accessToken: accToken,
                                 _logger: _logger);
-            if (fieldtripPostResponse == null)
+
+            if (tripPartStatusResponse == null)
             {
-                ViewBag.error =
-                    "Error while processing your request! (Updating FieldTrip!).\n FieldTrip Not Found!";
-                return RedirectToAction("StaffFieldTrip");
+                _logger.LogInformation(
+                    "Error while processing your request! (Getting List Field Trip Participant Status!). List was Empty!: " + tripPartStatusResponse);
+                ViewBag.Error =
+                    "Error while processing your request! (Getting List Field Trip Participant Status!).\n List was Empty!";
+                return View("StaffIndex");
             }
-            if (!fieldtripPostResponse.Status)
+            else
+            if (!tripPartStatusResponse.Status)
             {
-                _logger.LogInformation("Error while processing your request: " + fieldtripPostResponse.Status + " , Error Message: " + fieldtripPostResponse.ErrorMessage);
-                ViewBag.error =
-                    "Error while processing your request! (Updating FieldTrip Post!).\n"
-                    + fieldtripPostResponse.ErrorMessage;
-                return RedirectToAction("StaffFieldTrip");
+                ViewBag.Error =
+                    "Error while processing your request! (Getting List Field Trip Participant Status!).\n"
+                    + tripPartStatusResponse.ErrorMessage;
+                return View("StaffIndex");
             }
             return RedirectToAction("StaffFieldTripDetail", "Staff", new { id = id });
         }
+    
         [HttpPost("FieldTrip/Create")]
         /*[Route("Staff/Meeting/Update/{id:int}")]*/
         public async Task<IActionResult> StaffCreateFieldTrip(FieldTripViewModel fieldtripView)

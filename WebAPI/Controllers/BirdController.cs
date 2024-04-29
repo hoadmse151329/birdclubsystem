@@ -18,12 +18,12 @@ namespace WebAPI.Controllers
             _birdService = birdService;
             _memberService = memberService;
         }
-        [HttpPost("Bird")]
+        [HttpPost("AllBirds")]
         [Authorize(Roles = "Member")]
         [ProducesResponseType(typeof(List<BirdViewModel>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> GetBirdsByMemberId([Required][FromBody] string memberId)
+        public async Task<IActionResult> GetBirdsByMemberId([FromBody] string memberId)
         {
             try
             {
