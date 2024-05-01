@@ -27,6 +27,7 @@ namespace DAL.Infrastructure
         IContestParticipantRepository ContestParticipantRepository { get; }
         IContestMediaRepository ContestMediaRepository { get; }
         IBirdRepository BirdRepository { get; }
+        INotificationRepository NotificationRepository { get; }
         void Save();
     }
 }

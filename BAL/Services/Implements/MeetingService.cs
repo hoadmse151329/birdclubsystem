@@ -20,10 +20,10 @@ namespace BAL.Services.Implements
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
-        public async Task<IEnumerable<MeetingViewModel>> GetAll()
+        public async Task<IEnumerable<MeetingViewModel>> GetAllMeetings(string? role)
         {
             string locationName;
-            var listmeet = _unitOfWork.MeetingRepository.GetAll();
+            var listmeet = await _unitOfWork.MeetingRepository.GetAllMeetings(role);
             var listmeetview = _mapper.Map<IEnumerable<MeetingViewModel>>(listmeet);
             
             foreach (var itemview in listmeetview)
@@ -49,7 +49,7 @@ namespace BAL.Services.Implements
             return listmeetview;
         }
 
-        public async Task<IEnumerable<MeetingViewModel>> GetOpenMeetings()
+        /*public async Task<IEnumerable<MeetingViewModel>> GetOpenMeetings()
         {
             string locationName;
             var listmeet = _unitOfWork.MeetingRepository.GetOpenMeetings();
@@ -76,7 +76,7 @@ namespace BAL.Services.Implements
                 }
             }
             return listmeetview;
-        }
+        }*/
 
         public IEnumerable<MeetingViewModel> GetAllByRegistrationDeadline(DateTime registrationDeadline)
         {

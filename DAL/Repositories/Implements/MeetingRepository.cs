@@ -122,9 +122,13 @@ namespace DAL.Repositories.Implements
             return meetings.ToList();
         }
 
-        public IEnumerable<Meeting> GetOpenMeetings()
+        public async Task<IEnumerable<Meeting>> GetAllMeetings(string? role)
         {
-            return _context.Meetings.AsNoTracking().Where(meet => meet.Status == "OpenRegistration").ToList();
+            if (role == "Manager" || role == "Staff")
+            {
+                return _context.Meetings.AsNoTracking().ToList();
+            }
+            else return _context.Meetings.AsNoTracking().Where(meet => meet.Status == "OpenRegistration").ToList();
         }
 
         public async Task<Meeting?> GetMeetingById(int id)

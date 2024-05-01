@@ -10,7 +10,7 @@ namespace DAL.Repositories.Interfaces
 {
     public interface IContestRepository : IRepositoryBase<Contest>
     {
-        Task<IEnumerable<Contest>> GetAllContests();
+        Task<IEnumerable<Contest>> GetAllContests(string? role);
         public Task<Contest?> GetContestById(int id);
     }
 }
