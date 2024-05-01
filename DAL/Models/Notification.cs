@@ -10,8 +10,8 @@ namespace DAL.Models
     [Table("Notification")]
     public partial class Notification
     {
-        [Column("announcementID")]
-        public int AnnouncementId { get; set; }
+        [Column("notificationId")]
+        public int NotificationId { get; set; }
         [Column("title")]
         [StringLength(255)]
         public string? Title { get; set; }

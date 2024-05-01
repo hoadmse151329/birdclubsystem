@@ -36,16 +36,15 @@ namespace WebAPI.Controllers
             _participantService = meetingParticipantService;
         }
 
-		[HttpGet("All")]
-		[HttpGet]
+		[HttpPost("All")]
 		[ProducesResponseType(typeof(List<MeetingViewModel>), StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
-		public async Task<IActionResult> GetAllMeetings()
+		public async Task<IActionResult> GetAllMeetings([FromBody] string? role)
 		{
 			try
 			{
-				var result = await _meetingService.GetAll();
+				var result = await _meetingService.GetAllMeetings(role);
 				if (result == null)
 				{
 					return NotFound(new
@@ -80,49 +79,6 @@ namespace WebAPI.Controllers
                 });
             }
 		}
-        [HttpGet("AllOpen")]
-        [ProducesResponseType(typeof(List<MeetingViewModel>), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> GetAllOpenMeetings()
-        {
-            try
-            {
-                var result = await _meetingService.GetOpenMeetings();
-                if (result == null)
-                {
-                    return NotFound(new
-                    {
-                        Status = false,
-                        ErrorMessage = "List of Meetings Not Found!"
-                    });
-                }
-
-                return Ok(new
-                {
-                    Status = true,
-                    Data = result
-                });
-            }
-            catch (Exception ex)
-            {
-                if (ex.InnerException != null)
-                {
-                    return BadRequest(new
-                    {
-                        Status = false,
-                        ErrorMessage = ex.Message,
-                        InnerExceptionMessage = ex.InnerException.Message
-                    });
-                }
-                // Log the exception if needed
-                return BadRequest(new
-                {
-                    Status = false,
-                    ErrorMessage = ex.Message
-                });
-            }
-        }
         [HttpGet("Search")]
         [ProducesResponseType(typeof(List<MeetingViewModel>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

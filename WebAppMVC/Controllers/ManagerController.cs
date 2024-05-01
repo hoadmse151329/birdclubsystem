@@ -117,8 +117,9 @@ namespace WebAppMVC.Controllers
             var listMeetResponse = await methcall.CallMethodReturnObject<GetMeetingResponseByList>(
                 _httpClient: _httpClient,
                 options: options,
-                methodName: "GET",
+                methodName: "POST",
                 url: ManagerAPI_URL,
+                inputType: role,
                 _logger: _logger);
 
             if (listMeetResponse == null || listLocationResponse == null)
@@ -417,8 +418,9 @@ namespace WebAppMVC.Controllers
             var listFieldTripResponse = await methcall.CallMethodReturnObject<GetFieldTripResponseByList>(
                 _httpClient: _httpClient,
                 options: options,
-                methodName: "GET",
+                methodName: "POST",
                 url: ManagerAPI_URL,
+                inputType: role,
                 _logger: _logger);
 
             if (listFieldTripResponse == null || listLocationResponse == null)
@@ -692,8 +694,9 @@ namespace WebAppMVC.Controllers
             var listContestResponse = await methcall.CallMethodReturnObject<GetContestResponseByList>(
                 _httpClient: _httpClient,
                 options: options,
-                methodName: "GET",
+                methodName: "POST",
                 url: ManagerAPI_URL,
+                inputType: role,
                 _logger: _logger);
 
             if (listContestResponse == null || listLocationResponse == null)

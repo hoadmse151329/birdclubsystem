@@ -15,7 +15,8 @@ namespace WebAPI.Controllers
 	public class MemberController : ControllerBase
 	{
 		private readonly IMemberService _memberService;
-		private readonly IConfiguration _config;
+        private readonly INotificationService _notificationService;
+        private readonly IConfiguration _config;
 
 		public MemberController(IMemberService memberService, IConfiguration config)
 		{
@@ -183,5 +184,49 @@ namespace WebAPI.Controllers
                 });
             }
 		}
+        [HttpPost("AllNotifications")]
+        [Authorize(Roles = "Member")]
+        [ProducesResponseType(typeof(List<NotificationViewModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetAllNotificationsByUserId([Required][FromBody] int id)
+        {
+            try
+            {
+                var result = await _notificationService.GetAllNotificationsByUserId(id);
+                if (result == null)
+                {
+                    return NotFound(new
+                    {
+                        Status = false,
+                        ErrorMessage = "Notifications Not Found!"
+                    });
+                }
+
+                return Ok(new
+                {
+                    Status = true,
+                    Data = result
+                });
+            }
+            catch (Exception ex)
+            {
+                if (ex.InnerException != null)
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = ex.Message,
+                        InnerExceptionMessage = ex.InnerException.Message
+                    });
+                }
+                // Log the exception if needed
+                return BadRequest(new
+                {
+                    Status = false,
+                    ErrorMessage = ex.Message
+                });
+            }
+        }
     }
 }

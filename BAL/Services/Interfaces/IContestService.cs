@@ -10,7 +10,7 @@ namespace BAL.Services.Interfaces
     public interface IContestService
     {
         Task<ContestViewModel?> GetById(int id);
-        Task<IEnumerable<ContestViewModel>> GetAll();
+        Task<IEnumerable<ContestViewModel>> GetAllContests(string? role);
         void Create(ContestViewModel entity);
         void Update(ContestViewModel entity);
     }

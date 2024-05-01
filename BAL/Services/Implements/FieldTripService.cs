@@ -21,10 +21,10 @@ namespace BAL.Services.Implements
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<FieldTripViewModel>> GetAll()
+        public async Task<IEnumerable<FieldTripViewModel>> GetAllFieldTrips(string? role)
         {
             string[] locationName;
-            var listtrip = await _unitOfWork.FieldTripRepository.GetAllFieldTrips();
+            var listtrip = await _unitOfWork.FieldTripRepository.GetAllFieldTrips(role);
             var listtripview = _mapper.Map<IEnumerable<FieldTripViewModel>>(listtrip);
             foreach (var itemview in listtripview)
             {

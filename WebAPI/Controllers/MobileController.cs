@@ -61,11 +61,11 @@ namespace WebAPI.Controllers
         [ProducesResponseType(typeof(List<MeetingViewModel>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> GetAllMeetings()
+        public async Task<IActionResult> GetAllMeetings(string? role)
         {
             try
             {
-                var result = await _meetingService.GetAll();
+                var result = await _meetingService.GetAllMeetings(role);
                 if (result == null)
                 {
                     return NotFound(new
