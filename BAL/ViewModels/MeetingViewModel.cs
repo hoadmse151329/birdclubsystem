@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BAL.Attributes;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -13,12 +14,16 @@ namespace BAL.ViewModels
         public int? MeetingId { get; set; }
         public string? MeetingName { get; set; }
         public string? Description { get; set; }
+        [Required]
 		[DataType(DataType.DateTime)]
 		public DateTime? RegistrationDeadline { get; set; }
-		[DataType(DataType.Date)]
+        [Required]
+        [DateGreaterThan(comparisonProperty: "RegistrationDeadline",15, "Day", ErrorMessage = "Start Date must be greater than Registration Deadline")]
+        [DataType(DataType.Date)]
 		public DateTime? StartDate { get; set; }
         [Required]
-		[DataType(DataType.Date)]
+        [DateGreaterThan(comparisonProperty: "StartDate", ErrorMessage = "End Date must be greater than Start Date")]
+        [DataType(DataType.Date)]
 		public DateTime? EndDate { get; set; }
         public int? NumberOfParticipants { get; set; }
         [Range(3,int.MaxValue,ErrorMessage = "Number of Participants Limit must be at least three people")]

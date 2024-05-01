@@ -310,7 +310,13 @@ namespace WebAppMVC.Controllers
 		{
 			AuthenAPI_URL += "/RegisterTempMember";
 
-			var authenResponse = await methcall.CallMethodReturnObject<GetAuthenResponse>(
+            if (!TryValidateModel(newmemRequest))
+            {
+                ViewBag.Error =
+                "Error while processing your request! (Registering New Member!).\n Validation Failed!";
+                return View("Register");
+            }
+            var authenResponse = await methcall.CallMethodReturnObject<GetAuthenResponse>(
 				_httpClient: client,
 				options: jsonOptions,
 				methodName: "POST",
@@ -324,8 +330,7 @@ namespace WebAppMVC.Controllers
 				ViewBag.error = "Error while registering your new account ! ";
 				return View("Register");
 			}
-
-			var responseAuth = authenResponse.Data;
+            var responseAuth = authenResponse.Data;
 
 			if (authenResponse.Status)
 			{
