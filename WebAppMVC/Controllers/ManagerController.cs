@@ -449,7 +449,7 @@ namespace WebAppMVC.Controllers
         {
             string ManagerFieldTripDetailAPI_URL = ManagerAPI_URL + "FieldTrip/AllParticipants/" + id;
             ManagerAPI_URL += "FieldTrip/" + id;
-            dynamic fieldtripDetailBigModel = new ExpandoObject();
+            dynamic fieldtripDetailViewModel = new ExpandoObject();
 
             string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
             if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
@@ -497,9 +497,12 @@ namespace WebAppMVC.Controllers
                     + fieldtripPostResponse.ErrorMessage;
                 return RedirectToAction("ManagerFieldTrip");
             }
-            fieldtripDetailBigModel.FieldTripDetails = fieldtripPostResponse.Data;
-            fieldtripDetailBigModel.FieldTripParticipants = fieldtrippartPostResponse.Data;
-            return View(fieldtripDetailBigModel);
+            fieldtripDetailViewModel.FieldTripDetails = fieldtripPostResponse.Data;
+            fieldtripDetailViewModel.FieldTripTourFeatures = fieldtripPostResponse.Data.FieldtripAdditionalDetails.Where(f => f.Type.Equals("tour_features")).ToList();
+            fieldtripDetailViewModel.FieldTripImportantToKnows = fieldtripPostResponse.Data.FieldtripAdditionalDetails.Where(f => f.Type.Equals("important_to_know")).ToList();
+            fieldtripDetailViewModel.FieldTripActivitiesAndTransportation = fieldtripPostResponse.Data.FieldtripAdditionalDetails.Where(f => f.Type.Equals("activities_and_transportation")).ToList();
+            fieldtripDetailViewModel.FieldTripParticipants = fieldtrippartPostResponse.Data;
+            return View(fieldtripDetailViewModel);
         }
         [HttpPost("FieldTrip/Update/{id:int}")]
         /*[Route("Manager/FieldTrip/Update/{id:int}")]*/
