@@ -39,7 +39,7 @@ namespace WebAppMVC.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
 		{
-            string MeetingAPI_URL = HomeAPI_URL + "Meeting/AllOpen";
+            string MeetingAPI_URL = HomeAPI_URL + "Meeting/All";
             string FieldTripAPI_URL_All = HomeAPI_URL + "FieldTrip/All";
             string ContestAPI_URL_All = HomeAPI_URL + "Contest/All";
             dynamic testmodel = new ExpandoObject();
@@ -58,6 +58,7 @@ namespace WebAppMVC.Controllers
             if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");*/
 
             string? role = HttpContext.Session.GetString("ROLE_NAME");
+            if (role == null) role = "Guest";
 
             string? usrname = HttpContext.Session.GetString("USER_NAME");
 
@@ -70,22 +71,25 @@ namespace WebAppMVC.Controllers
             var listFieldTripResponse = await methcall.CallMethodReturnObject<GetFieldTripResponseByList>(
                 _httpClient: _httpClient,
                 options: options,
-                methodName: "GET",
+                methodName: "POST",
                 url: FieldTripAPI_URL_All,
+                inputType: role,
                 _logger: _logger);
 
             var listMeetResponse = await methcall.CallMethodReturnObject<GetMeetingResponseByList>(
                 _httpClient: _httpClient,
                 options: options,
-                methodName: "GET",
+                methodName: "POST",
                 url: MeetingAPI_URL,
+                inputType: role,
                 _logger: _logger);
 
 			var listContestResponse = await methcall.CallMethodReturnObject<GetContestResponseByList>(
 				_httpClient: _httpClient,
 				options: options,
-				methodName: "GET",
+				methodName: "POST",
 				url: ContestAPI_URL_All,
+                inputType: role,
 				_logger: _logger);
 
 			if (listMeetResponse == null || listFieldTripResponse == null || listContestResponse == null)

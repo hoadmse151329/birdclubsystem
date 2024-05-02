@@ -1,6 +1,7 @@
 ﻿using DAL.Infrastructure;
 using DAL.Models;
 using DAL.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,9 +17,13 @@ namespace DAL.Repositories.Implements
         {
             _context = context;
         }
-        public async Task<IEnumerable<Contest>> GetAllContests()
+        public async Task<IEnumerable<Contest>> GetAllContests(string? role)
         {
-            return _context.Contests.ToList();
+            if (role == "Manager" || role == "Staff")
+            {
+                return _context.Contests.AsNoTracking().ToList();
+            }
+            return _context.Contests.AsNoTracking().Where(c => c.Status == "OpenRegistration").ToList();
         }
         public async Task<Contest?> GetContestById(int id)
         {

@@ -18,6 +18,7 @@ using System.Security.Policy;
 using BAL.ViewModels.Member;
 using WebAppMVC.Models.Manager;
 using BAL.ViewModels.Manager;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 // thêm crud của meeting, fieldtrip, contest.
 namespace WebAppMVC.Controllers
 {
@@ -116,8 +117,9 @@ namespace WebAppMVC.Controllers
             var listMeetResponse = await methcall.CallMethodReturnObject<GetMeetingResponseByList>(
                 _httpClient: _httpClient,
                 options: options,
-                methodName: "GET",
+                methodName: "POST",
                 url: ManagerAPI_URL,
+                inputType: role,
                 _logger: _logger);
 
             if (listMeetResponse == null || listLocationResponse == null)
@@ -145,7 +147,9 @@ namespace WebAppMVC.Controllers
         public async Task<IActionResult> ManagerMeetingDetail(int id)
         {
             string ManagerMeetingDetailAPI_URL = ManagerAPI_URL + "Meeting/AllParticipants/" + id;
+
             ManagerAPI_URL += "Meeting/" + id;
+
             dynamic meetingDetailBigModel = new ExpandoObject();
 
             string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
@@ -194,6 +198,16 @@ namespace WebAppMVC.Controllers
                     + meetPostResponse.ErrorMessage;
                return RedirectToAction("ManagerMeeting");
             }
+            /*if (TempData.ContainsKey("ModelState"))
+            {
+                var listModelState = TempData["ModelState"] as List<KeyValuePair<string,ModelStateEntry>>;
+                ModelStateDictionary newModel = new();
+                foreach(var error in listModelState)
+                {
+                    newModel.AddModelError(error.)
+                }
+                ViewData.ModelState.Merge();
+            }*/
             meetingDetailBigModel.MeetingDetails = meetPostResponse.Data;
             meetingDetailBigModel.MeetingParticipants = meetpartPostResponse.Data;
             return View(meetingDetailBigModel);
@@ -209,9 +223,10 @@ namespace WebAppMVC.Controllers
 
 			if (!TryValidateModel(meetView))
 			{
-				ViewBag.Error =
+                /*TempData["ModelState"] = ViewData.ModelState;*/
+                ViewBag.Error =
 				"Error while processing your request! (Update Meeting!).\n Validation Failed!";
-				return RedirectToAction("ManagerMeetingDetail",new { id });
+				return RedirectToAction("ManagerMeetingDetail", new {id});
 			}
 			string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
             if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
@@ -403,8 +418,9 @@ namespace WebAppMVC.Controllers
             var listFieldTripResponse = await methcall.CallMethodReturnObject<GetFieldTripResponseByList>(
                 _httpClient: _httpClient,
                 options: options,
-                methodName: "GET",
+                methodName: "POST",
                 url: ManagerAPI_URL,
+                inputType: role,
                 _logger: _logger);
 
             if (listFieldTripResponse == null || listLocationResponse == null)
@@ -678,8 +694,9 @@ namespace WebAppMVC.Controllers
             var listContestResponse = await methcall.CallMethodReturnObject<GetContestResponseByList>(
                 _httpClient: _httpClient,
                 options: options,
-                methodName: "GET",
+                methodName: "POST",
                 url: ManagerAPI_URL,
+                inputType: role,
                 _logger: _logger);
 
             if (listContestResponse == null || listLocationResponse == null)

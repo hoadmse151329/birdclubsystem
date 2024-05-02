@@ -17,9 +17,16 @@ namespace DAL.Repositories.Implements
         {
             _context = context;
         }
-        public async Task<IEnumerable<FieldTrip>> GetAllFieldTrips()
+        public async Task<IEnumerable<FieldTrip>> GetAllFieldTrips(string? role)
         {
+            if (role == "Manager" || role == "Staff")
+            {
+                return _context.FieldTrips.AsNoTracking()
+                .Include(f => f.FieldtripPictures.Where(fm => fm.Type.Equals("Spotlight")))
+                .ToList();
+            }
             return _context.FieldTrips.AsNoTracking()
+                .Where(f => f.Status == "OpenRegistration")
                 .Include(f => f.FieldtripPictures.Where(fm => fm.Type.Equals("Spotlight")))
                 .ToList();
         }

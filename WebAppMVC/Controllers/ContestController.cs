@@ -45,8 +45,8 @@ namespace WebAppMVC.Controllers
             string LocationAPI_URL_All_City = "/api/Location/AllAddressCities";
             dynamic testmodel = new ExpandoObject();
 
-
             string? role = HttpContext.Session.GetString("ROLE_NAME");
+            if (role == null) role = "Guest";
 
             string? usrname = HttpContext.Session.GetString("USER_NAME");
 
@@ -75,8 +75,9 @@ namespace WebAppMVC.Controllers
             var listContestResponse = await methcall.CallMethodReturnObject<GetContestResponseByList>(
                 _httpClient: _httpClient,
                 options: options,
-                methodName: "GET",
+                methodName: "POST",
                 url: ContestAPI_URL,
+                inputType: role,
                 _logger: _logger);
 
             if (listContestResponse == null || listLocationRoadResponse == null || listLocationDistrictResponse == null || listLocationCityResponse == null)

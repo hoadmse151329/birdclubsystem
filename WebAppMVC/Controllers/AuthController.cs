@@ -48,12 +48,24 @@ namespace WebAppMVC.Controllers
 		[HttpGet("Register")]
 		public IActionResult Register()
 		{
-			return View();
+            string? role = HttpContext.Session.GetString("ROLE_NAME");
+
+            if (role == null) role = "Guest";
+
+            TempData["ROLE_NAME"] = role;
+
+            return View();
 		}
 		[HttpGet("Login")]
 		public IActionResult Login()
 		{
-			return View();
+            string? role = HttpContext.Session.GetString("ROLE_NAME");
+
+            if (role == null) role = "Guest";
+
+            TempData["ROLE_NAME"] = role;
+
+            return View();
 		}
 
         #region Old Google Login Code (Deprecated)
@@ -310,7 +322,13 @@ namespace WebAppMVC.Controllers
 		{
 			AuthenAPI_URL += "/RegisterTempMember";
 
-			var authenResponse = await methcall.CallMethodReturnObject<GetAuthenResponse>(
+            if (!TryValidateModel(newmemRequest))
+            {
+                ViewBag.Error =
+                "Error while processing your request! (Registering New Member!).\n Validation Failed!";
+                return View("Register");
+            }
+            var authenResponse = await methcall.CallMethodReturnObject<GetAuthenResponse>(
 				_httpClient: client,
 				options: jsonOptions,
 				methodName: "POST",
@@ -324,8 +342,7 @@ namespace WebAppMVC.Controllers
 				ViewBag.error = "Error while registering your new account ! ";
 				return View("Register");
 			}
-
-			var responseAuth = authenResponse.Data;
+            var responseAuth = authenResponse.Data;
 
 			if (authenResponse.Status)
 			{

@@ -13,6 +13,7 @@ using System.Text.Encodings.Web;
 using static Org.BouncyCastle.Math.EC.ECCurve;
 using WebAppMVC.Models.Member;
 using WebAppMVC.Models.Staff;
+
 namespace WebAppMVC.Controllers
 {    
 	[Route("Staff")]
@@ -43,7 +44,26 @@ namespace WebAppMVC.Controllers
 		[HttpGet("Index")]
 		public IActionResult StaffIndex()
 		{
-			return View();
+            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
+            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+
+            string? role = HttpContext.Session.GetString("ROLE_NAME");
+            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
+            else if (!role.Equals("Staff")) return View("Index");
+
+            string? usrId = HttpContext.Session.GetString("USER_ID");
+            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
+
+            string? usrname = HttpContext.Session.GetString("USER_NAME");
+            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
+
+            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
+
+            TempData["ROLE_NAME"] = role;
+            TempData["USER_NAME"] = usrname;
+            TempData["IMAGE_PATH"] = imagepath;
+
+            return View();
 		}
 		[HttpGet("Meeting")]
 		public async Task<IActionResult> StaffMeeting([FromQuery] string search)
@@ -88,9 +108,10 @@ namespace WebAppMVC.Controllers
 			var listMeetResponse = await methcall.CallMethodReturnObject<GetMeetingResponseByList>(
 				_httpClient: _httpClient,
 				options: options,
-				methodName: "GET",
+				methodName: "POST",
 				url: StaffAPI_URL,
-				_logger: _logger);
+                inputType: role,
+                _logger: _logger);
 
 			if (listMeetResponse == null || listLocationResponse == null)
 			{
@@ -316,8 +337,9 @@ namespace WebAppMVC.Controllers
             var listFieldTripResponse = await methcall.CallMethodReturnObject<GetFieldTripResponseByList>(
                 _httpClient: _httpClient,
                 options: options,
-                methodName: "GET",
+                methodName: "POST",
                 url: StaffAPI_URL,
+                inputType: role,
                 _logger: _logger);
 
             if (listFieldTripResponse == null || listLocationResponse == null)
@@ -452,8 +474,8 @@ namespace WebAppMVC.Controllers
             return RedirectToAction("StaffFieldTripDetail", "Staff", new { id = id });
         }
     
-        [HttpPost("FieldTrip/Create")]
-        /*[Route("Staff/Meeting/Update/{id:int}")]*/
+        /*[HttpPost("FieldTrip/Create")]
+        [Route("Staff/Meeting/Update/{id:int}")]
         public async Task<IActionResult> StaffCreateFieldTrip(FieldTripViewModel fieldtripView)
         {
             StaffAPI_URL += "FieldTrip/Create";
@@ -500,7 +522,7 @@ namespace WebAppMVC.Controllers
                 return RedirectToAction("StaffFieldTrip");
             }
             return RedirectToAction("StaffFieldTrip");
-        }
+        }*/
         [HttpGet("Contest")]
         public async Task<IActionResult> StaffContest([FromQuery] string search)
         {
@@ -544,8 +566,9 @@ namespace WebAppMVC.Controllers
             var listContestResponse = await methcall.CallMethodReturnObject<GetContestResponseByList>(
                 _httpClient: _httpClient,
                 options: options,
-                methodName: "GET",
+                methodName: "POST",
                 url: StaffAPI_URL,
+                inputType: role,
                 _logger: _logger);
 
             if (listContestResponse == null || listLocationResponse == null)
@@ -678,8 +701,7 @@ namespace WebAppMVC.Controllers
             }
             return RedirectToAction("StaffContestDetail", "Staff", new { id = id });
         }
-        [HttpPost("Contest/Create")]
-        /*[Route("Staff/Contest/Update/{id:int}")]*/
+        /*[HttpPost("Contest/Create")]
         public async Task<IActionResult> StaffCreateContest(ContestViewModel contestView)
         {
             StaffAPI_URL += "Contest/Create";
@@ -726,7 +748,7 @@ namespace WebAppMVC.Controllers
                 return RedirectToAction("StaffContest");
             }
             return RedirectToAction("StaffContest");
-        }
+        }*/
         [HttpGet("ContestPoints")]
         public IActionResult StaffContestPoints()
 		{
@@ -742,7 +764,7 @@ namespace WebAppMVC.Controllers
 
             string? role = HttpContext.Session.GetString("ROLE_NAME");
             if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
+            else if (!role.Equals("Staff")) return RedirectToAction("Index", "Home");
 
             string? usrId = HttpContext.Session.GetString("USER_ID");
             if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
