@@ -498,7 +498,7 @@ namespace WebAppMVC.Controllers
                 return RedirectToAction("ManagerFieldTrip");
             }
             fieldtripDetailBigModel.FieldTripDetails = fieldtripPostResponse.Data;
-            fieldtripDetailBigModel.FieldTripParticipants = fieldtripPostResponse.Data;
+            fieldtripDetailBigModel.FieldTripParticipants = fieldtrippartPostResponse.Data;
             return View(fieldtripDetailBigModel);
         }
         [HttpPost("FieldTrip/Update/{id:int}")]
