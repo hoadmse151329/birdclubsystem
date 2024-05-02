@@ -3,12 +3,12 @@
     Layout = null;
     ViewData["Title"] = "Manager Field Trip Detail Page";
     BAL.ViewModels.FieldTripViewModel details = Model.FieldTripDetails;
-    BAL.ViewModels.FieldtripDaybyDayViewModel DayByDay = Model.FieldTripDetails;
-    BAL.ViewModels.FieldTripAdditionalDetailViewModel AddDetails = Model.FieldTripDetails;
-    BAL.ViewModels.FieldtripMediaViewModel Media = Model.FieldTripDetails;
-    BAL.ViewModels.FieldtripInclusionViewModel Inclusion = Model.FieldTripDetails;
-    BAL.ViewModels.FieldtripGettingThereViewModel Gettingthere = Model.FieldTripDetails;
-    List<BAL.ViewModels.FieldTripParticipantViewModel> parts = Model.FieldTripParticipants;
+    List<BAL.ViewModels.FieldtripDaybyDayViewModel>? DayByDay = details.FieldtripDaybyDays;
+    List<BAL.ViewModels.FieldTripAdditionalDetailViewModel>? AddDetails = details.FieldtripAdditionalDetails;
+    List<BAL.ViewModels.FieldtripMediaViewModel>? Media = details.FieldtripPictures;
+    List < BAL.ViewModels.FieldtripInclusionViewModel>? Inclusion = details.FieldtripInclusions;
+    BAL.ViewModels.FieldtripGettingThereViewModel Gettingthere = details.FieldtripGettingTheres;
+    List<BAL.ViewModels.FieldTripParticipantViewModel>? parts = Model.FieldTripParticipants;
 }
 <html lang="en">
 <head>
@@ -177,7 +177,7 @@
                         <div class="row">
                             <div class="card profile col-12 mb-4">
                                 <div class="card-header">
-                                    <h4>Meeting Information</h4>
+                                    <h4>Fieldtrip Information</h4>
                                     <div class="edit-info">
                                         <i class='bx bxs-edit-alt' data-toggle="modal" data-target="#editprofile"></i>
                                     </div>
@@ -233,6 +233,14 @@
                                     </div>
                                     <div class="row mb-sm-2">
                                         <div class="col-sm-5 text-sm-right">
+                                            <span>Fee:</span>
+                                        </div>
+                                        <div class="col-sm-7 text-sm-left">
+                                            <span>@details.Fee</span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-sm-2">
+                                        <div class="col-sm-5 text-sm-right">
                                             <span>Maximum Participations:</span>
                                         </div>
                                         <div class="col-sm-7 text-sm-left">
@@ -277,22 +285,27 @@
                         <div class="row">
                             <div class="card profile col-12 mb-4">
                                 <div class="card-header">
-                                    <h4>AddDetails</h4>
+                                    <h4>Add Details</h4>
                                     <div class="edit-info">
-                                        <i class='bx bxs-edit-alt' data-toggle="modal" data-target="#editrates"></i>
+                                        <i class='bx bxs-edit-alt' data-toggle="modal" data-target="#editdetails"></i>
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    @foreach (var rate in details.FieldtripAdditionalDetails)
-                                    {
-                                        @* <div class="row mb-sm-2">
-                                            <div class="col-sm-5 text-sm-right">
-                                                <span>@rate.RateType</span>
-                                            </div>
-                                            <div class="col-sm-7 text-sm-left">
-                                                <span>@rate.Price</span>
-                                            </div>
-                                        </div>   *@                                      
+                                    @{
+                                        if(details.FieldtripAdditionalDetails != null && details.FieldtripAdditionalDetails.Count > 0)
+                                        {
+                                            @foreach (var addDetail in details.FieldtripAdditionalDetails)
+                                            {
+                                                <div class="row mb-sm-2">
+                                                    <div class="col-sm-5 text-sm-right">
+                                                        <span>@addDetail</span>
+                                                    </div>
+                                                    <div class="col-sm-7 text-sm-left">
+                                                        <span>@addDetail</span>
+                                                    </div>
+                                                </div>
+                                            }
+                                        }
                                     }
                                 </div>
                             </div>
@@ -306,11 +319,49 @@
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    <div class="row mb-sm-2">
+                                    @{
+                                        if(details.FieldtripGettingTheres != null)
+                                        {
+                                            <div class="row">
+                                                <div class="col-md-5 text-md-right">
+                                                    <label for="meeting-name">Start & End:</label>
+                                                </div>
+                                                <div class="col-md-7">
+                                                    <span>@details.FieldtripGettingTheres.GettingThereStartEnd</span>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-5 text-md-right">
+                                                    <label for="meeting-name">Flight:</label>
+                                                </div>
+                                                <div class="col-md-7">
+                                                    <span>@details.FieldtripGettingTheres.GettingThereFlight</span>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-5 text-md-right">
+                                                    <label for="meeting-name">Transportation:</label>
+                                                </div>
+                                                <div class="col-md-7">
+                                                    <span>@details.FieldtripGettingTheres.GettingThereTransportation</span>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-5 text-md-right">
+                                                    <label for="meeting-name">Accommodation:</label>
+                                                </div>
+                                                <div class="col-md-7">
+                                                    <span>@details.FieldtripGettingTheres.GettingThereAccommodation</span>
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+                                    @* <div class="row mb-sm-2">
                                         <div class="col-sm-12 text-sm">
                                             <span>@details.FieldtripGettingTheres.GettingThereAccommodation</span>
                                         </div>
-                                    </div>
+                                    </div> *@
                                 </div>
                             </div>
                         </div>
@@ -323,19 +374,30 @@
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    @foreach (var day in details.FieldtripDaybyDays)
-                                    {
-                                        <div class="row mb-sm-2">
-                                            <div class="col-sm-2 text-sm-left">
-                                                <span>@day.Day</span>
-                                            </div>
-                                            <div class="col-sm-7 text-sm">
-                                                <span>@day.Description</span>
-                                            </div>
-                                            <div class="col-sm-3 text-sm-right">
-                                                <span>@day.PictureId</span>
-                                            </div>
-                                        </div>
+                                    @{
+                                        if(details.FieldtripDaybyDays != null && details.FieldtripDaybyDays.Count > 0)
+                                        {
+                                            foreach (var day in details.FieldtripDaybyDays)
+                                            {
+                                                <div class="row mb-sm-2">
+                                                    <div class="col-sm-2 text-sm-left">
+                                                        <span>@day.Day</span>
+                                                    </div>
+                                                    <div class="col-sm-7 text-sm">
+                                                        <span>@day.MainDestination</span>
+                                                    </div>
+                                                    <div class="col-sm-7 text-sm">
+                                                        <span>@day.Accommodation</span>
+                                                    </div>
+                                                    <div class="col-sm-7 text-sm">
+                                                        <span>@day.MealsAndDrinks</span>
+                                                    </div>
+                                                    <div class="col-sm-7 text-sm">
+                                                        <span>@day.Description</span>
+                                                    </div>
+                                                </div>
+                                            }
+                                        }
                                     }
                                 </div>
                             </div>
@@ -349,19 +411,30 @@
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    @foreach (var inc in details.FieldtripInclusions)
-                                    {
-                                        <div class="row mb-sm-2">
-                                            <div class="col-sm-4 text-sm-left">
-                                                <span>@inc.Title</span>
-                                            </div>
-                                            <div class="col-sm-3 text-sm">
-                                                <span>@inc.Type</span>
-                                            </div>
-                                            <div class="col-sm-5 text-sm-right">
-                                                <span>@inc.InclusionText</span>
-                                            </div>
-                                        </div>
+                                    @{
+                                        if(details.FieldtripInclusions != null && details.FieldtripInclusions.Count > 0)
+                                        {
+                                            @foreach (var inc in details.FieldtripInclusions)
+                                            {
+                                                <div class="row mb-sm-2">
+                                                    <div class="col-sm-4 text-sm-left">
+                                                        <span>@inc.Title</span>
+                                                    </div>
+                                                    <div class="col-sm-5 text-sm-right">
+                                                        <span>@inc.InclusionText</span>
+                                                    </div>
+                                                    <div class="col-sm-3 text-sm">
+                                                        <span>@inc.Type</span>
+                                                    </div>
+                                                    <div class="col-sm-5 text-sm-right">
+                                                        <span>@inc.InclusionText</span>
+                                                    </div>
+                                                    <div class="col-sm-5 text-sm-right">
+                                                        <span>@inc.Inclusiontype</span>
+                                                    </div>
+                                                </div>
+                                            }
+                                        }
                                     }
                                 </div>
                             </div>
@@ -375,16 +448,21 @@
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    @foreach (var pic in details.FieldtripPictures)
-                                    {
-                                        <div class="row mb-sm-6">
-                                            <div class="col-sm-4 text-sm-left">
-                                                <span>@pic.Image</span>
-                                            </div>
-                                            <div class="col-sm-6 text-sm">
-                                                <span>@pic.Description</span>
-                                            </div>
-                                        </div>
+                                    @{
+                                        if (details.FieldtripPictures != null && details.FieldtripPictures.Count > 0)
+                                        {
+                                            @foreach (var pic in details.FieldtripPictures)
+                                            {
+                                                <div class="row mb-sm-6">
+                                                    <div class="col-sm-4 text-sm-left">
+                                                        <span>@pic.Image</span>
+                                                    </div>
+                                                    <div class="col-sm-6 text-sm">
+                                                        <span>@pic.Description</span>
+                                                    </div>
+                                                </div>
+                                            }
+                                        }
                                     }
                                 </div>
                             </div>
@@ -559,11 +637,11 @@
                 <div class="modal-header">
                     <h4 class="modal-title">Edit Field Trip</h4>
                 </div>
-                <form asp-action="ManagerUpdateFieldTripDetail" asp-controller="Manager" method="post" asp-route-id="@details.TripId" class="form-group">
+                <form asp-action="ManagerUpdateFieldTripDetail" asp-controller="Manager" method="post" asp-route-id="@details.TripId" asp-route-id="@DayByDay" class="form-group">
                     <div class="modal-body">
                         <div class="row justify-content-center">
                             <div class="col-12 col-md-8">
-                                <div class="form-group row">
+                                @* <div class="form-group row">
                                     <label asp-for="@DayByDay.Day" class="col-sm-4 col-form-label">Day</label>
                                     <div class="col-sm-8">
                                         <input asp-for="@DayByDay.Day" id="Day" type="text" name="Day"
@@ -589,7 +667,7 @@
                                         <span asp-validation-for="@DayByDay.PictureId" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                     </div>
-                                </div>
+                                </div> *@
                         </div>
                     </div>
                     <div class="modal-footer justify-content-center">
@@ -610,7 +688,7 @@
                     <div class="modal-body">
                         <div class="row justify-content-center">
                             <div class="col-12 col-md-8">
-                                <div class="form-group row">
+                                @* <div class="form-group row">
                                     <label asp-for="@Inclusion.Title" class="col-sm-4 col-form-label">Title</label>
                                     <div class="col-sm-8">
                                         <input asp-for="@Inclusion.Title" id="Title" type="text" name="Title"
@@ -636,7 +714,7 @@
                                         <span asp-validation-for="@Inclusion.InclusionText" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                     </div>
-                                </div>
+                                </div> *@
                             </div>
                         </div>
                     </div>
@@ -658,7 +736,7 @@
                     <div class="modal-body">
                         <div class="row justify-content-center">
                             <div class="col-12 col-md-8">
-                                <div class="form-group row">
+                                @* <div class="form-group row">
                                     <label asp-for="@Media.Image" class="col-sm-4 col-form-label">Image</label>
                                     <div class="col-sm-8">
                                         <input asp-for="@Media.Image" id="Image" name="@Media.Image"
@@ -675,7 +753,7 @@
                                                value="@Media.Description" class="form-control" required>
                                         <span asp-validation-for="@Media.Description" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                    </div>
+                                    </div> *@
                         </div>
                     </div>
                     <div class="modal-footer justify-content-center">
