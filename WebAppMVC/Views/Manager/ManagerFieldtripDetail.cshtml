@@ -279,20 +279,23 @@
                                 <div class="card-header">
                                     <h4>AddDetails</h4>
                                     <div class="edit-info">
-                                        <i class='bx bxs-edit-alt' data-toggle="modal" data-target="#editrates"></i>
+                                        <i class='bx bxs-edit-alt' data-toggle="modal" data-target="#editadddetail"></i>
                                     </div>
                                 </div>
                                 <div class="card-body">
                                     @foreach (var rate in details.FieldtripAdditionalDetails)
                                     {
-                                        @* <div class="row mb-sm-2">
+                                         <div class="row mb-sm-2">
                                             <div class="col-sm-5 text-sm-right">
-                                                <span>@rate.RateType</span>
+                                                <span>@rate.Title</span>
                                             </div>
                                             <div class="col-sm-7 text-sm-left">
-                                                <span>@rate.Price</span>
+                                                <span>@rate.Description</span>
                                             </div>
-                                        </div>   *@                                      
+                                            <div class="col-sm-7 text-sm-left">
+                                                <span>@rate.Type</span>
+                                            </div>
+                                        </div>                                         
                                     }
                                 </div>
                             </div>
@@ -307,6 +310,15 @@
                                 </div>
                                 <div class="card-body">
                                     <div class="row mb-sm-2">
+                                        <div class="col-sm-12 text-sm">
+                                            <span>@details.FieldtripGettingTheres.GettingThereStartEnd</span>
+                                        </div>
+                                        <div class="col-sm-12 text-sm">
+                                            <span>@details.FieldtripGettingTheres.GettingThereFlight</span>
+                                        </div>
+                                        <div class="col-sm-12 text-sm">
+                                            <span>@details.FieldtripGettingTheres.GettingThereTransportation</span>
+                                        </div>
                                         <div class="col-sm-12 text-sm">
                                             <span>@details.FieldtripGettingTheres.GettingThereAccommodation</span>
                                         </div>
@@ -325,17 +337,18 @@
                                 <div class="card-body">
                                     @foreach (var day in details.FieldtripDaybyDays)
                                     {
-                                        <div class="row mb-sm-2">
-                                            <div class="col-sm-2 text-sm-left">
-                                                <span>@day.Day</span>
-                                            </div>
                                             <div class="col-sm-7 text-sm">
                                                 <span>@day.Description</span>
                                             </div>
                                             <div class="col-sm-3 text-sm-right">
-                                                <span>@day.PictureId</span>
+                                                <span>@day.MainDestination</span>
                                             </div>
-                                        </div>
+                                            <div class="col-sm-3 text-sm-right">
+                                                <span>@day.Accommodation</span>
+                                            </div>
+                                            <div class="col-sm-3 text-sm-right">
+                                                <span>@day.MealsAndDrinks</span>
+                                            </div>                                            
                                     }
                                 </div>
                             </div>
@@ -361,6 +374,9 @@
                                             <div class="col-sm-5 text-sm-right">
                                                 <span>@inc.InclusionText</span>
                                             </div>
+                                            <div class="col-sm-5 text-sm-right">
+                                                <span>@inc.Inclusiontype</span>
+                                            </div>
                                         </div>
                                     }
                                 </div>
@@ -383,6 +399,9 @@
                                             </div>
                                             <div class="col-sm-6 text-sm">
                                                 <span>@pic.Description</span>
+                                            </div>
+                                            <div class="col-sm-6 text-sm">
+                                                <span>@pic.Type</span>
                                             </div>
                                         </div>
                                     }
@@ -409,6 +428,7 @@
                                             <tr>
                                                 <td>@part.ParticipantNo</td>
                                                 <td>@part.MemberName</td>
+                                                <td>@part.CheckInStatus</td>
                                             </tr>
                                         }
                                         <tr>
@@ -464,17 +484,19 @@
                                 </div>
                                 <div class="form-group row">
                                 <label asp-for="@details.Status" class="col-sm-4 col-form-label">Status:</label>
-                                    <div class="col-sm-8">
-                                    <input asp-for="@details.Status" id="Status" type="text" name="Status"
-                                            value="@details.Status" class="form-control" required>
-                                    <span asp-validation-for="@details.Status" id="error_message"
-                                            class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                    <div class="input-group mb-3">
+                                    <select asp-for="@details"  class="custom-select" name="status" id="status">
+                                        <option value="">Status</option>
+                                    </select>
                                     </div>
                                 </div>
+                                <div class="form-group row">
+                                <label asp-for="@details.NumberOfParticipantsLimit" class="col-sm-4 col-form-label">Number Of Participants Limit:</label>
                                 <input asp-for="@details.NumberOfParticipantsLimit" id="NumberOfParticipantsLimit" type="number" name="NumberOfParticipantsLimit"
                                        value="@details.NumberOfParticipantsLimit" class="form-control" required hidden>
                                 <span asp-validation-for="@details.NumberOfParticipantsLimit" id="error_message"
                                       class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -486,7 +508,7 @@
             </div>
         </div>
         </div>
-        <div id="editrates" class="modal fade" role="dialog">
+        <div id="editadddetail" class="modal fade" role="dialog">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
             <div class="modal-content modal-addRoom">
                 <div class="modal-header">
@@ -496,24 +518,32 @@
                     <div class="modal-body">
                         <div class="row justify-content-center">
                             <div class="col-12 col-md-8">
-                                @* <div class="form-group row">
-                                    <label asp-for="@AddDetails.RateType" class="col-sm-4 col-form-label">RateType</label>
+                                 <div class="form-group row">
+                                    <label asp-for="@AddDetails.Title" class="col-sm-4 col-form-label">Title</label>
                                     <div class="col-sm-8">
-                                        <input asp-for="@AddDetails.RateType" id="RateType" type="text" name="RateType"
-                                               value="@AddDetails.RateType" class="form-control" required>
-                                        <span asp-validation-for="@AddDetails.RateType" id="error_message"
+                                        <input asp-for="@AddDetails.Title" id="Title" type="text" name="Title"
+                                               value="@AddDetails.Title" class="form-control" required>
+                                        <span asp-validation-for="@AddDetails.Title" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label asp-for="@AddDetails.Price" class="col-sm-4 col-form-label">Price</label>
+                                    <label asp-for="@AddDetails.Description" class="col-sm-4 col-form-label">Price</label>
                                     <div class="col-sm-8">
-                                        <input asp-for="@AddDetails.Price" id="Price" type="text" name="Price"
-                                               value="@AddDetails.Price" class="form-control" required>
-                                        <span asp-validation-for="@AddDetails.Price" id="error_message"
+                                        <input asp-for="@AddDetails.Description" id="Description" type="text" name="Description"
+                                               value="@AddDetails.Description" class="form-control" required>
+                                        <span asp-validation-for="@AddDetails.Description" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                     </div>
-                                </div> *@
+                                </div>
+                                <div class="form-group row">
+                                    <label asp-for="@AddDetails.Type" class="col-sm-4 col-form-label">Type</label>
+                                    <div class="input-group mb-3">
+                                    <select asp-for="@AddDetails" class="custom-select" name="Type" id="Type">
+                                        <option value="">Type</option>
+                                    </select>
+                                    </div>
+                                </div>
                         </div>
                     </div>
                     <div class="modal-footer justify-content-center">
@@ -534,6 +564,33 @@
                     <div class="modal-body">
                         <div class="row justify-content-center">
                             <div class="col-12 col-md-8">
+                                <div class="form-group row">
+                                    <label asp-for="@Gettingthere.GettingThereStartEnd" class="col-sm-4 col-form-label">Getting There Start End</label>
+                                    <div class="col-sm-8">
+                                        <input asp-for="@Gettingthere.GettingThereStartEnd" id="GettingThereStartEnd" type="text" name="GettingThereStartEnd"
+                                               value="@Gettingthere.GettingThereStartEnd" class="form-control" required>
+                                        <span asp-validation-for="@Gettingthere.GettingThereStartEnd" id="error_message"
+                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label asp-for="@Gettingthere.GettingThereFlight" class="col-sm-4 col-form-label">Getting There Flight</label>
+                                    <div class="col-sm-8">
+                                        <input asp-for="@Gettingthere.GettingThereFlight" id="GettingThereFlight" type="text" name="GettingThereFlight"
+                                               value="@Gettingthere.GettingThereFlight" class="form-control" required>
+                                        <span asp-validation-for="@Gettingthere.GettingThereFlight" id="error_message"
+                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label asp-for="@Gettingthere.GettingThereTransportation" class="col-sm-4 col-form-label">Getting There Transportation</label>
+                                    <div class="col-sm-8">
+                                        <input asp-for="@Gettingthere.GettingThereTransportation" id="GettingThereTransportation" type="text" name="GettingThereTransportation"
+                                               value="@Gettingthere.GettingThereTransportation" class="form-control" required>
+                                        <span asp-validation-for="@Gettingthere.GettingThereTransportation" id="error_message"
+                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                    </div>
+                                </div>
                                 <div class="form-group row">
                                     <label asp-for="@Gettingthere.GettingThereAccommodation" class="col-sm-4 col-form-label">GettingThereAccommodation</label>
                                     <div class="col-sm-8">
@@ -564,15 +621,6 @@
                         <div class="row justify-content-center">
                             <div class="col-12 col-md-8">
                                 <div class="form-group row">
-                                    <label asp-for="@DayByDay.Day" class="col-sm-4 col-form-label">Day</label>
-                                    <div class="col-sm-8">
-                                        <input asp-for="@DayByDay.Day" id="Day" type="text" name="Day"
-                                               value="@DayByDay.Day" class="form-control" required>
-                                        <span asp-validation-for="@DayByDay.Day" id="error_message"
-                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
                                     <label asp-for="@DayByDay.Description" class="col-sm-4 col-form-label">Description</label>
                                     <div class="col-sm-8">
                                         <input asp-for="@DayByDay.Description" id="Description" type="text" name="Description"
@@ -582,11 +630,29 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label asp-for="@DayByDay.PictureId" class="col-sm-4 col-form-label">Picture ID</label>
+                                    <label asp-for="@DayByDay.MainDestination" class="col-sm-4 col-form-label">MainDestination</label>
                                     <div class="col-sm-8">
-                                        <input asp-for="@DayByDay.PictureId" id="PictureId" type="text" name="PicturId"
-                                               value="@DayByDay.PictureId" class="form-control" required>
-                                        <span asp-validation-for="@DayByDay.PictureId" id="error_message"
+                                        <input asp-for="@DayByDay.MainDestination" id="MainDestination" type="text" name="Main Destination"
+                                               value="@DayByDay.MainDestination" class="form-control" required>
+                                        <span asp-validation-for="@DayByDay.MainDestination" id="error_message"
+                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label asp-for="@DayByDay.Accommodation" class="col-sm-4 col-form-label">Accommodation</label>
+                                    <div class="col-sm-8">
+                                        <input asp-for="@DayByDay.Accommodation" id="Accommodation" type="text" name="Accommodation"
+                                               value="@DayByDay.Accommodation" class="form-control" required>
+                                        <span asp-validation-for="@DayByDay.Accommodation" id="error_message"
+                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label asp-for="@DayByDay.MealsAndDrinks" class="col-sm-4 col-form-label">Meals And Drinks</label>
+                                    <div class="col-sm-8">
+                                        <input asp-for="@DayByDay.MainDestination" id="MainDestination" type="text" name="MealsAndDrinks"
+                                               value="@DayByDay.MealsAndDrinks" class="form-control" required>
+                                        <span asp-validation-for="@DayByDay.MealsAndDrinks" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                     </div>
                                 </div>
@@ -621,13 +687,18 @@
                                 </div>                                                     
                                 <div class="form-group row">
                                     <label asp-for="@Inclusion.Type" class="col-sm-4 col-form-label">Type</label>
-                                    <div class="col-sm-8">
-                                        <input asp-for="@Inclusion.Type" id="Type" type="text" name="Type"
-                                               value="@Inclusion.Type" class="form-control" required>
-                                        <span asp-validation-for="@Inclusion.Type" id="error_message"
-                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                    </div>
-                                </div>                               
+                                    <div class="input-group mb-3">
+                                    <select asp-for="@Inclusion"  class="custom-select" name="Type" id="Type">
+                                        <option value="">Type</option>
+                                    </select>
+                                </div>       
+                                <div class="form-group row">
+                                    <label asp-for="@Inclusion.Inclusiontype" class="col-sm-4 col-form-label">Inclusion Type</label>
+                                    <div class="input-group mb-3">
+                                    <select asp-for="@Inclusion"  class="custom-select" name="Inclusiontype" id="Inclusiontype">
+                                        <option value="">Inclusion Type</option>
+                                    </select>
+                                </div>
                                 <div class="form-group row">
                                     <label asp-for="@Inclusion.InclusionText" class="col-sm-4 col-form-label">InclusionText</label>
                                     <div class="col-sm-8">
@@ -668,7 +739,8 @@
                                         <span asp-validation-for="@Media.Image" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                     </div>
-                                </div>  
+                                </div>
+                                <div class="form-group row">
                                 <label asp-for="@Media.Description" class="col-sm-4 col-form-label">Description</label>
                                     <div class="col-sm-8">
                                         <input asp-for="@Media.Description" id="Description" type="text" name="Description"
@@ -676,6 +748,15 @@
                                         <span asp-validation-for="@Media.Description" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                     </div>
+                                </div>
+                                <div class="form-group row">
+                                <label asp-for="@Media.Type" class="col-sm-4 col-form-label">Type</label>
+                                    <div class="input-group mb-3">
+                                    <select asp-for="@Media"  class="custom-select" name="Type" id="Type">
+                                        <option value="">Type</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer justify-content-center">

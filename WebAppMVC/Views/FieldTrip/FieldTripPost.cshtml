@@ -33,7 +33,7 @@
     <link rel="stylesheet" href="https://unpkg.com/filepond-plugin-file-poster/dist/filepond-plugin-file-poster.css" >
         <!-- main CSS -->
         <link rel="stylesheet" href="~/css/main.css">
-            <link rel="stylesheet" href="~/css/FieldTrip.css">
+        <link rel="stylesheet" href="~/css/FieldTrip.css">
           
     <!-- main CSS -->
 </head>
@@ -138,25 +138,25 @@
                             <li class="nav-item">
                                 <a class="nav-link active" data-toggle="tab" href="#home1">
                                     <i class='bx bx-home-alt-2'></i>
-                                    <span>Overview</span>
+                                    <span class="title">Overview</span>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" data-toggle="tab" href="#home2">
                                     <i class='bx bx-home-alt-2'></i>
-                                    <span>Day By Day</span>
+                                    <span class="title">Day By Day</span>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" data-toggle="tab" href="#home5">
                                     <i class='bx bx-home-alt-2'></i>
-                                    <span>Inclusions</span>
+                                    <span class="title">Inclusions</span>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" data-toggle="tab" href="#home6">
                                     <i class='bx bx-home-alt-2'></i>
-                                    <span>Getting There</span>
+                                    <span class="title">Getting There</span>
                                 </a>
                             </li>
                         </ul>
@@ -171,30 +171,10 @@
                                             {
                                                 <div class="col col-12 col-t-6 item">
                                                     <h4>@detail.Title</h4>
-                                                    <p>@detail.Description</p>
+                                                    <p class="p">@detail.Description</p>
                                                 </div>
                                             }
                                         }
-                                        @* <div class="svg-box">
-                                        <img src="https://cfstatic.safaribookings.com/img/svg/icons-red/icon-accomodation-mid.svg" alt="">
-                                        </div> *@
-                                        @* <div class="svg-box">
-                                        <img src="https://cfstatic.safaribookings.com/img/svg/icons-red/icon-group-small.svg" alt="">
-                                        </div> *@
-                                        @* <div class="svg-box">
-                                        <img src="https://cfstatic.safaribookings.com/img/svg/icons-red/icon-departure-any-day.svg" alt="">
-                                        </div> *@
-
-                                        @* <div class="svg-box">
-                                        <img src="https://cfstatic.safaribookings.com/img/svg/icons-red/icon-customize-no.svg" alt="">
-                                        </div> *@
-                                        @* <div class="svg-box">
-                                        <img src="https://cfstatic.safaribookings.com/img/svg/icons-red/icon-solo-travelers-yes.svg" alt="">
-                                        </div> *@
-                                        @* <div class="svg-box">
-                                        <img src="https://cfstatic.safaribookings.com/img/svg/icons-red/icon-age-plus.svg" alt="">
-                                        <span>3</span>
-                                        </div> *@
                                     </div>
                                 </div>
                                 <div class="tour__content__block tour__content__block--activities avoid-break-p">
@@ -204,61 +184,10 @@
                                             foreach (var detail in activitiesAndTransportation)
                                             {
                                                 <li>
-                                                    <span><h4><b>@detail.Title:</b></h4> @detail.Description</span>
+                                                    <h4>@detail.Title:</h4> <p>@detail.Description</p>
                                                 </li>
                                             }
-                                        }
-                                        @* <li>
-                                            <div>
-                                                <picture>
-                                                    <img src="https://cfstatic.safaribookings.com/img/svg/icons-red/icon-activities.svg" alt="">
-                                                </picture>
-                                            </div>
-                                            <span>
-                                                Activities: <b>game drives</b>, <b> walking safaris</b> <span>(with an armed guide)</span> &amp; <b> specialized birding</b> <span>(with a professional birding guide)</span>
-                                            </span>
-                                        </li>
-
-                                        <li>
-                                            <div>
-                                                <picture>
-                                                    <img src="https://cfstatic.safaribookings.com/img/svg/icons-red/icon-tour-selfdriving.svg" alt="">
-                                                </picture>
-                                            </div>
-                                            <span>
-                                                Game drives: <a href="#" class="help image textual" data-val="https://cfstatic.safaribookings.com/images/vehicles/normal-4x4-vehicle.jpg" title="">normal 4x4 vehicle</a> &amp; minivan
-                                            </span>
-                                        </li>
-                                        <li>
-                                            <div>
-                                                <picture>
-                                                    <img src="https://cfstatic.safaribookings.com/img/svg/icons-red/icon-road.svg" alt="">
-                                                </picture>
-                                            </div>
-                                            <span>
-                                                Getting around: minivan, normal 4x4 vehicle &amp; hiking/walking
-                                            </span>
-                                        </li>
-                                        <li class="hide-544">
-                                            <div>
-                                                <picture>
-                                                    <img src="https://cfstatic.safaribookings.com/img/svg/icons-red/icon-internationaal-flight.svg" alt="">
-                                                </picture>
-                                            </div>
-                                            <span>
-                                                Book your own international flights when using this operator <a href="#" title="If a tour operator cannot book your international flights, they will pick you up from the airport and take care of all further transportation, in most cases. All you'll have to do is book the flight yourself using a website such as Skyscanner.com. Please be sure to contact the operator upfront to confirm availability, dates and pick-up service." class="help">help</a>
-                                            </span>
-                                        </li>
-                                        <li>
-                                            <div>
-                                                <picture>
-                                                    <img src="https://cfstatic.safaribookings.com/img/svg/icons-red/icon-airport-transfer.svg" alt="">
-                                                </picture>
-                                            </div>
-                                            <span>
-                                                A <b>transfer</b> from and back to the airport is included
-                                            </span>
-                                        </li> *@
+                                        }                                        
                                     </ul>
                                 </div>
                                 <div class="tour__content__block tour__content__block--accommodations avoid-break-p">
@@ -283,11 +212,9 @@
                                                         <div class="gallery__preview--row">
                                                             @foreach(var picture in day.Media)
                                                             {
-                                                                <a rel="overlay nofollow">
                                                                     <div>
                                                                         <img class="" src="@picture.Image" alt="">
                                                                     </div>
-                                                                </a>
                                                             }
                                                         </div>
                                                     </div>
@@ -299,135 +226,6 @@
                                                 </li>
                                             }
                                         }
-                                        <!-- #region name -->
-                                        @*
-                                        <li>
-                                            <div>1</div>
-                                            <div>
-                                                <a href="https://kakakuona-resort.business.site/" target="_blank" rel="noopener nofollow">
-                                                    Kakakuona Resort
-                                                </a>
-                                                <span class="txt--small">
-                                                    Budget resort in or near Lushoto (Usambaras)
-                                                    <span class="hide-t txt--italic">
-                                                        – All Meals Included
-                                                    </span>
-                                                </span>
-
-
-
-
-
-                                            </div>
-                                            <div class="txt--small">
-                                                <div class="hide show-t">
-                                                    All Meals Included
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div>2</div>
-                                            <div>
-                                                <a href="https://magoroto.com" target="_blank" rel="noopener nofollow">
-                                                    Magoroto Forest Estate (Camping Tents)
-                                                </a>
-                                                <span class="txt--small">
-                                                    Budget tented camp inside Magoroto Forest
-                                                    <span class="hide-t txt--italic">
-                                                        – All Meals Included
-                                                    </span>
-                                                </span>
-
-
-
-
-
-                                            </div>
-                                            <div class="txt--small">
-                                                <div class="hide show-t">
-                                                    All Meals Included
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div>3</div>
-                                            <div>
-                                                <a href="https://www.amaniforestcamp.com" target="_blank" rel="noopener nofollow">
-                                                    Amani Forest Camp
-                                                </a>
-                                                <span class="txt--small">
-                                                    Mid-range lodge inside Amani NR (Usambaras)
-                                                    <span class="hide-t txt--italic">
-                                                        – All Meals Included
-                                                    </span>
-                                                </span>
-
-
-
-
-
-                                                <div class="gallery__preview--row">
-                                                    <a href="#photo1" class="" data-gallery="https://www.safaribookings.com/a2581/photos" rel="overlay nofollow">
-                                                        <div>
-                                                            <img class="" src="https://cloudfront.safaribookings.com/accommodations/photos/thumbs/2581_16648833154172_.jpeg" alt="">
-                                                        </div>
-                                                    </a>
-                                                    <a href="#photo2" class="" data-gallery="https://www.safaribookings.com/a2581/photos" rel="overlay nofollow">
-                                                        <div>
-                                                            <img class="" src="https://cloudfront.safaribookings.com/accommodations/photos/thumbs/2581_1664883565102_ama3r.jpeg" alt="">
-                                                        </div>
-                                                    </a>
-                                                    <a href="#photo3" class="more-photos" data-gallery="https://www.safaribookings.com/a2581/photos" rel="overlay nofollow">
-                                                        <div>
-                                                            <img class="" src="https://cloudfront.safaribookings.com/accommodations/photos/thumbs/2581_16648835651177_ama2r.jpeg" alt="">
-                                                            <span>
-                                                                <b>+5</b>
-                                                                Photos
-                                                            </span>
-                                                        </div>
-                                                    </a>
-                                                    <a href="#photo4" class="more-photos" data-gallery="https://www.safaribookings.com/a2581/photos" rel="overlay nofollow">
-                                                        <div>
-                                                            <img class="" src="https://cloudfront.safaribookings.com/accommodations/photos/thumbs/2581_16648833154175_ama6.jpeg" alt="">
-                                                            <span>
-                                                                <b>+4</b>
-                                                                Photos
-                                                            </span>
-                                                        </div>
-                                                    </a>
-                                                </div>
-
-
-
-                                            </div>
-                                            <div class="txt--small">
-                                                <div class="hide show-t">
-                                                    All Meals Included
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div>4</div>
-                                            <div>
-                                                End of tour<br><span class="no-accommodation txt--small txt--xgrey">(No accommodation)</span>
-                                                <span class="txt--small">
-                                                    <span class="hide-t txt--italic">
-                                                        – Breakfast &amp; Lunch Included
-                                                    </span>
-                                                </span>
-
-
-
-
-
-                                            </div>
-                                            <div class="txt--small">
-                                                <div class="hide show-t">
-                                                    Breakfast &amp; Lunch Included
-                                                </div>
-                                            </div>
-                                        </li> *@
-                                    <!-- #endregion -->
                                     </ul>
                                 </div>
                                 <div class="tour__content__block tour__content__block--rates avoid-break-p">
@@ -437,7 +235,7 @@
                                             @foreach (var imtk in importantToKnow)
                                             {
                                                 <li>
-                                                    <span><h4><b>@imtk.Title:</b></h4> @imtk.Description</span>
+                                                    <h4>@imtk.Title:</h4><p>@imtk.Description</p>
                                                 </li>
                                             }
                                         }
@@ -449,7 +247,7 @@
                                     <div class="day">
                                         <div class="day__header  day__header--text   startend  ">
                                             <div class="caption  ">
-                                                <h3 class="hide-t"><i class="sbi sbi--map-pin"></i><span>Arrival <span class="txt--small hide show-ti">(See Getting There for more details)</span></span></h3><h3 class="no-title hide show-t"></h3><h2 class="hide show-t startend"><i class="sbi sbi--map-pin"></i><span>Arrival <span class="txt--small hide show-ti">(See <a href="https://www.safaribookings.com/gettingthere/t56551" class="tablink scrolltop" rel="nofollow">Getting There</a> for more details)</span></span></h2>
+                                                <h3 class="hide-t"><i class="sbi sbi--map-pin"></i><span>Arrival <span class="txt--small hide show-ti">(See Getting There for more details)</span></span></h3><h3 class="no-title hide show-t"></h3><h2 class="hide show-t startend"><i class="sbi sbi--map-pin"></i><span>Arrival <span class="txt--small hide show-ti">(See <a href="#home6" class="tablink scrolltop" rel="nofollow">Getting There</a> for more details)</span></span></h2>
                                             </div>
                                         </div>
 
@@ -457,7 +255,7 @@
                                             <div class="day__inner__block">
                                                 <p class="shorten-m" data-shorten="300"></p>
                                                 <ul class="list list--icon list--icon-arrow list--icon-nopadding">
-                                                    <li>Accommodation before the tour starts can be arranged for an extra cost.</li>
+                                                    <li class="txt--small txt--normal">Accommodation before the tour starts can be arranged for an extra cost.</li>
                                                 </ul>
                                             </div>
 
@@ -520,81 +318,7 @@
                                             </div>
                                         }
                                     }
-                                    @* <div class="day">
-                                        <div class="day__header  day__header--photo   ">
-                                            <div class="photos">
-                                                <picture>
-                                                    <!--[if IE 9]><video style="display: none;"><![endif]-->
-                                                    <source media="(min-width: 970px)" class="" srcset="https://cloudfront.safaribookings.com/lib/tanzania/destination/752x253/Lushoto_003.jpg">
-                                                    <source media="(min-width: 772px)" class="" srcset="https://cloudfront.safaribookings.com/lib/tanzania/destination/960x300/Lushoto_003.jpg">
-                                                    <source media="(min-width: 484px)" class="" srcset="https://cloudfront.safaribookings.com/lib/tanzania/destination/752x253/Lushoto_003.jpg">
-                                                    <!--[if IE 9]></video><![endif]-->
-                                                    <img class="" alt="" srcset="https://cloudfront.safaribookings.com/lib/tanzania/destination/464x145/Lushoto_003@2x.jpg 2x" src="https://cloudfront.safaribookings.com/lib/tanzania/destination/464x145/Lushoto_003.jpg">
-                                                    <noscript>
-                                                        <!--[if IE 9]><video style="display: none;"><![endif]-->
-                                                        <source srcset="https://cloudfront.safaribookings.com/lib/tanzania/destination/752x253/Lushoto_003.jpg" media="(min-width: 970px)" class="lazyload">
-                                                        <source srcset="https://cloudfront.safaribookings.com/lib/tanzania/destination/960x300/Lushoto_003.jpg" media="(min-width: 772px)" class="lazyload">
-                                                        <source srcset="https://cloudfront.safaribookings.com/lib/tanzania/destination/752x253/Lushoto_003.jpg" media="(min-width: 484px)" class="lazyload">
-                                                        <!--[if IE 9]></video><![endif]-->
-                                                        <img src="https://cloudfront.safaribookings.com/lib/tanzania/destination/464x145/Lushoto_003.jpg" srcset="https://cloudfront.safaribookings.com/lib/tanzania/destination/464x145/Lushoto_003@2x.jpg 2x" class="lazyload" alt="" />
-                                                    </noscript>
-                                                </picture>
-                                            </div>
-                                            <div class="caption  caption--photo  ">
-                                                <h3><span>Day 1</span></h3><h2 class="hide show-t"><span>Arusha to Lushote</span></h2>
-                                            </div>
-                                        </div>
-
-                                        <div class="day__inner">
-                                            <div class="day__inner__block">
-                                                <h2 class="hide-t serif">Arusha to Lushote</h2>
-                                                <p class="shorten-m" data-shorten="300">Driving from Arusha to Lushoto take 4 hrs to five. This day you will rest. In evening you will have little town. Lushoto town is an old town which has historical builds and sites. You will have dinner in town while interact with indigenous people from Samba community.</p>
-                                            </div>
-
-                                            <div class="day__inner__block">
-                                                <dl>
-                                                    <dt>
-                                                        Main Destination:
-                                                    </dt>
-                                                    <dd>
-                                                        Lushoto <span class="txt--small txt--xgrey">(Town)</span>
-                                                    </dd>
-
-
-                                                    <dt>
-                                                        Accommodation:
-                                                    </dt>
-                                                    <dd>
-                                                        <a href="https://kakakuona-resort.business.site/" class="external show-ti mb-4" target="_blank" rel="nofollow noopener"><b>Kakakuona Resort</b></a>
-                                                        <ul class="list list--icon list--icon-arrow list--icon-nopadding txt--small txt--grey">
-                                                            <li>
-                                                                Budget resort located in or near Lushoto
-                                                            </li>
-                                                        </ul>
-
-                                                    </dd>
-
-
-                                                </dl>
-
-
-
-                                                <dl class="no-top-margin">
-                                                    <dt>
-                                                        Meals &amp; Drinks:
-                                                    </dt>
-                                                    <dd class="with-bullet">
-                                                        <ul class="list list--icon list--icon-arrow list--icon-nopadding txt--small txt--grey">
-                                                            <li class="mb-4">All meals included</li>
-                                                            <li>Drinking water &amp; beer and wine <span class="txt--grey txt--small">(Other drinks not included)</span></li>
-                                                        </ul>
-                                                    </dd>
-                                                </dl>
-
-
-                                            </div>
-                                        </div>
-                                    </div> *@
+                                    
                                     <div class="day">
                                         <div class="day__header  day__header--text   startend  ">
                                             <div class="caption  ">
@@ -605,7 +329,7 @@
                                             <div class="day__inner__block">
                                                 <p class="shorten-m" data-shorten="300"></p>
                                                 <ul class="list list--icon list--icon-arrow list--icon-nopadding">
-                                                    <li>Additional accommodation can be arranged for an extra cost.</li>
+                                                    <li class="txt--small txt--normal">Additional accommodation can be arranged for an extra cost.</li>
                                                 </ul>
                                             </div>
                                         </div>
@@ -621,17 +345,7 @@
                                             {
                                                 <li><h4><b>@inclusion.Title:</b></h4> @inclusion.InclusionText <span class="txt--xsmall txt--xgrey">@inclusion.Type</span></li>
                                             }
-                                        }
-                                        @* <li>Park fees <span class="txt--xsmall txt--xgrey">(For non-residents)</span></li>
-                                        <li>All activities <span class="txt--xsmall txt--xgrey">(Unless labeled as optional)</span></li>
-                                        <li>All accommodation <span class="txt--xsmall txt--xgrey">(Unless listed as upgrade)</span></li>
-                                        <li>A professional driver/guide</li>
-                                        <li>All transportation <span class="txt--xsmall txt--xgrey">(Unless labeled as optional)</span></li>
-                                        <li>All Taxes/VAT</li>
-                                        <li>Roundtrip airport transfer</li>
-                                        <li>Meals <span class="txt--xsmall txt--xgrey">(As specified in the day-by-day section)</span></li>
-                                        <li>Drinks <span class="txt--xsmall txt--xgrey">(As specified in the day-by-day section)</span></li> *@
-
+                                        }                                      
                                     </ul>
                                 </div>
                                 <div class="tour__content__block tour__content__block--inclusions">
@@ -643,11 +357,6 @@
                                                 <li><h4><b>@exclusion.Title:</b></h4> @exclusion.InclusionText <span class="txt--xsmall txt--xgrey">@exclusion.Type</span></li>
                                             }
                                         }
-                                        @* <li>International flights <span class="txt--xsmall txt--xgrey">(From/to home)</span></li>
-                                        <li>Additional accommodation before and at the end of the tour</li>
-                                        <li>Tips <span class="txt--xsmall txt--xgrey">(Tipping guideline US$10.00 pp per day)</span></li>
-                                        <li>Personal items <span class="txt--xsmall txt--xgrey">(Souvenirs, travel insurance, visa fees, etc.)</span></li>
-                                        <li>Government imposed increase of taxes and/or park fees</li> *@
                                     </ul>
                                 </div>
                             </div>
