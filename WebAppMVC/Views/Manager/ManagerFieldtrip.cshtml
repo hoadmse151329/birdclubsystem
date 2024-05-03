@@ -295,28 +295,27 @@
                                                     </div>
                                                 </div>
                                             </div>
-    <div id="deleteFieldTrip" class="modal fade" role="dialog">
-        <div class="modal-dialog modal-dialog-centered" role="content">
-            <div class="modal-content">
-                <form action="#">
-                    <div class="card-body">
-                        <div class="del-title">
-                            <i class='bx bx-error-circle'></i>
-                            <h2>Are you sure want to delete ?</h2> 
-                        </div>
-                        <div class="del-submit d-flex justify-content-center">       
-                            <form asp-action="ManagerCancelFieldTrip" asp-controller="Manager" method="post" asp-route-id="@data.TripId">
-                                <button type="submit" name="action" value="deleteFieldTrip" class="btn btn-success">Save</button>
-                                </form>
-                                <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
-                            </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+                                            <div id="deleteFieldTrip" class="modal fade" role="dialog">
+                                                <div class="modal-dialog modal-dialog-centered" role="content">
+                                                    <div class="modal-content">
+                                                        <form action="#">
+                                                            <div class="card-body">
+                                                                <div class="del-title">
+                                                                    <i class='bx bx-error-circle'></i>
+                                                                    <h2>Are you sure want to delete ?</h2> 
+                                                                </div>
+                                                                <div class="del-submit d-flex justify-content-center">       
+                                                                    <form asp-action="ManagerCancelFieldTrip" asp-controller="Manager" method="post" asp-route-id="@data.TripId">
+                                                                        <button type="submit" name="action" value="deleteFieldTrip" class="btn btn-success">Save</button>
+                                                                        </form>
+                                                                        <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
+                                                                    </div>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         }
-
                                 </div>
                             </div>
                             <!-- end tapnet -->
@@ -393,54 +392,10 @@
                                     <textarea asp-for="@createFieldTrip.Note" value="@createFieldTrip.Note" type="text" name="note" placeholder="Meeting Note..." class="form-control col-md-7 mt-3" rows="3" required></textarea>
                                     <span asp-validation-for="@createFieldTrip.Note" id="error_message"
                                           class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-
-                                    <label asp-for="@createFieldTripGettingthere.GettingThereAccommodation" class="col-md-3 col-form-label mt-3 text-md-right">GettingThereAccommodation</label>
-                                    <textarea asp-for="@createFieldTripGettingthere.GettingThereAccommodation" value="@createFieldTripGettingthere.GettingThereAccommodation" type="text" name="gettingtheretext" placeholder="GettingThereAccommodation..." class="form-control col-md-7 mt-3" rows="3" required></textarea>
-                                    <span asp-validation-for="@createFieldTripGettingthere.GettingThereAccommodation" id="error_message"
-                                          class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-
-                                    <label asp-for="@createFieldTripDayByDay.Description" class="col-md-3 col-form-label mt-3 text-md-right">Description</label>
-                                    <textarea asp-for="@createFieldTripDayByDay.Description" value="@createFieldTripDayByDay.Description" type="text" name="description" placeholder="Description..." class="form-control col-md-7 mt-3" rows="3" required></textarea>
-                                    <span asp-validation-for="@createFieldTripDayByDay.Description" id="error_message"
-                                          class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-
-                                    @* <label asp-for="@createFieldTripDayByDay.PictureId" class="col-md-3 col-form-label mt-3 text-md-right">Picture ID</label>
-                                    <textarea asp-for="@createFieldTripDayByDay.PictureId" value="@createFieldTripDayByDay.PictureId" type="text" name="picturid" placeholder="Pictur ID..." class="form-control col-md-7 mt-3" rows="3" required></textarea>
-                                    <span asp-validation-for="@createFieldTripDayByDay.PictureId" id="error_message"
-                                          class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span> *@
-
-                                    <label asp-for="@createFieldTripDayByDay.Day" class="col-md-3 col-form-label mt-3 text-md-right">Day</label>
-                                    <textarea asp-for="@createFieldTripDayByDay.Day" value="@createFieldTripDayByDay.Day" type="datetime-local" name="day" required class="form-control col-md-7 mt-3"></textarea>
-                                    <span asp-validation-for="@createFieldTripDayByDay.Day" id="error_message"
-                                          class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-
-                                    <label asp-for="@createFieldTripInclsion.Title" class="col-md-3 col-form-label mt-3 text-md-right">Title</label>
-                                    <textarea asp-for="@createFieldTripInclsion.Title" value="@createFieldTripInclsion.Title" type="text" name="title" placeholder="Title..." class="form-control col-md-7 mt-3" rows="3" required></textarea>
-                                    <span asp-validation-for="@createFieldTripInclsion.Title" id="error_message"
-                                          class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-
-                                    <label asp-for="@createFieldTripInclsion.Type" class="col-md-3 col-form-label mt-3 text-md-right">Type</label>
-                                    <textarea asp-for="@createFieldTripInclsion.Type" value="@createFieldTripInclsion.Type" type="text" name="type" placeholder="Type..." class="form-control col-md-7 mt-3" rows="3" required></textarea>
-                                    <span asp-validation-for="@createFieldTripInclsion.Type" id="error_message"
-                                          class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-
-                                    <label asp-for="@createFieldTripInclsion.InclusionText" class="col-md-3 col-form-label mt-3 text-md-right">Inclusion Text</label>
-                                    <textarea asp-for="@createFieldTripInclsion.InclusionText" value="@createFieldTripInclsion.InclusionText" type="text" name="inclusiontext" placeholder="Inclusion Text..." class="form-control col-md-7 mt-3" rows="3" required></textarea>
-                                    <span asp-validation-for="@createFieldTripInclsion.InclusionText" id="error_message"
-                                          class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-
-                                    <label class="col-md-3 col-form-label mt-2 text-md-right">Choose Media Picture</label>
-                                    <input type="file" name="mediaphoto" class="form-control col-md-7 mt-2" accept="image/*">
-
-                                    <label asp-for="@createFieldTripMedia.Description" class="col-md-3 col-form-label mt-3 text-md-right">Media Description</label>
-                                    <textarea asp-for="@createFieldTripMedia.Description" value="@createFieldTripMedia.Description" type="text" name="description" placeholder="Media Description..." class="form-control col-md-7 mt-3" rows="3" required></textarea>
-                                    <span asp-validation-for="@createFieldTripMedia.Description" id="error_message"
-                                          class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-
                                 </div> 
                             </div>                
                             <div class="modal-footer justify-content-center">
-                                <button class="btn btn-success" type="submit" name="action" value="createRoom" >Save</button>
+                                <button class="btn btn-success" type="submit" name="action" >Save</button>
                                 <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
                             </div>
                         </div>
