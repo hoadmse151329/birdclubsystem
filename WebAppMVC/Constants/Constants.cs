@@ -11,6 +11,7 @@
 		public static string NEW_MEMBER_CONFIRM_REGISTRATION_URL = "../Auth/SignUp";
 
 		public static string NEW_MEMBER_REGISTRATION_TRANSACTION_TYPE = "New-Membership-Registration";
+		public static string MEMBER_FIELDTRIP_REGISTRATION_TRANSACTION_TYPE = "Member-FieldTrip-Registration";
 		public static string ADMIN = "Admin";
 		public static string MEMBER = "Member";
 		public static string TEMPMEMBER = "TempMember";

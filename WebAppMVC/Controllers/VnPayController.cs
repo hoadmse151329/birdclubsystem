@@ -118,6 +118,47 @@ namespace WebAppMVC.Controllers
 				return RedirectToAction("ConfirmRegister", "Auth");
 			}
 
+			if (response.TransactionType == Constants.Constants.MEMBER_FIELDTRIP_REGISTRATION_TRANSACTION_TYPE && response.Success && role == Constants.Constants.MEMBER)
+			{
+				TransactionAPI_URL += "Create";
+
+                var tran = new TransactionViewModel()
+                {
+                    Value = response.Value / 100,
+                    UserId = null,
+                    VnPayId = response.TransactionId.ToString(),
+                    TransactionType = response.TransactionType,
+                    TransactionDate = DateTime.Now,
+                    PaymentDate = DateTime.Now,
+                    DocNo = response.DocNo,
+                    Status = "Completed"
+                };
+
+                var transactionResponse = await methcall.CallMethodReturnObject<GetTransactionResponse>(
+                                _httpClient: _httpClient,
+                                options: jsonOptions,
+                                methodName: "POST",
+                                url: TransactionAPI_URL,
+                                inputType: tran,
+                                accessToken: accToken,
+                                _logger: _logger);
+
+                if (transactionResponse == null)
+                {
+                    ViewBag.Error =
+                        "Error while processing your request! (Getting Transaction Response!)";
+                    return RedirectToAction("Index", "FieldTrip");
+                }
+                else
+                if (!transactionResponse.Status)
+                {
+                    ViewBag.Error =
+                        "Error while processing your request! (Getting Transaction Response!)";
+                    return RedirectToAction("Index", "FieldTrip");
+                }
+				methcall.SetCookie(Response, "tranKey", transactionResponse.Data, cookieOptions, jsonOptions, 5);
+				return RedirectToAction("FieldTripConfirmRegister", "FieldTrip");
+            }
 			return View(response);
         }
     }

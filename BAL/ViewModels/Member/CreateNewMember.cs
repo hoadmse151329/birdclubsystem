@@ -26,9 +26,9 @@ namespace BAL.ViewModels.Member
 		[Required(ErrorMessage = "Gender is required")]
 		[RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Gender is invalid")]
 		public string? Gender { get; set; }
-		[Required(AllowEmptyStrings = false, ErrorMessage = "Address is required")]
+		/*[Required(AllowEmptyStrings = false, ErrorMessage = "Address is required")]
 		[RegularExpression(@"^[a-zA-Z0-9\/?\s?]+,[a-zA-Z0-9\s?]+,[a-zA-Z0-9\s?]+,[a-zA-Z\s?]{4,}$", ErrorMessage = "Address is Invalid, it must be writen in this format: Area Number,Street,District,City")]
-		public string? Address { get; set; }
+		public string? Address { get; set; }*/
 		[Phone(ErrorMessage = "Please enter a valid Phone No")]
 		[Required(AllowEmptyStrings = false, ErrorMessage = "Phone Number is required")]
 		[DataType(DataType.PhoneNumber)]
