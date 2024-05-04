@@ -36,8 +36,11 @@
     font-style: normal !important;
 }
 .txt--small {
-    font-size: .875rem;
-    line-height: 1.125rem;
+    font-family: "Inter-Bold", Helvetica;
+    font-weight: 500;
+    font-size: 20px;
+    letter-spacing: 1.2px;
+    line-height: normal;
 }
 .tour__content__block--accommodations ul li.footnote div:nth-child(1) i {
     position: absolute;
@@ -1229,17 +1232,6 @@ tour__content__block--consider .row {
         line-height: normal;
         white-space:nowrap;
     }
-.nav-tabs {
-    padding-top: 50px;
-    border-bottom: 1px solid #dee2e6;
-}
-.nav {
-    display: flex;
-    flex-wrap: wrap;
-    padding-left: 0;
-    margin-bottom: 0;
-    list-style: none;
-}
 .member-field-trips-post .soi-noi-hoi-thi-chim {
     position: absolute;
     width: 765px;
@@ -3076,10 +3068,6 @@ svg.only-defs {
     line-height: 1rem
 }
 
-.txt--small {
-    font-size: .875rem;
-    line-height: 1.125rem
-}
 
 .txt--green {
     color: #2a7018
@@ -27232,7 +27220,13 @@ form.signup__accommodation .acc-chain div.checkbox {
         padding-right: .625rem;
         margin-bottom: .625rem;
         position: relative;
-        font-size: 1.0625rem
+        font-family: "Inter-Bold", Helvetica;
+        font-weight: 700;
+        color: #000000;
+        font-size: 24px;
+        text-align: center;
+        letter-spacing: 1.2px;
+        line-height: normal;
     }
 
     .tour__content__block:before {
@@ -28005,8 +27999,8 @@ form.signup__accommodation .acc-chain div.checkbox {
     }
 
         .tour__content__block--daybyday .day__header--text h2.startend i.sbi {
-            width: 1.5rem;
-            height: 30px;
+            width: 3rem;
+            height: 70px;
             position: absolute;
             top: .1875rem;
             left: -2.0625rem;
@@ -28639,15 +28633,25 @@ form.signup__accommodation .acc-chain div.checkbox {
             }
 
         .tour__content__block--consider .row div.item h4 {
-            font-style: italic;
-            line-height: 1.25rem;
-            margin-bottom: .1875rem
+            margin-bottom: .1875rem ;
+            font-family: "Inter-Bold", Italic;
+            font-weight: 700;
+            color: #000000;
+            font-size: 24px;
+            letter-spacing: 1.2px;
+            line-height: normal;
         }
 
         .tour__content__block--consider .row div.item p {
-            line-height: 1.125rem;
-            font-size: .875rem;
-            color: #666
+            color: #666;
+            position: relative;
+            align-self: stretch;
+            font-family: "Inter-Bold", Helvetica;
+            font-weight: 500;
+            font-size: 20px;
+            text-align: center;
+            letter-spacing: 1.2px;
+            line-height: normal;
         }
 
 .tour__content__block--activities ul li a.image {
@@ -28657,7 +28661,17 @@ form.signup__accommodation .acc-chain div.checkbox {
     position: relative;
     cursor: default
 }
-
+.tour__content__block--activities ul li p {
+    color: #666;
+    position: absolute;
+    align-self: stretch;
+    font-family: "Inter-Bold", Helvetica;
+    font-weight: 500;
+    font-size: 20px;
+    text-align: center;
+    letter-spacing: 1.2px;
+    line-height: normal;
+}
     .tour__content__block--activities ul li a.image:before {
         border-bottom: 1px dotted #666;
         position: absolute;
@@ -33830,7 +33844,7 @@ form.signup__accommodation .acc-chain div.checkbox {
                 }
 
             .tour__content__block--daybyday .day__header--text h2 {
-                font-size: 1.25rem !important;
+                font-size: 3.25rem !important;
                 line-height: 1.5rem;
                 padding-top: .3125rem;
                 padding-bottom: .3125rem;
@@ -33865,7 +33879,7 @@ form.signup__accommodation .acc-chain div.checkbox {
                 }
 
                 .tour__content__block--daybyday .day__header--text h2.startend .txt--small {
-                    font-size: 1rem;
+                    font-size: 2rem;
                     font-weight: normal
                 }
 

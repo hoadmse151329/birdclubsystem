@@ -545,18 +545,27 @@ html body {
         color: #fff;
     }
 
-    .cardBox .room {
+    .cardBox .event {
         background: #f39c12;
         border: #f39c12;
         box-shadow: 0 7px 25px rgba(243, 156, 18, 0.5);
     }
 
-    .cardBox .service {
+    .cardBox .report {
         background: #e74c3c;
         border: #e74c3c;
         box-shadow: 0 7px 25px rgba(231, 76, 60, 0.5);
     }
-
+    .cardBox .blog {
+        background: #e74c3c;
+        border: #e74c3c;
+        box-shadow: 0 7px 25px rgba(231, 76, 60, 0.5);
+    }
+    .cardBox .news {
+        background: #e74c3c;
+        border: #e74c3c;
+        box-shadow: 0 7px 25px rgba(231, 76, 60, 0.5);
+    }
     .cardBox .feedback {
         background: #3498db;
         border: #3498db;
@@ -816,7 +825,7 @@ html body {
 }
 
 
-/* room list */
+/* club list */
 .navs .nav-item .nav-link {
     color: #34495e;
 }
@@ -886,7 +895,7 @@ html body {
 }
 
 
-.card-child .add-room {
+.card-child .add-club {
     position: relative;
     display: flex;
     height: 37.5rem;
@@ -918,7 +927,7 @@ html body {
         align-items: center;
     }
 
-.card-child .room-name {
+.card-child .club-name {
     background-color: #6688CC;
     text-align: center;
     font-size: 20px;
@@ -930,7 +939,7 @@ html body {
     color: #fff;
 }
 
-    .card-child .room-name .status {
+    .card-child .club-name .status {
         width: auto;
         display: flex;
         justify-content: center;
@@ -969,11 +978,11 @@ html body {
     border-radius: 20px;
 }
 
-.room-name .status span h6 {
+.club-name .status span h6 {
     margin-left: 2px;
 }
 
-.room-title ul li {
+.club-title ul li {
     list-style: none;
     line-height: 1rem;
     display: flex;
@@ -986,18 +995,18 @@ html body {
     height: 150px;
 }
 
-    .room-title ul li:last-child {
+    .club-title ul li:last-child {
         margin-top: 15px;
     }
 
-    .room-title ul li h6 {
+    .club-title ul li h6 {
         font-size: 15px;
         font-weight: 700;
         width: 116px;
     }
 
 
-    .room-title ul li:last-child span {
+    .club-title ul li:last-child span {
         position: relative;
         color: #e74c3c;
         font-size: 20px;
@@ -1166,7 +1175,7 @@ figcaption {
 
 
 
-/* history-room */
+/* history-club */
 #myTable thead th {
     font-size: 13px;
 }
@@ -1182,7 +1191,7 @@ figcaption {
 
 
 
-/* history-room-details */
+/* history-club-details */
 .main-content .page-header h1 {
     font-size: 18px;
     padding: 14px 0;
