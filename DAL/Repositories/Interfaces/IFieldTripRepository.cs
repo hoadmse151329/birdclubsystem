@@ -12,7 +12,7 @@ namespace DAL.Repositories.Interfaces
     public interface IFieldTripRepository : IRepositoryBase<FieldTrip>
     {
         Task<IEnumerable<FieldTrip>> GetAllFieldTrips(string? role);
-        public Task<FieldTrip?> GetFieldTripById(int id);
+        Task<FieldTrip?> GetFieldTripById(int id);
         Task<bool> GetBoolFieldTripId(int id);
     }
 }
