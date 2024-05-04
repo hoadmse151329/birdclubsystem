@@ -146,32 +146,13 @@ namespace WebAppMVC.Controllers
                     + listMeetResponse.ErrorMessage + "\n" + listLocationResponse.ErrorMessage;
                 return View("ManagerIndex");
             }
-            /*if (TempData.ContainsKey("ValidationErrors"))
-            {
-                List<string> listModelState = TempData["ValidationErrors"] as List<string>;
-                *//*var listModelState = JsonSerializer.Deserialize<List<KeyValuePair<string, ModelStateEntry>>>(TempData["ValidationErrors"].ToString());*//*
-                if (listModelState != null)
-                {
-                    ModelStateDictionary newModel = new();
-                    //newModel
-                    ViewData.ModelState.Merge(newModel);
-                }
-            }*/
-            /*var list = await methcall.GetCookie<List<string>>(Request, "ValidationErrors", options);
-            if (list != null)
-            {
-                testmodel.Errors = list;
-            }
-            testmodel.Errors = null;*/
             testmodel.CreateMeeting = null;
             if (TempData.Peek(Constants.Constants.CREATE_MEETING_VALID) != null)
             {
                 testmodel.CreateMeeting = JsonSerializer.Deserialize<MeetingViewModel>(TempData[Constants.Constants.CREATE_MEETING_VALID].ToString());
-                TryValidateModel(testmodel.CreateMeeting);
+                TempData.Remove(Constants.Constants.CREATE_MEETING_VALID);
+                TryValidateModel(testmodel.CreateMeeting,"createMeeting");
             }
-            /*var meet = (ViewDataDictionary)TempData["ValidationErrors"];
-            testmodel.CreateMeeting = meet;*/
-
             testmodel.Locations = listLocationResponse.Data;
             testmodel.Meetings = listMeetResponse.Data;
             return View(testmodel);
@@ -246,9 +227,11 @@ namespace WebAppMVC.Controllers
         {
             ManagerAPI_URL += "Meeting/Update/" + id;
 
-			if (!TryValidateModel(meetView))
+			if (!ModelState.IsValid)
 			{
                 /*TempData["ModelState"] = ViewData.ModelState;*/
+                string validJson = JsonSerializer.Serialize(meetView, options);
+                TempData[Constants.Constants.CREATE_MEETING_VALID] = validJson;
                 ViewBag.Error =
 				"Error while processing your request! (Update Meeting!).\n Validation Failed!";
 				return RedirectToAction("ManagerMeetingDetail", new {id});
@@ -298,18 +281,16 @@ namespace WebAppMVC.Controllers
         }
         [HttpPost("Meeting/Create")]
         /*[Route("Manager/Meeting/Update/{id:int}")]*/
-        public async Task<IActionResult> ManagerCreateMeeting(MeetingViewModel createMeet)
+        public async Task<IActionResult> ManagerCreateMeeting([FromBody] MeetingViewModel createMeet)
         {
             ManagerAPI_URL += "Meeting/Create";
-            if (!TryValidateModel(createMeet))
+            if (!ModelState.IsValid)
             {
-                /*TempData["ValidationErrors"] = ModelState.Values.SelectMany(v => v.Errors.Select(c => c.ErrorMessage)).ToList();*/
-                /*List<string> errorlist = ModelState.Values.SelectMany(v => v.Errors.Select(c => c.ErrorMessage)).ToList();
-
+                /*TempData["ValidationErrors"] = ModelState.Values.SelectMany(v => v.Errors.Select(c => c.ErrorMessage)).ToList();
+                List<string> errorlist = ModelState.Values.SelectMany(v => v.Errors.Select(c => c.ErrorMessage)).ToList();
                 methcall.SetCookie(Response, "ValidationErrors", errorlist, cookieOptions, options);*/
                 string validJson = JsonSerializer.Serialize(createMeet, options);
                 TempData[Constants.Constants.CREATE_MEETING_VALID] = validJson;
-                TempData.Keep();
                 return RedirectToAction("ManagerMeeting");
             }
 
@@ -342,12 +323,16 @@ namespace WebAppMVC.Controllers
                                 _logger: _logger);
             if (meetPostResponse == null)
             {
+                string validJson = JsonSerializer.Serialize(createMeet, options);
+                TempData[Constants.Constants.CREATE_MEETING_VALID] = validJson;
                 ViewBag.Error =
                     "Error while processing your request! (Create Meeting!).\n Meeting Not Found!";
                 return RedirectToAction("ManagerMeeting");
             }
             if (!meetPostResponse.Status)
             {
+                string validJson = JsonSerializer.Serialize(createMeet, options);
+                TempData[Constants.Constants.CREATE_MEETING_VALID] = validJson;
                 _logger.LogInformation("Error while processing your request: " + meetPostResponse.Status + " , Error Message: " + meetPostResponse.ErrorMessage);
                 ViewBag.Error =
                     "Error while processing your request! (Create Meeting Post!).\n"
@@ -469,6 +454,13 @@ namespace WebAppMVC.Controllers
                     + listFieldTripResponse.ErrorMessage + "\n" + listLocationResponse.ErrorMessage;
                 return View("ManagerIndex");
             }
+            testmodel2.CreateFieldTrip = null;
+            if (TempData.Peek(Constants.Constants.CREATE_FIELDTRIP_VALID) != null)
+            {
+                testmodel2.CreateFieldTrip = JsonSerializer.Deserialize<FieldTripViewModel>(TempData[Constants.Constants.CREATE_FIELDTRIP_VALID].ToString());
+                TempData.Remove(Constants.Constants.CREATE_FIELDTRIP_VALID);
+                TryValidateModel(testmodel2.CreateFieldTrip, "createFieldTrip");
+            }
             testmodel2.FieldTrips = listFieldTripResponse.Data;
             testmodel2.Locations = listLocationResponse.Data;
             return View(testmodel2);
@@ -589,6 +581,64 @@ namespace WebAppMVC.Controllers
         [HttpPost("FieldTrip/Create")]
         /*[Route("Manager/Meeting/Update/{id:int}")]*/
         public async Task<IActionResult> ManagerCreateFieldTrip(FieldTripViewModel createFieldTrip)
+        {
+            ManagerAPI_URL += "FieldTrip/Create";
+            if (!ModelState.IsValid)
+            {
+                string validJson = JsonSerializer.Serialize(createFieldTrip, options);
+                TempData[Constants.Constants.CREATE_FIELDTRIP_VALID] = validJson;
+                ViewBag.Error =
+                    "Error while processing your request! (Create Meeting!).\n Validation Failed!";
+                return RedirectToAction("ManagerFieldtrip");
+            }
+
+            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
+            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+
+            string? role = HttpContext.Session.GetString("ROLE_NAME");
+            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
+            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
+
+            string? usrId = HttpContext.Session.GetString("USER_ID");
+            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
+
+            string? usrname = HttpContext.Session.GetString("USER_NAME");
+            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
+
+            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
+
+            TempData["ROLE_NAME"] = role;
+            TempData["USER_NAME"] = usrname;
+            TempData["IMAGE_PATH"] = imagepath;
+
+            var fieldtripPostResponse = await methcall.CallMethodReturnObject<GetFieldTripPostResponse>(
+                                _httpClient: _httpClient,
+                                options: options,
+                                methodName: "POST",
+                                url: ManagerAPI_URL,
+                                inputType: createFieldTrip,
+                                accessToken: accToken,
+                                _logger: _logger);
+            if (fieldtripPostResponse == null)
+            {
+                ViewBag.Error =
+                    "Error while processing your request! (Create FieldTrip!).\n Meeting Not Found!";
+                return RedirectToAction("ManagerFieldTrip");
+            }
+            if (!fieldtripPostResponse.Status)
+            {
+                _logger.LogInformation("Error while processing your request: " + fieldtripPostResponse.Status + " , Error Message: " + fieldtripPostResponse.ErrorMessage);
+                ViewBag.Error =
+                    "Error while processing your request! (Create Meeting Post!).\n"
+                    + fieldtripPostResponse.ErrorMessage;
+                return RedirectToAction("ManagerFieldTrip");
+            }
+            return RedirectToAction("ManagerFieldTrip");
+        }
+
+        [HttpPost("FieldTrip/{id:int}/Create/DayByDay")]
+        /*[Route("Manager/Meeting/Update/{id:int}")]*/
+        public async Task<IActionResult> ManagerCreateFieldTripDayByDay(FieldTripViewModel createFieldTrip)
         {
             ManagerAPI_URL += "FieldTrip/Create";
             if (!TryValidateModel(createFieldTrip))

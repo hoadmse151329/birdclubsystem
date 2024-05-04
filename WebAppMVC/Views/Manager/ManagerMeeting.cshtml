@@ -4,7 +4,7 @@
     ViewData["Title"] = "Manager Meeting Page";
     List<string> locationList = Model.Locations;
     List<BAL.ViewModels.MeetingViewModel> meetingList = Model.Meetings;
-    BAL.ViewModels.MeetingViewModel createMeet = Model.CreateMeeting != null ? Model.CreateMeeting : new BAL.ViewModels.MeetingViewModel();
+    BAL.ViewModels.MeetingViewModel createMeeting = Model.CreateMeeting != null ? Model.CreateMeeting : new BAL.ViewModels.MeetingViewModel();
     BAL.ViewModels.MeetingViewModel cancelMeet = new();
     string? search = string.Empty;
 }
@@ -326,62 +326,61 @@
                 </div>
                 <div class="modal-body">
                     <form asp-action="ManagerCreateMeeting" asp-controller="Manager" method="post" id="form">
-                        <div asp-validation-summary="All" class="row p-4"></div>
                         <div class="row p-4">
                             <div class="col-12">
                                 <div class="row form-group">
-                                    <label asp-for="@createMeet.MeetingName" class="col-md-3 col-form-label text-md-right"></label>
-                                    <input asp-for="@createMeet.MeetingName" value="@createMeet.MeetingName" type="text" placeholder="Meeting Name" required class="form-control col-md-7">
-                                    <span asp-validation-for="@createMeet.MeetingName" 
+                                    <label asp-for="@createMeeting.MeetingName" class="col-md-3 col-form-label text-md-right"></label>
+                                    <input asp-for="@createMeeting.MeetingName" value="@createMeeting.MeetingName" type="text" placeholder="Meeting Name" required class="form-control col-md-7">
+                                    <span asp-validation-for="@createMeeting.MeetingName" 
                                           class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                 </div>
                                 <div class="row form-group">
                                     <label class="col-md-3 col-form-label mt-2 text-md-right">Choose Picture</label>
                                     <input type="file" name="photo" class="form-control col-md-7 mt-2" accept="image/*">
 
-                                    <label asp-for="@createMeet.RegistrationDeadline" class="col-md-3 col-form-label mt-3 text-md-right"></label>
-                                    <input asp-for="@createMeet.RegistrationDeadline" value="@createMeet.RegistrationDeadline.ToString("yyyy-MM-ddTHH:mm")" type="datetime-local" required class="form-control col-md-7 mt-3" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}">
-                                    <span asp-validation-for="@createMeet.RegistrationDeadline" 
+                                    <label asp-for="@createMeeting.RegistrationDeadline" class="col-md-3 col-form-label mt-3 text-md-right"></label>
+                                    <input asp-for="@createMeeting.RegistrationDeadline" value="@createMeeting.RegistrationDeadline.ToString("yyyy-MM-ddTHH:mm")" type="datetime-local" required class="form-control col-md-7 mt-3" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}">
+                                    <span asp-validation-for="@createMeeting.RegistrationDeadline"
                                           class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
-                                    <label asp-for="@createMeet.StartDate" class="col-md-3 col-form-label mt-3 text-md-right"></label>
-                                    <input asp-for="@createMeet.StartDate" value="@createMeet.StartDate.ToString("yyyy-MM-ddTHH:mm")" type="datetime-local" required class="form-control col-md-7 mt-3" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}">
-                                    <span asp-validation-for="@createMeet.StartDate" 
+                                    <label asp-for="@createMeeting.StartDate" class="col-md-3 col-form-label mt-3 text-md-right"></label>
+                                    <input asp-for="@createMeeting.StartDate" value="@createMeeting.StartDate.ToString("yyyy-MM-ddTHH:mm")" type="datetime-local" required class="form-control col-md-7 mt-3" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}">
+                                    <span asp-validation-for="@createMeeting.StartDate" 
                                           class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
-                                    <label asp-for="@createMeet.EndDate" class="col-md-3 col-form-label mt-3 text-md-right"></label>
-                                    <input asp-for="@createMeet.EndDate" value="@createMeet.EndDate.ToString("yyyy-MM-ddTHH:mm")" type="datetime-local" required class="form-control col-md-7 mt-3" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}">
-                                    <span asp-validation-for="@createMeet.EndDate" 
+                                    <label asp-for="@createMeeting.EndDate" class="col-md-3 col-form-label mt-3 text-md-right"></label>
+                                    <input asp-for="@createMeeting.EndDate" value="@createMeeting.EndDate.ToString("yyyy-MM-ddTHH:mm")" type="datetime-local" required class="form-control col-md-7 mt-3" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}">
+                                    <span asp-validation-for="@createMeeting.EndDate" 
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
-                                    <label asp-for="@createMeet.NumberOfParticipantsLimit" class="col-md-3 col-form-label mt-3 text-md-right"></label>
-                                    <input asp-for="@createMeet.NumberOfParticipantsLimit" value="@createMeet.NumberOfParticipantsLimit" type="number" class="form-control col-md-7 mt-3" required min="3">
-                                    <span asp-validation-for="@createMeet.NumberOfParticipantsLimit" 
+                                    <label asp-for="@createMeeting.NumberOfParticipantsLimit" class="col-md-3 col-form-label mt-3 text-md-right"></label>
+                                    <input asp-for="@createMeeting.NumberOfParticipantsLimit" value="@createMeeting.NumberOfParticipantsLimit" type="number" class="form-control col-md-7 mt-3" required min="3">
+                                    <span asp-validation-for="@createMeeting.NumberOfParticipantsLimit" 
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
-                                    <label asp-for="@createMeet.Host" class="col-md-3 col-form-label mt-3 text-md-right"></label>
-                                    <input asp-for="@createMeet.Host" value="@createMeet.Host" type="text" placeholder="Meeting Host" class="form-control col-md-7 mt-3" rows="3" required>
-                                    <span asp-validation-for="@createMeet.Host" 
+                                    <label asp-for="@createMeeting.Host" class="col-md-3 col-form-label mt-3 text-md-right"></label>
+                                    <input asp-for="@createMeeting.Host" value="@createMeeting.Host" type="text" placeholder="Meeting Host" class="form-control col-md-7 mt-3" rows="3" required>
+                                    <span asp-validation-for="@createMeeting.Host" 
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
-                                    <label asp-for="@createMeet.Incharge" class="col-md-3 col-form-label mt-3 text-md-right"></label>
-                                    <input asp-for="@createMeet.Incharge" value="@createMeet.Incharge" type="text" placeholder="Staff incharge of Meeting" class="form-control col-md-7 mt-3" rows="3" required>
-                                    <span asp-validation-for="@createMeet.Incharge" 
+                                    <label asp-for="@createMeeting.Incharge" class="col-md-3 col-form-label mt-3 text-md-right"></label>
+                                    <input asp-for="@createMeeting.Incharge" value="@createMeeting.Incharge" type="text" placeholder="Staff incharge of Meeting" class="form-control col-md-7 mt-3" rows="3" required>
+                                    <span asp-validation-for="@createMeeting.Incharge" 
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
-                                    <label asp-for="@createMeet.Address" class="col-md-3 col-form-label mt-3 text-md-right"></label>
-                                    <textarea asp-for="@createMeet.Address" value="@createMeet.Address" type="text" placeholder="Meeting Address..." class="form-control col-md-7 mt-3" rows="3" required></textarea>
-                                    <span asp-validation-for="@createMeet.Address" 
+                                    <label asp-for="@createMeeting.Address" class="col-md-3 col-form-label mt-3 text-md-right"></label>
+                                    <textarea asp-for="@createMeeting.Address" value="@createMeeting.Address" type="text" placeholder="Meeting Address..." class="form-control col-md-7 mt-3" rows="3" required></textarea>
+                                    <span asp-validation-for="@createMeeting.Address" 
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
-                                    <label asp-for="@createMeet.Description" class="col-md-3 col-form-label mt-3 text-md-right"></label>
-                                    <textarea asp-for="@createMeet.Description" value="@createMeet.Description" type="text" placeholder="Meeting description..." class="form-control col-md-7 mt-3" rows="3" required></textarea>
-                                    <span asp-validation-for="@createMeet.Description" 
+                                    <label asp-for="@createMeeting.Description" class="col-md-3 col-form-label mt-3 text-md-right"></label>
+                                    <textarea asp-for="@createMeeting.Description" value="@createMeeting.Description" type="text" placeholder="Meeting description..." class="form-control col-md-7 mt-3" rows="3" required></textarea>
+                                    <span asp-validation-for="@createMeeting.Description" 
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
-                                    <label asp-for="@createMeet.Note" class="col-md-3 col-form-label mt-3 text-md-right"></label>
-                                    <textarea asp-for="@createMeet.Note" value="@createMeet.Note" type="text" placeholder="Meeting Note..." class="form-control col-md-7 mt-3" rows="3" required></textarea>
-                                    <span asp-validation-for="@createMeet.Note" 
+                                    <label asp-for="@createMeeting.Note" class="col-md-3 col-form-label mt-3 text-md-right"></label>
+                                    <textarea asp-for="@createMeeting.Note" value="@createMeeting.Note" type="text" placeholder="Meeting Note..." class="form-control col-md-7 mt-3" rows="3" required></textarea>
+                                    <span asp-validation-for="@createMeeting.Note" 
                                           class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                 </div>
                             </div>                
