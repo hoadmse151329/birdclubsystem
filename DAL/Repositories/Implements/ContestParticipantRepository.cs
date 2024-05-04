@@ -86,5 +86,23 @@ namespace DAL.Repositories.Implements
             if (birdId != null) return _context.ContestParticipants.FirstOrDefault(b => b.ContestId == contestId && b.MemberId == memberId && b.BirdId == birdId);
 			return _context.ContestParticipants.FirstOrDefault(b => b.ContestId == contestId && b.MemberId == memberId);
 		}
+
+        public async Task<IEnumerable<ContestParticipant>> UpdateAllContestParticipantStatus(List<ContestParticipant> part)
+        {
+            foreach (var participant in part)
+            {
+                var conpart = _context.ContestParticipants
+                    .SingleOrDefault(p => p.ContestId == participant.ContestId && p.MemberId == participant.MemberId);
+                if (conpart != null)
+                {
+                    if (conpart.CheckInStatus != participant.CheckInStatus)
+                    {
+                        conpart.CheckInStatus = participant.CheckInStatus;
+                        _context.Update(conpart);
+                    }
+                }
+            }
+            return part;
+        }
 	}
 }

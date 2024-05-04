@@ -131,8 +131,8 @@
                             </div>
                             <div class="d-flex justify-content-between">
                                     <p class="club-price"><i class="fas fa-calendar"></i> 
-                                        From @data.StartDate.Value.ToString("MM/dd/yyyy") 
-                                        to @data.EndDate.Value.ToString("MM/dd/yyyy")</p>
+                                        From @data.StartDate.ToString("MM/dd/yyyy") 
+                                        to @data.EndDate.ToString("MM/dd/yyyy")</p>
                                 <button class="button--primary"><a class="text-decoration-none text-white"
                                         href="@Url.Action("MeetingPost", "Meeting",new {id = data.MeetingId})">See More</a></button>
                             </div>
@@ -157,8 +157,8 @@
                         <div class="d-flex justify-content-between">
                             <p class="club-price">
                                 <i class="fas fa-calendar"></i>
-                                From @data.StartDate.Value.ToString("MM/dd/yyyy")
-                                to @data.EndDate.Value.ToString("MM/dd/yyyy")
+                                From @data.StartDate.ToString("MM/dd/yyyy")
+                                to @data.EndDate.ToString("MM/dd/yyyy")
                             </p>
                             <button class="button--primary">
                                 <a class="text-decoration-none text-white"
@@ -185,8 +185,8 @@
                         </div>
                         <div class="d-flex justify-content-between">
                                 <p class="club-price"><i class="fas fa-calendar"></i> 
-                                    From @data.StartDate.Value.ToString("MM/dd/yyyy") 
-                                    to @data.EndDate.Value.ToString("MM/dd/yyyy")</p>
+                                    From @data.StartDate.ToString("MM/dd/yyyy") 
+                                    to @data.EndDate.ToString("MM/dd/yyyy")</p>
                             <button class="button--primary"><a class="text-decoration-none text-white"
                                 href="@Url.Action("ContestPost", "Contest",new {id = data.ContestId})">See More</a></button>
                         </div>
@@ -299,7 +299,7 @@
                     <img src="~/images/tv-2.jpg" alt="team 1" />
                     <div class="team__title">
                         <h5>Bui Huu Vinh</h5>
-                        <p>- Thành viên</p>
+                        <p>- Staff</p>
                     </div>
                     <div class="team__details">
                         <h5>Bui Huu Vinh</h5>
