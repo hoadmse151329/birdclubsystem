@@ -60,13 +60,12 @@ namespace BAL.Services.Implements
             if (trip != null)
             {
                 var locationName = await _unitOfWork.LocationRepository.GetLocationNameById(trip.LocationId.Value);
+                if (locationName == null) return null;
+
                 var locationSplit = locationName.Split(",");
 
-                if (locationName == null)
-                {
-                    return null;
-                }
                 int partAmount = await _unitOfWork.FieldTripParticipantRepository.GetCountFieldTripParticipantsByTripId(trip.TripId);
+
                 var fieldTrip = _mapper.Map<FieldTripViewModel>(trip);
 
                 fieldTrip.NumberOfParticipants = fieldTrip.NumberOfParticipantsLimit - partAmount;
@@ -104,17 +103,17 @@ namespace BAL.Services.Implements
         }
         public void Create(FieldTripViewModel entity)
         {
-            var loc = _unitOfWork.LocationRepository.GetLocationByName(entity.Address).Result;
+            var loc = _unitOfWork.LocationRepository.GetLocationByName(entity.Address.Trim()).Result;
 
-            if (!loc.Equals(entity.Address.Trim()))
+            if (loc == null)
             {
                 _unitOfWork.LocationRepository.Update(loc = new Location
                 {
-                    LocationName = entity.Address,
-                    Description = loc.Description
+                    LocationName = entity.Address.Trim(),
+                    Description = ""
                 });
                 _unitOfWork.Save();
-                loc = _unitOfWork.LocationRepository.GetLocationByName(entity.Address).Result;
+                loc = _unitOfWork.LocationRepository.GetLocationByName(entity.Address.Trim()).Result;
             }
             var trip = _mapper.Map<FieldTrip>(entity);
             trip.LocationId = loc.LocationId;
@@ -124,17 +123,17 @@ namespace BAL.Services.Implements
 
         public void Update(FieldTripViewModel entity)
         {
-            var loc = _unitOfWork.LocationRepository.GetLocationByTripId(entity.TripId.Value).Result;
+            var loc = _unitOfWork.LocationRepository.GetLocationByName(entity.Address.Trim()).Result;
 
-            if (!loc.Equals(entity.Address.Trim()))
+            if (loc == null)
             {
                 _unitOfWork.LocationRepository.Update(loc = new Location
                 {
-                    LocationName = entity.Address,
-                    Description = loc.Description
+                    LocationName = entity.Address.Trim(),
+                    Description = ""
                 });
                 _unitOfWork.Save();
-                loc = _unitOfWork.LocationRepository.GetLocationByTripId(entity.TripId.Value).Result;
+                loc = _unitOfWork.LocationRepository.GetLocationByName(entity.Address.Trim()).Result;
             }
             var trip = _mapper.Map<FieldTrip>(entity);
             trip.LocationId = loc.LocationId;

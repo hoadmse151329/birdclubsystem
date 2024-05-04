@@ -11,6 +11,7 @@ namespace DAL.Repositories.Interfaces
     public interface IFieldtripDaybyDayRepository : IRepositoryBase<FieldtripDaybyDay>
     {
         Task<FieldtripDaybyDay> GetFieldTripDayByDayById(int tripId, int fieldtripId);
-        Task<IEnumerable<FieldtripDaybyDay>> GetAllFieldTripDayByDaysById(int tripId);
+        Task<FieldtripDaybyDay> GetFieldTripDayByDayByIdTracking(int tripId, int fieldtripId);
+        Task<IEnumerable<FieldtripDaybyDay>> GetAllFieldTripDayByDaysByTripId(int tripId);
     }
 }

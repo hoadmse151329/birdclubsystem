@@ -196,7 +196,7 @@
                                             <label for="customer-name">Registration Deadlines:</label>
                                         </div>
                                         <div class="col-md-7">
-                                            <span>@details.RegistrationDeadline.Value.ToString("MM/dd/yyyy")</span>
+                                            <span>@details.RegistrationDeadline.ToString("MM/dd/yyyy")</span>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -204,7 +204,7 @@
                                             <label for="customer-name">Start Date:</label>
                                         </div>
                                         <div class="col-md-7">
-                                            <span>@details.StartDate.Value.ToString("MM/dd/yyyy")</span>
+                                            <span>@details.StartDate.ToString("MM/dd/yyyy")</span>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -212,7 +212,7 @@
                                             <label for="customer-name">End Date:</label>
                                         </div>
                                         <div class="col-md-7">
-                                            <span>@details.EndDate.Value.ToString("MM/dd/yyyy")</span>
+                                            <span>@details.EndDate.ToString("MM/dd/yyyy")</span>
                                         </div>
                                     </div>
                                     <div class="row mb-sm-2">
@@ -334,7 +334,7 @@
                                 <label asp-for="@details.RegistrationDeadline" class="col-sm-4 col-form-label">Registration Deadlines:</label>
                                     <div class="col-sm-8">
                                     <input asp-for="@details.RegistrationDeadline" id="RegistrationDeadline" type="date" name="RegistrationDeadline"
-                                               value="@details.RegistrationDeadline.Value.ToString("yyyy-MM-dd")" class="form-control" required>
+                                               value="@details.RegistrationDeadline.ToString("yyyy-MM-dd")" class="form-control" required>
                                     <span asp-validation-for="@details.RegistrationDeadline" id="error_message"
                                             class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                     </div>
@@ -343,7 +343,7 @@
                                 <label asp-for="@details.StartDate" class="col-sm-4 col-form-label">Start date:</label>
                                     <div class="col-sm-8">
                                     <input asp-for="@details.StartDate" id="StartDate" type="date" name="StartDate"
-                                               value="@details.StartDate.Value.ToString("yyyy-MM-dd")" class="form-control" required>
+                                               value="@details.StartDate.ToString("yyyy-MM-dd")" class="form-control" required>
                                     <span asp-validation-for="@details.StartDate" id="error_message"
                                             class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                     </div>
@@ -352,7 +352,7 @@
                                 <label asp-for="@details.EndDate" class="col-sm-4 col-form-label">End date:</label>
                                     <div class="col-sm-8">
                                     <input asp-for="@details.EndDate" id="EndDate" type="date" name="EndDate"
-                                            value="@details.EndDate.Value.ToString("yyyy-MM-dd")" class="form-control" required>
+                                            value="@details.EndDate.ToString("yyyy-MM-dd")" class="form-control" required>
                                     <span asp-validation-for="@details.EndDate" id="error_message"
                                             class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                     </div>
