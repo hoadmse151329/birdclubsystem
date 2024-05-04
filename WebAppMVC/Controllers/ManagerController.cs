@@ -1194,6 +1194,11 @@ namespace WebAppMVC.Controllers
             }
             return RedirectToAction("ManagerMemberStatus");
         }
+        [HttpGet("Statistical")]
+        public IActionResult ManagerStatistical()
+        {
+            return View();
+        }
         [HttpGet("Blog")]
         public IActionResult ManagerBlog()
         {

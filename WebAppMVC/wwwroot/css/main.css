@@ -540,7 +540,7 @@ footer {
   background-color: #2c3e50; }
 .booking .booking__table tr:first-child {
   border: 1px solid #2c3e50; }
-.booking .booking__table .room-number {
+.booking .booking__table .club-number {
   width: 105px; }
 .booking .booking__table .hour {
   width: 83px; }
@@ -553,7 +553,7 @@ footer {
   margin-bottom: 1rem; }
   .booking .booking__table .total-price-box .table {
     height: 100%; }
-.booking .img-room img {
+.booking .img-club img {
   width: 150px;
   height: auto;
   margin-right: 10px; }
@@ -574,7 +574,7 @@ footer {
   background-color: #2c3e50 !important;
   border-color: #2c3e50; }
 
-.room-type-title {
+.club-type-title {
   font-weight: bold; }
 
 .box-booking {
@@ -596,7 +596,7 @@ footer {
 .hot-label {
   width: 50px; }
 
-.empty-room {
+.empty-club {
   font-size: 15px;
   background: -webkit-linear-gradient(#ed0202, #aa0202);
   -webkit-background-clip: text;
@@ -667,7 +667,7 @@ footer {
       .background .container button.login-gg:hover {
         background: #61BDF6; }
 
-.content__list-room {
+.content__list-club {
   min-height: 1367.5px; }
 
 .content__filter .custom-select {
@@ -1029,7 +1029,7 @@ body {
     scroll-padding-top: 100px;
 }
 
-.room-item {
+.club-item {
     margin-top: 20px;
     margin-right: 5px;
     margin-bottom: 0;
@@ -1044,43 +1044,43 @@ body {
     transition: 0.5s;
 }
 
-    .room-item .motel-title {
+    .club-item .club-title {
         padding-top: 10px;
     }
 
-        .room-item .motel-title a {
+        .club-item .club-title a {
             color: #00ccb8;
             transition: all 0.5s;
         }
 
-            .room-item .motel-title a:hover {
+            .club-item .club-title a:hover {
                 color: #ffadd9;
             }
 
-    .room-item .motel-image {
+    .club-item .club-image {
         display: block;
         border-radius: 10px;
         overflow: hidden;
     }
 
-        .room-item .motel-image img {
+        .club-item .club-image img {
             height: 172px;
         }
 
-    .room-item .motel-price {
+    .club-item .club-price {
         font-size: 14px;
     }
 
-    .room-item:hover {
+    .club-item:hover {
         transform: translateY(-10px);
         box-shadow: 1px 1px 15px #b0b0b0;
     }
 
-    .room-item i {
+    .club-item i {
         font-size: 14px;
     }
 
-    .room-item p {
+    .club-item p {
         font-size: 15px;
         margin: 0;
         margin: 10px 0;
@@ -1621,18 +1621,18 @@ footer {
         font-size: 18px;
     }
 
-.motel .heading {
+.club .heading {
     color: #2c3e50;
     font-weight: 700;
     margin-bottom: 15px;
 }
 
-.motel .motel__content {
+.club .club__content {
     position: relative;
     padding-bottom: 10px;
 }
 
-    .motel .motel__content h5 {
+    .club .club__content h5 {
         font-weight: bold;
         margin-left: 10px;
         background: -webkit-linear-gradient(0.25turn, #00ecd5, #ffadd9);
@@ -1640,7 +1640,7 @@ footer {
         -webkit-text-fill-color: transparent;
     }
 
-        .motel .motel__content h5 i {
+        .club .club__content h5 i {
             font-size: 18px;
         }
 
@@ -2033,7 +2033,7 @@ footer {
     border: 1px solid #2c3e50;
 }
 
-.booking .booking__table .room-number {
+.booking .booking__table .club-number {
     width: 110px;
 }
 
@@ -2056,13 +2056,13 @@ footer {
         height: 100%;
     }
 
-.booking .empty-room {
+.booking .empty-club {
     display: inline-block;
     margin-bottom: 18px;
     margin-left: 10px;
 }
 
-.booking .img-room img {
+.booking .img-club img {
     width: 250px;
     height: auto;
     margin-bottom: 10px;
@@ -2089,7 +2089,7 @@ footer {
     border-color: #2c3e50;
 }
 
-.room-type-title {
+.club-type-title {
     font-weight: bold;
 }
 
@@ -2118,7 +2118,7 @@ footer {
     width: 50px;
 }
 
-.empty-room {
+.empty-club {
     font-size: 15px;
     background: -webkit-linear-gradient(#ed0202, #aa0202);
     -webkit-background-clip: text;
@@ -2235,7 +2235,7 @@ footer {
                 background: #61BDF6;
             }
 
-.content__list-room {
+.content__list-club {
     min-height: 1367.5px;
 }
 
@@ -2265,7 +2265,7 @@ footer {
     display: table;
 }
 
-    .content__list .item .motel-image {
+    .content__list .item .club-image {
         display: block;
         border-radius: 10px;
         overflow: hidden;
