@@ -12,6 +12,7 @@
         new SelectListItem {Text = "Expired", Value = "Expired"},
         new SelectListItem {Text = "Suspended", Value = "Suspended"}
     };
+    Layout = "~/Views/Shared/_MLayout.cshtml";
 }
 <html lang="en">
 <head>
@@ -33,122 +34,6 @@
         <link rel="stylesheet" href="~/css/main.css">
 </head>
 <body>
-    <!-- sidebar -->
-        <div class="sidebar">
-        <div class="container">
-            <div class="navigation">  
-                <ul class="slide-menu">
-                    <div class="logo">
-                        <a href="@Url.Action("ManagerIndex", "Manager")">
-                            <img class="logo" src="~/images/Red_whiskered_bulbul_bird_logo_eps_10_generated 1.png" alt="logo">
-                        </a>
-                    </div>
-                    <li class="active" data-toggle="tooltip"data-placement="right" title="Overview">
-                        <a href="@Url.Action("ManagerIndex", "Manager")">
-                            <span><i class='bx bx-tachometer'></i></span>
-                            <span class="title">Overview</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                            <i class='bx bx-bookmarks'></i>
-                            <span class="title">Manage</span>
-                            <i class='bx bxs-chevron-down drop'></i>
-                        </a>
-                        <ul class="collapse sub-menu" id="collapseOne">
-                            <li data-toggle="tooltip"data-placement="right" title="Manage Meeting">
-                                <a href="@Url.Action("ManagerMeeting", "Manager")" li class="dropdown-item">
-                                    <i class='bx bx-home-alt-2'></i>
-                                    <span class="title">Meeting</span>
-                                </a> 
-                            </li>
-                            <li data-toggle="tooltip"data-placement="right" title="Manage Fieldtrip">
-                                <a href="@Url.Action("ManagerFieldtrip", "Manager")" li class="dropdown-item">
-                                    <i class='bx bx-calendar-edit'></i>
-                                    <span class="title">Fieldtrip</span>
-                                </a>
-                            </li> 
-                            <li data-toggle="tooltip"data-placement="right" title="Manage Bird Contest">
-                                <a href="@Url.Action("ManagerContest", "Manager")" li class="dropdown-item">
-                                    <i class='bx bx-trophy'></i>
-                                    <span class="title">Bird Contest</span>
-                                </a>
-                            </li>
-                            <li data-toggle="tooltip" data-placement="right" title="Manage Member Status">
-                                <a href="@Url.Action("ManagerMemberStatus", "Manager")" li class="dropdown-item">
-                                    <i class='bx bx-message-square-check'></i>
-                                    <span class="title">Member Status</span>
-                                </a>
-                            </li>
-                            <li data-toggle="tooltip" data-placement="right" title="Manage Member Status">
-                                <a href="@Url.Action("ManagerBlog", "Manager")" li class="dropdown-item">
-                                    <i class='bx bx-conversation'></i>
-                                    <span class="title">Blog</span>
-                                </a>
-                            </li>
-                            <li data-toggle="tooltip" data-placement="right" title="Manage Member Status">
-                                <a href="@Url.Action("ManagerNews", "Manager")" li class="dropdown-item">
-                                    <i class='bx bx-message-square'></i>
-                                    <span class="title">News</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li data-toggle="tooltip"data-placement="right" title="Manage Feedback">
-                        <a href="@Url.Action("ManagerFeedback", "Manager")">
-                            <span><i class="bx bx-detail"></i></span>
-                            <span class="title">Feedback</span>
-                        </a>
-                    </li>
-                    <li data-toggle="tooltip"data-placement="right" title="Manager Profile">
-                        <a href="@Url.Action("ManagerProfile", "Manager")">
-                            <span><i class='bx bx-user'></i></span>
-                            <span class="title">Manager Profile</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-    <!-- End sidebar -->
-
-    <!-- Header -->
-     <div class="header">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-sm-12">
-                        <div class="toggle float-left">
-                            <i class='bx bx-menu'></i>
-                        </div>
-                        <div class="float-left">
-                            <div class="dashboard_bar d-flex">
-                                Home
-                            </div>
-                        </div>
-                        <div class="float-right">
-                            <div class="btn-group me-1 mb-1">
-                                <div class="dropdown">
-                                     @if (TempData["ROLE_NAME"] != null)
-                                    {
-                                    <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        @TempData["USER_NAME"]
-                                    </button>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item" href="@Url.Action("ManagerProfile", "Manager")"><i class='bx bx-user'></i>Manager Profile</a> <!--thêm theo user id và role-->
-                                        <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="@Url.Action("Logout", "Auth")">Logout</a>
-                                    </div>
-                                    }
-                                </div>  
-                            </div>
-                        </div>   
-                    </div>
-                </div>
-            </div>
-        </div>
-    <!-- End header -->
-
-    <!-- List room -->
     <div class="main-content">
         <div class="main">
             <div class="container-fluid">

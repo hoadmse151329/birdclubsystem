@@ -143,7 +143,6 @@ Validator.isConfirmed = function (selector, getConfirmValue, message) {
 
 
 
-// ===================Thuy detail=====================
 /***AVATAR SCRIPT***/
 
 function readURL(input) {
@@ -199,7 +198,7 @@ function getPageList(totalPages, page, maxLength) {
 }
 
 $(function () {
-  var numberOfItems = $(".content__list, .room-item").length;
+  var numberOfItems = $(".content__list, .club-item").length;
   var limitPerPage = 9;
   var totalPages = Math.ceil(numberOfItems / limitPerPage);
   var paginationSize = 7;
@@ -208,7 +207,7 @@ $(function () {
   function showPage(whichPage) {
     if (whichPage < 1 || whichPage > totalPages) return false;
     currentPage = whichPage;
-    $(".content__list .room-item")
+    $(".content__list .club-item")
       .hide()
       .slice((currentPage - 1) * limitPerPage, currentPage * limitPerPage)
       .show();
@@ -329,7 +328,7 @@ $(document).ready(function () {
                 window.location = $(this).data("href");
             });
         });
-        // ===================Thuy detail=====================
+
 let vnd = Intl.NumberFormat("vi-VN", {
   style: "currency",
   currency: "VND",
@@ -352,7 +351,7 @@ $(function () {
 var app_a = {
   tbl: "#app_a",
   h: "input.hour_val",
-  r: "input.room_val",
+  r: "input.club_val",
   t: ".row_total",
   am: ".amount",
   p: ".price",
