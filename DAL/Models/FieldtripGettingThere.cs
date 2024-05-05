@@ -9,6 +9,13 @@ namespace DAL.Models
     [Table("FieldtripGettingThere")]
     public partial class FieldtripGettingThere
     {
+        public FieldtripGettingThere()
+        {
+            GettingThereStartEnd = "Some Description";
+            GettingThereFlight = "Some Description";
+            GettingThereTransportation = "Some Description";
+            GettingThereAccommodation = "Some Description";
+        }
         [Column("tripId")]
         public int TripId { get; set; }
         [Key]

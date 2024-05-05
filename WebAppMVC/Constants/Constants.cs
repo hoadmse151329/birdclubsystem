@@ -14,6 +14,8 @@
 		public static string CREATE_MEETING_VALID = "CMeetingValid";
         public static string UPDATE_MEETING_VALID = "UMeetingValid";
         public static string CREATE_FIELDTRIP_VALID = "CFieldTripValid";
+        public static string UPDATE_FIELDTRIP_VALID = "UFieldTripValid";
+        public static string CREATE_FIELDTRIP_DAYBYDAY_VALID = "CFieldTripDayByDayValid";
         public static string ADMIN = "Admin";
 		public static string MEMBER = "Member";
 		public static string TEMPMEMBER = "TempMember";

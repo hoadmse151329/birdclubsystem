@@ -18,6 +18,7 @@ namespace BAL.ViewModels
             StartDate = DateTime.Now.AddDays(1);
             EndDate = DateTime.Now.AddDays(2);
             Status = "OnHold";
+            Media = new List<MeetingMediaViewModel>();
         }
         public int? MeetingId { get; set; }
         [Required(ErrorMessage = "Meeting Name is required")]
@@ -33,12 +34,12 @@ namespace BAL.ViewModels
         [Required(ErrorMessage = "Start Date is required")]
         [DisplayName("Start Date")]
         [DateGreaterThan(comparisonProperty: "RegistrationDeadline", comparisonRange: 10, comparisonType: "Day", ErrorMessage = "Start Date must be greater than Registration Deadline at least 10 days")]
-        [DataType(DataType.Date)]
+        [DataType(DataType.DateTime)]
 		public DateTime StartDate { get; set; }
         [Required(ErrorMessage = "End Date is required")]
         [DisplayName("End Date")]
         [DateGreaterThan(comparisonProperty: "StartDate", ErrorMessage = "End Date must be greater than Start Date")]
-        [DataType(DataType.Date)]
+        [DataType(DataType.DateTime)]
 		public DateTime EndDate { get; set; }
         [DisplayName("Number Of Participants")]
         public int? NumberOfParticipants { get; set; }
@@ -68,6 +69,10 @@ namespace BAL.ViewModels
         [Required(ErrorMessage = "Status is required")]
         [DisplayName("Status")]
         public string? Status { get; set; }
+        [DisplayName("Location Map Image")]
+        public MeetingMediaViewModel? LocationMapImage { get; set; }
+        [DisplayName("Spotlight Image")]
+        public MeetingMediaViewModel? SpotlightImage { get; set; }
 
         public List<MeetingMediaViewModel>? Media { get; set; }
     }
