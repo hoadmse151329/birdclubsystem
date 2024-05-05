@@ -23,6 +23,6 @@ namespace DAL.Models
 
         [ForeignKey(nameof(ContestId))]
         [InverseProperty(nameof(Contest.ContestPictures))]
-        public virtual Contest? ContestDetails { get; set; }
+        public virtual Contest? ContestDetail { get; set; }
     }
 }

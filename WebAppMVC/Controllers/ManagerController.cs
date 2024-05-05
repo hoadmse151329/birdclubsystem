@@ -281,7 +281,7 @@ namespace WebAppMVC.Controllers
         }
         [HttpPost("Meeting/Create")]
         /*[Route("Manager/Meeting/Update/{id:int}")]*/
-        public async Task<IActionResult> ManagerCreateMeeting([FromBody] MeetingViewModel createMeet)
+        public async Task<IActionResult> ManagerCreateMeeting( MeetingViewModel createMeet)
         {
             ManagerAPI_URL += "Meeting/Create";
             if (!ModelState.IsValid)

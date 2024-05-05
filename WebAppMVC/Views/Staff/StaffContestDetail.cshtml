@@ -4,7 +4,12 @@
     ViewData["Title"] = "Staff Contest Detail Page";
     BAL.ViewModels.ContestViewModel details = Model.ContestDetails;
     List<BAL.ViewModels.ContestParticipantViewModel> parts = Model.ContestParticipants;
-        Layout = "~/Views/Shared/_SLayout.cshtml";
+    List<SelectListItem> checkInStatus = new()
+    {
+        new SelectListItem {Text = "Not Checked-In", Value = "Not Checked-In"},
+        new SelectListItem {Text = "Checked-In", Value = "Checked-In"}
+    }; 
+    Layout = "~/Views/Shared/_SLayout.cshtml";
 }
 <html lang="en">
 <head>
@@ -142,7 +147,31 @@
                                             <span>Status:</span>
                                         </div>
                                         <div class="col-sm-7">
-                                            <span class="destroy" style="float: left;">@details.Status</span>
+                                            @{
+                                                switch (details.Status)
+                                                {
+                                                    case "Ongoing":
+                                                    case "CheckingIn":
+                                                    case "OpenRegistration":
+                                                        {
+                                                            <span class="outcome" style="float: left;">@details.Status</span>
+                                                            break;
+                                                        }
+                                                    case "OnHold":
+                                                    case "ClosedRegistration":
+                                                        {
+                                                            <span class="approval" style="float: left;">@details.Status</span>
+                                                            break;
+                                                        }
+                                                    case "Ended":
+                                                    case "Postponed":
+                                                    case "Cancelled":
+                                                        {
+                                                            <span class="destroy" style="float: left;">@details.Status</span>
+                                                            break;
+                                                        }
+                                                }
+                                            }
                                         </div>
                                     </div>
                                 </div>
@@ -151,7 +180,7 @@
                         <div class="row">
                             <div class="card profile col-12 mb-4">
                                 <div class="card-header">
-                                    <h4>Meeting Information</h4>
+                                    <h4>Contest Information</h4>
                                 </div>
                                 <div class="card-body">
                                     <div class="row">
@@ -247,9 +276,10 @@
                         </div>
                     </div>
                     <div class="col-lg-5 cardFB">
+                        <form asp-action="StaffUpdateContestDetail" asp-controller="Staff" asp-route-id="@details.ContestId" method="post">
                         <div class="card border-0 d-flex">
                             <div class="card-header">
-                                <h4>Participants</h4>
+                                <h4>Edit Participant Status</h4>
                                 <div class="edit-info">
                                         <i class='bx bxs-edit-alt' data-toggle="modal" data-target="#editstatus"></i>
                                     </div>
@@ -268,7 +298,7 @@
                                         {
                                             <tr>
                                                 <td>@part.ParticipantNo</td>
-                                                <td>@part.BirdId</td>
+                                                <td>@part.MemberName</td>
                                                 <td>@part.CheckInStatus</td>
                                             </tr>
                                         }
@@ -277,41 +307,13 @@
                                     </tbody>
                                 </table>
                             </div>
-
+                        </form>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-    <!-- edit Room -->
-                    <div id="editstatus" class="modal fade" role="dialog">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
-            <div class="modal-content modal-addRoom">
-                <div class="modal-header">
-                    <h4 class="modal-title">Edit Status</h4>
-                </div>
-                <form asp-action="StaffUpdateFieldTripDetail" asp-controller="Staff" method="post" asp-route-id="@details.ContestId" class="form-group">
-                    <div class="modal-body">
-                        <div class="row justify-content-center">
-                            <div class="col-12 col-md-8">
-                                @foreach (var part in parts){
-                                <label asp-for="@part.CheckInStatus" class="col-sm-4 col-form-label">CheckInStatus</label>
-                                    <div class="col-sm-8">
-                                        <input asp-for="@part.CheckInStatus" id="CheckInStatus" type="checkbox" name="CheckInStatus"
-                                               value="@part.CheckInStatus" class="form-control" required>
-                                    </div>
-                                    }
-                        </div>
-                    </div>
-                    <div class="modal-footer justify-content-center">
-                        <button class="btn btn-success" type="submit" value="Update">Save</button>
-                        <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
-                    </div>
-                </form>
-            </div>
-        </div>
 
         <!-- jQuery first, then Popper.js, then Bootstrap JS. -->
 
