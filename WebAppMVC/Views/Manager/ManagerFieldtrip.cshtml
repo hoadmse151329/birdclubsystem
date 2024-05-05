@@ -4,12 +4,14 @@
     ViewData["Title"] = "Manager Meeting Page";
     List<string> locationList = Model.Locations;
     List<BAL.ViewModels.FieldTripViewModel> fieldtripList = Model.FieldTrips;
-    BAL.ViewModels.FieldTripViewModel createFieldTrip = new();
-    BAL.ViewModels.FieldtripDaybyDayViewModel createFieldTripDayByDay = new();
-    BAL.ViewModels.FieldTripAdditionalDetailViewModel createFieldTripRates = new();
-    BAL.ViewModels.FieldtripMediaViewModel createFieldTripMedia = new();
-    BAL.ViewModels.FieldtripInclusionViewModel createFieldTripInclsion = new();
-    BAL.ViewModels.FieldtripGettingThereViewModel createFieldTripGettingthere = new();
+    BAL.ViewModels.FieldTripViewModel createFieldTrip = Model.CreateFieldTrip != null ? Model.CreateFieldTrip : new BAL.ViewModels.FieldTripViewModel();
+
+    //BAL.ViewModels.FieldtripDaybyDayViewModel createFieldTripDayByDay = new();
+    //BAL.ViewModels.FieldTripAdditionalDetailViewModel createFieldTripRates = new();
+    //BAL.ViewModels.FieldtripMediaViewModel createFieldTripMedia = new();
+    //BAL.ViewModels.FieldtripInclusionViewModel createFieldTripInclsion = new();
+    //BAL.ViewModels.FieldtripGettingThereViewModel createFieldTripGettingthere = new();
+
     string? search = string.Empty;
     Layout = "~/Views/Shared/_MLayout.cshtml";
 }
@@ -215,7 +217,6 @@
                     <h4 class="modal-title">Add new FieldTrip</h4>
                 </div>
                 <div class="modal-body">
-                    @*<form asp-action="ManagerCreateFieldTrip" asp-controller="Manager" method="get" onsubmit="return submitFunc()" id="form">*@
                     <form asp-action="ManagerCreateFieldTrip" asp-controller="Manager" method="post" id="form">
                         <div class="row p-4">
                             <div class="col-12">
