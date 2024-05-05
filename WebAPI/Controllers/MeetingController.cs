@@ -478,14 +478,14 @@ namespace WebAPI.Controllers
                 {
                     return NotFound(new
                     {
-                        status = false,
-                        errorMessage = "Meeting Not Found!"
+                        Status = false,
+                        ErrorMessage = "Meeting Not Found!"
                     });
                 }
 
                 return Ok(new
                 {
-                    status = true,
+                    Status = true,
                     Data = result
                 });
             }

@@ -30,7 +30,7 @@ namespace DAL.Repositories.Implements
 
         public async Task<IEnumerable<ContestParticipant>> GetContestParticipantsByContestId(int contestId)
         {
-            return _context.ContestParticipants.Where(con => con.ContestId == contestId).ToList();
+            return _context.ContestParticipants.Where(con => con.ContestId == contestId).Include(m => m.MemberDetail).ToList();
         }
 
         public async Task<IEnumerable<ContestParticipant>> GetContestParticipantsByBirdId(int birdId)
@@ -40,7 +40,7 @@ namespace DAL.Repositories.Implements
 
         public async Task<IEnumerable<ContestParticipant>> GetContestParticipantsByBirdIdInclude(int birdId)
         {
-            return _context.ContestParticipants.Where(b => b.BirdId == birdId).Include(c => c.Contest).ToList();
+            return _context.ContestParticipants.Where(b => b.BirdId == birdId).Include(c => c.ContestDetail).ToList();
         }
 
 		public async Task<IEnumerable<ContestParticipant>> GetContestParticipantsByMemberId(string memberId)
@@ -50,7 +50,7 @@ namespace DAL.Repositories.Implements
 
 		public async Task<IEnumerable<ContestParticipant>> GetContestParticipantsByMemberIdInclude(string memberId)
 		{
-            return _context.ContestParticipants.Where(cp => cp.MemberId == memberId).ToList();
+            return _context.ContestParticipants.AsNoTracking().Where(c => c.MemberId == memberId).Include(c => c.ContestDetail).ToList();
 		}
 
 		public async Task<int> GetCountContestParticipantsByMemberId(string memberId)
@@ -86,5 +86,23 @@ namespace DAL.Repositories.Implements
             if (birdId != null) return _context.ContestParticipants.FirstOrDefault(b => b.ContestId == contestId && b.MemberId == memberId && b.BirdId == birdId);
 			return _context.ContestParticipants.FirstOrDefault(b => b.ContestId == contestId && b.MemberId == memberId);
 		}
+
+        public async Task<IEnumerable<ContestParticipant>> UpdateAllContestParticipantStatus(List<ContestParticipant> part)
+        {
+            foreach (var participant in part)
+            {
+                var conpart = _context.ContestParticipants
+                    .SingleOrDefault(p => p.ContestId == participant.ContestId && p.MemberId == participant.MemberId);
+                if (conpart != null)
+                {
+                    if (conpart.CheckInStatus != participant.CheckInStatus)
+                    {
+                        conpart.CheckInStatus = participant.CheckInStatus;
+                        _context.Update(conpart);
+                    }
+                }
+            }
+            return part;
+        }
 	}
 }

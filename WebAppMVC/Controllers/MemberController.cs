@@ -171,6 +171,7 @@ namespace WebAppMVC.Controllers
 
             string MemberMeetingPartAPI_URL = "/api/Meeting/Participation/AllMeetings";
             string MemberFieldTripPartAPI_URL = "/api/FieldTrip/Participation/AllFieldTrips";
+            string MemberContestPartAPI_URL = "/api/Contest/Participation/AllContests";
             
             dynamic registeredModel = new ExpandoObject();
 
@@ -192,7 +193,16 @@ namespace WebAppMVC.Controllers
                 inputType: usrId,
                 accessToken: accToken);
 
-            if (memberMeetingPart == null || memberFieldTripPart == null)
+            var memberContestPart = await methcall.CallMethodReturnObject<GetListEventParticipation>(
+                _httpClient: _httpClient,
+                options: options,
+                methodName: "POST",
+                url: MemberContestPartAPI_URL,
+                _logger: _logger,
+                inputType: usrId,
+                accessToken: accToken);
+
+            if (memberMeetingPart == null || memberFieldTripPart == null || memberContestPart == null)
             {
                 ViewBag.error =
                     "Error while processing your request! (Getting Member Participation History!).\n Member Participation History Not Found!\n"
@@ -200,7 +210,7 @@ namespace WebAppMVC.Controllers
                 return RedirectToAction("MemberProfile");
             }
             else
-            if (!memberMeetingPart.Status || !memberFieldTripPart.Status)
+            if (!memberMeetingPart.Status || !memberFieldTripPart.Status || !memberContestPart.Status)
             {
                 ViewBag.error =
                     "Error while processing your request! (Getting Member Participation History!).\n Member Participation History Not Found!"
@@ -211,6 +221,7 @@ namespace WebAppMVC.Controllers
             List<GetEventParticipation> registeredEvents = new();
             registeredEvents.AddRange(memberMeetingPart.Data);
             registeredEvents.AddRange(memberFieldTripPart.Data);
+            registeredEvents.AddRange(memberContestPart.Data);
 
             registeredModel.RegisteredEvents = registeredEvents;
             return View(registeredModel);

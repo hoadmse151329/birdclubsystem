@@ -5,6 +5,20 @@
     BAL.ViewModels.ContestViewModel details = Model.ContestDetails;
     List<BAL.ViewModels.ContestParticipantViewModel> parts = Model.ContestParticipants;
     Layout = "~/Views/Shared/_MLayout.cshtml";
+    List<SelectListItem> defaultContestStatus = new()
+    {
+        new SelectListItem {Text = "On Hold", Value = "OnHold"},
+        new SelectListItem {Text = "Postponed", Value = "Postponed"},
+        new SelectListItem {Text = "Cancelled", Value = "Cancelled"},
+        new SelectListItem {Text = "Ended", Value = "Ended"}
+    };
+    foreach (var item in defaultContestStatus)
+    {
+        if (details.Status.Equals(item.Value))
+        {
+            item.Selected = true;
+        }
+    }
 }
 <html lang="en">
 <head>
@@ -59,7 +73,7 @@
                         <div class="row">
                             <div class="card profile col-12 mb-4">
                                 <div class="card-header">
-                                    <h4>Meeting Information</h4>
+                                    <h4>Contest Information</h4>
                                     <div class="edit-info">
                                         <i class='bx bxs-edit-alt' data-toggle="modal" data-target="#editprofile"></i>
                                     </div>
@@ -175,7 +189,7 @@
                                         {
                                             <tr>
                                                 <td>@part.ParticipantNo</td>
-                                                <td>@part.BirdId</td>
+                                                <td>@part.MemberName</td>
                                             </tr>
                                         }
                                         <tr>
@@ -251,18 +265,5 @@
                 </form>
             </div>
         </div>
-
-
-        <!-- jQuery first, then Popper.js, then Bootstrap JS. -->
-        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src="~/js/owner-script.js"></script>
-        <script src="~/lib/jquery/dist/jquery.min.js"></script>
 </body>
 </html>
