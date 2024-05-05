@@ -12,6 +12,7 @@
 
 		public static string NEW_MEMBER_REGISTRATION_TRANSACTION_TYPE = "New-Membership-Registration";
 		public static string CREATE_MEETING_VALID = "CMeetingValid";
+        public static string UPDATE_MEETING_VALID = "UMeetingValid";
         public static string CREATE_FIELDTRIP_VALID = "CFieldTripValid";
         public static string ADMIN = "Admin";
 		public static string MEMBER = "Member";

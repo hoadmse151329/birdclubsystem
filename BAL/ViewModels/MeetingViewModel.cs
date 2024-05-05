@@ -17,37 +17,44 @@ namespace BAL.ViewModels
             RegistrationDeadline = DateTime.Now;
             StartDate = DateTime.Now.AddDays(1);
             EndDate = DateTime.Now.AddDays(2);
+            Status = "OnHold";
         }
         public int? MeetingId { get; set; }
+        [Required(ErrorMessage = "Meeting Name is required")]
         [DisplayName("Meeting Name")]
         public string? MeetingName { get; set; }
+        [Required(ErrorMessage = "Description is required")]
         [DisplayName("Description")]
         public string? Description { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Registration Deadline is required")]
         [DisplayName("Registration Deadline")]
         [DataType(DataType.DateTime)]
 		public DateTime RegistrationDeadline { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Start Date is required")]
         [DisplayName("Start Date")]
         [DateGreaterThan(comparisonProperty: "RegistrationDeadline", comparisonRange: 10, comparisonType: "Day", ErrorMessage = "Start Date must be greater than Registration Deadline at least 10 days")]
         [DataType(DataType.Date)]
 		public DateTime StartDate { get; set; }
-        [Required]
+        [Required(ErrorMessage = "End Date is required")]
         [DisplayName("End Date")]
         [DateGreaterThan(comparisonProperty: "StartDate", ErrorMessage = "End Date must be greater than Start Date")]
         [DataType(DataType.Date)]
 		public DateTime EndDate { get; set; }
         [DisplayName("Number Of Participants")]
         public int? NumberOfParticipants { get; set; }
+        [Required(ErrorMessage = "Maximum Participants is required")]
         [DisplayName("Maximum Participants")]
         [Range(3,int.MaxValue,ErrorMessage = "Maximum Participants value must be at least three people")]
         public int? NumberOfParticipantsLimit { get; set; }
         [DisplayName("Participant Number")]
         public int? ParticipationNo { get; set; }
+        [Required(ErrorMessage = "Host is required")]
         [DisplayName("Host")]
         public string? Host { get; set; }
+        [Required(ErrorMessage = "Incharge is required")]
         [DisplayName("Incharge")]
         public string? Incharge { get; set; }
+        [Required(ErrorMessage = "Note is required")]
         [DisplayName("Note")]
         public string? Note { get; set; }
 		[Required(ErrorMessage = "Address is required")]
@@ -58,6 +65,7 @@ namespace BAL.ViewModels
         public string? Street { get; set; }
         public string? District { get; set; }
         public string? City { get; set; }
+        [Required(ErrorMessage = "Status is required")]
         [DisplayName("Status")]
         public string? Status { get; set; }
 

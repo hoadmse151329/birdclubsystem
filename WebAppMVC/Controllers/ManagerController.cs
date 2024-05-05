@@ -20,6 +20,7 @@ using WebAppMVC.Models.Manager;
 using BAL.ViewModels.Manager;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using System.ComponentModel.DataAnnotations;
 // thêm crud của meeting, fieldtrip, contest.
 namespace WebAppMVC.Controllers
 {
@@ -146,6 +147,7 @@ namespace WebAppMVC.Controllers
                     + listMeetResponse.ErrorMessage + "\n" + listLocationResponse.ErrorMessage;
                 return View("ManagerIndex");
             }
+
             testmodel.CreateMeeting = null;
             if (TempData.Peek(Constants.Constants.CREATE_MEETING_VALID) != null)
             {
@@ -153,13 +155,14 @@ namespace WebAppMVC.Controllers
                 TempData.Remove(Constants.Constants.CREATE_MEETING_VALID);
                 TryValidateModel(testmodel.CreateMeeting,"createMeeting");
             }
+
             testmodel.Locations = listLocationResponse.Data;
             testmodel.Meetings = listMeetResponse.Data;
             return View(testmodel);
         }
         [HttpGet("Meeting/{id:int}")]
         /*[Route("Manager/Meeting/{id:int}")]*/
-        public async Task<IActionResult> ManagerMeetingDetail(int id)
+        public async Task<IActionResult> ManagerMeetingDetail([FromRoute][Required] int id)
         {
             string ManagerMeetingDetailAPI_URL = ManagerAPI_URL + "Meeting/AllParticipants/" + id;
 
@@ -213,27 +216,35 @@ namespace WebAppMVC.Controllers
                     + meetPostResponse.ErrorMessage;
                return RedirectToAction("ManagerMeeting");
             }
+            meetingDetailBigModel.UpdateMeeting = null;
+            if (TempData.Peek(Constants.Constants.UPDATE_MEETING_VALID) != null)
+            {
+                meetingDetailBigModel.UpdateMeeting = JsonSerializer.Deserialize<MeetingViewModel>(TempData[Constants.Constants.UPDATE_MEETING_VALID].ToString());
+                TempData.Remove(Constants.Constants.UPDATE_MEETING_VALID);
+                TryValidateModel(meetingDetailBigModel.UpdateMeeting, "updateMeeting");
+            }
             meetingDetailBigModel.MeetingDetails = meetPostResponse.Data;
             meetingDetailBigModel.MeetingParticipants = meetpartPostResponse.Data;
 
             return View(meetingDetailBigModel);
         }
-        [HttpPost("Meeting/Update/{id:int}")]
+        [HttpPost("Meeting/{id:int}/Update")]
         /*[Route("Manager/Meeting/Update/{id:int}")]*/
         public async Task<IActionResult> ManagerUpdateMeetingDetail(
-            int id,
-            MeetingViewModel meetView
+            [FromRoute] [Required] int id,
+            [Required] MeetingViewModel updateMeeting
             )
         {
             ManagerAPI_URL += "Meeting/Update/" + id;
 
 			if (!ModelState.IsValid)
 			{
-                /*TempData["ModelState"] = ViewData.ModelState;*/
-                string validJson = JsonSerializer.Serialize(meetView, options);
-                TempData[Constants.Constants.CREATE_MEETING_VALID] = validJson;
+                string validJson = JsonSerializer.Serialize(updateMeeting, options);
+                TempData[Constants.Constants.UPDATE_MEETING_VALID] = validJson;
+
                 ViewBag.Error =
 				"Error while processing your request! (Update Meeting!).\n Validation Failed!";
+
 				return RedirectToAction("ManagerMeetingDetail", new {id});
 			}
 			string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
@@ -260,28 +271,34 @@ namespace WebAppMVC.Controllers
                                 options: options,
                                 methodName: "PUT",
                                 url: ManagerAPI_URL,
-                                inputType: meetView,
+                                inputType: updateMeeting,
                                 accessToken: accToken,
                                 _logger: _logger);
             if (meetPostResponse == null)
             {
+                string validJson = JsonSerializer.Serialize(updateMeeting, options);
+                TempData[Constants.Constants.CREATE_MEETING_VALID] = validJson;
+
                 ViewBag.Error =
                     "Error while processing your request! (Updating Meeting!).\n Meeting Not Found!";
-                return RedirectToAction("ManagerMeeting");
+                return RedirectToAction("ManagerMeetingDetail", new { id });
             }
             if (!meetPostResponse.Status)
             {
+                string validJson = JsonSerializer.Serialize(updateMeeting, options);
+                TempData[Constants.Constants.CREATE_MEETING_VALID] = validJson;
+
                 _logger.LogInformation("Error while processing your request: " + meetPostResponse.Status + " , Error Message: " + meetPostResponse.ErrorMessage);
                 ViewBag.Error =
                     "Error while processing your request! (Updating Meeting Post!).\n"
                     + meetPostResponse.ErrorMessage;
-                return RedirectToAction("ManagerMeeting");
+                return RedirectToAction("ManagerMeetingDetail", new { id });
             }
             return RedirectToAction("ManagerMeetingDetail",new { id });
         }
         [HttpPost("Meeting/Create")]
         /*[Route("Manager/Meeting/Update/{id:int}")]*/
-        public async Task<IActionResult> ManagerCreateMeeting([FromBody] MeetingViewModel createMeet)
+        public async Task<IActionResult> ManagerCreateMeeting([Required] MeetingViewModel createMeeting)
         {
             ManagerAPI_URL += "Meeting/Create";
             if (!ModelState.IsValid)
@@ -289,7 +306,7 @@ namespace WebAppMVC.Controllers
                 /*TempData["ValidationErrors"] = ModelState.Values.SelectMany(v => v.Errors.Select(c => c.ErrorMessage)).ToList();
                 List<string> errorlist = ModelState.Values.SelectMany(v => v.Errors.Select(c => c.ErrorMessage)).ToList();
                 methcall.SetCookie(Response, "ValidationErrors", errorlist, cookieOptions, options);*/
-                string validJson = JsonSerializer.Serialize(createMeet, options);
+                string validJson = JsonSerializer.Serialize(createMeeting, options);
                 TempData[Constants.Constants.CREATE_MEETING_VALID] = validJson;
                 return RedirectToAction("ManagerMeeting");
             }
@@ -318,12 +335,12 @@ namespace WebAppMVC.Controllers
                                 options: options,
                                 methodName: "POST",
                                 url: ManagerAPI_URL,
-                                inputType: createMeet,
+                                inputType: createMeeting,
                                 accessToken: accToken,
                                 _logger: _logger);
             if (meetPostResponse == null)
             {
-                string validJson = JsonSerializer.Serialize(createMeet, options);
+                string validJson = JsonSerializer.Serialize(createMeeting, options);
                 TempData[Constants.Constants.CREATE_MEETING_VALID] = validJson;
                 ViewBag.Error =
                     "Error while processing your request! (Create Meeting!).\n Meeting Not Found!";
@@ -331,7 +348,7 @@ namespace WebAppMVC.Controllers
             }
             if (!meetPostResponse.Status)
             {
-                string validJson = JsonSerializer.Serialize(createMeet, options);
+                string validJson = JsonSerializer.Serialize(createMeeting, options);
                 TempData[Constants.Constants.CREATE_MEETING_VALID] = validJson;
                 _logger.LogInformation("Error while processing your request: " + meetPostResponse.Status + " , Error Message: " + meetPostResponse.ErrorMessage);
                 ViewBag.Error =
@@ -342,11 +359,11 @@ namespace WebAppMVC.Controllers
             return RedirectToAction("ManagerMeeting");
         }
 
-        [HttpPost("Meeting/Cancel")]
+        [HttpPost("Meeting/{id:int}/Cancel")]
         public async Task<IActionResult> ManagerCancelMeeting(
-            int meetId)
+            [FromRoute] [Required] int id)
         {
-            ManagerAPI_URL += "Meeting/Update/Cancel/" + meetId;
+            ManagerAPI_URL += "Meeting/Update/Cancel/" + id;
 
             string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
             if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
