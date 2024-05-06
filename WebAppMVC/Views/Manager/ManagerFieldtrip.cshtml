@@ -1,7 +1,7 @@
 ﻿@model dynamic
 @{
     Layout = null;
-    ViewData["Title"] = "Manager Meeting Page";
+    ViewData["Title"] = "Manager Fiedl Trip Page";
     List<string> locationList = Model.Locations;
     List<BAL.ViewModels.FieldTripViewModel> fieldtripList = Model.FieldTrips;
     BAL.ViewModels.FieldTripViewModel createFieldTrip = Model.CreateFieldTrip != null ? Model.CreateFieldTrip : new BAL.ViewModels.FieldTripViewModel();
@@ -101,7 +101,7 @@
                                         @foreach (var data in fieldtripList)
                                         {
                                             <div class="col-xl-3 col-lg-6 col-sm-6 my-3">
-                                                <div class="card card-child">
+                                                <div class="card1 card-child">
                                                     <div class="club-name">
                                                         <span>FieldTrip</span>
                                                         <div class="status">
@@ -157,15 +157,15 @@
                                                                 </li>
                                                                 <li>
                                                                     <h6>Location:</h6>
-                                                                    <span>@data.AreaNumber,@data.Street,@data.District,@data.City</span>
+                                                                    <span class="truncate">@data.AreaNumber,@data.Street,@data.District,@data.City</span>
                                                                 </li>
                                                                 <li>
                                                                     <h6>Description:</h6>
-                                                                    <span>@data.Description</span>
+                                                                    <span class="truncate">@data.Description</span>
                                                                 </li>
                                                                 <li>
                                                                     <h6>Note:</h6>
-                                                                    <span>@data.Note</span>
+                                                                    <span class="truncate">@data.Note</span>
                                                                 </li>
                                                             </ul>
                                                         </div>
@@ -203,6 +203,7 @@
                             </div>
                             <!-- end tapnet -->
                         </div>
+                    </div>
                     </div>
                 </section>
             </div>

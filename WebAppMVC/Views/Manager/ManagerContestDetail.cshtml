@@ -56,29 +56,44 @@
                         <div class="row">
                             <div class="card profile col-12 mb-4">
                                 <div class="card-header">
-                                    <h4>Contest Status</h4>
-                                </div>
-                                <div class="card-body">
-                                    <div class="row mb-sm-2">
-                                        <div class="col-sm-5 text-sm-right">
-                                            <span>Status:</span>
-                                        </div>
-                                        <div class="col-sm-7">
-                                            <span class="destroy" style="float: left;">@details.Status</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="card profile col-12 mb-4">
-                                <div class="card-header">
                                     <h4>Contest Information</h4>
                                     <div class="edit-info">
                                         <i class='bx bxs-edit-alt' data-toggle="modal" data-target="#editprofile"></i>
                                     </div>
                                 </div>
                                 <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-sm-5 text-sm-right">
+                                            <span>Status:</span>
+                                        </div>
+                                        <div class="col-sm-7">
+                                            @{
+                                                switch (details.Status)
+                                                {
+                                                    case "Ongoing":
+                                                    case "CheckingIn":
+                                                    case "OpenRegistration":
+                                                        {
+                                                            <span class="outcome" style="float: left;">@details.Status</span>
+                                                            break;
+                                                        }
+                                                    case "OnHold":
+                                                    case "ClosedRegistration":
+                                                        {
+                                                            <span class="approval" style="float: left;">@details.Status</span>
+                                                            break;
+                                                        }
+                                                    case "Ended":
+                                                    case "Postponed":
+                                                    case "Cancelled":
+                                                        {
+                                                            <span class="destroy" style="float: left;">@details.Status</span>
+                                                            break;
+                                                        }
+                                                }
+                                            }
+                                        </div>
+                                    </div>
                                     <div class="row">
                                         <div class="col-md-5 text-md-right">
                                             <label for="meeting-name">Contest Name:</label>

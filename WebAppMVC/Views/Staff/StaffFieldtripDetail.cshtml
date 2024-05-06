@@ -3,12 +3,29 @@
     Layout = null;
     ViewData["Title"] = "Staff Field Trip Detail Page";
     BAL.ViewModels.FieldTripViewModel details = Model.FieldTripDetails;
-    BAL.ViewModels.FieldtripDaybyDayViewModel DayByDay = Model.FieldTripDetails;
-    BAL.ViewModels.FieldTripAdditionalDetailViewModel AddDetails = Model.FieldTripDetails;
-    BAL.ViewModels.FieldtripMediaViewModel Media = Model.FieldTripDetails;
-    BAL.ViewModels.FieldtripInclusionViewModel Inclusion = Model.FieldTripDetails;
-    BAL.ViewModels.FieldtripGettingThereViewModel Gettingthere = Model.FieldTripDetails;
-    List<BAL.ViewModels.FieldTripParticipantViewModel> parts = Model.FieldTripParticipants;
+    List<BAL.ViewModels.FieldtripDaybyDayViewModel>? DayByDay = details.FieldtripDaybyDays;
+    List<BAL.ViewModels.FieldTripAdditionalDetailViewModel>? TourFeatures = Model.FieldTripTourFeatures;
+    List<BAL.ViewModels.FieldTripAdditionalDetailViewModel>? Importants = Model.FieldTripImportantToKnows;
+    List<BAL.ViewModels.FieldTripAdditionalDetailViewModel>? ActAndTras = Model.FieldTripActivitiesAndTransportation;
+    List<BAL.ViewModels.FieldtripMediaViewModel>? Media = details.FieldtripPictures;
+    List < BAL.ViewModels.FieldtripInclusionViewModel>? Inclusion = details.FieldtripInclusions;
+
+    BAL.ViewModels.FieldtripGettingThereViewModel Gettingthere = details.FieldtripGettingTheres;
+
+    List<BAL.ViewModels.FieldTripParticipantViewModel>? parts = Model.FieldTripParticipants;
+
+    List<SelectListItem> checkInStatus = new()
+    {
+        new SelectListItem {Text = "Not Checked-In", Value = "Not Checked-In"},
+        new SelectListItem {Text = "Checked-In", Value = "Checked-In"}
+    };
+    List<SelectListItem> defaultMeetingStatus = new()
+    {
+        new SelectListItem {Text = "Open Registration", Value = "OpenRegistration"},
+        new SelectListItem {Text = "Closed Registration", Value = "ClosedRegistration"},
+        new SelectListItem {Text = "Checking In", Value = "CheckingIn"},
+        new SelectListItem {Text = "Ongoing", Value = "Ongoing"}
+    };
         Layout = "~/Views/Shared/_SLayout.cshtml";
 }
 <html lang="en">
@@ -27,97 +44,6 @@
     <link rel="stylesheet" href="https://unpkg.com/filepond-plugin-file-poster/dist/filepond-plugin-file-poster.css">
 </head>
 <body>
-    <!-- sidebar -->
-    <div class="sidebar">
-        <div class="container">
-            <div class="navigation">  
-                <ul class="slide-menu">
-                    <div class="logo">
-                        <a href="@Url.Action("StaffIndex", "Staff")">
-                            <img class="logo" src="~/images/Red_whiskered_bulbul_bird_logo_eps_10_generated 1.png" alt="logo">
-                        </a>
-                    </div>
-                    <li class="active" data-toggle="tooltip"data-placement="right" title="Overview">
-                        <a href="@Url.Action("StaffIndex", "Staff")">
-                            <span><i class='bx bx-tachometer'></i></span>
-                            <span class="title">Overview</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                            <i class='bx bx-bookmarks'></i>
-                            <span class="title">Manage</span>
-                            <i class='bx bxs-chevron-down drop'></i>
-                        </a>
-                        <ul class="collapse sub-menu" id="collapseOne">
-                            <li data-toggle="tooltip"data-placement="right" title="Manage Meeting">
-                                <a href="@Url.Action("StaffMeeting", "Staff")" li class="dropdown-item">
-                                    <i class='bx bx-home-alt-2'></i>
-                                    <span class="title">Meeting</span>
-                                </a> 
-                            </li>
-                            <li data-toggle="tooltip"data-placement="right" title="Manage Fieldtrip">
-                                <a href="@Url.Action("StaffFieldTrip", "Staff")" li class="dropdown-item">
-                                    <i class='bx bx-calendar-edit'></i>
-                                    <span class="title">Fieldtrip</span>
-                                </a>
-                            </li> 
-                            <li data-toggle="tooltip"data-placement="right" title="Manage Bird Contest">
-                                <a href="@Url.Action("StaffContest", "Staff")" li class="dropdown-item">
-                                    <i class='bx bx-trophy'></i>
-                                    <span class="title">Bird Contest</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    </li>
-                    <li data-toggle="tooltip"data-placement="right" title="Staff Profile">
-                        <a href="@Url.Action("StaffProfile", "Staff")">
-                            <span><i class='bx bx-user'></i></span>
-                            <span class="title">Staff Profile</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-    <!-- End sidebar -->
-
-    <!-- Header -->
-    <div class="header">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-sm-12">
-                        <div class="toggle float-left">
-                            <i class='bx bx-menu'></i>
-                        </div>
-                        <div class="float-left">
-                            <div class="dashboard_bar d-flex">
-                                Home
-                            </div>
-                        </div>
-                        <div class="float-right">
-                            <div class="btn-group me-1 mb-1">
-                                <div class="dropdown">
-                                    @if (TempData["ROLE_NAME"] != null)
-                                    {
-                                    <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        @TempData["USER_NAME"]
-                                    </button>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item" href="@Url.Action("StaffProfile", "Staff")"><i class='bx bx-user'></i>Staff Profile</a> <!--thêm theo user id và role-->
-                                        <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="@Url.Action("Logout", "Auth")">Logout</a>
-                                    </div>
-                                    }
-                                </div>  
-                            </div>
-                        </div>   
-                    </div>
-                </div>
-            </div>
-        </div>
-    <!-- End header -->
     <!-- List club -->
     <div class="main-content">
         <div class="main">
@@ -139,26 +65,41 @@
                         <div class="row">
                             <div class="card profile col-12 mb-4">
                                 <div class="card-header">
-                                    <h4>Field Trip Status</h4>
+                                    <h4>Meeting Information</h4>
                                 </div>
                                 <div class="card-body">
-                                    <div class="row mb-sm-2">
+                                    <div class="row">
                                         <div class="col-sm-5 text-sm-right">
                                             <span>Status:</span>
                                         </div>
                                         <div class="col-sm-7">
-                                            <span class="destroy" style="float: left;">@details.Status</span>
+                                            @{
+                                                switch (details.Status)
+                                                {
+                                                    case "Ongoing":
+                                                    case "CheckingIn":
+                                                    case "OpenRegistration":
+                                                        {
+                                                            <span class="outcome" style="float: left;">@details.Status</span>
+                                                            break;
+                                                        }
+                                                    case "OnHold":
+                                                    case "ClosedRegistration":
+                                                        {
+                                                            <span class="approval" style="float: left;">@details.Status</span>
+                                                            break;
+                                                        }
+                                                    case "Ended":
+                                                    case "Postponed":
+                                                    case "Cancelled":
+                                                        {
+                                                            <span class="destroy" style="float: left;">@details.Status</span>
+                                                            break;
+                                                        }
+                                                }
+                                            }
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="card profile col-12 mb-4">
-                                <div class="card-header">
-                                    <h4>Meeting Information</h4>
-                                </div>
-                                <div class="card-body">
                                     <div class="row">
                                         <div class="col-md-5 text-md-right">
                                             <label for="meeting-name">FieldTrip Name:</label>

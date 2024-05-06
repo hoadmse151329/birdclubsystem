@@ -18,13 +18,20 @@ namespace WebAppMVC.Controllers
         private readonly IConfiguration _config;
         private readonly HttpClient _httpClient = null;
         private string ContestAPI_URL = "";
-        private readonly JsonSerializerOptions options = new JsonSerializerOptions
+        private readonly JsonSerializerOptions jsonOptions = new JsonSerializerOptions
         {
             Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
             PropertyNameCaseInsensitive = true,
         };
+        private readonly CookieOptions cookieOptions = new CookieOptions
+        {
+            Expires = DateTime.Now.AddMinutes(10),
+            MaxAge = TimeSpan.FromMinutes(10),
+            Secure = true,
+            IsEssential = true,
+        };
         private BirdClubLibrary methcall = new();
-		public ContestController(ILogger<ContestController> logger, IConfiguration config)
+        public ContestController(ILogger<ContestController> logger, IConfiguration config)
 		{
             _logger = logger;
             _config = config;
@@ -36,7 +43,7 @@ namespace WebAppMVC.Controllers
         }
 
         [HttpGet]
-        [Route("Contest/Index")]
+        [Route("Index")]
         public async Task<IActionResult> Index()
 		{
             ContestAPI_URL += "/All";
@@ -58,26 +65,26 @@ namespace WebAppMVC.Controllers
 
             var listLocationRoadResponse = await methcall.CallMethodReturnObject<GetLocationAddressResponseByList>(
                 _httpClient: _httpClient,
-                options: options,
+                options: jsonOptions,
                 methodName: "GET",
                 url: LocationAPI_URL_All_Road,
                 _logger: _logger);
             var listLocationDistrictResponse = await methcall.CallMethodReturnObject<GetLocationAddressResponseByList>(
                 _httpClient: _httpClient,
-                options: options,
+                options: jsonOptions,
                 methodName: "GET",
                 url: LocationAPI_URL_All_District,
                 _logger: _logger);
             var listLocationCityResponse = await methcall.CallMethodReturnObject<GetLocationAddressResponseByList>(
                 _httpClient: _httpClient,
-                options: options,
+                options: jsonOptions,
                 methodName: "GET",
                 url: LocationAPI_URL_All_City,
                 _logger: _logger);
 
             var listContestResponse = await methcall.CallMethodReturnObject<GetContestResponseByList>(
                 _httpClient: _httpClient,
-                options: options,
+                options: jsonOptions,
                 methodName: "POST",
                 url: ContestAPI_URL,
                 inputType: role,
@@ -152,7 +159,7 @@ namespace WebAppMVC.Controllers
                 ContestAPI_URL += "Participant/" + id;
                 contestPostResponse = await methcall.CallMethodReturnObject<GetContestPostResponse>(
                                    _httpClient: _httpClient,
-                                   options: options,
+                                   options: jsonOptions,
                                    methodName: "POST",
                                    url: ContestAPI_URL,
                                    _logger: _logger,
@@ -164,7 +171,7 @@ namespace WebAppMVC.Controllers
                 ContestAPI_URL += id;
                 contestPostResponse = await methcall.CallMethodReturnObject<GetContestPostResponse>(
                                    _httpClient: _httpClient,
-                                   options: options,
+                                   options: jsonOptions,
                                    methodName: "GET",
                                    url: ContestAPI_URL,
                                    _logger: _logger);
@@ -218,7 +225,7 @@ namespace WebAppMVC.Controllers
 
             var participationNo = await methcall.CallMethodReturnObject<GetContestParticipationNo>(
                 _httpClient: _httpClient,
-                options: options,
+                options: jsonOptions,
                 methodName: "POST",
                 url: ContestAPI_URL,
                 _logger: _logger,
@@ -270,7 +277,7 @@ namespace WebAppMVC.Controllers
 
             var participationNo = await methcall.CallMethodReturnObject<GetContestPostDeRegister>(
                 _httpClient: _httpClient,
-                options: options,
+                options: jsonOptions,
                 methodName: "POST",
                 url: ContestAPI_URL,
                 _logger: _logger,
