@@ -43,7 +43,7 @@ namespace BAL.Attributes
 
             var comparisonValue = (DateTime)validationContext.ObjectType.GetProperty(_comparisonProperty)
                                                                         .GetValue(validationContext.ObjectInstance);
-            if(_comparisonType != null)
+            if (_comparisonType != null)
             {
                 switch (_comparisonType)
                 {
@@ -51,14 +51,14 @@ namespace BAL.Attributes
                         {
                             if (_comparisonRange != null)
                             {
-                                if (currentValue.Day < comparisonValue.AddDays(_comparisonRange.Value).Day)
+                                if (currentValue.CompareTo(comparisonValue.AddDays(_comparisonRange.Value)) <= 0)
                                 {
                                     return new ValidationResult(ErrorMessage);
                                 }
                             }
                             else
                             {
-                                if (currentValue.Day < comparisonValue.Day)
+                                if (currentValue.CompareTo(comparisonValue) <= 0)
                                 {
                                     return new ValidationResult(ErrorMessage);
                                 }
@@ -69,14 +69,14 @@ namespace BAL.Attributes
                         {
                             if (_comparisonRange != null)
                             {
-                                if (currentValue.Hour < comparisonValue.AddHours(_comparisonRange.Value).Hour)
+                                if (currentValue.CompareTo(comparisonValue.AddHours(_comparisonRange.Value)) <= 0)
                                 {
                                     return new ValidationResult(ErrorMessage);
                                 }
                             }
                             else
                             {
-                                if (currentValue.Hour < comparisonValue.Hour)
+                                if (currentValue.CompareTo(comparisonValue) <= 0)
                                 {
                                     return new ValidationResult(ErrorMessage);
                                 }
@@ -87,14 +87,14 @@ namespace BAL.Attributes
                         {
                             if (_comparisonRange != null)
                             {
-                                if (currentValue.Month < comparisonValue.AddMonths(_comparisonRange.Value).Month)
+                                if (currentValue.CompareTo(comparisonValue.AddMonths(_comparisonRange.Value)) <= 0)
                                 {
                                     return new ValidationResult(ErrorMessage);
                                 }
                             }
                             else
                             {
-                                if (currentValue.Month < comparisonValue.Month)
+                                if (currentValue.CompareTo(comparisonValue) <= 0)
                                 {
                                     return new ValidationResult(ErrorMessage);
                                 }
@@ -105,14 +105,14 @@ namespace BAL.Attributes
                         {
                             if (_comparisonRange != null)
                             {
-                                if (currentValue.Year < comparisonValue.AddYears(_comparisonRange.Value).Year)
+                                if (currentValue.CompareTo(comparisonValue.AddYears(_comparisonRange.Value)) <= 0)
                                 {
                                     return new ValidationResult(ErrorMessage);
                                 }
                             }
                             else
                             {
-                                if (currentValue.Year < comparisonValue.Year)
+                                if (currentValue.CompareTo(comparisonValue) <= 0)
                                 {
                                     return new ValidationResult(ErrorMessage);
                                 }
@@ -121,7 +121,7 @@ namespace BAL.Attributes
                         }
                     default:
                         {
-                            if (currentValue < comparisonValue)
+                            if (currentValue.CompareTo(comparisonValue) <= 0)
                             {
                                 return new ValidationResult(ErrorMessage);
                             }
@@ -131,7 +131,7 @@ namespace BAL.Attributes
             }
             else
             {
-                if (currentValue < comparisonValue)
+                if (currentValue.CompareTo(comparisonValue) <= 0)
                 {
                     return new ValidationResult(ErrorMessage);
                 }

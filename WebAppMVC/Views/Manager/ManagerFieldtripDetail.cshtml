@@ -5,7 +5,12 @@
     BAL.ViewModels.FieldTripViewModel details = Model.FieldTripDetails;
     BAL.ViewModels.FieldTripViewModel updateTrip = Model.UpdateFieldTrip != null ? Model.UpdateFieldTrip : Model.FieldTripDetails;
 
-    List<BAL.ViewModels.FieldtripDaybyDayViewModel>? DayByDay = details.FieldtripDaybyDays;
+    List<BAL.ViewModels.FieldtripDaybyDayViewModel>? detailDayByDay = details.FieldtripDaybyDays;
+    int createDayByDayCount = detailDayByDay.Count + 1;
+    BAL.ViewModels.FieldtripDaybyDayViewModel createDayByDay = Model.CreateFieldTripDayByDay != null ? Model.CreateFieldTripDayByDay : new BAL.ViewModels.FieldtripDaybyDayViewModel();
+
+
+
     List<BAL.ViewModels.FieldTripAdditionalDetailViewModel>? TourFeatures = Model.FieldTripTourFeatures;
     List<BAL.ViewModels.FieldTripAdditionalDetailViewModel>? Importants = Model.FieldTripImportantToKnows;
     List<BAL.ViewModels.FieldTripAdditionalDetailViewModel>? ActAndTras = Model.FieldTripActivitiesAndTransportation;
@@ -13,7 +18,7 @@
     List < BAL.ViewModels.FieldtripInclusionViewModel>? Inclusion = details.FieldtripInclusions;
 
     BAL.ViewModels.FieldtripGettingThereViewModel Gettingthere = details.FieldtripGettingTheres;
-    BAL.ViewModels.FieldtripGettingThereViewModel updateGettingThere = updateTrip.FieldtripGettingTheres;
+    BAL.ViewModels.FieldtripGettingThereViewModel updateGettingThere = Model.UpdateFieldTripGettingThere != null ? Model.UpdateFieldTripGettingThere : updateTrip.FieldtripGettingTheres;
 
     List<BAL.ViewModels.FieldTripParticipantViewModel>? parts = Model.FieldTripParticipants;
 
@@ -70,7 +75,10 @@
                         <div class="row">
                             <div class="card profile col-12 mb-4">
                                 <div class="card-header">
-                                    <h4>Field Trip Status</h4>
+                                    <h4>Fieldtrip Information</h4>
+                                    <div class="edit-info">
+                                        <i class='bx bxs-edit-alt' data-toggle="modal" data-target="#editprofile"></i>
+                                    </div>
                                 </div>
                                 <div class="card-body">
                                     <div class="row mb-sm-2">
@@ -78,21 +86,33 @@
                                             <span>Status:</span>
                                         </div>
                                         <div class="col-sm-7">
-                                            <span class="destroy" style="float: left;">@details.Status</span>
+                                            @{
+                                                switch (details.Status)
+                                                {
+                                                    case "Ongoing":
+                                                    case "CheckingIn":
+                                                    case "OpenRegistration":
+                                                        {
+                                                            <span class="outcome" style="float: left;">@details.Status</span>
+                                                            break;
+                                                        }
+                                                    case "OnHold":
+                                                    case "ClosedRegistration":
+                                                        {
+                                                            <span class="approval" style="float: left;">@details.Status</span>
+                                                            break;
+                                                        }
+                                                    case "Ended":
+                                                    case "Postponed":
+                                                    case "Cancelled":
+                                                        {
+                                                            <span class="destroy" style="float: left;">@details.Status</span>
+                                                            break;
+                                                        }
+                                                }
+                                            }
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="card profile col-12 mb-4">
-                                <div class="card-header">
-                                    <h4>Fieldtrip Information</h4>
-                                    <div class="edit-info">
-                                        <i class='bx bxs-edit-alt' data-toggle="modal" data-target="#editprofile"></i>
-                                    </div>
-                                </div>
-                                <div class="card-body">
                                     <div class="row">
                                         <div class="col-md-5 text-md-right">
                                             <label for="meeting-name">FieldTrip Name:</label>
@@ -179,6 +199,14 @@
                                         </div>
                                         <div class="col-sm-7 text-sm-left">
                                             <span>@details.Description</span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-sm-2">
+                                        <div class="col-sm-5 text-sm-right">
+                                            <span>Details:</span>
+                                        </div>
+                                        <div class="col-sm-7 text-sm-left">
+                                            <span>@details.Details</span>
                                         </div>
                                     </div>
                                     <div class="row mb-sm-2">
@@ -384,14 +412,14 @@
                                 <div class="card-header">
                                     <h4>Day By Day</h4>
                                     <div class="edit-info">
-                                        <i class='bx bxs-edit-alt' data-toggle="modal" data-target="#editdaybyday"></i>
+                                        <i class='bx bxs-edit-alt' data-toggle="modal" data-target="#createdaybyday"></i>
                                     </div>
                                 </div>
                                 <div class="card-body">
                                     @{
-                                        if (DayByDay != null && DayByDay.Count > 0)
+                                        if (detailDayByDay != null && detailDayByDay.Count > 0)
                                         {
-                                            foreach (var day in DayByDay)
+                                            foreach (var day in detailDayByDay)
                                             {
                                                 <div class="row">
                                                     <div class="col-md-5 text-md-right">
@@ -721,34 +749,55 @@
             </div>
         </div>
     </div>
-    <div id="editrates" class="modal fade" role="dialog">
+    <div id="editgettingthere" class="modal fade" role="dialog">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
             <div class="modal-content modal-addRoom">
                 <div class="modal-header">
-                    <h4 class="modal-title">Edit Field Trip</h4>
+                    <h4 class="modal-title">Edit Field Trip Getting There</h4>
                 </div>
-                <form asp-action="ManagerUpdateFieldTripDetail" asp-controller="Manager" method="post" asp-route-id="@details.TripId" class="form-group">
+                <form asp-action="ManagerUpdateFieldTripGettingThereDetail" asp-controller="Manager" method="post" asp-route-id="@details.TripId" class="form-group">
                     <div class="modal-body">
                         <div class="row justify-content-center">
-                            <div class="col-12 col-md-8">
-                                @* <div class="form-group row">
-                                    <label asp-for="@AddDetails.RateType" class="col-sm-4 col-form-label">RateType</label>
-                                    <div class="col-sm-8">
-                                        <input asp-for="@AddDetails.RateType" id="RateType" type="text" name="RateType"
-                                               value="@AddDetails.RateType" class="form-control" required>
-                                        <span asp-validation-for="@AddDetails.RateType" id="error_message"
+                            <div class="col-12 col-md-12">
+                                <input asp-for="@updateGettingThere.GettingThereId" type="number"
+                                       value="@updateGettingThere.GettingThereId" class="form-control" required hidden>
+                                <div class="form-group row">
+                                    <label asp-for="@updateGettingThere.GettingThereStartEnd" class="col-sm-2 col-form-label"></label>
+                                    <div class="col-sm-10">
+                                        <textarea asp-for="@updateGettingThere.GettingThereStartEnd"
+                                                  value="@updateGettingThere.GettingThereStartEnd" class="form-control" required></textarea>
+                                        <span asp-validation-for="@updateGettingThere.GettingThereStartEnd" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label asp-for="@AddDetails.Price" class="col-sm-4 col-form-label">Price</label>
-                                    <div class="col-sm-8">
-                                        <input asp-for="@AddDetails.Price" id="Price" type="text" name="Price"
-                                               value="@AddDetails.Price" class="form-control" required>
-                                        <span asp-validation-for="@AddDetails.Price" id="error_message"
+                                    <label asp-for="@updateGettingThere.GettingThereFlight" class="col-sm-2 col-form-label"></label>
+                                    <div class="col-sm-10">
+                                        <textarea asp-for="@updateGettingThere.GettingThereFlight"
+                                                  value="@updateGettingThere.GettingThereFlight" class="form-control" required></textarea>
+                                        <span asp-validation-for="@updateGettingThere.GettingThereFlight" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                     </div>
-                                </div> *@
+                                </div>
+                                <div class="form-group row">
+                                    <label asp-for="@updateGettingThere.GettingThereTransportation" class="col-sm-2 col-form-label"></label>
+                                    <div class="col-sm-10">
+                                        <textarea asp-for="@updateGettingThere.GettingThereTransportation"
+                                                  value="@updateGettingThere.GettingThereTransportation" class="form-control" required></textarea>
+                                        <span asp-validation-for="@updateGettingThere.GettingThereTransportation" id="error_message"
+                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label asp-for="@updateGettingThere.GettingThereAccommodation" class="col-sm-2 col-form-label"></label>
+                                    <div class="col-sm-10">
+                                        <textarea asp-for="@updateGettingThere.GettingThereAccommodation"
+                                                  value="@updateGettingThere.GettingThereAccommodation" class="form-control" required></textarea>
+                                        <span asp-validation-for="@updateGettingThere.GettingThereAccommodation" id="error_message"
+                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer justify-content-center">
@@ -758,26 +807,65 @@
                 </form>
             </div>
         </div>
-        </div>
-        <div id="editgettingthere" class="modal fade" role="dialog">
+    </div>
+    <div id="createdaybyday" class="modal fade" role="dialog">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
             <div class="modal-content modal-addRoom">
                 <div class="modal-header">
-                    <h4 class="modal-title">Edit Field Trip</h4>
+                    <h4 class="modal-title">Create Field Trip Day</h4>
                 </div>
-                <form asp-action="ManagerUpdateFieldTripDetail" asp-controller="Manager" method="post" asp-route-id="@details.TripId" class="form-group">
+                <form asp-action="ManagerCreateFieldTripDayByDayDetail" asp-controller="Manager" method="post" asp-route-tripId="@details.TripId" class="form-group">
                     <div class="modal-body">
                         <div class="row justify-content-center">
-                            <div class="col-12 col-md-8">
+                            <div class="col-12 col-md-6">
                                 <div class="form-group row">
-                                    <label asp-for="@Gettingthere.GettingThereAccommodation" class="col-sm-4 col-form-label">GettingThereAccommodation</label>
+                                    <label asp-for="@createDayByDay.Day" class="col-sm-4 col-form-label"></label>
                                     <div class="col-sm-8">
-                                        <input asp-for="@Gettingthere.GettingThereAccommodation" id="GettingThereAccommodation" type="text" name="GettingThereAccommodation"
-                                               value="@Gettingthere.GettingThereAccommodation" class="form-control" required>
-                                        <span asp-validation-for="@Gettingthere.GettingThereAccommodation" id="error_message"
+                                        <input asp-for="@createDayByDay.Day" type="number" min="@createDayByDayCount" placeholder="@createDayByDayCount"
+                                               value="@createDayByDay.Day" class="form-control" required>
+                                        <span asp-validation-for="@createDayByDay.Day" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                     </div>
-                                </div>                               
+                                </div>
+                                <div class="form-group row">
+                                    <label asp-for="@createDayByDay.MainDestination" class="col-sm-4 col-form-label"></label>
+                                    <div class="col-sm-8">
+                                        <input asp-for="@createDayByDay.MainDestination" type="text" placeholder="Your trip's destination for the day"
+                                               value="@createDayByDay.MainDestination" class="form-control" required>
+                                        <span asp-validation-for="@createDayByDay.MainDestination" id="error_message"
+                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="form-group row">
+                                    <label asp-for="@createDayByDay.Accommodation" class="col-sm-4 col-form-label"></label>
+                                    <div class="col-sm-8">
+                                        <input asp-for="@createDayByDay.Accommodation" type="text" placeholder="Your trip's accommodation for the day"
+                                               value="@createDayByDay.Accommodation" class="form-control" required>
+                                        <span asp-validation-for="@createDayByDay.Accommodation" id="error_message"
+                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label asp-for="@createDayByDay.MealsAndDrinks" class="col-sm-4 col-form-label"></label>
+                                    <div class="col-sm-8">
+                                        <input asp-for="@createDayByDay.MealsAndDrinks" type="text" placeholder="Your trip's meals and drinks for the day"
+                                               value="@createDayByDay.MealsAndDrinks" class="form-control" required>
+                                        <span asp-validation-for="@createDayByDay.MealsAndDrinks" id="error_message"
+                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label asp-for="@createDayByDay.Description" class="col-sm-4 col-form-label"></label>
+                            <div class="col-sm-8">
+                                <textarea asp-for="@createDayByDay.Description"
+                                       value="@createDayByDay.Description" class="form-control" required></textarea>
+                                <span asp-validation-for="@createDayByDay.Description" id="error_message"
+                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer justify-content-center">
@@ -787,44 +875,65 @@
                 </form>
             </div>
         </div>
-        </div>
-        <div id="editdaybyday" class="modal fade" role="dialog">
+    </div>
+    <div id="editdaybyday" class="modal fade" role="dialog">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
             <div class="modal-content modal-addRoom">
                 <div class="modal-header">
-                    <h4 class="modal-title">Edit Field Trip</h4>
+                    <h4 class="modal-title">Create Field Trip Day</h4>
                 </div>
-                <form asp-action="ManagerUpdateFieldTripDetail" asp-controller="Manager" method="post" asp-route-id="@details.TripId" asp-route-id="@DayByDay" class="form-group">
+                <form asp-action="ManagerUpdateFieldTripDayByDayDetail" asp-controller="Manager" method="post" asp-route-id="@details.TripId" class="form-group">
                     <div class="modal-body">
                         <div class="row justify-content-center">
-                            <div class="col-12 col-md-8">
-                                @* <div class="form-group row">
-                                    <label asp-for="@DayByDay.Day" class="col-sm-4 col-form-label">Day</label>
+                            <div class="col-12 col-md-6">
+                                <div class="form-group row">
+                                    <label asp-for="@createDayByDay.Day" class="col-sm-4 col-form-label"></label>
                                     <div class="col-sm-8">
-                                        <input asp-for="@DayByDay.Day" id="Day" type="text" name="Day"
-                                               value="@DayByDay.Day" class="form-control" required>
-                                        <span asp-validation-for="@DayByDay.Day" id="error_message"
+                                        <input asp-for="@createDayByDay.Day" type="text"
+                                               value="@createDayByDay.Day" class="form-control" required>
+                                        <span asp-validation-for="@createDayByDay.Day" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label asp-for="@DayByDay.Description" class="col-sm-4 col-form-label">Description</label>
+                                    <label asp-for="@createDayByDay.MainDestination" class="col-sm-4 col-form-label"></label>
                                     <div class="col-sm-8">
-                                        <input asp-for="@DayByDay.Description" id="Description" type="text" name="Description"
-                                               value="@DayByDay.Description" class="form-control" required>
-                                        <span asp-validation-for="@DayByDay.Description" id="error_message"
+                                        <input asp-for="@createDayByDay.MainDestination" type="text"
+                                               value="@createDayByDay.MainDestination" class="form-control" required>
+                                        <span asp-validation-for="@createDayByDay.MainDestination" id="error_message"
+                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="form-group row">
+                                    <label asp-for="@createDayByDay.Accommodation" class="col-sm-4 col-form-label"></label>
+                                    <div class="col-sm-8">
+                                        <input asp-for="@createDayByDay.Accommodation" type="text"
+                                               value="@createDayByDay.Accommodation" class="form-control" required>
+                                        <span asp-validation-for="@createDayByDay.Accommodation" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label asp-for="@DayByDay.PictureId" class="col-sm-4 col-form-label">Picture ID</label>
+                                    <label asp-for="@createDayByDay.MealsAndDrinks" class="col-sm-4 col-form-label"></label>
                                     <div class="col-sm-8">
-                                        <input asp-for="@DayByDay.PictureId" id="PictureId" type="text" name="PicturId"
-                                               value="@DayByDay.PictureId" class="form-control" required>
-                                        <span asp-validation-for="@DayByDay.PictureId" id="error_message"
+                                        <input asp-for="@createDayByDay.MealsAndDrinks" type="text"
+                                               value="@createDayByDay.MealsAndDrinks" class="form-control" required>
+                                        <span asp-validation-for="@createDayByDay.MealsAndDrinks" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                     </div>
-                                </div> *@
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label asp-for="@createDayByDay.Description" class="col-sm-4 col-form-label"></label>
+                            <div class="col-sm-8">
+                                <textarea asp-for="@createDayByDay.Description"
+                                          value="@createDayByDay.Description" class="form-control" required></textarea>
+                                <span asp-validation-for="@createDayByDay.Description" id="error_message"
+                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer justify-content-center">
@@ -834,8 +943,8 @@
                 </form>
             </div>
         </div>
-        </div>
-        <div id="editinclusion" class="modal fade" role="dialog">
+    </div>
+    <div id="editinclusion" class="modal fade" role="dialog">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
             <div class="modal-content modal-addRoom">
                 <div class="modal-header">
@@ -882,8 +991,8 @@
                 </form>
             </div>
         </div>
-        </div>
-        <div id="editmedias" class="modal fade" role="dialog">
+    </div>
+    <div id="editmedias" class="modal fade" role="dialog">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
             <div class="modal-content modal-addRoom">
                 <div class="modal-header">
@@ -920,6 +1029,6 @@
                 </form>
             </div>
         </div>
-        </div>
+    </div>
 </body>
 </html>

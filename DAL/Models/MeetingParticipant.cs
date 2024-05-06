@@ -9,6 +9,10 @@ namespace DAL.Models
     [Table("MeetingParticipant")]
     public partial class MeetingParticipant
     {
+        public MeetingParticipant()
+        {
+            CheckInStatus = "Not Checked-In";
+        }
         [Key]
         [Column("meetingId")]
         public int MeetingId { get; set; }

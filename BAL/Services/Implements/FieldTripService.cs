@@ -110,8 +110,7 @@ namespace BAL.Services.Implements
             {
                 _unitOfWork.LocationRepository.Update(loc = new Location
                 {
-                    LocationName = entity.Address.Trim(),
-                    Description = ""
+                    LocationName = entity.Address.Trim()
                 });
                 _unitOfWork.Save();
                 loc = _unitOfWork.LocationRepository.GetLocationByName(entity.Address.Trim()).Result;
@@ -130,15 +129,11 @@ namespace BAL.Services.Implements
             {
                 _unitOfWork.LocationRepository.Update(loc = new Location
                 {
-                    LocationName = entity.Address.Trim(),
+                    LocationName = entity.Address.Trim()
                 });
                 _unitOfWork.Save();
                 loc = _unitOfWork.LocationRepository.GetLocationByName(entity.Address.Trim()).Result;
             }
-
-            var trip = _mapper.Map<FieldTrip>(entity);
-
-            trip.LocationId = loc.LocationId;
 
             var getting = _unitOfWork.FieldTripGettingThereRepository.GetFieldTripGettingTheresByTripId(entity.TripId.Value).Result;
 
@@ -151,10 +146,29 @@ namespace BAL.Services.Implements
                 _unitOfWork.Save();
                 getting = _unitOfWork.FieldTripGettingThereRepository.GetFieldTripGettingTheresByTripId(entity.TripId.Value).Result;
             }
+
+            var trip = _mapper.Map<FieldTrip>(entity);
+
+            trip.LocationId = loc.LocationId;
             trip.FieldtripGettingTheres = getting;
 
             _unitOfWork.FieldTripRepository.Update(trip);
             _unitOfWork.Save();
+        }
+        public bool UpdateGettingThere(FieldtripGettingThereViewModel entity)
+        {
+            var trip = _unitOfWork.FieldTripRepository.GetById(entity.TripId.Value);
+
+            if (trip == null)
+            {
+                return false;
+            }
+
+            var getting = _mapper.Map<FieldtripGettingThere>(entity);
+            getting.Trip = trip;
+            _unitOfWork.FieldTripGettingThereRepository.Update(getting);
+            _unitOfWork.Save();
+            return true;
         }
 
         public async Task<bool> GetBoolFieldTripId(int id)
