@@ -92,5 +92,16 @@ namespace BAL.Services.Implements
         {
             return await _unitOfWork.ContestParticipantRepository.GetParticipationNoContestParticipantById(contestId, memberId, birdId);
         }
+
+        public async Task<bool> UpdateAllContestParticipantStatus(List<ContestParticipantViewModel> listPart)
+        {
+            var part = await _unitOfWork.ContestParticipantRepository.UpdateAllContestParticipantStatus(_mapper.Map<List<ContestParticipant>>(listPart));
+            if (part != null)
+            {
+                _unitOfWork.Save();
+                return true;
+            }
+            return false;
+        }
     }
 }

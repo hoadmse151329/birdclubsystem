@@ -33,16 +33,19 @@ namespace BAL.Services.Implements
                     return null;
                 }
                 int partAmount = await _unitOfWork.ContestParticipantRepository.GetCountContestParticipantsByContestId(con.ContestId);
+
                 var contest = _mapper.Map<ContestViewModel>(con);
                 contest.NumberOfParticipantsLimit = contest.NumberOfParticipants - partAmount;
                 contest.Address = locationName;
 
                 contest.Media = (media != null) ? _mapper.Map<IEnumerable<ContestMediaViewModel>>(media).ToList() : null;
 
-                contest.AreaNumber = locationName[0];
-                contest.Street = locationName.Split(",")[1];
-                contest.District = locationName.Split(",")[2];
-                contest.City = locationName.Split(",")[3];
+                string[] temp = locationName.Split(",");
+
+                contest.AreaNumber = temp[0];
+                contest.Street = temp[1];
+                contest.District = temp[2];
+                contest.City = temp[3];
                 return contest;
             }
             return null;
@@ -62,10 +65,12 @@ namespace BAL.Services.Implements
                         itemview.Media = (media != null) ? _mapper.Map<IEnumerable<ContestMediaViewModel>>(media).ToList() : null;
 
                         locationName = await _unitOfWork.LocationRepository.GetLocationNameById(item.LocationId.Value);
-                        itemview.AreaNumber = locationName[0];
-                        itemview.Street = locationName.Split(",")[1];
-                        itemview.District = locationName.Split(",")[2];
-                        itemview.City = locationName.Split(",")[3];
+
+                        string[] temp = locationName.Split(',');
+                        itemview.AreaNumber = temp[0];
+                        itemview.Street = temp[1];
+                        itemview.District = temp[2];
+                        itemview.City = temp[3];
                     }
                 }
             }
@@ -74,17 +79,17 @@ namespace BAL.Services.Implements
         }
         public void Create(ContestViewModel entity)
         {
-            var loc = _unitOfWork.LocationRepository.GetLocationByName(entity.Address).Result;
+            var loc = _unitOfWork.LocationRepository.GetLocationByName(entity.Address.Trim()).Result;
 
-            if (!loc.Equals(entity.Address.Trim()))
+            if (loc == null)
             {
                 _unitOfWork.LocationRepository.Update(loc = new Location
                 {
-                    LocationName = entity.Address,
-                    Description = loc.Description
+                    LocationName = entity.Address.Trim(),
+                    Description = ""
                 });
                 _unitOfWork.Save();
-                loc = _unitOfWork.LocationRepository.GetLocationByName(entity.Address).Result;
+                loc = _unitOfWork.LocationRepository.GetLocationByName(entity.Address.Trim()).Result;
             }
             var contest = _mapper.Map<Contest>(entity);
             contest.LocationId = loc.LocationId;

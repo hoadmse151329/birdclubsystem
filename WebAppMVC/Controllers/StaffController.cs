@@ -12,6 +12,14 @@ using WebAppMVC.Models.Contest;
 using System.Text.Encodings.Web;
 using static Org.BouncyCastle.Math.EC.ECCurve;
 using WebAppMVC.Models.Member;
+using Azure;
+using Microsoft.DotNet.MSIdentity.Shared;
+using System.Security.Policy;
+using BAL.ViewModels.Member;
+using BAL.ViewModels.Staff;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using System.ComponentModel.DataAnnotations;
 using WebAppMVC.Models.Staff;
 
 namespace WebAppMVC.Controllers
@@ -194,7 +202,7 @@ namespace WebAppMVC.Controllers
         [HttpPost("Meeting/UpdateStatus/{id:int}")]
         public async Task<IActionResult> StaffUpdateMeetingStatus(
             int id,
-            string meetStatusView)
+            List<MeetingParticipantViewModel> meetPartView)
         {
             StaffAPI_URL += "Staff/MeetingStatus/Update/" + id;
 
@@ -222,7 +230,7 @@ namespace WebAppMVC.Controllers
                                 options: options,
                                 methodName: "PUT",
                                 url: StaffAPI_URL,
-                                inputType: meetStatusView,
+                                inputType: meetPartView,
                                 accessToken: accToken,
                                 _logger: _logger);
 
@@ -345,15 +353,15 @@ namespace WebAppMVC.Controllers
             if (listFieldTripResponse == null || listLocationResponse == null)
             {
                 _logger.LogInformation(
-                    "Error while processing your request! (Getting List FieldTrip!). List was Empty!: " + listFieldTripResponse);
-                ViewBag.error =
+                    "Error while processing your request! (Getting List FieldTrip!). List was Empty!: " + listLocationResponse + ",\n" + listFieldTripResponse);
+                ViewBag.Error =
                     "Error while processing your request! (Getting List FieldTrip!).\n List was Empty!";
                 return View("StaffIndex");
             }
             else
             if (!listFieldTripResponse.Status || !listLocationResponse.Status)
             {
-                ViewBag.error =
+                ViewBag.Error =
                     "Error while processing your request! (Getting List FieldTrip!).\n"
                     + listFieldTripResponse.ErrorMessage + "\n" + listLocationResponse.ErrorMessage;
                 return View("StaffIndex");
@@ -404,18 +412,21 @@ namespace WebAppMVC.Controllers
                                 _logger: _logger);
             if (fieldtripPostResponse == null)
             {
-                ViewBag.error =
+                ViewBag.Error =
                     "Error while processing your request! (Getting FieldTrip!).\n FieldTrip Not Found!";
                 return RedirectToAction("StaffFieldTrip");
             }
             if (!fieldtripPostResponse.Status)
             {
                 _logger.LogInformation("Error while processing your request: " + fieldtripPostResponse.Status + " , Error Message: " + fieldtripPostResponse.ErrorMessage);
-                ViewBag.error =
+                ViewBag.Error =
                     "Error while processing your request! (Getting FieldTrip Post!).\n"
                     + fieldtripPostResponse.ErrorMessage;
                 return RedirectToAction("StaffFieldTrip");
             }
+            fieldtripDetailBigModel.FieldTripTourFeatures = fieldtripPostResponse.Data.FieldtripAdditionalDetails.Where(f => f.Type.Equals("tour_features")).ToList();
+            fieldtripDetailBigModel.FieldTripImportantToKnows = fieldtripPostResponse.Data.FieldtripAdditionalDetails.Where(f => f.Type.Equals("important_to_know")).ToList();
+            fieldtripDetailBigModel.FieldTripActivitiesAndTransportation = fieldtripPostResponse.Data.FieldtripAdditionalDetails.Where(f => f.Type.Equals("activities_and_transportation")).ToList();
             fieldtripDetailBigModel.FieldTripDetails = fieldtripPostResponse.Data;
             fieldtripDetailBigModel.FieldTripParticipants = fieldtripPostResponse.Data;
             return View(fieldtripDetailBigModel);
@@ -425,7 +436,7 @@ namespace WebAppMVC.Controllers
             int id,
             List<FieldTripParticipantViewModel> tripPartView)
         {
-            StaffAPI_URL += "Staff/FieldTripParticipantStatus/Update/" + id;
+            StaffAPI_URL += "Staff/FieldTripStatus/Update/" + id;
 
             string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
             if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
@@ -649,14 +660,12 @@ namespace WebAppMVC.Controllers
             contestDetailBigModel.ContestParticipants = contestpartPostResponse.Data;
             return View(contestDetailBigModel);
         }
-        [HttpPost("Contest/Update/{id:int}")]
-        /*[Route("Staff/Contest/Update/{id:int}")]*/
-        public async Task<IActionResult> StaffUpdateContestDetail(
+        [HttpPost("Contest/UpdateStatus/{id:int}")]
+        public async Task<IActionResult> StaffUpdateContestStatus(
             int id,
-            ContestViewModel meetView
-            )
+            List<ContestParticipantViewModel> contestPartView)
         {
-            StaffAPI_URL += "Contest/Update/" + id;
+            StaffAPI_URL += "Staff/ContestStatus/Update/" + id;
 
             string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
             if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
@@ -677,27 +686,30 @@ namespace WebAppMVC.Controllers
             TempData["USER_NAME"] = usrname;
             TempData["IMAGE_PATH"] = imagepath;
 
-            var contestPostResponse = await methcall.CallMethodReturnObject<GetContestPostResponse>(
+            var contestPartStatusResponse = await methcall.CallMethodReturnObject<GetCheckInStatusUpdate>(
                                 _httpClient: _httpClient,
                                 options: options,
                                 methodName: "PUT",
                                 url: StaffAPI_URL,
-                                inputType: meetView,
+                                inputType: contestPartView,
                                 accessToken: accToken,
                                 _logger: _logger);
-            if (contestPostResponse == null)
+
+            if (contestPartStatusResponse == null)
             {
-                ViewBag.error =
-                    "Error while processing your request! (Updating Contest!).\n Contest Not Found!";
-                return RedirectToAction("StaffContest");
+                _logger.LogInformation(
+                    "Error while processing your request! (Getting List Contest Participant Status!). List was Empty!: " + contestPartStatusResponse);
+                ViewBag.Error =
+                    "Error while processing your request! (Getting List Contest Participant Status!).\n List was Empty!";
+                return View("StaffIndex");
             }
-            if (!contestPostResponse.Status)
+            else
+            if (!contestPartStatusResponse.Status)
             {
-                _logger.LogInformation("Error while processing your request: " + contestPostResponse.Status + " , Error Message: " + contestPostResponse.ErrorMessage);
-                ViewBag.error =
-                    "Error while processing your request! (Updating Contest Post!).\n"
-                    + contestPostResponse.ErrorMessage;
-                return RedirectToAction("StaffContest");
+                ViewBag.Error =
+                    "Error while processing your request! (Getting List Contest Participant Status!).\n"
+                    + contestPartStatusResponse.ErrorMessage;
+                return View("StaffIndex");
             }
             return RedirectToAction("StaffContestDetail", "Staff", new { id = id });
         }
@@ -789,14 +801,14 @@ namespace WebAppMVC.Controllers
             if (memberDetails == null)
             {
                 ViewBag.Error =
-                    "Error while processing your request! (Getting Staff Profile!).\n Manager Details Not Found!";
+                    "Error while processing your request! (Getting Staff Profile!).\n Staff Details Not Found!";
                 return RedirectToAction("Index");
             }
             else
             if (!memberDetails.Status)
             {
                 ViewBag.Error =
-                    "Error while processing your request! (Getting Staff Profile!).\n Manager Details Not Found!"
+                    "Error while processing your request! (Getting Staff Profile!).\n Staff Details Not Found!"
                 + memberDetails.ErrorMessage;
                 return RedirectToAction("Index");
             }

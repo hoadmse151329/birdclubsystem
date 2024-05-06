@@ -87,7 +87,7 @@
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    <div class="row mb-sm-2">
+                                    <div class="row">
                                         <div class="col-sm-5 text-sm-right">
                                             <span>Status:</span>
                                         </div>
@@ -467,6 +467,15 @@
                                                         <span>@day.Description</span>
                                                     </div>
                                                 </div>
+                                                <div class="row">
+                                                    <div class="col-md-5 text-md-right">
+                                                        <label for="meeting-name">Media:</label>
+                                                    </div>
+                                                    <div class="col-md-7">
+                                                        <span>@day.Media</span>
+                                                    </div>
+                                                </div>
+                                                <hr class="container my-0">
                                             }
                                         }
                                     }
@@ -694,7 +703,6 @@
                                         <select class="form-control" asp-for="@updateTrip.Status" asp-items="@defaultFieldTripStatus" class="custom-select"></select>
                                         <span asp-validation-for="@updateTrip.Status" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-
                                     </div>
                                 </div>
                             </div>
