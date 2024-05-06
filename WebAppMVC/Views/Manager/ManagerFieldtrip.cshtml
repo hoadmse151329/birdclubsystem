@@ -1,7 +1,7 @@
 ﻿@model dynamic
 @{
     Layout = null;
-    ViewData["Title"] = "Manager Fiedl Trip Page";
+    ViewData["Title"] = "Manager Field Trip Page";
     List<string> locationList = Model.Locations;
     List<BAL.ViewModels.FieldTripViewModel> fieldtripList = Model.FieldTrips;
     BAL.ViewModels.FieldTripViewModel createFieldTrip = Model.CreateFieldTrip != null ? Model.CreateFieldTrip : new BAL.ViewModels.FieldTripViewModel();
@@ -215,7 +215,7 @@
         <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
             <div class="modal-content modal-addRoom">
                 <div class="modal-header">
-                    <h4 class="modal-title">Add new FieldTrip</h4>
+                    <h4 class="modal-title">Add new Field Trip</h4>
                 </div>
                 <div class="modal-body">
                     <form asp-action="ManagerCreateFieldTrip" asp-controller="Manager" method="post" id="form">
@@ -277,7 +277,7 @@
                                           class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
                                     <label asp-for="@createFieldTrip.Fee" class="col-md-3 col-form-label mt-3 text-md-right"></label>
-                                    <input asp-for="@createFieldTrip.Fee" value="@createFieldTrip.Fee" type="number" placeholder="50" class="form-control col-md-7 mt-3" rows="3" required></input>
+                                    <input asp-for="@createFieldTrip.Fee" value="@createFieldTrip.Fee" type="number" placeholder="5000" class="form-control col-md-7 mt-3" rows="3" required></input>
                                     <span asp-validation-for="@createFieldTrip.Fee" id="error_message"
                                           class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 

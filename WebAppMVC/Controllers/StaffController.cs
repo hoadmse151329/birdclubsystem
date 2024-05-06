@@ -202,7 +202,7 @@ namespace WebAppMVC.Controllers
         [HttpPost("Meeting/UpdateStatus/{id:int}")]
         public async Task<IActionResult> StaffUpdateMeetingStatus(
             int id,
-            string meetStatusView)
+            List<MeetingParticipantViewModel> meetPartView)
         {
             StaffAPI_URL += "Staff/MeetingStatus/Update/" + id;
 
@@ -230,7 +230,7 @@ namespace WebAppMVC.Controllers
                                 options: options,
                                 methodName: "PUT",
                                 url: StaffAPI_URL,
-                                inputType: meetStatusView,
+                                inputType: meetPartView,
                                 accessToken: accToken,
                                 _logger: _logger);
 
@@ -436,7 +436,7 @@ namespace WebAppMVC.Controllers
             int id,
             List<FieldTripParticipantViewModel> tripPartView)
         {
-            StaffAPI_URL += "Staff/FieldTripParticipantStatus/Update/" + id;
+            StaffAPI_URL += "Staff/FieldTripStatus/Update/" + id;
 
             string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
             if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
@@ -660,14 +660,12 @@ namespace WebAppMVC.Controllers
             contestDetailBigModel.ContestParticipants = contestpartPostResponse.Data;
             return View(contestDetailBigModel);
         }
-        [HttpPost("Contest/Update/{id:int}")]
-        /*[Route("Staff/Contest/Update/{id:int}")]*/
-        public async Task<IActionResult> StaffUpdateContestDetail(
+        [HttpPost("Contest/UpdateStatus/{id:int}")]
+        public async Task<IActionResult> StaffUpdateContestStatus(
             int id,
-            ContestViewModel meetView
-            )
+            List<ContestParticipantViewModel> contestPartView)
         {
-            StaffAPI_URL += "Contest/Update/" + id;
+            StaffAPI_URL += "Staff/ContestStatus/Update/" + id;
 
             string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
             if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
@@ -688,27 +686,30 @@ namespace WebAppMVC.Controllers
             TempData["USER_NAME"] = usrname;
             TempData["IMAGE_PATH"] = imagepath;
 
-            var contestPostResponse = await methcall.CallMethodReturnObject<GetContestPostResponse>(
+            var contestPartStatusResponse = await methcall.CallMethodReturnObject<GetCheckInStatusUpdate>(
                                 _httpClient: _httpClient,
                                 options: options,
                                 methodName: "PUT",
                                 url: StaffAPI_URL,
-                                inputType: meetView,
+                                inputType: contestPartView,
                                 accessToken: accToken,
                                 _logger: _logger);
-            if (contestPostResponse == null)
+
+            if (contestPartStatusResponse == null)
             {
-                ViewBag.error =
-                    "Error while processing your request! (Updating Contest!).\n Contest Not Found!";
-                return RedirectToAction("StaffContest");
+                _logger.LogInformation(
+                    "Error while processing your request! (Getting List Contest Participant Status!). List was Empty!: " + contestPartStatusResponse);
+                ViewBag.Error =
+                    "Error while processing your request! (Getting List Contest Participant Status!).\n List was Empty!";
+                return View("StaffIndex");
             }
-            if (!contestPostResponse.Status)
+            else
+            if (!contestPartStatusResponse.Status)
             {
-                _logger.LogInformation("Error while processing your request: " + contestPostResponse.Status + " , Error Message: " + contestPostResponse.ErrorMessage);
-                ViewBag.error =
-                    "Error while processing your request! (Updating Contest Post!).\n"
-                    + contestPostResponse.ErrorMessage;
-                return RedirectToAction("StaffContest");
+                ViewBag.Error =
+                    "Error while processing your request! (Getting List Contest Participant Status!).\n"
+                    + contestPartStatusResponse.ErrorMessage;
+                return View("StaffIndex");
             }
             return RedirectToAction("StaffContestDetail", "Staff", new { id = id });
         }

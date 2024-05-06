@@ -18,6 +18,7 @@ namespace BAL.ViewModels
             StartDate = DateTime.Now.AddDays(1);
             EndDate = DateTime.Now.AddDays(2);
             Status = "OnHold";
+            NumberOfParticipants = 0;
             Media = new List<MeetingMediaViewModel>();
         }
         public int? MeetingId { get; set; }
