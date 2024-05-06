@@ -109,7 +109,7 @@ namespace BAL.Services.Implements
                 meeting.District = temp[2];
                 meeting.City = temp[3];
                 {
-                    foreach (var picture in meeting.Media?.ToList())
+                    if (picture.Type == "Spotlight")
                     {
                         meeting.SpotlightImage = picture;
                         meeting.MeetingPictures.Remove(picture);
@@ -118,7 +118,6 @@ namespace BAL.Services.Implements
                     if (picture.Type == "LocationMap")
                     {
                         meeting.LocationMapImage = picture;
-                        meeting.MeetingPictures.Remove(picture);
                     }
                 }
                 return meeting;
