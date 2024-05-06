@@ -4,6 +4,6 @@ namespace WebAppMVC.Models.FieldTrip
 {
     public class GetFieldTripDayByDayResponse : DefaultResponseViewModel
     {
-        public FieldtripDaybyDayViewModel? Data { get; set; }
+        public bool? Data { get; set; }
     }
 }

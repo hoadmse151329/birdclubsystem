@@ -31,6 +31,9 @@ namespace BAL.Services.Implements
                 var trip = listtrip.SingleOrDefault(ft => ft.TripId == itemview.TripId);
                 if(trip != null)
                 {
+                    var media = await _unitOfWork.FieldTripMediaRepository.GetFieldTripMediasByTripId(trip.TripId);
+                    itemview.FieldtripPictures = (media.Count() > 0) ? _mapper.Map<IEnumerable<FieldtripMediaViewModel>>(media).ToList() : itemview.FieldtripPictures;
+                    
                     var locationAddress = await _unitOfWork.LocationRepository.GetLocationNameById(trip.LocationId.Value);
                     itemview.Address = locationAddress;
 
@@ -59,6 +62,7 @@ namespace BAL.Services.Implements
             var trip = await _unitOfWork.FieldTripRepository.GetFieldTripById(id);
             if (trip != null)
             {
+                var media = await _unitOfWork.FieldTripMediaRepository.GetFieldTripMediasByTripId(trip.TripId);
                 var locationName = await _unitOfWork.LocationRepository.GetLocationNameById(trip.LocationId.Value);
                 if (locationName == null) return null;
 
@@ -67,6 +71,8 @@ namespace BAL.Services.Implements
                 int partAmount = await _unitOfWork.FieldTripParticipantRepository.GetCountFieldTripParticipantsByTripId(trip.TripId);
 
                 var fieldTrip = _mapper.Map<FieldTripViewModel>(trip);
+
+                fieldTrip.FieldtripPictures = (media.Count() > 0) ? _mapper.Map<IEnumerable<FieldtripMediaViewModel>>(media).ToList() : fieldTrip.FieldtripPictures;
 
                 fieldTrip.NumberOfParticipants = fieldTrip.NumberOfParticipantsLimit - partAmount;
                 fieldTrip.Address = locationName;

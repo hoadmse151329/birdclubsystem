@@ -18,7 +18,7 @@ namespace BAL.ViewModels
             StartDate = DateTime.Now.AddDays(1);
             EndDate = DateTime.Now.AddDays(2);
             Status = "OnHold";
-            Media = new List<MeetingMediaViewModel>();
+            MeetingPictures = new List<MeetingMediaViewModel>();
         }
         public int? MeetingId { get; set; }
         [Required(ErrorMessage = "Meeting Name is required")]
@@ -74,6 +74,6 @@ namespace BAL.ViewModels
         [DisplayName("Spotlight Image")]
         public MeetingMediaViewModel? SpotlightImage { get; set; }
 
-        public List<MeetingMediaViewModel>? Media { get; set; }
+        public List<MeetingMediaViewModel> MeetingPictures { get; set; }
     }
 }

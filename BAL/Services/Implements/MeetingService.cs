@@ -34,7 +34,7 @@ namespace BAL.Services.Implements
                     {
                         //int partAmount = await _unitOfWork.MeetingParticipantRepository.GetCountMeetingParticipantsByMeetId(meet.MeetingId);
                         var media = await _unitOfWork.MeetingMediaRepository.GetMeetingMediasByMeetingId(item.MeetingId);
-                        itemview.Media = (media.Count() > 0) ? _mapper.Map<IEnumerable<MeetingMediaViewModel>>(media).ToList() : null;
+                        itemview.MeetingPictures = (media.Count() > 0) ? _mapper.Map<IEnumerable<MeetingMediaViewModel>>(media).ToList() : itemview.MeetingPictures;
 
                         locationName = await _unitOfWork.LocationRepository.GetLocationNameById(item.LocationId.Value);
                         
@@ -63,7 +63,7 @@ namespace BAL.Services.Implements
                     {
                         //int partAmount = await _unitOfWork.MeetingParticipantRepository.GetCountMeetingParticipantsByMeetId(meet.MeetingId);
                         var media = await _unitOfWork.MeetingMediaRepository.GetMeetingMediasByMeetingId(item.MeetingId);
-                        itemview.Media = (media != null) ? _mapper.Map<IEnumerable<MeetingMediaViewModel>>(media).ToList() : null;
+                        itemview.MeetingPictures = (media != null) ? _mapper.Map<IEnumerable<MeetingMediaViewModel>>(media).ToList() : null;
 
                         locationName = await _unitOfWork.LocationRepository.GetLocationNameById(item.LocationId.Value);
 
@@ -100,7 +100,7 @@ namespace BAL.Services.Implements
                 meeting.NumberOfParticipants = meeting.NumberOfParticipantsLimit - partAmount;
                 meeting.Address = locationName;
 
-                meeting.Media = (media.Count() > 0) ? _mapper.Map<IEnumerable<MeetingMediaViewModel>>(media).ToList() : null;
+                meeting.MeetingPictures = (media.Count() > 0) ? _mapper.Map<IEnumerable<MeetingMediaViewModel>>(media).ToList() : meeting.MeetingPictures;
 
                 string[] temp = locationName.Split(",");
 
@@ -108,18 +108,18 @@ namespace BAL.Services.Implements
                 meeting.Street = temp[1];
                 meeting.District = temp[2];
                 meeting.City = temp[3];
-                foreach (var picture in meeting.Media.ToList())
+                foreach (var picture in meeting.MeetingPictures.ToList())
                 {
                     if (picture.Type == "Spotlight")
                     {
                         meeting.SpotlightImage = picture;
-                        meeting.Media.Remove(picture);
+                        meeting.MeetingPictures.Remove(picture);
                     }
                     else
                     if (picture.Type == "LocationMap")
                     {
                         meeting.LocationMapImage = picture;
-                        meeting.Media.Remove(picture);
+                        meeting.MeetingPictures.Remove(picture);
                     }
                 }
                 return meeting;

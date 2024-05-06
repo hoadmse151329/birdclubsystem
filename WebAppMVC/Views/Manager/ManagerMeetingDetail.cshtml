@@ -301,7 +301,7 @@
                                 <div class="form-group row">
                                 <label asp-for="@updateMeeting.Status" class="col-sm-4 col-form-label"></label>
                                     <div class="col-sm-8">
-                                    <select class="form-control" asp-for="@updateMeeting.Status" asp-items="@defaultMeetingStatus" class="custom-select"></select>
+                                    <select class="form-control" asp-for="@updateMeeting.Status" asp-items="@defaultMeetingStatus" class="custom-select" required></select>
                                     <span asp-validation-for="@updateMeeting.Status" id="error_message"
                                             class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 

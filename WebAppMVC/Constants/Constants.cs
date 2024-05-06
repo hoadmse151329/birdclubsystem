@@ -18,6 +18,8 @@
         public static string UPDATE_FIELDTRIP_VALID = "UFieldTripValid";
         public static string UPDATE_FIELDTRIP_GETTHERE_VALID = "UFieldTripGettingThereValid";
         public static string CREATE_FIELDTRIP_DAYBYDAY_VALID = "CFieldTripDayByDayValid";
+        public static string UPDATE_FIELDTRIP_DAYBYDAY_VALID = "UFieldTripDayByDayValid";
+        public static string CREATE_FIELDTRIP_INCLUSION_VALID = "CFieldTripInclusionValid";
         public static string ADMIN = "Admin";
 		public static string MEMBER = "Member";
 		public static string TEMPMEMBER = "TempMember";

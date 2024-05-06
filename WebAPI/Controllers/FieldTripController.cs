@@ -16,6 +16,7 @@ namespace WebAPI.Controllers
         private readonly IFieldTripService _fieldTripService;
         private readonly IFieldTripParticipantService _participantService;
         private readonly IFieldTripDayByDayService _dayByDayService;
+        private readonly IFieldTripInclusionService _inclusionService;
         private readonly IMemberService _memberService;
         private readonly IUserService _userService;
         private readonly IConfiguration _config;
@@ -206,28 +207,72 @@ namespace WebAPI.Controllers
                 });
             }
         }
-        [HttpPost("{tripId:int}/Create/DayByDay")]
+        [HttpPost("{id:int}/Create/DayByDay")]
         [Authorize(Roles = "Manager")]
         [ProducesResponseType(typeof(FieldtripDaybyDayViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CreateDayByDay(
-            [Required][FromQuery] int tripId,
+            [Required][FromRoute] int id,
             [Required][FromBody] FieldtripDaybyDayViewModel tripDay)
         {
             try
             {
-                if(await _dayByDayService.Create(tripId, tripDay))
+                if(await _dayByDayService.Create(id, tripDay))
                 return Ok(new
                 {
                     Status = true,
-                    Message = "Field Trip Create successfully!",
+                    Message = "Field Trip Day Create successfully!",
                     Data = true
                 });
                 else return StatusCode(StatusCodes.Status500InternalServerError,new
                 {
                     Status = true,
-                    Message = "Field Trip Create Failed!",
+                    Message = "Field Trip Day Create Failed!",
+                    Data = false
+                });
+            }
+            catch (Exception ex)
+            {
+                if (ex.InnerException != null)
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = ex.Message,
+                        InnerExceptionMessage = ex.InnerException.Message
+                    });
+                }
+                // Log the exception if needed
+                return BadRequest(new
+                {
+                    Status = false,
+                    ErrorMessage = ex.Message
+                });
+            }
+        }
+        [HttpPost("{id:int}/Create/Inclusion")]
+        [Authorize(Roles = "Manager")]
+        [ProducesResponseType(typeof(FieldtripInclusionViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> CreateInclusion(
+            [Required][FromRoute] int id,
+            [Required][FromBody] FieldtripInclusionViewModel tripInclu)
+        {
+            try
+            {
+                if (await _inclusionService.Create(id, tripInclu))
+                    return Ok(new
+                    {
+                        Status = true,
+                        Message = "Field Trip Inclusion Create successfully!",
+                        Data = true
+                    });
+                else return StatusCode(StatusCodes.Status500InternalServerError, new
+                {
+                    Status = true,
+                    Message = "Field Trip Inclusion Create Failed!",
                     Data = false
                 });
             }
