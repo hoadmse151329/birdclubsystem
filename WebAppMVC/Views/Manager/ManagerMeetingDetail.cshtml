@@ -2,7 +2,8 @@
 @{
     Layout = null;
     ViewData["Title"] = "Manager Meeting Detail Page";
-    BAL.ViewModels.MeetingViewModel details = Model.MeetingDetails;
+    BAL.ViewModels.MeetingViewModel detailsMeeting = Model.MeetingDetails;
+    BAL.ViewModels.MeetingViewModel updateMeeting = Model.UpdateMeeting != null ? Model.UpdateMeeting : Model.MeetingDetails;
     List<BAL.ViewModels.MeetingParticipantViewModel> parts = Model.MeetingParticipants;
     List<SelectListItem> defaultMeetingStatus = new()
     {
@@ -13,7 +14,7 @@
     };
     foreach(var item in defaultMeetingStatus)
     {
-        if (details.Status.Equals(item.Value))
+        if (updateMeeting.Status.Equals(item.Value))
         {
             item.Selected = true;
         }
@@ -65,26 +66,26 @@
                                         </div>
                                         <div class="col-sm-7">
                                             @{
-                                                switch (details.Status)
+                                                switch (detailsMeeting.Status)
                                                 {
                                                     case "Ongoing":
                                                     case "CheckingIn":
                                                     case "OpenRegistration":
                                                         {
-                                                            <span class="outcome" style="float: left;">@details.Status</span>
+                                                            <span class="outcome" style="float: left;">@detailsMeeting.Status</span>
                                                             break;
                                                         }
                                                     case "OnHold":
                                                     case "ClosedRegistration":
                                                         {
-                                                            <span class="approval" style="float: left;">@details.Status</span>
+                                                            <span class="approval" style="float: left;">@detailsMeeting.Status</span>
                                                             break;
                                                         }
                                                     case "Ended":
                                                     case "Postponed":
                                                     case "Cancelled":
                                                         {
-                                                            <span class="destroy" style="float: left;">@details.Status</span>
+                                                            <span class="destroy" style="float: left;">@detailsMeeting.Status</span>
                                                             break;
                                                         }
                                                 }
@@ -108,7 +109,7 @@
                                             <label for="meeting-name">Meeting Name:</label>
                                         </div>
                                         <div class="col-md-7">
-                                            <span>@details.MeetingName</span>
+                                            <span>@detailsMeeting.MeetingName</span>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -116,7 +117,7 @@
                                             <label for="customer-name">Registration Deadlines:</label>
                                         </div>
                                         <div class="col-md-7">
-                                            <span>@details.RegistrationDeadline.ToString("MM/dd/yyyy")</span>
+                                            <span>@detailsMeeting.RegistrationDeadline.ToString("yyyy-MM-dd HH:mm")</span>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -124,7 +125,7 @@
                                             <label for="customer-name">Start Date:</label>
                                         </div>
                                         <div class="col-md-7">
-                                            <span>@details.StartDate.ToString("MM/dd/yyyy")</span>
+                                            <span>@detailsMeeting.StartDate.ToString("yyyy-MM-dd HH:mm")</span>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -132,7 +133,7 @@
                                             <label for="customer-name">End Date:</label>
                                         </div>
                                         <div class="col-md-7">
-                                            <span>@details.EndDate.ToString("MM/dd/yyyy")</span>
+                                            <span>@detailsMeeting.EndDate.ToString("yyyy-MM-dd HH:mm")</span>
                                         </div>
                                     </div>
                                     <div class="row mb-sm-2">
@@ -140,7 +141,7 @@
                                             <span>Host:</span>
                                         </div>
                                         <div class="col-sm-7 text-sm-left">
-                                            <span>@details.Host</span>
+                                            <span>@detailsMeeting.Host</span>
                                         </div>
                                     </div>
                                     <div class="row mb-sm-2">
@@ -148,7 +149,7 @@
                                             <span>Incharge:</span>
                                         </div>
                                         <div class="col-sm-7 text-sm-left">
-                                            <span>@details.Incharge</span>
+                                            <span>@detailsMeeting.Incharge</span>
                                         </div>
                                     </div>
                                     <div class="row mb-sm-2">
@@ -156,7 +157,7 @@
                                             <span>Maximum Participations:</span>
                                         </div>
                                         <div class="col-sm-7 text-sm-left">
-                                            <span>@details.NumberOfParticipantsLimit</span>
+                                            <span>@detailsMeeting.NumberOfParticipantsLimit</span>
                                         </div>
                                     </div>
                                     <div class="row mb-sm-2">
@@ -164,7 +165,7 @@
                                             <span>Remaining Participant Slots:</span>
                                         </div>
                                         <div class="col-sm-7 text-sm-left">
-                                            <span>@details.NumberOfParticipants</span>
+                                            <span>@detailsMeeting.NumberOfParticipants</span>
                                         </div>
                                     </div>
                                     <div class="row mb-sm-2">
@@ -172,7 +173,7 @@
                                             <span>Location:</span>
                                         </div>
                                         <div class="col-sm-7 text-sm-left">
-                                            <span>@details.AreaNumber,@details.Street,@details.District,@details.City</span>
+                                            <span>@detailsMeeting.AreaNumber,@detailsMeeting.Street,@detailsMeeting.District,@detailsMeeting.City</span>
                                         </div>
                                     </div>
                                     <div class="row mb-sm-2">
@@ -180,7 +181,7 @@
                                             <span>Description:</span>
                                         </div>
                                         <div class="col-sm-7 text-sm-left">
-                                            <span>@details.Description</span>
+                                            <span>@detailsMeeting.Description</span>
                                         </div>
                                     </div>
                                     <div class="row mb-sm-2">
@@ -188,7 +189,7 @@
                                             <span>Note:</span>
                                         </div>
                                         <div class="col-sm-7 text-sm-left">
-                                            <span>@details.Note</span>
+                                            <span>@detailsMeeting.Note</span>
                                         </div>
                                     </div>
                                 </div>
@@ -237,80 +238,80 @@
                 <div class="modal-header">
                     <h4 class="modal-title">Edit Meeting</h4>
                 </div>
-                <form asp-action="ManagerUpdateMeetingDetail" asp-controller="Manager" method="post" asp-route-id="@details.MeetingId" class="form-group">
+                <form asp-action="ManagerUpdateMeetingDetail" asp-controller="Manager" method="post" asp-route-id="@detailsMeeting.MeetingId" class="form-group">
                     <div class="modal-body">
                         <div class="row justify-content-center">
                             <div class="col-12 col-md-6">
                                 <div class="form-group row">
-                                    <label asp-for="@details.MeetingName" class="col-sm-4 col-form-label">Meeting Name:</label>
+                                    <label asp-for="@updateMeeting.MeetingName" class="col-sm-4 col-form-label"></label>
                                     <div class="col-sm-8">
-                                        <input asp-for="@details.MeetingName" id="meetingname" type="text" name="meetingname"
-                                               value="@details.MeetingName" class="form-control" required>
-                                        <span asp-validation-for="@details.MeetingName" id="error_message"
+                                        <input asp-for="@updateMeeting.MeetingName" type="text" 
+                                               value="@updateMeeting.MeetingName" class="form-control" required>
+                                        <span asp-validation-for="@updateMeeting.MeetingName" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                <label asp-for="@details.RegistrationDeadline" class="col-sm-4 col-form-label">Registration Deadlines:</label>
+                                <label asp-for="@updateMeeting.RegistrationDeadline" class="col-sm-4 col-form-label"></label>
                                     <div class="col-sm-8">
-                                    <input asp-for="@details.RegistrationDeadline" id="RegistrationDeadline" type="date" name="RegistrationDeadline"
-                                               value="@details.RegistrationDeadline.ToString("yyyy-MM-dd")" class="form-control" required>
-                                    <span asp-validation-for="@details.RegistrationDeadline" id="error_message"
+                                        <input asp-for="@updateMeeting.RegistrationDeadline" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
+                                               value="@updateMeeting.RegistrationDeadline.ToString("yyyy-MM-ddTHH:mm")" class="form-control" required>
+                                    <span asp-validation-for="@updateMeeting.RegistrationDeadline" id="error_message"
                                             class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                <label asp-for="@details.StartDate" class="col-sm-4 col-form-label">Start date:</label>
+                                <label asp-for="@updateMeeting.StartDate" class="col-sm-4 col-form-label"></label>
                                     <div class="col-sm-8">
-                                    <input asp-for="@details.StartDate" id="StartDate" type="date" name="StartDate"
-                                               value="@details.StartDate.ToString("yyyy-MM-dd")" class="form-control" required>
-                                    <span asp-validation-for="@details.StartDate" id="error_message"
+                                        <input asp-for="@updateMeeting.StartDate" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
+                                               value="@updateMeeting.StartDate.ToString("yyyy-MM-ddTHH:mm")" class="form-control" required>
+                                    <span asp-validation-for="@updateMeeting.StartDate" id="error_message"
                                             class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                <label asp-for="@details.EndDate" class="col-sm-4 col-form-label">End date:</label>
+                                <label asp-for="@updateMeeting.EndDate" class="col-sm-4 col-form-label">End date:</label>
                                     <div class="col-sm-8">
-                                    <input asp-for="@details.EndDate" id="EndDate" type="date" name="EndDate"
-                                            value="@details.EndDate.ToString("yyyy-MM-dd")" class="form-control" required>
-                                    <span asp-validation-for="@details.EndDate" id="error_message"
+                                        <input asp-for="@updateMeeting.EndDate" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
+                                               value="@updateMeeting.EndDate.ToString("yyyy-MM-ddTHH:mm")" class="form-control" required>
+                                    <span asp-validation-for="@updateMeeting.EndDate" id="error_message"
                                             class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-12 col-md-6">
                                 <div class="form-group row">
-                                    <label asp-for="@details.NumberOfParticipantsLimit" class="col-sm-4 col-form-label">Maximum Participantions:</label>
+                                    <label asp-for="@updateMeeting.NumberOfParticipantsLimit" class="col-sm-4 col-form-label"></label>
                                     <div class="col-sm-8">
-                                        <input asp-for="@details.NumberOfParticipantsLimit" id="NumberOfParticipantsLimit" type="number" name="NumberOfParticipantsLimit"
-                                               value="@details.NumberOfParticipantsLimit" class="form-control" required>
-                                        <span asp-validation-for="@details.NumberOfParticipantsLimit" id="error_message"
+                                        <input asp-for="@updateMeeting.NumberOfParticipantsLimit" type="number"
+                                               value="@updateMeeting.NumberOfParticipantsLimit" class="form-control" required>
+                                        <span asp-validation-for="@updateMeeting.NumberOfParticipantsLimit" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label asp-for="@details.Host" class="col-sm-4 col-form-label">Host:</label>
+                                    <label asp-for="@updateMeeting.Host" class="col-sm-4 col-form-label"></label>
                                     <div class="col-sm-8">
-                                        <input asp-for="@details.Host" id="Host" type="text" name="Host"
-                                               value="@details.Host" class="form-control" required>
-                                        <span asp-validation-for="@details.Host" id="error_message"
+                                        <input asp-for="@updateMeeting.Host" type="text"
+                                               value="@updateMeeting.Host" class="form-control" required>
+                                        <span asp-validation-for="@updateMeeting.Host" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label asp-for="@details.Incharge" class="col-sm-4 col-form-label">Incharge:</label>
+                                    <label asp-for="@updateMeeting.Incharge" class="col-sm-4 col-form-label"></label>
                                     <div class="col-sm-8">
-                                        <input asp-for="@details.Incharge" id="Incharge" type="text" name="Incharge"
-                                               value="@details.Incharge" class="form-control" required>
-                                        <span asp-validation-for="@details.Incharge" id="error_message"
+                                        <input asp-for="@updateMeeting.Incharge" type="text"
+                                               value="@updateMeeting.Incharge" class="form-control" required>
+                                        <span asp-validation-for="@updateMeeting.Incharge" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                <label asp-for="@details.Status" class="col-sm-4 col-form-label">Status:</label>
+                                <label asp-for="@updateMeeting.Status" class="col-sm-4 col-form-label"></label>
                                     <div class="col-sm-8">
-                                    <select class="form-control" asp-for="@details.Status" asp-items="@defaultMeetingStatus" class="custom-select" name="Status"></select>
-                                    <span asp-validation-for="@details.Status" id="error_message"
+                                    <select class="form-control" asp-for="@updateMeeting.Status" asp-items="@defaultMeetingStatus" class="custom-select"></select>
+                                    <span asp-validation-for="@updateMeeting.Status" id="error_message"
                                             class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
                                     </div>
@@ -318,34 +319,34 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label asp-for="@details.Address" class="col-sm-2 col-form-label">Location</label>
+                            <label asp-for="@updateMeeting.Address" class="col-sm-2 col-form-label"></label>
                             <div class="col-sm-10">
-                                <input asp-for="@details.Address" id="Address" type="text" name="Address"
-                                       value="@details.Address" class="form-control" required>
-                                <span asp-validation-for="@details.Address" id="error_message"
+                                <input asp-for="@updateMeeting.Address" type="text"
+                                       value="@updateMeeting.Address" class="form-control" required>
+                                <span asp-validation-for="@updateMeeting.Address" id="error_message"
                                       class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label asp-for="@details.Description" class="col-sm-2 col-form-label">Description</label>
+                            <label asp-for="@updateMeeting.Description" class="col-sm-2 col-form-label"></label>
                             <div class="col-sm-10">
-                                <textarea asp-for="@details.Description" id="Description" type="text" name="Description"
-                                          value="@details.Description" class="form-control" required></textarea>
-                                <span asp-validation-for="@details.Description" id="error_message"
+                                <textarea asp-for="@updateMeeting.Description" type="text"
+                                          value="@updateMeeting.Description" class="form-control" required></textarea>
+                                <span asp-validation-for="@updateMeeting.Description" id="error_message"
                                       class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label asp-for="@details.Note" class="col-sm-2 col-form-label">Note</label>
+                            <label asp-for="@updateMeeting.Note" class="col-sm-2 col-form-label"></label>
                             <div class="col-sm-10">
-                                <textarea asp-for="@details.Note" id="Note" type="text" name="Note"
-                                          value="@details.Note" class="form-control" required></textarea>
-                                <span asp-validation-for="@details.Note" id="error_message"
+                                <textarea asp-for="@updateMeeting.Note" type="text"
+                                          value="@updateMeeting.Note" class="form-control" required></textarea>
+                                <span asp-validation-for="@updateMeeting.Note" id="error_message"
                                       class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                             </div>
                         </div>
-                        <input asp-for="@details.NumberOfParticipants" id="NumberOfParticipants" type="number" name="NumberOfParticipants"
-                               value="@details.NumberOfParticipants" required hidden>
+                        <input asp-for="@updateMeeting.NumberOfParticipants" type="number"
+                               value="@updateMeeting.NumberOfParticipants" required hidden>
                     </div>
                     <div class="modal-footer justify-content-center">
                         <button class="btn btn-success" type="submit" value="Update">Save</button>

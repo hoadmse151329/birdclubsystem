@@ -131,13 +131,60 @@ namespace WebAPI.Controllers
         {
             try
             {
-                trip.Status = "OnHold";
                 _fieldTripService.Create(trip);
                 return Ok(new
                 {
                     Status = true,
                     Message = "Field Trip Create successfully!",
                     Data = trip
+                });
+            }
+            catch (Exception ex)
+            {
+                if (ex.InnerException != null)
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = ex.Message,
+                        InnerExceptionMessage = ex.InnerException.Message
+                    });
+                }
+                // Log the exception if needed
+                return BadRequest(new
+                {
+                    Status = false,
+                    ErrorMessage = ex.Message
+                });
+            }
+        }
+        [Authorize(Roles = "Manager")]
+        [HttpGet("Update/Cancel/{id}")]
+        [ProducesResponseType(typeof(FieldTripViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> UpdateCancelFieldTrip(
+            [Required][FromRoute] int id)
+        {
+            try
+            {
+                var result = await _fieldTripService.GetById(id);
+                if (result == null)
+                {
+                    return NotFound(new
+                    {
+                        Status = false,
+                        ErrorMessage = "Meeting does not exist!"
+                    });
+                }
+                result.TripId = id;
+                result.Status = "Cancelled";
+                _fieldTripService.Update(result);
+                result = await _fieldTripService.GetById(id);
+                return Ok(new
+                {
+                    Status = true,
+                    Data = result
                 });
             }
             catch (Exception ex)

@@ -12,6 +12,7 @@ namespace DAL.Models
         public Location()
         {
             ClubLocations = new HashSet<ClubLocation>();
+            Description = "Some Address Description";
         }
 
         [Key]
