@@ -54,12 +54,12 @@
 
 						<div class="d-flex box-body justify-content-center">
 							<form class="reg-form" asp-controller="Auth" asp-action="Register">
-								@* @{
+								@{
 									if (ViewBag.error != null)
 									{
 										<span class="text-danger">@ViewBag.error</span>
 									}
-								} *@
+								}
 								<div class="form-group">
 									<input type="text" placeholder="Username" asp-for="UserName" class="form-control form-data" />
 
@@ -107,6 +107,10 @@
 								<div class="reg-text">
 									Already a Member? <a href="@Url.Action("Login","Auth")" class="link-success">Login</a>
 								</div>
+								<div class="reg-text">
+									Or Login with
+								</div>
+								<img class="google-icon" img src="~/images/google.png">
 							</form>
 						</div>
 						

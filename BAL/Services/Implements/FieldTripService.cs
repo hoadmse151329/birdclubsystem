@@ -69,7 +69,6 @@ namespace BAL.Services.Implements
                 var fieldTrip = _mapper.Map<FieldTripViewModel>(trip);
 
                 fieldTrip.NumberOfParticipants = fieldTrip.NumberOfParticipantsLimit - partAmount;
-                fieldTrip.Address = locationName;
 
                 fieldTrip.AreaNumber = Int32.Parse(locationSplit[0]);
                 fieldTrip.Street = locationSplit[1];
@@ -131,28 +130,13 @@ namespace BAL.Services.Implements
                 _unitOfWork.LocationRepository.Update(loc = new Location
                 {
                     LocationName = entity.Address.Trim(),
+                    Description = ""
                 });
                 _unitOfWork.Save();
                 loc = _unitOfWork.LocationRepository.GetLocationByName(entity.Address.Trim()).Result;
             }
-
             var trip = _mapper.Map<FieldTrip>(entity);
-
             trip.LocationId = loc.LocationId;
-
-            var getting = _unitOfWork.FieldTripGettingThereRepository.GetFieldTripGettingTheresByTripId(entity.TripId.Value).Result;
-
-            if (getting == null)
-            {
-                _unitOfWork.FieldTripGettingThereRepository.Update(getting = new FieldtripGettingThere
-                {
-                    TripId = entity.TripId.Value
-                });
-                _unitOfWork.Save();
-                getting = _unitOfWork.FieldTripGettingThereRepository.GetFieldTripGettingTheresByTripId(entity.TripId.Value).Result;
-            }
-            trip.FieldtripGettingTheres = getting;
-
             _unitOfWork.FieldTripRepository.Update(trip);
             _unitOfWork.Save();
         }

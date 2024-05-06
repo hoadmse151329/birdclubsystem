@@ -194,6 +194,7 @@ namespace WebAPI.Controllers
         {
             try
             {
+                meet.Status = "OnHold";
                 _meetingService.Create(meet);
 
                 return Ok(new

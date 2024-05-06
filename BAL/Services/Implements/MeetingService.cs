@@ -34,7 +34,7 @@ namespace BAL.Services.Implements
                     {
                         //int partAmount = await _unitOfWork.MeetingParticipantRepository.GetCountMeetingParticipantsByMeetId(meet.MeetingId);
                         var media = await _unitOfWork.MeetingMediaRepository.GetMeetingMediasByMeetingId(item.MeetingId);
-                        itemview.Media = (media.Count() > 0) ? _mapper.Map<IEnumerable<MeetingMediaViewModel>>(media).ToList() : null;
+                        itemview.Media = (media != null) ? _mapper.Map<IEnumerable<MeetingMediaViewModel>>(media).ToList() : null;
 
                         locationName = await _unitOfWork.LocationRepository.GetLocationNameById(item.LocationId.Value);
                         
@@ -100,7 +100,7 @@ namespace BAL.Services.Implements
                 meeting.NumberOfParticipants = meeting.NumberOfParticipantsLimit - partAmount;
                 meeting.Address = locationName;
 
-                meeting.Media = (media.Count() > 0) ? _mapper.Map<IEnumerable<MeetingMediaViewModel>>(media).ToList() : null;
+                meeting.Media = (media != null) ? _mapper.Map<IEnumerable<MeetingMediaViewModel>>(media).ToList() : null;
 
                 string[] temp = locationName.Split(",");
 
@@ -108,20 +108,6 @@ namespace BAL.Services.Implements
                 meeting.Street = temp[1];
                 meeting.District = temp[2];
                 meeting.City = temp[3];
-                foreach (var picture in meeting.Media.ToList())
-                {
-                    if (picture.Type == "Spotlight")
-                    {
-                        meeting.SpotlightImage = picture;
-                        meeting.Media.Remove(picture);
-                    }
-                    else
-                    if (picture.Type == "LocationMap")
-                    {
-                        meeting.LocationMapImage = picture;
-                        meeting.Media.Remove(picture);
-                    }
-                }
                 return meeting;
             }
             return null;

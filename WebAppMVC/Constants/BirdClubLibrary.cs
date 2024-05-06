@@ -7,8 +7,6 @@ using System.Text;
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Azure;
-using BAL.ViewModels;
-using Org.BouncyCastle.Ocsp;
 
 namespace WebAppMVC.Constants
 {
@@ -79,7 +77,7 @@ namespace WebAppMVC.Constants
 			response.Cookies.Append(key, json, cookieOptions);
 		}
 
-        public async Task<T> GetCookie<T>(HttpRequest request, string key, JsonSerializerOptions jsonOptions) where T :class
+        public async Task<T?> GetCookie<T>(HttpRequest request, string key, JsonSerializerOptions jsonOptions) where T :class
         {
             string value = request.Cookies.FirstOrDefault(c => c.Key == key).Value;
             if (value == null) return null;
@@ -90,51 +88,5 @@ namespace WebAppMVC.Constants
 		{
 			response.Cookies.Delete(key, cookieOptions);
 		}
-
-        public T GetValidationTempData<T>(
-            ControllerBase context,
-            ITempDataDictionary tempData, 
-            string tempDataName, 
-            string viewObjectName, 
-            JsonSerializerOptions jsonOptions
-            ) where T : class
-        {
-            if (tempData.Peek(tempDataName) != null)
-            {
-                var objectForValidation = JsonSerializer.Deserialize<T>(tempData[tempDataName].ToString(), jsonOptions);
-                tempData.Remove(tempDataName);
-                context.TryValidateModel(objectForValidation, viewObjectName);
-                return objectForValidation;
-            }
-            return null;
-        }
-        public ITempDataDictionary GetValidationTempData<T>(ITempDataDictionary tempData, string tempDataName, T objectForSerialize, JsonSerializerOptions jsonOptions) where T : class
-        {
-            string validJson = JsonSerializer.Serialize(objectForSerialize, jsonOptions);
-            tempData[tempDataName] = validJson;
-            return tempData;
-        }
-        /* Getter
-         * testmodel2.CreateFieldTrip = null;
-        if (TempData.Peek(Constants.Constants.CREATE_FIELDTRIP_VALID) != null)
-        {
-            testmodel2.CreateFieldTrip = JsonSerializer.Deserialize<FieldTripViewModel>(TempData[Constants.Constants.CREATE_FIELDTRIP_VALID].ToString());
-            TempData.Remove(Constants.Constants.CREATE_FIELDTRIP_VALID);
-            TryValidateModel(testmodel2.CreateFieldTrip, "createFieldTrip");
-        }*/
-        /*
-         * Setter
-        if (!ModelState.IsValid)
-            {
-                string validJson = JsonSerializer.Serialize(createMeeting, options);
-        TempData[Constants.Constants.CREATE_MEETING_VALID] = validJson;
-                return RedirectToAction("ManagerMeeting");
-        }*/
-        /* Old Code
-         * TempData["ValidationErrors"] = ModelState.Values.SelectMany(v => v.Errors.Select(c => c.ErrorMessage)).ToList();
-                List<string> errorlist = ModelState.Values.SelectMany(v => v.Errors.Select(c => c.ErrorMessage)).ToList();
-                methcall.SetCookie(Response, "ValidationErrors", errorlist, cookieOptions, options);
-        */
-
-    }
+	}
 }

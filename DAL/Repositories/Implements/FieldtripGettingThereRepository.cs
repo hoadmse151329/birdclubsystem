@@ -17,9 +17,9 @@ namespace DAL.Repositories.Implements
         {
             _context = context;
         }
-        public async Task<FieldtripGettingThere> GetFieldTripGettingTheresByTripId(int tripId)
+        public async Task<IEnumerable<FieldtripGettingThere>> GetFieldTripGettingTheresByTripId(int tripId)
         {
-            return _context.FieldtripGettingTheres.AsNoTracking().SingleOrDefault(f => f.TripId.Equals(tripId));
+            return _context.FieldtripGettingTheres.AsNoTracking().Where(f => f.TripId.Equals(tripId));
         }
     }
 }

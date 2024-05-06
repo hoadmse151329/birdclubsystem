@@ -221,7 +221,7 @@
                         <div class="row p-4">
                             <div class="col-12">
                                  <div class="row form-group">
-                                    <label asp-for="@createFieldTrip.TripName" class="col-md-3 col-form-label text-md-right"></label>
+                                    <label asp-for="@createFieldTrip.TripName" class="col-md-3 col-form-label text-md-right">FieldTrip Name</label>
                                     <input asp-for="@createFieldTrip.TripName" value="@createFieldTrip.TripName" type="text" placeholder="Field Trip Name" required class="form-control col-md-7">
                                     <span asp-validation-for="@createFieldTrip.TripName" id="error_message"
                                           class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
@@ -230,79 +230,59 @@
                                     <label class="col-md-3 col-form-label mt-2 text-md-right">Choose Picture</label>
                                     <input type="file" name="photo" class="form-control col-md-7 mt-2" accept="image/*">
 
-                                    <label asp-for="@createFieldTrip.RegistrationDeadline" class="col-md-3 col-form-label mt-3 text-md-right"></label>
+                                    <label asp-for="@createFieldTrip.RegistrationDeadline" class="col-md-3 col-form-label mt-3 text-md-right">Registration Deadlines</label>
                                     <input asp-for="@createFieldTrip.RegistrationDeadline" value="@createFieldTrip.RegistrationDeadline.ToString("yyyy-MM-ddTHH:mm")" type="datetime-local" required class="form-control col-md-7 mt-3" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}">
                                     <span asp-validation-for="@createFieldTrip.RegistrationDeadline" id="error_message"
                                           class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
-                                    <label asp-for="@createFieldTrip.StartDate" class="col-md-3 col-form-label mt-3 text-md-right"></label>
+                                    <label asp-for="@createFieldTrip.StartDate" class="col-md-3 col-form-label mt-3 text-md-right">Start Date</label>
                                     <input asp-for="@createFieldTrip.StartDate" value="@createFieldTrip.StartDate.ToString("yyyy-MM-ddTHH:mm")" type="datetime-local" required class="form-control col-md-7 mt-3" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}">
                                     <span asp-validation-for="@createFieldTrip.StartDate" id="error_message"
                                             class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
-                                    <label asp-for="@createFieldTrip.EndDate" class="col-md-3 col-form-label mt-3 text-md-right"></label>
+                                    <label asp-for="@createFieldTrip.EndDate" class="col-md-3 col-form-label mt-3 text-md-right">End Date</label>
                                     <input asp-for="@createFieldTrip.EndDate" value="@createFieldTrip.EndDate.ToString("yyyy-MM-ddTHH:mm")" type="datetime-local" required class="form-control col-md-7 mt-3" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}">
                                     <span asp-validation-for="@createFieldTrip.EndDate" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
-                                    <label asp-for="@createFieldTrip.NumberOfParticipantsLimit"  class="col-md-3 col-form-label mt-3 text-md-right"></label>
-                                    <input asp-for="@createFieldTrip.NumberOfParticipantsLimit" value="@createFieldTrip.NumberOfParticipantsLimit" placeholder="3" type="number" class="form-control col-md-7 mt-3" required>
+                                    <label asp-for="@createFieldTrip.NumberOfParticipantsLimit"  class="col-md-3 col-form-label mt-3 text-md-right">Number of Participants</label>
+                                    <input asp-for="@createFieldTrip.NumberOfParticipantsLimit" value="@createFieldTrip.NumberOfParticipantsLimit" type="number" class="form-control col-md-7 mt-3" required>
                                     <span asp-validation-for="@createFieldTrip.NumberOfParticipantsLimit" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
-                                    <label asp-for="@createFieldTrip.Host" class="col-md-3 col-form-label mt-3 text-md-right"></label>
+                                    <label asp-for="@createFieldTrip.Host" class="col-md-3 col-form-label mt-3 text-md-right">Host</label>
                                     <input asp-for="@createFieldTrip.Host" value="@createFieldTrip.Host" type="text" placeholder="Fieldtrip Host" class="form-control col-md-7 mt-3" rows="3" required>
                                     <span asp-validation-for="@createFieldTrip.Host" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
-                                    <label asp-for="@createFieldTrip.InCharge" class="col-md-3 col-form-label mt-3 text-md-right"></label>
+                                    <label asp-for="@createFieldTrip.InCharge" class="col-md-3 col-form-label mt-3 text-md-right">Incharge</label>
                                     <input asp-for="@createFieldTrip.InCharge" value="@createFieldTrip.InCharge" type="text" placeholder="Staff incharge of Field trip" class="form-control col-md-7 mt-3" rows="3" required>
                                     <span asp-validation-for="@createFieldTrip.InCharge" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
-                                    <label asp-for="@createFieldTrip.Address" class="col-md-3 col-form-label mt-3 text-md-right"></label>
+                                    <label asp-for="@createFieldTrip.Address" class="col-md-3 col-form-label mt-3 text-md-right">Address</label>
                                     <textarea asp-for="@createFieldTrip.Address" value="@createFieldTrip.Address" type="text" placeholder="Field trip Address..." class="form-control col-md-7 mt-3" rows="3" required></textarea>
                                     <span asp-validation-for="@createFieldTrip.Address" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
-                                    <label asp-for="@createFieldTrip.Description" class="col-md-3 col-form-label mt-3 text-md-right"></label>
+                                    <label asp-for="@createFieldTrip.Description" class="col-md-3 col-form-label mt-3 text-md-right">Description</label>
                                     <textarea asp-for="@createFieldTrip.Description" value="@createFieldTrip.Description" type="text" placeholder="Field trip description..." class="form-control col-md-7 mt-3" rows="3" required></textarea>
                                     <span asp-validation-for="@createFieldTrip.Description" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
-                                    <label asp-for="@createFieldTrip.Details" class="col-md-3 col-form-label mt-3 text-md-right"></label>
+                                    <label asp-for="@createFieldTrip.Details" class="col-md-3 col-form-label mt-3 text-md-right">Details</label>
                                     <textarea asp-for="@createFieldTrip.Details" value="@createFieldTrip.Details" type="text" placeholder="Field trip Details..." class="form-control col-md-7 mt-3" rows="3" required></textarea>
                                     <span asp-validation-for="@createFieldTrip.Details" id="error_message"
                                           class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
-                                    <label asp-for="@createFieldTrip.Fee" class="col-md-3 col-form-label mt-3 text-md-right"></label>
-                                    <input asp-for="@createFieldTrip.Fee" value="@createFieldTrip.Fee" type="number" placeholder="50" class="form-control col-md-7 mt-3" rows="3" required></input>
+                                    <label asp-for="@createFieldTrip.Fee" class="col-md-3 col-form-label mt-3 text-md-right">Fee</label>
+                                    <input asp-for="@createFieldTrip.Fee" value="@createFieldTrip.Fee" type="number" placeholder="Fee" class="form-control col-md-7 mt-3" rows="3" required></input>
                                     <span asp-validation-for="@createFieldTrip.Fee" id="error_message"
                                           class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
-                                    <label asp-for="@createFieldTrip.Note" class="col-md-3 col-form-label mt-3 text-md-right"></label>
+                                    <label asp-for="@createFieldTrip.Note" class="col-md-3 col-form-label mt-3 text-md-right">Note</label>
                                     <textarea asp-for="@createFieldTrip.Note" value="@createFieldTrip.Note" type="text" placeholder="Field trip Note..." class="form-control col-md-7 mt-3" rows="3" required></textarea>
                                     <span asp-validation-for="@createFieldTrip.Note" id="error_message"
-                                          class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                    
-                                    <label asp-for="@createFieldTrip.FieldtripGettingTheres.GettingThereStartEnd" class="col-md-3 col-form-label mt-3 text-md-right"></label>
-                                    <textarea asp-for="@createFieldTrip.FieldtripGettingTheres.GettingThereStartEnd" value="@createFieldTrip.FieldtripGettingTheres.GettingThereStartEnd" type="text" placeholder="Field trip Note..." class="form-control col-md-7 mt-3" rows="3" required></textarea>
-                                    <span asp-validation-for="@createFieldTrip.FieldtripGettingTheres.GettingThereStartEnd" id="error_message"
-                                          class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-
-                                    <label asp-for="@createFieldTrip.FieldtripGettingTheres.GettingThereFlight" class="col-md-3 col-form-label mt-3 text-md-right"></label>
-                                    <textarea asp-for="@createFieldTrip.FieldtripGettingTheres.GettingThereFlight" value="@createFieldTrip.FieldtripGettingTheres.GettingThereFlight" type="text" placeholder="Field trip Note..." class="form-control col-md-7 mt-3" rows="3" required></textarea>
-                                    <span asp-validation-for="@createFieldTrip.FieldtripGettingTheres.GettingThereFlight" id="error_message"
-                                          class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-
-                                    <label asp-for="@createFieldTrip.FieldtripGettingTheres.GettingThereTransportation" class="col-md-3 col-form-label mt-3 text-md-right"></label>
-                                    <textarea asp-for="@createFieldTrip.FieldtripGettingTheres.GettingThereTransportation" value="@createFieldTrip.FieldtripGettingTheres.GettingThereTransportation" type="text" placeholder="Field trip Note..." class="form-control col-md-7 mt-3" rows="3" required></textarea>
-                                    <span asp-validation-for="@createFieldTrip.FieldtripGettingTheres.GettingThereTransportation" id="error_message"
-                                          class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-
-                                    <label asp-for="@createFieldTrip.FieldtripGettingTheres.GettingThereAccommodation" class="col-md-3 col-form-label mt-3 text-md-right"></label>
-                                    <textarea asp-for="@createFieldTrip.FieldtripGettingTheres.GettingThereAccommodation" value="@createFieldTrip.FieldtripGettingTheres.GettingThereAccommodation" type="text" placeholder="Field trip Note..." class="form-control col-md-7 mt-3" rows="3" required></textarea>
-                                    <span asp-validation-for="@createFieldTrip.FieldtripGettingTheres.GettingThereAccommodation" id="error_message"
                                           class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                 </div> 
                             </div>                
