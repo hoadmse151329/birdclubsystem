@@ -122,7 +122,7 @@ namespace DAL.Models
                 entity.HasKey(e => e.PictureId)
                     .HasName("PK__ContestM__769A271AE03B7758");
 
-                entity.HasOne(d => d.ContestDetail)
+                entity.HasOne(d => d.ContestDetails)
                     .WithMany(p => p.ContestPictures)
                     .HasForeignKey(d => d.ContestId)
                     .HasConstraintName("FK_Contest");
@@ -138,13 +138,13 @@ namespace DAL.Models
                     .HasForeignKey(d => d.BirdId)
                     .HasConstraintName("FK__TournamentP__BID__0E6E26BF");
 
-                entity.HasOne(d => d.ContestDetail)
+                entity.HasOne(d => d.Contest)
                     .WithMany(p => p.ContestParticipants)
                     .HasForeignKey(d => d.ContestId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__TournamentP__TID__0D7A0286");
 
-                entity.HasOne(d => d.MemberDetail)
+                entity.HasOne(d => d.Member)
                     .WithMany(p => p.ContestParticipants)
                     .HasForeignKey(d => d.MemberId)
                     .OnDelete(DeleteBehavior.ClientSetNull)

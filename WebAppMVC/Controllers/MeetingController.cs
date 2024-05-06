@@ -216,7 +216,6 @@ namespace WebAppMVC.Controllers
             string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
 
             string? role = HttpContext.Session.GetString("ROLE_NAME");
-            if(role == null) role = "Guest";
 
             string? usrId = HttpContext.Session.GetString("USER_ID");
 

@@ -1,9 +1,6 @@
-﻿using BAL.ViewModels;
-using BAL.ViewModels.Authenticates;
-using DAL.Models;
+﻿using DAL.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.Extensions.Options;
 using System.Dynamic;
 using System.Net.Http.Headers;
 using System.Text.Encodings.Web;
@@ -13,10 +10,6 @@ using WebAppMVC.Constants;
 using WebAppMVC.Models.FieldTrip;
 using WebAppMVC.Models.Location;
 using WebAppMVC.Models.Meeting;
-using WebAppMVC.Models.Member;
-using WebAppMVC.Models.Transaction;
-using WebAppMVC.Models.VnPay;
-using WebAppMVC.Services;
 using static Org.BouncyCastle.Math.EC.ECCurve;
 
 namespace WebAppMVC.Controllers
@@ -27,27 +20,18 @@ namespace WebAppMVC.Controllers
 		private readonly ILogger<FieldTripController> _logger;
         private readonly IConfiguration _config;
 		private readonly HttpClient _httpClient = null;
-        private readonly IVnPayService _vnPayService;
 		private string FieldTripAPI_URL = "";
-		private readonly JsonSerializerOptions jsonOptions = new JsonSerializerOptions
+		private readonly JsonSerializerOptions options = new JsonSerializerOptions
 		{
             Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
             PropertyNameCaseInsensitive = true,
 		};
-        private readonly CookieOptions cookieOptions = new CookieOptions
-        {
-            Expires = DateTime.Now.AddMinutes(10),
-            MaxAge = TimeSpan.FromMinutes(10),
-            Secure = true,
-            IsEssential = true,
-        };
-        private BirdClubLibrary methcall = new();
-		public FieldTripController(ILogger<FieldTripController> logger, IConfiguration config, IVnPayService vnPayService)
+		private BirdClubLibrary methcall = new();
+		public FieldTripController(ILogger<FieldTripController> logger, IConfiguration config)
 		{
 			_logger = logger;
             _config = config;
 			_httpClient = new HttpClient();
-            _vnPayService = vnPayService;
 			var contentType = new MediaTypeWithQualityHeaderValue("application/json");
             _httpClient.DefaultRequestHeaders.Accept.Add(contentType);
             _httpClient.BaseAddress = new Uri(config.GetSection("DefaultApiUrl:ConnectionString").Value);
@@ -76,26 +60,26 @@ namespace WebAppMVC.Controllers
 
             var listLocationRoadResponse = await methcall.CallMethodReturnObject<GetLocationAddressResponseByList>(
                 _httpClient: _httpClient,
-                options: jsonOptions,
+                options: options,
                 methodName: "GET",
                 url: LocationAPI_URL_All_Road,
                 _logger: _logger);
             var listLocationDistrictResponse = await methcall.CallMethodReturnObject<GetLocationAddressResponseByList>(
                 _httpClient: _httpClient,
-                options: jsonOptions,
+                options: options,
                 methodName: "GET",
                 url: LocationAPI_URL_All_District,
                 _logger: _logger);
             var listLocationCityResponse = await methcall.CallMethodReturnObject<GetLocationAddressResponseByList>(
                 _httpClient: _httpClient,
-                options: jsonOptions,
+                options: options,
                 methodName: "GET",
                 url: LocationAPI_URL_All_City,
                 _logger: _logger);
 
             var listTripResponse = await methcall.CallMethodReturnObject<GetFieldTripResponseByList>(
                 _httpClient: _httpClient,
-                options: jsonOptions,
+                options: options,
                 methodName: "POST",
                 url: FieldTripAPI_URL,
                 inputType: role,
@@ -142,6 +126,10 @@ namespace WebAppMVC.Controllers
             testmodel.FieldTrips = listTripResponse.Data;
             return View(testmodel);
         }
+		public IActionResult FieldTripPayment()
+		{
+			return View();
+		}
         [HttpGet("FieldTripPost/{id:int}")]
         public async Task<IActionResult> FieldTripPost(int id)
 		{
@@ -150,7 +138,6 @@ namespace WebAppMVC.Controllers
             string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
 
             string? role = HttpContext.Session.GetString("ROLE_NAME");
-            if (role == null) role = "Guest";
 
             string? usrId = HttpContext.Session.GetString("USER_ID");
 
@@ -171,7 +158,7 @@ namespace WebAppMVC.Controllers
                 FieldTripAPI_URL += "Participant/" + id;
                 fieldtripPostResponse = await methcall.CallMethodReturnObject<GetFieldTripPostResponse>(
                                    _httpClient: _httpClient,
-                                   options: jsonOptions,
+                                   options: options,
                                    methodName: "POST",
                                    url: FieldTripAPI_URL,
                                    _logger: _logger,
@@ -183,7 +170,7 @@ namespace WebAppMVC.Controllers
                 FieldTripAPI_URL += id;
                 fieldtripPostResponse = await methcall.CallMethodReturnObject<GetFieldTripPostResponse>(
                                    _httpClient: _httpClient,
-                                   options: jsonOptions,
+                                   options: options,
                                    methodName: "GET",
                                    url: FieldTripAPI_URL,
                                    _logger: _logger);
@@ -219,71 +206,8 @@ namespace WebAppMVC.Controllers
         [HttpPost("FieldTripRegister/{tripId:int}")]
         public async Task<IActionResult> FieldTripRegister(int tripId)
         {
-            FieldTripAPI_URL += "/" + tripId;
-            string MemberAPI_URL = "/api/Member/Profile";
-
-            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
-            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
-
-            string? role = HttpContext.Session.GetString("ROLE_NAME");
-            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Member")) return RedirectToAction("Index", "Home");
-
-            string? usrId = HttpContext.Session.GetString("USER_ID");
-            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
-
-            string? usrname = HttpContext.Session.GetString("USER_NAME");
-            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
-
-            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
-
-            TempData["ROLE_NAME"] = role;
-            TempData["USER_NAME"] = usrname;
-            TempData["IMAGE_PATH"] = imagepath;
-
-            var fieldtripPostResponse = await methcall.CallMethodReturnObject<GetFieldTripPostResponse>(
-                                   _httpClient: _httpClient,
-                                   options: jsonOptions,
-                                   methodName: "GET",
-                                   url: FieldTripAPI_URL,
-                                   _logger: _logger);
-
-            var memberDetails = await methcall.CallMethodReturnObject<GetMemberProfileResponse>(
-                _httpClient: _httpClient,
-                options: jsonOptions,
-                methodName: "POST",
-                url: MemberAPI_URL,
-                _logger: _logger,
-                inputType: usrId,
-                accessToken: accToken);
-
-            methcall.SetCookie(Response, "trip", fieldtripPostResponse.Data, cookieOptions, jsonOptions, 20);
-
-            PaymentInformationModel model = new PaymentInformationModel()
-            {
-                Fullname = memberDetails.Data.FullName,
-                PayAmount = (decimal)fieldtripPostResponse.Data.Fee,
-                TransactionType = "Member-FieldTrip-Registration"
-            };
-
-            var url = _vnPayService.CreatePaymentUrl(model, HttpContext);
-            return Redirect(url);
-        }
-
-        [HttpGet("FieldTripConfirmRegister")]
-        public async Task<IActionResult> FieldTripConfirmRegister()
-        {
-            var fieldTrip = await methcall.GetCookie<FieldTripViewModel>(Request, "trip", jsonOptions);
-            
-            var tripId = (int)fieldTrip.TripId;
-
-            methcall.RemoveCookie(Response, "trip", cookieOptions, jsonOptions);
-
             FieldTripAPI_URL += "/Register/" + tripId;
 
-            string TransactionAPI_URL = "/api/Transaction/UpdateUser";
-            string MemberAPI_URL = "/api/Member/Profile";
-
             string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
             if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
 
@@ -302,19 +226,10 @@ namespace WebAppMVC.Controllers
             TempData["ROLE_NAME"] = role;
             TempData["USER_NAME"] = usrname;
             TempData["IMAGE_PATH"] = imagepath;
-
-            var memberDetails = await methcall.CallMethodReturnObject<GetMemberProfileResponse>(
-                _httpClient: _httpClient,
-                options: jsonOptions,
-                methodName: "POST",
-                url: MemberAPI_URL,
-                _logger: _logger,
-                inputType: usrId,
-                accessToken: accToken);
 
             var participationNo = await methcall.CallMethodReturnObject<GetFieldTripParticipationNo>(
                 _httpClient: _httpClient,
-                options: jsonOptions,
+                options: options,
                 methodName: "POST",
                 url: FieldTripAPI_URL,
                 _logger: _logger,
@@ -336,45 +251,6 @@ namespace WebAppMVC.Controllers
                     "Error while processing your request! (Registering Field Trip Participation!).\n"
                     + participationNo.ErrorMessage;
                 RedirectToAction("FieldTripPost", new { id = tripId });
-            }
-
-            var tran = await methcall.GetCookie<TransactionViewModel>(Request, "tranKey", jsonOptions);
-
-            if (tran == null)
-            {
-                _logger.LogError("Error while registering your new account: Your Registration Transaction not found!");
-
-                ViewBag.error = "Error while registering your new account: Your Registration Transaction not found! " +
-                    "\nPlease contact the birdclub manager for assistance with resolving this issue!";
-
-                return View("Register");
-            }
-
-            methcall.RemoveCookie(Response, "tranKey", cookieOptions, jsonOptions);
-
-            UpdateNewMemberTransactionRequest unmtr = new UpdateNewMemberTransactionRequest()
-            {
-                MemberId = memberDetails.Data.MemberId,
-                TransactionId = tran.TransactionId
-            };
-
-            var transactionResponse = await methcall.CallMethodReturnObject<GetTransactionResponse>(
-                _httpClient: _httpClient,
-                options: jsonOptions,
-                methodName: "PUT",
-                url: TransactionAPI_URL,
-                inputType: unmtr,
-                accessToken: accToken,
-                _logger: _logger);
-
-            if (transactionResponse == null)
-            {
-                _logger.LogError("Error while registering your new account: User Transaction Saving Failed!");
-
-                ViewBag.error = "Error while registering your new account: User Transaction Saving Failed!, " +
-                    "\nPlease contact the birdclub manager for assistance with resolving this issue!";
-
-                return View("Register");
             }
 
             return RedirectToAction("FieldTripPost", new { id = tripId });
@@ -405,7 +281,7 @@ namespace WebAppMVC.Controllers
 
             var participationNo = await methcall.CallMethodReturnObject<GetFieldTripPostDeRegister>(
                 _httpClient: _httpClient,
-                options: jsonOptions,
+                options: options,
                 methodName: "POST",
                 url: FieldTripAPI_URL,
                 _logger: _logger,

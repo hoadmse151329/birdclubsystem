@@ -59,9 +59,9 @@ namespace DAL.Models
         [Column("numberOfParticipantsLimit")]
         public int? NumberOfParticipantsLimit { get; set; }
 
-        [InverseProperty(nameof(ContestMedia.ContestDetail))]
+        [InverseProperty(nameof(ContestMedia.ContestDetails))]
         public virtual ICollection<ContestMedia> ContestPictures { get; set; }
-        [InverseProperty(nameof(ContestParticipant.ContestDetail))]
+        [InverseProperty(nameof(ContestParticipant.Contest))]
         public virtual ICollection<ContestParticipant> ContestParticipants { get; set; }
     }
 }

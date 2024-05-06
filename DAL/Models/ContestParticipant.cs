@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Models
 {
-    [Table("ContestParticipants")]
     public partial class ContestParticipant
     {
         [Key]
@@ -28,13 +27,13 @@ namespace DAL.Models
         public string CheckInStatus { get; set; } = null!;
 
         [ForeignKey(nameof(BirdId))]
-        [InverseProperty(nameof(Contest.ContestParticipants))]
+        [InverseProperty("ContestParticipants")]
         public virtual Bird? Bird { get; set; }
         [ForeignKey(nameof(ContestId))]
-        [InverseProperty(nameof(Contest.ContestParticipants))]
-        public virtual Contest ContestDetail { get; set; } = null!;
+        [InverseProperty("ContestParticipants")]
+        public virtual Contest Contest { get; set; } = null!;
         [ForeignKey(nameof(MemberId))]
-        [InverseProperty(nameof(Contest.ContestParticipants))]
-        public virtual Member MemberDetail { get; set; } = null!;
+        [InverseProperty("ContestParticipants")]
+        public virtual Member Member { get; set; } = null!;
     }
 }

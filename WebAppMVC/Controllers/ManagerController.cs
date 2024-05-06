@@ -279,7 +279,11 @@ namespace WebAppMVC.Controllers
         }
         [HttpPost("Meeting/Create")]
         /*[Route("Manager/Meeting/Update/{id:int}")]*/
+<<<<<<< HEAD
         public async Task<IActionResult> ManagerCreateMeeting([Required] MeetingViewModel createMeeting)
+=======
+        public async Task<IActionResult> ManagerCreateMeeting([FromBody] MeetingViewModel createMeet)
+>>>>>>> parent of 956280c (Merge branch 'main' into duy-2.0)
         {
             ManagerAPI_URL += "Meeting/Create";
             if (!ModelState.IsValid)

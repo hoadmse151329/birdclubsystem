@@ -12,6 +12,5 @@ namespace DAL.Repositories.Interfaces
     {
         Task<IEnumerable<Contest>> GetAllContests(string? role);
         public Task<Contest?> GetContestById(int id);
-        Task<bool> GetBoolContestId(int id);
     }
 }

@@ -27,14 +27,7 @@ namespace DAL.Repositories.Implements
         }
         public async Task<Contest?> GetContestById(int id)
         {
-            return _context.Contests.SingleOrDefault(c => c.ContestId == id);
-        }
-
-        public async Task<bool> GetBoolContestId(int id)
-        {
-            var con = _context.Contests.SingleOrDefault(c => c.ContestId == id);
-            if (con != null) return true;
-            else return false;
+            return _context.Contests.SingleOrDefault(contest => contest.ContestId == id);
         }
     }
 }

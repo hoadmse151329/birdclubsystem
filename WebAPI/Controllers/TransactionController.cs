@@ -266,7 +266,7 @@ namespace WebAPI.Controllers
 				});
 			}
 		}
-		[Authorize(Roles = "Member,TempMember")]
+		[Authorize(Roles = "TempMember")]
 		[HttpPut("UpdateUser")]
 		[ProducesResponseType(typeof(TransactionViewModel), StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]

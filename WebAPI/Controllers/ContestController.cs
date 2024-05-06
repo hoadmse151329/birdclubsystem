@@ -1,7 +1,6 @@
 ﻿using BAL.Services.Implements;
 using BAL.Services.Interfaces;
 using BAL.ViewModels;
-using BAL.ViewModels.Event;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -34,7 +33,7 @@ namespace WebAPI.Controllers
         [ProducesResponseType(typeof(List<ContestViewModel>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> GetAllContests([FromBody] string? role)
+        public async Task<IActionResult> GetAllContests([Required][FromBody] string role)
         {
             try
             {
@@ -116,7 +115,57 @@ namespace WebAPI.Controllers
                 });
             }
         }
-        
+        [HttpPost("Participant/{id}")]
+        [Authorize(Roles = "Member")]
+        [ProducesResponseType(typeof(ContestViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetContestAndParticipantNo(
+            [Required][FromRoute] int id,
+            [Required][FromBody] string memId)
+        {
+            try
+            {
+                var cont = await _contestService.GetById(id);
+                if (cont == null) return NotFound(new
+                {
+                    Status = false,
+                    ErrorMessage = "Contest Not Found!"
+                });
+                var mem = await _memberService.GetBoolById(memId);
+                if (!mem) return NotFound(new
+                {
+                    Status = false,
+                    ErrorMessage = "Member Not Found!"
+                });
+                int participateNo = await _participantService.GetParticipationNo(id,memId);
+                cont.ParticipationNo = participateNo;
+                return Ok(new
+                {
+                    Status = true,
+                    Message = "Get Contest successfully!",
+                    Data = cont
+                });
+            }
+            catch (Exception ex)
+            {
+                if (ex.InnerException != null)
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = ex.Message,
+                        InnerExceptionMessage = ex.InnerException.Message
+                    });
+                }
+                // Log the exception if needed
+                return BadRequest(new
+                {
+                    Status = false,
+                    ErrorMessage = ex.Message
+                });
+            }
+        }
         [HttpPost("Create")]
         [Authorize(Roles = "Manager")]
         [ProducesResponseType(typeof(ContestViewModel), StatusCodes.Status200OK)]
@@ -180,283 +229,6 @@ namespace WebAPI.Controllers
                 contest.ContestId = id;
                 _contestService.Update(contest);
                 result = await _contestService.GetById(contest.ContestId.Value);
-                return Ok(new
-                {
-                    Status = true,
-                    Data = result
-                });
-            }
-            catch (Exception ex)
-            {
-                if (ex.InnerException != null)
-                {
-                    return BadRequest(new
-                    {
-                        Status = false,
-                        ErrorMessage = ex.Message,
-                        InnerExceptionMessage = ex.InnerException.Message
-                    });
-                }
-                // Log the exception if needed
-                return BadRequest(new
-                {
-                    Status = false,
-                    ErrorMessage = ex.Message
-                });
-            }
-        }
-
-        [HttpGet("Update/Cancel/{id}")]
-        [Authorize(Roles = "Manager")]
-        [ProducesResponseType(typeof(ContestViewModel), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> UpdateCancelContest([Required][FromRoute] int id)
-        {
-            try
-            {
-                var result = _contestService.GetById(id).Result;
-                if (result == null)
-                {
-                    return NotFound(new
-                    {
-                        Status = false,
-                        ErrorMessage = "Contest does not exist"
-                    });
-                }
-                result.ContestId = id;
-                result.Status = "Cancelled";
-                _contestService.Update(result);
-                result = await _contestService.GetById(id);
-                return Ok(new
-                {
-                    Status = true,
-                    Data = result
-                });
-            }
-            catch (Exception ex)
-            {
-                if (ex.InnerException != null)
-                {
-                    return BadRequest(new
-                    {
-                        Status = false,
-                        ErrorMessage = ex.Message,
-                        InnerExceptionMessage = ex.InnerException.Message
-                    });
-                }
-                // Log the exception if needed
-                return BadRequest(new
-                {
-                    Status = false,
-                    ErrorMessage = ex.Message
-                });
-            }
-        }
-
-        [HttpPost("Register/{id}")]
-        [Authorize(Roles = "Member")]
-        [ProducesResponseType(typeof(ContestParticipantViewModel), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Register(
-            [Required][FromRoute] int id,
-            [Required][FromBody] string memId)
-        {
-            try
-            {
-                var contest = await _contestService.GetById(id);
-                if (contest == null) return NotFound(new
-                {
-                    Status = false,
-                    ErrorMessage = "Contest Not Found!"
-                });
-                var mem = await _memberService.GetBoolById(memId);
-                if (!mem) return NotFound(new
-                {
-                    Status = false,
-                    ErrorMessage = "Member Not Found!"
-                });
-                int participateNo = await _participantService.Create(memId, id);
-                return Ok(new
-                {
-                    Status = true,
-                    SuccessMessage = "Add Member Participation successfully!",
-                    Data = participateNo
-                });
-            }
-            catch (Exception ex)
-            {
-                if (ex.InnerException != null)
-                {
-                    return BadRequest(new
-                    {
-                        Status = false,
-                        ErrorMessage = ex.Message,
-                        InnerExceptionMessage = ex.InnerException.Message
-                    });
-                }
-                // Log the exception if needed
-                return BadRequest(new
-                {
-                    Status = false,
-                    ErrorMessage = ex.Message
-                });
-            }
-        }
-
-        [HttpPost("Participant/{id}")]
-        [Authorize(Roles = "Member")]
-        [ProducesResponseType(typeof(ContestViewModel), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> GetContestAndParticipantNo(
-            [Required][FromRoute] int id,
-            [Required][FromBody] string memId)
-        {
-            try
-            {
-                var cont = await _contestService.GetById(id);
-                if (cont == null) return NotFound(new
-                {
-                    Status = false,
-                    ErrorMessage = "Contest Not Found!"
-                });
-                var mem = await _memberService.GetBoolById(memId);
-                if (!mem) return NotFound(new
-                {
-                    Status = false,
-                    ErrorMessage = "Member Not Found!"
-                });
-                int participateNo = await _participantService.GetParticipationNo(id, memId);
-                cont.ParticipationNo = participateNo;
-                return Ok(new
-                {
-                    Status = true,
-                    Message = "Get Contest successfully!",
-                    Data = cont
-                });
-            }
-            catch (Exception ex)
-            {
-                if (ex.InnerException != null)
-                {
-                    return BadRequest(new
-                    {
-                        Status = false,
-                        ErrorMessage = ex.Message,
-                        InnerExceptionMessage = ex.InnerException.Message
-                    });
-                }
-                // Log the exception if needed
-                return BadRequest(new
-                {
-                    Status = false,
-                    ErrorMessage = ex.Message
-                });
-            }
-        }
-
-        [HttpPost("RemoveParticipant/{id}")]
-        [Authorize(Roles = "Member,Manager")]
-        [ProducesResponseType(typeof(ContestParticipantViewModel), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> RemoveParticipant(
-            [Required][FromRoute] int id,
-            [Required][FromBody] string memId)
-        {
-            try
-            {
-                var contest = await _participantService.GetParticipationNo(id, memId);
-                if (contest == 0) return NotFound(new
-                {
-                    Status = false,
-                    ErrorMessage = "Contest Not Found!"
-                });
-                var result = await _participantService.Delete(memId, id);
-                return Ok(new
-                {
-                    Status = true,
-                    Data = result,
-                    SuccessMessage = "Remove Contest Participation Successfully!"
-                });
-            }
-            catch (Exception ex)
-            {
-                if (ex.InnerException != null)
-                {
-                    return BadRequest(new
-                    {
-                        Status = false,
-                        ErrorMessage = ex.Message,
-                        InnerExceptionMessage = ex.InnerException.Message
-                    });
-                }
-                // Log the exception if needed
-                return BadRequest(new
-                {
-                    Status = false,
-                    ErrorMessage = ex.Message
-                });
-            }
-        }
-
-        [HttpGet("AllParticipants/{id}")]
-        [Authorize(Roles = "Manager, Staff")]
-        [ProducesResponseType(typeof(List<ContestParticipantViewModel>), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> GetAllParticipantsByContestId([FromRoute] int id)
-        {
-            try
-            {
-                var result = await _participantService.GetAllByContestId(id);
-                if (result == null) return NotFound(new
-                {
-                    Status = false,
-                    ErrorMessage = "Contest Not Found!"
-                });
-                return Ok(new
-                {
-                    Status = true,
-                    Data = result
-                });
-            }
-            catch (Exception ex)
-            {
-                if (ex.InnerException != null)
-                {
-                    return BadRequest(new
-                    {
-                        Status = false,
-                        ErrorMessage = ex.Message,
-                        InnerExceptionMessage = ex.InnerException.Message
-                    });
-                }
-                // Log the exception if needed
-                return BadRequest(new
-                {
-                    Status = false,
-                    ErrorMessage = ex.Message
-                });
-            }
-        }
-        [HttpPost("Participation/AllContests")]
-        [Authorize(Roles = "Member")]
-        [ProducesResponseType(typeof(List<GetEventParticipation>), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> GetAllContestParticipations([Required][FromBody] string memId)
-        {
-            try
-            {
-                var result = await _participantService.GetAllByMemberIdInclude(memId);
-                if (result == null) return NotFound(new
-                {
-                    Status = false,
-                    ErrorMessage = "List of Contest Participations Not Found!"
-                });
                 return Ok(new
                 {
                     Status = true,

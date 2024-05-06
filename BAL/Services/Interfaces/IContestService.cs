@@ -13,6 +13,5 @@ namespace BAL.Services.Interfaces
         Task<IEnumerable<ContestViewModel>> GetAllContests(string? role);
         void Create(ContestViewModel entity);
         void Update(ContestViewModel entity);
-        Task<bool> GetBoolContestId(int id);
     }
 }

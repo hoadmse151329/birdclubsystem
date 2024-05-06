@@ -80,24 +80,6 @@ namespace BAL.AutoMapperProfile
                     dest.EndDate = src.Trip.EndDate;
                     dest.RegistrationDeadline = src.Trip.RegistrationDeadline;
                     dest.Status = src.Trip.Status;
-                    dest.Fee = src.Trip.Fee;
-                    dest.ParticipationNo = Int32.Parse(src.ParticipantNo);
-                    dest.CheckInStatus = src.CheckInStatus;
-                })
-                .ReverseMap();
-            CreateMap<ContestParticipant, GetEventParticipation>()
-                .AfterMap((src, dest) =>
-                {
-                    dest.EventId = src.ContestId;
-                    dest.EventName = src.ContestDetail.ContestName;
-                    dest.EventType = "Bird Contest";
-                    dest.EventHost = src.ContestDetail.Host;
-                    dest.EventStaff = src.ContestDetail.Incharge;
-                    dest.StartDate = src.ContestDetail.StartDate;
-                    dest.EndDate = src.ContestDetail.EndDate;
-                    dest.RegistrationDeadline = src.ContestDetail.RegistrationDeadline;
-                    dest.Status = src.ContestDetail.Status;
-                    dest.Fee = src.ContestDetail.Fee;
                     dest.ParticipationNo = Int32.Parse(src.ParticipantNo);
                     dest.CheckInStatus = src.CheckInStatus;
                 })
@@ -124,18 +106,8 @@ namespace BAL.AutoMapperProfile
                 {
                     dest.MemberDetail = new();
                     dest.MemberDetail.FullName = src.MemberName;
-                });
-            CreateMap<ContestParticipant, ContestParticipantViewModel>()
-                .AfterMap((src, dest) =>
-                {
-                    dest.MemberName = src.MemberDetail.FullName;
                 })
-                .ReverseMap()
-                .AfterMap((src, dest) =>
-                {
-                    dest.MemberDetail = new();
-                    dest.MemberDetail.FullName = src.MemberName;
-                });
+                ;
             CreateMap<Meeting, MeetingViewModel>()
                 .ReverseMap();
             CreateMap<MeetingMedia, MeetingMediaViewModel>()

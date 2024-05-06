@@ -111,12 +111,5 @@ namespace BAL.Services.Implements
             _unitOfWork.ContestRepository.Update(contest);
             _unitOfWork.Save();
         }
-
-        public async Task<bool> GetBoolContestId(int id)
-        {
-            var con = await _unitOfWork.ContestRepository.GetBoolContestId(id);
-            if (!con) return false;
-            return true;
-        }
     }
 }

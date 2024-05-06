@@ -21,6 +21,5 @@ namespace DAL.Repositories.Interfaces
 		Task<bool> GetBoolContestParticipantById(int contestId, string memberId, int? birdId = null);
         Task<int> GetParticipationNoContestParticipantById(int contestId, string memberId, int? birdId = null);
         Task<ContestParticipant> GetContestParticipantById(int contestId, string memberId, int? birdId = null);
-		Task<IEnumerable<ContestParticipant>> UpdateAllContestParticipantStatus(List<ContestParticipant> part);
     }
 }
