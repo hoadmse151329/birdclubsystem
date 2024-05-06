@@ -17,6 +17,8 @@
         public static string CREATE_FIELDTRIP_VALID = "CFieldTripValid";
         public static string UPDATE_FIELDTRIP_VALID = "UFieldTripValid";
         public static string CREATE_FIELDTRIP_DAYBYDAY_VALID = "CFieldTripDayByDayValid";
+		public static string CREATE_CONTEST_VALID = "CContestValid";
+		public static string UPDATE_CONTEST_VALID = "UContestValid";
         public static string ADMIN = "Admin";
 		public static string MEMBER = "Member";
 		public static string TEMPMEMBER = "TempMember";

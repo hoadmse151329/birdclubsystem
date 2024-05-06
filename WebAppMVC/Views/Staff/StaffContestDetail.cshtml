@@ -3,7 +3,7 @@
     Layout = null;
     ViewData["Title"] = "Staff Contest Detail Page";
     BAL.ViewModels.ContestViewModel details = Model.ContestDetails;
-    List<BAL.ViewModels.ContestParticipantViewModel> parts = Model.ContestParticipants;
+    List<BAL.ViewModels.ContestParticipantViewModel> contestPartView = Model.ContestParticipants;
     List<SelectListItem> checkInStatus = new()
     {
         new SelectListItem {Text = "Not Checked-In", Value = "Not Checked-In"},
@@ -227,7 +227,7 @@
                                             <span>Incharge:</span>
                                         </div>
                                         <div class="col-sm-7 text-sm-left">
-                                            <span>@details.Incharge</span>
+                                            <span>@details.InCharge</span>
                                         </div>
                                     </div>
                                     <div class="row mb-sm-2">
@@ -275,13 +275,10 @@
                         </div>
                     </div>
                     <div class="col-lg-5 cardFB">
-                        <form asp-action="StaffUpdateContestDetail" asp-controller="Staff" asp-route-id="@details.ContestId" method="post">
+                        <form asp-action="StaffUpdateContestStatus" asp-controller="Staff" asp-route-id="@details.ContestId" method="post">
                         <div class="card border-0 d-flex">
                             <div class="card-header">
                                 <h4>Edit Participant Status</h4>
-                                <div class="edit-info">
-                                        <i class='bx bxs-edit-alt' data-toggle="modal" data-target="#editstatus"></i>
-                                    </div>
                             </div>
                             <div class="card-body">
                                 <table class="table table-hover table-borderless">
@@ -293,18 +290,43 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach (var part in parts)
-                                        {
-                                            <tr>
-                                                <td>@part.ParticipantNo</td>
-                                                <td>@part.MemberName</td>
-                                                <td>@part.CheckInStatus</td>
-                                            </tr>
-                                        }
-                                        <tr>
-                                        </tr>
+                                            @for (int i = 0; i < contestPartView.Count(); i++)
+                                            {
+                                                <tr class="@("clickable-row "+ (i%2 == 0 ? "even" : "odd")) " data-href="#"
+                                                    data-bs-toggle="tooltip" data-bs-placement="right"
+                                                    title="More Details">
+                                                    <input type="hidden" asp-for="@contestPartView[i].ContestId" name="contestPartView[@i].ContestId" value="@contestPartView[i].ContestId" class="form-control" />
+                                                    <input type="hidden" asp-for="@contestPartView[i].MemberId" name="contestPartView[@i].MemberId" value="@contestPartView[i].MemberId" class="form-control" />
+                                                    <td class="sorting_1">
+                                                        <input type="hidden" asp-for="@contestPartView[i].ParticipantNo" name="contestPartView[@i].ParticipantNo" value="@contestPartView[i].ParticipantNo" class="form-control" />
+                                                        @contestPartView[i].ParticipantNo
+                                                    </td>
+                                                    <td>
+                                                        <input type="hidden" asp-for="@contestPartView[i].MemberName" name="contestPartView[@i].MemberName" value="@contestPartView[i].MemberName" class="form-control" />
+                                                        @contestPartView[i].MemberName
+                                                    </td>
+                                                    <td>
+                                                        @{
+                                                            foreach (var status in checkInStatus)
+                                                            {
+                                                                if (status.Text.Equals(contestPartView[i].CheckInStatus))
+                                                                {
+                                                                    status.Selected = true;
+                                                                }
+                                                            }
+                                                        }
+                                                        <select class="form-control" asp-for="@contestPartView[i].CheckInStatus" asp-items="@checkInStatus" class="custom-select" name="contestPartView[@i].checkInStatus">
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                            }
                                     </tbody>
                                 </table>
+                                    <div class="row col-12 d-flex">
+                                        <div class="rating-room">
+                                            <button class="button--primary btn-success bg-success shadow btn-xs text-white" type="submit">Save Changes</button>
+                                        </div>
+                                    </div>
                             </div>
                         </form>
                         </div>

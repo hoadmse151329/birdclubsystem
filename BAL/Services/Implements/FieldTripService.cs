@@ -131,6 +131,7 @@ namespace BAL.Services.Implements
                 _unitOfWork.LocationRepository.Update(loc = new Location
                 {
                     LocationName = entity.Address.Trim(),
+                    Description = loc.Description
                 });
                 _unitOfWork.Save();
                 loc = _unitOfWork.LocationRepository.GetLocationByName(entity.Address.Trim()).Result;

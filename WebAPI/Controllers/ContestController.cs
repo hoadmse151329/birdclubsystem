@@ -127,9 +127,7 @@ namespace WebAPI.Controllers
         {
             try
             {
-                contest.Status = "OnHold";
                 _contestService.Create(contest);
-
                 return Ok(new
                 {
                     Status = true,

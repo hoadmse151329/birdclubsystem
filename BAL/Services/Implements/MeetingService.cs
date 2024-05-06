@@ -108,18 +108,22 @@ namespace BAL.Services.Implements
                 meeting.Street = temp[1];
                 meeting.District = temp[2];
                 meeting.City = temp[3];
-                foreach (var picture in meeting.Media.ToList())
+
+                if (meeting.Media.Any())
                 {
-                    if (picture.Type == "Spotlight")
+                    foreach (var picture in meeting.Media?.ToList())
                     {
-                        meeting.SpotlightImage = picture;
-                        meeting.Media.Remove(picture);
-                    }
-                    else
-                    if (picture.Type == "LocationMap")
-                    {
-                        meeting.LocationMapImage = picture;
-                        meeting.Media.Remove(picture);
+                        if (picture.Type == "Spotlight")
+                        {
+                            meeting.SpotlightImage = picture;
+                            meeting.Media.Remove(picture);
+                        }
+                        else
+                        if (picture.Type == "LocationMap")
+                        {
+                            meeting.LocationMapImage = picture;
+                            meeting.Media.Remove(picture);
+                        }
                     }
                 }
                 return meeting;

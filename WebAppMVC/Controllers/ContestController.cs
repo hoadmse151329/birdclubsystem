@@ -12,6 +12,7 @@ using WebAppMVC.Models.Meeting;
 
 namespace WebAppMVC.Controllers
 {
+    [Route("Contest")]
 	public class ContestController : Controller
 	{
 		private readonly ILogger<ContestController> _logger;
@@ -35,8 +36,7 @@ namespace WebAppMVC.Controllers
             ContestAPI_URL = "/api/Contest";
         }
 
-        [HttpGet]
-        [Route("Contest/Index")]
+        [HttpGet("Index")]
         public async Task<IActionResult> Index()
 		{
             ContestAPI_URL += "/All";
@@ -125,8 +125,7 @@ namespace WebAppMVC.Controllers
             return View(testmodel);
 		}
 
-        [HttpGet("{id:int}")]
-        [Route("Contest/ContestPost/{id:int}")]
+        [HttpGet("ContestPost")]
         public async Task<IActionResult> ContestPost(int id)
         {
             ContestAPI_URL += "/";
@@ -134,6 +133,7 @@ namespace WebAppMVC.Controllers
             string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
 
             string? role = HttpContext.Session.GetString("ROLE_NAME");
+            if (role == null) role = "Guest";
 
             string? usrId = HttpContext.Session.GetString("USER_ID");
 
@@ -192,7 +192,7 @@ namespace WebAppMVC.Controllers
         }
 
         [HttpPost]
-        [Route("Contest/ContestRegister/{contestId:int}")]
+        [Route("ContestRegister/{contestId:int}")]
         public async Task<IActionResult> ContestRegister(int contestId)
         {
             ContestAPI_URL += "/Register/" + contestId;
@@ -244,7 +244,7 @@ namespace WebAppMVC.Controllers
         }
 
         [HttpPost]
-        [Route("Contest/ContestDeRegister/{contestId:int}")]
+        [Route("ContestDeRegister/{contestId:int}")]
         public async Task<IActionResult> ContestDeRegister(int contestId)
         {
             ContestAPI_URL += "/RemoveParticipant/" + contestId;
