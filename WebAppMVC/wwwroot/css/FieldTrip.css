@@ -1333,7 +1333,7 @@ tour__content__block--consider .row {
     .member-field-trips-post .group-2 {
         position: absolute;
         width: 210px;
-        height: 383px;
+        height: 500px;
         top: 165px;
         left: 13px;
     }
@@ -1346,7 +1346,7 @@ tour__content__block--consider .row {
         font-weight: 700;
         color: #000000;
         font-size: 24px;
-        text-align: center;
+        text-align: left;
         letter-spacing: 1.2px;
         line-height: normal;
     }
@@ -1361,7 +1361,7 @@ tour__content__block--consider .row {
         font-weight: 700;
         color: #000000;
         font-size: 24px;
-        text-align: center;
+        text-align: left;
         letter-spacing: 1.2px;
         line-height: normal;
     }
@@ -1375,7 +1375,7 @@ tour__content__block--consider .row {
         font-weight: 700;
         color: #000000;
         font-size: 24px;
-        text-align: center;
+        text-align: left;
         letter-spacing: 1.2px;
         line-height: normal;
     }
@@ -1389,7 +1389,7 @@ tour__content__block--consider .row {
         font-weight: 700;
         color: #000000;
         font-size: 24px;
-        text-align: center;
+        text-align: left;
         letter-spacing: 1.2px;
         line-height: normal;
     }
@@ -1403,7 +1403,7 @@ tour__content__block--consider .row {
         font-weight: 700;
         color: #000000;
         font-size: 24px;
-        text-align: center;
+        text-align: left;
         letter-spacing: 1.2px;
         line-height: normal;
     }
@@ -1422,7 +1422,7 @@ tour__content__block--consider .row {
         font-weight: 500;
         color: #000000;
         font-size: 20px;
-        text-align: center;
+        text-align: left;
         letter-spacing: 1px;
         line-height: normal;
     }
@@ -1437,7 +1437,7 @@ tour__content__block--consider .row {
         font-weight: 500;
         color: #000000;
         font-size: 20px;
-        text-align: center;
+        text-align: left;
         letter-spacing: 1px;
         line-height: normal;
     }
@@ -1450,7 +1450,7 @@ tour__content__block--consider .row {
         font-weight: 500;
         color: #000000;
         font-size: 20px;
-        text-align: center;
+        text-align: left;
         letter-spacing: 1px;
         line-height: normal;
         white-space: nowrap;
@@ -1464,7 +1464,7 @@ tour__content__block--consider .row {
         font-weight: 500;
         color: #000000;
         font-size: 20px;
-        text-align: center;
+        text-align: left;
         letter-spacing: 1px;
         line-height: normal;
         white-space: nowrap;
@@ -1478,7 +1478,7 @@ tour__content__block--consider .row {
         font-weight: 500;
         color: #000000;
         font-size: 20px;
-        text-align: center;
+        text-align: left;
         letter-spacing: 1px;
         line-height: normal;
         white-space: nowrap;
@@ -1500,19 +1500,19 @@ tour__content__block--consider .row {
         border-radius: 50px;
     }
 
-    .member-field-trips-post .text-wrapper-16 {
-        width: 100px;
-        top: 16px;
-        left: 66px;
-        font-size: 20px;
-        position: absolute;
-        font-family: "Inter-Bold", Helvetica;
-        font-weight: 700;
-        color: #000000;
-        letter-spacing: 0;
-        line-height: normal;
-        white-space: nowrap;
-    }
+.member-field-trips-post .text-wrapper-16 {
+    width: 100px;
+    top: 16px;
+    left: 66px;
+    font-size: 20px;
+    position: absolute;
+    font-family: "Inter-Bold", Helvetica;
+    font-weight: 700;
+    color: #000000;
+    letter-spacing: 0;
+    line-height: normal;
+    white-space: nowrap;
+}
 
     .member-field-trips-post .footer {
         position: absolute;
@@ -1538,18 +1538,19 @@ tour__content__block--consider .row {
         left: 0;
     }
 
-    .member-field-trips-post .text-wrapper-17 {
-        position: absolute;
-        height: 29px;
-        top: 200px;
-        left: 153px;
-        font-family: "Inter-Regular", Helvetica;
-        font-weight: 400;
-        color: #000000;
-        font-size: 24px;
-        letter-spacing: 1.2px;
-        line-height: normal;
-    }
+.member-field-trips-post .text-wrapper-17 {
+    position: absolute;
+    width: 167px;
+    height: 29px;
+    top: 430px;
+    font-family: "Inter-Bold", Helvetica;
+    font-weight: 700;
+    color: #000000;
+    font-size: 24px;
+    text-align: left;
+    letter-spacing: 1.2px;
+    line-height: normal;
+}
 
     .member-field-trips-post .other-fanpages {
         position: absolute;
@@ -1559,19 +1560,19 @@ tour__content__block--consider .row {
         left: 1140px;
     }
 
-    .member-field-trips-post .text-wrapper-18 {
-        position: absolute;
-        width: 1134px;
-        height: 84px;
-        top: 20px;
-        left: 152px;
-        font-family: "Inter-Regular", Helvetica;
-        font-weight: 400;
-        color: #000000;
-        font-size: 16px;
-        letter-spacing: 0.8px;
-        line-height: normal;
-    }
+.member-field-trips-post .text-wrapper-18 {
+    top: 416px;
+    position: absolute;
+    height: 24px;
+    font-family: "Inter-Medium", Helvetica;
+    font-weight: 500;
+    color: #000000;
+    font-size: 20px;
+    text-align: left;
+    letter-spacing: 1px;
+    line-height: normal;
+    white-space: nowrap;
+}
 
     .member-field-trips-post .learn-more-button {
         position: absolute;

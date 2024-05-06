@@ -1144,7 +1144,7 @@
         font-weight: 700;
         color: #000000;
         font-size: 24px;
-        text-align: center;
+        text-align: left;
         letter-spacing: 1.2px;
         line-height: normal;
     }
@@ -1159,7 +1159,7 @@
         font-weight: 700;
         color: #000000;
         font-size: 24px;
-        text-align: center;
+        text-align: left;
         letter-spacing: 1.2px;
         line-height: normal;
     }
@@ -1173,7 +1173,7 @@
         font-weight: 700;
         color: #000000;
         font-size: 24px;
-        text-align: center;
+        text-align: left;
         letter-spacing: 1.2px;
         line-height: normal;
     }
@@ -1187,7 +1187,7 @@
         font-weight: 700;
         color: #000000;
         font-size: 24px;
-        text-align: center;
+        text-align: left;
         letter-spacing: 1.2px;
         line-height: normal;
     }
@@ -1201,7 +1201,7 @@
         font-weight: 700;
         color: #000000;
         font-size: 24px;
-        text-align: center;
+        text-align: left;
         letter-spacing: 1.2px;
         line-height: normal;
     }
@@ -1220,7 +1220,7 @@
         font-weight: 500;
         color: #000000;
         font-size: 20px;
-        text-align: center;
+        text-align: left;
         letter-spacing: 1px;
         line-height: normal;
     }
@@ -1235,7 +1235,7 @@
         font-weight: 500;
         color: #000000;
         font-size: 20px;
-        text-align: center;
+        text-align: left;
         letter-spacing: 1px;
         line-height: normal;
     }
@@ -1248,7 +1248,7 @@
         font-weight: 500;
         color: #000000;
         font-size: 20px;
-        text-align: center;
+        text-align: left;
         letter-spacing: 1px;
         line-height: normal;
         white-space: nowrap;
@@ -1262,7 +1262,7 @@
         font-weight: 500;
         color: #000000;
         font-size: 20px;
-        text-align: center;
+        text-align: left;
         letter-spacing: 1px;
         line-height: normal;
         white-space: nowrap;
@@ -1270,16 +1270,15 @@
 
     .member-meeting-post .text-wrapper-15 {
         top: 338px;
-        position: absolute;
         height: 24px;
+        position: absolute;
         font-family: "Inter-Medium", Helvetica;
         font-weight: 500;
         color: #000000;
         font-size: 20px;
-        text-align: center;
+        text-align: left;
         letter-spacing: 1px;
         line-height: normal;
-        white-space: nowrap;
     }
 
     .member-meeting-post .register {
