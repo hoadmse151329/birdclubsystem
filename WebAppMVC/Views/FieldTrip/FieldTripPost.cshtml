@@ -89,7 +89,7 @@
                         <div class="overlap-3">
                             <div id="map-container"></div>
                             <div class="tittle">
-                                <div class="overlap-group-2"><p class="text-wrapper-4">@fieldtripDetails.TripName</p></div>
+                                <div class="overlap-group-2"><p class="text-wrapper-4" id="dynamicText">@fieldtripDetails.TripName</p></div>
                             </div>
                             <div class="text-wrapper-5">From @fieldtripDetails.StartDate.ToString("MM/dd/yyyy") to @fieldtripDetails.EndDate.ToString("MM/dd/syyyy")</div>
 
@@ -100,7 +100,7 @@
                                 <div class="text-wrapper-8">Location</div>
                                 <div class="text-wrapper-9">Contact</div>
                                 <div class="text-wrapper-10">Organizer</div>
-                                <div class="text-wrapper-10">Fee</div>
+                                <div class="text-wrapper-17">Fee</div>
                             </div>
 
                             <div class="group-3">
@@ -110,7 +110,7 @@
                                 <div class="text-wrapper-13">@fieldtripDetails.RegistrationDeadline</div>
                                 <div class="text-wrapper-14">ChaoMaoClub@gmail.com</div>
                                 <div class="text-wrapper-15">@fieldtripDetails.Host</div>
-                                <div class="text-wrapper-15">@fieldtripDetails.Fee</div>
+                                <div class="text-wrapper-18">@fieldtripDetails.Fee</div>
                             </div>
 
                             <div class="register">
@@ -484,5 +484,34 @@
     <script src="https://unpkg.com/filepond-plugin-file-poster/dist/filepond-plugin-file-poster.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="~/js/owner-script.js"></script>
+    <script>
+    // Get the overlap-group-2 container
+    const container = document.querySelector('.overlap-group-2');
+    
+    // Get the dynamic text element
+    const dynamicText = document.getElementById('dynamicText');
+    
+    // Get the height of the container
+    const containerHeight = container.clientHeight;
+    
+    // Get the width of the container
+    const containerWidth = container.clientWidth;
+    
+    // Get the height of the dynamic text element
+    const textHeight = dynamicText.offsetHeight;
+    
+    // Get the width of the dynamic text element
+    const textWidth = dynamicText.offsetWidth;
+    
+    // Calculate the new top position to center vertically
+    const newTop = (containerHeight - textHeight) / 2;
+    
+    // Calculate the new left position to center horizontally
+    const newLeft = (containerWidth - textWidth) / 2;
+    
+    // Apply the new styles
+    dynamicText.style.top = `${newTop}px`;
+    dynamicText.style.left = `${newLeft}px`;
+</script>
 </body>
 </html>

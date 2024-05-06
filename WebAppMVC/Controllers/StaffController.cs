@@ -12,6 +12,14 @@ using WebAppMVC.Models.Contest;
 using System.Text.Encodings.Web;
 using static Org.BouncyCastle.Math.EC.ECCurve;
 using WebAppMVC.Models.Member;
+using Azure;
+using Microsoft.DotNet.MSIdentity.Shared;
+using System.Security.Policy;
+using BAL.ViewModels.Member;
+using BAL.ViewModels.Staff;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using System.ComponentModel.DataAnnotations;
 using WebAppMVC.Models.Staff;
 
 namespace WebAppMVC.Controllers
@@ -345,15 +353,15 @@ namespace WebAppMVC.Controllers
             if (listFieldTripResponse == null || listLocationResponse == null)
             {
                 _logger.LogInformation(
-                    "Error while processing your request! (Getting List FieldTrip!). List was Empty!: " + listFieldTripResponse);
-                ViewBag.error =
+                    "Error while processing your request! (Getting List FieldTrip!). List was Empty!: " + listLocationResponse + ",\n" + listFieldTripResponse);
+                ViewBag.Error =
                     "Error while processing your request! (Getting List FieldTrip!).\n List was Empty!";
                 return View("StaffIndex");
             }
             else
             if (!listFieldTripResponse.Status || !listLocationResponse.Status)
             {
-                ViewBag.error =
+                ViewBag.Error =
                     "Error while processing your request! (Getting List FieldTrip!).\n"
                     + listFieldTripResponse.ErrorMessage + "\n" + listLocationResponse.ErrorMessage;
                 return View("StaffIndex");
@@ -404,18 +412,21 @@ namespace WebAppMVC.Controllers
                                 _logger: _logger);
             if (fieldtripPostResponse == null)
             {
-                ViewBag.error =
+                ViewBag.Error =
                     "Error while processing your request! (Getting FieldTrip!).\n FieldTrip Not Found!";
                 return RedirectToAction("StaffFieldTrip");
             }
             if (!fieldtripPostResponse.Status)
             {
                 _logger.LogInformation("Error while processing your request: " + fieldtripPostResponse.Status + " , Error Message: " + fieldtripPostResponse.ErrorMessage);
-                ViewBag.error =
+                ViewBag.Error =
                     "Error while processing your request! (Getting FieldTrip Post!).\n"
                     + fieldtripPostResponse.ErrorMessage;
                 return RedirectToAction("StaffFieldTrip");
             }
+            fieldtripDetailBigModel.FieldTripTourFeatures = fieldtripPostResponse.Data.FieldtripAdditionalDetails.Where(f => f.Type.Equals("tour_features")).ToList();
+            fieldtripDetailBigModel.FieldTripImportantToKnows = fieldtripPostResponse.Data.FieldtripAdditionalDetails.Where(f => f.Type.Equals("important_to_know")).ToList();
+            fieldtripDetailBigModel.FieldTripActivitiesAndTransportation = fieldtripPostResponse.Data.FieldtripAdditionalDetails.Where(f => f.Type.Equals("activities_and_transportation")).ToList();
             fieldtripDetailBigModel.FieldTripDetails = fieldtripPostResponse.Data;
             fieldtripDetailBigModel.FieldTripParticipants = fieldtripPostResponse.Data;
             return View(fieldtripDetailBigModel);
@@ -790,14 +801,14 @@ namespace WebAppMVC.Controllers
             if (memberDetails == null)
             {
                 ViewBag.Error =
-                    "Error while processing your request! (Getting Staff Profile!).\n Manager Details Not Found!";
+                    "Error while processing your request! (Getting Staff Profile!).\n Staff Details Not Found!";
                 return RedirectToAction("Index");
             }
             else
             if (!memberDetails.Status)
             {
                 ViewBag.Error =
-                    "Error while processing your request! (Getting Staff Profile!).\n Manager Details Not Found!"
+                    "Error while processing your request! (Getting Staff Profile!).\n Staff Details Not Found!"
                 + memberDetails.ErrorMessage;
                 return RedirectToAction("Index");
             }

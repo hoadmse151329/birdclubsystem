@@ -6,6 +6,7 @@
     List<BAL.ViewModels.MeetingViewModel> meetingList = Model.Meetings;
     BAL.ViewModels.MeetingViewModel createMeet = new();
     string? search = string.Empty;
+        Layout = "~/Views/Shared/_SLayout.cshtml";
 }
 <html lang="en">
 <head>
@@ -23,99 +24,7 @@
     <link rel="stylesheet" href="https://unpkg.com/filepond-plugin-file-poster/dist/filepond-plugin-file-poster.css" >
 </head>
 <body>
-    <!-- sidebar -->
-        <div class="sidebar">
-        <div class="container">
-            <div class="navigation">  
-                <ul class="slide-menu">
-                    <div class="logo">
-                        <a href="@Url.Action("StaffIndex", "Staff")">
-                            <img class="logo" src="~/images/Red_whiskered_bulbul_bird_logo_eps_10_generated 1.png" alt="logo">
-                        </a>
-                    </div>
-                    <li class="active" data-toggle="tooltip"data-placement="right" title="Overview">
-                        <a href="@Url.Action("StaffIndex", "Staff")">
-                            <span><i class='bx bx-tachometer'></i></span>
-                            <span class="title">Overview</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                            <i class='bx bx-bookmarks'></i>
-                            <span class="title">Manage</span>
-                            <i class='bx bxs-chevron-down drop'></i>
-                        </a>
-                        <ul class="collapse sub-menu" id="collapseOne">
-                            <li data-toggle="tooltip"data-placement="right" title="Manage Meeting">
-                                <a href="@Url.Action("StaffMeeting", "Staff")" li class="dropdown-item">
-                                    <i class='bx bx-home-alt-2'></i>
-                                    <span class="title">Meeting</span>
-                                </a> 
-                            </li>
-                            <li data-toggle="tooltip"data-placement="right" title="Manage Fieldtrip">
-                                <a href="@Url.Action("StaffFieldTrip", "Staff")" li class="dropdown-item">
-                                    <i class='bx bx-calendar-edit'></i>
-                                    <span class="title">Fieldtrip</span>
-                                </a>
-                            </li> 
-                            <li data-toggle="tooltip"data-placement="right" title="Manage Bird Contest">
-                                <a href="@Url.Action("StaffContest", "Staff")" li class="dropdown-item">
-                                    <i class='bx bx-trophy'></i>
-                                    <span class="title">Bird Contest</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    </li>
-                    <li data-toggle="tooltip"data-placement="right" title="Staff Profile">
-                        <a href="@Url.Action("StaffProfile", "Staff")">
-                            <span><i class='bx bx-user'></i></span>
-                            <span class="title">Staff Profile</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-    <!-- End sidebar -->
-
-    <!-- Header -->
-    <div class="header">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-sm-12">
-                        <div class="toggle float-left">
-                            <i class='bx bx-menu'></i>
-                        </div>
-                        <div class="float-left">
-                            <div class="dashboard_bar d-flex">
-                                Home
-                            </div>
-                        </div>
-                        <div class="float-right">
-                            <div class="btn-group me-1 mb-1">
-                                <div class="dropdown">
-                                    @if (TempData["ROLE_NAME"] != null)
-                                    {
-                                    <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        @TempData["USER_NAME"]
-                                    </button>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item" href="@Url.Action("StaffProfile", "Staff")"><i class='bx bx-user'></i>Staff Profile</a> <!--thêm theo user id và role-->
-                                        <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="@Url.Action("Logout", "Auth")">Logout</a>
-                                    </div>
-                                    }
-                                </div>  
-                            </div>
-                        </div>   
-                    </div>
-                </div>
-            </div>
-        </div>
-    <!-- End header -->
-
-    <!-- List room -->
+    <!-- List club -->
     <div class="main-content">
         <div class="main">
             <div class="container-fluid">
@@ -159,35 +68,23 @@
                                                 }
                                             </div>
                                             <div class="col-sm-6 d-flex justify-content-end">
-                                                <form asp-action="StaffMeeting" asp-controller="Staff" method="get" asp-route-search="@search">
-                   
+                                                <form asp-action="StaffMeeting" asp-controller="Staff" method="get" asp-route-search="@search">                   
+                                                    <div>
+                                                        <label>
                                                             <input asp-for="@search" class="form-control" type="text" name="search" placeholder="Search..." value="@search">
-                                                            <button class="bx bx-search-alt" type="submit">
-                                                                <i class="sbi sbi--search mirrored header__search-submit-icon"></i>
-                                                            </button>
-                                                            @*<i class='bx bx-search-alt'></i>*@
-                                                        
-                                                    
+                                                            <i class='bx bx-search-alt'></i>
+                                                        </label>
+                                                    </div>
                                                 </form>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row card-content">
-                                        <div class="col-xl-3 col-lg-6 col-sm-6 my-3 item">
-                                            <div class="card card-child">
-                                                <div class="card-body add-room">
-                                                    <button class="border-0" data-toggle="modal"  data-target="#addMeeting">
-                                                        <span>Add Meeting</span>
-                                                        <i class='bx bx-add-to-queue'></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
                                         @foreach(var data in meetingList)
                                         {
                                             <div class="col-xl-3 col-lg-6 col-sm-6 my-3">
                                                 <div class="card card-child">
-                                                    <div class="room-name">
+                                                    <div class="club-name">
                                                         <span>Meeting</span>
                                                         <div class="status">
                                                             @{
@@ -218,7 +115,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="card-body">
-                                                        <div class="room-title">
+                                                        <div class="club-title">
                                                             <ul>
                                                                 <li>
                                                                     <h6>Meeting Name:</h6>
@@ -242,15 +139,15 @@
                                                                 </li>
                                                                 <li>
                                                                     <h6>Location:</h6>
-                                                                    <span>@data.AreaNumber,@data.Street,@data.District,@data.City</span>
+                                                                    <span class="truncate">@data.AreaNumber,@data.Street,@data.District,@data.City</span>
                                                                 </li>
                                                                 <li>
                                                                     <h6>Description:</h6>
-                                                                    <span>@data.Description</span>
+                                                                    <span class="truncate">@data.Description</span>
                                                                 </li>
                                                                 <li>
                                                                     <h6>Note:</h6>
-                                                                    <span>@data.Note</span>
+                                                                    <span class="truncate">@data.Note</span>
                                                                 </li>
                                                             </ul>
                                                         </div>
@@ -272,22 +169,6 @@
         </div>
     </div>
        
-    <!-- jQuery first, then Popper.js, then Bootstrap JS. -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
-        referrerpolicy="no-referrer"></script>
-        <!-- Jquery Waypoint -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>
-        <!-- BS4 JS -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.5/umd/popper.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
-        <!-- BS4 carousels -->
-        <!-- main js -->
-        <script src="~/js/user-script.js"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js"></script>
-    <script src="https://unpkg.com/filepond-plugin-file-poster/dist/filepond-plugin-file-poster.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script>
     function redirectToDetailPage() {
         window.location.href = '@Url.Action("StaffMeetingDetail", "Staff")';

@@ -1101,12 +1101,9 @@
     }
 
     .member-contest-post .text-wrapper-4 {
-        text-align:center;
+        text-align: center;
         position: absolute;
-        height: 29px;
-        top: 36px;
-        left: 50px;
-        font-family: "Inter-Bold", Helvetica;
+        font-family: 'Inter-Bold', Helvetica;
         font-weight: 700;
         color: #000000;
         font-size: 24px;
@@ -1118,7 +1115,7 @@
         position: absolute;
         height: 24px;
         top: 112px;
-        left: 95px;
+        left: 100px;
         font-family: "Inter-Medium", Helvetica;
         font-weight: 500;
         color: #000000;
@@ -1126,6 +1123,7 @@
         letter-spacing: 1px;
         line-height: normal;
         white-space: nowrap;
+        text-align: center;
     }
 
     .member-contest-post .group-2 {
@@ -1144,7 +1142,7 @@
         font-weight: 700;
         color: #000000;
         font-size: 24px;
-        text-align: center;
+        text-align: left;
         letter-spacing: 1.2px;
         line-height: normal;
     }
@@ -1159,7 +1157,7 @@
         font-weight: 700;
         color: #000000;
         font-size: 24px;
-        text-align: center;
+        text-align: left;
         letter-spacing: 1.2px;
         line-height: normal;
     }
@@ -1173,7 +1171,7 @@
         font-weight: 700;
         color: #000000;
         font-size: 24px;
-        text-align: center;
+        text-align: left;
         letter-spacing: 1.2px;
         line-height: normal;
     }
@@ -1187,7 +1185,7 @@
         font-weight: 700;
         color: #000000;
         font-size: 24px;
-        text-align: center;
+        text-align: left;
         letter-spacing: 1.2px;
         line-height: normal;
     }
@@ -1201,7 +1199,7 @@
         font-weight: 700;
         color: #000000;
         font-size: 24px;
-        text-align: center;
+        text-align: left;
         letter-spacing: 1.2px;
         line-height: normal;
     }
@@ -1220,7 +1218,7 @@
         font-weight: 500;
         color: #000000;
         font-size: 20px;
-        text-align: center;
+        text-align: left;
         letter-spacing: 1px;
         line-height: normal;
     }
@@ -1235,7 +1233,7 @@
         font-weight: 500;
         color: #000000;
         font-size: 20px;
-        text-align: center;
+        text-align: left;
         letter-spacing: 1px;
         line-height: normal;
     }
@@ -1248,7 +1246,7 @@
         font-weight: 500;
         color: #000000;
         font-size: 20px;
-        text-align: center;
+        text-align: left;
         letter-spacing: 1px;
         line-height: normal;
         white-space: nowrap;
@@ -1262,7 +1260,7 @@
         font-weight: 500;
         color: #000000;
         font-size: 20px;
-        text-align: center;
+        text-align: left;
         letter-spacing: 1px;
         line-height: normal;
         white-space: nowrap;
@@ -1270,16 +1268,15 @@
 
     .member-contest-post .text-wrapper-15 {
         top: 338px;
-        position: absolute;
         height: 24px;
+        position: absolute;
         font-family: "Inter-Medium", Helvetica;
         font-weight: 500;
         color: #000000;
         font-size: 20px;
-        text-align: center;
+        text-align: left;
         letter-spacing: 1px;
         line-height: normal;
-        white-space: nowrap;
     }
 
     .member-contest-post .register {
@@ -1338,17 +1335,30 @@
 
     .member-contest-post .text-wrapper-17 {
         position: absolute;
+        width: 167px;
         height: 29px;
-        top: 200px;
-        left: 153px;
-        font-family: "Inter-Regular", Helvetica;
-        font-weight: 400;
+        top: 430px;
+        font-family: "Inter-Bold", Helvetica;
+        font-weight: 700;
         color: #000000;
         font-size: 24px;
+        text-align: left;
         letter-spacing: 1.2px;
         line-height: normal;
     }
-
+    .member-contest-post .text-wrapper-18 {
+        top: 416px;
+        position: absolute;
+        height: 24px;
+        font-family: "Inter-Medium", Helvetica;
+        font-weight: 500;
+        color: #000000;
+        font-size: 20px;
+        text-align: left;
+        letter-spacing: 1px;
+        line-height: normal;
+        white-space: nowrap;
+    }
     .member-contest-post .other-fanpages {
         position: absolute;
         width: 147px;
@@ -1357,19 +1367,6 @@
         left: 1140px;
     }
 
-    .member-contest-post .text-wrapper-18 {
-        position: absolute;
-        width: 1134px;
-        height: 84px;
-        top: 20px;
-        left: 152px;
-        font-family: "Inter-Regular", Helvetica;
-        font-weight: 400;
-        color: #000000;
-        font-size: 16px;
-        letter-spacing: 0.8px;
-        line-height: normal;
-    }
 
     .member-contest-post .learn-more-button {
         position: absolute;
