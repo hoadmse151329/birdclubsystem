@@ -180,8 +180,7 @@
                                                                 <h2>Are you sure want to cancel this Meeting ?</h2>
                                                             </div>
                                                             <div class="del-submit d-flex justify-content-center">
-                                                                <form asp-action="ManagerCancelMeeting" asp-controller="Manager" method="post" >
-                                                                    <input type="hidden" name="meetId" value="@data.MeetingId"/>
+                                                                <form asp-action="ManagerCancelMeeting" asp-controller="Manager" method="post" asp-route-id="@data.MeetingId">
                                                                     <button type="submit" name="action" value="deleteMeeting" class="btn btn-success">
                                                                         Cancel Meeting
                                                                     </button>
@@ -216,7 +215,7 @@
                                 <div class="row form-group">
                                     <label asp-for="@createMeeting.MeetingName" class="col-md-3 col-form-label text-md-right"></label>
                                     <input asp-for="@createMeeting.MeetingName" value="@createMeeting.MeetingName" type="text" placeholder="Meeting Name" required class="form-control col-md-7">
-                                    <span asp-validation-for="@createMeeting.MeetingName" 
+                                    <span asp-validation-for="@createMeeting.MeetingName" id="error_message"
                                           class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                 </div>
                                 <div class="row form-group">
@@ -225,47 +224,47 @@
 
                                     <label asp-for="@createMeeting.RegistrationDeadline" class="col-md-3 col-form-label mt-3 text-md-right"></label>
                                     <input asp-for="@createMeeting.RegistrationDeadline" value="@createMeeting.RegistrationDeadline.ToString("yyyy-MM-ddTHH:mm")" type="datetime-local" required class="form-control col-md-7 mt-3" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}">
-                                    <span asp-validation-for="@createMeeting.RegistrationDeadline"
+                                    <span asp-validation-for="@createMeeting.RegistrationDeadline" id="error_message"
                                           class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
                                     <label asp-for="@createMeeting.StartDate" class="col-md-3 col-form-label mt-3 text-md-right"></label>
                                     <input asp-for="@createMeeting.StartDate" value="@createMeeting.StartDate.ToString("yyyy-MM-ddTHH:mm")" type="datetime-local" required class="form-control col-md-7 mt-3" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}">
-                                    <span asp-validation-for="@createMeeting.StartDate" 
+                                    <span asp-validation-for="@createMeeting.StartDate" id="error_message"
                                           class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
                                     <label asp-for="@createMeeting.EndDate" class="col-md-3 col-form-label mt-3 text-md-right"></label>
                                     <input asp-for="@createMeeting.EndDate" value="@createMeeting.EndDate.ToString("yyyy-MM-ddTHH:mm")" type="datetime-local" required class="form-control col-md-7 mt-3" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}">
-                                    <span asp-validation-for="@createMeeting.EndDate" 
+                                    <span asp-validation-for="@createMeeting.EndDate" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
                                     <label asp-for="@createMeeting.NumberOfParticipantsLimit" class="col-md-3 col-form-label mt-3 text-md-right"></label>
                                     <input asp-for="@createMeeting.NumberOfParticipantsLimit" value="@createMeeting.NumberOfParticipantsLimit" type="number" class="form-control col-md-7 mt-3" required min="3">
-                                    <span asp-validation-for="@createMeeting.NumberOfParticipantsLimit" 
+                                    <span asp-validation-for="@createMeeting.NumberOfParticipantsLimit" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
                                     <label asp-for="@createMeeting.Host" class="col-md-3 col-form-label mt-3 text-md-right"></label>
                                     <input asp-for="@createMeeting.Host" value="@createMeeting.Host" type="text" placeholder="Meeting Host" class="form-control col-md-7 mt-3" rows="3" required>
-                                    <span asp-validation-for="@createMeeting.Host" 
+                                    <span asp-validation-for="@createMeeting.Host" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
                                     <label asp-for="@createMeeting.Incharge" class="col-md-3 col-form-label mt-3 text-md-right"></label>
                                     <input asp-for="@createMeeting.Incharge" value="@createMeeting.Incharge" type="text" placeholder="Staff incharge of Meeting" class="form-control col-md-7 mt-3" rows="3" required>
-                                    <span asp-validation-for="@createMeeting.Incharge" 
+                                    <span asp-validation-for="@createMeeting.Incharge" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
                                     <label asp-for="@createMeeting.Address" class="col-md-3 col-form-label mt-3 text-md-right"></label>
                                     <textarea asp-for="@createMeeting.Address" value="@createMeeting.Address" type="text" placeholder="Meeting Address..." class="form-control col-md-7 mt-3" rows="3" required></textarea>
-                                    <span asp-validation-for="@createMeeting.Address" 
+                                    <span asp-validation-for="@createMeeting.Address" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
                                     <label asp-for="@createMeeting.Description" class="col-md-3 col-form-label mt-3 text-md-right"></label>
                                     <textarea asp-for="@createMeeting.Description" value="@createMeeting.Description" type="text" placeholder="Meeting description..." class="form-control col-md-7 mt-3" rows="3" required></textarea>
-                                    <span asp-validation-for="@createMeeting.Description" 
+                                    <span asp-validation-for="@createMeeting.Description" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
                                     <label asp-for="@createMeeting.Note" class="col-md-3 col-form-label mt-3 text-md-right"></label>
                                     <textarea asp-for="@createMeeting.Note" value="@createMeeting.Note" type="text" placeholder="Meeting Note..." class="form-control col-md-7 mt-3" rows="3" required></textarea>
-                                    <span asp-validation-for="@createMeeting.Note" 
+                                    <span asp-validation-for="@createMeeting.Note" id="error_message"
                                           class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                 </div>
                             </div>                
