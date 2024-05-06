@@ -31,6 +31,9 @@ namespace BAL.Services.Implements
                 var trip = listtrip.SingleOrDefault(ft => ft.TripId == itemview.TripId);
                 if(trip != null)
                 {
+                    var media = await _unitOfWork.FieldTripMediaRepository.GetFieldTripMediasByTripId(trip.TripId);
+                    itemview.FieldtripPictures = (media.Count() > 0) ? _mapper.Map<IEnumerable<FieldtripMediaViewModel>>(media).ToList() : itemview.FieldtripPictures;
+                    
                     var locationAddress = await _unitOfWork.LocationRepository.GetLocationNameById(trip.LocationId.Value);
                     itemview.Address = locationAddress;
 
@@ -59,6 +62,7 @@ namespace BAL.Services.Implements
             var trip = await _unitOfWork.FieldTripRepository.GetFieldTripById(id);
             if (trip != null)
             {
+                var media = await _unitOfWork.FieldTripMediaRepository.GetFieldTripMediasByTripId(trip.TripId);
                 var locationName = await _unitOfWork.LocationRepository.GetLocationNameById(trip.LocationId.Value);
                 if (locationName == null) return null;
 
@@ -67,6 +71,8 @@ namespace BAL.Services.Implements
                 int partAmount = await _unitOfWork.FieldTripParticipantRepository.GetCountFieldTripParticipantsByTripId(trip.TripId);
 
                 var fieldTrip = _mapper.Map<FieldTripViewModel>(trip);
+
+                fieldTrip.FieldtripPictures = (media.Count() > 0) ? _mapper.Map<IEnumerable<FieldtripMediaViewModel>>(media).ToList() : fieldTrip.FieldtripPictures;
 
                 fieldTrip.NumberOfParticipants = fieldTrip.NumberOfParticipantsLimit - partAmount;
                 fieldTrip.Address = locationName;
@@ -110,8 +116,7 @@ namespace BAL.Services.Implements
             {
                 _unitOfWork.LocationRepository.Update(loc = new Location
                 {
-                    LocationName = entity.Address.Trim(),
-                    Description = ""
+                    LocationName = entity.Address.Trim()
                 });
                 _unitOfWork.Save();
                 loc = _unitOfWork.LocationRepository.GetLocationByName(entity.Address.Trim()).Result;
@@ -130,16 +135,11 @@ namespace BAL.Services.Implements
             {
                 _unitOfWork.LocationRepository.Update(loc = new Location
                 {
-                    LocationName = entity.Address.Trim(),
-                    Description = loc.Description
+                    LocationName = entity.Address.Trim()
                 });
                 _unitOfWork.Save();
                 loc = _unitOfWork.LocationRepository.GetLocationByName(entity.Address.Trim()).Result;
             }
-
-            var trip = _mapper.Map<FieldTrip>(entity);
-
-            trip.LocationId = loc.LocationId;
 
             var getting = _unitOfWork.FieldTripGettingThereRepository.GetFieldTripGettingTheresByTripId(entity.TripId.Value).Result;
 
@@ -152,10 +152,29 @@ namespace BAL.Services.Implements
                 _unitOfWork.Save();
                 getting = _unitOfWork.FieldTripGettingThereRepository.GetFieldTripGettingTheresByTripId(entity.TripId.Value).Result;
             }
+
+            var trip = _mapper.Map<FieldTrip>(entity);
+
+            trip.LocationId = loc.LocationId;
             trip.FieldtripGettingTheres = getting;
 
             _unitOfWork.FieldTripRepository.Update(trip);
             _unitOfWork.Save();
+        }
+        public bool UpdateGettingThere(FieldtripGettingThereViewModel entity)
+        {
+            var trip = _unitOfWork.FieldTripRepository.GetById(entity.TripId.Value);
+
+            if (trip == null)
+            {
+                return false;
+            }
+
+            var getting = _mapper.Map<FieldtripGettingThere>(entity);
+            getting.Trip = trip;
+            _unitOfWork.FieldTripGettingThereRepository.Update(getting);
+            _unitOfWork.Save();
+            return true;
         }
 
         public async Task<bool> GetBoolFieldTripId(int id)

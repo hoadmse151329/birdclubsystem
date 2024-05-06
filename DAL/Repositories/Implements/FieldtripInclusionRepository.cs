@@ -18,6 +18,16 @@ namespace DAL.Repositories.Implements
             _context = context;
         }
 
+        public async Task<FieldtripInclusion> GetFieldTripInclusionById(int tripId, int incluId)
+        {
+            return _context.FieldtripInclusions.AsNoTracking().SingleOrDefault(f => f.TripId.Equals(tripId) && f.InclusionId.Equals(incluId));
+        }
+
+        public async Task<FieldtripInclusion> GetFieldTripInclusionByIdTracking(int tripId, int incluId)
+        {
+            return _context.FieldtripInclusions.SingleOrDefault(f => f.TripId.Equals(tripId) && f.InclusionId.Equals(incluId));
+        }
+
         public async Task<IEnumerable< FieldtripInclusion>> GetFieldTripInclusionsById(int tripId)
         {
             return _context.FieldtripInclusions.AsNoTracking().Where(f => f.TripId.Equals(tripId));

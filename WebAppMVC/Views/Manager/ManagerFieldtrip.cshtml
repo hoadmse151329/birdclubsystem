@@ -174,27 +174,27 @@
                                                         <form asp-action="FieldTrip" asp-controller="Manager" method="get" asp-route-id="@data.TripId">
                                                             <button class="btn btn-primary clickable-row" type="submit">See Detail</button>
                                                         </form>
-                                                            <button class="btn btn-danger" data-toggle="modal" data-target="#deleteFieldTrip" type="submit">Cancel FieldTrip</button>
+                                                        <button class="btn btn-danger" data-toggle="modal" data-target="#deleteFieldTrip_@data.TripId" type="submit">Cancel FieldTrip</button>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div id="deleteFieldTrip" class="modal fade" role="dialog">
+                                            <div id="deleteFieldTrip_@data.TripId" class="modal fade" role="dialog">
                                                 <div class="modal-dialog modal-dialog-centered" role="content">
                                                     <div class="modal-content">
-                                                        <form action="#">
-                                                            <div class="card-body">
-                                                                <div class="del-title">
-                                                                    <i class='bx bx-error-circle'></i>
-                                                                    <h2>Are you sure want to delete ?</h2> 
-                                                                </div>
-                                                                <div class="del-submit d-flex justify-content-center">       
-                                                                    <form asp-action="ManagerCancelFieldTrip" asp-controller="Manager" method="post" asp-route-id="@data.TripId">
-                                                                        <button type="submit" name="action" value="deleteFieldTrip" class="btn btn-success">Save</button>
-                                                                        </form>
-                                                                        <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
-                                                                    </div>
+                                                        <div class="card-body">
+                                                            <div class="del-title">
+                                                                <i class='bx bx-error-circle'></i>
+                                                                <h2>Are you sure want to cancel this Fieldtrip ?</h2>
                                                             </div>
-                                                        </form>
+                                                            <div class="del-submit d-flex justify-content-center">       
+                                                                <form asp-action="ManagerCancelFieldTrip" asp-controller="Manager" method="post" asp-route-id="@data.TripId">
+                                                                    <button type="submit" name="action" value="deleteFieldTrip" class="btn btn-success">
+                                                                        Cancel Fieldtrip
+                                                                    </button>
+                                                                </form>
+                                                                <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -267,7 +267,7 @@
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
                                     <label asp-for="@createFieldTrip.Description" class="col-md-3 col-form-label mt-3 text-md-right"></label>
-                                    <textarea asp-for="@createFieldTrip.Description" value="@createFieldTrip.Description" type="text" placeholder="Field trip description..." class="form-control col-md-7 mt-3" rows="3" required></textarea>
+                                    <textarea asp-for="@createFieldTrip.Description" value="@createFieldTrip.Description" type="text" placeholder="Field trip Description..." class="form-control col-md-7 mt-3" rows="3" required></textarea>
                                     <span asp-validation-for="@createFieldTrip.Description" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
@@ -287,22 +287,22 @@
                                           class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                     
                                     <label asp-for="@createFieldTrip.FieldtripGettingTheres.GettingThereStartEnd" class="col-md-3 col-form-label mt-3 text-md-right"></label>
-                                    <textarea asp-for="@createFieldTrip.FieldtripGettingTheres.GettingThereStartEnd" value="@createFieldTrip.FieldtripGettingTheres.GettingThereStartEnd" type="text" placeholder="Field trip Note..." class="form-control col-md-7 mt-3" rows="3" required></textarea>
+                                    <textarea asp-for="@createFieldTrip.FieldtripGettingTheres.GettingThereStartEnd" value="@createFieldTrip.FieldtripGettingTheres.GettingThereStartEnd" type="text" placeholder="Start and End Details..." class="form-control col-md-7 mt-3" rows="3" required></textarea>
                                     <span asp-validation-for="@createFieldTrip.FieldtripGettingTheres.GettingThereStartEnd" id="error_message"
                                           class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
                                     <label asp-for="@createFieldTrip.FieldtripGettingTheres.GettingThereFlight" class="col-md-3 col-form-label mt-3 text-md-right"></label>
-                                    <textarea asp-for="@createFieldTrip.FieldtripGettingTheres.GettingThereFlight" value="@createFieldTrip.FieldtripGettingTheres.GettingThereFlight" type="text" placeholder="Field trip Note..." class="form-control col-md-7 mt-3" rows="3" required></textarea>
+                                    <textarea asp-for="@createFieldTrip.FieldtripGettingTheres.GettingThereFlight" value="@createFieldTrip.FieldtripGettingTheres.GettingThereFlight" type="text" placeholder="Flight if needed (leave None for none)..." class="form-control col-md-7 mt-3" rows="3" required></textarea>
                                     <span asp-validation-for="@createFieldTrip.FieldtripGettingTheres.GettingThereFlight" id="error_message"
                                           class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
                                     <label asp-for="@createFieldTrip.FieldtripGettingTheres.GettingThereTransportation" class="col-md-3 col-form-label mt-3 text-md-right"></label>
-                                    <textarea asp-for="@createFieldTrip.FieldtripGettingTheres.GettingThereTransportation" value="@createFieldTrip.FieldtripGettingTheres.GettingThereTransportation" type="text" placeholder="Field trip Note..." class="form-control col-md-7 mt-3" rows="3" required></textarea>
+                                    <textarea asp-for="@createFieldTrip.FieldtripGettingTheres.GettingThereTransportation" value="@createFieldTrip.FieldtripGettingTheres.GettingThereTransportation" type="text" placeholder=" Transportation if needed (leave None for none)..." class="form-control col-md-7 mt-3" rows="3" required></textarea>
                                     <span asp-validation-for="@createFieldTrip.FieldtripGettingTheres.GettingThereTransportation" id="error_message"
                                           class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
                                     <label asp-for="@createFieldTrip.FieldtripGettingTheres.GettingThereAccommodation" class="col-md-3 col-form-label mt-3 text-md-right"></label>
-                                    <textarea asp-for="@createFieldTrip.FieldtripGettingTheres.GettingThereAccommodation" value="@createFieldTrip.FieldtripGettingTheres.GettingThereAccommodation" type="text" placeholder="Field trip Note..." class="form-control col-md-7 mt-3" rows="3" required></textarea>
+                                    <textarea asp-for="@createFieldTrip.FieldtripGettingTheres.GettingThereAccommodation" value="@createFieldTrip.FieldtripGettingTheres.GettingThereAccommodation" type="text" placeholder="Accommodation if needed (leave None for none)..." class="form-control col-md-7 mt-3" rows="3" required></textarea>
                                     <span asp-validation-for="@createFieldTrip.FieldtripGettingTheres.GettingThereAccommodation" id="error_message"
                                           class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                 </div> 
