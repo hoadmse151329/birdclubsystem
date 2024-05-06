@@ -132,7 +132,7 @@ namespace WebAppMVC.Controllers
             return View(testmodel);
 		}
 
-        [HttpGet("ContestPost")]
+        [HttpGet("ContestPost/{id:int}")]
         public async Task<IActionResult> ContestPost(int id)
         {
             ContestAPI_URL += "/";

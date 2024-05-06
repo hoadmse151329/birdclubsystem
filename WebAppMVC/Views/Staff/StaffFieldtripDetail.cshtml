@@ -342,7 +342,7 @@
                                 @foreach (var part in parts){
                                 <label asp-for="@part.CheckInStatus" class="col-sm-4 col-form-label">CheckInStatus</label>
                                     <div class="col-sm-8">
-                                        <input asp-for="@part.CheckInStatus" id="CheckInStatus" type="checkbox" name="CheckInStatus"
+                                        <input asp-for="@part.CheckInStatus" id="CheckInStatus" type="text" name="CheckInStatus"
                                                value="@part.CheckInStatus" class="form-control" required>
                                     </div>
                                     }
