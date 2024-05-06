@@ -107,7 +107,7 @@ namespace BAL.Services.Implements
                 usr.MemberDetail.FullName = newmem.FullName;
                 usr.MemberDetail.UserName = newmem.UserName;
 				usr.MemberDetail.Gender = newmem.Gender;
-				usr.MemberDetail.Address = newmem.Address;
+				//usr.MemberDetail.Address = newmem.Address;
                 usr.MemberDetail.Phone = newmem.Phone;
 			}
             _unitOfWork.UserRepository.Create(usr);

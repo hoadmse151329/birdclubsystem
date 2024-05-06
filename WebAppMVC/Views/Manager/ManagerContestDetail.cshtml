@@ -5,6 +5,20 @@
     BAL.ViewModels.ContestViewModel details = Model.ContestDetails;
     List<BAL.ViewModels.ContestParticipantViewModel> parts = Model.ContestParticipants;
     Layout = "~/Views/Shared/_MLayout.cshtml";
+    List<SelectListItem> defaultContestStatus = new()
+    {
+        new SelectListItem {Text = "On Hold", Value = "OnHold"},
+        new SelectListItem {Text = "Postponed", Value = "Postponed"},
+        new SelectListItem {Text = "Cancelled", Value = "Cancelled"},
+        new SelectListItem {Text = "Ended", Value = "Ended"}
+    };
+    foreach (var item in defaultContestStatus)
+    {
+        if (details.Status.Equals(item.Value))
+        {
+            item.Selected = true;
+        }
+    }
 }
 <html lang="en">
 <head>
@@ -59,7 +73,7 @@
                         <div class="row">
                             <div class="card profile col-12 mb-4">
                                 <div class="card-header">
-                                    <h4>Meeting Information</h4>
+                                    <h4>Contest Information</h4>
                                     <div class="edit-info">
                                         <i class='bx bxs-edit-alt' data-toggle="modal" data-target="#editprofile"></i>
                                     </div>
@@ -175,7 +189,7 @@
                                         {
                                             <tr>
                                                 <td>@part.ParticipantNo</td>
-                                                <td>@part.BirdId</td>
+                                                <td>@part.MemberName</td>
                                             </tr>
                                         }
                                         <tr>

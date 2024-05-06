@@ -33,20 +33,20 @@
                                      <div class="notification-dropdown dropdown">
                                           <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                <i class="fa fa-bell"></i><span class="notification">5</span>
+                                                <i class="fa fa-bell"></i><span class="notification"><%= noti.getNotificationNumber()%></span>
                                                      <span type="hidden" name="notificationId" value="${o.notificationId}"></span>  
                                           </button>
                                      <div class="dropdown-menu notification-table animate__animated animate__fadeInDown"
                                      aria-labelledby="dropdownMenuButton">
                                           <div class="dropdown-header">
                                                  <span class="triangle"></span>
-                                                 <span class="heading">Notification</span>
+                                                 <span class="heading">Thông báo</span>
                                           </div>
                                           <div class="dropdown-body">
-                                                 <a class="dropdown-item" href="@Url.Action("MemberHistoryEvent", "Member")">
-                                                 <p class="truncate"> See All <i class="fa fa-angle-right"></i></p>
+                                                 <a class="dropdown-item" href="MainController?action=notifi&userID=<%=loginUser.getUserId()%>&role=<%=loginUser.getRole()%>">
+                                                 <p class="truncate"> Xem tất cả <i class="fa fa-angle-right"></i></p>
                                                  </a>
-                                                 <a class="dropdown-item" href="@Url.Action("MemberHistoryEvent", "Member")"><p class="truncate"></p></a>
+                                                 <a class="dropdown-item" href="MainController?action=notifi1&userID=<%=loginUser.getUserId()%>&role=<%=loginUser.getRole()%>"><p class="truncate">${t.title}</p></a>
                                           </div>
                                      </div>
                                      </div>
