@@ -119,7 +119,6 @@ namespace BAL.Services.Implements
                     if (picture.Type == "LocationMap")
                     {
                         meeting.LocationMapImage = picture;
-                        meeting.MeetingPictures.Remove(picture);
                     }
                 }
                 return meeting;

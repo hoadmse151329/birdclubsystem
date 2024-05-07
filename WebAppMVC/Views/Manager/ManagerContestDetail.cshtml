@@ -2,9 +2,9 @@
 @{
     Layout = null;
     ViewData["Title"] = "Manager Contest Detail Page";
-    BAL.ViewModels.ContestViewModel details = Model.ContestDetails;
+    BAL.ViewModels.ContestViewModel detailsContest = Model.ContestDetails;
+    BAL.ViewModels.ContestViewModel updateContest = Model.UpdateContest != null ? Model.UpdateContest : Model.ContestDetails;
     List<BAL.ViewModels.ContestParticipantViewModel> parts = Model.ContestParticipants;
-    Layout = "~/Views/Shared/_MLayout.cshtml";
     List<SelectListItem> defaultContestStatus = new()
     {
         new SelectListItem {Text = "On Hold", Value = "OnHold"},
@@ -14,11 +14,12 @@
     };
     foreach (var item in defaultContestStatus)
     {
-        if (details.Status.Equals(item.Value))
+        if (detailsContest.Status.Equals(item.Value))
         {
             item.Selected = true;
         }
     }
+    Layout = "~/Views/Shared/_MLayout.cshtml";
 }
 <html lang="en">
 <head>
@@ -56,23 +57,6 @@
                         <div class="row">
                             <div class="card profile col-12 mb-4">
                                 <div class="card-header">
-                                    <h4>Contest Status</h4>
-                                </div>
-                                <div class="card-body">
-                                    <div class="row mb-sm-2">
-                                        <div class="col-sm-5 text-sm-right">
-                                            <span>Status:</span>
-                                        </div>
-                                        <div class="col-sm-7">
-                                            <span class="destroy" style="float: left;">@details.Status</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="card profile col-12 mb-4">
-                                <div class="card-header">
                                     <h4>Contest Information</h4>
                                     <div class="edit-info">
                                         <i class='bx bxs-edit-alt' data-toggle="modal" data-target="#editprofile"></i>
@@ -80,11 +64,43 @@
                                 </div>
                                 <div class="card-body">
                                     <div class="row">
+                                        <div class="col-sm-5 text-sm-right">
+                                            <span>Status:</span>
+                                        </div>
+                                        <div class="col-sm-7">
+                                            @{
+                                                switch (details.Status)
+                                                {
+                                                    case "Ongoing":
+                                                    case "CheckingIn":
+                                                    case "OpenRegistration":
+                                                        {
+                                                            <span class="outcome" style="float: left;">@details.Status</span>
+                                                            break;
+                                                        }
+                                                    case "OnHold":
+                                                    case "ClosedRegistration":
+                                                        {
+                                                            <span class="approval" style="float: left;">@details.Status</span>
+                                                            break;
+                                                        }
+                                                    case "Ended":
+                                                    case "Postponed":
+                                                    case "Cancelled":
+                                                        {
+                                                            <span class="destroy" style="float: left;">@details.Status</span>
+                                                            break;
+                                                        }
+                                                }
+                                            }
+                                        </div>
+                                    </div>
+                                    <div class="row">
                                         <div class="col-md-5 text-md-right">
                                             <label for="meeting-name">Contest Name:</label>
                                         </div>
                                         <div class="col-md-7">
-                                            <span>@details.ContestName</span>
+                                            <span>@detailsContest.ContestName</span>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -92,7 +108,7 @@
                                             <label for="customer-name">Registration Deadlines:</label>
                                         </div>
                                         <div class="col-md-7">
-                                            <span>@details.RegistrationDeadline.ToString("MM-dd-yyyy")</span>
+                                            <span>@detailsContest.RegistrationDeadline.ToString("MM-dd-yyyy")</span>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -100,7 +116,7 @@
                                             <label for="customer-name">Start Date:</label>
                                         </div>
                                         <div class="col-md-7">
-                                            <span>@details.StartDate.ToString("MM-dd-yyyy")</span>
+                                            <span>@detailsContest.StartDate.ToString("MM-dd-yyyy")</span>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -108,7 +124,7 @@
                                             <label for="customer-name">End Date:</label>
                                         </div>
                                         <div class="col-md-7">
-                                            <span>@details.EndDate.ToString("MM-dd-yyyy")</span>
+                                            <span>@detailsContest.EndDate.ToString("MM-dd-yyyy")</span>
                                         </div>
                                     </div>
                                     <div class="row mb-sm-2">
@@ -116,7 +132,7 @@
                                             <span>Host:</span>
                                         </div>
                                         <div class="col-sm-7 text-sm-left">
-                                            <span>@details.Host</span>
+                                            <span>@detailsContest.Host</span>
                                         </div>
                                     </div>
                                     <div class="row mb-sm-2">
@@ -124,7 +140,15 @@
                                             <span>Incharge:</span>
                                         </div>
                                         <div class="col-sm-7 text-sm-left">
-                                            <span>@details.Incharge</span>
+                                            <span>@detailsContest.InCharge</span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-sm-2">
+                                        <div class="col-sm-5 text-sm-right">
+                                            <span>Fee:</span>
+                                        </div>
+                                        <div class="col-sm-7 text-sm-left">
+                                            <span>@detailsContest.Fee</span>
                                         </div>
                                     </div>
                                     <div class="row mb-sm-2">
@@ -132,7 +156,7 @@
                                             <span>Maximum Participations:</span>
                                         </div>
                                         <div class="col-sm-7 text-sm-left">
-                                            <span>@details.NumberOfParticipantsLimit</span>
+                                            <span>@detailsContest.NumberOfParticipantsLimit</span>
                                         </div>
                                     </div>
                                     <div class="row mb-sm-2">
@@ -140,7 +164,7 @@
                                             <span>Remaining Participant Slots:</span>
                                         </div>
                                         <div class="col-sm-7 text-sm-left">
-                                            <span>@details.NumberOfParticipants</span>
+                                            <span>@detailsContest.NumberOfParticipants</span>
                                         </div>
                                     </div>
                                     <div class="row mb-sm-2">
@@ -148,7 +172,7 @@
                                             <span>Location:</span>
                                         </div>
                                         <div class="col-sm-7 text-sm-left">
-                                            <span>@details.AreaNumber,@details.Street,@details.District,@details.City</span>
+                                            <span>@detailsContest.AreaNumber,@detailsContest.Street,@detailsContest.District,@detailsContest.City</span>
                                         </div>
                                     </div>
                                     <div class="row mb-sm-2">
@@ -156,7 +180,7 @@
                                             <span>Description:</span>
                                         </div>
                                         <div class="col-sm-7 text-sm-left">
-                                            <span>@details.Description</span>
+                                            <span>@detailsContest.Description</span>
                                         </div>
                                     </div>
                                     <div class="row mb-sm-2">
@@ -164,7 +188,7 @@
                                             <span>Note:</span>
                                         </div>
                                         <div class="col-sm-7 text-sm-left">
-                                            <span>@details.Note</span>
+                                            <span>@detailsContest.Note</span>
                                         </div>
                                     </div>
                                 </div>
@@ -197,7 +221,6 @@
                                     </tbody>
                                 </table>
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -211,49 +234,120 @@
                 <div class="modal-header">
                     <h4 class="modal-title">Edit Contest</h4>
                 </div>
-                <form action="#" class="form-group">
+                <form asp-action="ManagerUpdateContestDetail" asp-controller="Manager" method="post" asp-route-id="@detailsContest.ContestId" class="form-group">
                     <div class="modal-body">
                         <div class="row justify-content-center">
-                            <div class="col-12 col-md-8">
+                            <div class="col-12 col-md-6">
                                 <div class="form-group row">
-                                    <label asp-for="@details.Address" class="col-sm-4 col-form-label">Location</label>
+                                    <label asp-for="@updateContest.ContestName" class="col-sm-4 col-form-label"></label>
                                     <div class="col-sm-8">
-                                        <input asp-for="@details.Address" id="Address" type="text" name="Address"
-                                               value="@details.Address" class="form-control" required>
-                                        <span asp-validation-for="@details.Address" id="error_message"
+                                        <input asp-for="@updateContest.ContestName" type="text"
+                                               value="@updateContest.ContestName" class="form-control" required>
+                                        <span asp-validation-for="@updateContest.ContestName" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label asp-for="@details.Description" class="col-sm-4 col-form-label">Description</label>
+                                    <label asp-for="@updateContest.RegistrationDeadline" class="col-sm-4 col-form-label"></label>
                                     <div class="col-sm-8">
-                                        <input asp-for="@details.Description" id="Description" type="text" name="Description"
-                                               value="@details.Description" class="form-control" required>
-                                        <span asp-validation-for="@details.Description" id="error_message"
+                                        <input asp-for="@updateContest.RegistrationDeadline" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
+                                               value="@updateContest.RegistrationDeadline.ToString("yyyy-MM-ddTHH:mm")" class="form-control" required>
+                                        <span asp-validation-for="@updateContest.RegistrationDeadline" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label asp-for="@details.Note" class="col-sm-4 col-form-label">Note</label>
+                                    <label asp-for="@updateContest.StartDate" class="col-sm-4 col-form-label"></label>
                                     <div class="col-sm-8">
-                                        <input asp-for="@details.Note" id="Note" type="text" name="Note"
-                                               value="@details.Note" class="form-control" required>
-                                        <span asp-validation-for="@details.Note" id="error_message"
+                                        <input asp-for="@updateContest.StartDate" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
+                                               value="@updateContest.StartDate.ToString("yyyy-MM-ddTHH:mm")" class="form-control" required>
+                                        <span asp-validation-for="@updateContest.StartDate" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                <label asp-for="@details.Status" class="col-sm-4 col-form-label">Status:</label>
+                                    <label asp-for="@updateContest.EndDate" class="col-sm-4 col-form-label">End date:</label>
                                     <div class="col-sm-8">
-                                    <input asp-for="@details.Status" id="Status" type="text" name="Status"
-                                            value="@details.Status" class="form-control" required>
-                                    <span asp-validation-for="@details.Status" id="error_message"
-                                            class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                        <input asp-for="@updateContest.EndDate" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
+                                               value="@updateContest.EndDate.ToString("yyyy-MM-ddTHH:mm")" class="form-control" required>
+                                        <span asp-validation-for="@updateContest.EndDate" id="error_message"
+                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                     </div>
                                 </div>
-                                <input asp-for="@details.NumberOfParticipantsLimit" id="NumberOfParticipantsLimit" type="number" name="NumberOfParticipantsLimit"
-                                       value="@details.NumberOfParticipantsLimit" class="form-control" required hidden>
-                                <span asp-validation-for="@details.NumberOfParticipantsLimit" id="error_message"
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="form-group row">
+                                    <label asp-for="@updateContest.NumberOfParticipantsLimit" class="col-sm-4 col-form-label"></label>
+                                    <div class="col-sm-8">
+                                        <input asp-for="@detailsContest.NumberOfParticipantsLimit" type="number" min="3"
+                                               value="@detailsContest.NumberOfParticipantsLimit" class="form-control" required>
+                                        <span asp-validation-for="@detailsContest.NumberOfParticipantsLimit" id="error_message"
+                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label asp-for="@updateContest.Host" class="col-sm-4 col-form-label"></label>
+                                    <div class="col-sm-8">
+                                        <input asp-for="@updateContest.Host" type="text"
+                                               value="@updateContest.Host" class="form-control" required>
+                                        <span asp-validation-for="@updateContest.Host" id="error_message"
+                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label asp-for="@updateContest.InCharge" class="col-sm-4 col-form-label"></label>
+                                    <div class="col-sm-8">
+                                        <input asp-for="@updateContest.InCharge" type="text"
+                                               value="@updateContest.InCharge" class="form-control" required>
+                                        <span asp-validation-for="@updateContest.InCharge" id="error_message"
+                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label asp-for="@updateContest.Status" class="col-sm-4 col-form-label"></label>
+                                    <div class="col-sm-8">
+                                        <select class="form-control" asp-for="@updateContest.Status" asp-items="@defaultContestStatus" class="custom-select"></select>
+                                        <span asp-validation-for="@updateContest.Status" id="error_message"
+                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label asp-for="@updateContest.Fee" class="col-sm-4 col-form-label"></label>
+                                <div class="col-sm-8">
+                                    <input asp-for="@updateContest.Fee" type="number" min="0"
+                                           value="@updateContest.Fee" class="form-control" required>
+                                    <span asp-validation-for="@updateContest.Fee" id="error_message"
+                                          class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                </div>
+                            </div>
+                            <input asp-for="@updateContest.NumberOfParticipants" type="number"
+                                   value="@updateContest.NumberOfParticipants" required hidden>
+                        </div>
+                        <div class="form-group row">
+                            <label asp-for="@detailsContest.Address" class="col-sm-4 col-form-label">Location</label>
+                            <div class="col-sm-8">
+                                <input asp-for="@detailsContest.Address" type="text" name="Address"
+                                       value="@detailsContest.Address" class="form-control" required>
+                                <span asp-validation-for="@detailsContest.Address" id="error_message"
+                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label asp-for="@detailsContest.Description" class="col-sm-4 col-form-label">Description</label>
+                            <div class="col-sm-8">
+                                <input asp-for="@detailsContest.Description" type="text" name="Description"
+                                       value="@detailsContest.Description" class="form-control" required>
+                                <span asp-validation-for="@detailsContest.Description" id="error_message"
+                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label asp-for="@detailsContest.Note" class="col-sm-4 col-form-label">Note</label>
+                            <div class="col-sm-8">
+                                <input asp-for="@detailsContest.Note" type="text" name="Note"
+                                       value="@detailsContest.Note" class="form-control" required>
+                                <span asp-validation-for="@detailsContest.Note" id="error_message"
                                       class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                             </div>
                         </div>
@@ -265,5 +359,6 @@
                 </form>
             </div>
         </div>
+    </div>
 </body>
 </html>

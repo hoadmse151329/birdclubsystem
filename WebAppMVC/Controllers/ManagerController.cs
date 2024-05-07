@@ -857,7 +857,8 @@ namespace WebAppMVC.Controllers
         public async Task<IActionResult> ManagerContest([FromQuery] string search)
         {
             _logger.LogInformation(search);
-            string LocationAPI_URL_All = ManagerAPI_URL + "Location/All";
+            string LocationAPI_URL_All = ManagerAPI_URL + "Location/AllAddresses";
+
             if (search != null || !string.IsNullOrEmpty(search))
             {
                 search = search.Trim();
@@ -886,7 +887,7 @@ namespace WebAppMVC.Controllers
             TempData["USER_NAME"] = usrname;
             TempData["IMAGE_PATH"] = imagepath;
 
-            var listLocationResponse = await methcall.CallMethodReturnObject<GetLocationResponseByList>(
+            var listLocationResponse = await methcall.CallMethodReturnObject<GetLocationAddressResponseByList>(
                 _httpClient: _httpClient,
                 options: options,
                 methodName: "GET",
@@ -917,6 +918,7 @@ namespace WebAppMVC.Controllers
                     + listContestResponse.ErrorMessage + "\n" + listLocationResponse.ErrorMessage;
                 return View("ManagerIndex");
             }
+            testmodel3.CreateContest = methcall.GetValidationTempData<ContestViewModel>(this, TempData, Constants.Constants.CREATE_CONTEST_VALID, "createContest", options);
             testmodel3.Contests = listContestResponse.Data;
             testmodel3.Locations = listLocationResponse.Data;
             return View(testmodel3);
@@ -975,6 +977,7 @@ namespace WebAppMVC.Controllers
                     + contestPostResponse.ErrorMessage;
                 return RedirectToAction("ManagerContest");
             }
+            contestDetailBigModel.UpdateContest = methcall.GetValidationTempData<ContestViewModel>(this, TempData, Constants.Constants.UPDATE_CONTEST_VALID, "updateContest", options);
             contestDetailBigModel.ContestDetails = contestPostResponse.Data;
             contestDetailBigModel.ContestParticipants = contestpartPostResponse.Data;
             return View(contestDetailBigModel);
@@ -1033,9 +1036,14 @@ namespace WebAppMVC.Controllers
         }
         [HttpPost("Contest/Create")]
         /*[Route("Manager/Contest/Update/{id:int}")]*/
-        public async Task<IActionResult> ManagerCreateContest(ContestViewModel contestView)
+        public async Task<IActionResult> ManagerCreateContest(ContestViewModel createContest)
         {
             ManagerAPI_URL += "Contest/Create";
+            if (!ModelState.IsValid)
+            {
+                TempData = methcall.GetValidationTempData(TempData, Constants.Constants.CREATE_CONTEST_VALID, createContest, options);
+                return RedirectToAction("ManagerContest");
+            }
 
             string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
             if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
@@ -1061,7 +1069,7 @@ namespace WebAppMVC.Controllers
                                 options: options,
                                 methodName: "POST",
                                 url: ManagerAPI_URL,
-                                inputType: contestView,
+                                inputType: createContest,
                                 accessToken: accToken,
                                 _logger: _logger);
             if (contestPostResponse == null)

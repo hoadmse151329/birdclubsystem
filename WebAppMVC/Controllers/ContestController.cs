@@ -12,19 +12,27 @@ using WebAppMVC.Models.Meeting;
 
 namespace WebAppMVC.Controllers
 {
+    [Route("Contest")]
 	public class ContestController : Controller
 	{
 		private readonly ILogger<ContestController> _logger;
         private readonly IConfiguration _config;
         private readonly HttpClient _httpClient = null;
         private string ContestAPI_URL = "";
-        private readonly JsonSerializerOptions options = new JsonSerializerOptions
+        private readonly JsonSerializerOptions jsonOptions = new JsonSerializerOptions
         {
             Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
             PropertyNameCaseInsensitive = true,
         };
+        private readonly CookieOptions cookieOptions = new CookieOptions
+        {
+            Expires = DateTime.Now.AddMinutes(10),
+            MaxAge = TimeSpan.FromMinutes(10),
+            Secure = true,
+            IsEssential = true,
+        };
         private BirdClubLibrary methcall = new();
-		public ContestController(ILogger<ContestController> logger, IConfiguration config)
+        public ContestController(ILogger<ContestController> logger, IConfiguration config)
 		{
             _logger = logger;
             _config = config;
@@ -35,8 +43,7 @@ namespace WebAppMVC.Controllers
             ContestAPI_URL = "/api/Contest";
         }
 
-        [HttpGet]
-        [Route("Contest/Index")]
+        [HttpGet("Index")]
         public async Task<IActionResult> Index()
 		{
             ContestAPI_URL += "/All";
@@ -58,26 +65,26 @@ namespace WebAppMVC.Controllers
 
             var listLocationRoadResponse = await methcall.CallMethodReturnObject<GetLocationAddressResponseByList>(
                 _httpClient: _httpClient,
-                options: options,
+                options: jsonOptions,
                 methodName: "GET",
                 url: LocationAPI_URL_All_Road,
                 _logger: _logger);
             var listLocationDistrictResponse = await methcall.CallMethodReturnObject<GetLocationAddressResponseByList>(
                 _httpClient: _httpClient,
-                options: options,
+                options: jsonOptions,
                 methodName: "GET",
                 url: LocationAPI_URL_All_District,
                 _logger: _logger);
             var listLocationCityResponse = await methcall.CallMethodReturnObject<GetLocationAddressResponseByList>(
                 _httpClient: _httpClient,
-                options: options,
+                options: jsonOptions,
                 methodName: "GET",
                 url: LocationAPI_URL_All_City,
                 _logger: _logger);
 
             var listContestResponse = await methcall.CallMethodReturnObject<GetContestResponseByList>(
                 _httpClient: _httpClient,
-                options: options,
+                options: jsonOptions,
                 methodName: "POST",
                 url: ContestAPI_URL,
                 inputType: role,
@@ -125,8 +132,7 @@ namespace WebAppMVC.Controllers
             return View(testmodel);
 		}
 
-        [HttpGet("{id:int}")]
-        [Route("Contest/ContestPost/{id:int}")]
+        [HttpGet("ContestPost")]
         public async Task<IActionResult> ContestPost(int id)
         {
             ContestAPI_URL += "/";
@@ -134,6 +140,7 @@ namespace WebAppMVC.Controllers
             string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
 
             string? role = HttpContext.Session.GetString("ROLE_NAME");
+            if (role == null) role = "Guest";
 
             string? usrId = HttpContext.Session.GetString("USER_ID");
 
@@ -152,7 +159,7 @@ namespace WebAppMVC.Controllers
                 ContestAPI_URL += "Participant/" + id;
                 contestPostResponse = await methcall.CallMethodReturnObject<GetContestPostResponse>(
                                    _httpClient: _httpClient,
-                                   options: options,
+                                   options: jsonOptions,
                                    methodName: "POST",
                                    url: ContestAPI_URL,
                                    _logger: _logger,
@@ -164,7 +171,7 @@ namespace WebAppMVC.Controllers
                 ContestAPI_URL += id;
                 contestPostResponse = await methcall.CallMethodReturnObject<GetContestPostResponse>(
                                    _httpClient: _httpClient,
-                                   options: options,
+                                   options: jsonOptions,
                                    methodName: "GET",
                                    url: ContestAPI_URL,
                                    _logger: _logger);
@@ -192,7 +199,7 @@ namespace WebAppMVC.Controllers
         }
 
         [HttpPost]
-        [Route("Contest/ContestRegister/{contestId:int}")]
+        [Route("ContestRegister/{contestId:int}")]
         public async Task<IActionResult> ContestRegister(int contestId)
         {
             ContestAPI_URL += "/Register/" + contestId;
@@ -218,7 +225,7 @@ namespace WebAppMVC.Controllers
 
             var participationNo = await methcall.CallMethodReturnObject<GetContestParticipationNo>(
                 _httpClient: _httpClient,
-                options: options,
+                options: jsonOptions,
                 methodName: "POST",
                 url: ContestAPI_URL,
                 _logger: _logger,
@@ -244,7 +251,7 @@ namespace WebAppMVC.Controllers
         }
 
         [HttpPost]
-        [Route("Contest/ContestDeRegister/{contestId:int}")]
+        [Route("ContestDeRegister/{contestId:int}")]
         public async Task<IActionResult> ContestDeRegister(int contestId)
         {
             ContestAPI_URL += "/RemoveParticipant/" + contestId;
@@ -270,7 +277,7 @@ namespace WebAppMVC.Controllers
 
             var participationNo = await methcall.CallMethodReturnObject<GetContestPostDeRegister>(
                 _httpClient: _httpClient,
-                options: options,
+                options: jsonOptions,
                 methodName: "POST",
                 url: ContestAPI_URL,
                 _logger: _logger,

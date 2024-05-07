@@ -22,6 +22,7 @@ namespace BAL.ViewModels
             FieldtripPictures = new List<FieldtripMediaViewModel>();
             FieldtripInclusions = new List<FieldtripInclusionViewModel>();
             FieldtripDaybyDays = new List<FieldtripDaybyDayViewModel>();
+            NumberOfParticipants = 0;
         }
         public int? TripId { get; set; }
         [Required(ErrorMessage = "Fieldtrip Name is required")]
@@ -66,7 +67,7 @@ namespace BAL.ViewModels
         public int? NumberOfParticipantsLimit { get; set; }
         [Required(ErrorMessage = "Fee is required")]
         [DisplayName("Fee")]
-        [Range(0, int.MaxValue, ErrorMessage = "Fee must be at least 0")]
+        [Range(5000, double.MaxValue, ErrorMessage = "Fee must be at least 5000đ")]
         public decimal? Fee { get; set; }
         [DisplayName("Participant Number")]
         public int? ParticipationNo { get; set; }

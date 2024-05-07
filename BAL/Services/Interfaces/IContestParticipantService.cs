@@ -21,5 +21,6 @@ namespace BAL.Services.Interfaces
         Task<IEnumerable<GetEventParticipation>> GetAllByMemberIdInclude(string memberId);
         Task<int> GetCurrentParticipantAmounts(int contestId);
         Task<int> GetParticipationNo(int contestId, string memberId, int? birdId = null);
+        Task<bool> UpdateAllContestParticipantStatus(List<ContestParticipantViewModel> listPart);
     }
 }

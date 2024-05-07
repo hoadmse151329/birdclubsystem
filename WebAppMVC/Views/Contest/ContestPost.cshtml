@@ -79,7 +79,7 @@
               <div class="overlap-3"> 
                 <div id="map-container"></div>
                 <div class="tittle">
-                  <div class="overlap-group-2"><p class="text-wrapper-4">@Model.ContestName</p></div>
+                  <div class="overlap-group-2"><p class="text-wrapper-4" id="dynamicText">@Model.ContestName</p></div>
                 </div>
                 <div class="text-wrapper-5">From @Model.StartDate.ToString("MM/dd/yyyy") to @Model.EndDate.ToString("MM/dd/syyyy")</div>
 
@@ -90,6 +90,7 @@
                   <div class="text-wrapper-8">Location</div>
                   <div class="text-wrapper-9">Contact</div>
                   <div class="text-wrapper-10">Organizer</div>
+                  <div class="text-wrapper-17">Fee</div>
                 </div>
 
 
@@ -101,6 +102,7 @@
                   <div class="text-wrapper-13">@Model.RegistrationDeadline</div>
                   <div class="text-wrapper-14">ChaoMaoClub@gmail.com</div>
                   <div class="text-wrapper-15">@Model.Host</div>
+                  <div class="text-wrapper-18">@Model.Fee</div>
                 </div>
                 <div class="register">
                     @{
@@ -157,5 +159,34 @@
                 }
             });
         </script>
+<script>
+    // Get the overlap-group-2 container
+    const container = document.querySelector('.overlap-group-2');
+    
+    // Get the dynamic text element
+    const dynamicText = document.getElementById('dynamicText');
+    
+    // Get the height of the container
+    const containerHeight = container.clientHeight;
+    
+    // Get the width of the container
+    const containerWidth = container.clientWidth;
+    
+    // Get the height of the dynamic text element
+    const textHeight = dynamicText.offsetHeight;
+    
+    // Get the width of the dynamic text element
+    const textWidth = dynamicText.offsetWidth;
+    
+    // Calculate the new top position to center vertically
+    const newTop = (containerHeight - textHeight) / 2;
+    
+    // Calculate the new left position to center horizontally
+    const newLeft = (containerWidth - textWidth) / 2;
+    
+    // Apply the new styles
+    dynamicText.style.top = `${newTop}px`;
+    dynamicText.style.left = `${newLeft}px`;
+</script>
   </body>
 </html>

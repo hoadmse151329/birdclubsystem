@@ -14,6 +14,15 @@
         <link rel='stylesheet' href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css'>
         <!-- Other-->
         <link rel="stylesheet" href="https://unpkg.com/filepond-plugin-file-poster/dist/filepond-plugin-file-poster.css" >
+        <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,100&family=Roboto+Condensed:wght@400;700&display=swap"
+        rel="stylesheet">
+        <link rel="stylesheet" href="~/fonts/fontawesome-free-5.15.4-web/css/all.min.css">
+        <!-- owl carousels -->
+        <link rel="stylesheet" href="~/css/owl.carousel.min.css">
+        <link rel="stylesheet" href="~/css/owl.theme.default.min.css">
+
+        <!-- main CSS -->
+        <link rel="stylesheet" href="~/css/main.css">
 </head>
 <body>
     <!-- sidebar -->
@@ -22,12 +31,12 @@
             <div class="navigation">  
                 <ul class="slide-menu">
                     <div class="logo">
-                        <a href="@Url.Action("ManagerIndex", "Manager")">
+                        <a href="@Url.Action("StaffIndex", "Staff")">
                             <img class="logo" src="~/images/Red_whiskered_bulbul_bird_logo_eps_10_generated 1.png" alt="logo">
                         </a>
                     </div>
                     <li class="active" data-toggle="tooltip"data-placement="right" title="Overview">
-                        <a href="@Url.Action("ManagerIndex", "Manager")">
+                        <a href="@Url.Action("StaffIndex", "Staff")">
                             <span><i class='bx bx-tachometer'></i></span>
                             <span class="title">Overview</span>
                         </a>
@@ -40,65 +49,30 @@
                         </a>
                         <ul class="collapse sub-menu" id="collapseOne">
                             <li data-toggle="tooltip"data-placement="right" title="Manage Meeting">
-                                <a href="@Url.Action("ManagerMeeting", "Manager")" li class="dropdown-item">
+                                <a href="@Url.Action("StaffMeeting", "Staff")" li class="dropdown-item">
                                     <i class='bx bx-home-alt-2'></i>
                                     <span class="title">Meeting</span>
                                 </a> 
                             </li>
                             <li data-toggle="tooltip"data-placement="right" title="Manage Fieldtrip">
-                                <a href="@Url.Action("ManagerFieldtrip", "Manager")" li class="dropdown-item">
+                                <a href="@Url.Action("StaffFieldTrip", "Staff")" li class="dropdown-item">
                                     <i class='bx bx-calendar-edit'></i>
                                     <span class="title">Fieldtrip</span>
                                 </a>
                             </li> 
                             <li data-toggle="tooltip"data-placement="right" title="Manage Bird Contest">
-                                <a href="@Url.Action("ManagerContest", "Manager")" li class="dropdown-item">
+                                <a href="@Url.Action("StaffContest", "Staff")" li class="dropdown-item">
                                     <i class='bx bx-trophy'></i>
                                     <span class="title">Bird Contest</span>
                                 </a>
                             </li>
-                            <li data-toggle="tooltip" data-placement="right" title="Manage Member Status">
-                                <a href="@Url.Action("ManagerMemberStatus", "Manager")" li class="dropdown-item">
-                                    <i class='bx bx-message-square-check'></i>
-                                    <span class="title">Member Status</span>
-                                </a>
-                            </li>
-                            <li data-toggle="tooltip" data-placement="right" title="Manage Member Status">
-                                <a href="@Url.Action("ManagerBlog", "Manager")" li class="dropdown-item">
-                                    <i class='bx bx-conversation'></i>
-                                    <span class="title">Blog</span>
-                                </a>
-                            </li>
-                            <li data-toggle="tooltip" data-placement="right" title="Manage Member Status">
-                                <a href="@Url.Action("ManagerNews", "Manager")" li class="dropdown-item">
-                                    <i class='bx bx-message-square'></i>
-                                    <span class="title">News</span>
-                                </a>
-                            </li>
                         </ul>
                     </li>
-                    <li data-toggle="tooltip"data-placement="right" title="Manage Feedback">
-                        <a href="@Url.Action("ManagerFeedback", "Manager")">
-                            <span><i class="bx bx-detail"></i></span>
-                            <span class="title">Feedback</span>
-                        </a>
                     </li>
-                    <li data-toggle="tooltip"data-placement="right" title="Thống kê">
-                            <a href="@Url.Action("ManagerStatistical", "Manager")">
-                                <span><i class='bx bx-line-chart'></i></span>
-                                <span class="title">Statical</span>
-                            </a>
-                    </li>
-                    <li data-toggle="tooltip"data-placement="right" title="Thông báo">
-                            <a href="@Url.Action("ManagerNotification", "Manager")">
-                                <span><i class='bx bx-notification'></i></span>
-                                <span class="title">Notification</span>
-                            </a>
-                    </li>
-                    <li data-toggle="tooltip"data-placement="right" title="Manager Profile">
-                        <a href="@Url.Action("ManagerProfile", "Manager")">
+                    <li data-toggle="tooltip"data-placement="right" title="Staff Profile">
+                        <a href="@Url.Action("StaffProfile", "Staff")">
                             <span><i class='bx bx-user'></i></span>
-                            <span class="title">Manager Profile</span>
+                            <span class="title">Staff Profile</span>
                         </a>
                     </li>
                 </ul>
@@ -129,7 +103,7 @@
                                         @TempData["USER_NAME"]
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item" href="@Url.Action("ManagerProfile", "Manager")"><i class='bx bx-user'></i>Manager Profile</a> <!--thêm theo user id và role-->
+                                        <a class="dropdown-item" href="@Url.Action("StaffProfile", "Staff")"><i class='bx bx-user'></i>Staff Profile</a> <!--thêm theo user id và role-->
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="@Url.Action("Logout", "Auth")">Logout</a>
                                     </div>
@@ -154,5 +128,12 @@
     <script src="~/js/user-script.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.5.0-beta.5/lightgallery.es5.min.js"></script>
     <script src="https://unpkg.com/filepond-plugin-file-poster/dist/filepond-plugin-file-poster.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.5.0-beta.5/lightgallery.es5.min.js"></script>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+    function redirectToDetailPage() {
+        window.location.href = '@Url.Action("StaffContestDetail", "Staff")';
+    }
+    </script>
 </body>
 </html>

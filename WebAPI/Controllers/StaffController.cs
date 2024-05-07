@@ -1,6 +1,5 @@
 ﻿using BAL.Services.Interfaces;
 using BAL.ViewModels;
-using DAL.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -18,12 +17,16 @@ namespace WebAPI.Controllers
         private readonly IMeetingParticipantService _meetParticipantService;
         private readonly IFieldTripService _fieldTripService;
         private readonly IFieldTripParticipantService _tripParticipantService;
+        private readonly IContestService _contestService;
+        private readonly IContestParticipantService _contestParticipantService;
         public StaffController(
             IMemberService memberService,
             IMeetingService meetingService,
             IMeetingParticipantService meetParticipantService,
             IFieldTripService fieldTripService,
             IFieldTripParticipantService tripParticipantService,
+            IContestService contestService,
+            IContestParticipantService contestParticipantService,
             IConfiguration config)
         {
             _memberService = memberService;
@@ -31,6 +34,8 @@ namespace WebAPI.Controllers
             _meetParticipantService = meetParticipantService;
             _fieldTripService = fieldTripService;
             _tripParticipantService = tripParticipantService;
+            _contestService = contestService;
+            _contestParticipantService = contestParticipantService;
             _config = config;
         }
 
@@ -122,7 +127,7 @@ namespace WebAPI.Controllers
             }
         }
 
-        [HttpPut("MeetingParticipantStatus/Update/{id:int}")]
+        [HttpPut("MeetingStatus/Update/{id:int}")]
         [Authorize(Roles = "Staff")]
         [ProducesResponseType(typeof(IEnumerable<MeetingParticipantViewModel>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -134,14 +139,11 @@ namespace WebAPI.Controllers
             try
             {
                 var check = await _meetingService.GetBoolMeetingId(id);
-                if (!check)
-                {
-                    return NotFound(new
+                if (!check) return NotFound(new
                     {
                         Status = false,
                         ErrorMessage = "Meeting does not exist!"
                     });
-                }
                 var result = await _meetParticipantService.UpdateAllMeetingParticipantStatus(listPart);
                 if (!result)
                 {
@@ -176,7 +178,7 @@ namespace WebAPI.Controllers
                 });
             }
         }
-        [HttpPut("FieldTripParticipantStatus/Update/{id:int}")]
+        [HttpPut("FieldTripStatus/Update/{id:int}")]
         [Authorize(Roles = "Staff")]
         [ProducesResponseType(typeof(IEnumerable<FieldTripParticipantViewModel>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -188,27 +190,69 @@ namespace WebAPI.Controllers
             try
             {
                 var check = await _fieldTripService.GetBoolFieldTripId(id);
-                if (!check)
+                if (!check) return NotFound(new
                 {
-                    return NotFound(new
-                    {
-                        Status = false,
-                        ErrorMessage = "Field Trip does not exist!"
-                    });
-                }
+                    Status = false,
+                    ErrorMessage = "Field Trip does not exist!"
+                });
                 var result = await _tripParticipantService.UpdateAllFieldTripParticipantStatus(listPart);
-                if (!result)
+                if (!result)return NotFound(new
                 {
-                    return NotFound(new
-                    {
-                        Status = false,
-                        ErrorMessage = "All Field Trip Participant Status Update Failed!"
-                    });
-                }
+                    Status = false,
+                    ErrorMessage = "All Field Trip Participant Status Update Failed!"
+                });
                 return Ok(new
                 {
                     Status = true,
                     Data = result,
+                });
+            }
+            catch (Exception ex)
+            {
+                if (ex.InnerException != null)
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = ex.Message,
+                        InnerExceptionMessage = ex.InnerException.Message
+                    });
+                }
+                // Log the exception if needed
+                return BadRequest(new
+                {
+                    Status = false,
+                    ErrorMessage = ex.Message
+                });
+            }
+        }
+        [HttpPut("ContestStatus/Update/{id:int}")]
+        [Authorize(Roles = "Staff")]
+        [ProducesResponseType(typeof(IEnumerable<ContestParticipantViewModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> UpdateAllContestParticipantStatus(
+            [Required][FromRoute] int id,
+            [Required][FromBody] List<ContestParticipantViewModel> listPart)
+        {
+            try
+            {
+                var check = await _contestService.GetBoolContestId(id);
+                if (!check) return NotFound(new
+                {
+                    Status = false,
+                    ErrorMessage = "Contest does not exist"
+                });
+                var result = await _contestParticipantService.UpdateAllContestParticipantStatus(listPart);
+                if (!result) return NotFound(new
+                {
+                    Status = false,
+                    ErrorMessage = "All Contest Participant Status Update Failed"
+                });
+                return Ok(new
+                {
+                    Status = true,
+                    Data = result
                 });
             }
             catch (Exception ex)
