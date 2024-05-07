@@ -1,6 +1,6 @@
 ﻿@model dynamic
 @{
-    Layout = null;
+    Layout = "~/Views/Shared/_MLayout.cshtml";
     ViewData["Title"] = "Manager Contest Detail Page";
     BAL.ViewModels.ContestViewModel detailsContest = Model.ContestDetails;
     BAL.ViewModels.ContestViewModel updateContest = Model.UpdateContest != null ? Model.UpdateContest : Model.ContestDetails;
@@ -19,7 +19,6 @@
             item.Selected = true;
         }
     }
-    Layout = "~/Views/Shared/_MLayout.cshtml";
 }
 <html lang="en">
 <head>
@@ -108,7 +107,7 @@
                                             <label for="customer-name">Registration Deadlines:</label>
                                         </div>
                                         <div class="col-md-7">
-                                            <span>@detailsContest.RegistrationDeadline.ToString("MM-dd-yyyy")</span>
+                                            <span>@detailsContest.RegistrationDeadline.ToString("dd-MM-yyyy HH:mm")</span>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -116,7 +115,7 @@
                                             <label for="customer-name">Start Date:</label>
                                         </div>
                                         <div class="col-md-7">
-                                            <span>@detailsContest.StartDate.ToString("MM-dd-yyyy")</span>
+                                            <span>@detailsContest.StartDate.ToString("dd-MM-yyyy HH:mm")</span>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -124,7 +123,7 @@
                                             <label for="customer-name">End Date:</label>
                                         </div>
                                         <div class="col-md-7">
-                                            <span>@detailsContest.EndDate.ToString("MM-dd-yyyy")</span>
+                                            <span>@detailsContest.EndDate.ToString("dd-MM-yyyy HH:mm")</span>
                                         </div>
                                     </div>
                                     <div class="row mb-sm-2">
@@ -279,9 +278,9 @@
                                 <div class="form-group row">
                                     <label asp-for="@updateContest.NumberOfParticipantsLimit" class="col-sm-4 col-form-label"></label>
                                     <div class="col-sm-8">
-                                        <input asp-for="@detailsContest.NumberOfParticipantsLimit" type="number" min="3"
-                                               value="@detailsContest.NumberOfParticipantsLimit" class="form-control" required>
-                                        <span asp-validation-for="@detailsContest.NumberOfParticipantsLimit" id="error_message"
+                                        <input asp-for="@updateContest.NumberOfParticipantsLimit" type="number" min="3"
+                                               value="@updateContest.NumberOfParticipantsLimit" class="form-control" required>
+                                        <span asp-validation-for="@updateContest.NumberOfParticipantsLimit" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                     </div>
                                 </div>
@@ -325,29 +324,29 @@
                                    value="@updateContest.NumberOfParticipants" required hidden>
                         </div>
                         <div class="form-group row">
-                            <label asp-for="@detailsContest.Address" class="col-sm-4 col-form-label">Location</label>
+                            <label asp-for="@updateContest.Address" class="col-sm-4 col-form-label">Location</label>
                             <div class="col-sm-8">
-                                <input asp-for="@detailsContest.Address" type="text" name="Address"
-                                       value="@detailsContest.Address" class="form-control" required>
-                                <span asp-validation-for="@detailsContest.Address" id="error_message"
+                                <input asp-for="@updateContest.Address" type="text"
+                                       value="@updateContest.Address" class="form-control" required>
+                                <span asp-validation-for="@updateContest.Address" id="error_message"
                                       class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label asp-for="@detailsContest.Description" class="col-sm-4 col-form-label">Description</label>
+                            <label asp-for="@updateContest.Description" class="col-sm-4 col-form-label">Description</label>
                             <div class="col-sm-8">
-                                <input asp-for="@detailsContest.Description" type="text" name="Description"
-                                       value="@detailsContest.Description" class="form-control" required>
-                                <span asp-validation-for="@detailsContest.Description" id="error_message"
+                                <textarea asp-for="@updateContest.Description"
+                                       value="@updateContest.Description" class="form-control" required></textarea>
+                                <span asp-validation-for="@updateContest.Description" id="error_message"
                                       class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label asp-for="@detailsContest.Note" class="col-sm-4 col-form-label">Note</label>
+                            <label asp-for="@updateContest.Note" class="col-sm-4 col-form-label">Note</label>
                             <div class="col-sm-8">
-                                <input asp-for="@detailsContest.Note" type="text" name="Note"
-                                       value="@detailsContest.Note" class="form-control" required>
-                                <span asp-validation-for="@detailsContest.Note" id="error_message"
+                                <textarea asp-for="@updateContest.Note"
+                                       value="@updateContest.Note" class="form-control" required></textarea>
+                                <span asp-validation-for="@updateContest.Note" id="error_message"
                                       class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                             </div>
                         </div>

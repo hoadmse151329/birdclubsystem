@@ -925,7 +925,9 @@ namespace WebAppMVC.Controllers
         }
         [HttpGet("Contest/{id:int}")]
         /*[Route("Manager/Contest/{id:int}")]*/
-        public async Task<IActionResult> ManagerContestDetail(int id)
+        public async Task<IActionResult> ManagerContestDetail(
+            [FromRoute][Required] int id
+            )
         {
             string ManagerContestDetailAPI_URL = ManagerAPI_URL + "Contest/AllParticipants/" + id;
             ManagerAPI_URL += "Contest/" + id;
@@ -980,16 +982,22 @@ namespace WebAppMVC.Controllers
             contestDetailBigModel.UpdateContest = methcall.GetValidationTempData<ContestViewModel>(this, TempData, Constants.Constants.UPDATE_CONTEST_VALID, "updateContest", options);
             contestDetailBigModel.ContestDetails = contestPostResponse.Data;
             contestDetailBigModel.ContestParticipants = contestpartPostResponse.Data;
+
             return View(contestDetailBigModel);
         }
-        [HttpPost("Contest/Update/{id:int}")]
+        [HttpPost("Contest/{id:int}/Update")]
         /*[Route("Manager/Contest/Update/{id:int}")]*/
         public async Task<IActionResult> ManagerUpdateContestDetail(
-            int id,
-            ContestViewModel meetView
+            [FromRoute][Required] int id,
+            [Required] ContestViewModel updateContest
             )
         {
             ManagerAPI_URL += "Contest/Update/" + id;
+            if (!ModelState.IsValid)
+            {
+                TempData = methcall.GetValidationTempData(TempData, Constants.Constants.UPDATE_CONTEST_VALID, updateContest, options);
+                return RedirectToAction("ManagerContestDetail", "Manager", new { id });
+            }
 
             string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
             if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
@@ -1015,14 +1023,14 @@ namespace WebAppMVC.Controllers
                                 options: options,
                                 methodName: "PUT",
                                 url: ManagerAPI_URL,
-                                inputType: meetView,
+                                inputType: updateContest,
                                 accessToken: accToken,
                                 _logger: _logger);
             if (contestPostResponse == null)
             {
                 ViewBag.Error =
                     "Error while processing your request! (Updating Contest!).\n Contest Not Found!";
-                return RedirectToAction("ManagerContest");
+                return RedirectToAction("ManagerContestDetail", "Manager", new { id });
             }
             if (!contestPostResponse.Status)
             {
@@ -1030,9 +1038,9 @@ namespace WebAppMVC.Controllers
                 ViewBag.Error =
                     "Error while processing your request! (Updating Contest Post!).\n"
                     + contestPostResponse.ErrorMessage;
-                return RedirectToAction("ManagerContest");
+                return RedirectToAction("ManagerContestDetail", "Manager", new { id });
             }
-            return RedirectToAction("ManagerContestDetail", "Manager", new { id = id });
+            return RedirectToAction("ManagerContestDetail", "Manager", new { id });
         }
         [HttpPost("Contest/Create")]
         /*[Route("Manager/Contest/Update/{id:int}")]*/
@@ -1089,9 +1097,9 @@ namespace WebAppMVC.Controllers
             return RedirectToAction("ManagerContest");
         }
 
-        [HttpPost("Contest/Update/Cancel/{id:int}")]
+        [HttpPost("Contest/{id:int}/Cancel")]
         public async Task<IActionResult> ManagerCancelContest(
-            int id)
+            [FromRoute][Required] int id)
         {
             ManagerAPI_URL += "Contest/Update/Cancel/" + id;
 

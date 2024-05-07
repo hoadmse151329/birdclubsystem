@@ -155,7 +155,7 @@ namespace WebAPI.Controllers
             }
         }
 
-        [HttpPut("Update/{id}")]
+        [HttpPut("Update/{id:int}")]
         [Authorize(Roles = "Manager")]
         [ProducesResponseType(typeof(ContestViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -166,7 +166,7 @@ namespace WebAPI.Controllers
         {
             try
             {
-                var result = _contestService.GetById(id).Result;
+                var result = await _contestService.GetById(id);
                 if (result == null)
                 {
                     return NotFound(new

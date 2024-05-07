@@ -35,7 +35,7 @@ namespace BAL.Services.Implements
                 int partAmount = await _unitOfWork.ContestParticipantRepository.GetCountContestParticipantsByContestId(con.ContestId);
 
                 var contest = _mapper.Map<ContestViewModel>(con);
-                contest.NumberOfParticipantsLimit = contest.NumberOfParticipants - partAmount;
+                contest.NumberOfParticipants = contest.NumberOfParticipantsLimit - partAmount;
                 contest.Address = locationName;
 
                 contest.Media = (media != null) ? _mapper.Map<IEnumerable<ContestMediaViewModel>>(media).ToList() : null;
