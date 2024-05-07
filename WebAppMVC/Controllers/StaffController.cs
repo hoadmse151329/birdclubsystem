@@ -252,56 +252,6 @@ namespace WebAppMVC.Controllers
             }
             return RedirectToAction("StaffMeetingDetail", "Staff", new { id = id });
         }
-        /*[HttpPost("Meeting/Create")]
-        [Route("Staff/Meeting/Update/{id:int}")]
-        public async Task<IActionResult> StaffCreateMeeting(MeetingViewModel meetView)
-        {
-            StaffAPI_URL += "Meeting/Create";
-
-            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
-            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
-
-            string? role = HttpContext.Session.GetString("ROLE_NAME");
-            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Staff")) return View("Index");
-
-            string? usrId = HttpContext.Session.GetString("USER_ID");
-            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
-
-            string? usrname = HttpContext.Session.GetString("USER_NAME");
-            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
-
-            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
-
-            TempData["ROLE_NAME"] = role;
-            TempData["USER_NAME"] = usrname;
-            TempData["IMAGE_PATH"] = imagepath;
-
-            var meetPostResponse = await methcall.CallMethodReturnObject<GetMeetingPostResponse>(
-                                _httpClient: _httpClient,
-                                options: options,
-                                methodName: "POST",
-                                url: StaffAPI_URL,
-                                inputType: meetView,
-                                accessToken: accToken,
-                                _logger: _logger);
-            if (meetPostResponse == null)
-            {
-                ViewBag.error =
-                    "Error while processing your request! (Create Meeting!).\n Meeting Not Found!";
-                return RedirectToAction("StaffMeeting");
-            }
-            if (!meetPostResponse.Status)
-            {
-                _logger.LogInformation("Error while processing your request: " + meetPostResponse.Status + " , Error Message: " + meetPostResponse.ErrorMessage);
-                ViewBag.error =
-                    "Error while processing your request! (Create Meeting Post!).\n"
-                    + meetPostResponse.ErrorMessage;
-                return RedirectToAction("StaffMeeting");
-            }
-            return RedirectToAction("StaffMeeting");
-            
-        }*/
         [HttpGet("FieldTrip")]
         public async Task<IActionResult> StaffFieldtrip([FromQuery] string search)
         {
@@ -424,15 +374,16 @@ namespace WebAppMVC.Controllers
                     + fieldtripPostResponse.ErrorMessage;
                 return RedirectToAction("StaffFieldTrip");
             }
+            fieldtripDetailBigModel.FieldTripDetails = fieldtripPostResponse.Data;
             fieldtripDetailBigModel.FieldTripTourFeatures = fieldtripPostResponse.Data.FieldtripAdditionalDetails.Where(f => f.Type.Equals("tour_features")).ToList();
             fieldtripDetailBigModel.FieldTripImportantToKnows = fieldtripPostResponse.Data.FieldtripAdditionalDetails.Where(f => f.Type.Equals("important_to_know")).ToList();
             fieldtripDetailBigModel.FieldTripActivitiesAndTransportation = fieldtripPostResponse.Data.FieldtripAdditionalDetails.Where(f => f.Type.Equals("activities_and_transportation")).ToList();
-            fieldtripDetailBigModel.FieldTripDetails = fieldtripPostResponse.Data;
-            fieldtripDetailBigModel.FieldTripParticipants = fieldtripPostResponse.Data;
+            fieldtripDetailBigModel.FieldTripParticipants = fieldtrippartPostResponse.Data;
+
             return View(fieldtripDetailBigModel);
         }
-        [HttpPost("FieldTrip/Update/{id:int}")]
-        public async Task<IActionResult> StaffUpdateFieldTripDetail(
+        [HttpPost("FieldTrip/UpdateStatus/{id:int}")]
+        public async Task<IActionResult> StaffUpdateFieldTripStatus(
             int id,
             List<FieldTripParticipantViewModel> tripPartView)
         {
@@ -485,55 +436,6 @@ namespace WebAppMVC.Controllers
             return RedirectToAction("StaffFieldTripDetail", "Staff", new { id = id });
         }
     
-        /*[HttpPost("FieldTrip/Create")]
-        [Route("Staff/Meeting/Update/{id:int}")]
-        public async Task<IActionResult> StaffCreateFieldTrip(FieldTripViewModel fieldtripView)
-        {
-            StaffAPI_URL += "FieldTrip/Create";
-
-            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
-            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
-
-            string? role = HttpContext.Session.GetString("ROLE_NAME");
-            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Staff")) return View("Index");
-
-            string? usrId = HttpContext.Session.GetString("USER_ID");
-            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
-
-            string? usrname = HttpContext.Session.GetString("USER_NAME");
-            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
-
-            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
-
-            TempData["ROLE_NAME"] = role;
-            TempData["USER_NAME"] = usrname;
-            TempData["IMAGE_PATH"] = imagepath;
-
-            var fieldtripPostResponse = await methcall.CallMethodReturnObject<GetFieldTripPostResponse>(
-                                _httpClient: _httpClient,
-                                options: options,
-                                methodName: "POST",
-                                url: StaffAPI_URL,
-                                inputType: fieldtripView,
-                                accessToken: accToken,
-                                _logger: _logger);
-            if (fieldtripPostResponse == null)
-            {
-                ViewBag.error =
-                    "Error while processing your request! (Create FieldTrip!).\n Meeting Not Found!";
-                return RedirectToAction("StaffFieldTrip");
-            }
-            if (!fieldtripPostResponse.Status)
-            {
-                _logger.LogInformation("Error while processing your request: " + fieldtripPostResponse.Status + " , Error Message: " + fieldtripPostResponse.ErrorMessage);
-                ViewBag.error =
-                    "Error while processing your request! (Create Meeting Post!).\n"
-                    + fieldtripPostResponse.ErrorMessage;
-                return RedirectToAction("StaffFieldTrip");
-            }
-            return RedirectToAction("StaffFieldTrip");
-        }*/
         [HttpGet("Contest")]
         public async Task<IActionResult> StaffContest([FromQuery] string search)
         {
@@ -713,54 +615,6 @@ namespace WebAppMVC.Controllers
             }
             return RedirectToAction("StaffContestDetail", "Staff", new { id = id });
         }
-        /*[HttpPost("Contest/Create")]
-        public async Task<IActionResult> StaffCreateContest(ContestViewModel contestView)
-        {
-            StaffAPI_URL += "Contest/Create";
-
-            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
-            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
-
-            string? role = HttpContext.Session.GetString("ROLE_NAME");
-            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Staff")) return View("Index");
-
-            string? usrId = HttpContext.Session.GetString("USER_ID");
-            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
-
-            string? usrname = HttpContext.Session.GetString("USER_NAME");
-            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
-
-            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
-
-            TempData["ROLE_NAME"] = role;
-            TempData["USER_NAME"] = usrname;
-            TempData["IMAGE_PATH"] = imagepath;
-
-            var contestPostResponse = await methcall.CallMethodReturnObject<GetContestPostResponse>(
-                                _httpClient: _httpClient,
-                                options: options,
-                                methodName: "POST",
-                                url: StaffAPI_URL,
-                                inputType: contestView,
-                                accessToken: accToken,
-                                _logger: _logger);
-            if (contestPostResponse == null)
-            {
-                ViewBag.error =
-                    "Error while processing your request! (Create Contest!).\n Contest Not Found!";
-                return RedirectToAction("StaffContest");
-            }
-            if (!contestPostResponse.Status)
-            {
-                _logger.LogInformation("Error while processing your request: " + contestPostResponse.Status + " , Error Message: " + contestPostResponse.ErrorMessage);
-                ViewBag.error =
-                    "Error while processing your request! (Create Contest Post!).\n"
-                    + contestPostResponse.ErrorMessage;
-                return RedirectToAction("StaffContest");
-            }
-            return RedirectToAction("StaffContest");
-        }*/
         [HttpGet("ContestPoints")]
         public IActionResult StaffContestPoints()
 		{

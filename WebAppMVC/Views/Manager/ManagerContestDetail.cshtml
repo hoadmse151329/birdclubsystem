@@ -69,26 +69,26 @@
                                         </div>
                                         <div class="col-sm-7">
                                             @{
-                                                switch (details.Status)
+                                                switch (detailsContest.Status)
                                                 {
                                                     case "Ongoing":
                                                     case "CheckingIn":
                                                     case "OpenRegistration":
                                                         {
-                                                            <span class="outcome" style="float: left;">@details.Status</span>
+                                                            <span class="outcome" style="float: left;">@detailsContest.Status</span>
                                                             break;
                                                         }
                                                     case "OnHold":
                                                     case "ClosedRegistration":
                                                         {
-                                                            <span class="approval" style="float: left;">@details.Status</span>
+                                                            <span class="approval" style="float: left;">@detailsContest.Status</span>
                                                             break;
                                                         }
                                                     case "Ended":
                                                     case "Postponed":
                                                     case "Cancelled":
                                                         {
-                                                            <span class="destroy" style="float: left;">@details.Status</span>
+                                                            <span class="destroy" style="float: left;">@detailsContest.Status</span>
                                                             break;
                                                         }
                                                 }

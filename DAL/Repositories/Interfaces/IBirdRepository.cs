@@ -12,5 +12,7 @@ namespace DAL.Repositories.Interfaces
     {
         Task<IEnumerable<Bird>> GetBirdsByMemberId(string memberId);
         Task<IEnumerable<Bird>> GetBirdsByMemberIdInclude(string memberId);
+        Task<int> GetBirdIdByMemberId(string memberId);
+        Task<int> GetELOByBirdId(int birdId);
     }
 }
