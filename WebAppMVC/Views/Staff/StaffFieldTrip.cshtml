@@ -157,27 +157,6 @@
                                                         <form asp-action="FieldTrip" asp-controller="Staff" method="get" asp-route-id="@data.TripId">
                                                             <button class="btn btn-primary clickable-row" type="submit">See Detail</button>
                                                         </form>
-                                                            <button class="btn btn-danger" data-toggle="modal" data-target="#deleteFieldTrip" type="submit">Cancel FieldTrip</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div id="deleteFieldTrip" class="modal fade" role="dialog">
-                                                <div class="modal-dialog modal-dialog-centered" role="content">
-                                                    <div class="modal-content">
-                                                        <form action="#">
-                                                            <div class="card-body">
-                                                                <div class="del-title">
-                                                                    <i class='bx bx-error-circle'></i>
-                                                                    <h2>Are you sure want to delete ?</h2> 
-                                                                </div>
-                                                                <div class="del-submit d-flex justify-content-center">       
-                                                                    <form asp-action="StaffCancelFieldTrip" asp-controller="Staff" method="post" asp-route-id="@data.TripId">
-                                                                        <button type="submit" name="action" value="deleteFieldTrip" class="btn btn-success">Save</button>
-                                                                        </form>
-                                                                        <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
-                                                                    </div>
-                                                            </div>
-                                                        </form>
                                                     </div>
                                                 </div>
                                             </div>

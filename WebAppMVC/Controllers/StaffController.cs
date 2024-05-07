@@ -382,8 +382,8 @@ namespace WebAppMVC.Controllers
 
             return View(fieldtripDetailBigModel);
         }
-        [HttpPost("FieldTrip/Update/{id:int}")]
-        public async Task<IActionResult> StaffUpdateFieldTripDetail(
+        [HttpPost("FieldTrip/UpdateStatus/{id:int}")]
+        public async Task<IActionResult> StaffUpdateFieldTripStatus(
             int id,
             List<FieldTripParticipantViewModel> tripPartView)
         {
