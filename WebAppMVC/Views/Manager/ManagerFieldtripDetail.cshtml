@@ -486,7 +486,7 @@
                                 <div class="card-header">
                                     <h4>Inclusions</h4>
                                     <div class="edit-info">
-                                        <i class='bx bxs-edit-alt' data-toggle="modal" data-target="#editinclusion"></i>
+                                        <i class='bx bxs-edit-alt' data-toggle="modal" data-target="#createinclusion"></i>
                                     </div>
                                 </div>
                                 <div class="card-body">
@@ -960,7 +960,7 @@
                 <div class="modal-header">
                     <h4 class="modal-title">Create Field Trip Inclusion</h4>
                 </div>
-                <form asp-action="ManagerCreateFieldTripInclusion" asp-controller="Manager" method="post" asp-route-id="@details.TripId" class="form-group">
+                <form asp-action="ManagerCreateFieldTripInclusion" asp-controller="Manager" method="post" asp-route-tripId="@details.TripId" class="form-group">
                     <div class="modal-body">
                         <div class="row justify-content-center">
                             <div class="col-12 col-md-12">
