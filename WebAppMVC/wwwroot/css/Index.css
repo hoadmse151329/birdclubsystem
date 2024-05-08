@@ -18,21 +18,34 @@
     width: 1440px;
     height: auto;
     margin: 0px auto;
-    background: rgb(166, 247, 145);
+    background: #99ffad;
     overflow: hidden;
     border-radius: 1rem;
     border-width: 1px;
     border-style: solid;
     border-image: initial;
 }
-
+.club__content font-a {
+    font-weight: bold;
+    margin-left: 10px;
+    background: -webkit-linear-gradient(0.25turn, #00ecd5, #ffadd9);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+    .club-content a:hover {
+        font-weight: bold;
+        margin-left: 10px;
+        background: -webkit-linear-gradient(0.25turn, #ffadd9, #ffadd9);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
 .pic {
     position: absolute;
     width: 1440px;
     height: 2150px;
     top: 0;
     left: 0;
-    background: url(./assets/images/3cc6d1c8-954f-4720-bae8-c44172c49666.png) no-repeat center;
+    background: url(./assets/images/register-bg.jpg) no-repeat center;
     background-size: cover;
 }
 
@@ -1104,7 +1117,7 @@
     width: 360px;
     height: 248px;
     margin: 0 0 0 0;
-    background: url(./assets/images/f158f7a84ca4538397b7b627b8280cfad630a21b.png) no-repeat center;
+     : url(./assets/images/f158f7a84ca4538397b7b627b8280cfad630a21b.png) no-repeat center;
     background-size: cover;
     border: 1px solid rgba(31, 82, 0, 0.35);
     z-index: 12;
