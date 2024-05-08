@@ -415,7 +415,7 @@
                                 <div class="card-header">
                                     <h4>Day By Day</h4>
                                     <div class="edit-info">
-                                        <i class='bx bxs-edit-alt' data-toggle="modal" data-target="#createdaybyday"></i>
+                                        <i class='bx bxs-plus-circle' data-toggle="modal" data-target="#createdaybyday"></i>
                                     </div>
                                 </div>
                                 <div class="card-body">
@@ -424,6 +424,12 @@
                                         {
                                             foreach (var day in detailDayByDay)
                                             {
+                                                <div class="card-header">
+                                                    <h4>Edit Detail</h4>
+                                                     <div class="edit-info">
+                                                        <i class='bx bxs-edit-alt' data-toggle="modal" data-target="#createdaybyday"></i>
+                                                     </div>
+                                                </div>
                                                 <div class="row">
                                                     <div class="col-md-5 text-md-right">
                                                         <label for="meeting-name">Day:</label>
@@ -1046,6 +1052,47 @@
             </div>
         </div>
     </div>
+    <div id="createimportant" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
+            <div class="modal-content modal-addRoom">
+                <div class="modal-header">
+                    <h4 class="modal-title">Create FieldTrip Important to Know</h4>
+                </div>
+                <form asp-action="ManagerCreateFieldTripImportant" asp-controller="Manager" method="post" asp-route-tripId="@details.TripId" class="form-group">
+                    <div class="modal-body">
+                        <div class="row justify-content-center">
+                            <div class="col-12 col-md-12">
+                                <div class="form-group row">
+                                    <label asp-for="@createImportant.Title" class="col-sm-4 col-form-label"></label>
+                                    <div class="col-sm-8">
+                                        <input asp-for="@createImportant.Title" type="text" placeholder="Tour Features title"
+                                               value="@createImportant.Title" class="form-control" required>
+                                        <span asp-validation-for="@createImportant.Title" id="error_message"
+                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label asp-for="@createImportant.Description" class="col-sm-4 col-form-label"></label>
+                                    <div class="col-sm-8">
+                                        <textarea asp-for="@createImportant.Description" placeholder="Tour Features description"
+                                                  value="@createImportant.Description" class="form-control" required></textarea>
+                                        <span asp-validation-for="@createImportant.Description" id="error_message"
+                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <input asp-for="@createImportant.Type" type="text"
+                                   value="@createImportant.Type" class="form-control" required hidden>
+                        </div>
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                        <button class="btn btn-success" type="submit" value="Update">Save</button>
+                        <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     <!-- create fieldtrip tour features details -->
     <div id="createtourfeatures" class="modal fade" role="dialog">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
@@ -1128,47 +1175,7 @@
         </div>
     </div>
     <!-- create fieldtrip importants details -->
-    <div id="createimportant" class="modal fade" role="dialog">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
-            <div class="modal-content modal-addRoom">
-                <div class="modal-header">
-                    <h4 class="modal-title">Create FieldTrip Important to Know</h4>
-                </div>
-                <form asp-action="ManagerCreateFieldTripImportant" asp-controller="Manager" method="post" asp-route-tripId="@details.TripId" class="form-group">
-                    <div class="modal-body">
-                        <div class="row justify-content-center">
-                            <div class="col-12 col-md-12">
-                                <div class="form-group row">
-                                    <label asp-for="@createImportant.Title" class="col-sm-4 col-form-label"></label>
-                                    <div class="col-sm-8">
-                                        <input asp-for="@createImportant.Title" type="text" placeholder="Tour Features title"
-                                               value="@createImportant.Title" class="form-control" required>
-                                        <span asp-validation-for="@createImportant.Title" id="error_message"
-                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label asp-for="@createImportant.Description" class="col-sm-4 col-form-label"></label>
-                                    <div class="col-sm-8">
-                                        <textarea asp-for="@createImportant.Description" placeholder="Tour Features description"
-                                                  value="@createImportant.Description" class="form-control" required></textarea>
-                                        <span asp-validation-for="@createImportant.Description" id="error_message"
-                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                    </div>
-                                </div>
-                            </div>
-                            <input asp-for="@createImportant.Type" type="text"
-                                   value="@createImportant.Type" class="form-control" required hidden>
-                        </div>
-                    </div>
-                    <div class="modal-footer justify-content-center">
-                        <button class="btn btn-success" type="submit" value="Update">Save</button>
-                        <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+    
     <!-- update fieldtrip importants details -->
     <div id="editmedias" class="modal fade" role="dialog">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
