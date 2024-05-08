@@ -14,6 +14,7 @@ namespace BAL.ViewModels
     {
         public MeetingViewModel()
         {
+            Review = "No Feedback";
             RegistrationDeadline = DateTime.Now;
             StartDate = DateTime.Now.AddDays(1);
             EndDate = DateTime.Now.AddDays(2);
@@ -49,6 +50,8 @@ namespace BAL.ViewModels
         public int? NumberOfParticipantsLimit { get; set; }
         [DisplayName("Participant Number")]
         public int? ParticipationNo { get; set; }
+        [DisplayName("Review")]
+        public string? Review { get; set; }
         [Required(ErrorMessage = "Host is required")]
         [DisplayName("Host")]
         public string? Host { get; set; }

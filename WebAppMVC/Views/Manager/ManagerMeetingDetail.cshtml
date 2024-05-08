@@ -5,20 +5,8 @@
     BAL.ViewModels.MeetingViewModel detailsMeeting = Model.MeetingDetails;
     BAL.ViewModels.MeetingViewModel updateMeeting = Model.UpdateMeeting != null ? Model.UpdateMeeting : Model.MeetingDetails;
     List<BAL.ViewModels.MeetingParticipantViewModel> parts = Model.MeetingParticipants;
-    List<SelectListItem> defaultMeetingStatus = new()
-    {
-        new SelectListItem {Text = "On Hold", Value = "OnHold"},
-        new SelectListItem {Text = "Postponed", Value = "Postponed"},
-        new SelectListItem {Text = "Cancelled", Value = "Cancelled"},
-        new SelectListItem {Text = "Ended", Value = "Ended"}
-    };
-    foreach (var item in defaultMeetingStatus)
-    {
-        if (updateMeeting.Status.Equals(item.Value))
-        {
-            item.Selected = true;
-        }
-    }
+    List<SelectListItem> defaultMeetingStatus = Model.SelectListStatus;
+
     Layout = "~/Views/Shared/_MLayout.cshtml";
 }
 <html lang="en">
@@ -335,9 +323,9 @@
                                       class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                             </div>
                         </div>
-                        <input asp-for="@updateMeeting.NumberOfParticipants" type="number"
-                               value="@updateMeeting.NumberOfParticipants" required hidden>
                     </div>
+                    <input asp-for="@updateMeeting.NumberOfParticipants" type="number"
+                           value="@updateMeeting.NumberOfParticipants" required hidden>
                     <div class="modal-footer justify-content-center">
                         <button class="btn btn-success" type="submit" value="Update">Save</button>
                         <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>

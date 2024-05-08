@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Azure;
 using BAL.ViewModels;
 using Org.BouncyCastle.Ocsp;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace WebAppMVC.Constants
 {
@@ -90,6 +91,135 @@ namespace WebAppMVC.Constants
 		{
 			response.Cookies.Delete(key, cookieOptions);
 		}
+
+        public List<SelectListItem> GetManagerEventStatusSelectableList(string eventStatus)
+        {
+            List<SelectListItem> defaultEventStatus = new();
+            switch (eventStatus)
+            {
+                case var value when value.Equals(Constants.EVENT_STATUS_ON_HOLD):
+                    {
+                        defaultEventStatus.Add(new SelectListItem { Text = Constants.EVENT_STATUS_NAME_ON_HOLD, Value = Constants.EVENT_STATUS_ON_HOLD, Selected = true });
+                        break;
+                    }
+                case var value when value.Equals(Constants.EVENT_STATUS_OPEN_REGISTRATION):
+                    {
+                        defaultEventStatus.Add(new SelectListItem { Text = Constants.EVENT_STATUS_NAME_OPEN_REGISTRATION, Value = Constants.EVENT_STATUS_OPEN_REGISTRATION, Selected = true });
+                        defaultEventStatus.Add(new SelectListItem { Text = Constants.EVENT_STATUS_NAME_POSTPONED, Value = Constants.EVENT_STATUS_POSTPONED });
+                        break;
+                    }
+                case var value when value.Equals(Constants.EVENT_STATUS_POSTPONED):
+                    {
+                        defaultEventStatus.Add(new SelectListItem { Text = Constants.EVENT_STATUS_NAME_POSTPONED, Value = Constants.EVENT_STATUS_POSTPONED, Selected = true });
+                        defaultEventStatus.Add(new SelectListItem { Text = Constants.EVENT_STATUS_NAME_OPEN_REGISTRATION, Value = Constants.EVENT_STATUS_OPEN_REGISTRATION });
+                        defaultEventStatus.Add(new SelectListItem { Text = Constants.EVENT_STATUS_NAME_CLOSED_REGISTRATION, Value = Constants.EVENT_STATUS_CLOSED_REGISTRATION });
+                        defaultEventStatus.Add(new SelectListItem { Text = Constants.EVENT_STATUS_NAME_CANCELLED, Value = Constants.EVENT_STATUS_CANCELLED });
+                        break;
+                    }
+                case var value when value.Equals(Constants.EVENT_STATUS_CLOSED_REGISTRATION):
+                    {
+                        defaultEventStatus.Add(new SelectListItem { Text = Constants.EVENT_STATUS_NAME_CLOSED_REGISTRATION, Value = Constants.EVENT_STATUS_CLOSED_REGISTRATION, Selected = true });
+                        defaultEventStatus.Add(new SelectListItem { Text = Constants.EVENT_STATUS_NAME_POSTPONED, Value = Constants.EVENT_STATUS_POSTPONED });
+                        break;
+                    }
+                case var value when value.Equals(Constants.EVENT_STATUS_CHECKING_IN):
+                    {
+                        defaultEventStatus.Add(new SelectListItem { Text = Constants.EVENT_STATUS_NAME_CHECKING_IN, Value = Constants.EVENT_STATUS_CHECKING_IN, Selected = true });
+                        defaultEventStatus.Add(new SelectListItem { Text = Constants.EVENT_STATUS_NAME_CANCELLED, Value = Constants.EVENT_STATUS_CANCELLED });
+                        break;
+                    }
+                case var value when value.Equals(Constants.EVENT_STATUS_ONGOING):
+                    {
+                        defaultEventStatus.Add(new SelectListItem { Text = Constants.EVENT_STATUS_NAME_ONGOING, Value = Constants.EVENT_STATUS_ONGOING, Selected = true });
+                        defaultEventStatus.Add(new SelectListItem { Text = Constants.EVENT_STATUS_NAME_CANCELLED, Value = Constants.EVENT_STATUS_CANCELLED });
+                        defaultEventStatus.Add(new SelectListItem { Text = Constants.EVENT_STATUS_NAME_ENDED, Value = Constants.EVENT_STATUS_ENDED });
+                        break;
+                    }
+                case var value when value.Equals(Constants.EVENT_STATUS_CANCELLED):
+                    {
+                        defaultEventStatus.Add(new SelectListItem { Text = Constants.EVENT_STATUS_NAME_CANCELLED, Value = Constants.EVENT_STATUS_CANCELLED, Selected = true, Disabled = true });
+                        break;
+                    }
+                case var value when value.Equals(Constants.EVENT_STATUS_ENDED):
+                    {
+                        defaultEventStatus.Add(new SelectListItem { Text = Constants.EVENT_STATUS_NAME_ENDED, Value = Constants.EVENT_STATUS_ENDED, Selected = true, Disabled = true });
+                        break;
+                    }
+            }
+            return defaultEventStatus;
+        }
+        public List<SelectListItem> GetManagerFieldTripInclusionTypeSelectableList(string inclusionType)
+        {
+            List<SelectListItem> defaultInclusionTypes = new();
+            switch (inclusionType)
+            {
+                case var value when value.Equals(Constants.FIELDTRIP_INCLUSION_TYPE_INCLUDED):
+                    {
+                        defaultInclusionTypes.Add(new SelectListItem { Text = Constants.FIELDTRIP_INCLUSION_TYPE_INCLUDED, Value = Constants.FIELDTRIP_INCLUSION_TYPE_INCLUDED, Selected = true });
+                        defaultInclusionTypes.Add(new SelectListItem { Text = Constants.FIELDTRIP_INCLUSION_TYPE_EXCLUDED, Value = Constants.FIELDTRIP_INCLUSION_TYPE_EXCLUDED });
+                        break;
+                    }
+                case var value when value.Equals(Constants.FIELDTRIP_INCLUSION_TYPE_EXCLUDED):
+                    {
+                        defaultInclusionTypes.Add(new SelectListItem { Text = Constants.FIELDTRIP_INCLUSION_TYPE_INCLUDED, Value = Constants.FIELDTRIP_INCLUSION_TYPE_INCLUDED });
+                        defaultInclusionTypes.Add(new SelectListItem { Text = Constants.FIELDTRIP_INCLUSION_TYPE_EXCLUDED, Value = Constants.FIELDTRIP_INCLUSION_TYPE_EXCLUDED, Selected = true });
+                        break;
+                    }
+            }
+            return defaultInclusionTypes;
+        }
+        public List<SelectListItem> GetStaffEventStatusSelectableList(string eventStatus)
+        {
+            List<SelectListItem> defaultEventStatus = new();
+            switch (eventStatus)
+            {
+                case var value when value.Equals(Constants.EVENT_STATUS_ON_HOLD):
+                    {
+                        defaultEventStatus.Add(new SelectListItem { Text = Constants.EVENT_STATUS_NAME_ON_HOLD, Value = Constants.EVENT_STATUS_ON_HOLD, Selected = true });
+                        defaultEventStatus.Add(new SelectListItem { Text = Constants.EVENT_STATUS_NAME_OPEN_REGISTRATION, Value = Constants.EVENT_STATUS_OPEN_REGISTRATION });
+                        break;
+                    }
+                case var value when value.Equals(Constants.EVENT_STATUS_OPEN_REGISTRATION):
+                    {
+                        defaultEventStatus.Add(new SelectListItem { Text = Constants.EVENT_STATUS_NAME_OPEN_REGISTRATION, Value = Constants.EVENT_STATUS_OPEN_REGISTRATION, Selected = true });
+                        defaultEventStatus.Add(new SelectListItem { Text = Constants.EVENT_STATUS_NAME_CLOSED_REGISTRATION, Value = Constants.EVENT_STATUS_CLOSED_REGISTRATION});
+                        break;
+                    }
+                case var value when value.Equals(Constants.EVENT_STATUS_POSTPONED):
+                    {
+                        defaultEventStatus.Add(new SelectListItem { Text = Constants.EVENT_STATUS_NAME_POSTPONED, Value = Constants.EVENT_STATUS_POSTPONED, Selected = true, Disabled = true });
+                        break;
+                    }
+                case var value when value.Equals(Constants.EVENT_STATUS_CLOSED_REGISTRATION):
+                    {
+                        defaultEventStatus.Add(new SelectListItem { Text = Constants.EVENT_STATUS_NAME_CLOSED_REGISTRATION, Value = Constants.EVENT_STATUS_CLOSED_REGISTRATION, Selected = true });
+                        defaultEventStatus.Add(new SelectListItem { Text = Constants.EVENT_STATUS_NAME_CHECKING_IN, Value = Constants.EVENT_STATUS_CHECKING_IN });
+                        break;
+                    }
+                case var value when value.Equals(Constants.EVENT_STATUS_CHECKING_IN):
+                    {
+                        defaultEventStatus.Add(new SelectListItem { Text = Constants.EVENT_STATUS_NAME_CHECKING_IN, Value = Constants.EVENT_STATUS_CHECKING_IN, Selected = true });
+                        defaultEventStatus.Add(new SelectListItem { Text = Constants.EVENT_STATUS_NAME_ONGOING, Value = Constants.EVENT_STATUS_ONGOING });
+                        break;
+                    }
+                case var value when value.Equals(Constants.EVENT_STATUS_ONGOING):
+                    {
+                        defaultEventStatus.Add(new SelectListItem { Text = Constants.EVENT_STATUS_NAME_ONGOING, Value = Constants.EVENT_STATUS_ONGOING, Selected = true, Disabled = true });
+                        break;
+                    }
+                case var value when value.Equals(Constants.EVENT_STATUS_CANCELLED):
+                    {
+                        defaultEventStatus.Add(new SelectListItem { Text = Constants.EVENT_STATUS_NAME_CANCELLED, Value = Constants.EVENT_STATUS_CANCELLED, Selected = true, Disabled = true });
+                        break;
+                    }
+                case var value when value.Equals(Constants.EVENT_STATUS_ENDED):
+                    {
+                        defaultEventStatus.Add(new SelectListItem { Text = Constants.EVENT_STATUS_NAME_ENDED, Value = Constants.EVENT_STATUS_ENDED, Selected = true, Disabled = true });
+                        break;
+                    }
+            }
+            return defaultEventStatus;
+        }
 
         public T GetValidationTempData<T>(
             ControllerBase context,

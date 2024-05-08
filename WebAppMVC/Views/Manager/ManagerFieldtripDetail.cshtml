@@ -23,25 +23,8 @@
 
     List<BAL.ViewModels.FieldTripParticipantViewModel>? parts = Model.FieldTripParticipants;
 
-    List<SelectListItem> defaultFieldTripInclusionTypes = new()
-    {
-        new SelectListItem {Text = "Included", Value = "Included", Selected = true},
-        new SelectListItem {Text = "Excluded", Value = "Excluded"}
-    };
-    List<SelectListItem> defaultFieldTripStatus = new()
-    {
-        new SelectListItem {Text = "On Hold", Value = "OnHold"},
-        new SelectListItem {Text = "Postponed", Value = "Postponed"},
-        new SelectListItem {Text = "Cancelled", Value = "Cancelled"},
-        new SelectListItem {Text = "Ended", Value = "Ended"}
-    };
-    foreach (var item in defaultFieldTripStatus)
-    {
-        if (updateTrip.Status.Equals(item.Value))
-        {
-            item.Selected = true;
-        }
-    }
+    List<SelectListItem> defaultFieldTripInclusionTypes = Model.SelectListInclusionTypes;
+    List<SelectListItem> defaultFieldTripStatus = Model.SelectListStatus;
 
     Layout = "~/Views/Shared/_MLayout.cshtml";
 }
@@ -715,9 +698,9 @@
                                           class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                 </div>
                             </div>
-                            <input asp-for="@updateTrip.NumberOfParticipants" type="number"
-                                   value="@updateTrip.NumberOfParticipants" required hidden>
                         </div>
+                        <input asp-for="@updateTrip.NumberOfParticipants" type="number"
+                               value="@updateTrip.NumberOfParticipants" required hidden>
                         <div class="form-group row">
                             <label asp-for="@updateTrip.Address" class="col-sm-2 col-form-label"></label>
                             <div class="col-sm-10">

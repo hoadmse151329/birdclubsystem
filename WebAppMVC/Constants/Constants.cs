@@ -12,6 +12,7 @@
 
 		public static string NEW_MEMBER_REGISTRATION_TRANSACTION_TYPE = "New-Membership-Registration";
 		public static string MEMBER_FIELDTRIP_REGISTRATION_TRANSACTION_TYPE = "Member-FieldTrip-Registration";
+
 		public static string CREATE_MEETING_VALID = "CMeetingValid";
         public static string UPDATE_MEETING_VALID = "UMeetingValid";
         public static string CREATE_FIELDTRIP_VALID = "CFieldTripValid";
@@ -22,6 +23,27 @@
         public static string CREATE_FIELDTRIP_INCLUSION_VALID = "CFieldTripInclusionValid";
 		public static string CREATE_CONTEST_VALID = "CContestValid";
         public static string UPDATE_CONTEST_VALID = "UContestValid";
+
+		public static string EVENT_STATUS_ON_HOLD = "OnHold";
+        public static string EVENT_STATUS_NAME_ON_HOLD = "On Hold";
+        public static string EVENT_STATUS_POSTPONED = "Postponed";
+        public static string EVENT_STATUS_NAME_POSTPONED = "Postponed";
+        public static string EVENT_STATUS_CANCELLED = "Cancelled";
+        public static string EVENT_STATUS_NAME_CANCELLED = "Cancelled";
+        public static string EVENT_STATUS_ENDED = "Ended";
+        public static string EVENT_STATUS_NAME_ENDED = "Ended";
+        public static string EVENT_STATUS_OPEN_REGISTRATION = "OpenRegistration";
+        public static string EVENT_STATUS_NAME_OPEN_REGISTRATION = "Open Registration";
+        public static string EVENT_STATUS_CLOSED_REGISTRATION = "ClosedRegistration";
+        public static string EVENT_STATUS_NAME_CLOSED_REGISTRATION = "Closed Registration";
+        public static string EVENT_STATUS_CHECKING_IN = "CheckingIn";
+        public static string EVENT_STATUS_NAME_CHECKING_IN = "Checking In";
+        public static string EVENT_STATUS_ONGOING = "Ongoing";
+        public static string EVENT_STATUS_NAME_ONGOING = "Ongoing";
+
+        public static string FIELDTRIP_INCLUSION_TYPE_INCLUDED = "Included";
+        public static string FIELDTRIP_INCLUSION_TYPE_EXCLUDED = "Excluded";
+
         public static string ADMIN = "Admin";
 		public static string MEMBER = "Member";
 		public static string TEMPMEMBER = "TempMember";
