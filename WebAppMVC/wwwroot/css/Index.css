@@ -18,14 +18,27 @@
     width: 1440px;
     height: auto;
     margin: 0px auto;
-    background: rgb(166, 247, 145);
+    background: #99ffad;
     overflow: hidden;
     border-radius: 1rem;
     border-width: 1px;
     border-style: solid;
     border-image: initial;
 }
-
+.club__content font-a {
+    font-weight: bold;
+    margin-left: 10px;
+    background: -webkit-linear-gradient(0.25turn, #00ecd5, #ffadd9);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+    .club-content a:hover {
+        font-weight: bold;
+        margin-left: 10px;
+        background: -webkit-linear-gradient(0.25turn, #ffadd9, #ffadd9);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
 .pic {
     position: absolute;
     width: 1440px;
