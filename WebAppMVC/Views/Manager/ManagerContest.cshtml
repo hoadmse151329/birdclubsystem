@@ -134,15 +134,15 @@
                                                                 </li>
                                                                 <li>
                                                                     <h6>Registration Deadlines:</h6>
-                                                                    <span>@data.RegistrationDeadline.ToString("MM/dd/yyyy")</span>
+                                                                    <span>@data.RegistrationDeadline.ToString("dd-MM-yyyy HH:mm")</span>
                                                                 </li>
                                                                 <li>
                                                                     <h6>Start Date:</h6>
-                                                                    <span>@data.StartDate.ToString("MM/dd/yyyy")</span>
+                                                                    <span>@data.StartDate.ToString("dd-MM-yyyy HH:mm")</span>
                                                                 </li>
                                                                 <li>
                                                                     <h6>End Date:</h6>
-                                                                    <span>@data.EndDate.ToString("MM/dd/yyyy")</span>
+                                                                    <span>@data.EndDate.ToString("dd-MM-yyyy HH:mm")</span>
                                                                 </li>
                                                                 <li>
                                                                     <h6>Maximum Participants:</h6>
@@ -171,29 +171,31 @@
                                                     </div>
                                                 </div>
                                             </div>
-    <div id="deleteContest" class="modal fade" role="dialog">
-        <div class="modal-dialog modal-dialog-centered" role="content">
-            <div class="modal-content">
-                <form action="#">
-                    <div class="card-body">
-                        <div class="del-title">
-                            <i class='bx bx-error-circle'></i>
-                            <h2>Are you sure want to delete ?</h2> 
-                        </div>
-                        <div class="del-submit d-flex justify-content-center">       
-                            <form asp-action="ManagerCancelContest" asp-controller="Manager" method="post" asp-route-id="@data.ContestId">
-                                <button type="submit" name="action" value="deleteContest" class="btn btn-success">Save</button>
-                                </form>
-                                <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
-                            </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+                                            <div id="deleteContest" class="modal fade" role="dialog">
+                                                <div class="modal-dialog modal-dialog-centered" role="content">
+                                                    <div class="modal-content">
+                                                        <form action="#">
+                                                            <div class="card-body">
+                                                                <div class="del-title">
+                                                                    <i class='bx bx-error-circle'></i>
+                                                                    <h2>Are you sure want to Cancel Contest ?</h2> 
+                                                                </div>
+                                                                <div class="del-submit d-flex justify-content-center">       
+                                                                    <form asp-action="ManagerCancelContest" asp-controller="Manager" method="post" asp-route-id="@data.ContestId">
+                                                                        <button type="submit" name="action" value="deleteContest" class="btn btn-success">Save</button>
+                                                                        </form>
+                                                                        <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
+                                                                    </div>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         }
-                                </div>                               
-                            <!-- end tapnet -->
+                                    </div>
+                                    <!-- end tapnet -->
+                                </div>    
+                            </div>
                         </div>
                     </div>
                 </section>

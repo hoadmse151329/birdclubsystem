@@ -27,7 +27,7 @@ namespace DAL.Repositories.Implements
         }
         public async Task<Contest?> GetContestById(int id)
         {
-            return _context.Contests.SingleOrDefault(c => c.ContestId == id);
+            return _context.Contests.AsNoTracking().SingleOrDefault(c => c.ContestId == id);
         }
 
         public async Task<bool> GetBoolContestId(int id)
@@ -35,6 +35,11 @@ namespace DAL.Repositories.Implements
             var con = _context.Contests.SingleOrDefault(c => c.ContestId == id);
             if (con != null) return true;
             else return false;
+        }
+
+        public async Task<Contest?> GetContestByIdTracking(int id)
+        {
+            return _context.Contests.SingleOrDefault(c => c.ContestId == id);
         }
     }
 }

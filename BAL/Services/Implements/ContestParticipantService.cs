@@ -22,17 +22,22 @@ namespace BAL.Services.Implements
             _mapper = mapper;
         }
 
-        public async Task<int> Create(string memberId, int contestId, int? birdId = null)
+        public async Task<int> Create(string memberId, int contestId)
         {
-            int partNo = await _unitOfWork.ContestParticipantRepository.GetParticipationNoContestParticipantById(contestId, memberId, birdId);
+            int partNo = await _unitOfWork.ContestParticipantRepository.GetParticipationNoContestParticipantById(contestId, memberId);
             if (partNo > 0) return partNo;
             int contestpartCount = await _unitOfWork.ContestParticipantRepository.GetCountContestParticipantsByContestId(contestId);
             if (contestpartCount.Equals(0)) partNo = 1; else partNo = contestpartCount + 1;
+            int birdId = await _unitOfWork.BirdRepository.GetBirdIdByMemberId(memberId);
+            int elo = await _unitOfWork.BirdRepository.GetELOByBirdId(birdId);
             ContestParticipant contestParticipant = new ContestParticipant()
             {
                 ContestId = contestId,
                 BirdId = birdId,
-                ParticipantNo = partNo.ToString()
+                MemberId = memberId,
+                ParticipantNo = partNo.ToString(),
+                Elo = elo,
+                CheckInStatus = "Not Checked-In"
             };
             _unitOfWork.ContestParticipantRepository.Create(contestParticipant);
             _unitOfWork.Save();

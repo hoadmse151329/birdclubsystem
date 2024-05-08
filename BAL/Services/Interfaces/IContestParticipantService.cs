@@ -11,7 +11,7 @@ namespace BAL.Services.Interfaces
 {
     public interface IContestParticipantService
     {
-        Task<int> Create(string memberId, int contestId, int? birdId = null);
+        Task<int> Create(string memberId, int contestId);
         Task<bool> Delete(string memberId, int contestId, int? birdId = null);
         Task<IEnumerable<ContestParticipantViewModel>> GetAll();
         Task<IEnumerable<ContestParticipantViewModel>> GetAllByBirdId(int birdId);

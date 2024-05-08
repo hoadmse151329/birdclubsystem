@@ -26,7 +26,8 @@ namespace WebAPI.Controllers
             IMemberService memberService,
             IUserService userService,
             IFieldTripParticipantService fieldTripParticipantService,
-            IFieldTripDayByDayService dayByDayService)
+            IFieldTripDayByDayService dayByDayService,
+            IFieldTripInclusionService inclusionService)
         {
             _fieldTripService = fieldTripService;
             _config = config;
@@ -34,6 +35,7 @@ namespace WebAPI.Controllers
             _userService = userService;
             _participantService = fieldTripParticipantService;
             _dayByDayService = dayByDayService;
+            _inclusionService = inclusionService;
         }
 
         [HttpPost("All")]

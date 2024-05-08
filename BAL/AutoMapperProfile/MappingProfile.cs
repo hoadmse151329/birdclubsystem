@@ -90,7 +90,7 @@ namespace BAL.AutoMapperProfile
                 {
                     dest.EventId = src.ContestId;
                     dest.EventName = src.ContestDetail.ContestName;
-                    dest.EventType = "Bird Contest";
+                    dest.EventType = "Contest";
                     dest.EventHost = src.ContestDetail.Host;
                     dest.EventStaff = src.ContestDetail.Incharge;
                     dest.StartDate = src.ContestDetail.StartDate;
