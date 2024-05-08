@@ -195,12 +195,13 @@ namespace WebAppMVC.Controllers
                     + meetPostResponse.ErrorMessage;
                 return RedirectToAction("StaffMeeting");
             }
+            meetingDetailBigModel.UpdateMeeting = methcall.GetValidationTempData<MeetingViewModel>(this, TempData, Constants.Constants.UPDATE_MEETING_VALID, "updateMeeting", options);
             meetingDetailBigModel.MeetingDetails = meetPostResponse.Data;
             meetingDetailBigModel.MeetingParticipants = meetpartPostResponse.Data;
             return View(meetingDetailBigModel);
         }
         [HttpPost("Meeting/UpdateStatus/{id:int}")]
-        public async Task<IActionResult> StaffUpdateMeetingStatus(
+        public async Task<IActionResult> StaffUpdateMeetingPartStatus(
             int id,
             List<MeetingParticipantViewModel> meetPartView)
         {

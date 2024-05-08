@@ -869,7 +869,7 @@ namespace WebAppMVC.Controllers
         /*[Route("Manager/Contest/Update/{id:int}")]*/
         public async Task<IActionResult> ManagerUpdateContestDetail(
             int id,
-            ContestViewModel meetView
+            ContestViewModel updateContest
             )
         {
             ManagerAPI_URL += "Contest/Update/" + id;
@@ -898,7 +898,7 @@ namespace WebAppMVC.Controllers
                                 options: options,
                                 methodName: "PUT",
                                 url: ManagerAPI_URL,
-                                inputType: meetView,
+                                inputType: updateContest,
                                 accessToken: accToken,
                                 _logger: _logger);
             if (contestPostResponse == null)

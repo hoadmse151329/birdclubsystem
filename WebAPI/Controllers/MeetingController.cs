@@ -222,7 +222,7 @@ namespace WebAPI.Controllers
                 });
             }
         }
-        [Authorize(Roles = "Manager")]
+        [Authorize(Roles = "Manager,Staff")]
         [HttpPut("Update/{id}")]
         [ProducesResponseType(typeof(MeetingViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
