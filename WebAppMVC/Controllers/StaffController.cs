@@ -196,6 +196,8 @@ namespace WebAppMVC.Controllers
                 return RedirectToAction("StaffMeeting");
             }
             meetingDetailBigModel.UpdateMeeting = methcall.GetValidationTempData<MeetingViewModel>(this, TempData, Constants.Constants.UPDATE_MEETING_VALID, "updateMeeting", options);
+            meetingDetailBigModel.SelectListStatus = methcall.GetStaffEventStatusSelectableList(meetPostResponse.Data.Status);
+
             meetingDetailBigModel.MeetingDetails = meetPostResponse.Data;
             meetingDetailBigModel.MeetingParticipants = meetpartPostResponse.Data;
             return View(meetingDetailBigModel);
@@ -441,6 +443,7 @@ namespace WebAppMVC.Controllers
             fieldtripDetailBigModel.FieldTripImportantToKnows = fieldtripPostResponse.Data.FieldtripAdditionalDetails.Where(f => f.Type.Equals("important_to_know")).ToList();
             fieldtripDetailBigModel.FieldTripActivitiesAndTransportation = fieldtripPostResponse.Data.FieldtripAdditionalDetails.Where(f => f.Type.Equals("activities_and_transportation")).ToList();
             fieldtripDetailBigModel.FieldTripParticipants = fieldtrippartPostResponse.Data;
+            fieldtripDetailBigModel.SelectListStatus = methcall.GetStaffEventStatusSelectableList(fieldtripPostResponse.Data.Status);
 
             return View(fieldtripDetailBigModel);
         }
@@ -449,7 +452,7 @@ namespace WebAppMVC.Controllers
             [FromRoute][Required] int id,
             [Required] FieldTripViewModel updateTrip)
         {
-            StaffAPI_URL += "FieldTrip/Update" + id;
+            StaffAPI_URL += "FieldTrip/Update/" + id;
             string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
             if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
 
@@ -670,12 +673,66 @@ namespace WebAppMVC.Controllers
                     + contestPostResponse.ErrorMessage;
                 return RedirectToAction("StaffContest");
             }
+            contestDetailBigModel.UpdateContest = methcall.GetValidationTempData<ContestViewModel>(this, TempData, Constants.Constants.UPDATE_CONTEST_VALID, "updateContest", options);
             contestDetailBigModel.ContestDetails = contestPostResponse.Data;
             contestDetailBigModel.ContestParticipants = contestpartPostResponse.Data;
+            contestDetailBigModel.SelectListStatus = methcall.GetStaffEventStatusSelectableList(contestPostResponse.Data.Status);
             return View(contestDetailBigModel);
         }
-        [HttpPost("Contest/UpdateStatus/{id:int}")]
+        [HttpPost("Contest/{id:int}/Update")]
         public async Task<IActionResult> StaffUpdateContestStatus(
+            [FromRoute][Required] int id,
+            [Required] ContestViewModel updateContest
+            )
+        {
+            StaffAPI_URL += "Contest/Update/" + id;
+
+            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
+            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+
+            string? role = HttpContext.Session.GetString("ROLE_NAME");
+            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
+            else if (!role.Equals("Staff")) return RedirectToAction("Index", "Home");
+
+            string? usrId = HttpContext.Session.GetString("USER_ID");
+            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
+
+            string? usrname = HttpContext.Session.GetString("USER_NAME");
+            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
+
+            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
+
+            TempData["ROLE_NAME"] = role;
+            TempData["USER_NAME"] = usrname;
+            TempData["IMAGE_PATH"] = imagepath;
+
+            var contestPostResponse = await methcall.CallMethodReturnObject<GetContestPostResponse>(
+                                _httpClient: _httpClient,
+                                options: options,
+                                methodName: "PUT",
+                                url: StaffAPI_URL,
+                                inputType: updateContest,
+                                accessToken: accToken,
+                                _logger: _logger);
+            if (contestPostResponse == null)
+            {
+                ViewBag.Error =
+                    "Error while processing your request! (Updating Contest Status!).\n Contest Not Found!";
+                return RedirectToAction("StaffContestDetail", "Staff", new { id });
+            }
+            if (!contestPostResponse.Status)
+            {
+                _logger.LogInformation("Error while processing your request: " + contestPostResponse.Status + " , Error Message: " + contestPostResponse.ErrorMessage);
+                ViewBag.Error =
+                    "Error while processing your request! (Updating Contest Status!).\n"
+                    + contestPostResponse.ErrorMessage;
+                return RedirectToAction("StaffContestDetail", "Staff", new { id });
+            }
+            return RedirectToAction("StaffContestDetail", "Staff", new { id });
+        }
+
+        [HttpPost("Contest/UpdateStatus/{id:int}")]
+        public async Task<IActionResult> StaffUpdateContestPartStatus(
             int id,
             List<ContestParticipantViewModel> contestPartView)
         {

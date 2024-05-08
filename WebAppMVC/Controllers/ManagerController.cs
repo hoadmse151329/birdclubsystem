@@ -990,7 +990,6 @@ namespace WebAppMVC.Controllers
             return View(contestDetailBigModel);
         }
         [HttpPost("Contest/{id:int}/Update")]
-        /*[Route("Manager/Contest/Update/{id:int}")]*/
         public async Task<IActionResult> ManagerUpdateContestDetail(
             [FromRoute][Required] int id,
             [Required] ContestViewModel updateContest

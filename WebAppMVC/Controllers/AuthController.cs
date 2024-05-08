@@ -172,6 +172,11 @@ namespace WebAppMVC.Controllers
 
             if (authenResponse == null)
 			{
+                string? role = HttpContext.Session.GetString("ROLE_NAME");
+
+                if (role == null) role = "Guest";
+
+                TempData["ROLE_NAME"] = role;
                 _logger.LogInformation("Username or Password is invalid.");
                 ViewBag.error = "Username or Password is invalid.";
 				return View("Login");

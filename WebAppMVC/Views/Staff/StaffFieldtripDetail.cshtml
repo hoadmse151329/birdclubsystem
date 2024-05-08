@@ -20,13 +20,7 @@
         new SelectListItem {Text = "Not Checked-In", Value = "Not Checked-In"},
         new SelectListItem {Text = "Checked-In", Value = "Checked-In"}
     };
-    List<SelectListItem> defaultTripStatus = new()
-    {
-        new SelectListItem {Text = "Open Registration", Value = "OpenRegistration"},
-        new SelectListItem {Text = "Closed Registration", Value = "ClosedRegistration"},
-        new SelectListItem {Text = "Checking In", Value = "CheckingIn"},
-        new SelectListItem {Text = "Ongoing", Value = "Ongoing"}
-    };
+    List<SelectListItem> defaultTripStatus = Model.SelectListStatus;
     Layout = "~/Views/Shared/_SLayout.cshtml";
 }
 <html lang="en">
@@ -150,6 +144,14 @@
                                         </div>
                                         <div class="col-sm-7 text-sm-left">
                                             <span>@detailsTrip.InCharge</span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-sm-2">
+                                        <div class="col-sm-5 text-sm-right">
+                                            <span>Fee:</span>
+                                        </div>
+                                        <div class="col-sm-7 text-sm-left">
+                                            <span>@detailsTrip.Fee</span>
                                         </div>
                                     </div>
                                     <div class="row mb-sm-2">
@@ -355,8 +357,8 @@
         </div>
     </div>
 
-    <!--edit Room-->
-    <div id="edit-profile" class="modal fade" role="dialog">
+    <!-- edit FieldTrip Status -->
+    <div id="editprofile" class="modal fade" role="dialog">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
             <div class="modal-content modal-addRoom">
                 <div class="modal-header">
@@ -378,6 +380,28 @@
                         </div>
                         <input asp-for="@updateTrip.TripName" type="text"
                                value="@updateTrip.TripName" required hidden>
+                        <input asp-for="@updateTrip.RegistrationDeadline" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
+                               value="@updateTrip.RegistrationDeadline.ToString("yyyy-MM-ddTHH:mm")" required hidden>
+                        <input asp-for="@updateTrip.StartDate" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
+                               value="@updateTrip.StartDate.ToString("yyyy-MM-ddTHH:mm")" required hidden>
+                        <input asp-for="@updateTrip.EndDate" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
+                               value="@updateTrip.EndDate.ToString("yyyy-MM-ddTHH:mm")" required hidden>
+                        <input asp-for="@updateTrip.NumberOfParticipantsLimit" type="number"
+                               value="@updateTrip.NumberOfParticipantsLimit" required hidden>
+                        <input asp-for="@updateTrip.Host" type="text"
+                               value="@updateTrip.Host" required hidden>
+                        <input asp-for="@updateTrip.InCharge" type="text"
+                               value="@updateTrip.InCharge" required hidden>
+                        <input asp-for="@updateTrip.Fee" type="number"
+                               value="@updateTrip.Fee" required hidden>
+                        <input asp-for="@updateTrip.Address" type="text"
+                               value="@updateTrip.Address" required hidden>
+                        <textarea asp-for="@updateTrip.Description" type="text"
+                                  value="@updateTrip.Description" required hidden></textarea>
+                        <textarea asp-for="@updateTrip.Details" type="text"
+                                  value="@updateTrip.Details" required hidden></textarea>
+                        <textarea asp-for="@updateTrip.Note" type="text"
+                                  value="@updateTrip.Note" required hidden></textarea>
                         <input asp-for="@updateTrip.NumberOfParticipants" type="number"
                                value="@updateTrip.NumberOfParticipants" required hidden>
                     </div>

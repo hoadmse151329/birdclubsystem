@@ -398,7 +398,7 @@ namespace WebAPI.Controllers
                 });
             }
         }
-        [HttpPut("Update/{id}")]
+        [HttpPut("Update/{id:int}")]
         [Authorize(Roles = "Manager,Staff")]
         [ProducesResponseType(typeof(FieldTripViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
