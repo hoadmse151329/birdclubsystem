@@ -2,7 +2,8 @@
 @{
     Layout = null;
     ViewData["Title"] = "Staff Meeting Detail Page";
-    BAL.ViewModels.MeetingViewModel details = Model.MeetingDetails;
+    BAL.ViewModels.MeetingViewModel detailsMeeting = Model.MeetingDetails;
+    BAL.ViewModels.MeetingViewModel updateMeeting = Model.UpdateMeeting != null ? Model.UpdateMeeting : Model.MeetingDetails;
     List<BAL.ViewModels.MeetingParticipantViewModel> meetPartView = Model.MeetingParticipants;
     List<SelectListItem> checkInStatus = new()
     {
@@ -148,6 +149,9 @@
                             <div class="card profile col-12 mb-4">
                                 <div class="card-header">
                                     <h4>Meeting Information</h4>
+                                    <div class="edit-info">
+                                        <i class='bx bxs-edit-alt' data-toggle="modal" data-target="#editprofile"></i>
+                                    </div>
                                 </div>
                                 <div class="card-body">
                                     <div class="row">
@@ -156,26 +160,26 @@
                                         </div>
                                         <div class="col-sm-7">
                                             @{
-                                                switch (details.Status)
+                                                switch (detailsMeeting.Status)
                                                 {
                                                     case "Ongoing":
                                                     case "CheckingIn":
                                                     case "OpenRegistration":
                                                         {
-                                                            <span class="outcome" style="float: left;">@details.Status</span>
+                                                            <span class="outcome" style="float: left;">@detailsMeeting.Status</span>
                                                             break;
                                                         }
                                                     case "OnHold":
                                                     case "ClosedRegistration":
                                                         {
-                                                            <span class="approval" style="float: left;">@details.Status</span>
+                                                            <span class="approval" style="float: left;">@detailsMeeting.Status</span>
                                                             break;
                                                         }
                                                     case "Ended":
                                                     case "Postponed":
                                                     case "Cancelled":
                                                         {
-                                                            <span class="destroy" style="float: left;">@details.Status</span>
+                                                            <span class="destroy" style="float: left;">@detailsMeeting.Status</span>
                                                             break;
                                                         }
                                                 }
@@ -187,7 +191,7 @@
                                             <label for="meeting-name">Meeting Name:</label>
                                         </div>
                                         <div class="col-md-7">
-                                            <span>@details.MeetingName</span>
+                                            <span>@detailsMeeting.MeetingName</span>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -195,7 +199,7 @@
                                             <label for="customer-name">Registration Deadlines:</label>
                                         </div>
                                         <div class="col-md-7">
-                                            <span>@details.RegistrationDeadline.ToString("MM/dd/yyyy")</span>
+                                            <span>@detailsMeeting.RegistrationDeadline.ToString("MM/dd/yyyy")</span>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -203,7 +207,7 @@
                                             <label for="customer-name">Start Date:</label>
                                         </div>
                                         <div class="col-md-7">
-                                            <span>@details.StartDate.ToString("MM/dd/yyyy")</span>
+                                            <span>@detailsMeeting.StartDate.ToString("MM/dd/yyyy")</span>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -211,7 +215,7 @@
                                             <label for="customer-name">End Date:</label>
                                         </div>
                                         <div class="col-md-7">
-                                            <span>@details.EndDate.ToString("MM/dd/yyyy")</span>
+                                            <span>@detailsMeeting.EndDate.ToString("MM/dd/yyyy")</span>
                                         </div>
                                     </div>
                                     <div class="row mb-sm-2">
@@ -219,7 +223,7 @@
                                             <span>Host:</span>
                                         </div>
                                         <div class="col-sm-7 text-sm-left">
-                                            <span>@details.Host</span>
+                                            <span>@detailsMeeting.Host</span>
                                         </div>
                                     </div>
                                     <div class="row mb-sm-2">
@@ -227,7 +231,7 @@
                                             <span>Incharge:</span>
                                         </div>
                                         <div class="col-sm-7 text-sm-left">
-                                            <span>@details.Incharge</span>
+                                            <span>@detailsMeeting.Incharge</span>
                                         </div>
                                     </div>
                                     <div class="row mb-sm-2">
@@ -235,7 +239,7 @@
                                             <span>Maximum Participations:</span>
                                         </div>
                                         <div class="col-sm-7 text-sm-left">
-                                            <span>@details.NumberOfParticipantsLimit</span>
+                                            <span>@detailsMeeting.NumberOfParticipantsLimit</span>
                                         </div>
                                     </div>
                                     <div class="row mb-sm-2">
@@ -243,7 +247,7 @@
                                             <span>Remaining Participant Slots:</span>
                                         </div>
                                         <div class="col-sm-7 text-sm-left">
-                                            <span>@details.NumberOfParticipants</span>
+                                            <span>@detailsMeeting.NumberOfParticipants</span>
                                         </div>
                                     </div>
                                     <div class="row mb-sm-2">
@@ -251,7 +255,7 @@
                                             <span>Location:</span>
                                         </div>
                                         <div class="col-sm-7 text-sm-left">
-                                            <span>@details.AreaNumber,@details.Street,@details.District,@details.City</span>
+                                            <span>@detailsMeeting.AreaNumber,@detailsMeeting.Street,@detailsMeeting.District,@detailsMeeting.City</span>
                                         </div>
                                     </div>
                                     <div class="row mb-sm-2">
@@ -259,7 +263,7 @@
                                             <span>Description:</span>
                                         </div>
                                         <div class="col-sm-7 text-sm-left">
-                                            <span>@details.Description</span>
+                                            <span>@detailsMeeting.Description</span>
                                         </div>
                                     </div>
                                     <div class="row mb-sm-2">
@@ -267,7 +271,7 @@
                                             <span>Note:</span>
                                         </div>
                                         <div class="col-sm-7 text-sm-left">
-                                            <span>@details.Note</span>
+                                            <span>@detailsMeeting.Note</span>
                                         </div>
                                     </div>
                                 </div>
@@ -276,7 +280,7 @@
                     </div>
 
                     <div class="col-lg-5 cardFB">
-                        <form asp-action="StaffUpdateMeetingStatus" asp-controller="Staff" asp-route-id="@details.MeetingId" method="post">
+                        <form asp-action="StaffUpdateMeetingPartStatus" asp-controller="Staff" asp-route-id="@detailsMeeting.MeetingId" method="post">
                             <div class="card border-0 d-flex">
                                 <div class="card-header">
                                     <h4>Edit Participant Status</h4>
@@ -332,34 +336,60 @@
                             </div>
                         </form>
                     </div>
-                    <div id="editprofile" class="modal fade" role="dialog">
-                        <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
-                            <div class="modal-content modal-addRoom">
-                                <div class="modal-header">
-                                    <h4 class="modal-title">Edit Meeting</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- edit Room -->
+    <div id="editprofile" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
+            <div class="modal-content modal-addRoom">
+                <div class="modal-header">
+                    <h4 class="modal-title">Edit Meeting Status</h4>
+                </div>
+                <form asp-action="StaffUpdateMeetingStatus" asp-controller="Staff" method="post" asp-route-id="@detailsMeeting.MeetingId" class="form-group">
+                    <div class="modal-body">
+                        <div class="row justify-content-center">
+                            <div class="col-12 col-md-6">
+                                <div class="form-group row">
+                                    <label asp-for="@updateMeeting.Status" class="col-sm-4 col-form-label"></label>
+                                    <div class="col-sm-8">
+                                        <select class="form-control" asp-for="@updateMeeting.Status" asp-items="@defaultMeetingStatus" class="custom-select" required></select>
+                                        <span asp-validation-for="@updateMeeting.Status" id="error_message"
+                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                    </div>
                                 </div>
-                                <form asp-action="StaffUpdateMeetingStatus" asp-controller="Staff" method="post" asp-route-id="@details.MeetingId" class="form-group">
-                                    <div class="modal-body">
-                                        <div class="row justify-content-center">
-                                            <div class="form-group row">
-                                                <label asp-for="@details.Status" class="col-sm-4 col-form-label">Status:</label>
-                                                <div class="col-sm-8">
-                                                    <select class="form-control" asp-for="@details.Status" asp-items="@defaultMeetingStatus" class="custom-select" name="Status"></select>
-                                                    <span asp-validation-for="@details.Status" id="error_message"
-                                                          class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer justify-content-center">
-                                        <button class="btn btn-success" type="submit" value="Update">Save</button>
-                                        <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
-                                    </div>
-                                </form>
                             </div>
                         </div>
+                        <input asp-for="@updateMeeting.MeetingName" type="text"
+                               value="@updateMeeting.MeetingName" required hidden>
+                        <input asp-for="@updateMeeting.RegistrationDeadline" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
+                               value="@updateMeeting.RegistrationDeadline.ToString("yyyy-MM-ddTHH:mm")" required hidden>
+                        <input asp-for="@updateMeeting.StartDate" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
+                               value="@updateMeeting.StartDate.ToString("yyyy-MM-ddTHH:mm")" required hidden>
+                        <input asp-for="@updateMeeting.EndDate" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
+                               value="@updateMeeting.EndDate.ToString("yyyy-MM-ddTHH:mm")" required hidden>
+                        <input asp-for="@updateMeeting.NumberOfParticipantsLimit" type="number"
+                               value="@updateMeeting.NumberOfParticipantsLimit" required hidden>
+                        <input asp-for="@updateMeeting.Host" type="text"
+                               value="@updateMeeting.Host" required hidden>
+                        <input asp-for="@updateMeeting.Incharge" type="text"
+                               value="@updateMeeting.Incharge" required hidden>
+                        <input asp-for="@updateMeeting.Address" type="text"
+                               value="@updateMeeting.Address" required hidden>
+                        <textarea asp-for="@updateMeeting.Description" type="text"
+                                  value="@updateMeeting.Description"  required hidden></textarea>
+                        <textarea asp-for="@updateMeeting.Note" type="text"
+                                  value="@updateMeeting.Note" required hidden></textarea>
+                        <input asp-for="@updateMeeting.NumberOfParticipants" type="number"
+                               value="@updateMeeting.NumberOfParticipants" required hidden>
                     </div>
-                </div>
+                    <div class="modal-footer justify-content-center">
+                        <button class="btn btn-success" type="submit" value="Update">Save</button>
+                        <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

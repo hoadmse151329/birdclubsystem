@@ -220,7 +220,6 @@ namespace WebAppMVC.Controllers
             return View(meetingDetailBigModel);
         }
         [HttpPost("Meeting/{id:int}/Update")]
-        /*[Route("Manager/Meeting/Update/{id:int}")]*/
         public async Task<IActionResult> ManagerUpdateMeetingDetail(
             [FromRoute] [Required] int id,
             [Required] MeetingViewModel updateMeeting

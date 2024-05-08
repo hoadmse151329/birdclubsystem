@@ -195,12 +195,73 @@ namespace WebAppMVC.Controllers
                     + meetPostResponse.ErrorMessage;
                 return RedirectToAction("StaffMeeting");
             }
+            meetingDetailBigModel.UpdateMeeting = methcall.GetValidationTempData<MeetingViewModel>(this, TempData, Constants.Constants.UPDATE_MEETING_VALID, "updateMeeting", options);
             meetingDetailBigModel.MeetingDetails = meetPostResponse.Data;
             meetingDetailBigModel.MeetingParticipants = meetpartPostResponse.Data;
             return View(meetingDetailBigModel);
         }
-        [HttpPost("Meeting/UpdateStatus/{id:int}")]
+        [HttpPost("Meeting/{id:int}/Update")]
         public async Task<IActionResult> StaffUpdateMeetingStatus(
+            [FromRoute][Required] int id,
+            [Required] MeetingViewModel updateMeeting)
+        {
+            StaffAPI_URL += "Meeting/Update/" + id;
+
+            /*if (!ModelState.IsValid)
+            {
+                TempData = methcall.GetValidationTempData(TempData, Constants.Constants.UPDATE_MEETING_VALID, updateMeeting, options);
+                return RedirectToAction("StaffMeetingDetail", new { id });
+            }*/
+            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
+            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+
+            string? role = HttpContext.Session.GetString("ROLE_NAME");
+            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
+            else if (!role.Equals("Staff")) return RedirectToAction("Index", "Home");
+
+            string? usrId = HttpContext.Session.GetString("USER_ID");
+            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
+
+            string? usrname = HttpContext.Session.GetString("USER_NAME");
+            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
+
+            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
+
+            TempData["ROLE_NAME"] = role;
+            TempData["USER_NAME"] = usrname;
+            TempData["IMAGE_PATH"] = imagepath;
+
+            var meetPostResponse = await methcall.CallMethodReturnObject<GetMeetingPostResponse>(
+                                _httpClient: _httpClient,
+                                options: options,
+                                methodName: "PUT",
+                                url: StaffAPI_URL,
+                                inputType: updateMeeting,
+                                accessToken: accToken,
+                                _logger: _logger);
+            if (meetPostResponse == null)
+            {
+                TempData = methcall.GetValidationTempData(TempData, Constants.Constants.UPDATE_MEETING_VALID, updateMeeting, options);
+
+                ViewBag.Error =
+                    "Error while processing your request! (Updating Meeting Status!).\n Meeting Not Found!";
+                return RedirectToAction("StaffMeetingDetail", new { id });
+            }
+            if (!meetPostResponse.Status)
+            {
+                TempData = methcall.GetValidationTempData(TempData, Constants.Constants.UPDATE_MEETING_VALID, updateMeeting, options);
+
+                _logger.LogInformation("Error while processing your request: " + meetPostResponse.Status + " , Error Message: " + meetPostResponse.ErrorMessage);
+                ViewBag.Error =
+                    "Error while processing your request! (Updating Meeting Status!).\n"
+                    + meetPostResponse.ErrorMessage;
+                return RedirectToAction("StaffMeetingDetail", new { id });
+            }
+            return RedirectToAction("StaffMeetingDetail", new { id });
+        }
+
+        [HttpPost("Meeting/UpdateStatus/{id:int}")]
+        public async Task<IActionResult> StaffUpdateMeetingPartStatus(
             int id,
             List<MeetingParticipantViewModel> meetPartView)
         {
@@ -250,7 +311,7 @@ namespace WebAppMVC.Controllers
                     + meetPartStatusResponse.ErrorMessage;
                 return View("StaffIndex");
             }
-            return RedirectToAction("StaffMeetingDetail", "Staff", new { id = id });
+            return RedirectToAction("StaffMeetingDetail", "Staff", new { id });
         }
         [HttpGet("FieldTrip")]
         public async Task<IActionResult> StaffFieldtrip([FromQuery] string search)
@@ -375,6 +436,7 @@ namespace WebAppMVC.Controllers
                 return RedirectToAction("StaffFieldTrip");
             }
             fieldtripDetailBigModel.FieldTripDetails = fieldtripPostResponse.Data;
+            fieldtripDetailBigModel.UpdateFieldTrip = methcall.GetValidationTempData<FieldTripViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_VALID, "updateTrip", options);
             fieldtripDetailBigModel.FieldTripTourFeatures = fieldtripPostResponse.Data.FieldtripAdditionalDetails.Where(f => f.Type.Equals("tour_features")).ToList();
             fieldtripDetailBigModel.FieldTripImportantToKnows = fieldtripPostResponse.Data.FieldtripAdditionalDetails.Where(f => f.Type.Equals("important_to_know")).ToList();
             fieldtripDetailBigModel.FieldTripActivitiesAndTransportation = fieldtripPostResponse.Data.FieldtripAdditionalDetails.Where(f => f.Type.Equals("activities_and_transportation")).ToList();
@@ -382,8 +444,58 @@ namespace WebAppMVC.Controllers
 
             return View(fieldtripDetailBigModel);
         }
-        [HttpPost("FieldTrip/UpdateStatus/{id:int}")]
+        [HttpPost("FieldTrip/{id:int}/Update")]
         public async Task<IActionResult> StaffUpdateFieldTripStatus(
+            [FromRoute][Required] int id,
+            [Required] FieldTripViewModel updateTrip)
+        {
+            StaffAPI_URL += "FieldTrip/Update" + id;
+            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
+            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+
+            string? role = HttpContext.Session.GetString("ROLE_NAME");
+            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
+            else if (!role.Equals("Staff")) return RedirectToAction("Index", "Home");
+
+            string? usrId = HttpContext.Session.GetString("USER_ID");
+            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
+
+            string? usrname = HttpContext.Session.GetString("USER_NAME");
+            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
+
+            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
+
+            TempData["ROLE_NAME"] = role;
+            TempData["USER_NAME"] = usrname;
+            TempData["IMAGE_PATH"] = imagepath;
+
+            var fieldtripPostResponse = await methcall.CallMethodReturnObject<GetFieldTripPostResponse>(
+                                _httpClient: _httpClient,
+                                options: options,
+                                methodName: "PUT",
+                                url: StaffAPI_URL,
+                                inputType: updateTrip,
+                                accessToken: accToken,
+                                _logger: _logger);
+            if (fieldtripPostResponse == null)
+            {
+                ViewBag.Error =
+                    "Error while processing your request! (Updating FieldTrip Status!).\n FieldTrip Not Found!";
+                return RedirectToAction("StaffFieldTripDetail", new { id });
+            }
+            if (!fieldtripPostResponse.Status)
+            {
+                _logger.LogInformation("Error while processing your request: " + fieldtripPostResponse.Status + " , Error Message: " + fieldtripPostResponse.ErrorMessage);
+                ViewBag.Error =
+                    "Error while processing your request! (Updating FieldTrip Status!).\n"
+                    + fieldtripPostResponse.ErrorMessage;
+                return RedirectToAction("StaffFieldTripDetail", new { id });
+            }
+            return RedirectToAction("StaffFieldTripDetail", new { id });
+        }
+
+        [HttpPost("FieldTrip/UpdateStatus/{id:int}")]
+        public async Task<IActionResult> StaffUpdateFieldTripPartStatus(
             int id,
             List<FieldTripParticipantViewModel> tripPartView)
         {
@@ -433,7 +545,7 @@ namespace WebAppMVC.Controllers
                     + tripPartStatusResponse.ErrorMessage;
                 return View("StaffIndex");
             }
-            return RedirectToAction("StaffFieldTripDetail", "Staff", new { id = id });
+            return RedirectToAction("StaffFieldTripDetail", "Staff", new { id });
         }
     
         [HttpGet("Contest")]
