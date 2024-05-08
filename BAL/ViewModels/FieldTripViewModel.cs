@@ -13,6 +13,7 @@ namespace BAL.ViewModels
     {
         public FieldTripViewModel()
         {
+            Review = "No Feedback";
             Status = "OnHold";
             RegistrationDeadline = DateTime.Now;
             StartDate = DateTime.Now.AddDays(1);
@@ -71,6 +72,8 @@ namespace BAL.ViewModels
         public decimal? Fee { get; set; }
         [DisplayName("Participant Number")]
         public int? ParticipationNo { get; set; }
+        [DisplayName("Review")]
+        public string? Review { get; set; }
         [Required(ErrorMessage = "Host is required")]
         [DisplayName("Host")]
         public string? Host { get; set; }

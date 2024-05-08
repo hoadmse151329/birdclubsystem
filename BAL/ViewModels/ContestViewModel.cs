@@ -13,6 +13,7 @@ namespace BAL.ViewModels
     {
         public ContestViewModel()
         {
+            Review = "No Feedback";
             Status = "OnHold";
             RegistrationDeadline = DateTime.Now;
             StartDate = DateTime.Now.AddDays(1);
@@ -80,8 +81,8 @@ namespace BAL.ViewModels
         public int? NumberOfParticipantsLimit { get; set; }
         [DisplayName("Participant Number")]
         public int? ParticipationNo { get; set; }
-        [DisplayName("Club ID")]
-        public int? ClubId { get; set; }
+        /*[DisplayName("Club ID")]
+        public int? ClubId { get; set; }*/
 
         public List<ContestMediaViewModel>? Media { get; set; }
     }
