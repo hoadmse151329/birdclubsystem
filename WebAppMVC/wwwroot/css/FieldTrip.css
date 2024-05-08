@@ -1059,26 +1059,23 @@ tour__content__block--consider .row {
         left: 54px;
     }
 
-    .member-field-trips-post .group {
-        background-color:white;
-        position: relative;
-        width: 768px;
-        height: 1254px;
-        border-radius: 30px;
-        border: 1px solid black;
-        box-shadow: 1px 1px 5px #b0b0b0;
-        top: 0;
-        left: 0;
-    }
+.member-field-trips-post .group {
+    background-color: white;
+    position: relative;
+    width: 778px;
+    height: 1254px;
+    border-radius: 50px;
+    border: 3px solid black;
+    box-shadow: 1px 1px 5px #b0b0b0;
+    top: 0;
+    left: 0;
+}
 
-    .member-field-trips-post .overlap-2 {
-        position: relative;
-        width: 768px;
-        height: 1254px;
-        border-radius: 30px;
-        border: 1px solid black;
-        box-shadow: 1px 1px 5px #b0b0b0;
-    }
+.member-field-trips-post .overlap-2 {
+    position: relative;
+    width: 768px;
+    height: 1254px;
+}
 
     .member-field-trips-post .img {
         position: absolute;
@@ -1111,7 +1108,17 @@ tour__content__block--consider .row {
         gap: 1px;
         position: absolute;
     }
-
+.member-field-trips-post .flexcontainer-3 {
+    width: 582px;
+    height: 154px;
+    top: 600px;
+    left: 91px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1px;
+    position: absolute;
+}
     .member-field-trips-post .text {
         position: relative;
         align-self: stretch;
@@ -1212,14 +1219,13 @@ tour__content__block--consider .row {
         top: 0;
         left: 1px;
     }
-
-    .member-field-trips-post .div-wrapper {
-        position: relative;
-        width: 761px;
-        height: 100px;
-        background-color: lawngreen;
-        border-radius: 25px 25px 0px 0px;
-    }
+.member-field-trips-post .div-wrapper {
+    position: relative;
+    width: 770px;
+    height: 100px;
+    background-color: #99ffad;
+    border-radius: 50px 50px 0px 0px;
+}
 
     .member-field-trips-post .text-wrapper-3 {
         position: absolute;
@@ -1236,7 +1242,7 @@ tour__content__block--consider .row {
     }
 .member-field-trips-post .soi-noi-hoi-thi-chim {
     position: absolute;
-    width: 765px;
+    width: 772px;
     height: 317px;
     top: 99px;
     left: 0;
@@ -1247,17 +1253,17 @@ tour__content__block--consider .row {
     background-color: white;
     border-radius: 30px;
 }
-    .member-field-trips-post .info {
-        position: absolute;
-        background-color: white;
-        border-radius: 30px;
-        border: 2px solid black;
-        box-shadow: 1px 1px 5px #b0b0b0;
-        width: 532px;
-        height: 1132px;
-        top: 100px;
-        left: 804px;
-    }
+.member-field-trips-post .info {
+    position: absolute;
+    background-color: white;
+    border-radius: 50px;
+    border: 3px solid black;
+    box-shadow: 1px 1px 5px #b0b0b0;
+    width: 540px;
+    height: 1132px;
+    top: 100px;
+    left: 804px;
+}
 
     .member-field-trips-post .overlap-3 {
         position: relative;
@@ -1265,9 +1271,6 @@ tour__content__block--consider .row {
         left: -1px;
         width: 532px;
         height: 1132px;
-        border-radius: 30px;
-        border: 2px solid black;
-        box-shadow: 1px 1px 5px #b0b0b0;
     }
 
     .member-field-trips-post .rectangle-5 {
@@ -1300,13 +1303,13 @@ tour__content__block--consider .row {
         left: 1px;
     }
 
-    .member-field-trips-post .overlap-group-2 {
-        position: relative;
-        width: 525px;
-        height: 100px;
-        background-color: lawngreen;
-        border-radius: 25px 25px 0px 0px;
-    }
+.member-field-trips-post .overlap-group-2 {
+    position: relative;
+    width: 534px;
+    height: 100px;
+    background-color: #99ffad;
+    border-radius: 50px 50px 0px 0px;
+}
 
     .member-field-trips-post .text-wrapper-4 {
         text-align: center;
@@ -1498,13 +1501,15 @@ tour__content__block--consider .row {
         left: 159px;
     }
 
-    .member-field-trips-post .overlap-group-3 {
-        position: relative;
-        width: 214px;
-        height: 55px;
-        background-color: #4ac30059;
-        border-radius: 50px;
-    }
+.member-field-trips-post .overlap-group-3 {
+    position: relative;
+    width: 214px;
+    height: 55px;
+    background-color: #99ffad;
+    border-radius: 50px;
+    border: 3px solid transparent;
+    box-shadow: 1px 1px 5px #b0b0b0;
+}
 
 .member-field-trips-post .text-wrapper-16 {
     width: 100px;

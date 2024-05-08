@@ -25,12 +25,13 @@
     border-style: solid;
     border-image: initial;
 }
-.club__content font-a {
+.club__content .font-a {
     font-weight: bold;
     margin-left: 10px;
     background: -webkit-linear-gradient(0.25turn, #00ecd5, #ffadd9);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    font-size:18px;
 }
     .club-content a:hover {
         font-weight: bold;

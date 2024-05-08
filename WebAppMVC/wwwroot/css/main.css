@@ -3,13 +3,6 @@
   display: flex;
   align-items: center;
   justify-content: center; }
-.carousel-Banner{
-    position: relative;
-    width: 1000px;
-    height: 550px;
-    overflow: hidden;
-    margin: auto;
-}
 .nav-tabs {
     padding-top: 50px;
     border-bottom: 1px solid #dee2e6;
@@ -24,7 +17,7 @@
 }
 .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
     color: #495057;
-    background-color: lawngreen;
+    background-color: #99ffad;
     border-color: #dee2e6 #dee2e6 #fff;
 }
 .nav-link {
@@ -270,9 +263,7 @@ body .lb-cancel {
     outline: none; }
 
 .background {
-  background-image: url(../images/register-bg.png);
-  min-height: 100vh;
-  width: 100%;
+    background: #2f3545 url(../images/bg.png) no-repeat scroll center 0;
 }
 
 .header__bottom--search .custom-select {
@@ -295,6 +286,8 @@ body .lb-cancel {
 .breadcrumb {
   padding: 0.75rem 0; }
   .breadcrumb .breadcrumb-item a {
+    font-weight:600;
+    font-size:18px;
     color: #00ccb8;
     transition: all 0.5s;
     border-bottom: 3px solid #00ccb8; }
@@ -306,7 +299,7 @@ body .lb-cancel {
     content: "\f105";
     color: #2c3e50;
     font-weight: 900;
-    font-size: 17px; }
+    font-size: 18px; }
 
 .infor #carouselBanner .carousel-control-prev i,
 .infor #carouselBanner .carousel-control-next i {
@@ -2205,16 +2198,6 @@ body .lb-cancel {
     padding: 0.75rem 0;
 }
 
-    .breadcrumb .breadcrumb-item a {
-        color: #00ccb8;
-        transition: all 0.5s;
-        border-bottom: 3px solid #00ccb8;
-    }
-
-        .breadcrumb .breadcrumb-item a:hover {
-            color: #ffadd9;
-            border-color: #ffadd9;
-        }
 
     .breadcrumb .breadcrumb-item + .breadcrumb-item::before {
         font-family: "Font Awesome 5 Free";
