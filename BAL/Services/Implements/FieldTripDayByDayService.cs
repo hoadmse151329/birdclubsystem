@@ -39,7 +39,7 @@ namespace BAL.Services.Implements
 
             if (ftrip == null) return false;
 
-            var day = await _unitOfWork.FieldTripDaybyDayRepository.GetFieldTripDayByDayById(tripId, dayId);
+            var day = await _unitOfWork.FieldTripDaybyDayRepository.GetFieldTripDayByDayByIdTracking(dayId);
 
             if (day == null) return false;
             _unitOfWork.FieldTripDaybyDayRepository.Delete(day);
@@ -60,7 +60,7 @@ namespace BAL.Services.Implements
 
             if (dayDetail == null || dayDetail.DaybyDayId == null) return false;
 
-            var day = await _unitOfWork.FieldTripDaybyDayRepository.GetFieldTripDayByDayByIdTracking(tripId, dayDetail.DaybyDayId.Value);
+            var day = await _unitOfWork.FieldTripDaybyDayRepository.GetFieldTripDayByDayByIdTracking(dayDetail.DaybyDayId.Value);
 
             if (day == null) return false;
 

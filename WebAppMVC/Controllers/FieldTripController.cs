@@ -123,20 +123,21 @@ namespace WebAppMVC.Controllers
             {
                 roads.Add(new SelectListItem(text: road, value: road));
             }
-            testmodel.Roads = roads;
 
             List<SelectListItem> districts = new();
             foreach (var district in listLocationDistrictResponse.Data)
             {
                 districts.Add(new SelectListItem(text: district, value: district));
             }
-            testmodel.Districts = districts;
 
             List<SelectListItem> cities = new();
             foreach (var city in listLocationCityResponse.Data)
             {
                 cities.Add(new SelectListItem(text: city, value: city));
             }
+
+            testmodel.Roads = roads;
+            testmodel.Districts = districts;
             testmodel.Cities = cities;
 
             testmodel.FieldTrips = listTripResponse.Data;
@@ -195,6 +196,14 @@ namespace WebAppMVC.Controllers
                     "Error while processing your request! (Getting Fieldtrip Post!).\n Fieldtrip Not Found!";
                 return RedirectToAction("Index");
             }
+            if (!fieldtripPostResponse.Status)
+            {
+                //_logger.LogInformation("Username or Password is invalid: " + fieldtripPostResponse.Status + " , Error Message: " + fieldtripPostResponse.ErrorMessage);
+                ViewBag.error =
+                    "Error while processing your request! (Getting Fieldtrip Post!).\n"
+                    + fieldtripPostResponse.ErrorMessage;
+                return RedirectToAction("Index");
+            }
 
             fieldtripDetail.FieldTrip = fieldtripPostResponse.Data;
             fieldtripDetail.TourFeatures = fieldtripPostResponse.Data.FieldtripAdditionalDetails.Where(f => f.Type == "tour_features").ToList();
@@ -205,14 +214,6 @@ namespace WebAppMVC.Controllers
             fieldtripDetail.GettingThere = fieldtripPostResponse.Data.FieldtripGettingTheres;
             fieldtripDetail.Pictures = fieldtripPostResponse.Data.FieldtripPictures;
 
-            if (!fieldtripPostResponse.Status)
-            {
-                //_logger.LogInformation("Username or Password is invalid: " + fieldtripPostResponse.Status + " , Error Message: " + fieldtripPostResponse.ErrorMessage);
-                ViewBag.error =
-                    "Error while processing your request! (Getting Fieldtrip Post!).\n"
-                    + fieldtripPostResponse.ErrorMessage;
-                return RedirectToAction("Index");
-            }
             return View(fieldtripDetail);
         }
 
@@ -257,7 +258,7 @@ namespace WebAppMVC.Controllers
                 inputType: usrId,
                 accessToken: accToken);
 
-            methcall.SetCookie(Response, "trip", fieldtripPostResponse.Data, cookieOptions, jsonOptions, 20);
+            methcall.SetCookie(Response, "tripRegistrationInProgress", fieldtripPostResponse.Data, cookieOptions, jsonOptions, 20);
 
             PaymentInformationModel model = new PaymentInformationModel()
             {
@@ -273,11 +274,15 @@ namespace WebAppMVC.Controllers
         [HttpGet("FieldTripConfirmRegister")]
         public async Task<IActionResult> FieldTripConfirmRegister()
         {
-            var fieldTrip = await methcall.GetCookie<FieldTripViewModel>(Request, "trip", jsonOptions);
+            var fieldTrip = await methcall.GetCookie<FieldTripViewModel>(Request, "tripRegistrationInProgress", jsonOptions);
             
-            var tripId = (int)fieldTrip.TripId;
+            if(fieldTrip == null)
+            {
+                return RedirectToAction("Index");
+            }
+            int tripId = fieldTrip.TripId.Value;
 
-            methcall.RemoveCookie(Response, "trip", cookieOptions, jsonOptions);
+            methcall.RemoveCookie(Response, "tripRegistrationInProgress", cookieOptions, jsonOptions);
 
             FieldTripAPI_URL += "/Register/" + tripId;
 

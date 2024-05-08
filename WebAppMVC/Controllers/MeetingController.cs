@@ -188,20 +188,21 @@ namespace WebAppMVC.Controllers
             {
                 roads.Add(new SelectListItem(text: road, value: road));
             }
-			testmodel.Roads = roads;
 
             List<SelectListItem> districts = new();
             foreach (var district in listLocationDistrictResponse.Data)
             {
                 districts.Add(new SelectListItem(text: district, value: district));
             }
-            testmodel.Districts = districts;
 
             List<SelectListItem> cities = new();
             foreach (var city in listLocationCityResponse.Data)
             {
                 cities.Add(new SelectListItem(text: city, value: city));
             }
+
+            testmodel.Roads = roads;
+            testmodel.Districts = districts;
             testmodel.Cities = cities;
 
             return View(testmodel);

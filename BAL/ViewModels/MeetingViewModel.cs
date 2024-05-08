@@ -14,9 +14,11 @@ namespace BAL.ViewModels
     {
         public MeetingViewModel()
         {
-            RegistrationDeadline = DateTime.Now;
-            StartDate = DateTime.Now.AddDays(1);
-            EndDate = DateTime.Now.AddDays(2);
+            Review = "No Feedback";
+            OpenRegistration = DateTime.Now.AddDays(1);
+            RegistrationDeadline = DateTime.Now.AddDays(2);
+            StartDate = DateTime.Now.AddDays(13);
+            EndDate = DateTime.Now.AddDays(14);
             Status = "OnHold";
             MeetingPictures = new List<MeetingMediaViewModel>();
         }
@@ -27,6 +29,10 @@ namespace BAL.ViewModels
         [Required(ErrorMessage = "Description is required")]
         [DisplayName("Description")]
         public string? Description { get; set; }
+        [Required(ErrorMessage = "Open Registration Date is required")]
+        [DisplayName("Open Registration Date")]
+        [DataType(DataType.DateTime)]
+        public DateTime OpenRegistration { get; set; }
         [Required(ErrorMessage = "Registration Deadline is required")]
         [DisplayName("Registration Deadline")]
         [DataType(DataType.DateTime)]
@@ -49,6 +55,8 @@ namespace BAL.ViewModels
         public int? NumberOfParticipantsLimit { get; set; }
         [DisplayName("Participant Number")]
         public int? ParticipationNo { get; set; }
+        [DisplayName("Review")]
+        public string? Review { get; set; }
         [Required(ErrorMessage = "Host is required")]
         [DisplayName("Host")]
         public string? Host { get; set; }

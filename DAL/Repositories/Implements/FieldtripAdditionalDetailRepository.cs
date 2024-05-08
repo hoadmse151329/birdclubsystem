@@ -17,9 +17,14 @@ namespace DAL.Repositories.Implements
         {
             _context = context;
         }
-        public async Task<FieldtripAdditionalDetail> GetFieldTripAdditionalDetailById(int tripId, int addDetailId)
+        public async Task<FieldtripAdditionalDetail> GetFieldTripAdditionalDetailById(int addDetailId)
         {
-            return await _context.FieldtripAdditionalDetails.AsNoTracking().SingleOrDefaultAsync(f => f.TripId.Equals(tripId) && f.TripDetailsId.Equals(addDetailId));
+            return await _context.FieldtripAdditionalDetails.AsNoTracking().SingleOrDefaultAsync(f => f.TripDetailsId.Equals(addDetailId));
+        }
+
+        public async Task<FieldtripAdditionalDetail> GetFieldTripAdditionalDetailByIdTracking(int addDetailId)
+        {
+            return await _context.FieldtripAdditionalDetails.SingleOrDefaultAsync(f => f.TripDetailsId.Equals(addDetailId));
         }
 
         public async Task<IEnumerable<FieldtripAdditionalDetail>> GetFieldTripAdditionalDetailsByTripId(int tripId)

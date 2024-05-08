@@ -133,7 +133,7 @@ namespace BAL.Services.Implements
 
             if (loc == null)
             {
-                _unitOfWork.LocationRepository.Update(loc = new Location
+                _unitOfWork.LocationRepository.Update(new Location
                 {
                     LocationName = entity.Address.Trim()
                 });
@@ -145,7 +145,7 @@ namespace BAL.Services.Implements
 
             if (getting == null)
             {
-                _unitOfWork.FieldTripGettingThereRepository.Update(getting = new FieldtripGettingThere
+                _unitOfWork.FieldTripGettingThereRepository.Update(new FieldtripGettingThere
                 {
                     TripId = entity.TripId.Value
                 });

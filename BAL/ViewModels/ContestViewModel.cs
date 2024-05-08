@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,10 +14,12 @@ namespace BAL.ViewModels
     {
         public ContestViewModel()
         {
+            Review = "No Feedback";
             Status = "OnHold";
-            RegistrationDeadline = DateTime.Now;
-            StartDate = DateTime.Now.AddDays(1);
-            EndDate = DateTime.Now.AddDays(2);
+            OpenRegistration = DateTime.Now.AddDays(1);
+            RegistrationDeadline = DateTime.Now.AddDays(2);
+            StartDate = DateTime.Now.AddDays(13);
+            EndDate = DateTime.Now.AddDays(14);
             NumberOfParticipants = 0;
         }
         public int? ContestId { get; set; }
@@ -26,6 +29,10 @@ namespace BAL.ViewModels
         [Required(ErrorMessage = "Description is required")]
         [DisplayName("Description")]
         public string? Description { get; set; }
+        [Required(ErrorMessage = "Open Registration Date is required")]
+        [DisplayName("Open Registration Date")]
+        [DataType(DataType.DateTime)]
+        public DateTime OpenRegistration { get; set; }
         [Required(ErrorMessage = "Registration Deadline is required")]
         [DisplayName("Registration Deadline")]
         [DataType(DataType.DateTime)]
@@ -80,8 +87,8 @@ namespace BAL.ViewModels
         public int? NumberOfParticipantsLimit { get; set; }
         [DisplayName("Participant Number")]
         public int? ParticipationNo { get; set; }
-        [DisplayName("Club ID")]
-        public int? ClubId { get; set; }
+        /*[DisplayName("Club ID")]
+        public int? ClubId { get; set; }*/
 
         public List<ContestMediaViewModel>? Media { get; set; }
     }
