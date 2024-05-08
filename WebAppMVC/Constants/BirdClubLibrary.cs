@@ -238,10 +238,43 @@ namespace WebAppMVC.Constants
             }
             return null;
         }
-        public ITempDataDictionary GetValidationTempData<T>(ITempDataDictionary tempData, string tempDataName, T objectForSerialize, JsonSerializerOptions jsonOptions) where T : class
+        public List<T> GetValidationTempDataList<T>(
+            ControllerBase context,
+            ITempDataDictionary tempData,
+            string tempDataNamePrefix,
+            string viewObjectNamePrefix,
+            JsonSerializerOptions jsonOptions
+            ) where T : class
+        {
+            var list = tempData.Where(t => t.Key.StartsWith(tempDataNamePrefix + "_"));
+            if (list != null)
+            {
+                List<T> result = new();
+                foreach ( var item in list)
+                {
+                    var objectForValidation = JsonSerializer.Deserialize<T>(item.Value.ToString(), jsonOptions);
+                    result.Add(objectForValidation);
+                    tempData.Remove(item.Key);
+                    context.TryValidateModel(objectForValidation, viewObjectNamePrefix + "_" + item.Key.Split("_")[1]);
+                }
+                if( result.Count > 0 )
+                {
+                    return result;
+                }
+                return null;
+            }
+            return null;
+        }
+        public ITempDataDictionary SetValidationTempData<T>(ITempDataDictionary tempData, string tempDataName, T objectForSerialize, JsonSerializerOptions jsonOptions) where T : class
         {
             string validJson = JsonSerializer.Serialize(objectForSerialize, jsonOptions);
             tempData[tempDataName] = validJson;
+            return tempData;
+        }
+        public ITempDataDictionary SetValidationTempDataWithId<T>(ITempDataDictionary tempData, string tempDataName, int objectId, T objectForSerialize, JsonSerializerOptions jsonOptions) where T : class
+        {
+            string validJson = JsonSerializer.Serialize(objectForSerialize, jsonOptions);
+            tempData[tempDataName + "_" + objectId] = validJson;
             return tempData;
         }
         /* Getter

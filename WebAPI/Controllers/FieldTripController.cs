@@ -447,7 +447,7 @@ namespace WebAPI.Controllers
                 });
             }
         }
-        [HttpPut("Update/{id}")]
+        [HttpPut("{id:int}/Update")]
         [Authorize(Roles = "Manager,Staff")]
         [ProducesResponseType(typeof(FieldTripViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -495,13 +495,14 @@ namespace WebAPI.Controllers
                 });
             }
         }
-        [HttpPut("{id:int}/Update/GettingThere")]
+        [HttpPut("{id:int}/GettingThere/{getId:int}/Update")]
         [Authorize(Roles = "Manager")]
         [ProducesResponseType(typeof(FieldTripViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> UpdateGettingThere(
             [Required][FromRoute] int id,
+            [Required][FromRoute] int getId,
             [Required][FromBody] FieldtripGettingThereViewModel tripGet)
         {
             try
@@ -524,6 +525,70 @@ namespace WebAPI.Controllers
                     {
                         Status = true,
                         Data = result
+                    });
+                }
+                return NotFound(new
+                {
+                    Status = false,
+                    ErrorMessage = "Field trip does not exist or internal server error"
+                });
+            }
+            catch (Exception ex)
+            {
+                if (ex.InnerException != null)
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = ex.Message,
+                        InnerExceptionMessage = ex.InnerException.Message
+                    });
+                }
+                // Log the exception if needed
+                return BadRequest(new
+                {
+                    Status = false,
+                    ErrorMessage = ex.Message
+                });
+            }
+        }
+        [HttpPut("{tripId:int}/DayByDay/{dayId:int}/Update")]
+        [Authorize(Roles = "Manager")]
+        [ProducesResponseType(typeof(FieldTripViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> UpdateGettingThere(
+            [Required][FromRoute] int tripId,
+            [Required][FromRoute] int dayId,
+            [Required][FromBody] FieldtripDaybyDayViewModel tripDay)
+        {
+            try
+            {
+                var result = _fieldTripService.GetById(tripId).Result;
+                if (result == null)
+                {
+                    return NotFound(new
+                    {
+                        Status = false,
+                        ErrorMessage = "Field trip does not exist!"
+                    });
+                }
+                var day = await _dayByDayService.GetById(dayId);
+                if (day == null)
+                {
+                    return NotFound(new
+                    {
+                        Status = false,
+                        ErrorMessage = "Field trip Day By Day does not exist!"
+                    });
+                }
+                var check = await _dayByDayService.Update(tripId, tripDay);
+                if (check)
+                {
+                    return Ok(new
+                    {
+                        Status = true,
+                        Data = check
                     });
                 }
                 return NotFound(new

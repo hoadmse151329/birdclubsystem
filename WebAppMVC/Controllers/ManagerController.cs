@@ -225,11 +225,11 @@ namespace WebAppMVC.Controllers
             [Required] MeetingViewModel updateMeeting
             )
         {
-            ManagerAPI_URL += "Meeting/Update/" + id;
+            ManagerAPI_URL += "Meeting/" + id + "/Update";
 
 			if (!ModelState.IsValid)
 			{
-                TempData = methcall.GetValidationTempData(TempData, Constants.Constants.UPDATE_MEETING_VALID, updateMeeting, options);
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_MEETING_VALID, updateMeeting, options);
 				return RedirectToAction("ManagerMeetingDetail", new {id});
 			}
 			string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
@@ -261,7 +261,7 @@ namespace WebAppMVC.Controllers
                                 _logger: _logger);
             if (meetPostResponse == null)
             {
-                TempData = methcall.GetValidationTempData(TempData, Constants.Constants.UPDATE_MEETING_VALID, updateMeeting, options);
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_MEETING_VALID, updateMeeting, options);
 
                 ViewBag.Error =
                     "Error while processing your request! (Updating Meeting!).\n Meeting Not Found!";
@@ -269,7 +269,7 @@ namespace WebAppMVC.Controllers
             }
             if (!meetPostResponse.Status)
             {
-                TempData = methcall.GetValidationTempData(TempData, Constants.Constants.UPDATE_MEETING_VALID, updateMeeting, options);
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_MEETING_VALID, updateMeeting, options);
 
                 _logger.LogInformation("Error while processing your request: " + meetPostResponse.Status + " , Error Message: " + meetPostResponse.ErrorMessage);
                 ViewBag.Error =
@@ -286,7 +286,7 @@ namespace WebAppMVC.Controllers
             ManagerAPI_URL += "Meeting/Create";
             if (!ModelState.IsValid)
             {
-                TempData = methcall.GetValidationTempData(TempData, Constants.Constants.CREATE_MEETING_VALID, createMeeting, options);
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.CREATE_MEETING_VALID, createMeeting, options);
                 return RedirectToAction("ManagerMeeting");
             }
 
@@ -513,6 +513,8 @@ namespace WebAppMVC.Controllers
             }
             fieldtripDetailVM.UpdateFieldTrip = methcall.GetValidationTempData<FieldTripViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_VALID, "updateTrip", options);
             fieldtripDetailVM.UpdateFieldTripGettingThere = methcall.GetValidationTempData<FieldtripGettingThereViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_GETTHERE_VALID, "updateGettingThere", options);
+            fieldtripDetailVM.UpdateFieldTripDayByDay = methcall.GetValidationTempData<FieldtripDaybyDayViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_DAYBYDAY_VALID, "updateDayByDay", options);
+            
             fieldtripDetailVM.CreateFieldTripDayByDay = methcall.GetValidationTempData<FieldtripDaybyDayViewModel>(this, TempData, Constants.Constants.CREATE_FIELDTRIP_DAYBYDAY_VALID, "createDayByDay", options);
             fieldtripDetailVM.CreateFieldTripInclusion = methcall.GetValidationTempData<FieldtripInclusionViewModel>(this, TempData, Constants.Constants.CREATE_FIELDTRIP_INCLUSION_VALID, "createInclusion", options);
             fieldtripDetailVM.CreateFieldTripTourFeatures = methcall.GetValidationTempData<FieldTripAdditionalDetailViewModel>(this, TempData, Constants.Constants.CREATE_FIELDTRIP_TOURFEATURES_VALID, "createTourFeatures", options);
@@ -537,10 +539,10 @@ namespace WebAppMVC.Controllers
             [Required] FieldTripViewModel updateTrip
             )
         {
-            ManagerAPI_URL += "FieldTrip/Update/" + id;
+            ManagerAPI_URL += "FieldTrip/" + id + "/Update";
             if (!ModelState.IsValid)
             {
-                TempData = methcall.GetValidationTempData(TempData, Constants.Constants.UPDATE_FIELDTRIP_VALID, updateTrip, options);
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_FIELDTRIP_VALID, updateTrip, options);
                 return RedirectToAction("ManagerFieldTripDetail", new { id });
             }
             string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
@@ -586,17 +588,18 @@ namespace WebAppMVC.Controllers
             }
             return RedirectToAction("ManagerFieldTripDetail", new { id });
         }
-        [HttpPost("FieldTrip/{id:int}/Update/GettingThere")]
+        [HttpPost("FieldTrip/{id:int}/GettingThere/{getId:int}/Update")]
         /*[Route("Manager/FieldTrip/Update/{id:int}")]*/
         public async Task<IActionResult> ManagerUpdateFieldTripGettingThereDetail(
             [FromRoute][Required] int id,
+            [FromRoute][Required] int getId,
             [Required] FieldtripGettingThereViewModel updateGettingThere
             )
         {
-            ManagerAPI_URL += "FieldTrip/" + id + "/Update/GettingThere";
+            ManagerAPI_URL += "FieldTrip/" + id + "/GettingThere/" + getId + "/Update";
             if (!ModelState.IsValid)
             {
-                TempData = methcall.GetValidationTempData(TempData, Constants.Constants.UPDATE_FIELDTRIP_GETTHERE_VALID, updateGettingThere, options);
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_FIELDTRIP_GETTHERE_VALID, updateGettingThere, options);
                 return RedirectToAction("ManagerFieldTripDetail", new { id });
             }
             string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
@@ -642,6 +645,63 @@ namespace WebAppMVC.Controllers
             }
             return RedirectToAction("ManagerFieldTripDetail", new { id });
         }
+        [HttpPost("FieldTrip/{id:int}/DayByDay/{dayId:int}/Update")]
+        /*[Route("Manager/FieldTrip/Update/{id:int}")]*/
+        public async Task<IActionResult> ManagerUpdateFieldTripDayByDay(
+            [FromRoute][Required] int id,
+            [FromRoute][Required] int dayId,
+            [Required] FieldtripDaybyDayViewModel updateDayByDay
+            )
+        {
+            ManagerAPI_URL += "FieldTrip/" + id + "/DayByDay/" + dayId + "/Update";
+            if (!ModelState.IsValid)
+            {
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_FIELDTRIP_DAYBYDAY_VALID, updateDayByDay, options);
+                return RedirectToAction("ManagerFieldTripDetail", new { id });
+            }
+            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
+            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+
+            string? role = HttpContext.Session.GetString("ROLE_NAME");
+            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
+            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
+
+            string? usrId = HttpContext.Session.GetString("USER_ID");
+            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
+
+            string? usrname = HttpContext.Session.GetString("USER_NAME");
+            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
+
+            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
+
+            TempData["ROLE_NAME"] = role;
+            TempData["USER_NAME"] = usrname;
+            TempData["IMAGE_PATH"] = imagepath;
+
+            var ftGettingThereResponse = await methcall.CallMethodReturnObject<GetFieldTripDayByDayResponse>(
+                                _httpClient: _httpClient,
+                                options: options,
+                                methodName: "PUT",
+                                url: ManagerAPI_URL,
+                                inputType: updateDayByDay,
+                                accessToken: accToken,
+                                _logger: _logger);
+            if (ftGettingThereResponse == null)
+            {
+                ViewBag.Error =
+                    "Error while processing your request! (Updating FieldTrip!).\n FieldTrip Not Found!";
+                return RedirectToAction("ManagerFieldTripDetail", new { id });
+            }
+            if (!ftGettingThereResponse.Status)
+            {
+                _logger.LogInformation("Error while processing your request: " + ftGettingThereResponse.Status + " , Error Message: " + ftGettingThereResponse.ErrorMessage);
+                ViewBag.Error =
+                    "Error while processing your request! (Updating FieldTrip Post!).\n"
+                    + ftGettingThereResponse.ErrorMessage;
+                return RedirectToAction("ManagerFieldTripDetail", new { id });
+            }
+            return RedirectToAction("ManagerFieldTripDetail", new { id });
+        }
         [HttpPost("FieldTrip/Create")]
         /*[Route("Manager/Meeting/Update/{id:int}")]*/
         public async Task<IActionResult> ManagerCreateFieldTrip(FieldTripViewModel createFieldTrip)
@@ -649,7 +709,7 @@ namespace WebAppMVC.Controllers
             ManagerAPI_URL += "FieldTrip/Create";
             if (!ModelState.IsValid)
             {
-                TempData = methcall.GetValidationTempData(TempData, Constants.Constants.CREATE_FIELDTRIP_VALID, createFieldTrip, options);
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.CREATE_FIELDTRIP_VALID, createFieldTrip, options);
                 return RedirectToAction("ManagerFieldtrip");
             }
 
@@ -707,7 +767,7 @@ namespace WebAppMVC.Controllers
             ManagerAPI_URL += "FieldTrip/" + tripId + "/Create/DayByDay";
             if (!ModelState.IsValid)
             {
-                TempData = methcall.GetValidationTempData(TempData, Constants.Constants.CREATE_FIELDTRIP_DAYBYDAY_VALID, createDayByDay, options);
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.CREATE_FIELDTRIP_DAYBYDAY_VALID, createDayByDay, options);
                 return RedirectToAction("ManagerFieldTripDetail", new { id = tripId });
             }
 
@@ -765,7 +825,7 @@ namespace WebAppMVC.Controllers
             ManagerAPI_URL += "FieldTrip/" + tripId + "/Create/Inclusion";
             if (!ModelState.IsValid)
             {
-                TempData = methcall.GetValidationTempData(TempData, Constants.Constants.CREATE_FIELDTRIP_INCLUSION_VALID, createInclusion, options);
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.CREATE_FIELDTRIP_INCLUSION_VALID, createInclusion, options);
                 return RedirectToAction("ManagerFieldTripDetail", new { id = tripId });
             }
 
@@ -823,7 +883,7 @@ namespace WebAppMVC.Controllers
             ManagerAPI_URL += "FieldTrip/" + tripId + "/Create/AdditionalDetail";
             if (!ModelState.IsValid)
             {
-                TempData = methcall.GetValidationTempData(TempData, Constants.Constants.CREATE_FIELDTRIP_TOURFEATURES_VALID, createTourFeatures, options);
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.CREATE_FIELDTRIP_TOURFEATURES_VALID, createTourFeatures, options);
                 return RedirectToAction("ManagerFieldTripDetail", new { id = tripId });
             }
 
@@ -881,7 +941,7 @@ namespace WebAppMVC.Controllers
             ManagerAPI_URL += "FieldTrip/" + tripId + "/Create/AdditionalDetail";
             if (!ModelState.IsValid)
             {
-                TempData = methcall.GetValidationTempData(TempData, Constants.Constants.CREATE_FIELDTRIP_INCLUSION_VALID, createImportant, options);
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.CREATE_FIELDTRIP_INCLUSION_VALID, createImportant, options);
                 return RedirectToAction("ManagerFieldTripDetail", new { id = tripId });
             }
 
@@ -939,7 +999,7 @@ namespace WebAppMVC.Controllers
             ManagerAPI_URL += "FieldTrip/" + tripId + "/Create/AdditionalDetail";
             if (!ModelState.IsValid)
             {
-                TempData = methcall.GetValidationTempData(TempData, Constants.Constants.CREATE_FIELDTRIP_ACTIVITIESANDTRANSPORTATION_VALID, createActAndTras, options);
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.CREATE_FIELDTRIP_ACTIVITIESANDTRANSPORTATION_VALID, createActAndTras, options);
                 return RedirectToAction("ManagerFieldTripDetail", new { id = tripId });
             }
 
@@ -1178,7 +1238,7 @@ namespace WebAppMVC.Controllers
             ManagerAPI_URL += "Contest/Update/" + id;
             if (!ModelState.IsValid)
             {
-                TempData = methcall.GetValidationTempData(TempData, Constants.Constants.UPDATE_CONTEST_VALID, updateContest, options);
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_CONTEST_VALID, updateContest, options);
                 return RedirectToAction("ManagerContestDetail", "Manager", new { id });
             }
 
@@ -1232,7 +1292,7 @@ namespace WebAppMVC.Controllers
             ManagerAPI_URL += "Contest/Create";
             if (!ModelState.IsValid)
             {
-                TempData = methcall.GetValidationTempData(TempData, Constants.Constants.CREATE_CONTEST_VALID, createContest, options);
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.CREATE_CONTEST_VALID, createContest, options);
                 return RedirectToAction("ManagerContest");
             }
 

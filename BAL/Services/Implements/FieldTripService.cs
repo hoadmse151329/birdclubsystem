@@ -164,12 +164,7 @@ namespace BAL.Services.Implements
         public bool UpdateGettingThere(FieldtripGettingThereViewModel entity)
         {
             var trip = _unitOfWork.FieldTripRepository.GetById(entity.TripId.Value);
-
-            if (trip == null)
-            {
-                return false;
-            }
-
+            if (trip == null) return false;
             var getting = _mapper.Map<FieldtripGettingThere>(entity);
             getting.Trip = trip;
             _unitOfWork.FieldTripGettingThereRepository.Update(getting);

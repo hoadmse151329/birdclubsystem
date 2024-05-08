@@ -14,7 +14,7 @@ namespace BAL.ViewModels
         {
             Media = new List<FieldtripMediaViewModel>();
         }
-        //public int? TripId { get; set; }
+        public int? TripId { get; set; }
         public int? DaybyDayId { get; set; }
         [Required(ErrorMessage = "Day Number value is required")]
         [Range(1,99, ErrorMessage = "Day Number value must not be less than 1 or more than 99")]
