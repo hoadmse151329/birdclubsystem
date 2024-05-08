@@ -29,6 +29,8 @@ namespace DAL.Models
         public string? Description { get; set; }
         [Column("details")]
         public string Details { get; set; } = null!;
+        [Column("openRegistration", TypeName = "datetime")]
+        public DateTime? OpenRegistration { get; set; }
         [Column("registrationDeadline", TypeName = "datetime")]
         public DateTime? RegistrationDeadline { get; set; }
         [Column("startDate", TypeName = "datetime")]

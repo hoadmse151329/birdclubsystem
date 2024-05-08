@@ -10,7 +10,8 @@ namespace DAL.Repositories.Interfaces
 {
     public interface IFieldtripAdditionalDetailRepository : IRepositoryBase<FieldtripAdditionalDetail>
     {
-        Task<FieldtripAdditionalDetail> GetFieldTripAdditionalDetailById(int tripId, int addDetailId);
+        Task<FieldtripAdditionalDetail> GetFieldTripAdditionalDetailById(int addDetailId);
+        Task<FieldtripAdditionalDetail> GetFieldTripAdditionalDetailByIdTracking(int addDetailId);
         Task<IEnumerable<FieldtripAdditionalDetail>> GetFieldTripAdditionalDetailsByTripId(int tripId);
     }
 }

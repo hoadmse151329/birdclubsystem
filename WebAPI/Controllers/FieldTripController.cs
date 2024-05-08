@@ -17,6 +17,7 @@ namespace WebAPI.Controllers
         private readonly IFieldTripParticipantService _participantService;
         private readonly IFieldTripDayByDayService _dayByDayService;
         private readonly IFieldTripInclusionService _inclusionService;
+        private readonly IFieldTripAdditionalDetailService _addDetailService;
         private readonly IMemberService _memberService;
         private readonly IUserService _userService;
         private readonly IConfiguration _config;
@@ -27,7 +28,9 @@ namespace WebAPI.Controllers
             IUserService userService,
             IFieldTripParticipantService fieldTripParticipantService,
             IFieldTripDayByDayService dayByDayService,
-            IFieldTripInclusionService inclusionService)
+            IFieldTripInclusionService inclusionService,
+            IFieldTripAdditionalDetailService additionalDetailService
+            )
         {
             _fieldTripService = fieldTripService;
             _config = config;
@@ -36,6 +39,7 @@ namespace WebAPI.Controllers
             _participantService = fieldTripParticipantService;
             _dayByDayService = dayByDayService;
             _inclusionService = inclusionService;
+            _addDetailService = additionalDetailService;
         }
 
         [HttpPost("All")]
@@ -275,6 +279,51 @@ namespace WebAPI.Controllers
                 {
                     Status = true,
                     Message = "Field Trip Inclusion Create Failed!",
+                    Data = false
+                });
+            }
+            catch (Exception ex)
+            {
+                if (ex.InnerException != null)
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = ex.Message,
+                        InnerExceptionMessage = ex.InnerException.Message
+                    });
+                }
+                // Log the exception if needed
+                return BadRequest(new
+                {
+                    Status = false,
+                    ErrorMessage = ex.Message
+                });
+            }
+        }
+
+        [HttpPost("{id:int}/Create/AdditionalDetail")]
+        [Authorize(Roles = "Manager")]
+        [ProducesResponseType(typeof(FieldtripInclusionViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> CreateAdditionalDetail(
+            [Required][FromRoute] int id,
+            [Required][FromBody] FieldTripAdditionalDetailViewModel tripAddDetail)
+        {
+            try
+            {
+                if (await _addDetailService.Create(id, tripAddDetail))
+                    return Ok(new
+                    {
+                        Status = true,
+                        Message = "Field Trip Additional Detail Create successfully!",
+                        Data = true
+                    });
+                else return StatusCode(StatusCodes.Status500InternalServerError, new
+                {
+                    Status = true,
+                    Message = "Field Trip Additional Detai Create Failed!",
                     Data = false
                 });
             }

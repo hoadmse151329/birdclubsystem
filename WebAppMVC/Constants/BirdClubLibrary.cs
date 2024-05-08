@@ -65,7 +65,7 @@ namespace WebAppMVC.Constants
 		public void SetCookie(HttpResponse response, string key, object inputType, CookieOptions cookieOptions, JsonSerializerOptions jsonOptions, int? expireTime = null)
 		{
 			string json = JsonSerializer.Serialize(inputType,jsonOptions);
-            if(cookieOptions != null && expireTime.HasValue)
+            if(expireTime.HasValue)
             {
 				CookieOptions privatecookieOptions = new CookieOptions
                 {
