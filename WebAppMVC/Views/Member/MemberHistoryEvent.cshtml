@@ -139,9 +139,9 @@
                                                                                     {
                                                                                         <div class="report-club">
                                                                                             <button data-toggle="modal"
-                                                                                                data-target="#report"
+                                                                                                data-target="#feedback"
                                                                                                 class="button--primary btn-danger shadow btn-xs sharp text-white bg-danger">
-                                                                                                <span>Report</span>
+                                                                                                <span>Feedback</span>
                                                                                             </button>
                                                                                         </div>
                                                                                         break;
@@ -168,6 +168,107 @@
                                                         </tbody>
                                                     </table>
                                                 </div>
+                                                <div id="feedback" class="modal fade" role="dialog">
+                                                                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                                                                    <div class="modal-content modal-addRoom">
+                                                                        <div class="modal-header">
+                                                                            <h4 class="modal-title">Feedback Event
+                                                                            </h4>
+                                                                        </div>
+                                                                        <form action="MemberController" method="post">
+                                                                            <div class="modal-body">
+                                                                                <div class="row p-4">
+                                                                                    <div class="col-12">
+                                                                                        <div class="row form-group">
+                                                                                            <input name="bookingID"
+                                                                                                value="booking03"
+                                                                                                style="display: none">
+                                                                                            <input name="userID"
+                                                                                                value="hai03"
+                                                                                                style="display: none">
+                                                                                            <input name="motelID"
+                                                                                                value="785146827"
+                                                                                                style="display: none">
+                                                                                            <label for="rating"
+                                                                                                class="col-md-3 col-form-label text-md-right">Rating</label>
+                                                                                            <div
+                                                                                                class="form-group col-md-5 stars">
+                                                                                                <input
+                                                                                                    class="star star-5"
+                                                                                                    id="star-5"
+                                                                                                    type="radio"
+                                                                                                    name="rating"
+                                                                                                    value="5" />
+                                                                                                <label
+                                                                                                    class="star star-5"
+                                                                                                    for="star-5"></label>
+                                                                                                <input
+                                                                                                    class="star star-4"
+                                                                                                    id="star-4"
+                                                                                                    type="radio"
+                                                                                                    name="rating"
+                                                                                                    value="4" />
+                                                                                                <label
+                                                                                                    class="star star-4"
+                                                                                                    for="star-4"></label>
+                                                                                                <input
+                                                                                                    class="star star-3"
+                                                                                                    id="star-3"
+                                                                                                    type="radio"
+                                                                                                    name="rating"
+                                                                                                    value="3" />
+                                                                                                <label
+                                                                                                    class="star star-3"
+                                                                                                    for="star-3"></label>
+                                                                                                <input
+                                                                                                    class="star star-2"
+                                                                                                    id="star-2"
+                                                                                                    type="radio"
+                                                                                                    name="rating"
+                                                                                                    value="2" />
+                                                                                                <label
+                                                                                                    class="star star-2"
+                                                                                                    for="star-2"></label>
+                                                                                                <input
+                                                                                                    class="star star-1"
+                                                                                                    id="star-1"
+                                                                                                    type="radio"
+                                                                                                    name="rating"
+                                                                                                    value="1" />
+                                                                                                <label
+                                                                                                    class="star star-1"
+                                                                                                    for="star-1"></label>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="row form-group">
+                                                                                            <label for="desct"
+                                                                                                class="col-md-3 col-form-label text-md-right">Nội
+                                                                                                dung</label>
+                                                                                            <textarea type="text"
+                                                                                                placeholder="..."
+                                                                                                required
+                                                                                                class="form-control col-md-7"
+                                                                                                rows="3"
+                                                                                                name="desct"></textarea>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div
+                                                                                    class="modal-footer justify-content-center">
+                                                                                    <button
+                                                                                        class=" button--primary bg-success text-white "
+                                                                                        type="submit" name="action"
+                                                                                        value="feedback">Feedback</button>
+                                                                                    <button
+                                                                                        class="button--primary bg-danger text-white"
+                                                                                        type="button"
+                                                                                        data-dismiss="modal">Cancle</button>
+                                                                                </div>
+                                                                            </div>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
                                                 <!--Report-->
                                                 <div id="report" class="modal fade" role="dialog">
                                                     <div class="modal-dialog modal-dialog-centered modal-lg"

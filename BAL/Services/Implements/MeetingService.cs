@@ -25,19 +25,19 @@ namespace BAL.Services.Implements
             string locationName;
             var listmeet = await _unitOfWork.MeetingRepository.GetAllMeetings(role);
             var listmeetview = _mapper.Map<IEnumerable<MeetingViewModel>>(listmeet);
-            
+
             foreach (var itemview in listmeetview)
             {
-                foreach(var item in listmeet)
+                foreach (var item in listmeet)
                 {
-                    if(item.MeetingId == itemview.MeetingId)
+                    if (item.MeetingId == itemview.MeetingId)
                     {
                         //int partAmount = await _unitOfWork.MeetingParticipantRepository.GetCountMeetingParticipantsByMeetId(meet.MeetingId);
                         var media = await _unitOfWork.MeetingMediaRepository.GetMeetingMediasByMeetingId(item.MeetingId);
                         itemview.MeetingPictures = (media.Count() > 0) ? _mapper.Map<IEnumerable<MeetingMediaViewModel>>(media).ToList() : itemview.MeetingPictures;
 
                         locationName = await _unitOfWork.LocationRepository.GetLocationNameById(item.LocationId.Value);
-                        
+
                         string[] temp = locationName.Split(",");
                         itemview.AreaNumber = temp[0];
                         itemview.Street = temp[1];
@@ -95,7 +95,7 @@ namespace BAL.Services.Implements
                     return null;
                 }
                 int partAmount = await _unitOfWork.MeetingParticipantRepository.GetCountMeetingParticipantsByMeetId(meet.MeetingId);
-                
+
                 var meeting = _mapper.Map<MeetingViewModel>(meet);
                 meeting.NumberOfParticipants = meeting.NumberOfParticipantsLimit - partAmount;
                 meeting.Address = locationName;
@@ -108,6 +108,7 @@ namespace BAL.Services.Implements
                 meeting.Street = temp[1];
                 meeting.District = temp[2];
                 meeting.City = temp[3];
+                foreach (var picture in meeting.MeetingPictures.ToList())
                 {
                     if (picture.Type == "Spotlight")
                     {
