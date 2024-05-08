@@ -13,16 +13,16 @@ namespace BAL.ViewModels
         public int? TripId { get; set; }
         public int? GettingThereId { get; set; }
         //[Required(ErrorMessage = "Start and End description is required")]
-        [DisplayName("Getting There Start and End")]
+        [DisplayName("Start and End Details")]
         public string? GettingThereStartEnd { get; set; }
         //[Required(ErrorMessage = "Flight description is required")]
-        [DisplayName("Getting There Flight")]
+        [DisplayName("Flight Details")]
         public string? GettingThereFlight { get; set; }
         //[Required(ErrorMessage = "Transportation description is required")]
-        [DisplayName("Getting There Flight")]
+        [DisplayName("Transportation Details")]
         public string? GettingThereTransportation { get; set; }
         //[Required(ErrorMessage = "Accommodation description is required")]
-        [DisplayName("Getting There Accommodation")]
+        [DisplayName("Accommodation Details")]
         public string? GettingThereAccommodation { get; set; }
     }
 }

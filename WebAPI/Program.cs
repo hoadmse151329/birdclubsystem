@@ -110,6 +110,7 @@ namespace WebAPI
             builder.Services.AddScoped<IFieldTripService, FieldTripService>();
             builder.Services.AddScoped<IFieldTripParticipantService, FieldTripParticipantService>();
             builder.Services.AddScoped<IFieldTripDayByDayService,FieldTripDayByDayService>();
+            builder.Services.AddScoped<IFieldTripInclusionService, FieldTripInclusionService>();
             builder.Services.AddScoped<IContestService, ContestService>();
             builder.Services.AddScoped<IContestParticipantService, ContestParticipantService>();
             builder.Services.AddScoped<ITransactionService, TransactionService>();

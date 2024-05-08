@@ -9,11 +9,10 @@ namespace DAL.Models
     [Table("FieldTripParticipants")]
     public partial class FieldTripParticipant
     {
-        /*public FieldTripParticipant()
+        public FieldTripParticipant()
         {
-            MemberDetail = new Member();
-            Trip = new FieldTrip();
-        }*/
+            CheckInStatus = "Not Checked-In";
+        }
         [Key]
         [Column("tripId")]
         public int TripId { get; set; }

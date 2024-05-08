@@ -32,8 +32,7 @@ namespace BAL.Services.Implements
             {
                 TripId = tripId,
                 MemberId = memId,
-                ParticipantNo = partNo.ToString(),
-                CheckInStatus = "Not Checked-In"
+                ParticipantNo = partNo.ToString()
             };
             _unitOfWork.FieldTripParticipantRepository.Create(fieldTripParticipant);
             _unitOfWork.Save();
