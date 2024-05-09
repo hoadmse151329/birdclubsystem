@@ -5,6 +5,7 @@
     BAL.ViewModels.MeetingViewModel detailsMeeting = Model.MeetingDetails;
     BAL.ViewModels.MeetingViewModel updateMeeting = Model.UpdateMeeting != null ? Model.UpdateMeeting : Model.MeetingDetails;
     List<BAL.ViewModels.MeetingParticipantViewModel> parts = Model.MeetingParticipants;
+    List<BAL.ViewModels.MeetingMediaViewModel> Media = detailsMeeting.MeetingPictures;
     List<SelectListItem> defaultMeetingStatus = Model.SelectListStatus;
 
     Layout = "~/Views/Shared/_MLayout.cshtml";
@@ -182,6 +183,50 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="card profile col-12 mb-4">
+                                <div class="card-header">
+                                    <h4>Medias</h4>
+                                    <div class="edit-info">
+                                        <i class='bx bxs-edit-alt' data-toggle="modal" data-target="#editmedias"></i>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    @{
+                                        if (Media != null && Media.Count > 0)
+                                        {
+                                            @foreach (var pic in Media)
+                                            {
+                                                <div class="row">
+                                                    <div class="col-md-5 text-md-right">
+                                                        <label for="meeting-name">Image Url:</label>
+                                                    </div>
+                                                    <div class="col-md-7">
+                                                        <img class="img-fluid" src="@pic.Image" alt="nt1">
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-5 text-md-right">
+                                                        <label for="meeting-name">Description:</label>
+                                                    </div>
+                                                    <div class="col-md-7">
+                                                        <span>@pic.Description</span>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-5 text-md-right">
+                                                        <label for="meeting-name">Type:</label>
+                                                    </div>
+                                                    <div class="col-md-7">
+                                                        <span>@pic.Type</span>
+                                                    </div>
+                                                </div>
+                                            }
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        </div>
 
                     </div>
                     <div class="col-lg-5 cardFB">
@@ -337,6 +382,20 @@
                         <button class="btn btn-success" type="submit" value="Update">Save</button>
                         <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
                     </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- edit meeting media-->
+    <div id="editmedias" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
+            <div class="modal-content modal-addRoom">
+                <div class="modal-header">
+                    <h4 class="modal-title">Edit Meeting Media</h4>
+                </div>
+                <form asp-action="ManagerUpdateMeetingMedia" asp-controller="Manager" method="post" asp-route-id="@detailsMeeting.MeetingId" class="form-group">
+
                 </form>
             </div>
         </div>

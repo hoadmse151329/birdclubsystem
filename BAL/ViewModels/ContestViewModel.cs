@@ -73,7 +73,7 @@ namespace BAL.ViewModels
         public string? Host { get; set; }
         [Required(ErrorMessage = "InCharge is required")]
         [DisplayName("InCharge")]
-        public string? InCharge { get; set; }
+        public string? Incharge { get; set; }
         [Required(ErrorMessage = "Note is required")]
         [DisplayName("Note")]
         public string? Note { get; set; }

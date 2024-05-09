@@ -157,8 +157,13 @@
                                                     <div class="form-group mx-auto">
                                                         <form asp-action="Meeting" asp-controller="Manager" method="get" asp-route-id="@data.MeetingId">
                                                             <button class="btn btn-primary clickable-row" type="submit">See Detail</button>
-                                                        </form>                                                        
-                                                            <button class="btn btn-danger" data-toggle="modal" data-target="#deleteMeeting_@data.MeetingId" type="submit">Cancel Meeting</button>
+                                                        </form>  
+                                                        @{
+                                                            if (data.Status.Equals("OnHold") || data.Status.Equals("Postponed") || data.Status.Equals("CheckingIn") || data.Status.Equals("Ongoing"))
+                                                            {
+                                                                <button class="btn btn-danger" data-toggle="modal" data-target="#deleteMeeting_@data.MeetingId" type="submit">Cancel</button>
+                                                            }
+                                                        }
                                                     </div>
                                                 </div>
                                             </div>
@@ -169,15 +174,15 @@
                                                         <div class="card-body">
                                                             <div class="del-title">
                                                                 <i class='bx bx-error-circle'></i>
-                                                                <h2>Are you sure want to cancel this Meeting ?</h2>
+                                                                <h2>Are you sure you want to cancel this Meeting ?</h2>
                                                             </div>
                                                             <div class="del-submit d-flex justify-content-center">
                                                                 <form asp-action="ManagerCancelMeeting" asp-controller="Manager" method="post" asp-route-id="@data.MeetingId">
                                                                     <button type="submit" name="action" value="deleteMeeting" class="btn btn-success">
-                                                                        Cancel Meeting
+                                                                        Yes
                                                                     </button>
                                                                 </form>
-                                                                <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
+                                                                <button class="btn btn-danger" type="button" data-dismiss="modal">No</button>
                                                             </div>
                                                         </div>
                                                     </div>

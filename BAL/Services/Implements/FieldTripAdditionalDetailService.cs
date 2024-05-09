@@ -52,6 +52,11 @@ namespace BAL.Services.Implements
             throw new NotImplementedException();
         }
 
+        public async Task<FieldTripAdditionalDetailViewModel> GetById(int addId)
+        {
+            return _mapper.Map<FieldTripAdditionalDetailViewModel>(await _unitOfWork.FieldtripAdditionalDetailRepository.GetFieldTripAdditionalDetailById(addId));
+        }
+
         public async Task<bool> Update(int tripId, FieldTripAdditionalDetailViewModel addDetail)
         {
             var ftrip = await _unitOfWork.FieldTripRepository.GetFieldTripById(tripId);
@@ -60,10 +65,11 @@ namespace BAL.Services.Implements
 
             if (addDetail == null || addDetail.TripDetailsId == null) return false;
 
-            var add = await _unitOfWork.FieldtripAdditionalDetailRepository.GetFieldTripAdditionalDetailByIdTracking(addDetail.TripDetailsId.Value);
+            var addDe = await _unitOfWork.FieldtripAdditionalDetailRepository.GetFieldTripAdditionalDetailById(addDetail.TripDetailsId.Value);
 
-            if (add == null) return false;
+            if (addDe == null) return false;
 
+            var add = _mapper.Map<FieldtripAdditionalDetail>(addDetail);
             add.TripId = tripId;
             _unitOfWork.FieldtripAdditionalDetailRepository.Update(add);
             _unitOfWork.Save();
