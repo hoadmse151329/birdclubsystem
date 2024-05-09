@@ -233,7 +233,7 @@ namespace WebAppMVC.Controllers
 
             if (!ModelState.IsValid)
             {
-                TempData = methcall.GetValidationTempData(TempData, Constants.Constants.UPDATE_MEETING_VALID, updateMeeting, options);
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_MEETING_VALID, updateMeeting, options);
                 return RedirectToAction("ManagerMeetingDetail", new { id });
             }
             string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
@@ -352,7 +352,7 @@ namespace WebAppMVC.Controllers
         public async Task<IActionResult> ManagerCancelMeeting(
             [FromRoute][Required] int id)
         {
-            ManagerAPI_URL += "Meeting/Update/Cancel/" + id;
+            ManagerAPI_URL += "Meeting/" + id + "/Cancel";
 
             string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
             if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
@@ -525,6 +525,15 @@ namespace WebAppMVC.Controllers
             fieldtripDetailVM.UpdateFieldTripGettingThere = methcall.GetValidationTempData<FieldtripGettingThereViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_GETTHERE_VALID, "updateGettingThere", options);
             fieldtripDetailVM.UpdateFieldTripDayByDayErrors = methcall.GetValidationModelStateErrorMessageList<FieldtripDaybyDayViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_DAYBYDAY_VALID, "updateDayByDay", options);
             fieldtripDetailVM.UpdateFieldTripDayByDays = methcall.GetValidationTempDataList<FieldtripDaybyDayViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_DAYBYDAY_VALID, "updateDayByDay", options);
+            fieldtripDetailVM.UpdateFieldTripInclusionErrors = methcall.GetValidationModelStateErrorMessageList<FieldtripInclusionViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_INCLUSION_VALID, "updateInclusion", options);
+            fieldtripDetailVM.UpdateFieldTripInclusions = methcall.GetValidationTempDataList<FieldtripInclusionViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_INCLUSION_VALID, "updateInclusion", options);
+            fieldtripDetailVM.UpdateFieldTripTourFeatureErrors = methcall.GetValidationModelStateErrorMessageList<FieldTripAdditionalDetailViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_TOURFEATURES_VALID, "updateTourFeature", options);
+            fieldtripDetailVM.UpdateFieldTripTourFeatures = methcall.GetValidationTempDataList<FieldTripAdditionalDetailViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_TOURFEATURES_VALID, "updateTourFeature", options);
+            fieldtripDetailVM.UpdateFieldTripImportantErrors = methcall.GetValidationModelStateErrorMessageList<FieldTripAdditionalDetailViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_IMPORTANTTOKNOW_VALID, "updateImportant", options);
+            fieldtripDetailVM.UpdateFieldTripImportants = methcall.GetValidationTempDataList<FieldTripAdditionalDetailViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_IMPORTANTTOKNOW_VALID, "updateImportant", options);
+            fieldtripDetailVM.UpdateFieldTripActAndTrasErrors = methcall.GetValidationModelStateErrorMessageList<FieldTripAdditionalDetailViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_ACTIVITIESANDTRANSPORTATION_VALID, "updateActAndTras", options);
+            fieldtripDetailVM.UpdateFieldTripActAndTrass = methcall.GetValidationTempDataList<FieldTripAdditionalDetailViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_ACTIVITIESANDTRANSPORTATION_VALID, "updateActAndTras", options);
+
 
             fieldtripDetailVM.CreateFieldTripDayByDay = methcall.GetValidationTempData<FieldtripDaybyDayViewModel>(this, TempData, Constants.Constants.CREATE_FIELDTRIP_DAYBYDAY_VALID, "createDayByDay", options);
             fieldtripDetailVM.CreateFieldTripInclusion = methcall.GetValidationTempData<FieldtripInclusionViewModel>(this, TempData, Constants.Constants.CREATE_FIELDTRIP_INCLUSION_VALID, "createInclusion", options);
@@ -689,7 +698,7 @@ namespace WebAppMVC.Controllers
             TempData["USER_NAME"] = usrname;
             TempData["IMAGE_PATH"] = imagepath;
 
-            var ftGettingThereResponse = await methcall.CallMethodReturnObject<GetFieldTripDayByDayResponse>(
+            var ftDayByDayResponse = await methcall.CallMethodReturnObject<GetFieldTripDayByDayResponse>(
                                 _httpClient: _httpClient,
                                 options: options,
                                 methodName: "PUT",
@@ -697,18 +706,246 @@ namespace WebAppMVC.Controllers
                                 inputType: updateDayByDay,
                                 accessToken: accToken,
                                 _logger: _logger);
-            if (ftGettingThereResponse == null)
+            if (ftDayByDayResponse == null)
             {
                 ViewBag.Error =
                     "Error while processing your request! (Updating FieldTrip!).\n FieldTrip Not Found!";
                 return RedirectToAction("ManagerFieldTripDetail", new { id });
             }
-            if (!ftGettingThereResponse.Status)
+            if (!ftDayByDayResponse.Status)
             {
-                _logger.LogInformation("Error while processing your request: " + ftGettingThereResponse.Status + " , Error Message: " + ftGettingThereResponse.ErrorMessage);
+                _logger.LogInformation("Error while processing your request: " + ftDayByDayResponse.Status + " , Error Message: " + ftDayByDayResponse.ErrorMessage);
                 ViewBag.Error =
                     "Error while processing your request! (Updating FieldTrip Post!).\n"
-                    + ftGettingThereResponse.ErrorMessage;
+                    + ftDayByDayResponse.ErrorMessage;
+                return RedirectToAction("ManagerFieldTripDetail", new { id });
+            }
+            return RedirectToAction("ManagerFieldTripDetail", new { id });
+        }
+        [HttpPost("FieldTrip/{id:int}/Inclusion/{incId:int}/Update")]
+        /*[Route("Manager/FieldTrip/Update/{id:int}")]*/
+        public async Task<IActionResult> ManagerUpdateFieldTripInclusion(
+            [FromRoute][Required] int id,
+            [FromRoute][Required] int incId,
+            [Required] FieldtripInclusionViewModel updateInclusion
+            )
+        {
+            ManagerAPI_URL += "FieldTrip/" + id + "/Inclusion/" + incId + "/Update";
+            if (!ModelState.IsValid)
+            {
+                TempData = methcall.SetValidationTempDataWithId(TempData, Constants.Constants.UPDATE_FIELDTRIP_INCLUSION_VALID, incId, updateInclusion, options);
+                return RedirectToAction("ManagerFieldTripDetail", new { id });
+            }
+            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
+            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+
+            string? role = HttpContext.Session.GetString("ROLE_NAME");
+            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
+            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
+
+            string? usrId = HttpContext.Session.GetString("USER_ID");
+            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
+
+            string? usrname = HttpContext.Session.GetString("USER_NAME");
+            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
+
+            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
+
+            TempData["ROLE_NAME"] = role;
+            TempData["USER_NAME"] = usrname;
+            TempData["IMAGE_PATH"] = imagepath;
+
+            var ftInclusionResponse = await methcall.CallMethodReturnObject<GetFieldTripInclusionResponse>(
+                                _httpClient: _httpClient,
+                                options: options,
+                                methodName: "PUT",
+                                url: ManagerAPI_URL,
+                                inputType: updateInclusion,
+                                accessToken: accToken,
+                                _logger: _logger);
+            if (ftInclusionResponse == null)
+            {
+                ViewBag.Error =
+                    "Error while processing your request! (Updating FieldTrip!).\n FieldTrip Not Found!";
+                return RedirectToAction("ManagerFieldTripDetail", new { id });
+            }
+            if (!ftInclusionResponse.Status)
+            {
+                _logger.LogInformation("Error while processing your request: " + ftInclusionResponse.Status + " , Error Message: " + ftInclusionResponse.ErrorMessage);
+                ViewBag.Error =
+                    "Error while processing your request! (Updating FieldTrip Post!).\n"
+                    + ftInclusionResponse.ErrorMessage;
+                return RedirectToAction("ManagerFieldTripDetail", new { id });
+            }
+            return RedirectToAction("ManagerFieldTripDetail", new { id });
+        }
+        [HttpPost("FieldTrip/{id:int}/TourFeature/{addDeId:int}/Update")]
+        /*[Route("Manager/FieldTrip/Update/{id:int}")]*/
+        public async Task<IActionResult> ManagerUpdateFieldTripTourFeature(
+            [FromRoute][Required] int id,
+            [FromRoute][Required] int addDeId,
+            [Required] FieldTripAdditionalDetailViewModel updateTourFeature
+            )
+        {
+            ManagerAPI_URL += "FieldTrip/" + id + "/AdditionalDetail/" + addDeId + "/Update";
+            if (!ModelState.IsValid)
+            {
+                TempData = methcall.SetValidationTempDataWithId(TempData, Constants.Constants.UPDATE_FIELDTRIP_TOURFEATURES_VALID, addDeId, updateTourFeature, options);
+                return RedirectToAction("ManagerFieldTripDetail", new { id });
+            }
+            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
+            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+
+            string? role = HttpContext.Session.GetString("ROLE_NAME");
+            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
+            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
+
+            string? usrId = HttpContext.Session.GetString("USER_ID");
+            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
+
+            string? usrname = HttpContext.Session.GetString("USER_NAME");
+            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
+
+            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
+
+            TempData["ROLE_NAME"] = role;
+            TempData["USER_NAME"] = usrname;
+            TempData["IMAGE_PATH"] = imagepath;
+
+            var ftTourFeaturesResponse = await methcall.CallMethodReturnObject<GetFieldTripAdditionalDetailResponse>(
+                                _httpClient: _httpClient,
+                                options: options,
+                                methodName: "PUT",
+                                url: ManagerAPI_URL,
+                                inputType: updateTourFeature,
+                                accessToken: accToken,
+                                _logger: _logger);
+            if (ftTourFeaturesResponse == null)
+            {
+                ViewBag.Error =
+                    "Error while processing your request! (Updating FieldTrip!).\n FieldTrip Not Found!";
+                return RedirectToAction("ManagerFieldTripDetail", new { id });
+            }
+            if (!ftTourFeaturesResponse.Status)
+            {
+                _logger.LogInformation("Error while processing your request: " + ftTourFeaturesResponse.Status + " , Error Message: " + ftTourFeaturesResponse.ErrorMessage);
+                ViewBag.Error =
+                    "Error while processing your request! (Updating FieldTrip Post!).\n"
+                    + ftTourFeaturesResponse.ErrorMessage;
+                return RedirectToAction("ManagerFieldTripDetail", new { id });
+            }
+            return RedirectToAction("ManagerFieldTripDetail", new { id });
+        }
+        [HttpPost("FieldTrip/{id:int}/Important/{addDeId:int}/Update")]
+        /*[Route("Manager/FieldTrip/Update/{id:int}")]*/
+        public async Task<IActionResult> ManagerUpdateFieldTripImportant(
+            [FromRoute][Required] int id,
+            [FromRoute][Required] int addDeId,
+            [Required] FieldTripAdditionalDetailViewModel updateImportant
+            )
+        {
+            ManagerAPI_URL += "FieldTrip/" + id + "/AdditionalDetail/" + addDeId + "/Update";
+            if (!ModelState.IsValid)
+            {
+                TempData = methcall.SetValidationTempDataWithId(TempData, Constants.Constants.UPDATE_FIELDTRIP_IMPORTANTTOKNOW_VALID, addDeId, updateImportant, options);
+                return RedirectToAction("ManagerFieldTripDetail", new { id });
+            }
+            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
+            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+
+            string? role = HttpContext.Session.GetString("ROLE_NAME");
+            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
+            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
+
+            string? usrId = HttpContext.Session.GetString("USER_ID");
+            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
+
+            string? usrname = HttpContext.Session.GetString("USER_NAME");
+            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
+
+            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
+
+            TempData["ROLE_NAME"] = role;
+            TempData["USER_NAME"] = usrname;
+            TempData["IMAGE_PATH"] = imagepath;
+
+            var ftImportantResponse = await methcall.CallMethodReturnObject<GetFieldTripAdditionalDetailResponse>(
+                                _httpClient: _httpClient,
+                                options: options,
+                                methodName: "PUT",
+                                url: ManagerAPI_URL,
+                                inputType: updateImportant,
+                                accessToken: accToken,
+                                _logger: _logger);
+            if (ftImportantResponse == null)
+            {
+                ViewBag.Error =
+                    "Error while processing your request! (Updating FieldTrip!).\n FieldTrip Not Found!";
+                return RedirectToAction("ManagerFieldTripDetail", new { id });
+            }
+            if (!ftImportantResponse.Status)
+            {
+                _logger.LogInformation("Error while processing your request: " + ftImportantResponse.Status + " , Error Message: " + ftImportantResponse.ErrorMessage);
+                ViewBag.Error =
+                    "Error while processing your request! (Updating FieldTrip Post!).\n"
+                    + ftImportantResponse.ErrorMessage;
+                return RedirectToAction("ManagerFieldTripDetail", new { id });
+            }
+            return RedirectToAction("ManagerFieldTripDetail", new { id });
+        }
+        [HttpPost("FieldTrip/{id:int}/ActAndTras/{addDeId:int}/Update")]
+        /*[Route("Manager/FieldTrip/Update/{id:int}")]*/
+        public async Task<IActionResult> ManagerUpdateFieldTripActAndTras(
+            [FromRoute][Required] int id,
+            [FromRoute][Required] int addDeId,
+            [Required] FieldTripAdditionalDetailViewModel updateActAndTras
+            )
+        {
+            ManagerAPI_URL += "FieldTrip/" + id + "/AdditionalDetail/" + addDeId + "/Update";
+            if (!ModelState.IsValid)
+            {
+                TempData = methcall.SetValidationTempDataWithId(TempData, Constants.Constants.UPDATE_FIELDTRIP_ACTIVITIESANDTRANSPORTATION_VALID, addDeId, updateActAndTras, options);
+                return RedirectToAction("ManagerFieldTripDetail", new { id });
+            }
+            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
+            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+
+            string? role = HttpContext.Session.GetString("ROLE_NAME");
+            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
+            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
+
+            string? usrId = HttpContext.Session.GetString("USER_ID");
+            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
+
+            string? usrname = HttpContext.Session.GetString("USER_NAME");
+            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
+
+            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
+
+            TempData["ROLE_NAME"] = role;
+            TempData["USER_NAME"] = usrname;
+            TempData["IMAGE_PATH"] = imagepath;
+
+            var ftActAndTrasResponse = await methcall.CallMethodReturnObject<GetFieldTripAdditionalDetailResponse>(
+                                _httpClient: _httpClient,
+                                options: options,
+                                methodName: "PUT",
+                                url: ManagerAPI_URL,
+                                inputType: updateActAndTras,
+                                accessToken: accToken,
+                                _logger: _logger);
+            if (ftActAndTrasResponse == null)
+            {
+                ViewBag.Error =
+                    "Error while processing your request! (Updating FieldTrip!).\n FieldTrip Not Found!";
+                return RedirectToAction("ManagerFieldTripDetail", new { id });
+            }
+            if (!ftActAndTrasResponse.Status)
+            {
+                _logger.LogInformation("Error while processing your request: " + ftActAndTrasResponse.Status + " , Error Message: " + ftActAndTrasResponse.ErrorMessage);
+                ViewBag.Error =
+                    "Error while processing your request! (Updating FieldTrip Post!).\n"
+                    + ftActAndTrasResponse.ErrorMessage;
                 return RedirectToAction("ManagerFieldTripDetail", new { id });
             }
             return RedirectToAction("ManagerFieldTripDetail", new { id });
@@ -917,7 +1154,7 @@ namespace WebAppMVC.Controllers
             TempData["USER_NAME"] = usrname;
             TempData["IMAGE_PATH"] = imagepath;
 
-            var ftDayByDayResponse = await methcall.CallMethodReturnObject<GetFieldTripDayByDayResponse>(
+            var ftDayByDayResponse = await methcall.CallMethodReturnObject<GetFieldTripAdditionalDetailResponse>(
                                 _httpClient: _httpClient,
                                 options: options,
                                 methodName: "POST",
@@ -975,7 +1212,7 @@ namespace WebAppMVC.Controllers
             TempData["USER_NAME"] = usrname;
             TempData["IMAGE_PATH"] = imagepath;
 
-            var ftDayByDayResponse = await methcall.CallMethodReturnObject<GetFieldTripDayByDayResponse>(
+            var ftImportantResponse = await methcall.CallMethodReturnObject<GetFieldTripDayByDayResponse>(
                                 _httpClient: _httpClient,
                                 options: options,
                                 methodName: "POST",
@@ -983,18 +1220,18 @@ namespace WebAppMVC.Controllers
                                 inputType: createImportant,
                                 accessToken: accToken,
                                 _logger: _logger);
-            if (ftDayByDayResponse == null)
+            if (ftImportantResponse == null)
             {
                 ViewBag.Error =
                     "Error while processing your request! (Create FieldTrip!).\n Meeting Not Found!";
                 return RedirectToAction("ManagerFieldTripDetail", new { id = tripId });
             }
-            if (!ftDayByDayResponse.Status)
+            if (!ftImportantResponse.Status)
             {
-                _logger.LogInformation("Error while processing your request: " + ftDayByDayResponse.Status + " , Error Message: " + ftDayByDayResponse.ErrorMessage);
+                _logger.LogInformation("Error while processing your request: " + ftImportantResponse.Status + " , Error Message: " + ftImportantResponse.ErrorMessage);
                 ViewBag.Error =
                     "Error while processing your request! (Create Meeting Post!).\n"
-                    + ftDayByDayResponse.ErrorMessage;
+                    + ftImportantResponse.ErrorMessage;
                 return RedirectToAction("ManagerFieldTripDetail", new { id = tripId });
             }
             return RedirectToAction("ManagerFieldTripDetail", new { id = tripId });
@@ -1033,7 +1270,7 @@ namespace WebAppMVC.Controllers
             TempData["USER_NAME"] = usrname;
             TempData["IMAGE_PATH"] = imagepath;
 
-            var ftDayByDayResponse = await methcall.CallMethodReturnObject<GetFieldTripDayByDayResponse>(
+            var ftActAndTrasResponse = await methcall.CallMethodReturnObject<GetFieldTripDayByDayResponse>(
                                 _httpClient: _httpClient,
                                 options: options,
                                 methodName: "POST",
@@ -1041,18 +1278,18 @@ namespace WebAppMVC.Controllers
                                 inputType: createActAndTras,
                                 accessToken: accToken,
                                 _logger: _logger);
-            if (ftDayByDayResponse == null)
+            if (ftActAndTrasResponse == null)
             {
                 ViewBag.Error =
                     "Error while processing your request! (Create FieldTrip!).\n Meeting Not Found!";
                 return RedirectToAction("ManagerFieldTripDetail", new { id = tripId });
             }
-            if (!ftDayByDayResponse.Status)
+            if (!ftActAndTrasResponse.Status)
             {
-                _logger.LogInformation("Error while processing your request: " + ftDayByDayResponse.Status + " , Error Message: " + ftDayByDayResponse.ErrorMessage);
+                _logger.LogInformation("Error while processing your request: " + ftActAndTrasResponse.Status + " , Error Message: " + ftActAndTrasResponse.ErrorMessage);
                 ViewBag.Error =
                     "Error while processing your request! (Create Meeting Post!).\n"
-                    + ftDayByDayResponse.ErrorMessage;
+                    + ftActAndTrasResponse.ErrorMessage;
                 return RedirectToAction("ManagerFieldTripDetail", new { id = tripId });
             }
             return RedirectToAction("ManagerFieldTripDetail", new { id = tripId });
@@ -1062,7 +1299,7 @@ namespace WebAppMVC.Controllers
         public async Task<IActionResult> ManagerCancelFieldTrip(
             [FromRoute][Required] int id)
         {
-            ManagerAPI_URL += "FieldTrip/Update/Cancel/" + id;
+            ManagerAPI_URL += "FieldTrip/" + id + "/Cancel";
 
             string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
             if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");

@@ -171,27 +171,32 @@
                                                         <form asp-action="Contest" asp-controller="Manager" method="get" asp-route-id="@data.ContestId">
                                                             <button class="btn btn-primary clickable-row" type="submit">See Detail</button>
                                                         </form>
-                                                            <button class="btn btn-danger" data-toggle="modal" data-target="#deleteContest" type="submit">Cancel Contest</button>
+                                                        @{
+                                                            if (data.Status.Equals("OnHold") || data.Status.Equals("Postponed") || data.Status.Equals("CheckingIn") || data.Status.Equals("Ongoing"))
+                                                            {
+                                                                <button class="btn btn-danger" data-toggle="modal" data-target="#deleteContest_@data.ContestId" type="submit">Cancel</button>
+                                                            }
+                                                        }
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div id="deleteContest" class="modal fade" role="dialog">
+                                            <div id="deleteContest_@data.ContestId" class="modal fade" role="dialog">
                                                 <div class="modal-dialog modal-dialog-centered" role="content">
                                                     <div class="modal-content">
-                                                        <form action="#">
-                                                            <div class="card-body">
-                                                                <div class="del-title">
-                                                                    <i class='bx bx-error-circle'></i>
-                                                                    <h2>Are you sure want to Cancel Contest ?</h2> 
-                                                                </div>
-                                                                <div class="del-submit d-flex justify-content-center">       
-                                                                    <form asp-action="ManagerCancelContest" asp-controller="Manager" method="post" asp-route-id="@data.ContestId">
-                                                                        <button type="submit" name="action" value="deleteContest" class="btn btn-success">Save</button>
-                                                                        </form>
-                                                                        <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
-                                                                    </div>
+                                                        <div class="card-body">
+                                                            <div class="del-title">
+                                                                <i class='bx bx-error-circle'></i>
+                                                                <h2>Are you sure you want to cancel this Contest ?</h2>
                                                             </div>
-                                                        </form>
+                                                            <div class="del-submit d-flex justify-content-center">       
+                                                                <form asp-action="ManagerCancelContest" asp-controller="Manager" method="post" asp-route-id="@data.ContestId">
+                                                                    <button type="submit" name="action" value="deleteContest" class="btn btn-success">
+                                                                        Yes
+                                                                    </button>
+                                                                </form>
+                                                                <button class="btn btn-danger" type="button" data-dismiss="modal">No</button>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
