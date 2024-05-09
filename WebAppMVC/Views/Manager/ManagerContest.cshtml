@@ -234,6 +234,11 @@
                                     <label class="col-md-3 col-form-label mt-2 text-md-right">Choose Picture</label>
                                     <input type="file" name="photo" class="form-control col-md-7 mt-2" accept="image/*">
 
+                                    <label asp-for="@createContest.OpenRegistration" class="col-md-3 col-form-label mt-3 text-md-right"></label>
+                                    <input asp-for="@createContest.OpenRegistration" value="@createContest.OpenRegistration.ToString("yyyy-MM-ddTHH:mm")" type="datetime-local" required class="form-control col-md-7 mt-3" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}">
+                                    <span asp-validation-for="@createContest.OpenRegistration" id="error_message"
+                                          class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+
                                     <label asp-for="@createContest.RegistrationDeadline" class="col-md-3 col-form-label mt-3 text-md-right"></label>
                                     <input asp-for="@createContest.RegistrationDeadline" value="@createContest.RegistrationDeadline.ToString("yyyy-MM-ddTHH:mm")" type="datetime-local" required class="form-control col-md-7 mt-3" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}">
                                     <span asp-validation-for="@createContest.RegistrationDeadline" id="error_message"
@@ -277,6 +282,21 @@
                                     <label asp-for="@createContest.Fee" class="col-md-3 col-form-label mt-3 text-md-right"></label>
                                     <input asp-for="@createContest.Fee" value="@createContest.Fee" type="number" placeholder="5000" class="form-control col-md-7 mt-3" rows="3" required></input>
                                     <span asp-validation-for="@createContest.Fee" id="error_message"
+                                          class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+
+                                    <label asp-for="@createContest.BeforeScore" class="col-md-3 col-form-label mt-3 text-md-right"></label>
+                                    <input asp-for="@createContest.BeforeScore" value="@createContest.BeforeScore" type="number" placeholder="0" class="form-control col-md-7 mt-3" rows="3" required></input>
+                                    <span asp-validation-for="@createContest.BeforeScore" id="error_message"
+                                          class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+
+                                    <label asp-for="@createContest.AfterScore" class="col-md-3 col-form-label mt-3 text-md-right"></label>
+                                    <input asp-for="@createContest.AfterScore" value="@createContest.AfterScore" type="number" placeholder="0" class="form-control col-md-7 mt-3" rows="3" required></input>
+                                    <span asp-validation-for="@createContest.AfterScore" id="error_message"
+                                          class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+
+                                    <label asp-for="@createContest.Prize" class="col-md-3 col-form-label mt-3 text-md-right"></label>
+                                    <input asp-for="@createContest.Prize" value="@createContest.Prize" type="number" placeholder="0" class="form-control col-md-7 mt-3" rows="3" required></input>
+                                    <span asp-validation-for="@createContest.Prize" id="error_message"
                                           class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
                                     <label asp-for="@createContest.Note" class="col-md-3 col-form-label mt-3 text-md-right">Note</label>

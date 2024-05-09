@@ -34,6 +34,7 @@ namespace BAL.ViewModels
         [DataType(DataType.DateTime)]
         public DateTime OpenRegistration { get; set; }
         [Required(ErrorMessage = "Registration Deadline is required")]
+        [DateGreaterThan(comparisonProperty: "OpenRegistration", comparisonRange: 10, comparisonType: "Day", ErrorMessage = "Registration Deadline Date must be greater than Open Registration at least 10 days")]
         [DisplayName("Registration Deadline")]
         [DataType(DataType.DateTime)]
         public DateTime RegistrationDeadline { get; set; }
