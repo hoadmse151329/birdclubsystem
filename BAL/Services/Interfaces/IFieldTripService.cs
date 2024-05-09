@@ -15,5 +15,6 @@ namespace BAL.Services.Interfaces
         void Update(FieldTripViewModel entity);
         bool UpdateGettingThere(FieldtripGettingThereViewModel entity);
         Task<bool> GetBoolFieldTripId(int id);
+        bool UpdateMedia(FieldtripMediaViewModel entity);
     }
 }

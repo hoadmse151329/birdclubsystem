@@ -195,7 +195,6 @@ namespace WebAPI.Controllers
             try
             {
                 _meetingService.Create(meet);
-
                 return Ok(new
                 {
                     Status = true,
