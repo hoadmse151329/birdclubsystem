@@ -37,7 +37,7 @@
       <section class="infor">
         <div class="background-infor">
                 <div id="carouselBanner" class="carousel slide">
-                    <div class="carousel-Banner">
+                    <div class="carousel-inner">
                         <div class="carousel-item active">
                             <img src="~/images/chao-mao2.png" class="d-block w-100" alt="cover-1">
                         </div>
@@ -105,8 +105,6 @@
             >
             <div class="img-2"></div>
             <div class="section"><a class="text-6" href="@Url.Action("login", "Auth")">Join Now!</a></div>
-          <div class="img"></div>
-          <span class="text-7">Recent and Upcoming events and activities</span>
         </div>
         </section>
         <section class="club container spacing" style="background-color:white">
@@ -133,7 +131,7 @@
                                     <p class="club-price"><i class="fas fa-calendar"></i> 
                                         From @data.StartDate.ToString("MM/dd/yyyy") 
                                         to @data.EndDate.ToString("MM/dd/yyyy")</p>
-                                <button class="button--primary"><a class="text-decoration-none text-white"
+                                <button class="button--primary"><a class="text-decoration-none text-black"
                                         href="@Url.Action("MeetingPost", "Meeting",new {id = data.MeetingId})">See More</a></button>
                             </div>
                         </div>
@@ -161,7 +159,7 @@
                                 to @data.EndDate.ToString("MM/dd/yyyy")
                             </p>
                             <button class="button--primary">
-                                <a class="text-decoration-none text-white"
+                                <a class="text-decoration-none text-black"
                                href="@Url.Action("FieldTripPost", "FieldTrip",new {id = data.TripId})">See More</a>
                             </button>
                         </div>
@@ -187,7 +185,7 @@
                                 <p class="club-price"><i class="fas fa-calendar"></i> 
                                     From @data.StartDate.ToString("MM/dd/yyyy") 
                                     to @data.EndDate.ToString("MM/dd/yyyy")</p>
-                            <button class="button--primary"><a class="text-decoration-none text-white"
+                            <button class="button--primary"><a class="text-decoration-none text-black"
                                 href="@Url.Action("ContestPost", "Contest",new {id = data.ContestId})">See More</a></button>
                         </div>
                     </div>
@@ -195,10 +193,10 @@
             </div>
         </div>
     </section>
-    <hr class="container my-0" />
+    <hr class="container my-0"/>
     <!-- SERVICES -->
     <section id="services" class="services spacing">
-        <div class="container px-0">
+        <div class="container px-0" style="background-color:white">
             <h3 class="heading"><i class="fa fa-concierge-bell"></i>Service</h3>
             <div class="row">
                 <div class="offset-1 col-4 service-item">
@@ -217,7 +215,7 @@
     <hr class="container my-0" />
     <!-- ABOUT US -->
     <section id="aboutUs" class="about-us container px-0 spacing">
-        <h3 class="heading"><i class="fa fa-id-card"></i> About Us</h3>
+        <h3 class="heading" style="background-color:white"><i class="fa fa-id-card"></i> About Us</h3>
         <div class="row">
             <div class="col-6 card intro-desc">
                 <div class="intro-title d-flex">
@@ -242,7 +240,7 @@
     <!-- TEAM MEMBER -->
     <section id="teamMember" class="team-member spacing">
         <div class="container">
-            <h3 class="heading"><i class="fa fa-users"></i>Team</h3>
+            <h3 class="heading" style="background-color:white"><i class="fa fa-users"></i>Team</h3>
             <div class="team-carousel owl-carousel owl-theme">
                 <div class="team__item">
                     <img src="~/images/tv-4.jpg" alt="team 1" />
