@@ -8,8 +8,9 @@
     List<BAL.ViewModels.FieldtripDaybyDayViewModel>? detailDayByDay = details.FieldtripDaybyDays;
     int createDayByDayCount = detailDayByDay.Count + 1;
     BAL.ViewModels.FieldtripDaybyDayViewModel createDayByDay = Model.CreateFieldTripDayByDay != null ? Model.CreateFieldTripDayByDay : new BAL.ViewModels.FieldtripDaybyDayViewModel();
+    List<BAL.ViewModels.FieldtripDaybyDayViewModel> updateDayByDays = Model.UpdateFieldTripDayByDays != null ? Model.UpdateFieldTripDayByDays : new List<BAL.ViewModels.FieldtripDaybyDayViewModel>();
+    Dictionary<string, string> updateDayByDayErrorList = Model.UpdateFieldTripDayByDayErrors != null ? Model.UpdateFieldTripDayByDayErrors : new Dictionary<string, string>();
 
-    BAL.ViewModels.FieldtripDaybyDayViewModel updateDayByDay = Model.UpdateFieldTripDayByDay != null ? Model.UpdateFieldTripDayByDay : new BAL.ViewModels.FieldtripDaybyDayViewModel();
     BAL.ViewModels.FieldtripGettingThereViewModel detailGettingThere = details.FieldtripGettingTheres;
     BAL.ViewModels.FieldtripGettingThereViewModel updateGettingThere = Model.UpdateFieldTripGettingThere != null ? Model.UpdateFieldTripGettingThere : detailGettingThere;
 
@@ -425,18 +426,10 @@
                                             foreach (var day in detailDayByDay)
                                             {
                                                 <div class="card-header">
-                                                    <h4>Edit Detail</h4>
+                                                    <h5>Day @day.Day Details</h5>
                                                      <div class="edit-info">
                                                         <i class='bx bxs-edit-alt' data-toggle="modal" data-target="#editdaybyday_@day.DaybyDayId"></i>
                                                      </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-5 text-md-right">
-                                                        <label for="meeting-name">Day:</label>
-                                                    </div>
-                                                    <div class="col-md-7">
-                                                        <span>@day.Day</span>
-                                                    </div>
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-5 text-md-right">
@@ -488,7 +481,8 @@
                                                             </div>
                                                             <form asp-action="ManagerUpdateFieldTripDayByDay" asp-controller="Manager" method="post" asp-route-id="@details.TripId" asp-route-dayId="@day.DaybyDayId" class="form-group">
                                                                 @{
-                                                                    if (updateDayByDay.DaybyDayId != null)
+                                                                    var updateDayByDay = updateDayByDays.FirstOrDefault(d => d.DaybyDayId.Equals(day.DaybyDayId));
+                                                                    if (updateDayByDay != null)
                                                                     {
                                                                         <div class="modal-body">
                                                                             <div class="row justify-content-center">
@@ -500,8 +494,11 @@
                                                                                         <div class="col-sm-8">
                                                                                             <input asp-for="@updateDayByDay.Day" type="number" min="1"
                                                                                                     value="@updateDayByDay.Day" class="form-control" required>
-                                                                                            <span asp-validation-for="@updateDayByDay.Day" id="error_message"
-                                                                                                    class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                                                                            @{
+                                                                                                var errorday = updateDayByDayErrorList.FirstOrDefault(d => d.Key.Equals("updateDayByDay_" + updateDayByDay.DaybyDayId + ".Day")).Value;
+                                                                                            }
+                                                                                            <span id="error_message" name="updateDayByDay_@(updateDayByDay.DaybyDayId).Day" data-valmsg-for="updateDayByDay_@(updateDayByDay.DaybyDayId).Day"
+                                                                                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2 field-validation-error" data-valmsg-replace="true">@errorday</span>
                                                                                         </div>
                                                                                     </div>
                                                                                     <div class="form-group row">
@@ -509,8 +506,11 @@
                                                                                         <div class="col-sm-8">
                                                                                             <input asp-for="@updateDayByDay.MainDestination" type="text"
                                                                                                     value="@updateDayByDay.MainDestination" class="form-control" required>
-                                                                                            <span asp-validation-for="@updateDayByDay.MainDestination" id="error_message"
-                                                                                                    class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                                                                            @{
+                                                                                                var errordesti = updateDayByDayErrorList.FirstOrDefault(d => d.Key.Equals("updateDayByDay_" + updateDayByDay.DaybyDayId + ".MainDestination")).Value;
+                                                                                            }
+                                                                                            <span id="error_message" name="updateDayByDay_@(updateDayByDay.DaybyDayId).MainDestination" data-valmsg-for="updateDayByDay_@(updateDayByDay.DaybyDayId).MainDestination"
+                                                                                                  class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2 field-validation-error" data-valmsg-replace="true">@errordesti</span>
                                                                                         </div>
                                                                                     </div>
                                                                                     <div class="form-group row">
@@ -518,26 +518,33 @@
                                                                                         <div class="col-sm-8">
                                                                                             <input asp-for="@updateDayByDay.Accommodation" type="text"
                                                                                                     value="@updateDayByDay.Accommodation" class="form-control" required>
-                                                                                            <span asp-validation-for="@updateDayByDay.Accommodation" id="error_message"
-                                                                                                    class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                                                                            @{
+                                                                                                var erroraccmo = updateDayByDayErrorList.FirstOrDefault(d => d.Key.Equals("updateDayByDay_" + updateDayByDay.DaybyDayId + ".Accommodation")).Value;
+                                                                                            }
+                                                                                            <span id="error_message" name="updateDayByDay_@(updateDayByDay.DaybyDayId).Accommodation" data-valmsg-for="updateDayByDay_@(updateDayByDay.DaybyDayId).Accommodation"
+                                                                                                  class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2 field-validation-error" data-valmsg-replace="true">@erroraccmo</span>
                                                                                         </div>
                                                                                     </div>
                                                                                     <div class="form-group row">
                                                                                         <label asp-for="@updateDayByDay.MealsAndDrinks" class="col-sm-4 col-form-label"></label>
                                                                                         <div class="col-sm-8">
-                                                                                            <textarea asp-for="@updateDayByDay.MealsAndDrinks" maxlength="255"
-                                                                                                    value="@updateDayByDay.MealsAndDrinks" class="form-control" required></textarea>
-                                                                                            <span asp-validation-for="@updateDayByDay.MealsAndDrinks" id="error_message"
-                                                                                                    class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                                                                            <textarea name="updateDayByDay.MealsAndDrinks" class="form-control" required>@updateDayByDay.MealsAndDrinks</textarea>
+                                                                                            @{
+                                                                                                var errormeal = updateDayByDayErrorList.FirstOrDefault(d => d.Key.Equals("updateDayByDay_" + updateDayByDay.DaybyDayId + ".MealsAndDrinks")).Value;
+                                                                                            }
+                                                                                            <span id="error_message" name="updateDayByDay_@(updateDayByDay.DaybyDayId).MealsAndDrinks" data-valmsg-for="updateDayByDay_@(updateDayByDay.DaybyDayId).MealsAndDrinks"
+                                                                                                  class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2 field-validation-error" data-valmsg-replace="true">@errormeal</span>
                                                                                         </div>
                                                                                     </div>
                                                                                     <div class="form-group row">
                                                                                         <label asp-for="@updateDayByDay.Description" class="col-sm-4 col-form-label"></label>
                                                                                         <div class="col-sm-8">
-                                                                                            <textarea asp-for="@updateDayByDay.Description"
-                                                                                                        value="@updateDayByDay.Description" class="form-control" required></textarea>
-                                                                                            <span asp-validation-for="@updateDayByDay.Description" id="error_message"
-                                                                                                    class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                                                                            <textarea name="updateDayByDay.Description" class="form-control" required>@updateDayByDay.Description</textarea>
+                                                                                            @{
+                                                                                                var errordes = updateDayByDayErrorList.FirstOrDefault(d => d.Key.Equals("updateDayByDay_" + updateDayByDay.DaybyDayId + ".Description")).Value;
+                                                                                            }
+                                                                                            <span id="error_message" name="updateDayByDay_@(updateDayByDay.DaybyDayId).Description" data-valmsg-for="updateDayByDay_@(updateDayByDay.DaybyDayId).Description"
+                                                                                                  class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2 field-validation-error" data-valmsg-replace="true">@errordes</span>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
@@ -550,12 +557,12 @@
                                                                         <div class="modal-body">
                                                                             <div class="row justify-content-center">
                                                                                 <input asp-for="@updateDayByDay.DaybyDayId" type="number"
-                                                                                       value="@updateDayByDay.DaybyDayId" class="form-control" required hidden>
+                                                                                       value="@day.DaybyDayId" class="form-control" required hidden>
                                                                                 <div class="col-12 col-md-12">
                                                                                     <div class="form-group row">
                                                                                         <label asp-for="@updateDayByDay.Day" class="col-sm-4 col-form-label"></label>
                                                                                         <div class="col-sm-8">
-                                                                                            <input asp-for="@updateDayByDay.Day" type="number" min="1"
+                                                                                            <input asp-for="@updateDayByDay.Day" type="number"
                                                                                                    value="@updateDayByDay.Day" class="form-control" required>
                                                                                             <span asp-validation-for="@updateDayByDay.Day" id="error_message"
                                                                                                   class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
@@ -565,7 +572,7 @@
                                                                                         <label asp-for="@updateDayByDay.MainDestination" class="col-sm-4 col-form-label"></label>
                                                                                         <div class="col-sm-8">
                                                                                             <input asp-for="@updateDayByDay.MainDestination" type="text"
-                                                                                                   value="@updateDayByDay.MainDestination" class="form-control" required>
+                                                                                                   value="@day.MainDestination" class="form-control" required>
                                                                                             <span asp-validation-for="@updateDayByDay.MainDestination" id="error_message"
                                                                                                   class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                                                                         </div>
@@ -574,7 +581,7 @@
                                                                                         <label asp-for="@updateDayByDay.Accommodation" class="col-sm-4 col-form-label"></label>
                                                                                         <div class="col-sm-8">
                                                                                             <input asp-for="@updateDayByDay.Accommodation" type="text"
-                                                                                                   value="@updateDayByDay.Accommodation" class="form-control" required>
+                                                                                                   value="@day.Accommodation" class="form-control" required>
                                                                                             <span asp-validation-for="@updateDayByDay.Accommodation" id="error_message"
                                                                                                   class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                                                                         </div>
@@ -582,8 +589,7 @@
                                                                                     <div class="form-group row">
                                                                                         <label asp-for="@updateDayByDay.MealsAndDrinks" class="col-sm-4 col-form-label"></label>
                                                                                         <div class="col-sm-8">
-                                                                                            <textarea asp-for="@updateDayByDay.MealsAndDrinks"
-                                                                                                      value="@updateDayByDay.MealsAndDrinks" class="form-control" required></textarea>
+                                                                                            <textarea name="updateDayByDay.MealsAndDrinks" class="form-control" required>@day.MealsAndDrinks</textarea>
                                                                                             <span asp-validation-for="@updateDayByDay.MealsAndDrinks" id="error_message"
                                                                                                   class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                                                                         </div>
@@ -591,8 +597,7 @@
                                                                                     <div class="form-group row">
                                                                                         <label asp-for="@updateDayByDay.Description" class="col-sm-4 col-form-label"></label>
                                                                                         <div class="col-sm-8">
-                                                                                            <textarea asp-for="@updateDayByDay.Description"
-                                                                                                      value="@updateDayByDay.Description" class="form-control" required></textarea>
+                                                                                            <textarea name="updateDayByDay.Description" class="form-control" required>@day.Description</textarea>
                                                                                             <span asp-validation-for="@updateDayByDay.Description" id="error_message"
                                                                                                   class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                                                                         </div>

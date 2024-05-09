@@ -265,6 +265,52 @@ namespace WebAppMVC.Constants
             }
             return null;
         }
+        public Dictionary<string,string>? GetValidationModelStateErrorMessageList<T>(
+            ControllerBase context,
+            ITempDataDictionary tempData,
+            string tempDataNamePrefix,
+            string viewObjectNamePrefix,
+            JsonSerializerOptions jsonOptions
+            ) where T : class
+        {
+            var list = tempData.Where(t => t.Key.StartsWith(tempDataNamePrefix + "_"));
+            if (list.Count() > 0)
+            {
+                Dictionary<string, string> result = new();
+                foreach (var item in list)
+                {
+                    var objectForValidation = JsonSerializer.Deserialize<T>(item.Value.ToString(), jsonOptions);
+                    context.TryValidateModel(objectForValidation, viewObjectNamePrefix + "_" + item.Key.Split("_")[1]);
+                    var listErrors = context.ModelState.FindKeysWithPrefix(viewObjectNamePrefix + "_" + item.Key.Split("_")[1]);
+                    foreach (var erroritem in listErrors)
+                    {
+                        var errors = erroritem.Value.Errors;
+                        if (errors != null)
+                        {
+                            if (errors.Count > 1)
+                            {
+                                string errorsList = "";
+                                foreach (var error in errors)
+                                {
+                                    errorsList += error.ErrorMessage + ";";
+                                }
+                                result.Add(erroritem.Key, errorsList);
+                            }
+                            else
+                            {
+                                result.Add(erroritem.Key, errors.FirstOrDefault().ErrorMessage);
+                            }
+                        }
+                    }
+                }
+                if (result.Count > 0)
+                {
+                    return result;
+                }
+                return null;
+            }
+            return null;
+        }
         public ITempDataDictionary SetValidationTempData<T>(ITempDataDictionary tempData, string tempDataName, T objectForSerialize, JsonSerializerOptions jsonOptions) where T : class
         {
             string validJson = JsonSerializer.Serialize(objectForSerialize, jsonOptions);

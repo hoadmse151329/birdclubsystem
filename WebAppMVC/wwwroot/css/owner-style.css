@@ -1302,7 +1302,13 @@ html body {
     }
 
         .profile .card-header h4 {
-            margin-left: 40%;
+            /*margin-left: 40%;*/
+            margin-bottom: 0.4rem;
+            margin-top:0.5rem;
+        }
+        .profile .card-header h5 {
+            /*margin-left: 40%;*/
+            font-weight: 600;
         }
 
         .profile .card-header .edit-info {
