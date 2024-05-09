@@ -549,7 +549,7 @@ namespace WebAPI.Controllers
             }
         }
         [HttpPost("Upload")]
-        [Authorize(Roles = "Admin,Member")]
+        //[Authorize(Roles = "Admin,Member")]
         [ProducesResponseType(typeof(UpdateMemberAvatar), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

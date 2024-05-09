@@ -1,12 +1,13 @@
 {
   "dependencies": {
-    "secrets1": {
-      "type": "secrets"
-    },
     "storage1": {
       "type": "storage",
       "connectionId": "MyBirdClubAzureStorageString",
       "dynamicId": null
+    },
+    "secrets1": {
+      "type": "secrets",
+      "connectionId": null
     }
   }
 }

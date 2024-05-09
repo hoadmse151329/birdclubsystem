@@ -172,6 +172,22 @@ namespace BAL.Services.Implements
             return true;
         }
 
+        public bool UpdateMedia(FieldtripMediaViewModel entity)
+        {
+            var trip = _unitOfWork.FieldTripRepository.GetById(entity.TripId.Value);
+
+            if (trip == null)
+            {
+                return false;
+            }
+
+            var media = _mapper.Map<FieldtripMedia>(entity);
+            media.Trip = trip;
+            _unitOfWork.FieldTripMediaRepository.Update(media);
+            _unitOfWork.Save();
+            return true;
+        }
+
         public async Task<bool> GetBoolFieldTripId(int id)
         {
             var trip = await _unitOfWork.FieldTripRepository.GetBoolFieldTripId(id);
