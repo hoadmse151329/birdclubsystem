@@ -3,16 +3,13 @@
     $('a').click(function () {
         $('#loading-screen').fadeIn();
     });
-    $('nav-link').click(function () {
-        $('#loading-screen').fadeIn();
-    }, 5000);
     // Show loading screen on page load
     $('#loading-screen').fadeIn();
 
     // Hide loading screen after a delay (e.g., 3 seconds)
     setTimeout(function () {
         $('#loading-screen').fadeOut();
-    }, 5000); // Adjust the delay time as needed (in milliseconds)
+    }, 2000); // Adjust the delay time as needed (in milliseconds)
 });
 
 const textAnimation = document.querySelector('.text-animation');
@@ -21,7 +18,7 @@ const textAnimation = document.querySelector('.text-animation');
 const animationDuration = 5000; // 5 seconds
 
 // Set the interval for updating the text color gradient
-const interval = 50; // 50 milliseconds
+const interval = 30; // 50 milliseconds
 
 // Function to update text color gradient during animation
 function updateTextColor() {
