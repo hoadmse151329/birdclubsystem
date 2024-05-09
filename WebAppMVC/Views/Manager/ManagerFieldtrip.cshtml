@@ -178,7 +178,12 @@
                                                         <form asp-action="FieldTrip" asp-controller="Manager" method="get" asp-route-id="@data.TripId">
                                                             <button class="btn btn-primary clickable-row" type="submit">See Detail</button>
                                                         </form>
-                                                        <button class="btn btn-danger" data-toggle="modal" data-target="#deleteFieldTrip_@data.TripId" type="submit">Cancel FieldTrip</button>
+                                                        @{
+                                                            if (data.Status.Equals("OnHold") || data.Status.Equals("Postponed") || data.Status.Equals("CheckingIn") || data.Status.Equals("Ongoing"))
+                                                            {
+                                                                <button class="btn btn-danger" data-toggle="modal" data-target="#deleteFieldTrip_@data.TripId" type="submit">Cancel</button>
+                                                            }
+                                                        }
                                                     </div>
                                                 </div>
                                             </div>
@@ -188,15 +193,15 @@
                                                         <div class="card-body">
                                                             <div class="del-title">
                                                                 <i class='bx bx-error-circle'></i>
-                                                                <h2>Are you sure want to cancel this Fieldtrip ?</h2>
+                                                                <h2>Are you sure you want to cancel this FieldTrip ?</h2>
                                                             </div>
                                                             <div class="del-submit d-flex justify-content-center">       
                                                                 <form asp-action="ManagerCancelFieldTrip" asp-controller="Manager" method="post" asp-route-id="@data.TripId">
                                                                     <button type="submit" name="action" value="deleteFieldTrip" class="btn btn-success">
-                                                                        Cancel Fieldtrip
+                                                                        Yes
                                                                     </button>
                                                                 </form>
-                                                                <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
+                                                                <button class="btn btn-danger" type="button" data-dismiss="modal">No</button>
                                                             </div>
                                                         </div>
                                                     </div>

@@ -195,7 +195,6 @@ namespace WebAPI.Controllers
             try
             {
                 _meetingService.Create(meet);
-
                 return Ok(new
                 {
                     Status = true,
@@ -222,8 +221,8 @@ namespace WebAPI.Controllers
                 });
             }
         }
+        [HttpPut("{id:int}/Update")]
         [Authorize(Roles = "Manager,Staff")]
-        [HttpPut("Update/{id}")]
         [ProducesResponseType(typeof(MeetingViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -271,7 +270,7 @@ namespace WebAPI.Controllers
             }
         }
         [Authorize(Roles = "Manager")]
-        [HttpGet("Update/Cancel/{id}")]
+        [HttpGet("{id:int}/Cancel")]
         [ProducesResponseType(typeof(MeetingViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

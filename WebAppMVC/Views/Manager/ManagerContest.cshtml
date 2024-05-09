@@ -171,27 +171,32 @@
                                                         <form asp-action="Contest" asp-controller="Manager" method="get" asp-route-id="@data.ContestId">
                                                             <button class="btn btn-primary clickable-row" type="submit">See Detail</button>
                                                         </form>
-                                                            <button class="btn btn-danger" data-toggle="modal" data-target="#deleteContest" type="submit">Cancel Contest</button>
+                                                        @{
+                                                            if (data.Status.Equals("OnHold") || data.Status.Equals("Postponed") || data.Status.Equals("CheckingIn") || data.Status.Equals("Ongoing"))
+                                                            {
+                                                                <button class="btn btn-danger" data-toggle="modal" data-target="#deleteContest_@data.ContestId" type="submit">Cancel</button>
+                                                            }
+                                                        }
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div id="deleteContest" class="modal fade" role="dialog">
+                                            <div id="deleteContest_@data.ContestId" class="modal fade" role="dialog">
                                                 <div class="modal-dialog modal-dialog-centered" role="content">
                                                     <div class="modal-content">
-                                                        <form action="#">
-                                                            <div class="card-body">
-                                                                <div class="del-title">
-                                                                    <i class='bx bx-error-circle'></i>
-                                                                    <h2>Are you sure want to Cancel Contest ?</h2> 
-                                                                </div>
-                                                                <div class="del-submit d-flex justify-content-center">       
-                                                                    <form asp-action="ManagerCancelContest" asp-controller="Manager" method="post" asp-route-id="@data.ContestId">
-                                                                        <button type="submit" name="action" value="deleteContest" class="btn btn-success">Save</button>
-                                                                        </form>
-                                                                        <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
-                                                                    </div>
+                                                        <div class="card-body">
+                                                            <div class="del-title">
+                                                                <i class='bx bx-error-circle'></i>
+                                                                <h2>Are you sure you want to cancel this Contest ?</h2>
                                                             </div>
-                                                        </form>
+                                                            <div class="del-submit d-flex justify-content-center">       
+                                                                <form asp-action="ManagerCancelContest" asp-controller="Manager" method="post" asp-route-id="@data.ContestId">
+                                                                    <button type="submit" name="action" value="deleteContest" class="btn btn-success">
+                                                                        Yes
+                                                                    </button>
+                                                                </form>
+                                                                <button class="btn btn-danger" type="button" data-dismiss="modal">No</button>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -254,9 +259,9 @@
                                     <span asp-validation-for="@createContest.Host" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
-                                    <label asp-for="@createContest.InCharge" class="col-md-3 col-form-label mt-3 text-md-right">Incharge</label>
-                                    <input asp-for="@createContest.InCharge" value="@createContest.InCharge" type="text" placeholder="Staff incharge of Contest" class="form-control col-md-7 mt-3" rows="3" required>
-                                    <span asp-validation-for="@createContest.InCharge" id="error_message"
+                                    <label asp-for="@createContest.Incharge" class="col-md-3 col-form-label mt-3 text-md-right">Incharge</label>
+                                    <input asp-for="@createContest.Incharge" value="@createContest.Incharge" type="text" placeholder="Staff incharge of Contest" class="form-control col-md-7 mt-3" rows="3" required>
+                                    <span asp-validation-for="@createContest.Incharge" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
                                     <label asp-for="@createContest.Address" class="col-md-3 col-form-label mt-3 text-md-right">Address</label>

@@ -2,13 +2,15 @@
 @{
     Layout = null;
     ViewData["Title"] = "Staff Contest Detail Page";
-    BAL.ViewModels.ContestViewModel details = Model.ContestDetails;
+    BAL.ViewModels.ContestViewModel detailsContest = Model.ContestDetails;
+    BAL.ViewModels.ContestViewModel updateContest = Model.UpdateContest != null ? Model.UpdateContest : detailsContest;
     List<BAL.ViewModels.ContestParticipantViewModel> contestPartView = Model.ContestParticipants;
     List<SelectListItem> checkInStatus = new()
     {
         new SelectListItem {Text = "Not Checked-In", Value = "Not Checked-In"},
         new SelectListItem {Text = "Checked-In", Value = "Checked-In"}
     }; 
+    List<SelectListItem> defaultContestStatus = Model.SelectListStatus;
     Layout = "~/Views/Shared/_SLayout.cshtml";
 }
 <html lang="en">
@@ -49,6 +51,9 @@
                             <div class="card profile col-12 mb-4">
                                 <div class="card-header">
                                     <h4>Contest Information</h4>
+                                    <div class="edit-info">
+                                        <i class='bx bxs-edit-alt' data-toggle="modal" data-target="#editprofile"></i>
+                                    </div>
                                 </div>
                                 <div class="card-body">
                                     <div class="row">
@@ -57,26 +62,26 @@
                                         </div>
                                         <div class="col-sm-7">
                                             @{
-                                                switch (details.Status)
+                                                switch (detailsContest.Status)
                                                 {
                                                     case "Ongoing":
                                                     case "CheckingIn":
                                                     case "OpenRegistration":
                                                         {
-                                                            <span class="outcome" style="float: left;">@details.Status</span>
+                                                            <span class="outcome" style="float: left;">@detailsContest.Status</span>
                                                             break;
                                                         }
                                                     case "OnHold":
                                                     case "ClosedRegistration":
                                                         {
-                                                            <span class="approval" style="float: left;">@details.Status</span>
+                                                            <span class="approval" style="float: left;">@detailsContest.Status</span>
                                                             break;
                                                         }
                                                     case "Ended":
                                                     case "Postponed":
                                                     case "Cancelled":
                                                         {
-                                                            <span class="destroy" style="float: left;">@details.Status</span>
+                                                            <span class="destroy" style="float: left;">@detailsContest.Status</span>
                                                             break;
                                                         }
                                                 }
@@ -88,7 +93,7 @@
                                             <label for="meeting-name">Contest Name:</label>
                                         </div>
                                         <div class="col-md-7">
-                                            <span>@details.ContestName</span>
+                                            <span>@detailsContest.ContestName</span>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -96,7 +101,7 @@
                                             <label for="customer-name">Registration Deadlines:</label>
                                         </div>
                                         <div class="col-md-7">
-                                            <span>@details.RegistrationDeadline.ToString("MM-dd-yyyy")</span>
+                                            <span>@detailsContest.RegistrationDeadline.ToString("MM-dd-yyyy")</span>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -104,7 +109,7 @@
                                             <label for="customer-name">Start Date:</label>
                                         </div>
                                         <div class="col-md-7">
-                                            <span>@details.StartDate.ToString("MM-dd-yyyy")</span>
+                                            <span>@detailsContest.StartDate.ToString("MM-dd-yyyy")</span>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -112,7 +117,7 @@
                                             <label for="customer-name">End Date:</label>
                                         </div>
                                         <div class="col-md-7">
-                                            <span>@details.EndDate.ToString("MM-dd-yyyy")</span>
+                                            <span>@detailsContest.EndDate.ToString("MM-dd-yyyy")</span>
                                         </div>
                                     </div>
                                     <div class="row mb-sm-2">
@@ -120,7 +125,7 @@
                                             <span>Host:</span>
                                         </div>
                                         <div class="col-sm-7 text-sm-left">
-                                            <span>@details.Host</span>
+                                            <span>@detailsContest.Host</span>
                                         </div>
                                     </div>
                                     <div class="row mb-sm-2">
@@ -128,7 +133,7 @@
                                             <span>Incharge:</span>
                                         </div>
                                         <div class="col-sm-7 text-sm-left">
-                                            <span>@details.InCharge</span>
+                                            <span>@detailsContest.Incharge</span>
                                         </div>
                                     </div>
                                     <div class="row mb-sm-2">
@@ -136,7 +141,7 @@
                                             <span>Maximum Participations:</span>
                                         </div>
                                         <div class="col-sm-7 text-sm-left">
-                                            <span>@details.NumberOfParticipantsLimit</span>
+                                            <span>@detailsContest.NumberOfParticipantsLimit</span>
                                         </div>
                                     </div>
                                     <div class="row mb-sm-2">
@@ -144,7 +149,7 @@
                                             <span>Remaining Participant Slots:</span>
                                         </div>
                                         <div class="col-sm-7 text-sm-left">
-                                            <span>@details.NumberOfParticipants</span>
+                                            <span>@detailsContest.NumberOfParticipants</span>
                                         </div>
                                     </div>
                                     <div class="row mb-sm-2">
@@ -152,7 +157,7 @@
                                             <span>Location:</span>
                                         </div>
                                         <div class="col-sm-7 text-sm-left">
-                                            <span>@details.AreaNumber,@details.Street,@details.District,@details.City</span>
+                                            <span>@detailsContest.AreaNumber,@detailsContest.Street,@detailsContest.District,@detailsContest.City</span>
                                         </div>
                                     </div>
                                     <div class="row mb-sm-2">
@@ -160,7 +165,7 @@
                                             <span>Description:</span>
                                         </div>
                                         <div class="col-sm-7 text-sm-left">
-                                            <span>@details.Description</span>
+                                            <span>@detailsContest.Description</span>
                                         </div>
                                     </div>
                                     <div class="row mb-sm-2">
@@ -168,7 +173,7 @@
                                             <span>Note:</span>
                                         </div>
                                         <div class="col-sm-7 text-sm-left">
-                                            <span>@details.Note</span>
+                                            <span>@detailsContest.Note</span>
                                         </div>
                                     </div>
                                 </div>
@@ -176,7 +181,7 @@
                         </div>
                     </div>
                     <div class="col-lg-5 cardFB">
-                        <form asp-action="StaffUpdateContestStatus" asp-controller="Staff" asp-route-id="@details.ContestId" method="post">
+                        <form asp-action="StaffUpdateContestPartStatus" asp-controller="Staff" asp-route-id="@detailsContest.ContestId" method="post">
                         <div class="card border-0 d-flex">
                             <div class="card-header">
                                 <h4>Edit Participant Status</h4>
@@ -237,7 +242,59 @@
         </div>
     </div>
 
-        <!-- jQuery first, then Popper.js, then Bootstrap JS. -->
-
+    <!-- edit Contest Status -->
+    <div id="editprofile" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
+            <div class="modal-content modal-addRoom">
+                <div class="modal-header">
+                    <h4 class="modal-title">Edit Contest Status</h4>
+                </div>
+                <form asp-action="StaffUpdateContestStatus" asp-controller="Staff" method="post" asp-route-id="@detailsContest.ContestId" class="form-group">
+                    <div class="modal-body">
+                        <div class="row justify-content-center">
+                            <div class="col-12 col-md-6">
+                                <div class="form-group row">
+                                    <label asp-for="@updateContest.Status" class="col-sm-4 col-form-label"></label>
+                                    <div class="col-sm-8">
+                                        <select class="form-control" asp-for="@updateContest.Status" asp-items="@defaultContestStatus" class="custom-select" required></select>
+                                        <span asp-validation-for="@updateContest.Status" id="error_message"
+                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <input asp-for="@updateContest.ContestName" type="text"
+                               value="@updateContest.ContestName" required hidden>
+                        <input asp-for="@updateContest.RegistrationDeadline" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
+                               value="@updateContest.RegistrationDeadline.ToString("yyyy-MM-ddTHH:mm")" required hidden>
+                        <input asp-for="@updateContest.StartDate" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
+                               value="@updateContest.StartDate.ToString("yyyy-MM-ddTHH:mm")" required hidden>
+                        <input asp-for="@updateContest.EndDate" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
+                               value="@updateContest.EndDate.ToString("yyyy-MM-ddTHH:mm")" required hidden>
+                        <input asp-for="@updateContest.NumberOfParticipantsLimit" type="number"
+                               value="@updateContest.NumberOfParticipantsLimit" required hidden>
+                        <input asp-for="@updateContest.Host" type="text"
+                               value="@updateContest.Host" required hidden>
+                        <input asp-for="@updateContest.Incharge" type="text"
+                               value="@updateContest.Incharge" required hidden>
+                        <input asp-for="@updateContest.Fee" type="number"
+                               value="@updateContest.Fee" required hidden>
+                        <input asp-for="@updateContest.Address" type="text"
+                               value="@updateContest.Address" required hidden>
+                        <textarea asp-for="@updateContest.Description" type="text"
+                                  value="@updateContest.Description" required hidden></textarea>
+                        <textarea asp-for="@updateContest.Note" type="text"
+                                  value="@updateContest.Note" required hidden></textarea>
+                        <input asp-for="@updateContest.NumberOfParticipants" type="number"
+                               value="@updateContest.NumberOfParticipants" required hidden>
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                        <button class="btn btn-success" type="submit" value="Update">Save</button>
+                        <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

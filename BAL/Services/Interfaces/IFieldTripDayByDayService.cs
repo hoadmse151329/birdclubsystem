@@ -13,6 +13,7 @@ namespace BAL.Services.Interfaces
         Task<bool> Create(int tripId, FieldtripDaybyDayViewModel dayDetail);
         Task<bool> Delete(int dayId, int tripId);
         Task<bool> Update(int tripId, FieldtripDaybyDayViewModel dayDetail);
+        Task<FieldtripDaybyDayViewModel> GetById(int dayId);
         Task<IEnumerable<FieldtripDaybyDayViewModel>> GetAllByTripId(int tripId);
     }
 }

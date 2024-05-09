@@ -33,13 +33,13 @@ namespace BAL.Services.Implements
             return true;
         }
 
-        public async Task<bool> Delete(int incluId, int tripId)
+        public async Task<bool> Delete(int incId, int tripId)
         {
             var ftrip = await _unitOfWork.FieldTripRepository.GetFieldTripById(tripId);
 
             if (ftrip == null) return false;
 
-            var inclu = await _unitOfWork.FieldTripInclusionRepository.GetFieldTripInclusionByIdTracking(incluId);
+            var inclu = await _unitOfWork.FieldTripInclusionRepository.GetFieldTripInclusionByIdTracking(incId);
 
             if (inclu == null) return false;
             _unitOfWork.FieldTripInclusionRepository.Delete(inclu);
@@ -51,21 +51,28 @@ namespace BAL.Services.Implements
         {
             throw new NotImplementedException();
         }
+        public async Task<FieldtripInclusionViewModel> GetById(int incId)
+        {
+            return _mapper.Map<FieldtripInclusionViewModel>(await _unitOfWork.FieldTripInclusionRepository.GetFieldTripInclusionById(incId));
+        }
 
-        public async Task<bool> Update(int tripId, FieldtripInclusionViewModel inclusion)
+        public async Task<bool> Update(int tripId, FieldtripInclusionViewModel inclusionDetail)
         {
             var ftrip = await _unitOfWork.FieldTripRepository.GetFieldTripById(tripId);
 
             if (ftrip == null) return false;
 
-            if (inclusion == null || inclusion.InclusionId == null) return false;
+            if (inclusionDetail == null || inclusionDetail.InclusionId == null) return false;
 
-            var inclu = await _unitOfWork.FieldTripInclusionRepository.GetFieldTripInclusionByIdTracking(inclusion.InclusionId.Value);
+            var inclu = await _unitOfWork.FieldTripInclusionRepository.GetFieldTripInclusionById(inclusionDetail.InclusionId.Value);
 
             if (inclu == null) return false;
 
             inclu.TripId = tripId;
-            _unitOfWork.FieldTripInclusionRepository.Update(inclu);
+            var inc = _mapper.Map<FieldtripInclusion>(inclusionDetail);
+            inc.TripId = tripId;
+
+            _unitOfWork.FieldTripInclusionRepository.Update(inc);
             _unitOfWork.Save();
             return true;
         }

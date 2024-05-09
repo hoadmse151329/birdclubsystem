@@ -23,6 +23,11 @@ namespace DAL.Repositories.Implements
             return _context.FieldtripMedia.AsNoTracking().SingleOrDefault(f => f.TripId.Equals(tripId) && f.PictureId.Equals(pictureId));
         }
 
+        public async Task<FieldtripMedia> GetFieldTripMediaByIdTracking(int tripId, int pictureId)
+        {
+            return _context.FieldtripMedia.SingleOrDefault(f => f.TripId.Equals(tripId) && f.PictureId.Equals(pictureId));
+        }
+
         public async Task<IEnumerable<FieldtripMedia>> GetFieldTripMediasByTripId(int tripId)
         {
             return _context.FieldtripMedia.AsNoTracking().Where(f => f.TripId.Equals(tripId));

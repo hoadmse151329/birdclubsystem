@@ -18,6 +18,8 @@ using System.Text.Encodings.Web;
 using BAL.ViewModels.Event;
 using WebAppMVC.Models.Transaction;
 using WebAppMVC.Models.Bird;
+using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
 
 namespace WebAppMVC.Controllers
 {
@@ -253,15 +255,24 @@ namespace WebAppMVC.Controllers
 
             if (photo != null && photo.Length > 0)
             {
-                var fileName = Path.GetFileName(photo.FileName);
-                var pathImage = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", fileName);
+                string connectionString = _config.GetSection("AzureStorage:BlobConnectionString").Value;
+                string containerName = _config.GetSection("AzureStorage:BlobContainerName").Value;
+                BlobServiceClient _blobServiceClient = new BlobServiceClient(connectionString);
+                BlobContainerClient _blobContainerClient = _blobServiceClient.GetBlobContainerClient(containerName);
 
-                using (var stream = new FileStream(pathImage, FileMode.Create))
+                var azureResponse = new List<BlobContentInfo>();
+                string filename = photo.FileName;
+                string uniqueBlobName = $"{Guid.NewGuid()}-{filename}";
+                using (var memoryStream = new MemoryStream())
                 {
-                    await photo.CopyToAsync(stream);
+                    photo.CopyTo(memoryStream);
+                    memoryStream.Position = 0;
+
+                    var client = await _blobContainerClient.UploadBlobAsync(uniqueBlobName, memoryStream);
+                    azureResponse.Add(client);
                 }
 
-                var image = "/images/" + fileName;
+                var image = "https://edwinbirdclubstorage.blob.core.windows.net/images/" + uniqueBlobName;
                 dynamic imageUpload = new ExpandoObject();
                 imageUpload.ImagePath = image;
                 imageUpload.MemberId = usrId;
@@ -288,7 +299,7 @@ namespace WebAppMVC.Controllers
                 }
                 return RedirectToAction("MemberProfile");
             }
-            return RedirectToAction("Error");
+            return RedirectToAction("MemberProfile");
         }
         [HttpPost("ChangePassword")]
         //[Authorize(Roles = "Member")]

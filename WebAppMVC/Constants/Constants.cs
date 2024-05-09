@@ -48,6 +48,9 @@
         public static string EVENT_STATUS_ONGOING = "Ongoing";
         public static string EVENT_STATUS_NAME_ONGOING = "Ongoing";
 
+        public static string EVENT_PARTICIPANT_STATUS_NOT_CHECKED_IN = "Not Checked-In";
+        public static string EVENT_PARTICIPANT_STATUS_CHECKED_IN = "Checked-In";
+
         public static string FIELDTRIP_INCLUSION_TYPE_INCLUDED = "Included";
         public static string FIELDTRIP_INCLUSION_TYPE_EXCLUDED = "Excluded";
 
