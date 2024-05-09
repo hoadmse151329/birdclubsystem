@@ -39,7 +39,7 @@ namespace BAL.Services.Implements
 
             if (ftrip == null) return false;
 
-            var day = await _unitOfWork.FieldTripDaybyDayRepository.GetFieldTripDayByDayById(tripId, dayId);
+            var day = await _unitOfWork.FieldTripDaybyDayRepository.GetFieldTripDayByDayByIdTracking(dayId);
 
             if (day == null) return false;
             _unitOfWork.FieldTripDaybyDayRepository.Delete(day);
@@ -52,6 +52,11 @@ namespace BAL.Services.Implements
             throw new NotImplementedException();
         }
 
+        public async Task<FieldtripDaybyDayViewModel> GetById(int dayId)
+        {
+            return _mapper.Map<FieldtripDaybyDayViewModel>(await _unitOfWork.FieldTripDaybyDayRepository.GetFieldTripDayByDayById(dayId));
+        }
+
         public async Task<bool> Update(int tripId, FieldtripDaybyDayViewModel dayDetail)
         {
             var ftrip = await _unitOfWork.FieldTripRepository.GetFieldTripById(tripId);
@@ -60,10 +65,11 @@ namespace BAL.Services.Implements
 
             if (dayDetail == null || dayDetail.DaybyDayId == null) return false;
 
-            var day = await _unitOfWork.FieldTripDaybyDayRepository.GetFieldTripDayByDayByIdTracking(tripId, dayDetail.DaybyDayId.Value);
+            var tripDay = await _unitOfWork.FieldTripDaybyDayRepository.GetFieldTripDayByDayById(dayDetail.DaybyDayId.Value);
 
-            if (day == null) return false;
+            if (tripDay == null) return false;
 
+            var day = _mapper.Map<FieldtripDaybyDay>(dayDetail);
             day.TripId = tripId;
             _unitOfWork.FieldTripDaybyDayRepository.Update(day);
             _unitOfWork.Save();

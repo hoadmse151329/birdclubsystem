@@ -10,8 +10,8 @@ namespace DAL.Repositories.Interfaces
 {
     public interface IFieldtripDaybyDayRepository : IRepositoryBase<FieldtripDaybyDay>
     {
-        Task<FieldtripDaybyDay> GetFieldTripDayByDayById(int tripId, int dayId);
-        Task<FieldtripDaybyDay> GetFieldTripDayByDayByIdTracking(int tripId, int dayId);
+        Task<FieldtripDaybyDay> GetFieldTripDayByDayById(int dayId);
+        Task<FieldtripDaybyDay> GetFieldTripDayByDayByIdTracking(int dayId);
         Task<IEnumerable<FieldtripDaybyDay>> GetAllFieldTripDayByDaysByTripId(int tripId);
     }
 }

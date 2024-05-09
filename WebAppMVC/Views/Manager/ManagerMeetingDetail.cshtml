@@ -33,7 +33,7 @@
                     <div class="offset-sm-6 col-sm-6  d-flex justify-content-sm-end p-md-0 mt-2 mt-sm-0 ">
                         <ol class="breadcrumb">
                             <li class="breadcrumd-item">
-                                <a href="#">Manage</a>
+                                <a href="@Url.Action("ManagerMeeting", "Manager")">Manage</a>
                             </li>
                             <li class="breadcrumd-item">
                                 <span>/</span>
@@ -94,10 +94,18 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-5 text-md-right">
+                                            <label for="customer-name">Open Registration Date:</label>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <span>@detailsMeeting.OpenRegistration.ToString("dd-MM-yyyy HH:mm")</span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-5 text-md-right">
                                             <label for="customer-name">Registration Deadlines:</label>
                                         </div>
                                         <div class="col-md-7">
-                                            <span>@detailsMeeting.RegistrationDeadline.ToString("yyyy-MM-dd HH:mm")</span>
+                                            <span>@detailsMeeting.RegistrationDeadline.ToString("dd-MM-yyyy HH:mm")</span>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -105,7 +113,7 @@
                                             <label for="customer-name">Start Date:</label>
                                         </div>
                                         <div class="col-md-7">
-                                            <span>@detailsMeeting.StartDate.ToString("yyyy-MM-dd HH:mm")</span>
+                                            <span>@detailsMeeting.StartDate.ToString("dd-MM-yyyy HH:mm")</span>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -113,7 +121,7 @@
                                             <label for="customer-name">End Date:</label>
                                         </div>
                                         <div class="col-md-7">
-                                            <span>@detailsMeeting.EndDate.ToString("yyyy-MM-dd HH:mm")</span>
+                                            <span>@detailsMeeting.EndDate.ToString("dd-MM-yyyy HH:mm")</span>
                                         </div>
                                     </div>
                                     <div class="row mb-sm-2">
@@ -336,7 +344,6 @@
                                     <select class="form-control" asp-for="@updateMeeting.Status" asp-items="@defaultMeetingStatus" class="custom-select" required></select>
                                     <span asp-validation-for="@updateMeeting.Status" id="error_message"
                                             class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-
                                     </div>
                                 </div>
                             </div>

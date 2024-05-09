@@ -207,7 +207,7 @@ namespace WebAppMVC.Controllers
             [FromRoute][Required] int id,
             [Required] MeetingViewModel updateMeeting)
         {
-            StaffAPI_URL += "Meeting/Update/" + id;
+            StaffAPI_URL += "Meeting/" + id + "/Update";
 
             /*if (!ModelState.IsValid)
             {
@@ -243,7 +243,7 @@ namespace WebAppMVC.Controllers
                                 _logger: _logger);
             if (meetPostResponse == null)
             {
-                TempData = methcall.GetValidationTempData(TempData, Constants.Constants.UPDATE_MEETING_VALID, updateMeeting, options);
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_MEETING_VALID, updateMeeting, options);
 
                 ViewBag.Error =
                     "Error while processing your request! (Updating Meeting Status!).\n Meeting Not Found!";
@@ -251,7 +251,7 @@ namespace WebAppMVC.Controllers
             }
             if (!meetPostResponse.Status)
             {
-                TempData = methcall.GetValidationTempData(TempData, Constants.Constants.UPDATE_MEETING_VALID, updateMeeting, options);
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_MEETING_VALID, updateMeeting, options);
 
                 _logger.LogInformation("Error while processing your request: " + meetPostResponse.Status + " , Error Message: " + meetPostResponse.ErrorMessage);
                 ViewBag.Error =
@@ -452,7 +452,7 @@ namespace WebAppMVC.Controllers
             [FromRoute][Required] int id,
             [Required] FieldTripViewModel updateTrip)
         {
-            StaffAPI_URL += "FieldTrip/Update/" + id;
+            StaffAPI_URL += "FieldTrip/"+ id + "/Update";
             string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
             if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
 

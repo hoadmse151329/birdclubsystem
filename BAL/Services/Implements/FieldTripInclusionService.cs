@@ -39,7 +39,7 @@ namespace BAL.Services.Implements
 
             if (ftrip == null) return false;
 
-            var inclu = _unitOfWork.FieldTripInclusionRepository.GetById(incluId);
+            var inclu = await _unitOfWork.FieldTripInclusionRepository.GetFieldTripInclusionByIdTracking(incluId);
 
             if (inclu == null) return false;
             _unitOfWork.FieldTripInclusionRepository.Delete(inclu);
@@ -60,7 +60,7 @@ namespace BAL.Services.Implements
 
             if (inclusion == null || inclusion.InclusionId == null) return false;
 
-            var inclu = await _unitOfWork.FieldTripInclusionRepository.GetFieldTripInclusionByIdTracking(tripId, inclusion.InclusionId.Value);
+            var inclu = await _unitOfWork.FieldTripInclusionRepository.GetFieldTripInclusionByIdTracking(inclusion.InclusionId.Value);
 
             if (inclu == null) return false;
 

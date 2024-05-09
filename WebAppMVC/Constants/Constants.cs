@@ -21,7 +21,14 @@
         public static string CREATE_FIELDTRIP_DAYBYDAY_VALID = "CFieldTripDayByDayValid";
         public static string UPDATE_FIELDTRIP_DAYBYDAY_VALID = "UFieldTripDayByDayValid";
         public static string CREATE_FIELDTRIP_INCLUSION_VALID = "CFieldTripInclusionValid";
-		public static string CREATE_CONTEST_VALID = "CContestValid";
+        public static string UPDATE_FIELDTRIP_INCLUSION_VALID = "UFieldTripInclusionValid";
+        public static string CREATE_FIELDTRIP_TOURFEATURES_VALID = "CFieldTripTourFeaturesValid";
+        public static string UPDATE_FIELDTRIP_TOURFEATURES_VALID = "UFieldTripTourFeaturesValid";
+        public static string CREATE_FIELDTRIP_IMPORTANTTOKNOW_VALID = "CFieldTripImportantValid";
+        public static string UPDATE_FIELDTRIP_IMPORTANTTOKNOW_VALID = "UFieldTripImportantValid";
+        public static string CREATE_FIELDTRIP_ACTIVITIESANDTRANSPORTATION_VALID = "CFieldTripActAndTrasValid";
+        public static string UPDATE_FIELDTRIP_ACTIVITIESANDTRANSPORTATION_VALID = "UFieldTripActAndTrasValid";
+        public static string CREATE_CONTEST_VALID = "CContestValid";
         public static string UPDATE_CONTEST_VALID = "UContestValid";
 
 		public static string EVENT_STATUS_ON_HOLD = "OnHold";

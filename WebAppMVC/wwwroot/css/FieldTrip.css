@@ -963,29 +963,30 @@ tour__content__block--consider .row {
         left: 5px;
         object-fit: cover;
     }
-
+.container {
+    max-width: 76.875rem;
+}
 .member-field-trips-post {
-    background-color: #ffffff;
+    background-color: transparent;
     display: flex;
     flex-direction: row;
     justify-content: center;
     width: 100%;
 }
-.container {
-    max-width: 76.875rem;
-}
-    .member-field-trips-post .overlap-wrapper {
-        background-color: #ffffff;
-        overflow: hidden;
-        width: 1440px;
-        height: 100%;
-    }
 
-    .member-field-trips-post .overlap {
-        position: relative;
-        width: 1444px;
-        height: 275vw;
-    }
+.member-field-trips-post .overlap-wrapper {
+    background-color: transparent;
+    overflow: hidden;
+    width: 1440px; /* Adjust this width as needed */
+    min-height: 100vh; /* Set a minimum height to prevent content from disappearing */
+}
+
+.member-field-trips-post .overlap {
+    position: relative;
+    width: 100%; /* Adjust this width as needed */
+    min-height: 100%; /* Set a minimum height to prevent content from disappearing */
+    overflow-y: auto; /* Add a vertical scrollbar if content exceeds the container height */
+}
 .wrapper {
     display: flex;
     flex-direction: column;
@@ -1059,8 +1060,9 @@ tour__content__block--consider .row {
     }
 
     .member-field-trips-post .group {
+        background-color:white;
         position: relative;
-        width: 766px;
+        width: 768px;
         height: 1254px;
         border-radius: 30px;
         border: 1px solid black;
@@ -1071,7 +1073,7 @@ tour__content__block--consider .row {
 
     .member-field-trips-post .overlap-2 {
         position: relative;
-        width: 766px;
+        width: 768px;
         height: 1254px;
         border-radius: 30px;
         border: 1px solid black;
@@ -1213,7 +1215,7 @@ tour__content__block--consider .row {
 
     .member-field-trips-post .div-wrapper {
         position: relative;
-        width: 763px;
+        width: 761px;
         height: 100px;
         background-color: lawngreen;
         border-radius: 25px 25px 0px 0px;
@@ -1240,7 +1242,11 @@ tour__content__block--consider .row {
     left: 0;
     object-fit: cover;
 }
-
+.field-trips-section {
+    margin-top: 25px;
+    background-color: white;
+    border-radius: 30px;
+}
     .member-field-trips-post .info {
         position: absolute;
         background-color: white;

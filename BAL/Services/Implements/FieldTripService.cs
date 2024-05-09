@@ -133,7 +133,7 @@ namespace BAL.Services.Implements
 
             if (loc == null)
             {
-                _unitOfWork.LocationRepository.Update(loc = new Location
+                _unitOfWork.LocationRepository.Update(new Location
                 {
                     LocationName = entity.Address.Trim()
                 });
@@ -145,7 +145,7 @@ namespace BAL.Services.Implements
 
             if (getting == null)
             {
-                _unitOfWork.FieldTripGettingThereRepository.Update(getting = new FieldtripGettingThere
+                _unitOfWork.FieldTripGettingThereRepository.Update(new FieldtripGettingThere
                 {
                     TripId = entity.TripId.Value
                 });
@@ -164,12 +164,7 @@ namespace BAL.Services.Implements
         public bool UpdateGettingThere(FieldtripGettingThereViewModel entity)
         {
             var trip = _unitOfWork.FieldTripRepository.GetById(entity.TripId.Value);
-
-            if (trip == null)
-            {
-                return false;
-            }
-
+            if (trip == null) return false;
             var getting = _mapper.Map<FieldtripGettingThere>(entity);
             getting.Trip = trip;
             _unitOfWork.FieldTripGettingThereRepository.Update(getting);
