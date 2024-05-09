@@ -71,18 +71,18 @@ a{
 .button .bottom-text {
     width: 150px;
     height: auto;
-    background: rgba(74.29, 195.50, 0, 0.35);
+    background: #27517b;
     border-radius: 50px;
     font-size: 22px;
-    color: black;
+    color: white;
 }
     .button .bottom-text:hover {
         width: 150px;
         height: auto;
-        background: #99ffad;
+        background: #7ca2c9;
         border-radius: 50px;
         font-size: 22px;
-        color: black;
+        color: white;
     }
 /*.footer .d-flex {
     flex-direction: column;

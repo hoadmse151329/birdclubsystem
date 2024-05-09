@@ -15,7 +15,8 @@
 
 .main-container {
     position: relative;
-    width: 1440px;
+    text-align:center;
+    width: 100%;
     height: auto;
     margin: 0px auto;
     background: #99ffad;
@@ -25,18 +26,28 @@
     border-style: solid;
     border-image: initial;
 }
+.text,
+.text-2,
+.text-3,
+.text-4,
+.text-5,
+.text-6,
+.text-7 {
+    position: absolute; /* Position the text elements absolutely */
+}
 .club__content .font-a {
+    font-size:24px;
     font-weight: bold;
     margin-left: 10px;
-    background: -webkit-linear-gradient(0.25turn, #00ecd5, #ffadd9);
+    background: -webkit-linear-gradient(0.25turn, #00ff32, #99ffad);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    font-size:18px;
 }
-    .club-content a:hover {
+    .club__content .font-a:hover {
+        font-size: 24px;
         font-weight: bold;
         margin-left: 10px;
-        background: -webkit-linear-gradient(0.25turn, #ffadd9, #ffadd9);
+        background: -webkit-linear-gradient(0.75turn, #2c3e50, #ffffff);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
     }
@@ -102,7 +113,8 @@
     font-size: 64px;
     font-weight: 700;
     line-height: 77.455px;
-    text-align: left;
+    letter-spacing: 1.2000000000000002px;
+    margin-left: 60px;
 }
 
 .text-2 {

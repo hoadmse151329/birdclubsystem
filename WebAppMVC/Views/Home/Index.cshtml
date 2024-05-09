@@ -65,8 +65,8 @@
                             <img src="~/images/best-choice.png" alt="best-choice">
                         </div>
                         <div class="content">
-                            <h4 style="color:black">Best choice</h4>
-                            <p style="color:black">CHAO MAO BIRDCLUB gives you suitable accommodation options for you to have a wonderful bird hobby.</p>
+                            <h4 style="color:white">Best choice</h4>
+                            <p style="color:white">CHAO MAO BIRDCLUB gives you suitable accommodation options for you to have a wonderful bird hobby.</p>
                         </div>
                     </div>
                     <div class="col-12 col-md-4 d-flex my-5">
@@ -74,8 +74,8 @@
                             <img src="~/images/security.png" alt="security">
                         </div>
                         <div class="content">
-                            <h4 style="color:black">Safety & security</h4>
-                            <p style="color:black">Cohesion information, high security and reputable services bring the best experience
+                            <h4 style="color:white">Safety & security</h4>
+                            <p style="color:white">Cohesion information, high security and reputable services bring the best experience
                                 for you</p>
                         </div>
                     </div>
@@ -84,8 +84,8 @@
                             <img src="~/images/support.png" alt="img3">
                         </div>
                         <div class="content">
-                            <h4 style="color:black">Support 24/7</h4>
-                            <p style="color:black">Always listen, always support you with all services at CHAO MAO BIRDCLUB.</p>
+                            <h4 style="color:white">Support 24/7</h4>
+                            <p style="color:white">Always listen, always support you with all services at CHAO MAO BIRDCLUB.</p>
                         </div>
                     </div>
                 </div>
@@ -105,8 +105,6 @@
             >
             <div class="img-2"></div>
             <div class="section"><a class="text-6" href="@Url.Action("login", "Auth")">Join Now!</a></div>
-          <div class="img"></div>
-          <span class="text-7">Recent and Upcoming events and activities</span>
         </div>
         </section>
         <section class="club container spacing" style="background-color:white">
@@ -133,7 +131,7 @@
                                     <p class="club-price"><i class="fas fa-calendar"></i> 
                                         From @data.StartDate.ToString("MM/dd/yyyy") 
                                         to @data.EndDate.ToString("MM/dd/yyyy")</p>
-                                <button class="button--primary"><a class="text-decoration-none text-white"
+                                <button class="button--primary"><a class="text-decoration-none text-black"
                                         href="@Url.Action("MeetingPost", "Meeting",new {id = data.MeetingId})">See More</a></button>
                             </div>
                         </div>
@@ -161,7 +159,7 @@
                                 to @data.EndDate.ToString("MM/dd/yyyy")
                             </p>
                             <button class="button--primary">
-                                <a class="text-decoration-none text-white"
+                                <a class="text-decoration-none text-black"
                                href="@Url.Action("FieldTripPost", "FieldTrip",new {id = data.TripId})">See More</a>
                             </button>
                         </div>
@@ -187,7 +185,7 @@
                                 <p class="club-price"><i class="fas fa-calendar"></i> 
                                     From @data.StartDate.ToString("MM/dd/yyyy") 
                                     to @data.EndDate.ToString("MM/dd/yyyy")</p>
-                            <button class="button--primary"><a class="text-decoration-none text-white"
+                            <button class="button--primary"><a class="text-decoration-none text-black"
                                 href="@Url.Action("ContestPost", "Contest",new {id = data.ContestId})">See More</a></button>
                         </div>
                     </div>
