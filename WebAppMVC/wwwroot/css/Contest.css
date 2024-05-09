@@ -779,7 +779,7 @@
     }
 
 .member-contest-post {
-    background-color: #ffffff;
+    background-color: transparent;
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -857,6 +857,7 @@
     }
 
     .member-contest-post .group {
+        background-color:white;
         position: relative;
         width: 766px;
         height: 1254px;

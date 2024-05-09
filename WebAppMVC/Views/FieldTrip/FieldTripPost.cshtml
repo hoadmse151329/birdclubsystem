@@ -54,7 +54,7 @@
                                     </span>
                                 </p>
                             </div>
-                            <div class="flexcontainer">
+                            <div class="flexcontainer-3">
                                 <p class="text">
 
                                     <span class="text-wrapper">Details<br /></span>
@@ -132,7 +132,7 @@
                                     else
                                     {
                                         <form asp-action="FieldTripRegister" asp-controller="FieldTrip" method="post" asp-route-tripId="@fieldtripDetails.TripId">
-                                            <button class="overlap-group-3 text-wrapper-16" type="submit">Register</button>
+                                            <button class="overlap-group-3 text-wrapper-16 button-rgb" type="submit">Register</button>
                                         </form>
                                     }
                                 }
@@ -507,6 +507,36 @@
     // Apply the new styles
     dynamicText.style.top = `${newTop}px`;
     dynamicText.style.left = `${newLeft}px`;
+</script>
+<script>
+    function randomizeColor() {
+        return Math.floor(Math.random() * 256);
+    }
+
+    function generateRandomRGB() {
+        const r = randomizeColor();
+        const g = randomizeColor();
+        const b = randomizeColor();
+        return `rgb(${r}, ${g}, ${b})`;
+    }
+    $(document).ready(function () {
+        setInterval(() => {
+            const topColor = generateRandomRGB();
+            const rightColor = generateRandomRGB();
+            const bottomColor = generateRandomRGB();
+            const leftColor = generateRandomRGB();
+
+            $('.button-rgb').css('border-top-color', topColor);
+            $('.button-rgb').css('border-right-color', rightColor);
+            $('.button-rgb').css('border-bottom-color', bottomColor);
+            $('.button-rgb').css('border-left-color', leftColor);
+        }, 200);
+    });
+    $(document).ready(function () {
+        setInterval(() => {
+            $('.').css('background-color', generateRandomRGB());
+        }, 1000);
+    });
 </script>
 </body>
 </html>

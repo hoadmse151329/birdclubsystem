@@ -5,10 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - birdclubsystem</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/loading.css"/>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <!-- FONT -->
 </head>
 <body>
+<div id="loading-screen">
+    <audio id="loading-audio" autoplay>
+        <source src="./images/media/LoadingSound.mp3" type="audio/mp3">
+    </audio>
+    <div class="loader">
+        <img src="~/images/Red_whiskered_bulbul_bird_logo_eps_10_generated 1.png" alt="Loading Image" class="loading-img">
+        <div class="text-animation">Loading... Please wait</div>
+    </div>
+</div>
     <header>
         <div class="header__top d-flex justify-content-between align-items-center container-fluid py-2 fixed-top">
         <div class="header__left">
@@ -141,18 +151,28 @@
         </a>
         <div class="row justify-content-between">
             <div class="col d-flex bottom-text text-color">@@2024 ChaoMao BirdClub</div>
-            <div class="col d-flex other-fanpages">
-                <a href="#"><img class="other-fanpage px-1" src="~/images/akar-icons_location.png" /></a>
-                <a href="#"><img class="other-fanpage px-1" src="~/images/ant-design_instagram-outlined.png" /></a>
-                <a href="#"><img class="other-fanpage px-1" src="~/images/bxl_facebook.png" /></a>
-                <a href="#"><img class="other-fanpage px-1" src="~/images/ant-design_twitter-outlined.png" /></a>
-            </div>
         </div>
     </div>
 </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/loading.js" defer></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+document.addEventListener('DOMContentLoaded', function () {
+    var loadingAudio = document.getElementById('loading-audio');
+
+    // Function to play the audio
+    function playAudio() {
+        if (loadingAudio.paused) {
+            loadingAudio.play();
+        }
+    }
+
+    // Play the audio when the user interacts with the document
+    document.addEventListener('click', playAudio);
+});
+</script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
