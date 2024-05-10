@@ -15,6 +15,8 @@
 
 		public static string CREATE_MEETING_VALID = "CMeetingValid";
         public static string UPDATE_MEETING_VALID = "UMeetingValid";
+        public static string CREATE_MEETING_MEDIA_VALID = "CMeetingMediaValid";
+        public static string UPDATE_MEETING_MEDIA_VALID = "UMeetingMediaValid";
         public static string CREATE_FIELDTRIP_VALID = "CFieldTripValid";
         public static string UPDATE_FIELDTRIP_VALID = "UFieldTripValid";
         public static string UPDATE_FIELDTRIP_GETTHERE_VALID = "UFieldTripGettingThereValid";
@@ -47,6 +49,10 @@
         public static string EVENT_STATUS_NAME_CHECKING_IN = "Checking In";
         public static string EVENT_STATUS_ONGOING = "Ongoing";
         public static string EVENT_STATUS_NAME_ONGOING = "Ongoing";
+
+        public static string BIRD_STATUS_AVAILABLE = "Available";
+        public static string BIRD_STATUS_INJURED = "Injured";
+        public static string BIRD_STATUS_UNAVAILABLE = "Unavailable";
 
         public static string EVENT_PARTICIPANT_STATUS_NOT_CHECKED_IN = "Not Checked-In";
         public static string EVENT_PARTICIPANT_STATUS_CHECKED_IN = "Checked-In";

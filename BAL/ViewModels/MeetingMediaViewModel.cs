@@ -8,10 +8,6 @@ namespace BAL.ViewModels
 {
     public class MeetingMediaViewModel
     {
-        public MeetingMediaViewModel()
-        {
-            Image = "/images/meeting.png";
-        }
         public int? PictureId { get; set; }
         public int? MeetingId { get; set; }
         public string? Description { get; set; }

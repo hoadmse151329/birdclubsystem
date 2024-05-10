@@ -564,8 +564,8 @@ namespace WebAPI.Controllers
         {
             try
             {
-                var result = _fieldTripService.GetById(tripId).Result;
-                if (result == null)
+                var check = _fieldTripService.GetById(tripId).Result;
+                if (check == null)
                 {
                     return NotFound(new
                     {
@@ -582,13 +582,13 @@ namespace WebAPI.Controllers
                         ErrorMessage = "Field trip Day By Day does not exist!"
                     });
                 }
-                var check = await _dayByDayService.Update(tripId, tripDay);
-                if (check)
+                var result = await _dayByDayService.Update(tripId, tripDay);
+                if (result)
                 {
                     return Ok(new
                     {
                         Status = true,
-                        Data = check
+                        Data = result
                     });
                 }
                 return NotFound(new

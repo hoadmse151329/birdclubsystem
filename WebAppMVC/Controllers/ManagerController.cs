@@ -175,6 +175,8 @@ namespace WebAppMVC.Controllers
             meetingDetailBigModel.UpdateMeeting = methcall.GetValidationTempData<MeetingViewModel>(this, TempData, Constants.Constants.UPDATE_MEETING_VALID, "updateMeeting", options);
             meetingDetailBigModel.SelectListStatus = methcall.GetManagerEventStatusSelectableList(meetPostResponse.Data.Status);
 
+            meetingDetailBigModel.CreateMeetingMedia = methcall.GetValidationTempData<MeetingMediaViewModel>(this, TempData, Constants.Constants.CREATE_MEETING_MEDIA_VALID, "createMedia", options);
+
             meetingDetailBigModel.MeetingDetails = meetPostResponse.Data;
             meetingDetailBigModel.MeetingParticipants = meetpartPostResponse.Data;
 
@@ -276,10 +278,60 @@ namespace WebAppMVC.Controllers
             return RedirectToAction("ManagerMeeting");
         }
 
-        [HttpPost("Meeting/{id:int}/Create/Media")]
-        public async Task<IActionResult> ManagerCreateMeetingMedia()
+        [HttpPost("Meeting/{meetingId:int}/Create/Media")]
+        public async Task<IActionResult> ManagerCreateMeetingMedia(
+            [Required][FromRoute] int meetingId,
+            [Required] MeetingMediaViewModel createMedia)
         {
-            return View();
+            ManagerAPI_URL += "Meeting/" + meetingId + "/Create/Media";
+            if (!ModelState.IsValid)
+            {
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.CREATE_MEETING_MEDIA_VALID, createMedia, options);
+                return RedirectToAction("ManagerMeetingDetail", new { id = meetingId });
+            }
+
+            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
+            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+
+            string? role = HttpContext.Session.GetString("ROLE_NAME");
+            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
+            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
+
+            string? usrId = HttpContext.Session.GetString("USER_ID");
+            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
+
+            string? usrname = HttpContext.Session.GetString("USER_NAME");
+            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
+
+            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
+
+            TempData["ROLE_NAME"] = role;
+            TempData["USER_NAME"] = usrname;
+            TempData["IMAGE_PATH"] = imagepath;
+
+            var meetMediaResponse = await methcall.CallMethodReturnObject<GetMeetingMediaResponse>(
+                    _httpClient: _httpClient,
+                    options: options,
+                    methodName: "POST",
+                    url: ManagerAPI_URL,
+                    inputType: createMedia,
+                    accessToken: accToken,
+                    _logger: _logger);
+            if (meetMediaResponse == null)
+            {
+                ViewBag.Error =
+                    "Error while processing your request! (Create Meeting Media!).\n Meeting Not Found!";
+                return RedirectToAction("ManagerMeetingDetail", new { id = meetingId });
+            }
+            if (!meetMediaResponse.Status)
+            {
+                _logger.LogInformation("Error while processing your request: " + meetMediaResponse.Status + " , Error Message: " + meetMediaResponse.ErrorMessage);
+                ViewBag.Error =
+                    "Error while processing your request! (Create Meeting Media!).\n"
+                    + meetMediaResponse.ErrorMessage;
+                return RedirectToAction("ManagerMeetingDetail", new { id = meetingId });
+            }
+            return RedirectToAction("ManagerMeetingDetail", new {id = meetingId});
         }
 
         [HttpPost("Meeting/{id:int}/Cancel")]
@@ -305,14 +357,14 @@ namespace WebAppMVC.Controllers
             if (meetPostResponse == null)
             {
                 ViewBag.Error =
-                    "Error while processing your request! (Updating Meeting!).\n Meeting Not Found!";
+                    "Error while processing your request! (Create Meeting Media!).\n Meeting Not Found!";
                 return RedirectToAction("ManagerMeeting");
             }
             if (!meetPostResponse.Status)
             {
                 _logger.LogInformation("Error while processing your request: " + meetPostResponse.Status + " , Error Message: " + meetPostResponse.ErrorMessage);
                 ViewBag.Error =
-                    "Error while processing your request! (Updating Meeting Post!).\n"
+                    "Error while processing your request! (Create Meeting Media!).\n"
                     + meetPostResponse.ErrorMessage;
                 return RedirectToAction("ManagerMeeting");
             }
