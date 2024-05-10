@@ -18,50 +18,53 @@ namespace WebAPI.Controllers
     {
         private readonly IMeetingService _meetingService;
         private readonly IMeetingParticipantService _participantService;
+        private readonly IMeetingMediaService _mediaService;
         private readonly IMemberService _memberService;
         private readonly IUserService _userService;
         private readonly IConfiguration _config;
 
         public MeetingController(
-            IMeetingService meetingService, 
-            IConfiguration config, 
-            IMemberService memberService, 
+            IMeetingService meetingService,
+            IConfiguration config,
+            IMemberService memberService,
             IUserService userService,
-            IMeetingParticipantService meetingParticipantService)
+            IMeetingParticipantService meetingParticipantService,
+            IMeetingMediaService mediaService)
         {
             _meetingService = meetingService;
             _config = config;
             _memberService = memberService;
             _userService = userService;
             _participantService = meetingParticipantService;
+            _mediaService = mediaService;
         }
 
-		[HttpPost("All")]
-		[ProducesResponseType(typeof(List<MeetingViewModel>), StatusCodes.Status200OK)]
-		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		[ProducesResponseType(StatusCodes.Status400BadRequest)]
-		public async Task<IActionResult> GetAllMeetings([FromBody] string? role)
-		{
-			try
-			{
-				var result = await _meetingService.GetAllMeetings(role);
-				if (result == null)
-				{
-					return NotFound(new
-					{
-						Status = false,
-						ErrorMessage = "List of Meetings Not Found!"
-					});
-				}
+        [HttpPost("All")]
+        [ProducesResponseType(typeof(List<MeetingViewModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetAllMeetings([FromBody] string? role)
+        {
+            try
+            {
+                var result = await _meetingService.GetAllMeetings(role);
+                if (result == null)
+                {
+                    return NotFound(new
+                    {
+                        Status = false,
+                        ErrorMessage = "List of Meetings Not Found!"
+                    });
+                }
 
-				return Ok(new
-				{
-					Status = true,
-					Data = result
-				});
-			}
-			catch (Exception ex)
-			{
+                return Ok(new
+                {
+                    Status = true,
+                    Data = result
+                });
+            }
+            catch (Exception ex)
+            {
                 if (ex.InnerException != null)
                 {
                     return BadRequest(new
@@ -78,7 +81,7 @@ namespace WebAPI.Controllers
                     ErrorMessage = ex.Message
                 });
             }
-		}
+        }
         [HttpGet("Search")]
         [ProducesResponseType(typeof(List<MeetingViewModel>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -189,7 +192,7 @@ namespace WebAPI.Controllers
         [ProducesResponseType(typeof(OkObjectResult), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Create (
+        public async Task<IActionResult> Create(
             [Required][FromBody] MeetingViewModel meet)
         {
             try
@@ -317,25 +320,124 @@ namespace WebAPI.Controllers
                 });
             }
         }
+        [HttpPost("{id:int}/Create/Media")]
+        [Authorize(Roles = "Manager")]
+        [ProducesResponseType(typeof(MeetingMediaViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> CreateMeetingMedia(
+            [Required][FromRoute] int id,
+            [Required][FromBody] MeetingMediaViewModel media)
+        {
+            try
+            {
+                if (await _mediaService.Create(id, media))
+                    return Ok(new
+                    {
+                        Status = true,
+                        Message = "Meeting Media Create successfully!",
+                        Data = true
+                    });
+                else return StatusCode(StatusCodes.Status500InternalServerError, new
+                {
+                    Status = true,
+                    Message = "Meeting Media Create Failed!",
+                    Data = false
+                });
+            }
+            catch (Exception ex)
+            {
+                if (ex.InnerException != null)
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = ex.Message,
+                        InnerExceptionMessage = ex.InnerException.Message
+                    });
+                }
+                // Log the exception if needed
+                return BadRequest(new
+                {
+                    Status = false,
+                    ErrorMessage = ex.Message
+                });
+            }
+        }
+        [HttpPut("{meetingId:int}/Media/{pictureId:int}/Update")]
+        [Authorize(Roles = "Manager")]
+        [ProducesResponseType(typeof(MeetingMediaViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> UpdateMeetingMedia(
+            [Required][FromRoute] int meetingId,
+            [Required][FromRoute] int pictureId,
+            [Required][FromBody] MeetingMediaViewModel media)
+        {
+            try
+            {
+                var check = _meetingService.GetById(meetingId).Result;
+                if (check == null) return NotFound(new
+                {
+                    Status = false,
+                    ErrorMessage = "Meeting does not exist!"
+                });
+                var pic = await _mediaService.GetById(pictureId);
+                if (pic == null) return NotFound(new
+                {
+                    Status = false,
+                    ErrorMessage = "Meeting Media does not exist!"
+                });
+                var result = await _mediaService.Update(meetingId, media);
+                if (result) return Ok(new
+                {
+                    Status = true,
+                    Data = result
+                });
+                return NotFound(new
+                {
+                    Status = false,
+                    ErrorMessage = "Meeting does not exist or internal server error"
+                });
+            }
+            catch (Exception ex)
+            {
+                if (ex.InnerException != null)
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = ex.Message,
+                        InnerExceptionMessage = ex.InnerException.Message
+                    });
+                }
+                // Log the exception if needed
+                return BadRequest(new
+                {
+                    Status = false,
+                    ErrorMessage = ex.Message
+                });
+            }
+        }
         [HttpPost("Register/{id}")]
         [Authorize(Roles = "Member")]
         [ProducesResponseType(typeof(MeetingParticipantViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Register(
-            [Required] [FromRoute] int id,
-            [Required] [FromBody] string memId)
+            [Required][FromRoute] int id,
+            [Required][FromBody] string memId)
         {
             try
             {
                 var meeting = await _meetingService.GetById(id);
-                if(meeting == null) return NotFound(new
+                if (meeting == null) return NotFound(new
                 {
                     Status = false,
                     ErrorMessage = "Meeting Not Found!"
                 });
                 var mem = await _memberService.GetBoolById(memId);
-                if(!mem) return NotFound(new
+                if (!mem) return NotFound(new
                 {
                     Status = false,
                     ErrorMessage = "Member Not Found!"
@@ -429,7 +531,7 @@ namespace WebAPI.Controllers
         {
             try
             {
-                var meeting = await _participantService.GetParticipationNo(memId,id);
+                var meeting = await _participantService.GetParticipationNo(memId, id);
                 if (meeting == 0) return NotFound(new
                 {
                     Status = false,
@@ -445,7 +547,7 @@ namespace WebAPI.Controllers
             }
             catch (Exception ex)
             {
-                if(ex.InnerException != null)
+                if (ex.InnerException != null)
                 {
                     return BadRequest(new
                     {

@@ -557,15 +557,15 @@ namespace WebAPI.Controllers
         [ProducesResponseType(typeof(FieldTripViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> UpdateGettingThere(
+        public async Task<IActionResult> UpdateDayByDay(
             [Required][FromRoute] int tripId,
             [Required][FromRoute] int dayId,
             [Required][FromBody] FieldtripDaybyDayViewModel tripDay)
         {
             try
             {
-                var result = _fieldTripService.GetById(tripId).Result;
-                if (result == null)
+                var check = _fieldTripService.GetById(tripId).Result;
+                if (check == null)
                 {
                     return NotFound(new
                     {
@@ -582,13 +582,13 @@ namespace WebAPI.Controllers
                         ErrorMessage = "Field trip Day By Day does not exist!"
                     });
                 }
-                var check = await _dayByDayService.Update(tripId, tripDay);
-                if (check)
+                var result = await _dayByDayService.Update(tripId, tripDay);
+                if (result)
                 {
                     return Ok(new
                     {
                         Status = true,
-                        Data = check
+                        Data = result
                     });
                 }
                 return NotFound(new

@@ -21,6 +21,7 @@ namespace BAL.ViewModels
             EndDate = DateTime.Now.AddDays(14);
             Status = "OnHold";
             MeetingPictures = new List<MeetingMediaViewModel>();
+            NumberOfParticipants = 0;
         }
         public int? MeetingId { get; set; }
         [Required(ErrorMessage = "Meeting Name is required")]

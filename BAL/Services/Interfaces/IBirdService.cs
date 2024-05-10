@@ -10,5 +10,9 @@ namespace BAL.Services.Interfaces
     public interface IBirdService
     {
         Task<IEnumerable<BirdViewModel>> GetBirdsByMemberId(string memberId);
+        Task<bool> Create(string memberId, BirdViewModel bird);
+        Task<bool> Update(string memberId, BirdViewModel bird);
+        Task<bool> Delete(string memberId, int birdId);
+        Task<BirdViewModel> GetById(int birdId);
     }
 }

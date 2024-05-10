@@ -68,5 +68,104 @@ namespace WebAPI.Controllers
                 });
             }
         }
+        [HttpPost("{id}/Create/Bird")]
+        [Authorize(Roles = "Member")]
+        [ProducesResponseType(typeof(BirdViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> CreateBird(
+            [Required][FromRoute] string id,
+            [Required][FromBody] BirdViewModel bird)
+        {
+            try
+            {
+                if (await _birdService.Create(id, bird))
+                    return Ok(new
+                    {
+                        Status = true,
+                        Message = "Bird Create successfully!",
+                        Data = true
+                    });
+                else return StatusCode(StatusCodes.Status500InternalServerError, new
+                {
+                    Status = true,
+                    Message = "Bird Create Failed!",
+                    Data = false
+                });
+            }
+            catch (Exception ex)
+            {
+                if (ex.InnerException != null)
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = ex.Message,
+                        InnerExceptionMessage = ex.InnerException.Message
+                    });
+                }
+                // Log the exception if needed
+                return BadRequest(new
+                {
+                    Status = false,
+                    ErrorMessage = ex.Message
+                });
+            }
+        }
+        [HttpPut("{memberId}/Bird/{birdId:int}/Update")]
+        [Authorize(Roles = "Member")]
+        [ProducesResponseType(typeof(BirdViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> UpdateBird(
+            [Required][FromRoute] string memberId,
+            [Required][FromRoute] int birdId,
+            [Required][FromBody] BirdViewModel birdModel)
+        {
+            try
+            {
+                var check = _memberService.GetById(memberId).Result;
+                if (check == null) return NotFound(new
+                {
+                    Status = false,
+                    ErrorMessage = "Member does not exist!"
+                });
+                var bird = await _birdService.GetById(birdId);
+                if (bird == null) return NotFound(new
+                {
+                    Status = false,
+                    ErrorMessage = "Bird does not exist!"
+                });
+                var result = await _birdService.Update(memberId, birdModel);
+                if (result) return Ok(new
+                {
+                    Status = true,
+                    Data = result
+                });
+                return NotFound(new
+                {
+                    Status = false,
+                    ErrorMessage = "Member does not exist or internal server error"
+                });
+            }
+            catch (Exception ex)
+            {
+                if (ex.InnerException != null)
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = ex.Message,
+                        InnerExceptionMessage = ex.InnerException.Message
+                    });
+                }
+                // Log the exception if needed
+                return BadRequest(new
+                {
+                    Status = false,
+                    ErrorMessage = ex.Message
+                });
+            }
+        }
     }
 }
