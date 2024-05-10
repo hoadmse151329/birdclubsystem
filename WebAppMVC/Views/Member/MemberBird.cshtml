@@ -187,7 +187,245 @@
             </div>
         </div>
     </div>
+    <div class="main-content">
+        <div class="main">
+            <div class="container-fluid">
+                <section>
+                    <div class="card">
+                        <div class="card-body">
+                            <!-- Nav tabs -->
+                            <ul class="nav nav-tabs">
+                                <li class="nav-item">
+                                    <a class="nav-link active" data-toggle="tab" href="#home1">
+                                        <i class='bx bx-home-alt-2'></i>
+                                        <span>Bird</span>
+                                    </a>
+                                </li>              
+                            </ul>
+                            
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+                                <!-- home1 -->
+                                <div class="tab-pane active" id="home1" role="tabpanel">
+                                    <div class="row search">
+                                        <div class="col-sm-12 d-flex">
+                                            <div class="col-sm-6 d-flex address-home">
+                                                @{
+                                                    if (ViewBag.error != null)
+                                                    {
+                                                        <span class="text-danger">@ViewBag.error</span>
+                                                    }
+                                                }
+                                            </div>
+                                            <div class="col-sm-6 d-flex justify-content-end">
+                                                <form asp-action="ManagerFieldTrip" asp-controller="Manager" method="get" asp-route-search="@search">                   
+                                                    <div>
+                                                        <label>
+                                                            <input asp-for="@search" class="form-control" type="text" name="search" placeholder="Search Bird..." value="@search">
+                                                            <i class='bx bx-search-alt'></i>
+                                                        </label>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row card-content">
+                                        <div class="col-xl-3 col-lg-6 col-sm-6 my-3 item">
+                                            <div class="card1 card-child">
+                                                <div class="card-body add-club">
+                                                    <button class="border-0" data-toggle="modal"  data-target="#addBird">
+                                                        <span>Add Bird</span>
+                                                        <i class='bx bx-add-to-queue'></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @foreach(var data in birdList)
+                                        {
+                                            <div class="col-xl-3 col-lg-6 col-sm-6 my-3">
+                                                <div class="card1 card-child">
+                                                    <div class="club-name">
+                                                        <span>Meeting</span>
+                                                        <div class="status"> <!--sẽ thêm các trạng thái status khác sau giờ để tạm-->
+                                                            @{
+                                                                switch (data.Status)
+                                                                {
+                                                                    case "Active":
+                                                                        {
+                                                                            <span class="stt1" style="float: left;">Status:<h6>@data.Status</h6></span>
+                                                                            break;
+                                                                        }
+                                                                    case "Injured":
+                                                                        {
+                                                                            <span class="stt3" style="float: left;">Status:<h6>@data.Status</h6></span>
+                                                                            break;
+                                                                        }
+                                                                    case "InActive":
+                                                                        {
+                                                                            <span class="stt2" style="float: left;">Status:<h6>@data.Status</h6></span>
+                                                                            break;
+                                                                        }
+                                                                }
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <div class="club-title">
+                                                            <ul>
+                                                                <li>
+                                                                    <span>@data.pictureId</span>
+                                                                </li>
+                                                                <li>
+                                                                    <h6>Bird Name:</h6>
+                                                                    <span>@data.BirdName</span>
+                                                                </li>
+                                                                <li>
+                                                                    <h6>ELO:</h6>
+                                                                    <span>@data.ELO</span>
+                                                                </li>
+                                                                <li>
+                                                                    <h6>Description:</h6>
+                                                                    <span>@data.Description</span>
+                                                                </li>
+                                                                <li>
+                                                                    <h6>Start Date:</h6>
+                                                                    <span>@data.StartDate.ToString("dd-MM-yyyy HH:mm")</span>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group mx-auto">
+                                                        @{
+                                                            if (data.Status.Equals("OnHold") || data.Status.Equals("Postponed") || data.Status.Equals("CheckingIn") || data.Status.Equals("Ongoing"))
+                                                            {
+                                                        <form asp-action="Meeting" asp-controller="Manager" method="get" asp-route-id="@data.MeetingId">
+                                                            <button class="btn btn-primary clickable-row btn-border" type="submit">See Detail</button>
+                                                        </form>                                                          
+                                                                <button class="btn btn-danger" data-toggle="modal" data-target="#deleteMeeting_@data.MeetingId" type="submit">Cancel</button>
+                                                            }
+                                                            else
+                                                            {
+                                                        <form asp-action="Meeting" asp-controller="Manager" method="get" asp-route-id="@data.MeetingId">
+                                                            <button class="btn btn-primary clickable-row btn-border" type="submit" style="align-self:center">See Detail</button>
+                                                        </form>
+                                                            }
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- remove Meeting -->
+                                            <div id="deleteMeeting_@data.MeetingId" class="modal fade" role="dialog">
+                                                <div class="modal-dialog modal-dialog-centered" role="content">
+                                                    <div class="modal-content">
+                                                        <div class="card-body">
+                                                            <div class="del-title">
+                                                                <i class='bx bx-error-circle'></i>
+                                                                <h2>Are you sure you want to cancel this Meeting ?</h2>
+                                                            </div>
+                                                            <div class="del-submit d-flex justify-content-center">
+                                                                <form asp-action="ManagerCancelMeeting" asp-controller="Manager" method="post" asp-route-id="@data.MeetingId">
+                                                                    <button type="submit" name="action" value="deleteMeeting" class="btn btn-success">
+                                                                        Yes
+                                                                    </button>
+                                                                </form>
+                                                                <button class="btn btn-danger" type="button" data-dismiss="modal">No</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                </div>                               
+                            <!-- end tapnet -->
+                        </div>
+                    </div>
+                    </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+    <div id="addMeeting" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+            <div class="modal-content modal-addRoom">
+                <div class="modal-header">
+                    <h4 class="modal-title">Add new Meeting</h4>
+                </div>
+                <div class="modal-body">
+                    <form asp-action="ManagerCreateMeeting" asp-controller="Manager" method="post" id="form">
+                        <div class="row p-4">
+                            <div class="col-12">
+                                <div class="row form-group">
+                                    <label asp-for="@createMeeting.MeetingName" class="col-md-3 col-form-label text-md-right"></label>
+                                    <input asp-for="@createMeeting.MeetingName" value="@createMeeting.MeetingName" type="text" placeholder="Meeting Name" required class="form-control col-md-7">
+                                    <span asp-validation-for="@createMeeting.MeetingName" id="error_message"
+                                          class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                </div>
+                                <div class="row form-group">
+                                    <label class="col-md-3 col-form-label mt-2 text-md-right">Choose Picture</label>
+                                    <input type="file" name="photo" class="form-control col-md-7 mt-2" accept="image/*">
 
+                                    <label asp-for="@createMeeting.OpenRegistration" class="col-md-3 col-form-label mt-3 text-md-right"></label>
+                                    <input asp-for="@createMeeting.OpenRegistration" value="@createMeeting.OpenRegistration.ToString("yyyy-MM-ddTHH:mm")" type="datetime-local" required class="form-control col-md-7 mt-3" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}">
+                                    <span asp-validation-for="@createMeeting.OpenRegistration" id="error_message"
+                                          class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+
+                                    <label asp-for="@createMeeting.RegistrationDeadline" class="col-md-3 col-form-label mt-3 text-md-right"></label>
+                                    <input asp-for="@createMeeting.RegistrationDeadline" value="@createMeeting.RegistrationDeadline.ToString("yyyy-MM-ddTHH:mm")" type="datetime-local" required class="form-control col-md-7 mt-3" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}">
+                                    <span asp-validation-for="@createMeeting.RegistrationDeadline" id="error_message"
+                                          class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+
+                                    <label asp-for="@createMeeting.StartDate" class="col-md-3 col-form-label mt-3 text-md-right"></label>
+                                    <input asp-for="@createMeeting.StartDate" value="@createMeeting.StartDate.ToString("yyyy-MM-ddTHH:mm")" type="datetime-local" required class="form-control col-md-7 mt-3" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}">
+                                    <span asp-validation-for="@createMeeting.StartDate" id="error_message"
+                                          class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+
+                                    <label asp-for="@createMeeting.EndDate" class="col-md-3 col-form-label mt-3 text-md-right"></label>
+                                    <input asp-for="@createMeeting.EndDate" value="@createMeeting.EndDate.ToString("yyyy-MM-ddTHH:mm")" type="datetime-local" required class="form-control col-md-7 mt-3" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}">
+                                    <span asp-validation-for="@createMeeting.EndDate" id="error_message"
+                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+
+                                    <label asp-for="@createMeeting.NumberOfParticipantsLimit" class="col-md-3 col-form-label mt-3 text-md-right"></label>
+                                    <input asp-for="@createMeeting.NumberOfParticipantsLimit" value="@createMeeting.NumberOfParticipantsLimit" type="number" class="form-control col-md-7 mt-3" required min="3">
+                                    <span asp-validation-for="@createMeeting.NumberOfParticipantsLimit" id="error_message"
+                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+
+                                    <label asp-for="@createMeeting.Host" class="col-md-3 col-form-label mt-3 text-md-right"></label>
+                                    <input asp-for="@createMeeting.Host" value="@createMeeting.Host" type="text" placeholder="Meeting Host" class="form-control col-md-7 mt-3" rows="3" required>
+                                    <span asp-validation-for="@createMeeting.Host" id="error_message"
+                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+
+                                    <label asp-for="@createMeeting.Incharge" class="col-md-3 col-form-label mt-3 text-md-right"></label>
+                                    <input asp-for="@createMeeting.Incharge" value="@createMeeting.Incharge" type="text" placeholder="Staff incharge of Meeting" class="form-control col-md-7 mt-3" rows="3" required>
+                                    <span asp-validation-for="@createMeeting.Incharge" id="error_message"
+                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+
+                                    <label asp-for="@createMeeting.Address" class="col-md-3 col-form-label mt-3 text-md-right"></label>
+                                    <textarea asp-for="@createMeeting.Address" value="@createMeeting.Address" type="text" placeholder="Meeting Address..." class="form-control col-md-7 mt-3" rows="3" required></textarea>
+                                    <span asp-validation-for="@createMeeting.Address" id="error_message"
+                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+
+                                    <label asp-for="@createMeeting.Description" class="col-md-3 col-form-label mt-3 text-md-right"></label>
+                                    <textarea asp-for="@createMeeting.Description" value="@createMeeting.Description" type="text" placeholder="Meeting description..." class="form-control col-md-7 mt-3" rows="3" required></textarea>
+                                    <span asp-validation-for="@createMeeting.Description" id="error_message"
+                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+
+                                    <label asp-for="@createMeeting.Note" class="col-md-3 col-form-label mt-3 text-md-right"></label>
+                                    <textarea asp-for="@createMeeting.Note" value="@createMeeting.Note" type="text" placeholder="Meeting Note..." class="form-control col-md-7 mt-3" rows="3" required></textarea>
+                                    <span asp-validation-for="@createMeeting.Note" id="error_message"
+                                          class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                </div>
+                            </div>                
+                            <div class="modal-footer justify-content-center">
+                                <button class="btn btn-success" type="submit" name="action" value="createRoom" >Save</button>
+                                <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
