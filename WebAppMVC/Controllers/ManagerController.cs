@@ -33,7 +33,7 @@ namespace WebAppMVC.Controllers
     public class ManagerController : Controller
     {
 
-        private readonly ILogger<MeetingController> _logger;
+        private readonly ILogger<ManagerController> _logger;
         private readonly IConfiguration _config;
         private readonly HttpClient _httpClient = null;
         private string ManagerAPI_URL = "";
@@ -51,7 +51,7 @@ namespace WebAppMVC.Controllers
         };
         private BirdClubLibrary methcall = new();
 
-        public ManagerController(ILogger<MeetingController> logger, IConfiguration config)
+        public ManagerController(ILogger<ManagerController> logger, IConfiguration config)
         {
             _logger = logger;
             _config = config;
@@ -64,27 +64,10 @@ namespace WebAppMVC.Controllers
 
         // GET: ManagerController
         [HttpGet("Index")]
-        public IActionResult ManagerIndex()
+        public async Task<IActionResult> ManagerIndex()
         {
-            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
-            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
-
-            string? role = HttpContext.Session.GetString("ROLE_NAME");
-            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
-
-            string? usrId = HttpContext.Session.GetString("USER_ID");
-            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
-
-            string? usrname = HttpContext.Session.GetString("USER_NAME");
-            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
-
-            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
-
-            TempData["ROLE_NAME"] = role;
-            TempData["USER_NAME"] = usrname;
-            TempData["IMAGE_PATH"] = imagepath;
-
+            if(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
             return View();
         }
         [HttpGet("Meeting")]
@@ -103,36 +86,22 @@ namespace WebAppMVC.Controllers
 
             dynamic testmodel = new ExpandoObject();
 
-            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
-            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
 
-            string? role = HttpContext.Session.GetString("ROLE_NAME");
-            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
-
-            string? usrId = HttpContext.Session.GetString("USER_ID");
-            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
-
-            string? usrname = HttpContext.Session.GetString("USER_NAME");
-            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
-
-            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
-
-            TempData["ROLE_NAME"] = role;
-            TempData["USER_NAME"] = usrname;
-            TempData["IMAGE_PATH"] = imagepath;
+            string? role = HttpContext.Session.GetString(Constants.Constants.ROLE_NAME);
 
             var listLocationResponse = await methcall.CallMethodReturnObject<GetLocationAddressResponseByList>(
                 _httpClient: _httpClient,
                 options: options,
-                methodName: "GET",
+                methodName: Constants.Constants.GET_METHOD,
                 url: LocationAPI_URL_All,
                 _logger: _logger);
 
             var listMeetResponse = await methcall.CallMethodReturnObject<GetMeetingResponseByList>(
                 _httpClient: _httpClient,
                 options: options,
-                methodName: "POST",
+                methodName: Constants.Constants.POST_METHOD,
                 url: ManagerAPI_URL,
                 inputType: role,
                 _logger: _logger);
@@ -169,35 +138,23 @@ namespace WebAppMVC.Controllers
 
             dynamic meetingDetailBigModel = new ExpandoObject();
 
-            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
-            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
 
-            string? role = HttpContext.Session.GetString("ROLE_NAME");
-            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
-            string? usrId = HttpContext.Session.GetString("USER_ID");
-            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
-
-            string? usrname = HttpContext.Session.GetString("USER_NAME");
-            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
-
-            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
-
-            TempData["ROLE_NAME"] = role;
-            TempData["USER_NAME"] = usrname;
-            TempData["IMAGE_PATH"] = imagepath;
+            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
 
             var meetPostResponse = await methcall.CallMethodReturnObject<GetMeetingPostResponse>(
                                 _httpClient: _httpClient,
                                 options: options,
-                                methodName: "GET",
+                                methodName: Constants.Constants.GET_METHOD,
                                 url: ManagerAPI_URL,
                                 _logger: _logger);
             var meetpartPostResponse = await methcall.CallMethodReturnObject<GetListMeetingParticipation>(
                                 _httpClient: _httpClient,
                                 options: options,
-                                methodName: "GET",
+                                methodName: Constants.Constants.GET_METHOD,
                                 url: ManagerMeetingDetailAPI_URL,
                                 accessToken: accToken,
                                 _logger: _logger);
@@ -236,29 +193,18 @@ namespace WebAppMVC.Controllers
                 TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_MEETING_VALID, updateMeeting, options);
                 return RedirectToAction("ManagerMeetingDetail", new { id });
             }
-            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
-            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
 
-            string? role = HttpContext.Session.GetString("ROLE_NAME");
-            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
 
-            string? usrId = HttpContext.Session.GetString("USER_ID");
-            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
-            string? usrname = HttpContext.Session.GetString("USER_NAME");
-            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
-
-            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
-
-            TempData["ROLE_NAME"] = role;
-            TempData["USER_NAME"] = usrname;
-            TempData["IMAGE_PATH"] = imagepath;
+            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
 
             var meetPostResponse = await methcall.CallMethodReturnObject<GetMeetingPostResponse>(
                                 _httpClient: _httpClient,
                                 options: options,
-                                methodName: "PUT",
+                                methodName: Constants.Constants.PUT_METHOD,
                                 url: ManagerAPI_URL,
                                 inputType: updateMeeting,
                                 accessToken: accToken,
@@ -294,29 +240,17 @@ namespace WebAppMVC.Controllers
                 return RedirectToAction("ManagerMeeting");
             }
 
-            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
-            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
 
-            string? role = HttpContext.Session.GetString("ROLE_NAME");
-            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
-            string? usrId = HttpContext.Session.GetString("USER_ID");
-            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
-
-            string? usrname = HttpContext.Session.GetString("USER_NAME");
-            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
-
-            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
-
-            TempData["ROLE_NAME"] = role;
-            TempData["USER_NAME"] = usrname;
-            TempData["IMAGE_PATH"] = imagepath;
+            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
 
             var meetPostResponse = await methcall.CallMethodReturnObject<GetMeetingPostResponse>(
                                 _httpClient: _httpClient,
                                 options: options,
-                                methodName: "POST",
+                                methodName: Constants.Constants.POST_METHOD,
                                 url: ManagerAPI_URL,
                                 inputType: createMeeting,
                                 accessToken: accToken,
@@ -354,29 +288,17 @@ namespace WebAppMVC.Controllers
         {
             ManagerAPI_URL += "Meeting/" + id + "/Cancel";
 
-            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
-            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
 
-            string? role = HttpContext.Session.GetString("ROLE_NAME");
-            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
-            string? usrId = HttpContext.Session.GetString("USER_ID");
-            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
-
-            string? usrname = HttpContext.Session.GetString("USER_NAME");
-            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
-
-            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
-
-            TempData["ROLE_NAME"] = role;
-            TempData["USER_NAME"] = usrname;
-            TempData["IMAGE_PATH"] = imagepath;
+            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
 
             var meetPostResponse = await methcall.CallMethodReturnObject<GetMeetingPostResponse>(
                                 _httpClient: _httpClient,
                                 options: options,
-                                methodName: "GET",
+                                methodName: Constants.Constants.GET_METHOD,
                                 url: ManagerAPI_URL,
                                 accessToken: accToken,
                                 _logger: _logger);
@@ -411,36 +333,23 @@ namespace WebAppMVC.Controllers
 
             dynamic fieldtripIndexVM = new ExpandoObject();
 
-            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
-            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
 
-            string? role = HttpContext.Session.GetString("ROLE_NAME");
-            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
+            string? role = HttpContext.Session.GetString(Constants.Constants.ROLE_NAME);
 
-            string? usrId = HttpContext.Session.GetString("USER_ID");
-            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
-
-            string? usrname = HttpContext.Session.GetString("USER_NAME");
-            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
-
-            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
-
-            TempData["ROLE_NAME"] = role;
-            TempData["USER_NAME"] = usrname;
-            TempData["IMAGE_PATH"] = imagepath;
 
             var listLocationResponse = await methcall.CallMethodReturnObject<GetLocationAddressResponseByList>(
                 _httpClient: _httpClient,
                 options: options,
-                methodName: "GET",
+                methodName: Constants.Constants.GET_METHOD,
                 url: LocationAPI_URL_All,
                 _logger: _logger);
 
             var listFieldTripResponse = await methcall.CallMethodReturnObject<GetFieldTripResponseByList>(
                 _httpClient: _httpClient,
                 options: options,
-                methodName: "POST",
+                methodName: Constants.Constants.POST_METHOD,
                 url: ManagerAPI_URL,
                 inputType: role,
                 _logger: _logger);
@@ -475,35 +384,23 @@ namespace WebAppMVC.Controllers
             ManagerAPI_URL += "FieldTrip/" + id;
             dynamic fieldtripDetailVM = new ExpandoObject();
 
-            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
-            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
 
-            string? role = HttpContext.Session.GetString("ROLE_NAME");
-            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
-            string? usrId = HttpContext.Session.GetString("USER_ID");
-            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
-
-            string? usrname = HttpContext.Session.GetString("USER_NAME");
-            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
-
-            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
-
-            TempData["ROLE_NAME"] = role;
-            TempData["USER_NAME"] = usrname;
-            TempData["IMAGE_PATH"] = imagepath;
+            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
 
             var fieldtripPostResponse = await methcall.CallMethodReturnObject<GetFieldTripPostResponse>(
                                 _httpClient: _httpClient,
                                 options: options,
-                                methodName: "GET",
+                                methodName: Constants.Constants.GET_METHOD,
                                 url: ManagerAPI_URL,
                                 _logger: _logger);
             var fieldtrippartPostResponse = await methcall.CallMethodReturnObject<GetListFieldTripParticipation>(
                                 _httpClient: _httpClient,
                                 options: options,
-                                methodName: "GET",
+                                methodName: Constants.Constants.GET_METHOD,
                                 url: ManagerFieldTripDetailAPI_URL,
                                 accessToken: accToken,
                                 _logger: _logger);
@@ -565,29 +462,17 @@ namespace WebAppMVC.Controllers
                 TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_FIELDTRIP_VALID, updateTrip, options);
                 return RedirectToAction("ManagerFieldTripDetail", new { id });
             }
-            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
-            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
 
-            string? role = HttpContext.Session.GetString("ROLE_NAME");
-            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
-            string? usrId = HttpContext.Session.GetString("USER_ID");
-            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
-
-            string? usrname = HttpContext.Session.GetString("USER_NAME");
-            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
-
-            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
-
-            TempData["ROLE_NAME"] = role;
-            TempData["USER_NAME"] = usrname;
-            TempData["IMAGE_PATH"] = imagepath;
+            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
 
             var fieldtripPostResponse = await methcall.CallMethodReturnObject<GetFieldTripPostResponse>(
                                 _httpClient: _httpClient,
                                 options: options,
-                                methodName: "PUT",
+                                methodName: Constants.Constants.PUT_METHOD,
                                 url: ManagerAPI_URL,
                                 inputType: updateTrip,
                                 accessToken: accToken,
@@ -622,29 +507,17 @@ namespace WebAppMVC.Controllers
                 TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_FIELDTRIP_GETTHERE_VALID, updateGettingThere, options);
                 return RedirectToAction("ManagerFieldTripDetail", new { id });
             }
-            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
-            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
 
-            string? role = HttpContext.Session.GetString("ROLE_NAME");
-            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
-            string? usrId = HttpContext.Session.GetString("USER_ID");
-            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
-
-            string? usrname = HttpContext.Session.GetString("USER_NAME");
-            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
-
-            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
-
-            TempData["ROLE_NAME"] = role;
-            TempData["USER_NAME"] = usrname;
-            TempData["IMAGE_PATH"] = imagepath;
+            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
 
             var ftGettingThereResponse = await methcall.CallMethodReturnObject<GetFieldTripGettingThereResponse>(
                                 _httpClient: _httpClient,
                                 options: options,
-                                methodName: "PUT",
+                                methodName: Constants.Constants.PUT_METHOD,
                                 url: ManagerAPI_URL,
                                 inputType: updateGettingThere,
                                 accessToken: accToken,
@@ -679,29 +552,17 @@ namespace WebAppMVC.Controllers
                 TempData = methcall.SetValidationTempDataWithId(TempData, Constants.Constants.UPDATE_FIELDTRIP_DAYBYDAY_VALID, dayId, updateDayByDay, options);
                 return RedirectToAction("ManagerFieldTripDetail", new { id });
             }
-            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
-            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
 
-            string? role = HttpContext.Session.GetString("ROLE_NAME");
-            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
-            string? usrId = HttpContext.Session.GetString("USER_ID");
-            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
-
-            string? usrname = HttpContext.Session.GetString("USER_NAME");
-            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
-
-            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
-
-            TempData["ROLE_NAME"] = role;
-            TempData["USER_NAME"] = usrname;
-            TempData["IMAGE_PATH"] = imagepath;
+            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
 
             var ftDayByDayResponse = await methcall.CallMethodReturnObject<GetFieldTripDayByDayResponse>(
                                 _httpClient: _httpClient,
                                 options: options,
-                                methodName: "PUT",
+                                methodName: Constants.Constants.PUT_METHOD,
                                 url: ManagerAPI_URL,
                                 inputType: updateDayByDay,
                                 accessToken: accToken,
@@ -736,29 +597,18 @@ namespace WebAppMVC.Controllers
                 TempData = methcall.SetValidationTempDataWithId(TempData, Constants.Constants.UPDATE_FIELDTRIP_INCLUSION_VALID, incId, updateInclusion, options);
                 return RedirectToAction("ManagerFieldTripDetail", new { id });
             }
-            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
-            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
 
-            string? role = HttpContext.Session.GetString("ROLE_NAME");
-            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
 
-            string? usrId = HttpContext.Session.GetString("USER_ID");
-            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
-            string? usrname = HttpContext.Session.GetString("USER_NAME");
-            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
-
-            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
-
-            TempData["ROLE_NAME"] = role;
-            TempData["USER_NAME"] = usrname;
-            TempData["IMAGE_PATH"] = imagepath;
+            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
 
             var ftInclusionResponse = await methcall.CallMethodReturnObject<GetFieldTripInclusionResponse>(
                                 _httpClient: _httpClient,
                                 options: options,
-                                methodName: "PUT",
+                                methodName: Constants.Constants.PUT_METHOD,
                                 url: ManagerAPI_URL,
                                 inputType: updateInclusion,
                                 accessToken: accToken,
@@ -793,29 +643,18 @@ namespace WebAppMVC.Controllers
                 TempData = methcall.SetValidationTempDataWithId(TempData, Constants.Constants.UPDATE_FIELDTRIP_TOURFEATURES_VALID, addDeId, updateTourFeature, options);
                 return RedirectToAction("ManagerFieldTripDetail", new { id });
             }
-            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
-            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
 
-            string? role = HttpContext.Session.GetString("ROLE_NAME");
-            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
 
-            string? usrId = HttpContext.Session.GetString("USER_ID");
-            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
-            string? usrname = HttpContext.Session.GetString("USER_NAME");
-            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
-
-            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
-
-            TempData["ROLE_NAME"] = role;
-            TempData["USER_NAME"] = usrname;
-            TempData["IMAGE_PATH"] = imagepath;
+            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
 
             var ftTourFeaturesResponse = await methcall.CallMethodReturnObject<GetFieldTripAdditionalDetailResponse>(
                                 _httpClient: _httpClient,
                                 options: options,
-                                methodName: "PUT",
+                                methodName: Constants.Constants.PUT_METHOD,
                                 url: ManagerAPI_URL,
                                 inputType: updateTourFeature,
                                 accessToken: accToken,
@@ -850,29 +689,18 @@ namespace WebAppMVC.Controllers
                 TempData = methcall.SetValidationTempDataWithId(TempData, Constants.Constants.UPDATE_FIELDTRIP_IMPORTANTTOKNOW_VALID, addDeId, updateImportant, options);
                 return RedirectToAction("ManagerFieldTripDetail", new { id });
             }
-            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
-            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
 
-            string? role = HttpContext.Session.GetString("ROLE_NAME");
-            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
 
-            string? usrId = HttpContext.Session.GetString("USER_ID");
-            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
-            string? usrname = HttpContext.Session.GetString("USER_NAME");
-            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
-
-            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
-
-            TempData["ROLE_NAME"] = role;
-            TempData["USER_NAME"] = usrname;
-            TempData["IMAGE_PATH"] = imagepath;
+            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
 
             var ftImportantResponse = await methcall.CallMethodReturnObject<GetFieldTripAdditionalDetailResponse>(
                                 _httpClient: _httpClient,
                                 options: options,
-                                methodName: "PUT",
+                                methodName: Constants.Constants.PUT_METHOD,
                                 url: ManagerAPI_URL,
                                 inputType: updateImportant,
                                 accessToken: accToken,
@@ -907,29 +735,18 @@ namespace WebAppMVC.Controllers
                 TempData = methcall.SetValidationTempDataWithId(TempData, Constants.Constants.UPDATE_FIELDTRIP_ACTIVITIESANDTRANSPORTATION_VALID, addDeId, updateActAndTras, options);
                 return RedirectToAction("ManagerFieldTripDetail", new { id });
             }
-            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
-            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
 
-            string? role = HttpContext.Session.GetString("ROLE_NAME");
-            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
 
-            string? usrId = HttpContext.Session.GetString("USER_ID");
-            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
-            string? usrname = HttpContext.Session.GetString("USER_NAME");
-            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
-
-            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
-
-            TempData["ROLE_NAME"] = role;
-            TempData["USER_NAME"] = usrname;
-            TempData["IMAGE_PATH"] = imagepath;
+            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
 
             var ftActAndTrasResponse = await methcall.CallMethodReturnObject<GetFieldTripAdditionalDetailResponse>(
                                 _httpClient: _httpClient,
                                 options: options,
-                                methodName: "PUT",
+                                methodName: Constants.Constants.PUT_METHOD,
                                 url: ManagerAPI_URL,
                                 inputType: updateActAndTras,
                                 accessToken: accToken,
@@ -961,29 +778,17 @@ namespace WebAppMVC.Controllers
                 return RedirectToAction("ManagerFieldtrip");
             }
 
-            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
-            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
 
-            string? role = HttpContext.Session.GetString("ROLE_NAME");
-            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
-            string? usrId = HttpContext.Session.GetString("USER_ID");
-            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
-
-            string? usrname = HttpContext.Session.GetString("USER_NAME");
-            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
-
-            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
-
-            TempData["ROLE_NAME"] = role;
-            TempData["USER_NAME"] = usrname;
-            TempData["IMAGE_PATH"] = imagepath;
+            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
 
             var fieldtripPostResponse = await methcall.CallMethodReturnObject<GetFieldTripPostResponse>(
                                 _httpClient: _httpClient,
                                 options: options,
-                                methodName: "POST",
+                                methodName: Constants.Constants.POST_METHOD,
                                 url: ManagerAPI_URL,
                                 inputType: createFieldTrip,
                                 accessToken: accToken,
@@ -1019,29 +824,17 @@ namespace WebAppMVC.Controllers
                 return RedirectToAction("ManagerFieldTripDetail", new { id = tripId });
             }
 
-            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
-            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
 
-            string? role = HttpContext.Session.GetString("ROLE_NAME");
-            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
-            string? usrId = HttpContext.Session.GetString("USER_ID");
-            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
-
-            string? usrname = HttpContext.Session.GetString("USER_NAME");
-            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
-
-            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
-
-            TempData["ROLE_NAME"] = role;
-            TempData["USER_NAME"] = usrname;
-            TempData["IMAGE_PATH"] = imagepath;
+            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
 
             var ftDayByDayResponse = await methcall.CallMethodReturnObject<GetFieldTripDayByDayResponse>(
                                 _httpClient: _httpClient,
                                 options: options,
-                                methodName: "POST",
+                                methodName: Constants.Constants.POST_METHOD,
                                 url: ManagerAPI_URL,
                                 inputType: createDayByDay,
                                 accessToken: accToken,
@@ -1077,29 +870,17 @@ namespace WebAppMVC.Controllers
                 return RedirectToAction("ManagerFieldTripDetail", new { id = tripId });
             }
 
-            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
-            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
 
-            string? role = HttpContext.Session.GetString("ROLE_NAME");
-            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
-            string? usrId = HttpContext.Session.GetString("USER_ID");
-            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
-
-            string? usrname = HttpContext.Session.GetString("USER_NAME");
-            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
-
-            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
-
-            TempData["ROLE_NAME"] = role;
-            TempData["USER_NAME"] = usrname;
-            TempData["IMAGE_PATH"] = imagepath;
+            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
 
             var ftInclusionResponse = await methcall.CallMethodReturnObject<GetFieldTripInclusionResponse>(
                                 _httpClient: _httpClient,
                                 options: options,
-                                methodName: "POST",
+                                methodName: Constants.Constants.POST_METHOD,
                                 url: ManagerAPI_URL,
                                 inputType: createInclusion,
                                 accessToken: accToken,
@@ -1135,29 +916,17 @@ namespace WebAppMVC.Controllers
                 return RedirectToAction("ManagerFieldTripDetail", new { id = tripId });
             }
 
-            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
-            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
 
-            string? role = HttpContext.Session.GetString("ROLE_NAME");
-            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
-            string? usrId = HttpContext.Session.GetString("USER_ID");
-            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
-
-            string? usrname = HttpContext.Session.GetString("USER_NAME");
-            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
-
-            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
-
-            TempData["ROLE_NAME"] = role;
-            TempData["USER_NAME"] = usrname;
-            TempData["IMAGE_PATH"] = imagepath;
+            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
 
             var ftDayByDayResponse = await methcall.CallMethodReturnObject<GetFieldTripAdditionalDetailResponse>(
                                 _httpClient: _httpClient,
                                 options: options,
-                                methodName: "POST",
+                                methodName: Constants.Constants.POST_METHOD,
                                 url: ManagerAPI_URL,
                                 inputType: createTourFeatures,
                                 accessToken: accToken,
@@ -1193,29 +962,17 @@ namespace WebAppMVC.Controllers
                 return RedirectToAction("ManagerFieldTripDetail", new { id = tripId });
             }
 
-            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
-            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
 
-            string? role = HttpContext.Session.GetString("ROLE_NAME");
-            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
-            string? usrId = HttpContext.Session.GetString("USER_ID");
-            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
-
-            string? usrname = HttpContext.Session.GetString("USER_NAME");
-            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
-
-            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
-
-            TempData["ROLE_NAME"] = role;
-            TempData["USER_NAME"] = usrname;
-            TempData["IMAGE_PATH"] = imagepath;
+            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
 
             var ftImportantResponse = await methcall.CallMethodReturnObject<GetFieldTripDayByDayResponse>(
                                 _httpClient: _httpClient,
                                 options: options,
-                                methodName: "POST",
+                                methodName: Constants.Constants.POST_METHOD,
                                 url: ManagerAPI_URL,
                                 inputType: createImportant,
                                 accessToken: accToken,
@@ -1251,29 +1008,17 @@ namespace WebAppMVC.Controllers
                 return RedirectToAction("ManagerFieldTripDetail", new { id = tripId });
             }
 
-            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
-            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
 
-            string? role = HttpContext.Session.GetString("ROLE_NAME");
-            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
-            string? usrId = HttpContext.Session.GetString("USER_ID");
-            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
-
-            string? usrname = HttpContext.Session.GetString("USER_NAME");
-            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
-
-            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
-
-            TempData["ROLE_NAME"] = role;
-            TempData["USER_NAME"] = usrname;
-            TempData["IMAGE_PATH"] = imagepath;
+            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
 
             var ftActAndTrasResponse = await methcall.CallMethodReturnObject<GetFieldTripDayByDayResponse>(
                                 _httpClient: _httpClient,
                                 options: options,
-                                methodName: "POST",
+                                methodName: Constants.Constants.POST_METHOD,
                                 url: ManagerAPI_URL,
                                 inputType: createActAndTras,
                                 accessToken: accToken,
@@ -1301,29 +1046,17 @@ namespace WebAppMVC.Controllers
         {
             ManagerAPI_URL += "FieldTrip/" + id + "/Cancel";
 
-            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
-            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
 
-            string? role = HttpContext.Session.GetString("ROLE_NAME");
-            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
-            string? usrId = HttpContext.Session.GetString("USER_ID");
-            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
-
-            string? usrname = HttpContext.Session.GetString("USER_NAME");
-            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
-
-            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
-
-            TempData["ROLE_NAME"] = role;
-            TempData["USER_NAME"] = usrname;
-            TempData["IMAGE_PATH"] = imagepath;
+            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
 
             var fieldtripPostResponse = await methcall.CallMethodReturnObject<GetMeetingPostResponse>(
                                 _httpClient: _httpClient,
                                 options: options,
-                                methodName: "GET",
+                                methodName: Constants.Constants.GET_METHOD,
                                 url: ManagerAPI_URL,
                                 accessToken: accToken,
                                 _logger: _logger);
@@ -1358,36 +1091,22 @@ namespace WebAppMVC.Controllers
 
             dynamic testmodel3 = new ExpandoObject();
 
-            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
-            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
 
-            string? role = HttpContext.Session.GetString("ROLE_NAME");
-            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
-
-            string? usrId = HttpContext.Session.GetString("USER_ID");
-            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
-
-            string? usrname = HttpContext.Session.GetString("USER_NAME");
-            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
-
-            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
-
-            TempData["ROLE_NAME"] = role;
-            TempData["USER_NAME"] = usrname;
-            TempData["IMAGE_PATH"] = imagepath;
+            string? role = HttpContext.Session.GetString(Constants.Constants.ROLE_NAME);
 
             var listLocationResponse = await methcall.CallMethodReturnObject<GetLocationAddressResponseByList>(
                 _httpClient: _httpClient,
                 options: options,
-                methodName: "GET",
+                methodName: Constants.Constants.GET_METHOD,
                 url: LocationAPI_URL_All,
                 _logger: _logger);
 
             var listContestResponse = await methcall.CallMethodReturnObject<GetContestResponseByList>(
                 _httpClient: _httpClient,
                 options: options,
-                methodName: "POST",
+                methodName: Constants.Constants.POST_METHOD,
                 url: ManagerAPI_URL,
                 inputType: role,
                 _logger: _logger);
@@ -1423,35 +1142,23 @@ namespace WebAppMVC.Controllers
             ManagerAPI_URL += "Contest/" + id;
             dynamic contestDetailBigModel = new ExpandoObject();
 
-            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
-            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
 
-            string? role = HttpContext.Session.GetString("ROLE_NAME");
-            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
-            string? usrId = HttpContext.Session.GetString("USER_ID");
-            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
-
-            string? usrname = HttpContext.Session.GetString("USER_NAME");
-            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
-
-            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
-
-            TempData["ROLE_NAME"] = role;
-            TempData["USER_NAME"] = usrname;
-            TempData["IMAGE_PATH"] = imagepath;
+            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
 
             var contestPostResponse = await methcall.CallMethodReturnObject<GetContestPostResponse>(
                                 _httpClient: _httpClient,
                                 options: options,
-                                methodName: "GET",
+                                methodName: Constants.Constants.GET_METHOD,
                                 url: ManagerAPI_URL,
                                 _logger: _logger);
             var contestpartPostResponse = await methcall.CallMethodReturnObject<GetListContestParticipation>(
                                 _httpClient: _httpClient,
                                 options: options,
-                                methodName: "GET",
+                                methodName: Constants.Constants.GET_METHOD,
                                 url: ManagerContestDetailAPI_URL,
                                 accessToken: accToken,
                                 _logger: _logger);
@@ -1489,29 +1196,17 @@ namespace WebAppMVC.Controllers
                 return RedirectToAction("ManagerContestDetail", "Manager", new { id });
             }
 
-            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
-            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
 
-            string? role = HttpContext.Session.GetString("ROLE_NAME");
-            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
-            string? usrId = HttpContext.Session.GetString("USER_ID");
-            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
-
-            string? usrname = HttpContext.Session.GetString("USER_NAME");
-            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
-
-            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
-
-            TempData["ROLE_NAME"] = role;
-            TempData["USER_NAME"] = usrname;
-            TempData["IMAGE_PATH"] = imagepath;
+            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
 
             var contestPostResponse = await methcall.CallMethodReturnObject<GetContestPostResponse>(
                                 _httpClient: _httpClient,
                                 options: options,
-                                methodName: "PUT",
+                                methodName: Constants.Constants.PUT_METHOD,
                                 url: ManagerAPI_URL,
                                 inputType: updateContest,
                                 accessToken: accToken,
@@ -1543,29 +1238,17 @@ namespace WebAppMVC.Controllers
                 return RedirectToAction("ManagerContest");
             }
 
-            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
-            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
 
-            string? role = HttpContext.Session.GetString("ROLE_NAME");
-            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
-            string? usrId = HttpContext.Session.GetString("USER_ID");
-            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
-
-            string? usrname = HttpContext.Session.GetString("USER_NAME");
-            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
-
-            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
-
-            TempData["ROLE_NAME"] = role;
-            TempData["USER_NAME"] = usrname;
-            TempData["IMAGE_PATH"] = imagepath;
+            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
 
             var contestPostResponse = await methcall.CallMethodReturnObject<GetContestPostResponse>(
                                 _httpClient: _httpClient,
                                 options: options,
-                                methodName: "POST",
+                                methodName: Constants.Constants.POST_METHOD,
                                 url: ManagerAPI_URL,
                                 inputType: createContest,
                                 accessToken: accToken,
@@ -1593,29 +1276,17 @@ namespace WebAppMVC.Controllers
         {
             ManagerAPI_URL += "Contest/Update/Cancel/" + id;
 
-            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
-            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
 
-            string? role = HttpContext.Session.GetString("ROLE_NAME");
-            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
-            string? usrId = HttpContext.Session.GetString("USER_ID");
-            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
-
-            string? usrname = HttpContext.Session.GetString("USER_NAME");
-            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
-
-            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
-
-            TempData["ROLE_NAME"] = role;
-            TempData["USER_NAME"] = usrname;
-            TempData["IMAGE_PATH"] = imagepath;
+            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
 
             var contestPostResponse = await methcall.CallMethodReturnObject<GetContestPostResponse>(
                                 _httpClient: _httpClient,
                                 options: options,
-                                methodName: "GET",
+                                methodName: Constants.Constants.GET_METHOD,
                                 url: ManagerAPI_URL,
                                 accessToken: accToken,
                                 _logger: _logger);
@@ -1640,29 +1311,17 @@ namespace WebAppMVC.Controllers
         {
             ManagerAPI_URL += "Manager/Profile";
 
-            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
-            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
 
-            string? role = HttpContext.Session.GetString("ROLE_NAME");
-            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
-            string? usrId = HttpContext.Session.GetString("USER_ID");
-            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
-
-            string? usrname = HttpContext.Session.GetString("USER_NAME");
-            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
-
-            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
-
-            TempData["ROLE_NAME"] = role;
-            TempData["USER_NAME"] = usrname;
-            TempData["IMAGE_PATH"] = imagepath;
+            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
 
             var memberDetails = await methcall.CallMethodReturnObject<GetMemberProfileResponse>(
                 _httpClient: _httpClient,
                 options: options,
-                methodName: "POST",
+                methodName: Constants.Constants.POST_METHOD,
                 url: ManagerAPI_URL,
                 _logger: _logger,
                 inputType: usrId,
@@ -1686,24 +1345,12 @@ namespace WebAppMVC.Controllers
         [HttpPost("Upload")]
         public async Task<IActionResult> UploadImage(IFormFile photo)
         {
-            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
-            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
 
-            string? role = HttpContext.Session.GetString("ROLE_NAME");
-            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
-            string? usrId = HttpContext.Session.GetString("USER_ID");
-            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
-
-            string? usrname = HttpContext.Session.GetString("USER_NAME");
-            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
-
-            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
-
-            TempData["ROLE_NAME"] = role;
-            TempData["USER_NAME"] = usrname;
-            TempData["IMAGE_PATH"] = imagepath;
+            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
 
             string ManagerAvatarAPI_URL = "/api/User/Upload";
 
@@ -1734,7 +1381,7 @@ namespace WebAppMVC.Controllers
                 var getMemberAvatar = await methcall.CallMethodReturnObject<GetMemberAvatarResponse>(
                     _httpClient: _httpClient,
                     options: options,
-                    methodName: "POST",
+                    methodName: Constants.Constants.POST_METHOD,
                     url: ManagerAvatarAPI_URL,
                     _logger: _logger,
                     inputType: imageUpload,
@@ -1761,31 +1408,19 @@ namespace WebAppMVC.Controllers
         {
             ManagerAPI_URL += "Manager/Profile/Update";
 
-            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
-            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
 
-            string? role = HttpContext.Session.GetString("ROLE_NAME");
-            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
-            string? usrId = HttpContext.Session.GetString("USER_ID");
-            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
-
-            string? usrname = HttpContext.Session.GetString("USER_NAME");
-            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
-
-            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
-
-            TempData["ROLE_NAME"] = role;
-            TempData["USER_NAME"] = usrname;
-            TempData["IMAGE_PATH"] = imagepath;
+            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
 
             memberDetail.MemberId = usrId;
 
             var memberDetailupdate = await methcall.CallMethodReturnObject<GetMemberProfileResponse>(
                 _httpClient: _httpClient,
                 options: options,
-                methodName: "PUT",
+                methodName: Constants.Constants.PUT_METHOD,
                 url: ManagerAPI_URL,
                 _logger: _logger,
                 inputType: memberDetail,
@@ -1812,31 +1447,19 @@ namespace WebAppMVC.Controllers
         {
             string ManagerChangePasswordAPI_URL = "/api/User/ChangePassword";
 
-            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
-            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
 
-            string? role = HttpContext.Session.GetString("ROLE_NAME");
-            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
-            string? usrId = HttpContext.Session.GetString("USER_ID");
-            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
-
-            string? usrname = HttpContext.Session.GetString("USER_NAME");
-            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
-
-            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
-
-            TempData["ROLE_NAME"] = role;
-            TempData["USER_NAME"] = usrname;
-            TempData["IMAGE_PATH"] = imagepath;
+            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
 
             memberPassword.userId = usrId;
 
             var memberDetailupdate = await methcall.CallMethodReturnObject<GetMemberPasswordChangeResponse>(
                 _httpClient: _httpClient,
                 options: options,
-                methodName: "PUT",
+                methodName: Constants.Constants.PUT_METHOD,
                 url: ManagerChangePasswordAPI_URL,
                 _logger: _logger,
                 inputType: memberPassword,
@@ -1875,29 +1498,17 @@ namespace WebAppMVC.Controllers
             else */
             ManagerAPI_URL += "Manager/MemberStatus";
 
-            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
-            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
 
-            string? role = HttpContext.Session.GetString("ROLE_NAME");
-            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
-            string? usrId = HttpContext.Session.GetString("USER_ID");
-            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
-
-            string? usrname = HttpContext.Session.GetString("USER_NAME");
-            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
-
-            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
-
-            TempData["ROLE_NAME"] = role;
-            TempData["USER_NAME"] = usrname;
-            TempData["IMAGE_PATH"] = imagepath;
+            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
 
             var listMemberStatusResponse = await methcall.CallMethodReturnObject<GetListMemberStatus>(
                 _httpClient: _httpClient,
                 options: options,
-                methodName: "GET",
+                methodName: Constants.Constants.GET_METHOD,
                 url: ManagerAPI_URL,
                 accessToken: accToken,
                 _logger: _logger);
@@ -1925,29 +1536,17 @@ namespace WebAppMVC.Controllers
         {
             ManagerAPI_URL += "Manager/MemberStatus/Update";
 
-            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
-            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
 
-            string? role = HttpContext.Session.GetString("ROLE_NAME");
-            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Manager")) return RedirectToAction("Index", "Home");
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
-            string? usrId = HttpContext.Session.GetString("USER_ID");
-            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
-
-            string? usrname = HttpContext.Session.GetString("USER_NAME");
-            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
-
-            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
-
-            TempData["ROLE_NAME"] = role;
-            TempData["USER_NAME"] = usrname;
-            TempData["IMAGE_PATH"] = imagepath;
+            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
 
             var listMemberStatusResponse = await methcall.CallMethodReturnObject<GetListMemberStatusUpdate>(
                 _httpClient: _httpClient,
                 options: options,
-                methodName: "PUT",
+                methodName: Constants.Constants.PUT_METHOD,
                 inputType: listRequest,
                 url: ManagerAPI_URL,
                 accessToken: accToken,

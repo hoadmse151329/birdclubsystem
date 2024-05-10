@@ -9,13 +9,13 @@
     // Hide loading screen after a delay (e.g., 3 seconds)
     setTimeout(function () {
         $('#loading-screen').fadeOut();
-    }, 2000); // Adjust the delay time as needed (in milliseconds)
+    }, 1000); // Adjust the delay time as needed (in milliseconds)
 });
 
 const textAnimation = document.querySelector('.text-animation');
 
 // Set animation duration in milliseconds
-const animationDuration = 5000; // 5 seconds
+const animationDuration = 1000; // 5 seconds
 
 // Set the interval for updating the text color gradient
 const interval = 30; // 50 milliseconds

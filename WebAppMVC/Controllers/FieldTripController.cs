@@ -4,6 +4,7 @@ using DAL.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Options;
+using System.ComponentModel.DataAnnotations;
 using System.Dynamic;
 using System.Net.Http.Headers;
 using System.Text.Encodings.Web;
@@ -144,7 +145,9 @@ namespace WebAppMVC.Controllers
             return View(testmodel);
         }
         [HttpGet("FieldTripPost/{id:int}")]
-        public async Task<IActionResult> FieldTripPost(int id)
+        public async Task<IActionResult> FieldTripPost(
+            [FromRoute][Required]int id
+            )
 		{
             FieldTripAPI_URL += "/";
 
@@ -218,7 +221,9 @@ namespace WebAppMVC.Controllers
         }
 
         [HttpPost("FieldTripRegister/{tripId:int}")]
-        public async Task<IActionResult> FieldTripRegister(int tripId)
+        public async Task<IActionResult> FieldTripRegister(
+            [FromRoute][Required] int tripId
+            )
         {
             FieldTripAPI_URL += "/" + tripId;
             string MemberAPI_URL = "/api/Member/Profile";

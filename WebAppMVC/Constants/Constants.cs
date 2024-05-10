@@ -2,7 +2,7 @@
 {
 	public static class Constants
 	{
-		public static string ADMIN_URL = "../Admin/AdminIndex";
+		public static string ADMIN_URL = "../Admin/Index";
 		public static string MEMBER_URL = "../Home/Index";
 		public static string MANAGER_URL = "../Manager/Index";
 		public static string STAFF_URL = "../Staff/Index";
@@ -54,9 +54,16 @@
         public static string FIELDTRIP_INCLUSION_TYPE_INCLUDED = "Included";
         public static string FIELDTRIP_INCLUSION_TYPE_EXCLUDED = "Excluded";
 
+        public static string ROLE_NAME = "ROLE_NAME";
+        public static string ACC_TOKEN = "ACCESS_TOKEN";
+        public static string USR_ID = "USER_ID";
+        public static string USR_NAME = "USER_NAME";
+        public static string USR_IMAGE = "IMAGE_PATH";
+
         public static string ADMIN = "Admin";
 		public static string MEMBER = "Member";
 		public static string TEMPMEMBER = "TempMember";
+        public static string GUEST = "Guest";
 		public readonly static string STAFF = "Staff";
 		public readonly static string MANAGER = "Manager";
 		public static string GET_METHOD = "GET";

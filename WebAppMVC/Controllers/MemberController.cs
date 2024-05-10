@@ -54,24 +54,11 @@ namespace WebAppMVC.Controllers
         {
             MemberInfoAPI_URL += "Profile";
 
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER));
+
             string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
-            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
-
-            string? role = HttpContext.Session.GetString("ROLE_NAME");
-            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Member")) return RedirectToAction("Index", "Home");
-
             string? usrId = HttpContext.Session.GetString("USER_ID");
-            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
-
-            string? usrname = HttpContext.Session.GetString("USER_NAME");
-            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
-
-            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
-
-            TempData["ROLE_NAME"] = role;
-            TempData["USER_NAME"] = usrname;
-            TempData["IMAGE_PATH"] = imagepath;
 
             var memberDetails = await methcall.CallMethodReturnObject<GetMemberProfileResponse>(
                 _httpClient: _httpClient,
@@ -104,24 +91,12 @@ namespace WebAppMVC.Controllers
         {
             MemberInfoAPI_URL += "Update";
 
-            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
-            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER));
 
-            string? role = HttpContext.Session.GetString("ROLE_NAME");
-            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Member")) return RedirectToAction("Index", "Home");
+            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
 
             string? usrId = HttpContext.Session.GetString("USER_ID");
-            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
-
-            string? usrname = HttpContext.Session.GetString("USER_NAME");
-            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
-
-            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
-
-            TempData["ROLE_NAME"] = role;
-            TempData["USER_NAME"] = usrname;
-            TempData["IMAGE_PATH"] = imagepath;
 
             memberDetail.MemberId = usrId;
 
@@ -152,24 +127,12 @@ namespace WebAppMVC.Controllers
         [HttpGet("HistoryEvent")]
         public async Task<IActionResult> MemberHistoryEvent()
         {
-            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
-            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER));
 
-            string? role = HttpContext.Session.GetString("ROLE_NAME");
-            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Member")) return RedirectToAction("Index", "Home");
+            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
 
             string? usrId = HttpContext.Session.GetString("USER_ID");
-            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
-
-            string? usrname = HttpContext.Session.GetString("USER_NAME");
-            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
-
-            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
-
-            TempData["ROLE_NAME"] = role;
-            TempData["USER_NAME"] = usrname;
-            TempData["IMAGE_PATH"] = imagepath;
 
             string MemberMeetingPartAPI_URL = "/api/Meeting/Participation/AllMeetings";
             string MemberFieldTripPartAPI_URL = "/api/FieldTrip/Participation/AllFieldTrips";
@@ -232,24 +195,12 @@ namespace WebAppMVC.Controllers
         //[Authorize(Roles = "Member")]
         public async Task<IActionResult> UploadImage(IFormFile photo)
         {
-            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
-            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER));
 
-            string? role = HttpContext.Session.GetString("ROLE_NAME");
-            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Member")) return RedirectToAction("Index", "Home");
+            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
 
             string? usrId = HttpContext.Session.GetString("USER_ID");
-            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
-
-            string? usrname = HttpContext.Session.GetString("USER_NAME");
-            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
-
-            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
-
-            TempData["ROLE_NAME"] = role;
-            TempData["USER_NAME"] = usrname;
-            TempData["IMAGE_PATH"] = imagepath;
 
             string MemberAvatarAPI_URL = "/api/User/Upload";
 
@@ -307,24 +258,12 @@ namespace WebAppMVC.Controllers
         {
             string MemberChangePasswordAPI_URL = "/api/User/ChangePassword";
 
-            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
-            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER));
 
-            string? role = HttpContext.Session.GetString("ROLE_NAME");
-            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Member")) return RedirectToAction("Index", "Home");
+            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
 
             string? usrId = HttpContext.Session.GetString("USER_ID");
-            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
-
-            string? usrname = HttpContext.Session.GetString("USER_NAME");
-            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
-
-            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
-
-            TempData["ROLE_NAME"] = role;
-            TempData["USER_NAME"] = usrname;
-            TempData["IMAGE_PATH"] = imagepath;
 
             memberPassword.userId = usrId;
 
@@ -364,24 +303,12 @@ namespace WebAppMVC.Controllers
         {
             string MemberBirdAPI_URL = "/api/Bird/AllBirds";
 
-            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
-            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER));
 
-            string? role = HttpContext.Session.GetString("ROLE_NAME");
-            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Member")) return RedirectToAction("Index", "Home");
+            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
 
             string? usrId = HttpContext.Session.GetString("USER_ID");
-            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
-
-            string? usrname = HttpContext.Session.GetString("USER_NAME");
-            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
-
-            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
-
-            TempData["ROLE_NAME"] = role;
-            TempData["USER_NAME"] = usrname;
-            TempData["IMAGE_PATH"] = imagepath;
 
             dynamic birdModel = new ExpandoObject();
 
@@ -416,24 +343,12 @@ namespace WebAppMVC.Controllers
         {
             string MemberPaymentAPI_URL = "/api/Transaction/AllTransactions";
 
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER));
+
             string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
-            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
 
-            string? role = HttpContext.Session.GetString("ROLE_NAME");
-            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Member")) return RedirectToAction("Index", "Home");
-
-            string? usrId = HttpContext.Session.GetString("USER_ID");
-            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
-
-            string? usrname = HttpContext.Session.GetString("USER_NAME");
-            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
-
-            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
-
-            TempData["ROLE_NAME"] = role;
-            TempData["USER_NAME"] = usrname;
-            TempData["IMAGE_PATH"] = imagepath;
+            string? usrId = HttpContext.Session.GetString("USER_ID"); ;
 
             dynamic transactionModel = new ExpandoObject();
 

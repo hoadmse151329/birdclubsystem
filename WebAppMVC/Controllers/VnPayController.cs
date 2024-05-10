@@ -69,10 +69,6 @@ namespace WebAppMVC.Controllers
 
 			string? role = HttpContext.Session.GetString("ROLE_NAME");
 
-			string? usrId = HttpContext.Session.GetString("USER_ID");
-
-			string? usrname = HttpContext.Session.GetString("USER_NAME");
-
 			var response = _vnPayService.PaymentExecute(Request.Query);
             if (response.TransactionType == Constants.Constants.NEW_MEMBER_REGISTRATION_TRANSACTION_TYPE && response.Success && role == Constants.Constants.TEMPMEMBER)
             {
@@ -93,7 +89,7 @@ namespace WebAppMVC.Controllers
 				var transactionResponse = await methcall.CallMethodReturnObject<GetTransactionResponse>(
 								_httpClient: _httpClient,
 								options: jsonOptions,
-								methodName: "POST",
+								methodName: Constants.Constants.POST_METHOD,
 								url: TransactionAPI_URL,
 								inputType: tran,
 								accessToken: accToken,
@@ -137,7 +133,7 @@ namespace WebAppMVC.Controllers
                 var transactionResponse = await methcall.CallMethodReturnObject<GetTransactionResponse>(
                                 _httpClient: _httpClient,
                                 options: jsonOptions,
-                                methodName: "POST",
+                                methodName: Constants.Constants.POST_METHOD,
                                 url: TransactionAPI_URL,
                                 inputType: tran,
                                 accessToken: accToken,

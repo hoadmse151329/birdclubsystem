@@ -1,14 +1,19 @@
 ﻿using DAL.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel.DataAnnotations;
 using System.Dynamic;
 using System.Net.Http.Headers;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using WebAppMVC.Constants;
 using WebAppMVC.Models.Contest;
+using WebAppMVC.Models.FieldTrip;
 using WebAppMVC.Models.Location;
 using WebAppMVC.Models.Meeting;
+using WebAppMVC.Models.Member;
+using WebAppMVC.Models.VnPay;
+using WebAppMVC.Services;
 
 namespace WebAppMVC.Controllers
 {
@@ -19,6 +24,7 @@ namespace WebAppMVC.Controllers
         private readonly IConfiguration _config;
         private readonly HttpClient _httpClient = null;
         private string ContestAPI_URL = "";
+        private readonly IVnPayService _vnPayService;
         private readonly JsonSerializerOptions jsonOptions = new JsonSerializerOptions
         {
             Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
@@ -32,11 +38,12 @@ namespace WebAppMVC.Controllers
             IsEssential = true,
         };
         private BirdClubLibrary methcall = new();
-        public ContestController(ILogger<ContestController> logger, IConfiguration config)
+        public ContestController(ILogger<ContestController> logger, IConfiguration config, IVnPayService vnPayService)
 		{
             _logger = logger;
             _config = config;
             _httpClient = new HttpClient();
+            _vnPayService = vnPayService;
             var contentType = new MediaTypeWithQualityHeaderValue("application/json");
             _httpClient.DefaultRequestHeaders.Accept.Add(contentType);
             _httpClient.BaseAddress = new Uri(config.GetSection("DefaultApiUrl:ConnectionString").Value);
@@ -52,16 +59,8 @@ namespace WebAppMVC.Controllers
             string LocationAPI_URL_All_City = "/api/Location/AllAddressCities";
             dynamic testmodel = new ExpandoObject();
 
-            string? role = HttpContext.Session.GetString("ROLE_NAME");
-            if (role == null) role = "Guest";
-
-            string? usrname = HttpContext.Session.GetString("USER_NAME");
-
-            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
-
-            TempData["ROLE_NAME"] = role;
-            TempData["USER_NAME"] = usrname;
-            TempData["IMAGE_PATH"] = imagepath;
+            methcall.SetUserDefaultData(this);
+            string? role = HttpContext.Session.GetString(Constants.Constants.ROLE_NAME);
 
             var listLocationRoadResponse = await methcall.CallMethodReturnObject<GetLocationAddressResponseByList>(
                 _httpClient: _httpClient,
@@ -133,24 +132,16 @@ namespace WebAppMVC.Controllers
 		}
 
         [HttpGet("ContestPost/{id:int}")]
-        public async Task<IActionResult> ContestPost(int id)
+        public async Task<IActionResult> ContestPost(
+            [FromRoute][Required] int id
+            )
         {
             ContestAPI_URL += "/";
 
-            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
-
-            string? role = HttpContext.Session.GetString("ROLE_NAME");
-            if (role == null) role = "Guest";
-
-            string? usrId = HttpContext.Session.GetString("USER_ID");
-
-            string? usrname = HttpContext.Session.GetString("USER_NAME");
-
-            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
-
-            TempData["ROLE_NAME"] = role;
-            TempData["USER_NAME"] = usrname;
-            TempData["IMAGE_PATH"] = imagepath;
+            methcall.SetUserDefaultData(this);
+            string? role = HttpContext.Session.GetString(Constants.Constants.ROLE_NAME);
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
+            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
 
             GetContestPostResponse? contestPostResponse = new();
 
@@ -198,30 +189,64 @@ namespace WebAppMVC.Controllers
             return View(contestmodel);
         }
 
-        [HttpPost]
-        [Route("ContestRegister/{contestId:int}")]
-        public async Task<IActionResult> ContestRegister(int contestId)
+        [HttpPost("ContestRegister/{contestId:int}")]
+        public async Task<IActionResult> ContestRegister(
+            [FromRoute][Required] int contestId
+            )
+        {
+            ContestAPI_URL += "/" + contestId;
+            string MemberAPI_URL = "/api/Member/Profile";
+
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER));
+
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
+
+            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
+
+            var contestPostResponse = await methcall.CallMethodReturnObject<GetContestPostResponse>(
+                                   _httpClient: _httpClient,
+                                   options: jsonOptions,
+                                   methodName: "GET",
+                                   url: ContestAPI_URL,
+                                   _logger: _logger);
+
+            var memberDetails = await methcall.CallMethodReturnObject<GetMemberProfileResponse>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: "POST",
+                url: MemberAPI_URL,
+                _logger: _logger,
+                inputType: usrId,
+                accessToken: accToken);
+
+            methcall.SetCookie(Response, "tripRegistrationInProgress", contestPostResponse.Data, cookieOptions, jsonOptions, 20);
+
+            PaymentInformationModel model = new PaymentInformationModel()
+            {
+                Fullname = memberDetails.Data.FullName,
+                PayAmount = (decimal)contestPostResponse.Data.Fee,
+                TransactionType = "Member-FieldTrip-Registration"
+            };
+
+            var url = _vnPayService.CreatePaymentUrl(model, HttpContext);
+            return Redirect(url);
+        }
+
+        [HttpGet("FieldTripConfirmRegister")]
+        public async Task<IActionResult> ContestConfirmRegister(
+            [FromRoute][Required] int contestId
+            )
         {
             ContestAPI_URL += "/Register/" + contestId;
+            string MemberAPI_URL = "/api/Member/Profile";
 
-            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
-            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER));
 
-            string? role = HttpContext.Session.GetString("ROLE_NAME");
-            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Member")) return RedirectToAction("Index", "Home");
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
-            string? usrId = HttpContext.Session.GetString("USER_ID");
-            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
-
-            string? usrname = HttpContext.Session.GetString("USER_NAME");
-            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
-
-            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
-
-            TempData["ROLE_NAME"] = role;
-            TempData["USER_NAME"] = usrname;
-            TempData["IMAGE_PATH"] = imagepath;
+            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
 
             var participationNo = await methcall.CallMethodReturnObject<GetContestParticipationNo>(
                 _httpClient: _httpClient,
@@ -231,6 +256,7 @@ namespace WebAppMVC.Controllers
                 _logger: _logger,
                 inputType: usrId,
                 accessToken: accToken);
+
             if (participationNo == null)
             {
                 _logger.LogInformation("Error while processing your request! (Registering Contest Participation!): Contest Not Found!");
@@ -246,8 +272,8 @@ namespace WebAppMVC.Controllers
                         + participationNo.ErrorMessage;
                 RedirectToAction("ContestPost", new { id = contestId });
             }
-            
-            return RedirectToAction("ContestPost", new {id = contestId});
+
+            return RedirectToAction("ContestPost", new { id = contestId });
         }
 
         [HttpPost]
@@ -256,24 +282,12 @@ namespace WebAppMVC.Controllers
         {
             ContestAPI_URL += "/RemoveParticipant/" + contestId;
 
-            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
-            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER));
 
-            string? role = HttpContext.Session.GetString("ROLE_NAME");
-            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Member")) return RedirectToAction("Index", "Home");
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
-            string? usrId = HttpContext.Session.GetString("USER_ID");
-            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
-
-            string? usrname = HttpContext.Session.GetString("USER_NAME");
-            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
-
-            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
-
-            TempData["ROLE_NAME"] = role;
-            TempData["USER_NAME"] = usrname;
-            TempData["IMAGE_PATH"] = imagepath;
+            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
 
             var participationNo = await methcall.CallMethodReturnObject<GetContestPostDeRegister>(
                 _httpClient: _httpClient,
