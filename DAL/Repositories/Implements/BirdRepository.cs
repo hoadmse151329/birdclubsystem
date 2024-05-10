@@ -41,5 +41,15 @@ namespace DAL.Repositories.Implements
             if (result != null) return result.Elo;
             return 0;
         }
+
+        public async Task<Bird> GetBirdById(int birdId)
+        {
+            return _context.Birds.AsNoTracking().SingleOrDefault(b => b.Equals(birdId));
+        }
+
+        public async Task<Bird> GetBirdByIdTracking(int birdId)
+        {
+            return _context.Birds.SingleOrDefault(b => b.Equals(birdId));
+        }
     }
 }

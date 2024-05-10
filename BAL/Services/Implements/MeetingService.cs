@@ -3,6 +3,7 @@ using BAL.Services.Interfaces;
 using BAL.ViewModels;
 using DAL.Infrastructure;
 using DAL.Models;
+using DAL.Repositories.Implements;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,7 +34,7 @@ namespace BAL.Services.Implements
                     if (item.MeetingId == itemview.MeetingId)
                     {
                         //int partAmount = await _unitOfWork.MeetingParticipantRepository.GetCountMeetingParticipantsByMeetId(meet.MeetingId);
-                        var media = await _unitOfWork.MeetingMediaRepository.GetMeetingMediasByMeetingId(item.MeetingId);
+                        var media = await _unitOfWork.MeetingMediaRepository.GetAllMeetingMediasByMeetingId(item.MeetingId);
                         itemview.MeetingPictures = (media.Count() > 0) ? _mapper.Map<IEnumerable<MeetingMediaViewModel>>(media).ToList() : itemview.MeetingPictures;
 
                         locationName = await _unitOfWork.LocationRepository.GetLocationNameById(item.LocationId.Value);
@@ -88,7 +89,7 @@ namespace BAL.Services.Implements
             var meet = await _unitOfWork.MeetingRepository.GetMeetingById(id);
             if (meet != null)
             {
-                var media = await _unitOfWork.MeetingMediaRepository.GetMeetingMediasByMeetingId(meet.MeetingId);
+                var media = await _unitOfWork.MeetingMediaRepository.GetAllMeetingMediasByMeetingId(meet.MeetingId);
                 string locationName = await _unitOfWork.LocationRepository.GetLocationNameById(meet.LocationId.Value);
                 if (locationName == null)
                 {
@@ -119,6 +120,7 @@ namespace BAL.Services.Implements
                     if (picture.Type == "LocationMap")
                     {
                         meeting.LocationMapImage = picture;
+                        meeting.MeetingPictures.Remove(picture);
                     }
                 }
                 return meeting;
@@ -189,8 +191,21 @@ namespace BAL.Services.Implements
                 _unitOfWork.Save();
                 loc = _unitOfWork.LocationRepository.GetLocationByName(entity.Address.Trim()).Result;
             }
+            var media = _unitOfWork.MeetingMediaRepository.GetAllMeetingMediasByMeetingId(entity.MeetingId.Value).Result;
+
+            if (media == null)
+            {
+                _unitOfWork.MeetingMediaRepository.Update(new MeetingMedia
+                {
+                    MeetingId = entity.MeetingId.Value,
+                });
+                _unitOfWork.Save();
+                media = _unitOfWork.MeetingMediaRepository.GetAllMeetingMediasByMeetingId(entity.MeetingId.Value).Result;
+            }
+
             var meeting = _mapper.Map<Meeting>(entity);
             meeting.LocationId = loc.LocationId;
+            meeting.MeetingPictures = (ICollection<MeetingMedia>)media;
             _unitOfWork.MeetingRepository.Update(meeting);
             _unitOfWork.Save();
         }

@@ -18,12 +18,17 @@ namespace DAL.Repositories.Implements
             _context = context;
         }
 
-        public async Task<MeetingMedia> GetMeetingMediaById(int meetingId, int pictureId)
+        public async Task<MeetingMedia> GetMeetingMediaById(int pictureId)
         {
-            return _context.MeetingMedia.AsNoTracking().SingleOrDefault(m => m.MeetingId.Equals(meetingId) && m.PictureId.Equals(pictureId));
+            return _context.MeetingMedia.AsNoTracking().SingleOrDefault(m => m.PictureId.Equals(pictureId));
         }
 
-        public async Task<IEnumerable<MeetingMedia>> GetMeetingMediasByMeetingId(int meetingId)
+        public async Task<MeetingMedia> GetMeetingMediaByIdTracking(int pictureId)
+        {
+            return _context.MeetingMedia.SingleOrDefault(m => m.PictureId.Equals(pictureId));
+        }
+
+        public async Task<IEnumerable<MeetingMedia>> GetAllMeetingMediasByMeetingId(int meetingId)
         {
             return _context.MeetingMedia.AsNoTracking().Where(m => m.MeetingId.Equals(meetingId));
         }
