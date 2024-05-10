@@ -15,16 +15,6 @@
   <head>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="~/css/Contest.css" />
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css">
-    <!-- FONT -->
-    <link
-        href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,100&family=Roboto+Condensed:wght@400;700&display=swap"
-        rel="stylesheet">
-    <!-- FONT AWESOME -->
-    <link rel="stylesheet" href="~/fonts/fontawesome-free-5.15.4-web/css/all.min.css">
-
-    <!-- main CSS -->
-    <link rel="stylesheet" href="~/css/main.css">
   </head>
  <body class="background">
     <hr>
@@ -80,7 +70,7 @@
             </div>
 
             <div class="col-9">
-                <div class="content__list row">
+                <div class="content__list row1">
                     @{
                         if (ViewBag.error != null)
                         {
@@ -128,6 +118,7 @@
                             </div>
                         </div>
                     }
+                    </div>
                 <div class="pagination mb-3">
                         <!-- <li class="page-item previous-page disabled">
                         <a class="page-link btn" href="#">Prev</i></a>

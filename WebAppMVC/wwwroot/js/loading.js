@@ -1,24 +1,29 @@
 ﻿$(document).ready(function () {
-    // Show loading screen when navigating to a new page
-    $('a').click(function () {
-        $('#loading-screen').fadeIn();
-    });
-    // Show loading screen on page load
-    $('#loading-screen').fadeIn();
+    // Initialize the loading screen to be hidden
+    $('#loading-screen').hide();
 
-    // Hide loading screen after a delay (e.g., 3 seconds)
-    setTimeout(function () {
+    // Show loading screen when a link with the specific class is clicked
+    $('.specific-button-class').click(function (e) {
+        e.preventDefault(); // Prevent default behavior of the link
+        $('#loading-screen').fadeIn(); // Show loading screen
+        setTimeout(function () {
+            window.location.href = $(this).attr('href'); // Navigate to the clicked link after a delay
+        }.bind(this), 1000); // Adjust the delay time as needed (in milliseconds)
+    });
+
+    // Hide loading screen when the page finishes loading
+    $(window).on('load', function () {
         $('#loading-screen').fadeOut();
-    }, 1000); // Adjust the delay time as needed (in milliseconds)
+    });
 });
 
 const textAnimation = document.querySelector('.text-animation');
 
 // Set animation duration in milliseconds
-const animationDuration = 1000; // 5 seconds
+const animationDuration = 2000; 
 
 // Set the interval for updating the text color gradient
-const interval = 30; // 50 milliseconds
+const interval = 30;
 
 // Function to update text color gradient during animation
 function updateTextColor() {

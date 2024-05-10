@@ -7,7 +7,15 @@
     padding-top: 50px;
     border-bottom: 1px solid #dee2e6;
 }
-
+.row1 {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin-right: -60px;
+    margin-left: -15px;
+    padding: 0.25rem;
+}
 .nav {
     display: flex;
     flex-wrap: wrap;
@@ -17,7 +25,7 @@
 }
 .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
     color: #495057;
-    background-color: #99ffad;
+    background-color: lightgray;
     border-color: #dee2e6 #dee2e6 #fff;
 }
 .nav-link {
@@ -270,11 +278,13 @@ body .lb-cancel {
     outline: none; }
 
 .background {
-    background: url(../images/bg.png) 0 scroll; /* put this at the end */
+    background: url(../images/bg.png) 0 scroll;
     background-position: center;
     background-repeat: no-repeat;
-    background-size: cover; /* or try background-size: auto; */
+    background-size: cover;
+    min-height: 100vh; /* Ensures that the background covers the entire viewport height */
 }
+
 
 .header__bottom--search .custom-select {
   background: url("") no-repeat right 0.75rem center/8px 10px;
@@ -1374,8 +1384,7 @@ body .lb-cancel {
     }
 
 .about-us .card-text {
-    font-weight: 700;
-    font-size: 18px;
+    font-size: 16px;
     color: #768092;
     line-height: 24px;
 }
@@ -1420,7 +1429,7 @@ body .lb-cancel {
 }
 
 .about-us p.card-text {
-    margin-left: 5px;
+    margin-left: 15px;
 }
 
 .about-us div.card-text {
