@@ -20,6 +20,7 @@ using WebAppMVC.Models.Transaction;
 using WebAppMVC.Models.Bird;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
+using WebAppMVC.Models.Notification;
 
 namespace WebAppMVC.Controllers
 {
@@ -59,6 +60,21 @@ namespace WebAppMVC.Controllers
 
             string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
             string? usrId = HttpContext.Session.GetString("USER_ID");
+
+            string NotificationAPI_URL = "/api/Notification/Count";
+
+            if (usrId != null)
+            {
+                var notificationCount = await methcall.CallMethodReturnObject<GetNotificationCountResponse>(
+                _httpClient: _httpClient,
+                options: options,
+                methodName: "POST",
+                url: NotificationAPI_URL,
+                inputType: usrId,
+                _logger: _logger);
+
+                ViewBag.NotificationCount = notificationCount.Data;
+            }
 
             var memberDetails = await methcall.CallMethodReturnObject<GetMemberProfileResponse>(
                 _httpClient: _httpClient,
@@ -133,6 +149,21 @@ namespace WebAppMVC.Controllers
             string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
 
             string? usrId = HttpContext.Session.GetString("USER_ID");
+
+            string NotificationAPI_URL = "/api/Notification/Count";
+
+            if (usrId != null)
+            {
+                var notificationCount = await methcall.CallMethodReturnObject<GetNotificationCountResponse>(
+                _httpClient: _httpClient,
+                options: options,
+                methodName: "POST",
+                url: NotificationAPI_URL,
+                inputType: usrId,
+                _logger: _logger);
+
+                ViewBag.NotificationCount = notificationCount.Data;
+            }
 
             string MemberMeetingPartAPI_URL = "/api/Meeting/Participation/AllMeetings";
             string MemberFieldTripPartAPI_URL = "/api/FieldTrip/Participation/AllFieldTrips";
@@ -310,6 +341,21 @@ namespace WebAppMVC.Controllers
 
             string? usrId = HttpContext.Session.GetString("USER_ID");
 
+            string NotificationAPI_URL = "/api/Notification/Count";
+
+            if (usrId != null)
+            {
+                var notificationCount = await methcall.CallMethodReturnObject<GetNotificationCountResponse>(
+                _httpClient: _httpClient,
+                options: options,
+                methodName: "POST",
+                url: NotificationAPI_URL,
+                inputType: usrId,
+                _logger: _logger);
+
+                ViewBag.NotificationCount = notificationCount.Data;
+            }
+
             dynamic birdModel = new ExpandoObject();
 
             var memberBird = await methcall.CallMethodReturnObject<GetListBirdByMemberResponse>(
@@ -351,6 +397,21 @@ namespace WebAppMVC.Controllers
 
             string? usrId = HttpContext.Session.GetString("USER_ID");
 
+            string NotificationAPI_URL = "/api/Notification/Count";
+
+            if (usrId != null)
+            {
+                var notificationCount = await methcall.CallMethodReturnObject<GetNotificationCountResponse>(
+                _httpClient: _httpClient,
+                options: options,
+                methodName: "POST",
+                url: NotificationAPI_URL,
+                inputType: usrId,
+                _logger: _logger);
+
+                ViewBag.NotificationCount = notificationCount.Data;
+            }
+
             dynamic transactionModel = new ExpandoObject();
 
             var memberPayment = await methcall.CallMethodReturnObject<GetUserPaymentResponse>(
@@ -391,6 +452,21 @@ namespace WebAppMVC.Controllers
             string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
 
             string? usrId = HttpContext.Session.GetString("USER_ID");
+
+            string NotificationAPI_URL = "/api/Notification/Count";
+
+            if (usrId != null)
+            {
+                var notificationCount = await methcall.CallMethodReturnObject<GetNotificationCountResponse>(
+                _httpClient: _httpClient,
+                options: options,
+                methodName: "POST",
+                url: NotificationAPI_URL,
+                inputType: usrId,
+                _logger: _logger);
+
+                ViewBag.NotificationCount = notificationCount.Data;
+            }
 
             dynamic notificationModel = new ExpandoObject();
 

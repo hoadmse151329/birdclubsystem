@@ -138,18 +138,26 @@
                                     </div>
                                     <div class="row mb-sm-2">
                                         <div class="col-sm-5 text-sm-right">
-                                            <span>Before Score:</span>
+                                            <span>Required Minimum ELO:</span>
                                         </div>
                                         <div class="col-sm-7 text-sm-left">
-                                            <span>@detailsContest.BeforeScore</span>
+                                            <span>@detailsContest.ReqMinELO</span>
                                         </div>
                                     </div>
                                     <div class="row mb-sm-2">
                                         <div class="col-sm-5 text-sm-right">
-                                            <span>After Score:</span>
+                                            <span>Required Maximum ELO:</span>
                                         </div>
                                         <div class="col-sm-7 text-sm-left">
-                                            <span>@detailsContest.AfterScore</span>
+                                            <span>@detailsContest.ReqMaxELO</span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-sm-2">
+                                        <div class="col-sm-5 text-sm-right">
+                                            <span>After ELO:</span>
+                                        </div>
+                                        <div class="col-sm-7 text-sm-left">
+                                            <span>@detailsContest.AfterELO</span>
                                         </div>
                                     </div>
                                     <div class="row mb-sm-2">
@@ -284,11 +292,20 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label asp-for="@updateContest.BeforeScore" class="col-sm-4 col-form-label"></label>
+                                    <label asp-for="@updateContest.ReqMinELO" class="col-sm-4 col-form-label"></label>
                                     <div class="col-sm-8">
-                                        <input asp-for="@updateContest.BeforeScore" type="number" min="0"
-                                               value="@updateContest.BeforeScore" class="form-control" required>
-                                        <span asp-validation-for="@updateContest.BeforeScore" id="error_message"
+                                        <input asp-for="@updateContest.ReqMinELO" type="number" min="0"
+                                               value="@updateContest.ReqMinELO" class="form-control" required>
+                                        <span asp-validation-for="@updateContest.ReqMinELO" id="error_message"
+                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label asp-for="@updateContest.ReqMaxELO" class="col-sm-4 col-form-label"></label>
+                                    <div class="col-sm-8">
+                                        <input asp-for="@updateContest.ReqMaxELO" type="number" min="0"
+                                               value="@updateContest.ReqMaxELO" class="form-control" required>
+                                        <span asp-validation-for="@updateContest.ReqMaxELO" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                     </div>
                                 </div>
@@ -339,11 +356,11 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label asp-for="@updateContest.AfterScore" class="col-sm-4 col-form-label"></label>
+                                    <label asp-for="@updateContest.AfterELO" class="col-sm-4 col-form-label"></label>
                                     <div class="col-sm-8">
-                                        <input asp-for="@updateContest.AfterScore" type="number" min="0"
-                                               value="@updateContest.AfterScore" class="form-control" required>
-                                        <span asp-validation-for="@updateContest.AfterScore" id="error_message"
+                                        <input asp-for="@updateContest.AfterELO" type="number" min="0"
+                                               value="@updateContest.AfterELO" class="form-control" required>
+                                        <span asp-validation-for="@updateContest.AfterELO" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                     </div>
                                 </div>

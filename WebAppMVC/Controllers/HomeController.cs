@@ -10,6 +10,9 @@ using WebAppMVC.Models.Meeting;
 using WebAppMVC.Models.FieldTrip;
 using WebAppMVC.Models.Contest;
 using System.Text.Encodings.Web;
+using Microsoft.AspNetCore.Http.Json;
+using System;
+using WebAppMVC.Models.Notification;
 
 namespace WebAppMVC.Controllers
 {
@@ -50,12 +53,12 @@ namespace WebAppMVC.Controllers
             /*string? role = HttpContext.Session.GetString("ROLE_NAME");
             if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
             else if (!role.Equals("Member")) return RedirectToAction("Logout", "Home");
-
-            string? usrId = HttpContext.Session.GetString("USER_ID");
+            
             if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
 
             string? usrname = HttpContext.Session.GetString("USER_NAME");
             if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");*/
+            string? usrId = HttpContext.Session.GetString("USER_ID");
 
             string? role = HttpContext.Session.GetString("ROLE_NAME");
             if (role == null) role = "Guest";
@@ -67,6 +70,21 @@ namespace WebAppMVC.Controllers
             TempData["ROLE_NAME"] = role;
             TempData["USER_NAME"] = usrname;
             TempData["IMAGE_PATH"] = imagepath;
+
+            string NotificationAPI_URL = "/api/Notification/Count";
+
+            if (usrId != null)
+            {
+                var notificationCount = await methcall.CallMethodReturnObject<GetNotificationCountResponse>(
+                _httpClient: _httpClient,
+                options: options,
+                methodName: "POST",
+                url: NotificationAPI_URL,
+                inputType: usrId,
+                _logger: _logger);
+
+                ViewBag.NotificationCount = notificationCount.Data;
+            }
 
             var listFieldTripResponse = await methcall.CallMethodReturnObject<GetFieldTripResponseByList>(
                 _httpClient: _httpClient,

@@ -14,6 +14,8 @@ using static Org.BouncyCastle.Math.EC.ECCurve;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Text.Encodings.Web;
 using System.ComponentModel.DataAnnotations;
+using System;
+using WebAppMVC.Models.Notification;
 
 namespace WebAppMVC.Controllers
 {
@@ -93,6 +95,23 @@ namespace WebAppMVC.Controllers
             methcall.SetUserDefaultData(this);
 
             string? role = HttpContext.Session.GetString(Constants.Constants.ROLE_NAME);
+
+            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
+
+            string NotificationAPI_URL = "/api/Notification/Count";
+
+            if (usrId != null)
+            {
+                var notificationCount = await methcall.CallMethodReturnObject<GetNotificationCountResponse>(
+                _httpClient: _httpClient,
+                options: options,
+                methodName: "POST",
+                url: NotificationAPI_URL,
+                inputType: usrId,
+                _logger: _logger);
+
+                ViewBag.NotificationCount = notificationCount.Data;
+            }
 
             var listLocationRoadResponse = await methcall.CallMethodReturnObject<GetLocationAddressResponseByList>(
                 _httpClient: _httpClient,
@@ -217,6 +236,21 @@ namespace WebAppMVC.Controllers
             string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
             string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
+
+            string NotificationAPI_URL = "/api/Notification/Count";
+
+            if (usrId != null)
+            {
+                var notificationCount = await methcall.CallMethodReturnObject<GetNotificationCountResponse>(
+                _httpClient: _httpClient,
+                options: options,
+                methodName: "POST",
+                url: NotificationAPI_URL,
+                inputType: usrId,
+                _logger: _logger);
+
+                ViewBag.NotificationCount = notificationCount.Data;
+            }
 
             GetMeetingPostResponse? meetPostResponse = new();
 
