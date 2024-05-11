@@ -212,7 +212,7 @@ namespace WebAppMVC.Controllers
 
 			string TransactionAPI_URL = "/api/Transaction/UpdateUser";
 
-			var newmemRequest = await methcall.GetCookie<CreateNewMember>(Request, "memRequest", jsonOptions);
+			var newmemRequest = await methcall.GetCookie<CreateNewMember>(Request, Constants.Constants.NEW_MEMBER_REGISTRATION_COOKIE, jsonOptions);
 
 			if (newmemRequest == null)
 			{
@@ -221,7 +221,7 @@ namespace WebAppMVC.Controllers
 				return View("Register");
 			}
 
-			methcall.RemoveCookie(Response, "memRequest", cookieOptions, jsonOptions);
+			methcall.RemoveCookie(Response, Constants.Constants.NEW_MEMBER_REGISTRATION_COOKIE, cookieOptions, jsonOptions);
 
 			var authenResponse = await methcall.CallMethodReturnObject<GetAuthenResponse>(
 				_httpClient: client,
@@ -242,7 +242,7 @@ namespace WebAppMVC.Controllers
 
 			var responseAuth = authenResponse.Data;
 
-			var tran = await methcall.GetCookie<TransactionViewModel>(Request,"tranKey",jsonOptions);
+			var tran = await methcall.GetCookie<TransactionViewModel>(Request, Constants.Constants.NEW_MEMBER_REGISTRATION_TRANSACTION_COOKIE,jsonOptions);
 
 			if (tran == null)
 			{
@@ -254,9 +254,9 @@ namespace WebAppMVC.Controllers
 				return View("Register");
 			}
 
-			methcall.RemoveCookie(Response, "tranKey", cookieOptions, jsonOptions);
+			methcall.RemoveCookie(Response, Constants.Constants.NEW_MEMBER_REGISTRATION_TRANSACTION_COOKIE, cookieOptions, jsonOptions);
 
-			UpdateNewMemberTransactionRequest unmtr = new UpdateNewMemberTransactionRequest()
+			UpdateTransactionRequest unmtr = new UpdateTransactionRequest()
 			{
 				MemberId = responseAuth.UserId,
 				TransactionId = tran.TransactionId
@@ -329,7 +329,7 @@ namespace WebAppMVC.Controllers
 				client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", responseAuth.AccessToken);
 			}
 
-			methcall.SetCookie(Response, "memRequest", newmemRequest, cookieOptions, jsonOptions, 20);
+			methcall.SetCookie(Response, Constants.Constants.NEW_MEMBER_REGISTRATION_COOKIE, newmemRequest, cookieOptions, jsonOptions, 20);
 			PaymentInformationModel model = new PaymentInformationModel()
 			{
 				Fullname = newmemRequest.FullName,

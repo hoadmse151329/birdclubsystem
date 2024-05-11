@@ -5,11 +5,7 @@
     BAL.ViewModels.ContestViewModel detailsContest = Model.ContestDetails;
     BAL.ViewModels.ContestViewModel updateContest = Model.UpdateContest != null ? Model.UpdateContest : detailsContest;
     List<BAL.ViewModels.ContestParticipantViewModel> contestPartView = Model.ContestParticipants;
-    List<SelectListItem> checkInStatus = new()
-    {
-        new SelectListItem {Text = "Not Checked-In", Value = "Not Checked-In"},
-        new SelectListItem {Text = "Checked-In", Value = "Checked-In"}
-    }; 
+    List<SelectListItem> checkInStatus = Model.SelectListParticipationStatus;
     List<SelectListItem> defaultContestStatus = Model.SelectListStatus;
     Layout = "~/Views/Shared/_SLayout.cshtml";
 }
@@ -213,6 +209,7 @@
                                                     </td>
                                                     <td>
                                                         @{
+
                                                             foreach (var status in checkInStatus)
                                                             {
                                                                 if (status.Text.Equals(contestPartView[i].CheckInStatus))
@@ -220,9 +217,9 @@
                                                                     status.Selected = true;
                                                                 }
                                                             }
+                                                            <select class="form-control" asp-for="@contestPartView[i].CheckInStatus" asp-items="@checkInStatus" class="custom-select" name="contestPartView[@i].checkInStatus">
+                                                            </select>
                                                         }
-                                                        <select class="form-control" asp-for="@contestPartView[i].CheckInStatus" asp-items="@checkInStatus" class="custom-select" name="contestPartView[@i].checkInStatus">
-                                                        </select>
                                                     </td>
                                                 </tr>
                                             }
