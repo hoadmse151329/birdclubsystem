@@ -139,10 +139,7 @@ namespace DAL.Repositories.Implements
         public async Task<bool> GetBoolMeetingId(int id)
         {
             var meet = _context.Meetings.SingleOrDefault(m => m.MeetingId == id);
-            if (meet != null)
-            {
-                return true;
-            }
+            if (meet != null) return true;
             else return false;
         }
     }

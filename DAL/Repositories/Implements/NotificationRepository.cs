@@ -40,9 +40,16 @@ namespace DAL.Repositories.Implements
             return notif;
         }
 
-        public async Task<int> GetCountUnreadNotificationsByUserId(int id)
+        public async Task<int> GetCountUnreadNotificationsByMemberId(string id)
         {
-            return _context.Notifications.AsNoTracking().Count(n => n.UserId == id && n.Status == "Unread");
+            return _context.Notifications.AsNoTracking().Count(n => n.UserDetail.MemberId == id && n.Status == "Unread");
+        }
+
+        public async Task<bool> GetBoolNotificationId(int id)
+        {
+            var notif = _context.Notifications.SingleOrDefault(n => n.NotificationId == id);
+            if (notif != null) return true;
+            else return false;
         }
     }
 }

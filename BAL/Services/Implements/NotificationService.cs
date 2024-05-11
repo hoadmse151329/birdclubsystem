@@ -50,9 +50,16 @@ namespace BAL.Services.Implements
             return false;
         }
 
-        public async Task<int> GetCountUnreadNotificationsByUserId(int id)
+        public async Task<int> GetCountUnreadNotificationsByMemberId(string id)
         {
-            return await _unitOfWork.NotificationRepository.GetCountUnreadNotificationsByUserId(id);
+            return await _unitOfWork.NotificationRepository.GetCountUnreadNotificationsByMemberId(id);
+        }
+
+        public async Task<bool> GetBoolNotificationId(int id)
+        {
+            var notif = await _unitOfWork.NotificationRepository.GetBoolNotificationId(id);
+            if (!notif) return false;
+            return true;
         }
     }
 }
