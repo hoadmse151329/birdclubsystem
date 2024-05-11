@@ -10,6 +10,12 @@ namespace BAL.ViewModels
 {
     public class BirdViewModel
     {
+        public BirdViewModel()
+        {
+            AddDate = DateTime.Now;
+            Status = "Active";
+            Elo = 1500;
+        }
         public int? BirdId { get; set; }
         public int? MemberId { get; set; }
         [Required(ErrorMessage = "Bird Name is required")]
@@ -29,7 +35,7 @@ namespace BAL.ViewModels
         public string? Color { get; set; }
         [Required(ErrorMessage = "Date Added is required")]
         [DisplayName("Date Added")]
-        public DateTime? AddDate { get; set; }
+        public DateTime AddDate { get; set; }
         [DisplayName("Profile Pic")]
         public string? ProfilePic { get; set; }
         [DisplayName("Status")]

@@ -4,11 +4,15 @@
     ViewData["Title"] = "Manager Meeting Detail Page";
     BAL.ViewModels.MeetingViewModel detailsMeeting = Model.MeetingDetails;
     BAL.ViewModels.MeetingViewModel updateMeeting = Model.UpdateMeeting != null ? Model.UpdateMeeting : Model.MeetingDetails;
+
     List<BAL.ViewModels.MeetingParticipantViewModel> parts = Model.MeetingParticipants;
+
     BAL.ViewModels.MeetingMediaViewModel Spotlight = detailsMeeting.SpotlightImage;
     BAL.ViewModels.MeetingMediaViewModel LocationMap = detailsMeeting.LocationMapImage;
+
     List<BAL.ViewModels.MeetingMediaViewModel> Media = detailsMeeting.MeetingPictures;
     BAL.ViewModels.MeetingMediaViewModel createMedia = Model.CreateMeetingMedia != null ? Model.CreateMeetingMedia : new BAL.ViewModels.MeetingMediaViewModel();
+
     List<SelectListItem> defaultMeetingStatus = Model.SelectListStatus;
 
     Layout = "~/Views/Shared/_MLayout.cshtml";
@@ -50,9 +54,14 @@
                             <div class="card profile col-12 mb-4">
                                 <div class="card-header">
                                     <h4>Meeting Information</h4>
-                                    <div class="edit-info">
-                                        <i class='bx bxs-edit-alt' data-toggle="modal" data-target="#editprofile"></i>
-                                    </div>
+                                    @{
+                                        if (!(detailsMeeting.Status.Equals("Ended") || detailsMeeting.Status.Equals("Cancelled")))
+                                        {
+                                            <div class="edit-info">
+                                                <i class='bx bxs-edit-alt' data-toggle="modal" data-target="#editprofile"></i>
+                                            </div>
+                                        }
+                                    }
                                 </div>
                                 <div class="card-body">
                                     <div class="row">
@@ -190,9 +199,14 @@
                             <div class="card profile col-12 mb-4">
                                 <div class="card-header">
                                     <h4>Meeting Medias</h4>
-                                    <div class="edit-info">
-                                        <i class='bx bxs-plus-circle' data-toggle="modal" data-target="#createmedia"></i>
-                                    </div>
+                                    @{
+                                        if (detailsMeeting.Status.Equals("OnHold") || detailsMeeting.Status.Equals("Postponed"))
+                                        {
+                                            <div class="edit-info">
+                                                <i class='bx bxs-plus-circle' data-toggle="modal" data-target="#createmedia"></i>
+                                            </div>
+                                        }
+                                    }
                                 </div>
                                 <div class="card-body">
                                     @{
@@ -200,9 +214,14 @@
                                         {
                                             <div class="card-header">
                                                 <h4>Spotlight</h4>
-                                                <div class="edit-info">
-                                                    <i class='bx bxs-edit-alt' data-toggle="modal" data-target="#editmedia_@Spotlight.PictureId"></i>
-                                                </div>
+                                                @{
+                                                    if (detailsMeeting.Status.Equals("OnHold") || detailsMeeting.Status.Equals("Postponed"))
+                                                    {
+                                                        <div class="edit-info">
+                                                            <i class='bx bxs-edit-alt' data-toggle="modal" data-target="#editmedia_@Spotlight.PictureId"></i>
+                                                        </div>
+                                                    }
+                                                }
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-5 text-md-right">
@@ -233,9 +252,14 @@
                                         {
                                             <div class="card-header">
                                                 <h4>Spotlight</h4>
-                                                <div class="edit-info">
-                                                    <i class='bx bxs-plus-circle' data-toggle="modal" data-target="#createspotlight"></i>
-                                                </div>
+                                                @{
+                                                    if (detailsMeeting.Status.Equals("OnHold") || detailsMeeting.Status.Equals("Postponed"))
+                                                    {
+                                                        <div class="edit-info">
+                                                            <i class='bx bxs-plus-circle' data-toggle="modal" data-target="#createspotlight"></i>
+                                                        </div>
+                                                    }
+                                                }
                                             </div>
                                         }
                                     }
@@ -245,10 +269,15 @@
                                         if (LocationMap != null)
                                         {
                                             <div class="card-header">
-                                                <h4>Location</h4>
-                                                <div class="edit-info">
-                                                    <i class='bx bxs-edit-alt' data-toggle="modal" data-target="#editmedia_@LocationMap.PictureId"></i>
-                                                </div>
+                                                <h4>Location Map</h4>
+                                                @{
+                                                    if (detailsMeeting.Status.Equals("OnHold") || detailsMeeting.Status.Equals("Postponed"))
+                                                    {
+                                                        <div class="edit-info">
+                                                            <i class='bx bxs-edit-alt' data-toggle="modal" data-target="#editmedia_@LocationMap.PictureId"></i>
+                                                        </div>
+                                                    }
+                                                }
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-5 text-md-right">
@@ -278,10 +307,15 @@
                                         else
                                         {
                                             <div class="card-header">
-                                                <h4>Location</h4>
-                                                <div class="edit-info">
-                                                    <i class='bx bxs-plus-circle' data-toggle="modal" data-target="#createlocationmap"></i>
-                                                </div>
+                                                <h4>Location Map</h4>
+                                                @{
+                                                    if (detailsMeeting.Status.Equals("OnHold") || detailsMeeting.Status.Equals("Postponed"))
+                                                    {
+                                                        <div class="edit-info">
+                                                            <i class='bx bxs-plus-circle' data-toggle="modal" data-target="#createlocationmap"></i>
+                                                        </div>
+                                                    }
+                                                }
                                             </div>
                                         }
                                     }
@@ -294,9 +328,14 @@
                                             {
                                                 <div class="card-header">
                                                     <h4>Additional Media</h4>
-                                                    <div class="edit-info">
-                                                        <i class='bx bxs-edit-alt' data-toggle="modal" data-target="#editmedia_@pic.PictureId"></i>
-                                                    </div>
+                                                    @{
+                                                        if (detailsMeeting.Status.Equals("OnHold") || detailsMeeting.Status.Equals("Postponed"))
+                                                        {
+                                                            <div class="edit-info">
+                                                                <i class='bx bxs-edit-alt' data-toggle="modal" data-target="#editmedia_@pic.PictureId"></i>
+                                                            </div>
+                                                        }
+                                                    }
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-5 text-md-right">
@@ -328,7 +367,6 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
                     <div class="col-lg-5 cardFB">
                         <div class="card border-0 d-flex">
@@ -362,253 +400,303 @@
             </div>
         </div>
     </div>
-
-    <!-- edit Meeting -->
-    <div id="editprofile" class="modal fade" role="dialog">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
-            <div class="modal-content modal-addRoom">
-                <div class="modal-header">
-                    <h4 class="modal-title">Edit Meeting</h4>
-                </div>
-                <form asp-action="ManagerUpdateMeetingDetail" asp-controller="Manager" method="post" asp-route-id="@detailsMeeting.MeetingId" class="form-group">
-                    <div class="modal-body">
-                        <div class="row justify-content-center">
-                            <div class="col-12 col-md-6">
-                                <div class="form-group row">
-                                    <label asp-for="@updateMeeting.MeetingName" class="col-sm-4 col-form-label"></label>
-                                    <div class="col-sm-8">
-                                        <input asp-for="@updateMeeting.MeetingName" type="text"
-                                               value="@updateMeeting.MeetingName" class="form-control" required>
-                                        <span asp-validation-for="@updateMeeting.MeetingName" id="error_message"
-                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label asp-for="@updateMeeting.RegistrationDeadline" class="col-sm-4 col-form-label"></label>
-                                    <div class="col-sm-8">
-                                        <input asp-for="@updateMeeting.RegistrationDeadline" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
-                                               value="@updateMeeting.RegistrationDeadline.ToString("yyyy-MM-ddTHH:mm")" class="form-control" required>
-                                        <span asp-validation-for="@updateMeeting.RegistrationDeadline" id="error_message"
-                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label asp-for="@updateMeeting.StartDate" class="col-sm-4 col-form-label"></label>
-                                    <div class="col-sm-8">
-                                        <input asp-for="@updateMeeting.StartDate" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
-                                               value="@updateMeeting.StartDate.ToString("yyyy-MM-ddTHH:mm")" class="form-control" required>
-                                        <span asp-validation-for="@updateMeeting.StartDate" id="error_message"
-                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label asp-for="@updateMeeting.EndDate" class="col-sm-4 col-form-label">End date:</label>
-                                    <div class="col-sm-8">
-                                        <input asp-for="@updateMeeting.EndDate" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
-                                               value="@updateMeeting.EndDate.ToString("yyyy-MM-ddTHH:mm")" class="form-control" required>
-                                        <span asp-validation-for="@updateMeeting.EndDate" id="error_message"
-                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-6">
-                                <div class="form-group row">
-                                    <label asp-for="@updateMeeting.NumberOfParticipantsLimit" class="col-sm-4 col-form-label"></label>
-                                    <div class="col-sm-8">
-                                        <input asp-for="@updateMeeting.NumberOfParticipantsLimit" type="number"
-                                               value="@updateMeeting.NumberOfParticipantsLimit" class="form-control" required>
-                                        <span asp-validation-for="@updateMeeting.NumberOfParticipantsLimit" id="error_message"
-                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label asp-for="@updateMeeting.Host" class="col-sm-4 col-form-label"></label>
-                                    <div class="col-sm-8">
-                                        <input asp-for="@updateMeeting.Host" type="text"
-                                               value="@updateMeeting.Host" class="form-control" required>
-                                        <span asp-validation-for="@updateMeeting.Host" id="error_message"
-                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label asp-for="@updateMeeting.Incharge" class="col-sm-4 col-form-label"></label>
-                                    <div class="col-sm-8">
-                                        <input asp-for="@updateMeeting.Incharge" type="text"
-                                               value="@updateMeeting.Incharge" class="form-control" required>
-                                        <span asp-validation-for="@updateMeeting.Incharge" id="error_message"
-                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label asp-for="@updateMeeting.Status" class="col-sm-4 col-form-label"></label>
-                                    <div class="col-sm-8">
-                                        <select class="form-control" asp-for="@updateMeeting.Status" asp-items="@defaultMeetingStatus" class="custom-select" required></select>
-                                        <span asp-validation-for="@updateMeeting.Status" id="error_message"
-                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label asp-for="@updateMeeting.Address" class="col-sm-2 col-form-label"></label>
-                            <div class="col-sm-10">
-                                <input asp-for="@updateMeeting.Address" type="text"
-                                       value="@updateMeeting.Address" class="form-control" required>
-                                <span asp-validation-for="@updateMeeting.Address" id="error_message"
-                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label asp-for="@updateMeeting.Description" class="col-sm-2 col-form-label"></label>
-                            <div class="col-sm-10">
-                                <textarea asp-for="@updateMeeting.Description" type="text"
-                                          value="@updateMeeting.Description" class="form-control" required></textarea>
-                                <span asp-validation-for="@updateMeeting.Description" id="error_message"
-                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label asp-for="@updateMeeting.Note" class="col-sm-2 col-form-label"></label>
-                            <div class="col-sm-10">
-                                <textarea asp-for="@updateMeeting.Note" type="text"
-                                          value="@updateMeeting.Note" class="form-control" required></textarea>
-                                <span asp-validation-for="@updateMeeting.Note" id="error_message"
-                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <input asp-for="@updateMeeting.NumberOfParticipants" type="number"
-                           value="@updateMeeting.NumberOfParticipants" required hidden>
-                    <div class="modal-footer justify-content-center">
-                        <button class="btn btn-success" type="submit" value="Update">Save</button>
-                        <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- create meeting additional media-->
-    <div id="createmedia" class="modal fade" role="dialog">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
-            <div class="modal-content modal-addRoom">
-                <div class="modal-header">
-                    <h4 class="modal-title">Create Meeting Additional Media</h4>
-                </div>
-                <form asp-action="ManagerCreateMeetingMedia" asp-controller="Manager" method="post" asp-route-meetingId="@detailsMeeting.MeetingId" class="form-group">
+    @{
+        if (detailsMeeting.Status.Equals("OnHold") || detailsMeeting.Status.Equals("Postponed"))
+        {
+            <!-- edit Meeting -->
+            <div id="editprofile" class="modal fade" role="dialog">
+                <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
                     <div class="modal-content modal-addRoom">
-                        <div class="row justify-content-center">
-                            <div class="col-12 col-md-6">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Edit Meeting</h4>
+                        </div>
+                        <form asp-action="ManagerUpdateMeetingDetail" asp-controller="Manager" method="post" asp-route-id="@detailsMeeting.MeetingId" class="form-group">
+                            <div class="modal-body">
+                                <div class="row justify-content-center">
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-group row">
+                                            <label asp-for="@updateMeeting.MeetingName" class="col-sm-4 col-form-label"></label>
+                                            <div class="col-sm-8">
+                                                <input asp-for="@updateMeeting.MeetingName" type="text"
+                                                       value="@updateMeeting.MeetingName" class="form-control" required>
+                                                <span asp-validation-for="@updateMeeting.MeetingName" id="error_message"
+                                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label asp-for="@updateMeeting.RegistrationDeadline" class="col-sm-4 col-form-label"></label>
+                                            <div class="col-sm-8">
+                                                <input asp-for="@updateMeeting.RegistrationDeadline" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
+                                                       value="@updateMeeting.RegistrationDeadline.ToString("yyyy-MM-ddTHH:mm")" class="form-control" required>
+                                                <span asp-validation-for="@updateMeeting.RegistrationDeadline" id="error_message"
+                                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label asp-for="@updateMeeting.StartDate" class="col-sm-4 col-form-label"></label>
+                                            <div class="col-sm-8">
+                                                <input asp-for="@updateMeeting.StartDate" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
+                                                       value="@updateMeeting.StartDate.ToString("yyyy-MM-ddTHH:mm")" class="form-control" required>
+                                                <span asp-validation-for="@updateMeeting.StartDate" id="error_message"
+                                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label asp-for="@updateMeeting.EndDate" class="col-sm-4 col-form-label">End date:</label>
+                                            <div class="col-sm-8">
+                                                <input asp-for="@updateMeeting.EndDate" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
+                                                       value="@updateMeeting.EndDate.ToString("yyyy-MM-ddTHH:mm")" class="form-control" required>
+                                                <span asp-validation-for="@updateMeeting.EndDate" id="error_message"
+                                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-group row">
+                                            <label asp-for="@updateMeeting.NumberOfParticipantsLimit" class="col-sm-4 col-form-label"></label>
+                                            <div class="col-sm-8">
+                                                <input asp-for="@updateMeeting.NumberOfParticipantsLimit" type="number"
+                                                       value="@updateMeeting.NumberOfParticipantsLimit" class="form-control" required>
+                                                <span asp-validation-for="@updateMeeting.NumberOfParticipantsLimit" id="error_message"
+                                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label asp-for="@updateMeeting.Host" class="col-sm-4 col-form-label"></label>
+                                            <div class="col-sm-8">
+                                                <input asp-for="@updateMeeting.Host" type="text"
+                                                       value="@updateMeeting.Host" class="form-control" required>
+                                                <span asp-validation-for="@updateMeeting.Host" id="error_message"
+                                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label asp-for="@updateMeeting.Incharge" class="col-sm-4 col-form-label"></label>
+                                            <div class="col-sm-8">
+                                                <input asp-for="@updateMeeting.Incharge" type="text"
+                                                       value="@updateMeeting.Incharge" class="form-control" required>
+                                                <span asp-validation-for="@updateMeeting.Incharge" id="error_message"
+                                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label asp-for="@updateMeeting.Status" class="col-sm-4 col-form-label"></label>
+                                            <div class="col-sm-8">
+                                                <select class="form-control" asp-for="@updateMeeting.Status" asp-items="@defaultMeetingStatus" class="custom-select" required></select>
+                                                <span asp-validation-for="@updateMeeting.Status" id="error_message"
+                                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="form-group row">
-                                    <label asp-for="@createMedia.Description" class="col-sm-4 col-form-label"></label>
-                                    <div class="col-sm-8">
-                                        <textarea asp-for="@createMedia.Description" type="text" placeholder="Enter Media Description..."
-                                               value="@createMedia.Description" class="form-control" required></textarea>
-                                        <span asp-validation-for="@createMedia.Description" id="error_message"
+                                    <label asp-for="@updateMeeting.Address" class="col-sm-2 col-form-label"></label>
+                                    <div class="col-sm-10">
+                                        <input asp-for="@updateMeeting.Address" type="text"
+                                               value="@updateMeeting.Address" class="form-control" required>
+                                        <span asp-validation-for="@updateMeeting.Address" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label asp-for="@createMedia.Type" class="col-sm-4 col-form-label"></label>
-                                    <div class="col-sm-8">
-                                        <input asp-for="@createMedia.Type" type="text"
-                                               value="Additional" class="form-control" readonly>
+                                    <label asp-for="@updateMeeting.Description" class="col-sm-2 col-form-label"></label>
+                                    <div class="col-sm-10">
+                                        <textarea asp-for="@updateMeeting.Description" type="text"
+                                                  value="@updateMeeting.Description" class="form-control" required></textarea>
+                                        <span asp-validation-for="@updateMeeting.Description" id="error_message"
+                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                     </div>
                                 </div>
-                                <input asp-for="@createMedia.Image" type="text" class="form-control"
-                                value="https://edwinbirdclubstorage.blob.core.windows.net/images/meeting/meeting_image_1.png" hidden/>
+                                <div class="form-group row">
+                                    <label asp-for="@updateMeeting.Note" class="col-sm-2 col-form-label"></label>
+                                    <div class="col-sm-10">
+                                        <textarea asp-for="@updateMeeting.Note" type="text"
+                                                  value="@updateMeeting.Note" class="form-control" required></textarea>
+                                        <span asp-validation-for="@updateMeeting.Note" id="error_message"
+                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                            <input asp-for="@updateMeeting.NumberOfParticipants" type="number"
+                                   value="@updateMeeting.NumberOfParticipants" required hidden>
+                            <div class="modal-footer justify-content-center">
+                                <button class="btn btn-success" type="submit" value="Update">Save</button>
+                                <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
+                            </div>
+                        </form>
                     </div>
-                    <div class="modal-footer justify-content-center">
-                        <button class="btn btn-success" type="submit" value="Update">Create</button>
-                        <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- create meeting spotlight media -->
-    <div id="createspotlight" class="modal fade" role="dialog">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
-            <div class="modal-content modal-addRoom">
-                <div class="modal-header">
-                    <h4 class="modal-title">Create Meeting Spotlight Media</h4>
                 </div>
-                <form asp-action="ManagerCreateMeetingMedia" asp-controller="Manager" method="post" asp-route-meetingId="@detailsMeeting.MeetingId" class="form-group">
-                    <div class="modal-content modal-addRoom">
-                        <div class="row justify-content-center">
-                            <div class="col-12 col-md-6">
-                                <div class="form-group row">
-                                    <label asp-for="@createMedia.Description" class="col-sm-4 col-form-label"></label>
-                                    <div class="col-sm-8">
-                                        <textarea asp-for="@createMedia.Description" type="text" placeholder="Enter Media Description..."
-                                                  value="@createMedia.Description" class="form-control" required></textarea>
-                                        <span asp-validation-for="@createMedia.Description" id="error_message"
-                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label asp-for="@createMedia.Type" class="col-sm-4 col-form-label"></label>
-                                    <div class="col-sm-8">
-                                        <input asp-for="@createMedia.Type" type="text"
-                                               value="Spotlight" class="form-control" readonly>
-                                    </div>
-                                </div>
-                                <input asp-for="@createMedia.Image" type="text" class="form-control"
-                                       value="https://edwinbirdclubstorage.blob.core.windows.net/images/meeting/meeting_image_1.png" hidden />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer justify-content-center">
-                        <button class="btn btn-success" type="submit" value="Update">Create</button>
-                        <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
-                    </div>
-                </form>
             </div>
-        </div>
-    </div>
 
-    <!-- create meeting location map media -->
-    <div id="createlocationmap" class="modal fade" role="dialog">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
-            <div class="modal-content modal-addRoom">
-                <div class="modal-header">
-                    <h4 class="modal-title">Create Meeting Location Map Media</h4>
-                </div>
-                <form asp-action="ManagerCreateMeetingMedia" asp-controller="Manager" method="post" asp-route-meetingId="@detailsMeeting.MeetingId" class="form-group">
+            <!-- create meeting additional media-->
+            <div id="createmedia" class="modal fade" role="dialog">
+                <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
                     <div class="modal-content modal-addRoom">
-                        <div class="row justify-content-center">
-                            <div class="col-12 col-md-6">
-                                <div class="form-group row">
-                                    <label asp-for="@createMedia.Description" class="col-sm-4 col-form-label"></label>
-                                    <div class="col-sm-8">
-                                        <textarea asp-for="@createMedia.Description" type="text" placeholder="Enter Media Description..."
-                                                  value="@createMedia.Description" class="form-control" required></textarea>
-                                        <span asp-validation-for="@createMedia.Description" id="error_message"
-                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label asp-for="@createMedia.Type" class="col-sm-4 col-form-label"></label>
-                                    <div class="col-sm-8">
-                                        <input asp-for="@createMedia.Type" type="text"
-                                               value="LocationMap" class="form-control" readonly>
-                                    </div>
-                                </div>
-                                <input asp-for="@createMedia.Image" type="text" class="form-control"
-                                       value="https://edwinbirdclubstorage.blob.core.windows.net/images/meeting/meeting_image_1.png" hidden />
-                            </div>
+                        <div class="modal-header">
+                            <h4 class="modal-title">Create Meeting Additional Media</h4>
                         </div>
+                        <form asp-action="ManagerCreateMeetingMedia" asp-controller="Manager" method="post" asp-route-meetingId="@detailsMeeting.MeetingId" class="form-group">
+                            <div class="modal-content modal-addRoom">
+                                <div class="row justify-content-center">
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-group row">
+                                            <label asp-for="@createMedia.Description" class="col-sm-4 col-form-label"></label>
+                                            <div class="col-sm-8">
+                                                <textarea asp-for="@createMedia.Description" type="text" placeholder="Enter Media Description..."
+                                                          value="@createMedia.Description" class="form-control" required></textarea>
+                                                <span asp-validation-for="@createMedia.Description" id="error_message"
+                                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label asp-for="@createMedia.Type" class="col-sm-4 col-form-label"></label>
+                                            <div class="col-sm-8">
+                                                <input asp-for="@createMedia.Type" type="text"
+                                                       value="Additional" class="form-control" readonly>
+                                            </div>
+                                        </div>
+                                        <input asp-for="@createMedia.Image" type="text" class="form-control"
+                                               value="https://edwinbirdclubstorage.blob.core.windows.net/images/meeting/meeting_image_1.png" hidden />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer justify-content-center">
+                                <button class="btn btn-success" type="submit" value="Update">Create</button>
+                                <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
+                            </div>
+                        </form>
                     </div>
-                    <div class="modal-footer justify-content-center">
-                        <button class="btn btn-success" type="submit" value="Update">Create</button>
-                        <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
-                    </div>
-                </form>
+                </div>
             </div>
-        </div>
-    </div>
+
+            <!-- create meeting spotlight media -->
+            <div id="createspotlight" class="modal fade" role="dialog">
+                <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
+                    <div class="modal-content modal-addRoom">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Create Meeting Spotlight Media</h4>
+                        </div>
+                        <form asp-action="ManagerCreateMeetingMedia" asp-controller="Manager" method="post" asp-route-meetingId="@detailsMeeting.MeetingId" class="form-group">
+                            <div class="modal-content modal-addRoom">
+                                <div class="row justify-content-center">
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-group row">
+                                            <label asp-for="@createMedia.Description" class="col-sm-4 col-form-label"></label>
+                                            <div class="col-sm-8">
+                                                <textarea asp-for="@createMedia.Description" type="text" placeholder="Enter Media Description..."
+                                                          value="@createMedia.Description" class="form-control" required></textarea>
+                                                <span asp-validation-for="@createMedia.Description" id="error_message"
+                                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label asp-for="@createMedia.Type" class="col-sm-4 col-form-label"></label>
+                                            <div class="col-sm-8">
+                                                <input asp-for="@createMedia.Type" type="text"
+                                                       value="Spotlight" class="form-control" readonly>
+                                            </div>
+                                        </div>
+                                        <input asp-for="@createMedia.Image" type="text" class="form-control"
+                                               value="https://edwinbirdclubstorage.blob.core.windows.net/images/meeting/meeting_image_1.png" hidden />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer justify-content-center">
+                                <button class="btn btn-success" type="submit" value="Update">Create</button>
+                                <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- create meeting location map media -->
+            <div id="createlocationmap" class="modal fade" role="dialog">
+                <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
+                    <div class="modal-content modal-addRoom">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Create Meeting Location Map Media</h4>
+                        </div>
+                        <form asp-action="ManagerCreateMeetingMedia" asp-controller="Manager" method="post" asp-route-meetingId="@detailsMeeting.MeetingId" class="form-group">
+                            <div class="modal-content modal-addRoom">
+                                <div class="row justify-content-center">
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-group row">
+                                            <label asp-for="@createMedia.Description" class="col-sm-4 col-form-label"></label>
+                                            <div class="col-sm-8">
+                                                <textarea asp-for="@createMedia.Description" type="text" placeholder="Enter Media Description..."
+                                                          value="@createMedia.Description" class="form-control" required></textarea>
+                                                <span asp-validation-for="@createMedia.Description" id="error_message"
+                                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label asp-for="@createMedia.Type" class="col-sm-4 col-form-label"></label>
+                                            <div class="col-sm-8">
+                                                <input asp-for="@createMedia.Type" type="text"
+                                                       value="LocationMap" class="form-control" readonly>
+                                            </div>
+                                        </div>
+                                        <input asp-for="@createMedia.Image" type="text" class="form-control"
+                                               value="https://edwinbirdclubstorage.blob.core.windows.net/images/meeting/meeting_image_1.png" hidden />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer justify-content-center">
+                                <button class="btn btn-success" type="submit" value="Update">Create</button>
+                                <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+        else if (!(detailsMeeting.Status.Equals("Ended") || detailsMeeting.Status.Equals("Cancelled")))
+        {
+            <div id="editprofile" class="modal fade" role="dialog">
+                <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
+                    <div class="modal-content modal-addRoom">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Edit Meeting Status</h4>
+                        </div>
+                        <form asp-action="ManagerUpdateMeetingDetail" asp-controller="Manager" method="post" asp-route-id="@detailsMeeting.MeetingId" class="form-group">
+                            <div class="modal-body">
+                                <div class="row justify-content-center">
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-group row">
+                                            <label asp-for="@updateMeeting.Status" class="col-sm-4 col-form-label"></label>
+                                            <div class="col-sm-8">
+                                                <select class="form-control" asp-for="@updateMeeting.Status" asp-items="@defaultMeetingStatus" class="custom-select" required></select>
+                                                <span asp-validation-for="@updateMeeting.Status" id="error_message"
+                                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input asp-for="@updateMeeting.MeetingName" type="text" value="@updateMeeting.MeetingName" required hidden>
+                                <input asp-for="@updateMeeting.RegistrationDeadline" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
+                                       value="@updateMeeting.RegistrationDeadline.ToString("yyyy-MM-ddTHH:mm")" required hidden>
+                                <input asp-for="@updateMeeting.StartDate" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
+                                       value="@updateMeeting.StartDate.ToString("yyyy-MM-ddTHH:mm")" required hidden>
+                                <input asp-for="@updateMeeting.EndDate" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
+                                       value="@updateMeeting.EndDate.ToString("yyyy-MM-ddTHH:mm")" required hidden>
+                                <input asp-for="@updateMeeting.NumberOfParticipantsLimit" type="number" value="@updateMeeting.NumberOfParticipantsLimit" required hidden>
+                                <input asp-for="@updateMeeting.Host" type="text" value="@updateMeeting.Host" required hidden>
+                                <input asp-for="@updateMeeting.Incharge" type="text" value="@updateMeeting.Incharge" required hidden>
+                                <input asp-for="@updateMeeting.Address" type="text" value="@updateMeeting.Address" required hidden>
+                                <textarea asp-for="@updateMeeting.Description" type="text" value="@updateMeeting.Description" required hidden></textarea>
+                                <textarea asp-for="@updateMeeting.Note" type="text" value="@updateMeeting.Note" required hidden></textarea>
+                                <input asp-for="@updateMeeting.NumberOfParticipants" type="number" value="@updateMeeting.NumberOfParticipants" required hidden>
+                            </div>
+                            <div class="modal-footer justify-content-center">
+                                <button class="btn btn-success" type="submit" value="Update">Save</button>
+                                <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    }
 </body>
 </html>

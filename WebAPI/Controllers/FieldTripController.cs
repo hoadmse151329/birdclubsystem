@@ -89,7 +89,7 @@ namespace WebAPI.Controllers
         [ProducesResponseType(typeof(FieldTripViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> GetFieldTripById([FromRoute] int id)
+        public async Task<IActionResult> GetFieldTripById([FromRoute][Required] int id)
         {
             try
             {

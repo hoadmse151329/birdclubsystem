@@ -14,6 +14,10 @@ using BAL.ViewModels;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
+using WebAppMVC.Models.Notification;
+using Microsoft.Extensions.Options;
+using System.Net.Http;
+using DAL.Models;
 
 namespace WebAppMVC.Controllers
 {
@@ -229,7 +233,7 @@ namespace WebAppMVC.Controllers
 
 			string TransactionAPI_URL = "/api/Transaction/UpdateUser";
 
-			var newmemRequest = await methcall.GetCookie<CreateNewMember>(Request, "memRequest", jsonOptions);
+			var newmemRequest = await methcall.GetCookie<CreateNewMember>(Request, Constants.Constants.NEW_MEMBER_REGISTRATION_COOKIE, jsonOptions);
 
 			if (newmemRequest == null)
 			{
@@ -238,7 +242,7 @@ namespace WebAppMVC.Controllers
 				return View("Register");
 			}
 
-			methcall.RemoveCookie(Response, "memRequest", cookieOptions, jsonOptions);
+			methcall.RemoveCookie(Response, Constants.Constants.NEW_MEMBER_REGISTRATION_COOKIE, cookieOptions, jsonOptions);
 
 			var authenResponse = await methcall.CallMethodReturnObject<GetAuthenResponse>(
 				_httpClient: client,
@@ -259,7 +263,7 @@ namespace WebAppMVC.Controllers
 
 			var responseAuth = authenResponse.Data;
 
-			var tran = await methcall.GetCookie<TransactionViewModel>(Request,"tranKey",jsonOptions);
+			var tran = await methcall.GetCookie<TransactionViewModel>(Request, Constants.Constants.NEW_MEMBER_REGISTRATION_TRANSACTION_COOKIE,jsonOptions);
 
 			if (tran == null)
 			{
@@ -270,10 +274,9 @@ namespace WebAppMVC.Controllers
 
 				return View("Register");
 			}
+			methcall.RemoveCookie(Response, Constants.Constants.NEW_MEMBER_REGISTRATION_TRANSACTION_COOKIE, cookieOptions, jsonOptions);
 
-			methcall.RemoveCookie(Response, "tranKey", cookieOptions, jsonOptions);
-
-			UpdateNewMemberTransactionRequest unmtr = new UpdateNewMemberTransactionRequest()
+			UpdateTransactionRequest unmtr = new UpdateTransactionRequest()
 			{
 				MemberId = responseAuth.UserId,
 				TransactionId = tran.TransactionId
@@ -301,27 +304,45 @@ namespace WebAppMVC.Controllers
 			}
 			if (authenResponse.Status)
 			{
-				HttpContext.Session.Remove("ACCESS_TOKEN");
-				HttpContext.Session.Remove("USER_NAME");
-				HttpContext.Session.Remove("ROLE_NAME");
-
-				/*HttpContext.Session.SetString("ACCESS_TOKEN", responseAuth.AccessToken);
-				HttpContext.Session.SetString("ROLE_NAME", responseAuth.RoleName);
-				HttpContext.Session.SetString("USER_ID", responseAuth.UserId);
-				HttpContext.Session.SetString("USER_NAME", responseAuth.UserName);
-				HttpContext.Session.SetString("IMAGE_PATH", responseAuth.ImagePath);
-
-				client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", responseAuth.AccessToken);
-
-				TempData["ACCESS_TOKEN"] = responseAuth.AccessToken;
-				TempData["ROLE_NAME"] = responseAuth.RoleName;
-				TempData["USER_ID"] = responseAuth.UserId;
-				TempData["USER_NAME"] = responseAuth.UserName;
-				TempData["IMAGE_PATH"] = responseAuth.ImagePath;*/
-
+				HttpContext.Session.Remove(Constants.Constants.ACC_TOKEN);
+				HttpContext.Session.Remove(Constants.Constants.USR_NAME);
+				HttpContext.Session.Remove(Constants.Constants.ROLE_NAME);
 			}
             ViewBag.Success = "Account Create Successfully, Please contact the manager for your account approval!";
 
+            NotificationViewModel notif = new NotificationViewModel()
+			{
+				Title = "Account Registration",
+				Description = "You have successfully joined ChaoMao Bird Club!",
+				Date = DateTime.Now,
+				UserId = transactionResponse.Data.UserId,
+				Status = "Unread"
+			};
+            string NotificationAPI_URL = "/api/Notification/" + transactionResponse.Data.UserId + "/Create";
+
+            var notificationResponse = await methcall.CallMethodReturnObject<GetNotificationPostResponse>(
+					_httpClient: client,
+                    options: jsonOptions,
+                    methodName: "POST",
+                    url: NotificationAPI_URL,
+                    inputType: notif,
+                    accessToken: accToken,
+                    _logger: _logger);
+
+            if (notificationResponse == null)
+            {
+                ViewBag.Error =
+                    "Error while processing your request! (Create Notification).\n User Not Found!";
+                return RedirectToAction("Login", "Auth");
+            }
+            if (!notificationResponse.Status)
+            {
+                _logger.LogInformation("Error while processing your request: " + notificationResponse.Status + " , Error Message: " + notificationResponse.ErrorMessage);
+                ViewBag.Error =
+                    "Error while processing your request! (Create Meeting Media!).\n"
+                    + notificationResponse.ErrorMessage;
+                return RedirectToAction("Login", "Auth");
+            }
             return RedirectToAction("Login", "Auth");
 		}
 		[HttpPost("Register")]
@@ -360,7 +381,7 @@ namespace WebAppMVC.Controllers
 				client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", responseAuth.AccessToken);
 			}
 
-			methcall.SetCookie(Response, "memRequest", newmemRequest, cookieOptions, jsonOptions, 20);
+			methcall.SetCookie(Response, Constants.Constants.NEW_MEMBER_REGISTRATION_COOKIE, newmemRequest, cookieOptions, jsonOptions, 20);
 			PaymentInformationModel model = new PaymentInformationModel()
 			{
 				Fullname = newmemRequest.FullName,

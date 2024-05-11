@@ -237,11 +237,16 @@ namespace WebAPI.Controllers
         {
             try
             {
-                var check = await _contestService.GetBoolContestId(id);
-                if (!check) return NotFound(new
+                var check = await _contestService.GetById(id);
+                if (check == null) return NotFound(new
                 {
                     Status = false,
                     ErrorMessage = "Contest does not exist"
+                });
+                if (!check.Status.Equals("CheckingIn")) NotFound(new
+                {
+                    Status = false,
+                    ErrorMessage = "Contest status is not \"Checking\" In to use this feature"
                 });
                 var result = await _contestParticipantService.UpdateAllContestParticipantStatus(listPart);
                 if (!result) return NotFound(new

@@ -65,95 +65,154 @@ namespace WebAppMVC.Controllers
 
         public async Task<IActionResult> PaymentConfirm()
         {
-			string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
+			string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
-			string? role = HttpContext.Session.GetString("ROLE_NAME");
+			string? role = HttpContext.Session.GetString(Constants.Constants.ROLE_NAME);
 
 			var response = _vnPayService.PaymentExecute(Request.Query);
-            if (response.TransactionType == Constants.Constants.NEW_MEMBER_REGISTRATION_TRANSACTION_TYPE && response.Success && role == Constants.Constants.TEMPMEMBER)
-            {
-				TransactionAPI_URL += "Create";
 
-				var tran = new TransactionViewModel()
-				{
-					Value = response.Value / 100,
-					UserId = null,
-					VnPayId = response.TransactionId.ToString(),
-					TransactionType = response.TransactionType,
-					TransactionDate = DateTime.Now,
-					PaymentDate = DateTime.Now,
-					DocNo = response.DocNo,
-					Status = "Completed"
-				};
-
-				var transactionResponse = await methcall.CallMethodReturnObject<GetTransactionResponse>(
-								_httpClient: _httpClient,
-								options: jsonOptions,
-								methodName: Constants.Constants.POST_METHOD,
-								url: TransactionAPI_URL,
-								inputType: tran,
-								accessToken: accToken,
-								_logger: _logger);
-
-				if (transactionResponse == null)
-				{
-					ViewBag.Error =
-						"Error while processing your request! (Getting Transaction Response!)";
-					return RedirectToAction("Register", "Auth");
-				}
-				else
-				if (!transactionResponse.Status)
-				{
-					ViewBag.Error =
-						"Error while processing your request! (Getting Transaction Response!)";
-					return RedirectToAction("Register", "Auth");
-				}
-
-				methcall.SetCookie(Response,"tranKey",transactionResponse.Data,cookieOptions,jsonOptions,5);
-
-				return RedirectToAction("ConfirmRegister", "Auth");
-			}
-
-			if (response.TransactionType == Constants.Constants.MEMBER_FIELDTRIP_REGISTRATION_TRANSACTION_TYPE && response.Success && role == Constants.Constants.MEMBER)
+			switch (response.TransactionType)
 			{
-				TransactionAPI_URL += "Create";
+				case var value when value.Equals(Constants.Constants.NEW_MEMBER_REGISTRATION_TRANSACTION_TYPE):
+					{
+						if(response.Success && role.Equals(Constants.Constants.TEMPMEMBER))
+						{
+                            TransactionAPI_URL += "Create";
 
-                var tran = new TransactionViewModel()
-                {
-                    Value = response.Value / 100,
-                    UserId = null,
-                    VnPayId = response.TransactionId.ToString(),
-                    TransactionType = response.TransactionType,
-                    TransactionDate = DateTime.Now,
-                    PaymentDate = DateTime.Now,
-                    DocNo = response.DocNo,
-                    Status = "Completed"
-                };
+                            var tran = new TransactionViewModel()
+                            {
+                                Value = response.Value / 100,
+                                UserId = null,
+                                VnPayId = response.TransactionId.ToString(),
+                                TransactionType = response.TransactionType,
+                                TransactionDate = DateTime.Now,
+                                PaymentDate = DateTime.Now,
+                                DocNo = response.DocNo,
+                                Status = "Completed"
+                            };
 
-                var transactionResponse = await methcall.CallMethodReturnObject<GetTransactionResponse>(
-                                _httpClient: _httpClient,
-                                options: jsonOptions,
-                                methodName: Constants.Constants.POST_METHOD,
-                                url: TransactionAPI_URL,
-                                inputType: tran,
-                                accessToken: accToken,
-                                _logger: _logger);
+                            var transactionResponse = await methcall.CallMethodReturnObject<GetTransactionResponse>(
+                                            _httpClient: _httpClient,
+                                            options: jsonOptions,
+                                            methodName: Constants.Constants.POST_METHOD,
+                                            url: TransactionAPI_URL,
+                                            inputType: tran,
+                                            accessToken: accToken,
+                                            _logger: _logger);
 
-                if (transactionResponse == null)
-                {
-                    ViewBag.Error =
-                        "Error while processing your request! (Getting Transaction Response!)";
-                    return RedirectToAction("Index", "FieldTrip");
-                }
-                else
-                if (!transactionResponse.Status)
-                {
-                    ViewBag.Error =
-                        "Error while processing your request! (Getting Transaction Response!)";
-                    return RedirectToAction("Index", "FieldTrip");
-                }
-				methcall.SetCookie(Response, "tranKey", transactionResponse.Data, cookieOptions, jsonOptions, 5);
-				return RedirectToAction("FieldTripConfirmRegister", "FieldTrip");
+                            if (transactionResponse == null)
+                            {
+                                ViewBag.Error =
+                                    "Error while processing your request! (Getting Transaction Response!)";
+                                return RedirectToAction("Register", "Auth");
+                            }
+                            else
+                            if (!transactionResponse.Status)
+                            {
+                                ViewBag.Error =
+                                    "Error while processing your request! (Getting Transaction Response!)";
+                                return RedirectToAction("Register", "Auth");
+                            }
+
+                            methcall.SetCookie(Response, Constants.Constants.NEW_MEMBER_REGISTRATION_TRANSACTION_COOKIE, transactionResponse.Data, cookieOptions, jsonOptions, 5);
+
+                            return RedirectToAction("ConfirmRegister", "Auth");
+                        }
+                        ViewBag.Error = "Error while processing your request! (Getting Transaction Response!)";
+                        return RedirectToAction("Register", "Auth");
+					}
+                case var value when value.Equals(Constants.Constants.MEMBER_FIELDTRIP_REGISTRATION_TRANSACTION_TYPE):
+                    {
+                        if (response.Success && role.Equals(Constants.Constants.MEMBER))
+                        {
+                            TransactionAPI_URL += "Create";
+
+                            var tran = new TransactionViewModel()
+                            {
+                                Value = response.Value / 100,
+                                UserId = null,
+                                VnPayId = response.TransactionId.ToString(),
+                                TransactionType = response.TransactionType,
+                                TransactionDate = DateTime.Now,
+                                PaymentDate = DateTime.Now,
+                                DocNo = response.DocNo,
+                                Status = "Completed"
+                            };
+
+                            var transactionResponse = await methcall.CallMethodReturnObject<GetTransactionResponse>(
+                                            _httpClient: _httpClient,
+                                            options: jsonOptions,
+                                            methodName: Constants.Constants.POST_METHOD,
+                                            url: TransactionAPI_URL,
+                                            inputType: tran,
+                                            accessToken: accToken,
+                                            _logger: _logger);
+
+                            if (transactionResponse == null)
+                            {
+                                ViewBag.Error =
+                                    "Error while processing your request! (Getting Transaction Response!)";
+                                return RedirectToAction("Index", "FieldTrip");
+                            }
+                            else
+                            if (!transactionResponse.Status)
+                            {
+                                ViewBag.Error =
+                                    "Error while processing your request! (Getting Transaction Response!)";
+                                return RedirectToAction("Index", "FieldTrip");
+                            }
+                            methcall.SetCookie(Response, Constants.Constants.MEMBER_FIELDTRIP_REGISTRATION_TRANSACTION_COOKIE, transactionResponse.Data, cookieOptions, jsonOptions, 5);
+                            return RedirectToAction("FieldTripConfirmRegister", "FieldTrip");
+                        }
+                        ViewBag.Error = "Error while processing your request! (Getting Transaction Response!)";
+                        return RedirectToAction("Index", "FieldTrip");
+                    }
+                case var value when value.Equals(Constants.Constants.MEMBER_CONTEST_REGISTRATION_TRANSACTION_TYPE):
+                    {
+                        if (response.Success && role.Equals(Constants.Constants.MEMBER))
+                        {
+                            TransactionAPI_URL += "Create";
+
+                            var tran = new TransactionViewModel()
+                            {
+                                Value = response.Value / 100,
+                                UserId = null,
+                                VnPayId = response.TransactionId.ToString(),
+                                TransactionType = response.TransactionType,
+                                TransactionDate = DateTime.Now,
+                                PaymentDate = DateTime.Now,
+                                DocNo = response.DocNo,
+                                Status = "Completed"
+                            };
+
+                            var transactionResponse = await methcall.CallMethodReturnObject<GetTransactionResponse>(
+                                            _httpClient: _httpClient,
+                                            options: jsonOptions,
+                                            methodName: Constants.Constants.POST_METHOD,
+                                            url: TransactionAPI_URL,
+                                            inputType: tran,
+                                            accessToken: accToken,
+                                            _logger: _logger);
+
+                            if (transactionResponse == null)
+                            {
+                                ViewBag.Error =
+                                    "Error while processing your request! (Getting Transaction Response!)";
+                                return RedirectToAction("Index", "Contest");
+                            }
+                            else
+                            if (!transactionResponse.Status)
+                            {
+                                ViewBag.Error =
+                                    "Error while processing your request! (Getting Transaction Response!)";
+                                return RedirectToAction("Index", "Contest");
+                            }
+                            methcall.SetCookie(Response, Constants.Constants.MEMBER_CONTEST_REGISTRATION_TRANSACTION_COOKIE, transactionResponse.Data, cookieOptions, jsonOptions, 5);
+                            return RedirectToAction("ContestConfirmRegister", "Contest");
+                        }
+                        ViewBag.Error = "Error while processing your request! (Getting Transaction Response!)";
+                        return RedirectToAction("Index", "Contest");
+                    }
             }
 			return View(response);
         }

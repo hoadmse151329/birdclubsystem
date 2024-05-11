@@ -15,6 +15,7 @@ using WebAppMVC.Models.FieldTrip;
 using WebAppMVC.Models.Location;
 using WebAppMVC.Models.Meeting;
 using WebAppMVC.Models.Member;
+using WebAppMVC.Models.Notification;
 using WebAppMVC.Models.Transaction;
 using WebAppMVC.Models.VnPay;
 using WebAppMVC.Services;
@@ -64,40 +65,49 @@ namespace WebAppMVC.Controllers
             string LocationAPI_URL_All_City = "/api/Location/AllAddressCities";
             dynamic testmodel = new ExpandoObject();
 
-            string? role = HttpContext.Session.GetString("ROLE_NAME");
-            if (role == null) role = "Guest";
+            methcall.SetUserDefaultData(this);
+            string? role = HttpContext.Session.GetString(Constants.Constants.ROLE_NAME);
 
-            string? usrname = HttpContext.Session.GetString("USER_NAME");
+            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
 
-            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
+            string NotificationAPI_URL = "/api/Notification/Count";
 
-            TempData["ROLE_NAME"] = role;
-            TempData["USER_NAME"] = usrname;
-            TempData["IMAGE_PATH"] = imagepath;
+            if (usrId != null)
+            {
+                var notificationCount = await methcall.CallMethodReturnObject<GetNotificationCountResponse>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: "POST",
+                url: NotificationAPI_URL,
+                inputType: usrId,
+                _logger: _logger);
+
+                ViewBag.NotificationCount = notificationCount.Data;
+            }
 
             var listLocationRoadResponse = await methcall.CallMethodReturnObject<GetLocationAddressResponseByList>(
                 _httpClient: _httpClient,
                 options: jsonOptions,
-                methodName: "GET",
+                methodName: Constants.Constants.GET_METHOD,
                 url: LocationAPI_URL_All_Road,
                 _logger: _logger);
             var listLocationDistrictResponse = await methcall.CallMethodReturnObject<GetLocationAddressResponseByList>(
                 _httpClient: _httpClient,
                 options: jsonOptions,
-                methodName: "GET",
+                methodName: Constants.Constants.GET_METHOD,
                 url: LocationAPI_URL_All_District,
                 _logger: _logger);
             var listLocationCityResponse = await methcall.CallMethodReturnObject<GetLocationAddressResponseByList>(
                 _httpClient: _httpClient,
                 options: jsonOptions,
-                methodName: "GET",
+                methodName: Constants.Constants.GET_METHOD,
                 url: LocationAPI_URL_All_City,
                 _logger: _logger);
 
             var listTripResponse = await methcall.CallMethodReturnObject<GetFieldTripResponseByList>(
                 _httpClient: _httpClient,
                 options: jsonOptions,
-                methodName: "POST",
+                methodName: Constants.Constants.POST_METHOD,
                 url: FieldTripAPI_URL,
                 inputType: role,
                 _logger: _logger);
@@ -144,27 +154,34 @@ namespace WebAppMVC.Controllers
             testmodel.FieldTrips = listTripResponse.Data;
             return View(testmodel);
         }
-        [HttpGet("FieldTripPost/{id:int}")]
+        [HttpGet("Post/{id:int}")]
         public async Task<IActionResult> FieldTripPost(
             [FromRoute][Required]int id
             )
 		{
             FieldTripAPI_URL += "/";
 
-            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
+            methcall.SetUserDefaultData(this);
+            string? role = HttpContext.Session.GetString(Constants.Constants.ROLE_NAME);
 
-            string? role = HttpContext.Session.GetString("ROLE_NAME");
-            if (role == null) role = "Guest";
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
-            string? usrId = HttpContext.Session.GetString("USER_ID");
+            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
 
-            string? usrname = HttpContext.Session.GetString("USER_NAME");
+            string NotificationAPI_URL = "/api/Notification/Count";
 
-            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
+            if (usrId != null)
+            {
+                var notificationCount = await methcall.CallMethodReturnObject<GetNotificationCountResponse>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: "POST",
+                url: NotificationAPI_URL,
+                inputType: usrId,
+                _logger: _logger);
 
-            TempData["ROLE_NAME"] = role;
-            TempData["USER_NAME"] = usrname;
-            TempData["IMAGE_PATH"] = imagepath;
+                ViewBag.NotificationCount = notificationCount.Data;
+            }
 
             dynamic fieldtripDetail = new ExpandoObject();
 
@@ -176,7 +193,7 @@ namespace WebAppMVC.Controllers
                 fieldtripPostResponse = await methcall.CallMethodReturnObject<GetFieldTripPostResponse>(
                                    _httpClient: _httpClient,
                                    options: jsonOptions,
-                                   methodName: "POST",
+                                   methodName: Constants.Constants.POST_METHOD,
                                    url: FieldTripAPI_URL,
                                    _logger: _logger,
                                    inputType: usrId,
@@ -188,7 +205,7 @@ namespace WebAppMVC.Controllers
                 fieldtripPostResponse = await methcall.CallMethodReturnObject<GetFieldTripPostResponse>(
                                    _httpClient: _httpClient,
                                    options: jsonOptions,
-                                   methodName: "GET",
+                                   methodName: Constants.Constants.GET_METHOD,
                                    url: FieldTripAPI_URL,
                                    _logger: _logger);
             }
@@ -220,7 +237,7 @@ namespace WebAppMVC.Controllers
             return View(fieldtripDetail);
         }
 
-        [HttpPost("FieldTripRegister/{tripId:int}")]
+        [HttpPost("{tripId:int}/Register")]
         public async Task<IActionResult> FieldTripRegister(
             [FromRoute][Required] int tripId
             )
@@ -228,58 +245,45 @@ namespace WebAppMVC.Controllers
             FieldTripAPI_URL += "/" + tripId;
             string MemberAPI_URL = "/api/Member/Profile";
 
-            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
-            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER));
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
-            string? role = HttpContext.Session.GetString("ROLE_NAME");
-            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Member")) return RedirectToAction("Index", "Home");
-
-            string? usrId = HttpContext.Session.GetString("USER_ID");
-            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
-
-            string? usrname = HttpContext.Session.GetString("USER_NAME");
-            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
-
-            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
-
-            TempData["ROLE_NAME"] = role;
-            TempData["USER_NAME"] = usrname;
-            TempData["IMAGE_PATH"] = imagepath;
+            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
 
             var fieldtripPostResponse = await methcall.CallMethodReturnObject<GetFieldTripPostResponse>(
                                    _httpClient: _httpClient,
                                    options: jsonOptions,
-                                   methodName: "GET",
+                                   methodName: Constants.Constants.GET_METHOD,
                                    url: FieldTripAPI_URL,
                                    _logger: _logger);
 
             var memberDetails = await methcall.CallMethodReturnObject<GetMemberProfileResponse>(
                 _httpClient: _httpClient,
                 options: jsonOptions,
-                methodName: "POST",
+                methodName: Constants.Constants.POST_METHOD,
                 url: MemberAPI_URL,
                 _logger: _logger,
                 inputType: usrId,
                 accessToken: accToken);
 
-            methcall.SetCookie(Response, "tripRegistrationInProgress", fieldtripPostResponse.Data, cookieOptions, jsonOptions, 20);
+            methcall.SetCookie(Response, Constants.Constants.MEMBER_FIELDTRIP_REGISTRATION_COOKIE, fieldtripPostResponse.Data, cookieOptions, jsonOptions, 20);
 
             PaymentInformationModel model = new PaymentInformationModel()
             {
                 Fullname = memberDetails.Data.FullName,
                 PayAmount = (decimal)fieldtripPostResponse.Data.Fee,
-                TransactionType = "Member-FieldTrip-Registration"
+                TransactionType = Constants.Constants.MEMBER_FIELDTRIP_REGISTRATION_TRANSACTION_TYPE
             };
 
             var url = _vnPayService.CreatePaymentUrl(model, HttpContext);
             return Redirect(url);
         }
 
-        [HttpGet("FieldTripConfirmRegister")]
+        [HttpGet("ConfirmRegister")]
         public async Task<IActionResult> FieldTripConfirmRegister()
         {
-            var fieldTrip = await methcall.GetCookie<FieldTripViewModel>(Request, "tripRegistrationInProgress", jsonOptions);
+            var fieldTrip = await methcall.GetCookie<FieldTripViewModel>(Request, Constants.Constants.MEMBER_FIELDTRIP_REGISTRATION_COOKIE, jsonOptions);
             
             if(fieldTrip == null)
             {
@@ -287,36 +291,23 @@ namespace WebAppMVC.Controllers
             }
             int tripId = fieldTrip.TripId.Value;
 
-            methcall.RemoveCookie(Response, "tripRegistrationInProgress", cookieOptions, jsonOptions);
+            methcall.RemoveCookie(Response, Constants.Constants.MEMBER_FIELDTRIP_REGISTRATION_COOKIE, cookieOptions, jsonOptions);
 
             FieldTripAPI_URL += "/Register/" + tripId;
 
             string TransactionAPI_URL = "/api/Transaction/UpdateUser";
             string MemberAPI_URL = "/api/Member/Profile";
 
-            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
-            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER));
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
-            string? role = HttpContext.Session.GetString("ROLE_NAME");
-            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Member")) return RedirectToAction("Index", "Home");
-
-            string? usrId = HttpContext.Session.GetString("USER_ID");
-            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
-
-            string? usrname = HttpContext.Session.GetString("USER_NAME");
-            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
-
-            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
-
-            TempData["ROLE_NAME"] = role;
-            TempData["USER_NAME"] = usrname;
-            TempData["IMAGE_PATH"] = imagepath;
+            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
 
             var memberDetails = await methcall.CallMethodReturnObject<GetMemberProfileResponse>(
                 _httpClient: _httpClient,
                 options: jsonOptions,
-                methodName: "POST",
+                methodName: Constants.Constants.POST_METHOD,
                 url: MemberAPI_URL,
                 _logger: _logger,
                 inputType: usrId,
@@ -325,7 +316,7 @@ namespace WebAppMVC.Controllers
             var participationNo = await methcall.CallMethodReturnObject<GetFieldTripParticipationNo>(
                 _httpClient: _httpClient,
                 options: jsonOptions,
-                methodName: "POST",
+                methodName: Constants.Constants.POST_METHOD,
                 url: FieldTripAPI_URL,
                 _logger: _logger,
                 inputType: usrId,
@@ -348,7 +339,7 @@ namespace WebAppMVC.Controllers
                 RedirectToAction("FieldTripPost", new { id = tripId });
             }
 
-            var tran = await methcall.GetCookie<TransactionViewModel>(Request, "tranKey", jsonOptions);
+            var tran = await methcall.GetCookie<TransactionViewModel>(Request, Constants.Constants.MEMBER_FIELDTRIP_REGISTRATION_TRANSACTION_COOKIE, jsonOptions);
 
             if (tran == null)
             {
@@ -360,9 +351,9 @@ namespace WebAppMVC.Controllers
                 return View("Register");
             }
 
-            methcall.RemoveCookie(Response, "tranKey", cookieOptions, jsonOptions);
+            methcall.RemoveCookie(Response, Constants.Constants.MEMBER_FIELDTRIP_REGISTRATION_TRANSACTION_COOKIE, cookieOptions, jsonOptions);
 
-            UpdateNewMemberTransactionRequest unmtr = new UpdateNewMemberTransactionRequest()
+            UpdateTransactionRequest unmtr = new UpdateTransactionRequest()
             {
                 MemberId = memberDetails.Data.MemberId,
                 TransactionId = tran.TransactionId
@@ -371,7 +362,7 @@ namespace WebAppMVC.Controllers
             var transactionResponse = await methcall.CallMethodReturnObject<GetTransactionResponse>(
                 _httpClient: _httpClient,
                 options: jsonOptions,
-                methodName: "PUT",
+                methodName: Constants.Constants.PUT_METHOD,
                 url: TransactionAPI_URL,
                 inputType: unmtr,
                 accessToken: accToken,
@@ -389,34 +380,21 @@ namespace WebAppMVC.Controllers
 
             return RedirectToAction("FieldTripPost", new { id = tripId });
         }
-        [HttpPost("FieldTripDeRegister/{tripId:int}")]
+        [HttpPost("{tripId:int}/DeRegister")]
         public async Task<IActionResult> FieldTripDeRegister(int tripId)
         {
             FieldTripAPI_URL += "/RemoveParticipant/" + tripId;
 
-            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
-            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER));
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
-            string? role = HttpContext.Session.GetString("ROLE_NAME");
-            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Member")) return RedirectToAction("Index", "Home");
-
-            string? usrId = HttpContext.Session.GetString("USER_ID");
-            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
-
-            string? usrname = HttpContext.Session.GetString("USER_NAME");
-            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
-
-            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
-
-            TempData["ROLE_NAME"] = role;
-            TempData["USER_NAME"] = usrname;
-            TempData["IMAGE_PATH"] = imagepath;
+            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
 
             var participationNo = await methcall.CallMethodReturnObject<GetFieldTripPostDeRegister>(
                 _httpClient: _httpClient,
                 options: jsonOptions,
-                methodName: "POST",
+                methodName: Constants.Constants.POST_METHOD,
                 url: FieldTripAPI_URL,
                 _logger: _logger,
                 inputType: usrId,

@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Models
 {
+    [Table("News")]
     public partial class News
     {
         [Key]

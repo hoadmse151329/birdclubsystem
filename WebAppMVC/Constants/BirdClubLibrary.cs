@@ -168,6 +168,21 @@ namespace WebAppMVC.Constants
             }
             return defaultInclusionTypes;
         }
+        public List<SelectListItem> GetStaffEventParticipationStatusSelectableList(string eventStatus)
+        {
+            List<SelectListItem> defaultStatusTypes = new();
+            if(eventStatus!= null && eventStatus.Equals(Constants.EVENT_STATUS_CHECKING_IN))
+            {
+                defaultStatusTypes.Add(new SelectListItem { Text = Constants.EVENT_PARTICIPANT_STATUS_CHECKED_IN, Value = Constants.EVENT_PARTICIPANT_STATUS_CHECKED_IN });
+                defaultStatusTypes.Add(new SelectListItem { Text = Constants.EVENT_PARTICIPANT_STATUS_NOT_CHECKED_IN, Value = Constants.EVENT_PARTICIPANT_STATUS_NOT_CHECKED_IN });
+            }
+            else
+            {
+                defaultStatusTypes.Add(new SelectListItem { Text = Constants.EVENT_PARTICIPANT_STATUS_CHECKED_IN, Value = Constants.EVENT_PARTICIPANT_STATUS_CHECKED_IN, Disabled = true });
+                defaultStatusTypes.Add(new SelectListItem { Text = Constants.EVENT_PARTICIPANT_STATUS_NOT_CHECKED_IN, Value = Constants.EVENT_PARTICIPANT_STATUS_NOT_CHECKED_IN, Selected = true , Disabled = true });
+            }
+            return defaultStatusTypes;
+        }
         public List<SelectListItem> GetStaffEventStatusSelectableList(string eventStatus)
         {
             List<SelectListItem> defaultEventStatus = new();
@@ -375,6 +390,7 @@ namespace WebAppMVC.Constants
             if (string.IsNullOrEmpty(role))
             {
                 role = Constants.GUEST;
+                context.HttpContext.Session.SetString(Constants.ROLE_NAME, role);
             }
             string? usrId = context.HttpContext.Session.GetString(Constants.USR_ID);
             string? usrname = context.HttpContext.Session.GetString(Constants.USR_NAME);
@@ -413,6 +429,28 @@ namespace WebAppMVC.Constants
             string validJson = JsonSerializer.Serialize(objectForSerialize, jsonOptions);
             tempData[tempDataName + "_" + objectId] = validJson;
             return tempData;
+        }
+        public double CalculateExpectedScore(double playerElo, double opponentElo, double n)
+        {
+            return 1 / (1 + Math.Pow(10, ((opponentElo - playerElo) / n) / 400));
+        }
+
+        // Calculate Basic Elo Change
+        public double CalculateBasicEloChange(double playerElo, double averageElo, int birdPoints, int totalPoints, double n, List<double> Y)
+        {
+            double expected = CalculateExpectedScore(playerElo, averageElo, n);
+            double result = birdPoints > totalPoints / 2 ? 1 : 0;
+            List<double> adjustedY = result == 1 ? Y : new List<double>(Y.ToArray().Reverse());
+            double adjustmentFactor = result == 1 ? Math.Max(0.5, 1 - (birdPoints - 1) / (totalPoints / 2.0)) : Math.Min(1.5, 1 + (birdPoints - totalPoints / 2.0) / (totalPoints / 2.0));
+            double K = adjustmentFactor > 1 ? 1.5 : 0.5;
+            double basicEloChange = adjustedY[0] * (result - expected);
+            return basicEloChange * adjustmentFactor * K;
+        }
+
+        // Update Elo
+        public double UpdateElo(double originalElo, double realEloChange)
+        {
+            return originalElo + realEloChange;
         }
         /* Getter
          * testmodel2.CreateFieldTrip = null;

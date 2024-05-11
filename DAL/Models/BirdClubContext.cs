@@ -287,6 +287,15 @@ namespace DAL.Models
                     .HasConstraintName("FK_News_Users");
             });
 
+            modelBuilder.Entity<Notification>(entity =>
+            {
+                entity.HasOne(d => d.UserDetail)
+                      .WithMany(p => p.Notifications)
+                      .HasForeignKey(d => d.UserId)
+                      .OnDelete(DeleteBehavior.ClientSetNull)
+                      .HasConstraintName("FK_Notification_Users");
+            });
+
             modelBuilder.Entity<Transaction>(entity =>
             {
                 /*entity.HasOne(d => d.UserDetail)

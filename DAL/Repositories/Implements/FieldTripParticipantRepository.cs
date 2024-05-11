@@ -42,7 +42,7 @@ namespace DAL.Repositories.Implements
 
         public async Task<IEnumerable<FieldTripParticipant>> GetFieldTripParticipantsByTripId(int tripId)
         {
-            return _context.FieldTripParticipants.AsNoTracking().Where(trip => trip.TripId == tripId).Include(f => f.MemberDetail).ToList();
+            return _context.FieldTripParticipants.AsNoTracking().Where(trip => trip.TripId == tripId).Include(f => f.MemberDetail).OrderBy(p => p.ParticipantNo).ToList();
         }
 
         public async Task<IEnumerable<FieldTripParticipant>> GetFieldTripParticipantsByMemberId(string memberId)

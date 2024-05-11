@@ -36,10 +36,12 @@ namespace DAL.Models
         public DateTime? StartDate { get; set; }
         [Column("endDate", TypeName = "datetime")]
         public DateTime? EndDate { get; set; }
-        [Column("beforeScore")]
-        public int? BeforeScore { get; set; }
-        [Column("afterScore")]
-        public int? AfterScore { get; set; }
+        [Column("reqMinELO")]
+        public int? ReqMinELO { get; set; }
+        [Column("reqMaxELO")]
+        public int? ReqMaxELO { get; set; }
+        [Column("afterELO")]
+        public int? AfterELO { get; set; }
         [Column("fee", TypeName = "decimal(10, 2)")]
         public decimal? Fee { get; set; }
         [Column("prize", TypeName = "decimal(12, 2)")]

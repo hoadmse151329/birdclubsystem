@@ -6,10 +6,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Models
 {
-    [Keyless]
     [Table("Notification")]
     public partial class Notification
     {
+        [Key]
         [Column("notificationId")]
         public int NotificationId { get; set; }
         [Column("title")]
@@ -24,5 +24,9 @@ namespace DAL.Models
         [Column("status")]
         [StringLength(50)]
         public string? Status { get; set; }
+
+        [ForeignKey(nameof(UserId))]
+        [InverseProperty(nameof(User.Notifications))]
+        public virtual User UserDetail { get; set; } = null!;
     }
 }
