@@ -92,7 +92,10 @@ namespace BAL.ViewModels
         public int? ParticipationNo { get; set; }
         /*[DisplayName("Club ID")]
         public int? ClubId { get; set; }*/
-
-        public List<ContestMediaViewModel>? Media { get; set; }
+        [DisplayName("Location Map Image")]
+        public ContestMediaViewModel? LocationMapImage { get; set; }
+        [DisplayName("Spotlight Image")]
+        public ContestMediaViewModel? SpotlightImage { get; set; }
+        public List<ContestMediaViewModel>? ContestPictures { get; set; }
     }
 }

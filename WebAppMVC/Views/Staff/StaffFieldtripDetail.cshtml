@@ -4,6 +4,7 @@
     ViewData["Title"] = "Staff Field Trip Detail Page";
     BAL.ViewModels.FieldTripViewModel detailsTrip = Model.FieldTripDetails;
     BAL.ViewModels.FieldTripViewModel updateTrip = Model.UpdateFieldTrip != null ? Model.UpdateFieldTrip : detailsTrip;
+
     List<BAL.ViewModels.FieldtripDaybyDayViewModel>? DayByDay = detailsTrip.FieldtripDaybyDays;
     List<BAL.ViewModels.FieldTripAdditionalDetailViewModel>? TourFeatures = Model.FieldTripTourFeatures;
     List<BAL.ViewModels.FieldTripAdditionalDetailViewModel>? Importants = Model.FieldTripImportantToKnows;
@@ -15,11 +16,7 @@
 
     List<BAL.ViewModels.FieldTripParticipantViewModel>? tripPartView = Model.FieldTripParticipants;
 
-    List<SelectListItem> checkInStatus = new()
-    {
-        new SelectListItem {Text = "Not Checked-In", Value = "Not Checked-In"},
-        new SelectListItem {Text = "Checked-In", Value = "Checked-In"}
-    };
+    List<SelectListItem> checkInStatus = Model.SelectListParticipationStatus;
     List<SelectListItem> defaultTripStatus = Model.SelectListStatus;
     Layout = "~/Views/Shared/_SLayout.cshtml";
 }
@@ -61,9 +58,14 @@
                             <div class="card profile col-12 mb-4">
                                 <div class="card-header">
                                     <h4>FieldTrip Information</h4>
-                                    <div class="edit-info">
-                                        <i class='bx bxs-edit-alt' data-toggle="modal" data-target="#editprofile"></i>
-                                    </div>
+                                    @{
+                                        if (!(detailsTrip.Status.Equals("Ongoing") || detailsTrip.Status.Equals("Cancelled") || detailsTrip.Status.Equals("Ended")))
+                                        {
+                                            <div class="edit-info">
+                                                <i class='bx bxs-edit-alt' data-toggle="modal" data-target="#editprofile"></i>
+                                            </div>
+                                        }
+                                    }
                                 </div>
                                 <div class="card-body">
                                     <div class="row">
@@ -200,19 +202,134 @@
                         <div class="row">
                             <div class="card profile col-12 mb-4">
                                 <div class="card-header">
-                                    <h4>AddDetails</h4>
+                                    <h4>Tour Features</h4>
                                 </div>
                                 <div class="card-body">
-                                    @foreach (var rate in detailsTrip.FieldtripAdditionalDetails)
-                                    {
-                                        @* <div class="row mb-sm-2">
-                                    <div class="col-sm-5 text-sm-right">
-                                    <span>@rate.RateType</span>
-                                    </div>
-                                    <div class="col-sm-7 text-sm-left">
-                                    <span>@rate.Price</span>
-                                    </div>
-                                    </div>  *@
+                                    @{
+                                        if (TourFeatures != null && TourFeatures.Count > 0)
+                                        {
+                                            foreach (var addDetail in TourFeatures)
+                                            {
+                                                <div class="card-header">
+                                                    <h5>Tour Feature @addDetail.Title Details</h5>
+                                                </div>
+                                                <div class="row mb-sm-2">
+                                                    <div class="col-sm-5 text-sm-right">
+                                                        <label for="meeting-name">Title:</label>
+                                                    </div>
+                                                    <div class="col-sm-7 text-sm-left">
+                                                        <span>@addDetail.Title</span>
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-sm-2">
+                                                    <div class="col-sm-5 text-sm-right">
+                                                        <label for="meeting-name">Description:</label>
+                                                    </div>
+                                                    <div class="col-sm-7 text-sm-left">
+                                                        <span>@addDetail.Description</span>
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-sm-2">
+                                                    <div class="col-sm-5 text-sm-right">
+                                                        <label for="meeting-name">Type:</label>
+                                                    </div>
+                                                    <div class="col-sm-7 text-sm-left">
+                                                        <span>@addDetail.Type</span>
+                                                    </div>
+                                                </div>
+                                                <hr class="container my-0">
+                                            }
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="card profile col-12 mb-4">
+                                <div class="card-header">
+                                    <h4>Important to know</h4>
+                                </div>
+                                <div class="card-body">
+                                    @{
+                                        if (Importants != null && Importants.Count > 0)
+                                        {
+                                            @foreach (var addDetail in Importants)
+                                            {
+                                                <div class="card-header">
+                                                    <h5>Important to Know @addDetail.Title Details</h5>
+                                                </div>
+                                                <div class="row mb-sm-2">
+                                                    <div class="col-sm-5 text-sm-right">
+                                                        <label for="meeting-name">Title:</label>
+                                                    </div>
+                                                    <div class="col-sm-7 text-sm-left">
+                                                        <span>@addDetail.Title</span>
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-sm-2">
+                                                    <div class="col-sm-5 text-sm-right">
+                                                        <label for="meeting-name">Description:</label>
+                                                    </div>
+                                                    <div class="col-sm-7 text-sm-left">
+                                                        <span>@addDetail.Description</span>
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-sm-2">
+                                                    <div class="col-sm-5 text-sm-right">
+                                                        <label for="meeting-name">Type:</label>
+                                                    </div>
+                                                    <div class="col-sm-7 text-sm-left">
+                                                        <span>@addDetail.Type</span>
+                                                    </div>
+                                                </div>
+                                                <hr class="container my-0">
+                                            }
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="card profile col-12 mb-4">
+                                <div class="card-header">
+                                    <h4>Activities and Transportation</h4>
+                                </div>
+                                <div class="card-body">
+                                    @{
+                                        if (ActAndTras != null && ActAndTras.Count > 0)
+                                        {
+                                            @foreach (var addDetail in ActAndTras)
+                                            {
+                                                <div class="card-header">
+                                                    <h5>ActAndTransport @addDetail.Title Details</h5>
+                                                </div>
+                                                <div class="row mb-sm-2">
+                                                    <div class="col-sm-5 text-sm-right">
+                                                        <label for="meeting-name">Title:</label>
+                                                    </div>
+                                                    <div class="col-sm-7 text-sm-left">
+                                                        <span>@addDetail.Title</span>
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-sm-2">
+                                                    <div class="col-sm-5 text-sm-right">
+                                                        <label for="meeting-name">Description:</label>
+                                                    </div>
+                                                    <div class="col-sm-7 text-sm-left">
+                                                        <span>@addDetail.Description</span>
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-sm-2">
+                                                    <div class="col-sm-5 text-sm-right">
+                                                        <label for="meeting-name">Type:</label>
+                                                    </div>
+                                                    <div class="col-sm-7 text-sm-left">
+                                                        <span>@addDetail.Type</span>
+                                                    </div>
+                                                </div>
+                                                <hr class="container my-0">
+                                            }
+                                        }
                                     }
                                 </div>
                             </div>
@@ -223,11 +340,44 @@
                                     <h4>Getting There</h4>
                                 </div>
                                 <div class="card-body">
-                                    <div class="row mb-sm-2">
-                                        <div class="col-sm-12 text-sm">
-                                            <span>@detailsTrip.FieldtripGettingTheres.GettingThereAccommodation</span>
-                                        </div>
-                                    </div>
+                                    @{
+                                        if (Gettingthere != null)
+                                        {
+                                            <div class="row">
+                                                <div class="col-md-5 text-md-right">
+                                                    <label for="meeting-name">Start & End:</label>
+                                                </div>
+                                                <div class="col-md-7">
+                                                    <span>@Gettingthere.GettingThereStartEnd</span>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-5 text-md-right">
+                                                    <label for="meeting-name">Flight:</label>
+                                                </div>
+                                                <div class="col-md-7">
+                                                    <span>@Gettingthere.GettingThereFlight</span>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-5 text-md-right">
+                                                    <label for="meeting-name">Transportation:</label>
+                                                </div>
+                                                <div class="col-md-7">
+                                                    <span>@Gettingthere.GettingThereTransportation</span>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-5 text-md-right">
+                                                    <label for="meeting-name">Accommodation:</label>
+                                                </div>
+                                                <div class="col-md-7">
+                                                    <span>@Gettingthere.GettingThereAccommodation</span>
+                                                </div>
+                                            </div>
+                                        }
+                                    }
                                 </div>
                             </div>
                         </div>
@@ -237,17 +387,66 @@
                                     <h4>Day By Day</h4>
                                 </div>
                                 <div class="card-body">
-                                    @foreach (var day in detailsTrip.FieldtripDaybyDays)
-                                    {
-                                        <div class="row mb-sm-2">
-                                            <div class="col-sm-2 text-sm-left">
-                                                <span>@day.Day</span>
-                                            </div>
-                                            <div class="col-sm-7 text-sm">
-                                                <span>@day.Description</span>
-                                            </div>
-                                        </div>
+                                    @{
+                                        if (DayByDay != null && DayByDay.Count > 0)
+                                        {
+                                            foreach (var day in DayByDay)
+                                            {
+                                                <div class="card-header">
+                                                    <h5>Day @day.Day Details</h5>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-5 text-md-right">
+                                                        <label for="meeting-name">MainDestination:</label>
+                                                    </div>
+                                                    <div class="col-md-7">
+                                                        <span>@day.MainDestination</span>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-5 text-md-right">
+                                                        <label for="meeting-name">Accommodation:</label>
+                                                    </div>
+                                                    <div class="col-md-7">
+                                                        <span>@day.Accommodation</span>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-5 text-md-right">
+                                                        <label for="meeting-name">MealsAndDrinks:</label>
+                                                    </div>
+                                                    <div class="col-md-7">
+                                                        <span>@day.MealsAndDrinks</span>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-5 text-md-right">
+                                                        <label for="meeting-name">Description:</label>
+                                                    </div>
+                                                    <div class="col-md-7">
+                                                        <span>@day.Description</span>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-5 text-md-right">
+                                                        <label for="meeting-name">Media:</label>
+                                                    </div>
+                                                    <div class="col-md-7">
+                                                        <span>@day.Media</span>
+                                                    </div>
+                                                </div>
+                                                <hr class="container my-0">
+                                            }
+                                        }
                                     }
+                                    @* <div class="row">
+                                    <div class="col-md-5 text-md-right">
+                                    <label for="meeting-name">Media:</label>
+                                    </div>
+                                    <div class="col-md-7">
+                                    <span>@day.Media</span>
+                                    </div>
+                                    </div> *@
                                 </div>
                             </div>
                         </div>
@@ -257,19 +456,41 @@
                                     <h4>Inclusions</h4>
                                 </div>
                                 <div class="card-body">
-                                    @foreach (var inc in detailsTrip.FieldtripInclusions)
-                                    {
-                                        <div class="row mb-sm-2">
-                                            <div class="col-sm-4 text-sm-left">
-                                                <span>@inc.Title</span>
-                                            </div>
-                                            <div class="col-sm-3 text-sm">
-                                                <span>@inc.Type</span>
-                                            </div>
-                                            <div class="col-sm-5 text-sm-right">
-                                                <span>@inc.InclusionText</span>
-                                            </div>
-                                        </div>
+                                    @{
+                                        if (Inclusion != null && Inclusion.Count > 0)
+                                        {
+                                            @foreach (var inc in Inclusion)
+                                            {
+                                                <div class="card-header">
+                                                    <h5>Inclusion @inc.Title Details</h5>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-5 text-md-right">
+                                                        <label for="meeting-name">Inclusion Text:</label>
+                                                    </div>
+                                                    <div class="col-md-7">
+                                                        <span>@inc.InclusionText</span>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-5 text-md-right">
+                                                        <label for="meeting-name">Type:</label>
+                                                    </div>
+                                                    <div class="col-md-7">
+                                                        <span>@inc.Type</span>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-5 text-md-right">
+                                                        <label for="meeting-name">Inclusion Type:</label>
+                                                    </div>
+                                                    <div class="col-md-7">
+                                                        <span>@inc.Inclusiontype</span>
+                                                    </div>
+                                                </div>
+                                                <hr class="container my-0">
+                                            }
+                                        }
                                     }
                                 </div>
                             </div>
@@ -280,138 +501,259 @@
                                     <h4>Medias</h4>
                                 </div>
                                 <div class="card-body">
-                                    @foreach (var pic in detailsTrip.FieldtripPictures)
-                                    {
-                                        <div class="row mb-sm-6">
-                                            <div class="col-sm-4 text-sm-left">
-                                                <span>@pic.Image</span>
-                                            </div>
-                                            <div class="col-sm-6 text-sm">
-                                                <span>@pic.Description</span>
-                                            </div>
-                                        </div>
+                                    @{
+                                        if (Media != null && Media.Count > 0)
+                                        {
+                                            @foreach (var pic in Media)
+                                            {
+                                                <div class="row">
+                                                    <div class="col-md-5 text-md-right">
+                                                        <label for="meeting-name">Image Url:</label>
+                                                    </div>
+                                                    <div class="col-md-7">
+                                                        <span>@pic.Image</span>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-5 text-md-right">
+                                                        <label for="meeting-name">Description:</label>
+                                                    </div>
+                                                    <div class="col-md-7">
+                                                        <span>@pic.Description</span>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-5 text-md-right">
+                                                        <label for="meeting-name">Type:</label>
+                                                    </div>
+                                                    <div class="col-md-7">
+                                                        <span>@pic.Type</span>
+                                                    </div>
+                                                </div>
+                                            }
+                                        }
                                     }
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-5 cardFB">
-                        <form asp-action="StaffUpdateFieldTripPartStatus" asp-controller="Staff" asp-route-id="@detailsTrip.TripId" method="post">
-                            <div class="card border-0 d-flex">
-                                <div class="card-header">
-                                    <h4>Edit Participant Status</h4>
-                                </div>
-                                <div class="card-body">
-                                    <table class="table table-hover table-borderless">
-                                        <thead>
-                                            <tr>
-                                                <th>Participant No:</th>
-                                                <th>Name:</th>
-                                                <th>Check In Status:</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @for (int i = 0; i < tripPartView.Count(); i++)
-                                            {
-                                                <tr class="@("clicks-row "+ (i%2 == 0 ? "even" : "odd")) " data-href="#"
-                                                    data-bs-toggle="tooltip" data-bs-placement="right"
-                                                    title="More Details">
-                                                    <input type="hidden" asp-for="@tripPartView[i].TripId" name="tripPartView[@i].TripId" value="@tripPartView[i].TripId" class="form-control" />
-                                                    <input type="hidden" asp-for="@tripPartView[i].MemberId" name="tripPartView[@i].MemberId" value="@tripPartView[i].MemberId" class="form-control" />
-                                                    <td class="sorting_1">
-                                                        <input type="hidden" asp-for="@tripPartView[i].ParticipantNo" name="tripPartView[@i].ParticipantNo" value="@tripPartView[i].ParticipantNo" class="form-control" />
-                                                        @tripPartView[i].ParticipantNo
-                                                    </td>
-                                                    <td>
-                                                        <input type="hidden" asp-for="@tripPartView[i].MemberName" name="tripPartView[@i].MemberName" value="@tripPartView[i].MemberName" class="form-control" />
-                                                        @tripPartView[i].MemberName
-                                                    </td>
-                                                    <td>
-                                                        @{
-                                                            foreach (var status in checkInStatus)
-                                                            {
-                                                                if (status.Text.Equals(tripPartView[i].CheckInStatus))
-                                                                {
-                                                                    status.Selected = true;
+                    @{
+                        if (detailsTrip.Status.Equals("CheckingIn"))
+                        {
+                            <div class="col-lg-5 cardFB">
+                                <form asp-action="StaffUpdateFieldTripPartStatus" asp-controller="Staff" asp-route-id="@detailsTrip.TripId" method="post">
+                                    <div class="card border-0 d-flex">
+                                        <div class="card-header">
+                                            <h4>Edit Participant Status</h4>
+                                        </div>
+                                        <div class="card-body">
+                                            <table class="table table-hover table-borderless">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Participant No:</th>
+                                                        <th>Name:</th>
+                                                        <th>Check In Status:</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @for (int i = 0; i < tripPartView.Count(); i++)
+                                                    {
+                                                        <tr class="@("clicks-row "+ (i%2 == 0 ? "even" : "odd")) " data-href="#"
+                                                            data-bs-toggle="tooltip" data-bs-placement="right"
+                                                            title="More Details">
+                                                            <input type="hidden" asp-for="@tripPartView[i].TripId" name="tripPartView[@i].TripId" value="@tripPartView[i].TripId" class="form-control" />
+                                                            <input type="hidden" asp-for="@tripPartView[i].MemberId" name="tripPartView[@i].MemberId" value="@tripPartView[i].MemberId" class="form-control" />
+                                                            <td class="sorting_1">
+                                                                <input type="hidden" asp-for="@tripPartView[i].ParticipantNo" name="tripPartView[@i].ParticipantNo" value="@tripPartView[i].ParticipantNo" class="form-control" />
+                                                                @tripPartView[i].ParticipantNo
+                                                            </td>
+                                                            <td>
+                                                                <input type="hidden" asp-for="@tripPartView[i].MemberName" name="tripPartView[@i].MemberName" value="@tripPartView[i].MemberName" class="form-control" />
+                                                                @tripPartView[i].MemberName
+                                                            </td>
+                                                            <td>
+                                                                @{
+                                                                    foreach (var status in checkInStatus)
+                                                                    {
+                                                                        if (status.Text.Equals(tripPartView[i].CheckInStatus))
+                                                                        {
+                                                                            status.Selected = true;
+                                                                        }
+                                                                    }
                                                                 }
-                                                            }
-                                                        }
-                                                        <select class="form-control" asp-for="@tripPartView[i].CheckInStatus" asp-items="@checkInStatus" class="custom-select" name="tripPartView[@i].checkInStatus">
-                                                        </select>
-                                                    </td>
+                                                                <select class="form-control" asp-for="@tripPartView[i].CheckInStatus" asp-items="@checkInStatus" class="custom-select" name="tripPartView[@i].checkInStatus">
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
+                                            <div class="row col-12 d-flex">
+                                                <div class="rating-club">
+                                                    <button class="button--primary btn-success bg-success shadow btn-xs text-white" type="submit">Save Changes</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        }
+                        else if (detailsTrip.Status.Equals("Ongoing"))
+                        {
+                            <div class="col-lg-5 cardFB">
+                                <form asp-action="StaffUpdateFieldTripPartStatus" asp-controller="Staff" asp-route-id="@detailsTrip.TripId" method="post">
+                                    <div class="card border-0 d-flex">
+                                        <div class="card-header">
+                                            <h4>Edit Participant Status</h4>
+                                        </div>
+                                        <div class="card-body">
+                                            <table class="table table-hover table-borderless">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Participant No:</th>
+                                                        <th>Name:</th>
+                                                        <th>Check In Status:</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @for (int i = 0; i < tripPartView.Count(); i++)
+                                                    {
+                                                        <tr class="@("clicks-row "+ (i%2 == 0 ? "even" : "odd")) " data-href="#"
+                                                            data-bs-toggle="tooltip" data-bs-placement="right"
+                                                            title="More Details">
+                                                            <input type="hidden" asp-for="@tripPartView[i].TripId" name="tripPartView[@i].TripId" value="@tripPartView[i].TripId" class="form-control" />
+                                                            <input type="hidden" asp-for="@tripPartView[i].MemberId" name="tripPartView[@i].MemberId" value="@tripPartView[i].MemberId" class="form-control" />
+                                                            <td class="sorting_1">
+                                                                <input type="hidden" asp-for="@tripPartView[i].ParticipantNo" name="tripPartView[@i].ParticipantNo" value="@tripPartView[i].ParticipantNo" class="form-control" />
+                                                                @tripPartView[i].ParticipantNo
+                                                            </td>
+                                                            <td>
+                                                                <input type="hidden" asp-for="@tripPartView[i].MemberName" name="tripPartView[@i].MemberName" value="@tripPartView[i].MemberName" class="form-control" />
+                                                                @tripPartView[i].MemberName
+                                                            </td>
+                                                            <td>
+                                                                @{
+                                                                    foreach (var status in checkInStatus)
+                                                                    {
+                                                                        if (status.Text.Equals(tripPartView[i].CheckInStatus))
+                                                                        {
+                                                                            status.Selected = true;
+                                                                        }
+                                                                    }
+                                                                }
+                                                                <select class="form-control" asp-for="@tripPartView[i].CheckInStatus" asp-items="@checkInStatus" class="custom-select" name="tripPartView[@i].checkInStatus">
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
+                                            <div class="row col-12 d-flex">
+                                                <div class="rating-club">
+                                                    <button class="button--primary btn-success bg-success shadow btn-xs text-white" type="submit">Save Changes</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-lg-5 cardFB">
+                                <div class="card border-0 d-flex">
+                                    <div class="card-header">
+                                        <h4>Participants</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <table class="table table-hover table-borderless">
+                                            <thead>
+                                                <tr>
+                                                    <th>Participant No:</th>
+                                                    <th>Name:</th>
                                                 </tr>
-                                            }
-                                        </tbody>
-                                    </table>
-                                    <div class="row col-12 d-flex">
-                                        <div class="rating-club">
-                                            <button class="button--primary btn-success bg-success shadow btn-xs text-white" type="submit">Save Changes</button>
+                                            </thead>
+                                            <tbody>
+                                                @for (int i = 0; i < tripPartView.Count(); i++)
+                                                {
+                                                    <tr>
+                                                        <td>@tripPartView[i].ParticipantNo</td>
+                                                        <td>@tripPartView[i].MemberName</td>
+                                                    </tr>
+                                                }
+                                                <tr>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    @{
+        if (!(detailsTrip.Status.Equals("Ongoing") || detailsTrip.Status.Equals("Cancelled") || detailsTrip.Status.Equals("Ended")))
+        {
+            <!-- edit FieldTrip Status -->
+            <div id="editprofile" class="modal fade" role="dialog">
+                <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
+                    <div class="modal-content modal-addRoom">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Edit Field Trip Status</h4>
+                        </div>
+                        <form asp-action="StaffUpdateFieldTripStatus" asp-controller="Staff" method="post" asp-route-id="@detailsTrip.TripId" class="form-group">
+                            <div class="modal-body">
+                                <div class="row justify-content-center">
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-group row">
+                                            <label asp-for="@updateTrip.Status" class="col-sm-4 col-form-label"></label>
+                                            <div class="col-sm-8">
+                                                <select class="form-control" asp-for="@updateTrip.Status" asp-items="@defaultTripStatus" class="custom-select" required></select>
+                                                <span asp-validation-for="@updateTrip.Status" id="error_message"
+                                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
+                                <input asp-for="@updateTrip.TripName" type="text"
+                                       value="@updateTrip.TripName" required hidden>
+                                <input asp-for="@updateTrip.RegistrationDeadline" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
+                                       value="@updateTrip.RegistrationDeadline.ToString("yyyy-MM-ddTHH:mm")" required hidden>
+                                <input asp-for="@updateTrip.StartDate" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
+                                       value="@updateTrip.StartDate.ToString("yyyy-MM-ddTHH:mm")" required hidden>
+                                <input asp-for="@updateTrip.EndDate" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
+                                       value="@updateTrip.EndDate.ToString("yyyy-MM-ddTHH:mm")" required hidden>
+                                <input asp-for="@updateTrip.NumberOfParticipantsLimit" type="number"
+                                       value="@updateTrip.NumberOfParticipantsLimit" required hidden>
+                                <input asp-for="@updateTrip.Host" type="text"
+                                       value="@updateTrip.Host" required hidden>
+                                <input asp-for="@updateTrip.InCharge" type="text"
+                                       value="@updateTrip.InCharge" required hidden>
+                                <input asp-for="@updateTrip.Fee" type="number"
+                                       value="@updateTrip.Fee" required hidden>
+                                <input asp-for="@updateTrip.Address" type="text"
+                                       value="@updateTrip.Address" required hidden>
+                                <textarea asp-for="@updateTrip.Description" type="text"
+                                          value="@updateTrip.Description" required hidden></textarea>
+                                <textarea asp-for="@updateTrip.Details" type="text"
+                                          value="@updateTrip.Details" required hidden></textarea>
+                                <textarea asp-for="@updateTrip.Note" type="text"
+                                          value="@updateTrip.Note" required hidden></textarea>
+                                <input asp-for="@updateTrip.NumberOfParticipants" type="number"
+                                       value="@updateTrip.NumberOfParticipants" required hidden>
+                            </div>
+                            <div class="modal-footer justify-content-center">
+                                <button class="btn btn-success" type="submit" value="Update">Save</button>
+                                <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-
-    <!-- edit FieldTrip Status -->
-    <div id="editprofile" class="modal fade" role="dialog">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
-            <div class="modal-content modal-addRoom">
-                <div class="modal-header">
-                    <h4 class="modal-title">Edit Field Trip Status</h4>
-                </div>
-                <form asp-action="StaffUpdateFieldTripStatus" asp-controller="Staff" method="post" asp-route-id="@detailsTrip.TripId" class="form-group">
-                    <div class="modal-body">
-                        <div class="row justify-content-center">
-                            <div class="col-12 col-md-6">
-                                <div class="form-group row">
-                                    <label asp-for="@updateTrip.Status" class="col-sm-4 col-form-label"></label>
-                                    <div class="col-sm-8">
-                                        <select class="form-control" asp-for="@updateTrip.Status" asp-items="@defaultTripStatus" class="custom-select" required></select>
-                                        <span asp-validation-for="@updateTrip.Status" id="error_message"
-                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <input asp-for="@updateTrip.TripName" type="text"
-                               value="@updateTrip.TripName" required hidden>
-                        <input asp-for="@updateTrip.RegistrationDeadline" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
-                               value="@updateTrip.RegistrationDeadline.ToString("yyyy-MM-ddTHH:mm")" required hidden>
-                        <input asp-for="@updateTrip.StartDate" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
-                               value="@updateTrip.StartDate.ToString("yyyy-MM-ddTHH:mm")" required hidden>
-                        <input asp-for="@updateTrip.EndDate" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
-                               value="@updateTrip.EndDate.ToString("yyyy-MM-ddTHH:mm")" required hidden>
-                        <input asp-for="@updateTrip.NumberOfParticipantsLimit" type="number"
-                               value="@updateTrip.NumberOfParticipantsLimit" required hidden>
-                        <input asp-for="@updateTrip.Host" type="text"
-                               value="@updateTrip.Host" required hidden>
-                        <input asp-for="@updateTrip.InCharge" type="text"
-                               value="@updateTrip.InCharge" required hidden>
-                        <input asp-for="@updateTrip.Fee" type="number"
-                               value="@updateTrip.Fee" required hidden>
-                        <input asp-for="@updateTrip.Address" type="text"
-                               value="@updateTrip.Address" required hidden>
-                        <textarea asp-for="@updateTrip.Description" type="text"
-                                  value="@updateTrip.Description" required hidden></textarea>
-                        <textarea asp-for="@updateTrip.Details" type="text"
-                                  value="@updateTrip.Details" required hidden></textarea>
-                        <textarea asp-for="@updateTrip.Note" type="text"
-                                  value="@updateTrip.Note" required hidden></textarea>
-                        <input asp-for="@updateTrip.NumberOfParticipants" type="number"
-                               value="@updateTrip.NumberOfParticipants" required hidden>
-                    </div>
-                    <div class="modal-footer justify-content-center">
-                        <button class="btn btn-success" type="submit" value="Update">Save</button>
-                        <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+        }
+    }
 </body>
 </html>

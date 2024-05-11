@@ -428,7 +428,7 @@ namespace WebAPI.Controllers
         [ProducesResponseType(typeof(List<ContestParticipantViewModel>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> GetAllParticipantsByContestId([FromRoute] int id)
+        public async Task<IActionResult> GetAllParticipantsByContestId([FromRoute][Required] int id)
         {
             try
             {

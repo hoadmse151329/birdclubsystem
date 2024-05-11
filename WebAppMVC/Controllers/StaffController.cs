@@ -197,7 +197,7 @@ namespace WebAppMVC.Controllers
             }
             meetingDetailBigModel.UpdateMeeting = methcall.GetValidationTempData<MeetingViewModel>(this, TempData, Constants.Constants.UPDATE_MEETING_VALID, "updateMeeting", options);
             meetingDetailBigModel.SelectListStatus = methcall.GetStaffEventStatusSelectableList(meetPostResponse.Data.Status);
-
+            meetingDetailBigModel.SelectListParticipationStatus = methcall.GetStaffEventParticipationStatusSelectableList(meetPostResponse.Data.Status);
             meetingDetailBigModel.MeetingDetails = meetPostResponse.Data;
             meetingDetailBigModel.MeetingParticipants = meetpartPostResponse.Data;
             return View(meetingDetailBigModel);
@@ -443,6 +443,7 @@ namespace WebAppMVC.Controllers
             fieldtripDetailBigModel.FieldTripImportantToKnows = fieldtripPostResponse.Data.FieldtripAdditionalDetails.Where(f => f.Type.Equals("important_to_know")).ToList();
             fieldtripDetailBigModel.FieldTripActivitiesAndTransportation = fieldtripPostResponse.Data.FieldtripAdditionalDetails.Where(f => f.Type.Equals("activities_and_transportation")).ToList();
             fieldtripDetailBigModel.FieldTripParticipants = fieldtrippartPostResponse.Data;
+            fieldtripDetailBigModel.SelectListParticipationStatus = methcall.GetStaffEventParticipationStatusSelectableList(fieldtripPostResponse.Data.Status);
             fieldtripDetailBigModel.SelectListStatus = methcall.GetStaffEventStatusSelectableList(fieldtripPostResponse.Data.Status);
 
             return View(fieldtripDetailBigModel);
@@ -666,11 +667,10 @@ namespace WebAppMVC.Controllers
             contestDetailBigModel.ContestDetails = contestPostResponse.Data;
             contestDetailBigModel.ContestParticipants = contestpartPostResponse.Data;
             contestDetailBigModel.SelectListParticipationStatus = methcall.GetStaffEventParticipationStatusSelectableList(contestPostResponse.Data.Status);
-            //contestDetailBigModel.SelectListParticipationStatus = methcall.GetStaffEventParticipationStatusSelectableList(contestpartPostResponse.Data.FirstOrDefault().CheckInStatus, contestPostResponse.Data.Status);
             contestDetailBigModel.SelectListStatus = methcall.GetStaffEventStatusSelectableList(contestPostResponse.Data.Status);
             return View(contestDetailBigModel);
         }
-        [HttpPost("Contest/{id:int}/Update")]
+        [HttpPost("Contest/{id:int}/Status/Update")]
         public async Task<IActionResult> StaffUpdateContestStatus(
             [FromRoute][Required] int id,
             [Required] ContestViewModel updateContest
@@ -717,7 +717,7 @@ namespace WebAppMVC.Controllers
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.STAFF) != null)
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.STAFF));
 
-            string? accToken = HttpContext.Session.GetString(Constants.Constants.STAFF);
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
             if(contestPartView.Count == 0)
             {

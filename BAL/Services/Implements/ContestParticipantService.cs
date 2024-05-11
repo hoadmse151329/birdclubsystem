@@ -35,8 +35,7 @@ namespace BAL.Services.Implements
                 BirdId = birdId,
                 MemberId = memberId,
                 ParticipantNo = partNo.ToString(),
-                Elo = elo,
-                CheckInStatus = "Not Checked-In"
+                Elo = elo
             };
             _unitOfWork.ContestParticipantRepository.Create(contestParticipant);
             _unitOfWork.Save();

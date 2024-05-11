@@ -30,7 +30,7 @@ namespace DAL.Repositories.Implements
 
         public async Task<IEnumerable<ContestParticipant>> GetContestParticipantsByContestId(int contestId)
         {
-            return _context.ContestParticipants.Where(con => con.ContestId == contestId).Include(m => m.MemberDetail).ToList();
+            return _context.ContestParticipants.Where(con => con.ContestId == contestId).Include(m => m.MemberDetail).OrderBy(p => p.ParticipantNo).ToList();
         }
 
         public async Task<IEnumerable<ContestParticipant>> GetContestParticipantsByBirdId(int birdId)
