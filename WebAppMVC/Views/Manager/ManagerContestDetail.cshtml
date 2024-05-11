@@ -150,26 +150,26 @@
                                     </div>
                                     <div class="row mb-sm-2">
                                         <div class="col-sm-5 text-sm-right">
-                                            <span>Require Minimum Elo:</span>
+                                            <span>Required Minimum ELO:</span>
                                         </div>
                                         <div class="col-sm-7 text-sm-left">
-                                            <span>@detailsContest.ReqMinElo</span>
+                                            <span>@detailsContest.ReqMinELO</span>
                                         </div>
                                     </div>
                                     <div class="row mb-sm-2">
                                         <div class="col-sm-5 text-sm-right">
-                                            <span>Require Maximum Elo:</span>
+                                            <span>Required Maximum ELO:</span>
                                         </div>
                                         <div class="col-sm-7 text-sm-left">
-                                            <span>@detailsContest.ReqMaxElo</span>
+                                            <span>@detailsContest.ReqMaxELO</span>
                                         </div>
                                     </div>
                                     <div class="row mb-sm-2">
                                         <div class="col-sm-5 text-sm-right">
-                                            <span>After Elo:</span>
+                                            <span>After ELO:</span>
                                         </div>
                                         <div class="col-sm-7 text-sm-left">
-                                            <span>@detailsContest.AfterElo</span>
+                                            <span>@detailsContest.AfterELO</span>
                                         </div>
                                     </div>
                                     <div class="row mb-sm-2">
@@ -496,60 +496,23 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-12 col-md-6">
-                                        <div class="form-group row">
-                                            <label asp-for="@updateContest.NumberOfParticipantsLimit" class="col-sm-4 col-form-label"></label>
-                                            <div class="col-sm-8">
-                                                <input asp-for="@updateContest.NumberOfParticipantsLimit" type="number" min="3"
-                                                       value="@updateContest.NumberOfParticipantsLimit" class="form-control" required>
-                                                <span asp-validation-for="@updateContest.NumberOfParticipantsLimit" id="error_message"
-                                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label asp-for="@updateContest.Host" class="col-sm-4 col-form-label"></label>
-                                            <div class="col-sm-8">
-                                                <input asp-for="@updateContest.Host" type="text"
-                                                       value="@updateContest.Host" class="form-control" required>
-                                                <span asp-validation-for="@updateContest.Host" id="error_message"
-                                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label asp-for="@updateContest.Incharge" class="col-sm-4 col-form-label"></label>
-                                            <div class="col-sm-8">
-                                                <input asp-for="@updateContest.Incharge" type="text"
-                                                       value="@updateContest.Incharge" class="form-control" required>
-                                                <span asp-validation-for="@updateContest.Incharge" id="error_message"
-                                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label asp-for="@updateContest.Status" class="col-sm-4 col-form-label"></label>
-                                            <div class="col-sm-8">
-                                                <select class="form-control" asp-for="@updateContest.Status" asp-items="@defaultContestStatus" class="custom-select"></select>
-                                                <span asp-validation-for="@updateContest.Status" id="error_message"
-                                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label asp-for="@updateContest.AfterElo" class="col-sm-4 col-form-label"></label>
-                                            <div class="col-sm-8">
-                                                <input asp-for="@updateContest.AfterElo" type="number" min="0"
-                                                       value="@updateContest.AfterElo" class="form-control" required>
-                                                <span asp-validation-for="@updateContest.AfterElo" id="error_message"
-                                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label asp-for="@updateContest.Fee" class="col-sm-4 col-form-label"></label>
-                                            <div class="col-sm-8">
-                                                <input asp-for="@updateContest.Fee" type="number" min="0"
-                                                       value="@updateContest.Fee" class="form-control" required>
-                                                <span asp-validation-for="@updateContest.Fee" id="error_message"
-                                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                            </div>
-                                        </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label asp-for="@updateContest.ReqMinELO" class="col-sm-4 col-form-label"></label>
+                                    <div class="col-sm-8">
+                                        <input asp-for="@updateContest.ReqMinELO" type="number" min="0"
+                                               value="@updateContest.ReqMinELO" class="form-control" required>
+                                        <span asp-validation-for="@updateContest.ReqMinELO" id="error_message"
+                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label asp-for="@updateContest.ReqMaxELO" class="col-sm-4 col-form-label"></label>
+                                    <div class="col-sm-8">
+                                        <input asp-for="@updateContest.ReqMaxELO" type="number" min="0"
+                                               value="@updateContest.ReqMaxELO" class="form-control" required>
+                                        <span asp-validation-for="@updateContest.ReqMaxELO" id="error_message"
+                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                     </div>
                                 </div>
                                 <input asp-for="@updateContest.NumberOfParticipants" type="number"
@@ -583,11 +546,20 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label asp-for="@updateContest.Note" class="col-sm-4 col-form-label">Note</label>
+                                    <label asp-for="@updateContest.AfterELO" class="col-sm-4 col-form-label"></label>
                                     <div class="col-sm-8">
-                                        <textarea asp-for="@updateContest.Note"
-                                                  value="@updateContest.Note" class="form-control" required></textarea>
-                                        <span asp-validation-for="@updateContest.Note" id="error_message"
+                                        <input asp-for="@updateContest.AfterELO" type="number" min="0"
+                                               value="@updateContest.AfterELO" class="form-control" required>
+                                        <span asp-validation-for="@updateContest.AfterELO" id="error_message"
+                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label asp-for="@updateContest.Fee" class="col-sm-4 col-form-label"></label>
+                                    <div class="col-sm-8">
+                                        <input asp-for="@updateContest.Fee" type="number" min="0"
+                                               value="@updateContest.Fee" class="form-control" required>
+                                        <span asp-validation-for="@updateContest.Fee" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                     </div>
                                 </div>

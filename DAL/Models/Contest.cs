@@ -37,11 +37,11 @@ namespace DAL.Models
         [Column("endDate", TypeName = "datetime")]
         public DateTime? EndDate { get; set; }
         [Column("reqMinELO")]
-        public int? ReqMinElo { get; set; }
+        public int? ReqMinELO { get; set; }
         [Column("reqMaxELO")]
-        public int? ReqMaxElo { get; set; }
+        public int? ReqMaxELO { get; set; }
         [Column("afterELO")]
-        public int? AfterElo { get; set; }
+        public int? AfterELO { get; set; }
         [Column("fee", TypeName = "decimal(10, 2)")]
         public decimal? Fee { get; set; }
         [Column("prize", TypeName = "decimal(12, 2)")]

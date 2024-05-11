@@ -3,6 +3,7 @@ using BAL.ViewModels.Authenticates;
 using DAL.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Options;
 using System.ComponentModel.DataAnnotations;
 using System.Dynamic;
 using System.Net.Http.Headers;
@@ -15,6 +16,7 @@ using WebAppMVC.Models.FieldTrip;
 using WebAppMVC.Models.Location;
 using WebAppMVC.Models.Meeting;
 using WebAppMVC.Models.Member;
+using WebAppMVC.Models.Notification;
 using WebAppMVC.Models.Transaction;
 using WebAppMVC.Models.VnPay;
 using WebAppMVC.Services;
@@ -65,6 +67,23 @@ namespace WebAppMVC.Controllers
 
             methcall.SetUserDefaultData(this);
             string? role = HttpContext.Session.GetString(Constants.Constants.ROLE_NAME);
+
+            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
+
+            string NotificationAPI_URL = "/api/Notification/Count";
+
+            if (usrId != null)
+            {
+                var notificationCount = await methcall.CallMethodReturnObject<GetNotificationCountResponse>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: "POST",
+                url: NotificationAPI_URL,
+                inputType: usrId,
+                _logger: _logger);
+
+                ViewBag.NotificationCount = notificationCount.Data;
+            }
 
             var listLocationRoadResponse = await methcall.CallMethodReturnObject<GetLocationAddressResponseByList>(
                 _httpClient: _httpClient,
@@ -146,6 +165,21 @@ namespace WebAppMVC.Controllers
             string? role = HttpContext.Session.GetString(Constants.Constants.ROLE_NAME);
             string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
             string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
+
+            string NotificationAPI_URL = "/api/Notification/Count";
+
+            if (usrId != null)
+            {
+                var notificationCount = await methcall.CallMethodReturnObject<GetNotificationCountResponse>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: "POST",
+                url: NotificationAPI_URL,
+                inputType: usrId,
+                _logger: _logger);
+
+                ViewBag.NotificationCount = notificationCount.Data;
+            }
 
             GetContestPostResponse? contestPostResponse = new();
 
@@ -268,7 +302,7 @@ namespace WebAppMVC.Controllers
                    "Error while processing your request! (Getting Bird for Contest Registration!).\n";
                 RedirectToAction("ContestPost", new { id = contestId });
             }
-            if (birdDetails.Data.Elo >= contestPostResponse.Data.ReqMinElo && birdDetails.Data.Elo <= contestPostResponse.Data.ReqMaxElo)
+            if (birdDetails.Data.Elo >= contestPostResponse.Data.ReqMinELO && birdDetails.Data.Elo <= contestPostResponse.Data.ReqMaxELO)
             {
                 ViewBag.error =
                    "Error while processing your request! (Your Bird Elo must be more than " + contestPostResponse.Data.ReqMinElo + " to register a Contest!).\n";

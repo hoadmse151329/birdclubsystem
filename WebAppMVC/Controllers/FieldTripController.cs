@@ -15,6 +15,7 @@ using WebAppMVC.Models.FieldTrip;
 using WebAppMVC.Models.Location;
 using WebAppMVC.Models.Meeting;
 using WebAppMVC.Models.Member;
+using WebAppMVC.Models.Notification;
 using WebAppMVC.Models.Transaction;
 using WebAppMVC.Models.VnPay;
 using WebAppMVC.Services;
@@ -64,9 +65,25 @@ namespace WebAppMVC.Controllers
             string LocationAPI_URL_All_City = "/api/Location/AllAddressCities";
             dynamic testmodel = new ExpandoObject();
 
-
             methcall.SetUserDefaultData(this);
             string? role = HttpContext.Session.GetString(Constants.Constants.ROLE_NAME);
+
+            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
+
+            string NotificationAPI_URL = "/api/Notification/Count";
+
+            if (usrId != null)
+            {
+                var notificationCount = await methcall.CallMethodReturnObject<GetNotificationCountResponse>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: "POST",
+                url: NotificationAPI_URL,
+                inputType: usrId,
+                _logger: _logger);
+
+                ViewBag.NotificationCount = notificationCount.Data;
+            }
 
             var listLocationRoadResponse = await methcall.CallMethodReturnObject<GetLocationAddressResponseByList>(
                 _httpClient: _httpClient,
@@ -150,6 +167,21 @@ namespace WebAppMVC.Controllers
             string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
             string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
+
+            string NotificationAPI_URL = "/api/Notification/Count";
+
+            if (usrId != null)
+            {
+                var notificationCount = await methcall.CallMethodReturnObject<GetNotificationCountResponse>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: "POST",
+                url: NotificationAPI_URL,
+                inputType: usrId,
+                _logger: _logger);
+
+                ViewBag.NotificationCount = notificationCount.Data;
+            }
 
             dynamic fieldtripDetail = new ExpandoObject();
 

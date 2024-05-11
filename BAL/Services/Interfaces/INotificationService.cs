@@ -12,6 +12,7 @@ namespace BAL.Services.Interfaces
         Task<IEnumerable<NotificationViewModel>> GetAllNotificationsByUserId(int id);
         Task<bool> Create(int id, NotificationViewModel notifModel);
         Task<bool> UpdateAllNotificationStatus(List<NotificationViewModel> listNotif);
-        Task<int> GetCountUnreadNotificationsByUserId(int id);
+        Task<int> GetCountUnreadNotificationsByMemberId(string id);
+        Task<bool> GetBoolNotificationId(int id);
     }
 }

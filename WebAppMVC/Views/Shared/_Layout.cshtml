@@ -1,4 +1,4 @@
-﻿@* @model BAL.ViewModels.NotificationViewModel *@
+﻿@*@model BAL.ViewModels.NotificationViewModel*@
 
 <!DOCTYPE html>
 <html lang="en">
@@ -52,7 +52,7 @@
                                      <div class="notification-dropdown dropdown">
                                           <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                <i class="fa fa-bell"></i><span class="notification">5</span>
+                                                <i class="fa fa-bell"></i><span class="notification">@ViewBag.NotificationCount</span>
                                                      <span type="hidden" name="notificationId" value="${o.notificationId}"></span>  
                                           </button>
                                      <div class="dropdown-menu notification-table animate__animated animate__fadeInDown"

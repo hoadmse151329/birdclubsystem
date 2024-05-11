@@ -59,12 +59,12 @@ namespace BAL.ViewModels
         [DateGreaterThan(comparisonProperty: "StartDate", comparisonRange: 1, comparisonType: "Day", ErrorMessage = "End Date must be greater than Start Date at least 1 day")]
         [DataType(DataType.DateTime)]
         public DateTime EndDate { get; set; }
-        [DisplayName("Require Minimum Elo")]
-        public int? ReqMinElo { get; set; }
-        [DisplayName("Require Maximum Elo")]
-        public int? ReqMaxElo { get; set; }
-        [DisplayName("After Elo")]
-        public int? AfterElo { get; set; }
+        [DisplayName("Required Minimum ELO")]
+        public int? ReqMinELO { get; set; }
+        [DisplayName("Required Maximum ELO")]
+        public int? ReqMaxELO { get; set; }
+        [DisplayName("After ELO")]
+        public int? AfterELO { get; set; }
         [Required(ErrorMessage = "Fee is required")]
         [DisplayName("Fee")]
         [Range(5000, double.MaxValue, ErrorMessage = "Fee must be at least 5000đ")]
