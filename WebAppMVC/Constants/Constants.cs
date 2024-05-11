@@ -43,10 +43,14 @@ namespace WebAppMVC.Constants
         public readonly static string UPDATE_FIELDTRIP_IMPORTANTTOKNOW_VALID = "UFieldTripImportantValid";
         public readonly static string CREATE_FIELDTRIP_ACTIVITIESANDTRANSPORTATION_VALID = "CFieldTripActAndTrasValid";
         public readonly static string UPDATE_FIELDTRIP_ACTIVITIESANDTRANSPORTATION_VALID = "UFieldTripActAndTrasValid";
+        public readonly static string CREATE_FIELDTRIP_MEDIA_VALID = "CFieldTripMediaValid";
+        public readonly static string UPDATE_FIELDTRIP_MEDIA_VALID = "UFieldTripMediaValid";
         public readonly static string CREATE_CONTEST_VALID = "CContestValid";
         public readonly static string UPDATE_CONTEST_VALID = "UContestValid";
+        public readonly static string CREATE_CONTEST_MEDIA_VALID = "CContestMediaValid";
+        public readonly static string UPDATE_CONTEST_MEDIA_VALID = "UContestMediaValid";
 
-		public readonly static string EVENT_STATUS_ON_HOLD = "OnHold";
+        public readonly static string EVENT_STATUS_ON_HOLD = "OnHold";
         public readonly static string EVENT_STATUS_NAME_ON_HOLD = "On Hold";
         public readonly static string EVENT_STATUS_POSTPONED = "Postponed";
         public readonly static string EVENT_STATUS_NAME_POSTPONED = "Postponed";

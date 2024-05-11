@@ -305,7 +305,7 @@ namespace WebAppMVC.Controllers
             if (birdDetails.Data.Elo >= contestPostResponse.Data.ReqMinELO && birdDetails.Data.Elo <= contestPostResponse.Data.ReqMaxELO)
             {
                 ViewBag.error =
-                   "Error while processing your request! (Your Bird Elo must be more than " + contestPostResponse.Data.ReqMinElo + " to register a Contest!).\n";
+                   "Error while processing your request! (Your Bird Elo must be more than " + contestPostResponse.Data.ReqMinELO + "and lesser than" + contestPostResponse.Data.ReqMaxELO + " to register this Contest!).\n";
                 RedirectToAction("ContestPost", new { id = contestId });
             }
             methcall.SetCookie(Response, Constants.Constants.MEMBER_CONTEST_REGISTRATION_COOKIE, contestPostResponse.Data, cookieOptions, jsonOptions, 20);
