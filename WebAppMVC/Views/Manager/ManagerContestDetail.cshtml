@@ -478,41 +478,23 @@
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label asp-for="@updateContest.ReqMinElo" class="col-sm-4 col-form-label"></label>
+                                            <label asp-for="@updateContest.ReqMinELO" class="col-sm-4 col-form-label"></label>
                                             <div class="col-sm-8">
-                                                <input asp-for="@updateContest.ReqMinElo" type="number" min="0"
-                                                       value="@updateContest.ReqMinElo" class="form-control" required>
-                                                <span asp-validation-for="@updateContest.ReqMinElo" id="error_message"
+                                                <input asp-for="@updateContest.ReqMinELO" type="number" min="0"
+                                                       value="@updateContest.ReqMinELO" class="form-control" required>
+                                                <span asp-validation-for="@updateContest.ReqMinELO" id="error_message"
                                                       class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label asp-for="@updateContest.ReqMaxElo" class="col-sm-4 col-form-label"></label>
+                                            <label asp-for="@updateContest.ReqMaxELO" class="col-sm-4 col-form-label"></label>
                                             <div class="col-sm-8">
-                                                <input asp-for="@updateContest.ReqMaxElo" type="number" min="0"
-                                                       value="@updateContest.ReqMaxElo" class="form-control" required>
-                                                <span asp-validation-for="@updateContest.ReqMaxElo" id="error_message"
+                                                <input asp-for="@updateContest.ReqMaxELO" type="number" min="0"
+                                                       value="@updateContest.ReqMaxELO" class="form-control" required>
+                                                <span asp-validation-for="@updateContest.ReqMaxELO" id="error_message"
                                                       class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label asp-for="@updateContest.ReqMinELO" class="col-sm-4 col-form-label"></label>
-                                    <div class="col-sm-8">
-                                        <input asp-for="@updateContest.ReqMinELO" type="number" min="0"
-                                               value="@updateContest.ReqMinELO" class="form-control" required>
-                                        <span asp-validation-for="@updateContest.ReqMinELO" id="error_message"
-                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label asp-for="@updateContest.ReqMaxELO" class="col-sm-4 col-form-label"></label>
-                                    <div class="col-sm-8">
-                                        <input asp-for="@updateContest.ReqMaxELO" type="number" min="0"
-                                               value="@updateContest.ReqMaxELO" class="form-control" required>
-                                        <span asp-validation-for="@updateContest.ReqMaxELO" id="error_message"
-                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                     </div>
                                 </div>
                                 <input asp-for="@updateContest.NumberOfParticipants" type="number"
@@ -604,9 +586,10 @@
                                        value="@updateContest.EndDate.ToString("yyyy-MM-ddTHH:mm")" required hidden>
                                 <input asp-for="@updateContest.NumberOfParticipantsLimit" type="number" value="@updateContest.NumberOfParticipantsLimit" required hidden>
                                 <input asp-for="@updateContest.Host" type="text" value="@updateContest.Host" required hidden>
-                                <input asp-for="@updateContest.ReqMinElo" type="number" value="@updateContest.ReqMinElo" required hidden />
-                                <input asp-for="@updateContest.AfterElo" type="number" value="@updateContest.AfterElo" required hidden />
-                                <input asp-for="@updateContest.Prize" type="Prize" value="@updateContest.ReqMinElo" required hidden />
+                                <input asp-for="@updateContest.ReqMinELO" type="number" value="@updateContest.ReqMinELO" required hidden />
+                                <input asp-for="@updateContest.ReqMaxELO" type="number" value="@updateContest.ReqMaxELO" required hidden />
+                                <input asp-for="@updateContest.AfterELO" type="number" value="@updateContest.AfterELO" required hidden />
+                                <input asp-for="@updateContest.Prize" type="Prize" value="@updateContest.Prize" required hidden />
                                 <input asp-for="@updateContest.Incharge" type="text" value="@updateContest.Incharge" required hidden>
                                 <input asp-for="@updateContest.Fee" type="number" value="@updateContest.Fee" required hidden>
                                 <input asp-for="@updateContest.Address" type="text" value="@updateContest.Address" required hidden>
