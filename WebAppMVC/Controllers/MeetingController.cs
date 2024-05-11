@@ -13,6 +13,7 @@ using System.Data;
 using static Org.BouncyCastle.Math.EC.ECCurve;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Text.Encodings.Web;
+using System.ComponentModel.DataAnnotations;
 
 namespace WebAppMVC.Controllers
 {
@@ -40,7 +41,7 @@ namespace WebAppMVC.Controllers
 			_httpClient.BaseAddress = new Uri(config.GetSection("DefaultApiUrl:ConnectionString").Value);
 			MeetingAPI_URL = "/api/Meeting";
 		}
-        private async Task<bool> UpdateMeetingStatus(int? meetingId, string newStatus)
+        /*private async Task<bool> UpdateMeetingStatus(int? meetingId, string newStatus)
         {
             // Prepare the API URL
             string apiUrl = $"{_config["DefaultApiUrl:ConnectionString"]}/api/Meeting/{meetingId}/{newStatus}";
@@ -61,7 +62,7 @@ namespace WebAppMVC.Controllers
             {
                 return false;
             }
-        }
+        }*/
         [HttpGet("Index")]
 		public async Task<IActionResult> Index(
             [FromQuery] string meetingName, 
@@ -89,33 +90,26 @@ namespace WebAppMVC.Controllers
             string LocationAPI_URL_All_City = "/api/Location/AllAddressCities";
             dynamic testmodel = new ExpandoObject();
 
-            string? role = HttpContext.Session.GetString("ROLE_NAME");
-            if (role == null) role = "Guest";
+            methcall.SetUserDefaultData(this);
 
-            string? usrname = HttpContext.Session.GetString("USER_NAME");
-
-            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
-
-            TempData["ROLE_NAME"] = role;
-            TempData["USER_NAME"] = usrname;
-            TempData["IMAGE_PATH"] = imagepath;
+            string? role = HttpContext.Session.GetString(Constants.Constants.ROLE_NAME);
 
             var listLocationRoadResponse = await methcall.CallMethodReturnObject<GetLocationAddressResponseByList>(
                 _httpClient: _httpClient,
                 options: options,
-                methodName: "GET",
+                methodName: Constants.Constants.GET_METHOD,
                 url: LocationAPI_URL_All_Road,
                 _logger: _logger);
             var listLocationDistrictResponse = await methcall.CallMethodReturnObject<GetLocationAddressResponseByList>(
                 _httpClient: _httpClient,
                 options: options,
-                methodName: "GET",
+                methodName: Constants.Constants.GET_METHOD,
                 url: LocationAPI_URL_All_District,
                 _logger: _logger);
             var listLocationCityResponse = await methcall.CallMethodReturnObject<GetLocationAddressResponseByList>(
                 _httpClient: _httpClient,
                 options: options,
-                methodName: "GET",
+                methodName: Constants.Constants.GET_METHOD,
                 url: LocationAPI_URL_All_City,
                 _logger: _logger);
 
@@ -123,7 +117,7 @@ namespace WebAppMVC.Controllers
             var listMeetResponse = await methcall.CallMethodReturnObject<GetMeetingResponseByList>(
 				_httpClient: _httpClient,
 				options: options,
-				methodName: "POST",
+				methodName: Constants.Constants.POST_METHOD,
 				url: MeetingAPI_URL,
                 inputType: role,
                 _logger: _logger);
@@ -144,7 +138,7 @@ namespace WebAppMVC.Controllers
                     + listMeetResponse.ErrorMessage + "\n" + listLocationRoadResponse.ErrorMessage;
                 Redirect("~/Home/Index");
             }
-            else
+            /*else
             {
                 foreach (var meeting in listMeetResponse.Data)
                 {
@@ -180,8 +174,8 @@ namespace WebAppMVC.Controllers
                         }
                     }
                 }
-            }
-                testmodel.Meetings = listMeetResponse.Data;
+            }*/
+            testmodel.Meetings = listMeetResponse.Data;
 
             List<SelectListItem> roads = new();
             foreach(var road in listLocationRoadResponse.Data)
@@ -209,25 +203,20 @@ namespace WebAppMVC.Controllers
 		}
 
 
-		[HttpGet("MeetingPost/{id:int}")]
-		public async Task<IActionResult> MeetingPost(int id)
+		[HttpGet("Post/{id:int}")]
+		public async Task<IActionResult> MeetingPost(
+            [FromRoute][Required] int id
+            )
 		{
 			MeetingAPI_URL += "/";
 
-            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
+            methcall.SetUserDefaultData(this);
 
-            string? role = HttpContext.Session.GetString("ROLE_NAME");
-            if(role == null) role = "Guest";
+            string? role = HttpContext.Session.GetString(Constants.Constants.ROLE_NAME);
 
-            string? usrId = HttpContext.Session.GetString("USER_ID");
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
-            string? usrname = HttpContext.Session.GetString("USER_NAME");
-
-            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
-
-            TempData["ROLE_NAME"] = role;
-            TempData["USER_NAME"] = usrname;
-            TempData["IMAGE_PATH"] = imagepath;
+            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
 
             GetMeetingPostResponse? meetPostResponse = new();
 
@@ -237,7 +226,7 @@ namespace WebAppMVC.Controllers
                 meetPostResponse = await methcall.CallMethodReturnObject<GetMeetingPostResponse>(
                                    _httpClient: _httpClient,
                                    options: options,
-                                   methodName: "POST",
+                                   methodName: Constants.Constants.POST_METHOD,
                                    url: MeetingAPI_URL,
                                    _logger: _logger,
                                    inputType: usrId,
@@ -249,7 +238,7 @@ namespace WebAppMVC.Controllers
                 meetPostResponse = await methcall.CallMethodReturnObject<GetMeetingPostResponse>(
                                    _httpClient: _httpClient,
                                    options: options,
-                                   methodName: "GET",
+                                   methodName: Constants.Constants.GET_METHOD,
                                    url: MeetingAPI_URL,
                                    _logger: _logger);
             }
@@ -275,35 +264,23 @@ namespace WebAppMVC.Controllers
             return View(meetmodel);
 		}
 
-		[HttpPost("MeetingRegister/{meetingId:int}")]
+		[HttpPost("{meetingId:int}/Register")]
         //[Authorize(Roles = "Member")]
         public async Task<IActionResult> MeetingRegister(int meetingId)
 		{
             MeetingAPI_URL += "/Register/" + meetingId;
 
-            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
-            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER));
 
-            string? role = HttpContext.Session.GetString("ROLE_NAME");
-            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Member")) return RedirectToAction("Index", "Home");
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
-            string? usrId = HttpContext.Session.GetString("USER_ID");
-            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
-
-            string? usrname = HttpContext.Session.GetString("USER_NAME");
-            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
-
-            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
-
-            TempData["ROLE_NAME"] = role;
-            TempData["USER_NAME"] = usrname;
-            TempData["IMAGE_PATH"] = imagepath;
+            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
 
             var participationNo = await methcall.CallMethodReturnObject<GetMeetingParticipationNo>(
                 _httpClient: _httpClient,
                 options: options,
-                methodName: "POST",
+                methodName: Constants.Constants.POST_METHOD,
                 url: MeetingAPI_URL,
                 _logger: _logger,
                 inputType: usrId,
@@ -326,35 +303,23 @@ namespace WebAppMVC.Controllers
 
             return RedirectToAction("MeetingPost", new { id = meetingId });
         }
-        [HttpPost("MeetingDeRegister/{meetingId:int}")]
+        [HttpPost("DeRegister/{meetingId:int}")]
         //[Authorize(Roles = "Member")]
         public async Task<IActionResult> MeetingDeRegister(int meetingId)
         {
             MeetingAPI_URL += "/RemoveParticipant/" + meetingId;
 
-            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
-            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER));
 
-            string? role = HttpContext.Session.GetString("ROLE_NAME");
-            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Member")) return RedirectToAction("Index", "Home");
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ROLE_NAME);
 
-            string? usrId = HttpContext.Session.GetString("USER_ID");
-            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
-
-            string? usrname = HttpContext.Session.GetString("USER_NAME");
-            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
-
-            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
-
-            TempData["ROLE_NAME"] = role;
-            TempData["USER_NAME"] = usrname;
-            TempData["IMAGE_PATH"] = imagepath;
+            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
 
             var participationNo = await methcall.CallMethodReturnObject<GetMeetingPostDeRegister>(
                 _httpClient: _httpClient,
                 options: options,
-                methodName: "POST",
+                methodName: Constants.Constants.POST_METHOD,
                 url: MeetingAPI_URL,
                 _logger: _logger,
                 inputType: usrId,

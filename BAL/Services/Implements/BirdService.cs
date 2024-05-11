@@ -45,7 +45,9 @@ namespace BAL.Services.Implements
             if (birdModel == null || birdModel.BirdId == null) return false;
             var birdCheck = await _unitOfWork.BirdRepository.GetBirdById(birdModel.BirdId.Value);
             if (birdCheck == null) return false;
+
             var bird = _mapper.Map<Bird>(birdModel);
+
             bird.MemberId = memberId;
             _unitOfWork.Save();
             return true;

@@ -272,7 +272,7 @@ namespace WebAPI.Controllers
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		public async Task<IActionResult> UpdateRegisterTransaction(
-			[Required][FromBody] UpdateNewMemberTransactionRequest tran)
+			[Required][FromBody] UpdateTransactionRequest tran)
 		{
 			try
 			{

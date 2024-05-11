@@ -109,7 +109,7 @@ namespace WebAppMVC.Controllers
             var listLocationResponse = await methcall.CallMethodReturnObject<GetLocationResponseByList>(
 				_httpClient: _httpClient,
 				options: options,
-				methodName: "GET",
+				methodName: Constants.Constants.GET_METHOD,
 				url: LocationAPI_URL_All,
 				_logger: _logger);
 
@@ -171,13 +171,13 @@ namespace WebAppMVC.Controllers
             var meetPostResponse = await methcall.CallMethodReturnObject<GetMeetingPostResponse>(
                                 _httpClient: _httpClient,
                                 options: options,
-                                methodName: "GET",
+                                methodName: Constants.Constants.GET_METHOD,
                                 url: StaffAPI_URL,
                                 _logger: _logger);
             var meetpartPostResponse = await methcall.CallMethodReturnObject<GetListMeetingParticipation>(
                                 _httpClient: _httpClient,
                                 options: options,
-                                methodName: "GET",
+                                methodName: Constants.Constants.GET_METHOD,
                                 url: StaffMeetingDetailAPI_URL,
                                 accessToken: accToken,
                                 _logger: _logger);
@@ -351,7 +351,7 @@ namespace WebAppMVC.Controllers
             var listLocationResponse = await methcall.CallMethodReturnObject<GetLocationResponseByList>(
                 _httpClient: _httpClient,
                 options: options,
-                methodName: "GET",
+                methodName: Constants.Constants.GET_METHOD,
                 url: LocationAPI_URL_All,
                 _logger: _logger);
 
@@ -413,13 +413,13 @@ namespace WebAppMVC.Controllers
             var fieldtripPostResponse = await methcall.CallMethodReturnObject<GetFieldTripPostResponse>(
                                 _httpClient: _httpClient,
                                 options: options,
-                                methodName: "GET",
+                                methodName: Constants.Constants.GET_METHOD,
                                 url: StaffAPI_URL,
                                 _logger: _logger);
             var fieldtrippartPostResponse = await methcall.CallMethodReturnObject<GetListFieldTripParticipation>(
                                 _httpClient: _httpClient,
                                 options: options,
-                                methodName: "GET",
+                                methodName: Constants.Constants.GET_METHOD,
                                 url: StaffFieldTripDetailAPI_URL,
                                 accessToken: accToken,
                                 _logger: _logger);
@@ -587,7 +587,7 @@ namespace WebAppMVC.Controllers
             var listLocationResponse = await methcall.CallMethodReturnObject<GetLocationResponseByList>(
                 _httpClient: _httpClient,
                 options: options,
-                methodName: "GET",
+                methodName: Constants.Constants.GET_METHOD,
                 url: LocationAPI_URL_All,
                 _logger: _logger);
 
@@ -621,41 +621,29 @@ namespace WebAppMVC.Controllers
         }
         [HttpGet("Contest/{id:int}")]
         /*[Route("Staff/Contest/{id:int}")]*/
-        public async Task<IActionResult> StaffContestDetail(int id)
+        public async Task<IActionResult> StaffContestDetail(
+            [FromRoute][Required] int id
+            )
         {
             string StaffContestDetailAPI_URL = StaffAPI_URL + "Contest/AllParticipants/" + id;
             StaffAPI_URL += "Contest/" + id;
             dynamic contestDetailBigModel = new ExpandoObject();
 
-            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
-            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.STAFF) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.STAFF));
 
-            string? role = HttpContext.Session.GetString("ROLE_NAME");
-            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Staff")) return View("Index");
-
-            string? usrId = HttpContext.Session.GetString("USER_ID");
-            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
-
-            string? usrname = HttpContext.Session.GetString("USER_NAME");
-            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
-
-            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
-
-            TempData["ROLE_NAME"] = role;
-            TempData["USER_NAME"] = usrname;
-            TempData["IMAGE_PATH"] = imagepath;
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
             var contestPostResponse = await methcall.CallMethodReturnObject<GetContestPostResponse>(
                                 _httpClient: _httpClient,
                                 options: options,
-                                methodName: "GET",
+                                methodName: Constants.Constants.GET_METHOD,
                                 url: StaffAPI_URL,
                                 _logger: _logger);
             var contestpartPostResponse = await methcall.CallMethodReturnObject<GetListContestParticipation>(
                                 _httpClient: _httpClient,
                                 options: options,
-                                methodName: "GET",
+                                methodName: Constants.Constants.GET_METHOD,
                                 url: StaffContestDetailAPI_URL,
                                 accessToken: accToken,
                                 _logger: _logger);
@@ -673,9 +661,12 @@ namespace WebAppMVC.Controllers
                     + contestPostResponse.ErrorMessage;
                 return RedirectToAction("StaffContest");
             }
+
             contestDetailBigModel.UpdateContest = methcall.GetValidationTempData<ContestViewModel>(this, TempData, Constants.Constants.UPDATE_CONTEST_VALID, "updateContest", options);
             contestDetailBigModel.ContestDetails = contestPostResponse.Data;
             contestDetailBigModel.ContestParticipants = contestpartPostResponse.Data;
+            contestDetailBigModel.SelectListParticipationStatus = methcall.GetStaffEventParticipationStatusSelectableList(contestPostResponse.Data.Status);
+            //contestDetailBigModel.SelectListParticipationStatus = methcall.GetStaffEventParticipationStatusSelectableList(contestpartPostResponse.Data.FirstOrDefault().CheckInStatus, contestPostResponse.Data.Status);
             contestDetailBigModel.SelectListStatus = methcall.GetStaffEventStatusSelectableList(contestPostResponse.Data.Status);
             return View(contestDetailBigModel);
         }
@@ -687,29 +678,14 @@ namespace WebAppMVC.Controllers
         {
             StaffAPI_URL += "Contest/Update/" + id;
 
-            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
-            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
-
-            string? role = HttpContext.Session.GetString("ROLE_NAME");
-            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Staff")) return RedirectToAction("Index", "Home");
-
-            string? usrId = HttpContext.Session.GetString("USER_ID");
-            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
-
-            string? usrname = HttpContext.Session.GetString("USER_NAME");
-            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
-
-            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
-
-            TempData["ROLE_NAME"] = role;
-            TempData["USER_NAME"] = usrname;
-            TempData["IMAGE_PATH"] = imagepath;
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.STAFF) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.STAFF));
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
             var contestPostResponse = await methcall.CallMethodReturnObject<GetContestPostResponse>(
                                 _httpClient: _httpClient,
                                 options: options,
-                                methodName: "PUT",
+                                methodName: Constants.Constants.PUT_METHOD,
                                 url: StaffAPI_URL,
                                 inputType: updateContest,
                                 accessToken: accToken,
@@ -731,36 +707,28 @@ namespace WebAppMVC.Controllers
             return RedirectToAction("StaffContestDetail", "Staff", new { id });
         }
 
-        [HttpPost("Contest/UpdateStatus/{id:int}")]
+        [HttpPost("Contest/{id:int}/Participant/All/Status/Update")]
         public async Task<IActionResult> StaffUpdateContestPartStatus(
-            int id,
-            List<ContestParticipantViewModel> contestPartView)
+            [FromRoute][Required] int id,
+            [Required] List<ContestParticipantViewModel> contestPartView)
         {
             StaffAPI_URL += "Staff/ContestStatus/Update/" + id;
 
-            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
-            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.STAFF) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.STAFF));
 
-            string? role = HttpContext.Session.GetString("ROLE_NAME");
-            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Staff")) return View("Index");
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.STAFF);
 
-            string? usrId = HttpContext.Session.GetString("USER_ID");
-            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
-
-            string? usrname = HttpContext.Session.GetString("USER_NAME");
-            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
-
-            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
-
-            TempData["ROLE_NAME"] = role;
-            TempData["USER_NAME"] = usrname;
-            TempData["IMAGE_PATH"] = imagepath;
+            if(contestPartView.Count == 0)
+            {
+                ViewBag.Error = "Error while processing your request! (Getting List Contest Participant Status!).\n List was Empty!";
+                return RedirectToAction("StaffContestDetail", "Staff", new {id});
+            }
 
             var contestPartStatusResponse = await methcall.CallMethodReturnObject<GetCheckInStatusUpdate>(
                                 _httpClient: _httpClient,
                                 options: options,
-                                methodName: "PUT",
+                                methodName: Constants.Constants.PUT_METHOD,
                                 url: StaffAPI_URL,
                                 inputType: contestPartView,
                                 accessToken: accToken,
@@ -772,7 +740,7 @@ namespace WebAppMVC.Controllers
                     "Error while processing your request! (Getting List Contest Participant Status!). List was Empty!: " + contestPartStatusResponse);
                 ViewBag.Error =
                     "Error while processing your request! (Getting List Contest Participant Status!).\n List was Empty!";
-                return View("StaffIndex");
+                return RedirectToAction("StaffContestDetail", "Staff", new { id });
             }
             else
             if (!contestPartStatusResponse.Status)
@@ -780,9 +748,9 @@ namespace WebAppMVC.Controllers
                 ViewBag.Error =
                     "Error while processing your request! (Getting List Contest Participant Status!).\n"
                     + contestPartStatusResponse.ErrorMessage;
-                return View("StaffIndex");
+                return RedirectToAction("StaffContestDetail", "Staff", new { id });
             }
-            return RedirectToAction("StaffContestDetail", "Staff", new { id = id });
+            return RedirectToAction("StaffContestDetail", "Staff", new { id });
         }
         [HttpGet("ContestPoints")]
         public IActionResult StaffContestPoints()
@@ -794,29 +762,17 @@ namespace WebAppMVC.Controllers
 		{
             StaffAPI_URL += "Staff/Profile";
 
-            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
-            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.STAFF) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.STAFF));
 
-            string? role = HttpContext.Session.GetString("ROLE_NAME");
-            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Staff")) return RedirectToAction("Index", "Home");
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
-            string? usrId = HttpContext.Session.GetString("USER_ID");
-            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
-
-            string? usrname = HttpContext.Session.GetString("USER_NAME");
-            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
-
-            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
-
-            TempData["ROLE_NAME"] = role;
-            TempData["USER_NAME"] = usrname;
-            TempData["IMAGE_PATH"] = imagepath;
+            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
 
             var memberDetails = await methcall.CallMethodReturnObject<GetMemberProfileResponse>(
                 _httpClient: _httpClient,
                 options: options,
-                methodName: "POST",
+                methodName: Constants.Constants.POST_METHOD,
                 url: StaffAPI_URL,
                 _logger: _logger,
                 inputType: usrId,

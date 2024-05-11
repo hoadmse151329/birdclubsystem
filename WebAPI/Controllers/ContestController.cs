@@ -18,15 +18,18 @@ namespace WebAPI.Controllers
         private readonly IContestParticipantService _participantService;
         private readonly IConfiguration _config;
         private readonly IMemberService _memberService;
+        private readonly IBirdService _birdService;
         public ContestController(
             IContestService contestService,
             IContestParticipantService contestParticipantService,
             IMemberService memberService,
+            IBirdService birdService,
             IConfiguration config)
         {
             _contestService = contestService;
             _memberService = memberService;
             _participantService = contestParticipantService;
+            _birdService = birdService;
             _config = config;
         }
 
@@ -252,30 +255,37 @@ namespace WebAPI.Controllers
             }
         }
 
-        [HttpPost("Register/{id}")]
+        [HttpPost("{contestId:int}/Bird/{birdId:int}/Register")]
         [Authorize(Roles = "Member")]
         [ProducesResponseType(typeof(ContestParticipantViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Register(
-            [Required][FromRoute] int id,
-            [Required][FromBody] string memId)
+            [Required][FromRoute] int contestId,
+            [Required][FromRoute] int birdId,
+            [Required][FromBody] string memberId)
         {
             try
             {
-                var contest = await _contestService.GetById(id);
+                var contest = await _contestService.GetById(contestId);
                 if (contest == null) return NotFound(new
                 {
                     Status = false,
                     ErrorMessage = "Contest Not Found!"
                 });
-                var mem = await _memberService.GetBoolById(memId);
+                var mem = await _memberService.GetBoolById(memberId);
                 if (!mem) return NotFound(new
                 {
                     Status = false,
                     ErrorMessage = "Member Not Found!"
                 });
-                int participateNo = await _participantService.Create(memId, id);
+                var bird = await _birdService.GetById(birdId);
+                if (bird == null) return NotFound(new
+                {
+                    Status = false,
+                    ErrorMessage = "Bird Not Found!"
+                });
+                int participateNo = await _participantService.Create(contestId, memberId, birdId);
                 return Ok(new
                 {
                     Status = true,
@@ -355,24 +365,37 @@ namespace WebAPI.Controllers
             }
         }
 
-        [HttpPost("RemoveParticipant/{id}")]
+        [HttpPost("{contestId:int}/Bird/{birdId:int}/Participant/Remove")]
         [Authorize(Roles = "Member,Manager")]
         [ProducesResponseType(typeof(ContestParticipantViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> RemoveParticipant(
-            [Required][FromRoute] int id,
+            [Required][FromRoute] int contestId,
+            [Required][FromRoute] int birdId,
             [Required][FromBody] string memId)
         {
             try
             {
-                var contest = await _participantService.GetParticipationNo(id, memId);
+                var contest = await _participantService.GetParticipationNo(contestId, memId);
                 if (contest == 0) return NotFound(new
                 {
                     Status = false,
                     ErrorMessage = "Contest Not Found!"
                 });
-                var result = await _participantService.Delete(memId, id);
+                var mem = await _memberService.GetBoolById(memId);
+                if (!mem) return NotFound(new
+                {
+                    Status = false,
+                    ErrorMessage = "Member Not Found!"
+                });
+                var bird = await _birdService.GetById(birdId);
+                if (bird == null) return NotFound(new
+                {
+                    Status = false,
+                    ErrorMessage = "Bird Not Found!"
+                });
+                var result = await _participantService.Delete(contestId, memId,birdId);
                 return Ok(new
                 {
                     Status = true,
