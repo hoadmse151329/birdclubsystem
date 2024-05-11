@@ -84,9 +84,9 @@
 
                                 <a href="#" class="club-image">
                                     @{
-                                        if (data.Media != null && data.Media.Count() > 0)
+                                        if (data.ContestPictures != null && data.ContestPictures.Count() > 0)
                                         {
-                                            <img class="img-fluid" src="@data.Media.FirstOrDefault().Image" alt="nt1">
+                                            <img class="img-fluid" src="@data.ContestPictures.FirstOrDefault().Image" alt="nt1">
                                         }
                                         else
                                         {

@@ -21,7 +21,7 @@ namespace WebAppMVC.Constants
         public readonly static string MEMBER_CONTEST_REGISTRATION_TRANSACTION_COOKIE = "Member-Contest-Registration-Transaction-Cookie";
 
         public readonly static string NEW_MEMBER_REGISTRATION_TRANSACTION_TYPE = "New-Membership-Registration";
-		    public readonly static string MEMBER_FIELDTRIP_REGISTRATION_TRANSACTION_TYPE = "Member-FieldTrip-Registration";
+		public readonly static string MEMBER_FIELDTRIP_REGISTRATION_TRANSACTION_TYPE = "Member-FieldTrip-Registration";
         public readonly static string MEMBER_CONTEST_REGISTRATION_TRANSACTION_TYPE = "Member-Contest-Registration";
     
         public readonly static string CREATE_BIRD_VALID = "CBirdValid";
@@ -46,7 +46,7 @@ namespace WebAppMVC.Constants
         public readonly static string CREATE_CONTEST_VALID = "CContestValid";
         public readonly static string UPDATE_CONTEST_VALID = "UContestValid";
 
-		    public readonly static string EVENT_STATUS_ON_HOLD = "OnHold";
+		public readonly static string EVENT_STATUS_ON_HOLD = "OnHold";
         public readonly static string EVENT_STATUS_NAME_ON_HOLD = "On Hold";
         public readonly static string EVENT_STATUS_POSTPONED = "Postponed";
         public readonly static string EVENT_STATUS_NAME_POSTPONED = "Postponed";
@@ -63,7 +63,7 @@ namespace WebAppMVC.Constants
         public readonly static string EVENT_STATUS_ONGOING = "Ongoing";
         public readonly static string EVENT_STATUS_NAME_ONGOING = "Ongoing";
 
-        public readonly static string BIRD_STATUS_AVAILABLE = "Available";
+        public readonly static string BIRD_STATUS_AVAILABLE = "Active";
         public readonly static string BIRD_STATUS_INJURED = "Injured";
         public readonly static string BIRD_STATUS_UNAVAILABLE = "Inactive";
 

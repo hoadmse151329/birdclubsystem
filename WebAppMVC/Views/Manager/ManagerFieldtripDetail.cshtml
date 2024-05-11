@@ -2,19 +2,19 @@
 @{
     Layout = null;
     ViewData["Title"] = "Manager Field Trip Detail Page";
-    BAL.ViewModels.FieldTripViewModel details = Model.FieldTripDetails;
-    BAL.ViewModels.FieldTripViewModel updateTrip = Model.UpdateFieldTrip != null ? Model.UpdateFieldTrip : details;
+    BAL.ViewModels.FieldTripViewModel detailsFieldTrip = Model.FieldTripDetails;
+    BAL.ViewModels.FieldTripViewModel updateTrip = Model.UpdateFieldTrip != null ? Model.UpdateFieldTrip : detailsFieldTrip;
 
-    List<BAL.ViewModels.FieldtripDaybyDayViewModel>? detailDayByDay = details.FieldtripDaybyDays;
+    List<BAL.ViewModels.FieldtripDaybyDayViewModel>? detailDayByDay = detailsFieldTrip.FieldtripDaybyDays;
     int createDayByDayCount = detailDayByDay.Count + 1;
     BAL.ViewModels.FieldtripDaybyDayViewModel createDayByDay = Model.CreateFieldTripDayByDay != null ? Model.CreateFieldTripDayByDay : new BAL.ViewModels.FieldtripDaybyDayViewModel();
     List<BAL.ViewModels.FieldtripDaybyDayViewModel> updateDayByDays = Model.UpdateFieldTripDayByDays != null ? Model.UpdateFieldTripDayByDays : new List<BAL.ViewModels.FieldtripDaybyDayViewModel>();
     Dictionary<string, string> updateDayByDayErrorList = Model.UpdateFieldTripDayByDayErrors != null ? Model.UpdateFieldTripDayByDayErrors : new Dictionary<string, string>();
 
-    BAL.ViewModels.FieldtripGettingThereViewModel detailGettingThere = details.FieldtripGettingTheres;
+    BAL.ViewModels.FieldtripGettingThereViewModel detailGettingThere = detailsFieldTrip.FieldtripGettingTheres;
     BAL.ViewModels.FieldtripGettingThereViewModel updateGettingThere = Model.UpdateFieldTripGettingThere != null ? Model.UpdateFieldTripGettingThere : detailGettingThere;
 
-    List<BAL.ViewModels.FieldtripInclusionViewModel>? Inclusion = details.FieldtripInclusions;
+    List<BAL.ViewModels.FieldtripInclusionViewModel>? Inclusion = detailsFieldTrip.FieldtripInclusions;
     BAL.ViewModels.FieldtripInclusionViewModel createInclusion = Model.CreateFieldTripInclusion != null ? Model.CreateFieldTripInclusion : new BAL.ViewModels.FieldtripInclusionViewModel();
     List<BAL.ViewModels.FieldtripInclusionViewModel> updateInclusions = Model.UpdateFieldTripInclusions != null ? Model.UpdateFieldTripInclusions : new List<BAL.ViewModels.FieldtripInclusionViewModel>();
     Dictionary<string, string> updateInclusionErrorList = Model.UpdateFieldTripInclusionErrors != null ? Model.UpdateFieldTripInclusionErrors : new Dictionary<string, string>();
@@ -35,7 +35,11 @@
     List<BAL.ViewModels.FieldTripAdditionalDetailViewModel> updateActAndTrass = Model.UpdateFieldTripActAndTrass != null ? Model.UpdateFieldTripActAndTrass : new List<BAL.ViewModels.FieldTripAdditionalDetailViewModel>();
     Dictionary<string, string> updateActAndTrasErrorList = Model.UpdateFieldTripActAndTrasErrors != null ? Model.UpdateFieldTripActAndTrasErrors : new Dictionary<string, string>();
 
-    List<BAL.ViewModels.FieldtripMediaViewModel>? Media = details.FieldtripPictures;
+    BAL.ViewModels.FieldtripMediaViewModel Spotlight = detailsFieldTrip.SpotlightImage;
+    BAL.ViewModels.FieldtripMediaViewModel LocationMap = detailsFieldTrip.LocationMapImage;
+
+    List<BAL.ViewModels.FieldtripMediaViewModel>? Media = detailsFieldTrip.FieldtripPictures;
+    BAL.ViewModels.FieldtripMediaViewModel createMedia = Model.CreateFieldTripMedia != null ? Model.CreateFieldTripMedia : new BAL.ViewModels.FieldtripMediaViewModel();
 
     List<BAL.ViewModels.FieldTripParticipantViewModel>? parts = Model.FieldTripParticipants;
 
@@ -81,9 +85,14 @@
                             <div class="card profile col-12 mb-4">
                                 <div class="card-header">
                                     <h4>Fieldtrip Information</h4>
-                                    <div class="edit-info">
-                                        <i class='bx bxs-edit-alt' data-toggle="modal" data-target="#editprofile"></i>
-                                    </div>
+                                    @{
+                                        if (!(detailsFieldTrip.Status.Equals("Ended") || detailsFieldTrip.Status.Equals("Cancelled")))
+                                        {
+                                            <div class="edit-info">
+                                                <i class='bx bxs-edit-alt' data-toggle="modal" data-target="#editprofile"></i>
+                                            </div>
+                                        }
+                                    }
                                 </div>
                                 <div class="card-body">
                                     <div class="row">
@@ -92,26 +101,26 @@
                                         </div>
                                         <div class="col-sm-7">
                                             @{
-                                                switch (details.Status)
+                                                switch (detailsFieldTrip.Status)
                                                 {
                                                     case "Ongoing":
                                                     case "CheckingIn":
                                                     case "OpenRegistration":
                                                         {
-                                                            <span class="outcome" style="float: left;">@details.Status</span>
+                                                            <span class="outcome" style="float: left;">@detailsFieldTrip.Status</span>
                                                             break;
                                                         }
                                                     case "OnHold":
                                                     case "ClosedRegistration":
                                                         {
-                                                            <span class="approval" style="float: left;">@details.Status</span>
+                                                            <span class="approval" style="float: left;">@detailsFieldTrip.Status</span>
                                                             break;
                                                         }
                                                     case "Ended":
                                                     case "Postponed":
                                                     case "Cancelled":
                                                         {
-                                                            <span class="destroy" style="float: left;">@details.Status</span>
+                                                            <span class="destroy" style="float: left;">@detailsFieldTrip.Status</span>
                                                             break;
                                                         }
                                                 }
@@ -123,7 +132,7 @@
                                             <label for="meeting-name">FieldTrip Name:</label>
                                         </div>
                                         <div class="col-md-7">
-                                            <span>@details.TripName</span>
+                                            <span>@detailsFieldTrip.TripName</span>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -131,7 +140,7 @@
                                             <label for="customer-name">Open Registration Date:</label>
                                         </div>
                                         <div class="col-md-7">
-                                            <span>@details.OpenRegistration.ToString("dd-MM-yyyy HH:mm")</span>
+                                            <span>@detailsFieldTrip.OpenRegistration.ToString("dd-MM-yyyy HH:mm")</span>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -139,7 +148,7 @@
                                             <label for="customer-name">Registration Deadlines:</label>
                                         </div>
                                         <div class="col-md-7">
-                                            <span>@details.RegistrationDeadline.ToString("dd-MM-yyyy HH:mm")</span>
+                                            <span>@detailsFieldTrip.RegistrationDeadline.ToString("dd-MM-yyyy HH:mm")</span>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -147,7 +156,7 @@
                                             <label for="customer-name">Start Date:</label>
                                         </div>
                                         <div class="col-md-7">
-                                            <span>@details.StartDate.ToString("dd-MM-yyyy HH:mm")</span>
+                                            <span>@detailsFieldTrip.StartDate.ToString("dd-MM-yyyy HH:mm")</span>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -155,7 +164,7 @@
                                             <label for="customer-name">End Date:</label>
                                         </div>
                                         <div class="col-md-7">
-                                            <span>@details.EndDate.ToString("dd-MM-yyyy HH:mm")</span>
+                                            <span>@detailsFieldTrip.EndDate.ToString("dd-MM-yyyy HH:mm")</span>
                                         </div>
                                     </div>
                                     <div class="row mb-sm-2">
@@ -163,7 +172,7 @@
                                             <span>Host:</span>
                                         </div>
                                         <div class="col-sm-7 text-sm-left">
-                                            <span>@details.Host</span>
+                                            <span>@detailsFieldTrip.Host</span>
                                         </div>
                                     </div>
                                     <div class="row mb-sm-2">
@@ -171,7 +180,7 @@
                                             <span>Incharge:</span>
                                         </div>
                                         <div class="col-sm-7 text-sm-left">
-                                            <span>@details.InCharge</span>
+                                            <span>@detailsFieldTrip.InCharge</span>
                                         </div>
                                     </div>
                                     <div class="row mb-sm-2">
@@ -179,7 +188,7 @@
                                             <span>Fee:</span>
                                         </div>
                                         <div class="col-sm-7 text-sm-left">
-                                            <span>@details.Fee&#8363</span>
+                                            <span>@detailsFieldTrip.Fee&#8363</span>
                                         </div>
                                     </div>
                                     <div class="row mb-sm-2">
@@ -187,7 +196,7 @@
                                             <span>Maximum Participations:</span>
                                         </div>
                                         <div class="col-sm-7 text-sm-left">
-                                            <span>@details.NumberOfParticipantsLimit</span>
+                                            <span>@detailsFieldTrip.NumberOfParticipantsLimit</span>
                                         </div>
                                     </div>
                                     <div class="row mb-sm-2">
@@ -195,7 +204,7 @@
                                             <span>Remaining Participant Slots:</span>
                                         </div>
                                         <div class="col-sm-7 text-sm-left">
-                                            <span>@details.NumberOfParticipants</span>
+                                            <span>@detailsFieldTrip.NumberOfParticipants</span>
                                         </div>
                                     </div>
                                     <div class="row mb-sm-2">
@@ -203,7 +212,7 @@
                                             <span>Location:</span>
                                         </div>
                                         <div class="col-sm-7 text-sm-left">
-                                            <span>@details.AreaNumber,@details.Street,@details.District,@details.City</span>
+                                            <span>@detailsFieldTrip.AreaNumber,@detailsFieldTrip.Street,@detailsFieldTrip.District,@detailsFieldTrip.City</span>
                                         </div>
                                     </div>
                                     <div class="row mb-sm-2">
@@ -211,7 +220,7 @@
                                             <span>Description:</span>
                                         </div>
                                         <div class="col-sm-7 text-sm-left">
-                                            <span>@details.Description</span>
+                                            <span>@detailsFieldTrip.Description</span>
                                         </div>
                                     </div>
                                     <div class="row mb-sm-2">
@@ -219,7 +228,7 @@
                                             <span>Details:</span>
                                         </div>
                                         <div class="col-sm-7 text-sm-left">
-                                            <span>@details.Details</span>
+                                            <span>@detailsFieldTrip.Details</span>
                                         </div>
                                     </div>
                                     <div class="row mb-sm-2">
@@ -227,7 +236,7 @@
                                             <span>Note:</span>
                                         </div>
                                         <div class="col-sm-7 text-sm-left">
-                                            <span>@details.Note</span>
+                                            <span>@detailsFieldTrip.Note</span>
                                         </div>
                                     </div>
                                 </div>
@@ -237,21 +246,31 @@
                             <div class="card profile col-12 mb-4">
                                 <div class="card-header">
                                     <h4>Tour Features</h4>
-                                    <div class="edit-info">
-                                        <i class='bx bxs-plus-circle' data-toggle="modal" data-target="#createtourfeature"></i>
-                                    </div>
+                                    @{
+                                        if (detailsFieldTrip.Status.Equals("OnHold") || detailsFieldTrip.Status.Equals("Postponed"))
+                                        {
+                                            <div class="edit-info">
+                                                <i class='bx bxs-plus-circle' data-toggle="modal" data-target="#createtourfeature"></i>
+                                            </div>
+                                        }
+                                    }
                                 </div>
                                 <div class="card-body">
                                     @{
                                         if (TourFeatures != null && TourFeatures.Count > 0)
                                         {
-                                            @foreach (var addDetail in TourFeatures)
+                                            foreach (var addDetail in TourFeatures)
                                             {
                                                 <div class="card-header">
                                                     <h5>Tour Feature @addDetail.Title Details</h5>
-                                                    <div class="edit-info">
-                                                        <i class='bx bxs-edit-alt' data-toggle="modal" data-target="#edittourfeature_@addDetail.TripDetailsId"></i>
-                                                    </div>
+                                                    @{
+                                                        if (detailsFieldTrip.Status.Equals("OnHold") || detailsFieldTrip.Status.Equals("Postponed"))
+                                                        {
+                                                            <div class="edit-info">
+                                                                <i class='bx bxs-edit-alt' data-toggle="modal" data-target="#edittourfeature_@addDetail.TripDetailsId"></i>
+                                                            </div>
+                                                        }
+                                                    }
                                                 </div>
                                                 <div class="row mb-sm-2">
                                                     <div class="col-sm-5 text-sm-right">
@@ -278,94 +297,96 @@
                                                     </div>
                                                 </div>
                                                 <hr class="container my-0">
-
-                                                <div id="edittourfeature_@addDetail.TripDetailsId" class="modal fade" role="dialog">
-                                                    <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
-                                                        <div class="modal-content modal-addRoom">
-                                                            <div class="modal-header">
-                                                                <h4 class="modal-title">Update Field Trip Tour Feature @addDetail.Title</h4>
-                                                            </div>
-                                                            <form asp-action="ManagerUpdateFieldTripTourFeature" asp-controller="Manager" method="post" asp-route-id="@details.TripId" asp-route-addDeId="@addDetail.TripDetailsId" class="form-group">
-                                                                @{
-                                                                    var updateTourFeature = updateTourFeatures.FirstOrDefault(d => d.TripDetailsId.Equals(addDetail.TripDetailsId));
-                                                                    if (updateTourFeature != null)
-                                                                    {
-                                                                        <div class="modal-body">
-                                                                            <div class="row justify-content-center">
-                                                                                <input asp-for="@updateTourFeature.TripDetailsId" type="number"
-                                                                                       value="@updateTourFeature.TripDetailsId" class="form-control" required hidden>
-                                                                                <input asp-for="@updateTourFeature.Type" type="text"
-                                                                                       value="@updateTourFeature.Type" class="form-control" required hidden>
-                                                                                <div class="col-12 col-md-12">
-                                                                                    <div class="form-group row">
-                                                                                        <label asp-for="@updateTourFeature.Title" class="col-sm-4 col-form-label"></label>
-                                                                                        <div class="col-sm-8">
-                                                                                            <input asp-for="@updateTourFeature.Title" type="text" 
-                                                                                                   value="@updateTourFeature.Title" class="form-control" required>
-                                                                                            @{
-                                                                                                var errortitle = updateTourFeatureErrorList.FirstOrDefault(d => d.Key.Equals("updateTourFeature_" + updateTourFeature.TripDetailsId + ".Title")).Value;
-                                                                                            }
-                                                                                            <span id="error_message" name="updateTourFeature_@(updateTourFeature.TripDetailsId).Title" data-valmsg-for="updateTourFeature_@(updateTourFeature.TripDetailsId).Title"
-                                                                                                  class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2 field-validation-error" data-valmsg-replace="true">@errortitle</span>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <div class="form-group row">
-                                                                                        <label asp-for="@updateTourFeature.Description" class="col-sm-4 col-form-label"></label>
-                                                                                        <div class="col-sm-8">
-                                                                                            <input asp-for="@updateTourFeature.Description" type="text"
-                                                                                                   value="@updateTourFeature.Description" class="form-control" required>
-                                                                                            @{
-                                                                                                var errordesti = updateDayByDayErrorList.FirstOrDefault(d => d.Key.Equals("updateTourFeature_" + updateTourFeature.TripDetailsId + ".Description")).Value;
-                                                                                            }
-                                                                                            <span id="error_message" name="updateTourFeature_@(updateTourFeature.TripDetailsId).Description" data-valmsg-for="updateTourFeature_@(updateTourFeature.TripDetailsId).Description"
-                                                                                                  class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2 field-validation-error" data-valmsg-replace="true">@errordesti</span>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        updateTourFeature = addDetail;
-                                                                        <div class="modal-body">
-                                                                            <div class="row justify-content-center">
-                                                                                <input asp-for="@updateTourFeature.TripDetailsId" type="number"
-                                                                                       value="@addDetail.TripDetailsId" class="form-control" required hidden>
-                                                                                <input asp-for="@updateTourFeature.Type" type="text"
-                                                                                       value="@addDetail.Type" class="form-control" required hidden>
-                                                                                <div class="col-12 col-md-12">
-                                                                                    <div class="form-group row">
-                                                                                        <label asp-for="@updateTourFeature.Title" class="col-sm-4 col-form-label"></label>
-                                                                                        <div class="col-sm-8">
-                                                                                            <input asp-for="@updateTourFeature.Title" type="text"
-                                                                                                   value="@updateTourFeature.Title" class="form-control" required>
-                                                                                            <span asp-validation-for="@updateTourFeature.Title" id="error_message"
-                                                                                                  class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <div class="form-group row">
-                                                                                        <label asp-for="@updateTourFeature.Description" class="col-sm-4 col-form-label"></label>
-                                                                                        <div class="col-sm-8">
-                                                                                            <input asp-for="@updateTourFeature.Description" type="text"
-                                                                                                   value="@addDetail.Description" class="form-control" required>
-                                                                                            <span asp-validation-for="@updateTourFeature.Description" id="error_message"
-                                                                                                  class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    }
-                                                                }
-                                                                <div class="modal-footer justify-content-center">
-                                                                    <button class="btn btn-success" type="submit" value="Update">Save</button>
-                                                                    <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
+                                                if (detailsFieldTrip.Status.Equals("OnHold") || detailsFieldTrip.Status.Equals("Postponed"))
+                                                {
+                                                    <div id="edittourfeature_@addDetail.TripDetailsId" class="modal fade" role="dialog">
+                                                        <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
+                                                            <div class="modal-content modal-addRoom">
+                                                                <div class="modal-header">
+                                                                    <h4 class="modal-title">Update Field Trip Tour Feature @addDetail.Title</h4>
                                                                 </div>
-                                                            </form>
+                                                                <form asp-action="ManagerUpdateFieldTripTourFeature" asp-controller="Manager" method="post" asp-route-id="@detailsFieldTrip.TripId" asp-route-addDeId="@addDetail.TripDetailsId" class="form-group">
+                                                                    @{
+                                                                        var updateTourFeature = updateTourFeatures.FirstOrDefault(d => d.TripDetailsId.Equals(addDetail.TripDetailsId));
+                                                                        if (updateTourFeature != null)
+                                                                        {
+                                                                            <div class="modal-body">
+                                                                                <div class="row justify-content-center">
+                                                                                    <input asp-for="@updateTourFeature.TripDetailsId" type="number"
+                                                                                            value="@updateTourFeature.TripDetailsId" class="form-control" required hidden>
+                                                                                    <input asp-for="@updateTourFeature.Type" type="text"
+                                                                                            value="@updateTourFeature.Type" class="form-control" required hidden>
+                                                                                    <div class="col-12 col-md-12">
+                                                                                        <div class="form-group row">
+                                                                                            <label asp-for="@updateTourFeature.Title" class="col-sm-4 col-form-label"></label>
+                                                                                            <div class="col-sm-8">
+                                                                                                <input asp-for="@updateTourFeature.Title" type="text"
+                                                                                                        value="@updateTourFeature.Title" class="form-control" required>
+                                                                                                @{
+                                                                                                    var errortitle = updateTourFeatureErrorList.FirstOrDefault(d => d.Key.Equals("updateTourFeature_" + updateTourFeature.TripDetailsId + ".Title")).Value;
+                                                                                                }
+                                                                                                <span id="error_message" name="updateTourFeature_@(updateTourFeature.TripDetailsId).Title" data-valmsg-for="updateTourFeature_@(updateTourFeature.TripDetailsId).Title"
+                                                                                                        class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2 field-validation-error" data-valmsg-replace="true">@errortitle</span>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="form-group row">
+                                                                                            <label asp-for="@updateTourFeature.Description" class="col-sm-4 col-form-label"></label>
+                                                                                            <div class="col-sm-8">
+                                                                                                <input asp-for="@updateTourFeature.Description" type="text"
+                                                                                                        value="@updateTourFeature.Description" class="form-control" required>
+                                                                                                @{
+                                                                                                    var errordesti = updateDayByDayErrorList.FirstOrDefault(d => d.Key.Equals("updateTourFeature_" + updateTourFeature.TripDetailsId + ".Description")).Value;
+                                                                                                }
+                                                                                                <span id="error_message" name="updateTourFeature_@(updateTourFeature.TripDetailsId).Description" data-valmsg-for="updateTourFeature_@(updateTourFeature.TripDetailsId).Description"
+                                                                                                        class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2 field-validation-error" data-valmsg-replace="true">@errordesti</span>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            updateTourFeature = addDetail;
+                                                                            <div class="modal-body">
+                                                                                <div class="row justify-content-center">
+                                                                                    <input asp-for="@updateTourFeature.TripDetailsId" type="number"
+                                                                                            value="@addDetail.TripDetailsId" class="form-control" required hidden>
+                                                                                    <input asp-for="@updateTourFeature.Type" type="text"
+                                                                                            value="@addDetail.Type" class="form-control" required hidden>
+                                                                                    <div class="col-12 col-md-12">
+                                                                                        <div class="form-group row">
+                                                                                            <label asp-for="@updateTourFeature.Title" class="col-sm-4 col-form-label"></label>
+                                                                                            <div class="col-sm-8">
+                                                                                                <input asp-for="@updateTourFeature.Title" type="text"
+                                                                                                        value="@updateTourFeature.Title" class="form-control" required>
+                                                                                                <span asp-validation-for="@updateTourFeature.Title" id="error_message"
+                                                                                                        class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="form-group row">
+                                                                                            <label asp-for="@updateTourFeature.Description" class="col-sm-4 col-form-label"></label>
+                                                                                            <div class="col-sm-8">
+                                                                                                <input asp-for="@updateTourFeature.Description" type="text"
+                                                                                                        value="@addDetail.Description" class="form-control" required>
+                                                                                                <span asp-validation-for="@updateTourFeature.Description" id="error_message"
+                                                                                                        class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        }
+                                                                    }
+                                                                    <div class="modal-footer justify-content-center">
+                                                                        <button class="btn btn-success" type="submit" value="Update">Save</button>
+                                                                        <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                }
                                             }
                                         }
                                     }
@@ -376,9 +397,14 @@
                             <div class="card profile col-12 mb-4">
                                 <div class="card-header">
                                     <h4>Important to know</h4>
-                                    <div class="edit-info">
-                                        <i class='bx bxs-plus-circle' data-toggle="modal" data-target="#createimportant"></i>
-                                    </div>
+                                    @{
+                                        if (detailsFieldTrip.Status.Equals("OnHold") || detailsFieldTrip.Status.Equals("Postponed"))
+                                        {
+                                            <div class="edit-info">
+                                                <i class='bx bxs-plus-circle' data-toggle="modal" data-target="#createimportant"></i>
+                                            </div>
+                                        }
+                                    }
                                 </div>
                                 <div class="card-body">
                                     @{
@@ -388,9 +414,14 @@
                                             {
                                                 <div class="card-header">
                                                     <h5>Important to Know @addDetail.Title Details</h5>
-                                                    <div class="edit-info">
-                                                        <i class='bx bxs-edit-alt' data-toggle="modal" data-target="#editimportant_@addDetail.TripDetailsId"></i>
-                                                    </div>
+                                                    @{
+                                                        if (detailsFieldTrip.Status.Equals("OnHold") || detailsFieldTrip.Status.Equals("Postponed"))
+                                                        {
+                                                            <div class="edit-info">
+                                                                <i class='bx bxs-edit-alt' data-toggle="modal" data-target="#editimportant_@addDetail.TripDetailsId"></i>
+                                                            </div>
+                                                        }
+                                                    }
                                                 </div>
                                                 <div class="row mb-sm-2">
                                                     <div class="col-sm-5 text-sm-right">
@@ -417,93 +448,96 @@
                                                     </div>
                                                 </div>
                                                 <hr class="container my-0">
-                                                <div id="editimportant_@addDetail.TripDetailsId" class="modal fade" role="dialog">
-                                                    <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
-                                                        <div class="modal-content modal-addRoom">
-                                                            <div class="modal-header">
-                                                                <h4 class="modal-title">Update Field Trip Important to Know @addDetail.Title</h4>
-                                                            </div>
-                                                            <form asp-action="ManagerUpdateFieldTripImportant" asp-controller="Manager" method="post" asp-route-id="@details.TripId" asp-route-addDeId="@addDetail.TripDetailsId" class="form-group">
-                                                                @{
-                                                                    var updateImportant = updateImportants.FirstOrDefault(d => d.TripDetailsId.Equals(addDetail.TripDetailsId));
-                                                                    if (updateImportant != null)
-                                                                    {
-                                                                        <div class="modal-body">
-                                                                            <div class="row justify-content-center">
-                                                                                <input asp-for="@updateImportant.TripDetailsId" type="number"
-                                                                                       value="@updateImportant.TripDetailsId" class="form-control" required hidden>
-                                                                                <input asp-for="@updateImportant.Type" type="text"
-                                                                                       value="@updateImportant.Type" class="form-control" required hidden>
-                                                                                <div class="col-12 col-md-12">
-                                                                                    <div class="form-group row">
-                                                                                        <label asp-for="@updateImportant.Title" class="col-sm-4 col-form-label"></label>
-                                                                                        <div class="col-sm-8">
-                                                                                            <input asp-for="@updateImportant.Title" type="text"
-                                                                                                   value="@updateImportant.Title" class="form-control" required>
-                                                                                            @{
-                                                                                                var errortitle = updateImportantErrorList.FirstOrDefault(d => d.Key.Equals("updateImportant_" + updateImportant.TripDetailsId + ".Title")).Value;
-                                                                                            }
-                                                                                            <span id="error_message" name="updateImportant_@(updateImportant.TripDetailsId).Title" data-valmsg-for="updateImportant_@(updateImportant.TripDetailsId).Title"
-                                                                                                  class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2 field-validation-error" data-valmsg-replace="true">@errortitle</span>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <div class="form-group row">
-                                                                                        <label asp-for="@updateImportant.Description" class="col-sm-4 col-form-label"></label>
-                                                                                        <div class="col-sm-8">
-                                                                                            <input asp-for="@updateImportant.Description" type="text"
-                                                                                                   value="@updateImportant.Description" class="form-control" required>
-                                                                                            @{
-                                                                                                var errordesti = updateDayByDayErrorList.FirstOrDefault(d => d.Key.Equals("updateImportant_" + updateImportant.TripDetailsId + ".Description")).Value;
-                                                                                            }
-                                                                                            <span id="error_message" name="updateImportant_@(updateImportant.TripDetailsId).Description" data-valmsg-for="updateImportant_@(updateImportant.TripDetailsId).Description"
-                                                                                                  class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2 field-validation-error" data-valmsg-replace="true">@errordesti</span>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        updateImportant = addDetail;
-                                                                        <div class="modal-body">
-                                                                            <div class="row justify-content-center">
-                                                                                <input asp-for="@updateImportant.TripDetailsId" type="number"
-                                                                                       value="@addDetail.TripDetailsId" class="form-control" required hidden>
-                                                                                <input asp-for="@updateImportant.Type" type="text"
-                                                                                       value="@addDetail.Type" class="form-control" required hidden>
-                                                                                <div class="col-12 col-md-12">
-                                                                                    <div class="form-group row">
-                                                                                        <label asp-for="@updateImportant.Title" class="col-sm-4 col-form-label"></label>
-                                                                                        <div class="col-sm-8">
-                                                                                            <input asp-for="@updateImportant.Title" type="text"
-                                                                                                   value="@updateImportant.Title" class="form-control" required>
-                                                                                            <span asp-validation-for="@updateImportant.Title" id="error_message"
-                                                                                                  class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <div class="form-group row">
-                                                                                        <label asp-for="@updateImportant.Description" class="col-sm-4 col-form-label"></label>
-                                                                                        <div class="col-sm-8">
-                                                                                            <input asp-for="@updateImportant.Description" type="text"
-                                                                                                   value="@addDetail.Description" class="form-control" required>
-                                                                                            <span asp-validation-for="@updateImportant.Description" id="error_message"
-                                                                                                  class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    }
-                                                                }
-                                                                <div class="modal-footer justify-content-center">
-                                                                    <button class="btn btn-success" type="submit" value="Update">Save</button>
-                                                                    <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
+                                                if (detailsFieldTrip.Status.Equals("OnHold") || detailsFieldTrip.Status.Equals("Postponed"))
+                                                {
+                                                    <div id="editimportant_@addDetail.TripDetailsId" class="modal fade" role="dialog">
+                                                        <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
+                                                            <div class="modal-content modal-addRoom">
+                                                                <div class="modal-header">
+                                                                    <h4 class="modal-title">Update Field Trip Important to Know @addDetail.Title</h4>
                                                                 </div>
-                                                            </form>
+                                                                <form asp-action="ManagerUpdateFieldTripImportant" asp-controller="Manager" method="post" asp-route-id="@detailsFieldTrip.TripId" asp-route-addDeId="@addDetail.TripDetailsId" class="form-group">
+                                                                    @{
+                                                                        var updateImportant = updateImportants.FirstOrDefault(d => d.TripDetailsId.Equals(addDetail.TripDetailsId));
+                                                                        if (updateImportant != null)
+                                                                        {
+                                                                            <div class="modal-body">
+                                                                                <div class="row justify-content-center">
+                                                                                    <input asp-for="@updateImportant.TripDetailsId" type="number"
+                                                                                           value="@updateImportant.TripDetailsId" class="form-control" required hidden>
+                                                                                    <input asp-for="@updateImportant.Type" type="text"
+                                                                                           value="@updateImportant.Type" class="form-control" required hidden>
+                                                                                    <div class="col-12 col-md-12">
+                                                                                        <div class="form-group row">
+                                                                                            <label asp-for="@updateImportant.Title" class="col-sm-4 col-form-label"></label>
+                                                                                            <div class="col-sm-8">
+                                                                                                <input asp-for="@updateImportant.Title" type="text"
+                                                                                                       value="@updateImportant.Title" class="form-control" required>
+                                                                                                @{
+                                                                                                    var errortitle = updateImportantErrorList.FirstOrDefault(d => d.Key.Equals("updateImportant_" + updateImportant.TripDetailsId + ".Title")).Value;
+                                                                                                }
+                                                                                                <span id="error_message" name="updateImportant_@(updateImportant.TripDetailsId).Title" data-valmsg-for="updateImportant_@(updateImportant.TripDetailsId).Title"
+                                                                                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2 field-validation-error" data-valmsg-replace="true">@errortitle</span>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="form-group row">
+                                                                                            <label asp-for="@updateImportant.Description" class="col-sm-4 col-form-label"></label>
+                                                                                            <div class="col-sm-8">
+                                                                                                <input asp-for="@updateImportant.Description" type="text"
+                                                                                                       value="@updateImportant.Description" class="form-control" required>
+                                                                                                @{
+                                                                                                    var errordesti = updateDayByDayErrorList.FirstOrDefault(d => d.Key.Equals("updateImportant_" + updateImportant.TripDetailsId + ".Description")).Value;
+                                                                                                }
+                                                                                                <span id="error_message" name="updateImportant_@(updateImportant.TripDetailsId).Description" data-valmsg-for="updateImportant_@(updateImportant.TripDetailsId).Description"
+                                                                                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2 field-validation-error" data-valmsg-replace="true">@errordesti</span>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            updateImportant = addDetail;
+                                                                            <div class="modal-body">
+                                                                                <div class="row justify-content-center">
+                                                                                    <input asp-for="@updateImportant.TripDetailsId" type="number"
+                                                                                           value="@addDetail.TripDetailsId" class="form-control" required hidden>
+                                                                                    <input asp-for="@updateImportant.Type" type="text"
+                                                                                           value="@addDetail.Type" class="form-control" required hidden>
+                                                                                    <div class="col-12 col-md-12">
+                                                                                        <div class="form-group row">
+                                                                                            <label asp-for="@updateImportant.Title" class="col-sm-4 col-form-label"></label>
+                                                                                            <div class="col-sm-8">
+                                                                                                <input asp-for="@updateImportant.Title" type="text"
+                                                                                                       value="@updateImportant.Title" class="form-control" required>
+                                                                                                <span asp-validation-for="@updateImportant.Title" id="error_message"
+                                                                                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="form-group row">
+                                                                                            <label asp-for="@updateImportant.Description" class="col-sm-4 col-form-label"></label>
+                                                                                            <div class="col-sm-8">
+                                                                                                <input asp-for="@updateImportant.Description" type="text"
+                                                                                                       value="@addDetail.Description" class="form-control" required>
+                                                                                                <span asp-validation-for="@updateImportant.Description" id="error_message"
+                                                                                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        }
+                                                                    }
+                                                                    <div class="modal-footer justify-content-center">
+                                                                        <button class="btn btn-success" type="submit" value="Update">Save</button>
+                                                                        <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                }
                                             }
                                         }
                                     }
@@ -514,9 +548,14 @@
                             <div class="card profile col-12 mb-4">
                                 <div class="card-header">
                                     <h4>Activities and Transportation</h4>
-                                    <div class="edit-info">
-                                        <i class='bx bxs-plus-circle' data-toggle="modal" data-target="#createactandtras"></i>
-                                    </div>
+                                    @{
+                                        if (detailsFieldTrip.Status.Equals("OnHold") || detailsFieldTrip.Status.Equals("Postponed"))
+                                        {
+                                            <div class="edit-info">
+                                                <i class='bx bxs-plus-circle' data-toggle="modal" data-target="#createactandtras"></i>
+                                            </div>
+                                        }
+                                    }
                                 </div>
                                 <div class="card-body">
                                     @{
@@ -526,9 +565,14 @@
                                             {
                                                 <div class="card-header">
                                                     <h5>ActAndTransport @addDetail.Title Details</h5>
-                                                    <div class="edit-info">
-                                                        <i class='bx bxs-edit-alt' data-toggle="modal" data-target="#editactandtras_@addDetail.TripDetailsId"></i>
-                                                    </div>
+                                                    @{
+                                                        if (detailsFieldTrip.Status.Equals("OnHold") || detailsFieldTrip.Status.Equals("Postponed"))
+                                                        {
+                                                            <div class="edit-info">
+                                                                <i class='bx bxs-edit-alt' data-toggle="modal" data-target="#editactandtras_@addDetail.TripDetailsId"></i>
+                                                            </div>
+                                                        }
+                                                    }
                                                 </div>
                                                 <div class="row mb-sm-2">
                                                     <div class="col-sm-5 text-sm-right">
@@ -555,93 +599,96 @@
                                                     </div>
                                                 </div>
                                                 <hr class="container my-0">
-                                                <div id="editactandtras_@addDetail.TripDetailsId" class="modal fade" role="dialog">
-                                                    <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
-                                                        <div class="modal-content modal-addRoom">
-                                                            <div class="modal-header">
-                                                                <h4 class="modal-title">Update Field Trip Activities and Transportation @addDetail.Title</h4>
-                                                            </div>
-                                                            <form asp-action="ManagerUpdateFieldTripActAndTras" asp-controller="Manager" method="post" asp-route-id="@details.TripId" asp-route-addDeId="@addDetail.TripDetailsId" class="form-group">
-                                                                @{
-                                                                    var updateActAndTras = updateActAndTrass.FirstOrDefault(d => d.TripDetailsId.Equals(addDetail.TripDetailsId));
-                                                                    if (updateActAndTras != null)
-                                                                    {
-                                                                        <div class="modal-body">
-                                                                            <div class="row justify-content-center">
-                                                                                <input asp-for="@updateActAndTras.TripDetailsId" type="number"
-                                                                                       value="@updateActAndTras.TripDetailsId" class="form-control" required hidden>
-                                                                                <input asp-for="@updateActAndTras.Type" type="text"
-                                                                                       value="@updateActAndTras.Type" class="form-control" required hidden>
-                                                                                <div class="col-12 col-md-12">
-                                                                                    <div class="form-group row">
-                                                                                        <label asp-for="@updateActAndTras.Title" class="col-sm-4 col-form-label"></label>
-                                                                                        <div class="col-sm-8">
-                                                                                            <input asp-for="@updateActAndTras.Title" type="text"
-                                                                                                   value="@updateActAndTras.Title" class="form-control" required>
-                                                                                            @{
-                                                                                                var errortitle = updateActAndTrasErrorList.FirstOrDefault(d => d.Key.Equals("updateActAndTras_" + updateActAndTras.TripDetailsId + ".Title")).Value;
-                                                                                            }
-                                                                                            <span id="error_message" name="updateActAndTras_@(updateActAndTras.TripDetailsId).Title" data-valmsg-for="updateActAndTras_@(updateActAndTras.TripDetailsId).Title"
-                                                                                                  class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2 field-validation-error" data-valmsg-replace="true">@errortitle</span>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <div class="form-group row">
-                                                                                        <label asp-for="@updateActAndTras.Description" class="col-sm-4 col-form-label"></label>
-                                                                                        <div class="col-sm-8">
-                                                                                            <input asp-for="@updateActAndTras.Description" type="text"
-                                                                                                   value="@updateActAndTras.Description" class="form-control" required>
-                                                                                            @{
-                                                                                                var errordesti = updateDayByDayErrorList.FirstOrDefault(d => d.Key.Equals("updateActAndTras_" + updateActAndTras.TripDetailsId + ".Description")).Value;
-                                                                                            }
-                                                                                            <span id="error_message" name="updateActAndTras_@(updateActAndTras.TripDetailsId).Description" data-valmsg-for="updateActAndTras_@(updateActAndTras.TripDetailsId).Description"
-                                                                                                  class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2 field-validation-error" data-valmsg-replace="true">@errordesti</span>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        updateActAndTras = addDetail;
-                                                                        <div class="modal-body">
-                                                                            <div class="row justify-content-center">
-                                                                                <input asp-for="@updateActAndTras.TripDetailsId" type="number"
-                                                                                       value="@addDetail.TripDetailsId" class="form-control" required hidden>
-                                                                                <input asp-for="@updateActAndTras.Type" type="text"
-                                                                                       value="@addDetail.Type" class="form-control" required hidden>
-                                                                                <div class="col-12 col-md-12">
-                                                                                    <div class="form-group row">
-                                                                                        <label asp-for="@updateActAndTras.Title" class="col-sm-4 col-form-label"></label>
-                                                                                        <div class="col-sm-8">
-                                                                                            <input asp-for="@updateActAndTras.Title" type="text"
-                                                                                                   value="@updateActAndTras.Title" class="form-control" required>
-                                                                                            <span asp-validation-for="@updateActAndTras.Title" id="error_message"
-                                                                                                  class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <div class="form-group row">
-                                                                                        <label asp-for="@updateActAndTras.Description" class="col-sm-4 col-form-label"></label>
-                                                                                        <div class="col-sm-8">
-                                                                                            <input asp-for="@updateActAndTras.Description" type="text"
-                                                                                                   value="@addDetail.Description" class="form-control" required>
-                                                                                            <span asp-validation-for="@updateActAndTras.Description" id="error_message"
-                                                                                                  class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    }
-                                                                }
-                                                                <div class="modal-footer justify-content-center">
-                                                                    <button class="btn btn-success" type="submit" value="Update">Save</button>
-                                                                    <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
+                                                if (detailsFieldTrip.Status.Equals("OnHold") || detailsFieldTrip.Status.Equals("Postponed"))
+                                                {
+                                                    <div id="editactandtras_@addDetail.TripDetailsId" class="modal fade" role="dialog">
+                                                        <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
+                                                            <div class="modal-content modal-addRoom">
+                                                                <div class="modal-header">
+                                                                    <h4 class="modal-title">Update Field Trip Activities and Transportation @addDetail.Title</h4>
                                                                 </div>
-                                                            </form>
+                                                                <form asp-action="ManagerUpdateFieldTripActAndTras" asp-controller="Manager" method="post" asp-route-id="@detailsFieldTrip.TripId" asp-route-addDeId="@addDetail.TripDetailsId" class="form-group">
+                                                                    @{
+                                                                        var updateActAndTras = updateActAndTrass.FirstOrDefault(d => d.TripDetailsId.Equals(addDetail.TripDetailsId));
+                                                                        if (updateActAndTras != null)
+                                                                        {
+                                                                            <div class="modal-body">
+                                                                                <div class="row justify-content-center">
+                                                                                    <input asp-for="@updateActAndTras.TripDetailsId" type="number"
+                                                                                           value="@updateActAndTras.TripDetailsId" class="form-control" required hidden>
+                                                                                    <input asp-for="@updateActAndTras.Type" type="text"
+                                                                                           value="@updateActAndTras.Type" class="form-control" required hidden>
+                                                                                    <div class="col-12 col-md-12">
+                                                                                        <div class="form-group row">
+                                                                                            <label asp-for="@updateActAndTras.Title" class="col-sm-4 col-form-label"></label>
+                                                                                            <div class="col-sm-8">
+                                                                                                <input asp-for="@updateActAndTras.Title" type="text"
+                                                                                                       value="@updateActAndTras.Title" class="form-control" required>
+                                                                                                @{
+                                                                                                    var errortitle = updateActAndTrasErrorList.FirstOrDefault(d => d.Key.Equals("updateActAndTras_" + updateActAndTras.TripDetailsId + ".Title")).Value;
+                                                                                                }
+                                                                                                <span id="error_message" name="updateActAndTras_@(updateActAndTras.TripDetailsId).Title" data-valmsg-for="updateActAndTras_@(updateActAndTras.TripDetailsId).Title"
+                                                                                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2 field-validation-error" data-valmsg-replace="true">@errortitle</span>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="form-group row">
+                                                                                            <label asp-for="@updateActAndTras.Description" class="col-sm-4 col-form-label"></label>
+                                                                                            <div class="col-sm-8">
+                                                                                                <input asp-for="@updateActAndTras.Description" type="text"
+                                                                                                       value="@updateActAndTras.Description" class="form-control" required>
+                                                                                                @{
+                                                                                                    var errordesti = updateDayByDayErrorList.FirstOrDefault(d => d.Key.Equals("updateActAndTras_" + updateActAndTras.TripDetailsId + ".Description")).Value;
+                                                                                                }
+                                                                                                <span id="error_message" name="updateActAndTras_@(updateActAndTras.TripDetailsId).Description" data-valmsg-for="updateActAndTras_@(updateActAndTras.TripDetailsId).Description"
+                                                                                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2 field-validation-error" data-valmsg-replace="true">@errordesti</span>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            updateActAndTras = addDetail;
+                                                                            <div class="modal-body">
+                                                                                <div class="row justify-content-center">
+                                                                                    <input asp-for="@updateActAndTras.TripDetailsId" type="number"
+                                                                                           value="@addDetail.TripDetailsId" class="form-control" required hidden>
+                                                                                    <input asp-for="@updateActAndTras.Type" type="text"
+                                                                                           value="@addDetail.Type" class="form-control" required hidden>
+                                                                                    <div class="col-12 col-md-12">
+                                                                                        <div class="form-group row">
+                                                                                            <label asp-for="@updateActAndTras.Title" class="col-sm-4 col-form-label"></label>
+                                                                                            <div class="col-sm-8">
+                                                                                                <input asp-for="@updateActAndTras.Title" type="text"
+                                                                                                       value="@updateActAndTras.Title" class="form-control" required>
+                                                                                                <span asp-validation-for="@updateActAndTras.Title" id="error_message"
+                                                                                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="form-group row">
+                                                                                            <label asp-for="@updateActAndTras.Description" class="col-sm-4 col-form-label"></label>
+                                                                                            <div class="col-sm-8">
+                                                                                                <input asp-for="@updateActAndTras.Description" type="text"
+                                                                                                       value="@addDetail.Description" class="form-control" required>
+                                                                                                <span asp-validation-for="@updateActAndTras.Description" id="error_message"
+                                                                                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        }
+                                                                    }
+                                                                    <div class="modal-footer justify-content-center">
+                                                                        <button class="btn btn-success" type="submit" value="Update">Save</button>
+                                                                        <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                }
                                             }
                                         }
                                     }
@@ -652,9 +699,14 @@
                             <div class="card profile col-12 mb-4">
                                 <div class="card-header">
                                     <h4>Getting There</h4>
-                                    <div class="edit-info">
-                                        <i class='bx bxs-edit-alt' data-toggle="modal" data-target="#editgettingthere"></i>
-                                    </div>
+                                    @{
+                                        if (detailsFieldTrip.Status.Equals("OnHold") || detailsFieldTrip.Status.Equals("Postponed"))
+                                        {
+                                            <div class="edit-info">
+                                                <i class='bx bxs-edit-alt' data-toggle="modal" data-target="#editgettingthere"></i>
+                                            </div>
+                                        }
+                                    }
                                 </div>
                                 <div class="card-body">
                                     @{
@@ -695,11 +747,6 @@
                                             </div>
                                         }
                                     }
-                                    @* <div class="row mb-sm-2">
-                                        <div class="col-sm-12 text-sm">
-                                            <span>@details.FieldtripGettingTheres.GettingThereAccommodation</span>
-                                        </div>
-                                    </div> *@
                                 </div>
                             </div>
                         </div>
@@ -707,9 +754,14 @@
                             <div class="card profile col-12 mb-4">
                                 <div class="card-header">
                                     <h4>Day By Day</h4>
-                                    <div class="edit-info">
-                                        <i class='bx bxs-plus-circle' data-toggle="modal" data-target="#createdaybyday"></i>
-                                    </div>
+                                    @{
+                                        if (detailsFieldTrip.Status.Equals("OnHold") || detailsFieldTrip.Status.Equals("Postponed"))
+                                        {
+                                            <div class="edit-info">
+                                                <i class='bx bxs-plus-circle' data-toggle="modal" data-target="#createdaybyday"></i>
+                                            </div>
+                                        }
+                                    }
                                 </div>
                                 <div class="card-body">
                                     @{
@@ -719,9 +771,14 @@
                                             {
                                                 <div class="card-header">
                                                     <h5>Day @day.Day Details</h5>
-                                                     <div class="edit-info">
-                                                        <i class='bx bxs-edit-alt' data-toggle="modal" data-target="#editdaybyday_@day.DaybyDayId"></i>
-                                                     </div>
+                                                    @{
+                                                        if (detailsFieldTrip.Status.Equals("OnHold") || detailsFieldTrip.Status.Equals("Postponed"))
+                                                        {
+                                                            <div class="edit-info">
+                                                                <i class='bx bxs-edit-alt' data-toggle="modal" data-target="#editdaybyday_@day.DaybyDayId"></i>
+                                                            </div>
+                                                        }
+                                                    }
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-5 text-md-right">
@@ -764,14 +821,15 @@
                                                     </div>
                                                 </div>
                                                 <hr class="container my-0">
-
+                                                if (detailsFieldTrip.Status.Equals("OnHold") || detailsFieldTrip.Status.Equals("Postponed"))
+                                                {
                                                 <div id="editdaybyday_@day.DaybyDayId" class="modal fade" role="dialog">
                                                     <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
                                                         <div class="modal-content modal-addRoom">
                                                             <div class="modal-header">
                                                                 <h4 class="modal-title">Update Field Trip Day @day.Day</h4>
                                                             </div>
-                                                            <form asp-action="ManagerUpdateFieldTripDayByDay" asp-controller="Manager" method="post" asp-route-id="@details.TripId" asp-route-dayId="@day.DaybyDayId" class="form-group">
+                                                            <form asp-action="ManagerUpdateFieldTripDayByDay" asp-controller="Manager" method="post" asp-route-id="@detailsFieldTrip.TripId" asp-route-dayId="@day.DaybyDayId" class="form-group">
                                                                 @{
                                                                     var updateDayByDay = updateDayByDays.FirstOrDefault(d => d.DaybyDayId.Equals(day.DaybyDayId));
                                                                     if (updateDayByDay != null)
@@ -907,6 +965,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                                }
                                             }
                                         }
                                     }
@@ -925,9 +984,14 @@
                             <div class="card profile col-12 mb-4">
                                 <div class="card-header">
                                     <h4>Inclusions</h4>
-                                    <div class="edit-info">
-                                        <i class='bx bxs-plus-circle' data-toggle="modal" data-target="#createinclusion"></i>
-                                    </div>
+                                    @{
+                                        if (detailsFieldTrip.Status.Equals("OnHold") || detailsFieldTrip.Status.Equals("Postponed"))
+                                        {
+                                            <div class="edit-info">
+                                                <i class='bx bxs-plus-circle' data-toggle="modal" data-target="#createinclusion"></i>
+                                            </div>
+                                        }
+                                    }
                                 </div>
                                 <div class="card-body">
                                     @{
@@ -937,9 +1001,14 @@
                                             {
                                                 <div class="card-header">
                                                     <h5>Inclusion @inc.Title Details</h5>
-                                                    <div class="edit-info">
-                                                        <i class='bx bxs-edit-alt' data-toggle="modal" data-target="#editinclusion_@inc.InclusionId"></i>
-                                                    </div>
+                                                    @{
+                                                        if (detailsFieldTrip.Status.Equals("OnHold") || detailsFieldTrip.Status.Equals("Postponed"))
+                                                        {
+                                                            <div class="edit-info">
+                                                                <i class='bx bxs-edit-alt' data-toggle="modal" data-target="#editinclusion_@inc.InclusionId"></i>
+                                                            </div>
+                                                        }
+                                                    }
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-5 text-md-right">
@@ -966,13 +1035,15 @@
                                                     </div>
                                                 </div>
                                                 <hr class="container my-0">
+                                                if (detailsFieldTrip.Status.Equals("OnHold") || detailsFieldTrip.Status.Equals("Postponed"))
+                                                {
                                                 <div id="editinclusion_@inc.InclusionId" class="modal fade" role="dialog">
                                                     <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
                                                         <div class="modal-content modal-addRoom">
                                                             <div class="modal-header">
                                                                 <h4 class="modal-title truncate">Update Field Trip Inclusion @inc.Title</h4>
                                                             </div>
-                                                            <form asp-action="ManagerUpdateFieldTripInclusion" asp-controller="Manager" method="post" asp-route-id="@details.TripId" asp-route-incId="@inc.InclusionId" class="form-group">
+                                                            <form asp-action="ManagerUpdateFieldTripInclusion" asp-controller="Manager" method="post" asp-route-id="@detailsFieldTrip.TripId" asp-route-incId="@inc.InclusionId" class="form-group">
                                                                 @{
                                                                     var updateInclusion = updateInclusions.FirstOrDefault(d => d.InclusionId.Equals(inc.InclusionId));
                                                                     if (updateInclusion != null)
@@ -1107,6 +1178,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                                }
                                             }
                                         }
                                     }
@@ -1116,10 +1188,127 @@
                         <div class="row">
                             <div class="card profile col-12 mb-4">
                                 <div class="card-header">
-                                    <h4>Medias</h4>
-                                    <div class="edit-info">
-                                        <i class='bx bxs-edit-alt' data-toggle="modal" data-target="#editmedias"></i>
-                                    </div>
+                                    <h4>FieldTrip Medias</h4>
+                                    @{
+                                        if (detailsFieldTrip.Status.Equals("OnHold") || detailsFieldTrip.Status.Equals("Postponed"))
+                                        {
+                                            <div class="edit-info">
+                                                <i class='bx bxs-plus-circle' data-toggle="modal" data-target="#createmedia"></i>
+                                            </div>
+                                        }
+                                    }
+                                </div>
+                                <div class="card-body">
+                                    @{
+                                        if (Spotlight != null)
+                                        {
+                                            <div class="card-header">
+                                                <h4>Spotlight</h4>
+                                                @{
+                                                    if (detailsFieldTrip.Status.Equals("OnHold") || detailsFieldTrip.Status.Equals("Postponed"))
+                                                    {
+                                                        <div class="edit-info">
+                                                            <i class='bx bxs-edit-alt' data-toggle="modal" data-target="#editmedia_@Spotlight.PictureId"></i>
+                                                        </div>
+                                                    }
+                                                }
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-5 text-md-right">
+                                                    <label for="meeting-name">Image:</label>
+                                                </div>
+                                                <div class="col-md-7">
+                                                    <img class="img-fluid" src="@Spotlight.Image" alt="nt1">
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-5 text-md-right">
+                                                    <label for="meeting-name">Description:</label>
+                                                </div>
+                                                <div class="col-md-7">
+                                                    <span>@Spotlight.Description</span>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-5 text-md-right">
+                                                    <label for="meeting-name">Type:</label>
+                                                </div>
+                                                <div class="col-md-7">
+                                                    <span>@Spotlight.Type</span>
+                                                </div>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="card-header">
+                                                <h4>Spotlight</h4>
+                                                @{
+                                                    if (detailsFieldTrip.Status.Equals("OnHold") || detailsFieldTrip.Status.Equals("Postponed"))
+                                                    {
+                                                        <div class="edit-info">
+                                                            <i class='bx bxs-plus-circle' data-toggle="modal" data-target="#createspotlight"></i>
+                                                        </div>
+                                                    }
+                                                }
+                                            </div>
+                                        }
+                                    }
+                                </div>
+                                <div class="card-body">
+                                    @{
+                                        if (LocationMap != null)
+                                        {
+                                            <div class="card-header">
+                                                <h4>Location Map</h4>
+                                                @{
+                                                    if (detailsFieldTrip.Status.Equals("OnHold") || detailsFieldTrip.Status.Equals("Postponed"))
+                                                    {
+                                                        <div class="edit-info">
+                                                            <i class='bx bxs-edit-alt' data-toggle="modal" data-target="#editmedia_@LocationMap.PictureId"></i>
+                                                        </div>
+                                                    }
+                                                }
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-5 text-md-right">
+                                                    <label for="meeting-name">Image:</label>
+                                                </div>
+                                                <div class="col-md-7">
+                                                    <img class="img-fluid" src="@LocationMap.Image" alt="nt1">
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-5 text-md-right">
+                                                    <label for="meeting-name">Description:</label>
+                                                </div>
+                                                <div class="col-md-7">
+                                                    <span>@LocationMap.Description</span>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-5 text-md-right">
+                                                    <label for="meeting-name">Type:</label>
+                                                </div>
+                                                <div class="col-md-7">
+                                                    <span>@LocationMap.Type</span>
+                                                </div>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="card-header">
+                                                <h4>Location Map</h4>
+                                                @{
+                                                    if (detailsFieldTrip.Status.Equals("OnHold") || detailsFieldTrip.Status.Equals("Postponed"))
+                                                    {
+                                                        <div class="edit-info">
+                                                            <i class='bx bxs-plus-circle' data-toggle="modal" data-target="#createlocationmap"></i>
+                                                        </div>
+                                                    }
+                                                }
+                                            </div>
+                                        }
+                                    }
                                 </div>
                                 <div class="card-body">
                                     @{
@@ -1127,12 +1316,23 @@
                                         {
                                             @foreach (var pic in Media)
                                             {
+                                                <div class="card-header">
+                                                    <h4>Additional Media</h4>
+                                                    @{
+                                                        if (detailsFieldTrip.Status.Equals("OnHold") || detailsFieldTrip.Status.Equals("Postponed"))
+                                                        {
+                                                            <div class="edit-info">
+                                                                <i class='bx bxs-edit-alt' data-toggle="modal" data-target="#editmedia_@pic.PictureId"></i>
+                                                            </div>
+                                                        }
+                                                    }
+                                                </div>
                                                 <div class="row">
                                                     <div class="col-md-5 text-md-right">
-                                                        <label for="meeting-name">Image Url:</label>
+                                                        <label for="meeting-name">Image:</label>
                                                     </div>
                                                     <div class="col-md-7">
-                                                        <span>@pic.Image</span>
+                                                        <img class="img-fluid" src="@pic.Image" alt="nt1">
                                                     </div>
                                                 </div>
                                                 <div class="row">
@@ -1191,493 +1391,546 @@
             </div>
         </div>
     </div>
-
-    <!-- edit fieldtrip main details -->
-    <div id="editprofile" class="modal fade" role="dialog">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
-            <div class="modal-content modal-addRoom">
-                <div class="modal-header">
-                    <h4 class="modal-title">Edit Field Trip Details</h4>
-                </div>
-                <form asp-action="ManagerUpdateFieldTripDetail" asp-controller="Manager" method="post" asp-route-id="@details.TripId" class="form-group">
-                    <div class="modal-body">
-                        <div class="row justify-content-center">
-                            <div class="col-12 col-md-6">
-                                <div class="form-group row">
-                                    <label asp-for="@updateTrip.TripName" class="col-sm-4 col-form-label"></label>
-                                    <div class="col-sm-8">
-                                        <input asp-for="@updateTrip.TripName" type="text" placeholder="Your trip's Name"
-                                               value="@updateTrip.TripName" class="form-control" required>
-                                        <span asp-validation-for="@updateTrip.TripName" id="error_message"
-                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label asp-for="@updateTrip.OpenRegistration" class="col-sm-4 col-form-label"></label>
-                                    <div class="col-sm-8">
-                                        <input asp-for="@updateTrip.OpenRegistration" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
-                                               value="@updateTrip.OpenRegistration.ToString("yyyy-MM-ddTHH:mm")" class="form-control" required>
-                                        <span asp-validation-for="@updateTrip.OpenRegistration" id="error_message"
-                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label asp-for="@updateTrip.RegistrationDeadline" class="col-sm-4 col-form-label"></label>
-                                    <div class="col-sm-8">
-                                        <input asp-for="@updateTrip.RegistrationDeadline" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
-                                               value="@updateTrip.RegistrationDeadline.ToString("yyyy-MM-ddTHH:mm")" class="form-control" required>
-                                        <span asp-validation-for="@updateTrip.RegistrationDeadline" id="error_message"
-                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label asp-for="@updateTrip.StartDate" class="col-sm-4 col-form-label"></label>
-                                    <div class="col-sm-8">
-                                        <input asp-for="@updateTrip.StartDate" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
-                                               value="@updateTrip.StartDate.ToString("yyyy-MM-ddTHH:mm")" class="form-control" required>
-                                        <span asp-validation-for="@updateTrip.StartDate" id="error_message"
-                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label asp-for="@updateTrip.EndDate" class="col-sm-4 col-form-label">End date:</label>
-                                    <div class="col-sm-8">
-                                        <input asp-for="@updateTrip.EndDate" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
-                                               value="@updateTrip.EndDate.ToString("yyyy-MM-ddTHH:mm")" class="form-control" required>
-                                        <span asp-validation-for="@updateTrip.EndDate" id="error_message"
-                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-6">
-                                <div class="form-group row">
-                                    <label asp-for="@updateTrip.NumberOfParticipantsLimit" class="col-sm-4 col-form-label"></label>
-                                    <div class="col-sm-8">
-                                        <input asp-for="@updateTrip.NumberOfParticipantsLimit" type="number" min="3"
-                                               value="@updateTrip.NumberOfParticipantsLimit" class="form-control" required>
-                                        <span asp-validation-for="@updateTrip.NumberOfParticipantsLimit" id="error_message"
-                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label asp-for="@updateTrip.Host" class="col-sm-4 col-form-label"></label>
-                                    <div class="col-sm-8">
-                                        <input asp-for="@updateTrip.Host" type="text" placeholder="Trip Host"
-                                               value="@updateTrip.Host" class="form-control" required>
-                                        <span asp-validation-for="@updateTrip.Host" id="error_message"
-                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label asp-for="@updateTrip.InCharge" class="col-sm-4 col-form-label"></label>
-                                    <div class="col-sm-8">
-                                        <input asp-for="@updateTrip.InCharge" type="text" placeholder="Staff incharge"
-                                               value="@updateTrip.InCharge" class="form-control" required>
-                                        <span asp-validation-for="@updateTrip.InCharge" id="error_message"
-                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label asp-for="@updateTrip.Status" class="col-sm-4 col-form-label"></label>
-                                    <div class="col-sm-8">
-                                        <select class="form-control" asp-for="@updateTrip.Status" asp-items="@defaultFieldTripStatus" class="custom-select"></select>
-                                        <span asp-validation-for="@updateTrip.Status" id="error_message"
-                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label asp-for="@updateTrip.Fee" class="col-sm-4 col-form-label"></label>
-                                    <div class="col-sm-8">
-                                        <input asp-for="@updateTrip.Fee" type="number" min="5000"
-                                               value="@updateTrip.Fee" class="form-control" required>
-                                        <span asp-validation-for="@updateTrip.Fee" id="error_message"
-                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                    </div>
-                                </div>
-                            </div>
+    @{
+        if (detailsFieldTrip.Status.Equals("OnHold") || detailsFieldTrip.Status.Equals("Postponed"))
+        {
+            <!-- edit fieldtrip main details -->
+            <div id="editprofile" class="modal fade" role="dialog">
+                <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
+                    <div class="modal-content modal-addRoom">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Edit Field Trip Details</h4>
                         </div>
-                        <input asp-for="@updateTrip.NumberOfParticipants" type="number"
-                               value="@updateTrip.NumberOfParticipants" required hidden>
-                        <div class="form-group row">
-                            <label asp-for="@updateTrip.Address" class="col-sm-2 col-form-label"></label>
-                            <div class="col-sm-10">
-                                <input asp-for="@updateTrip.Address" type="text" placeholder="Your trip's address"
-                                       value="@updateTrip.Address" class="form-control" required>
-                                <span asp-validation-for="@updateTrip.Address" id="error_message"
-                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label asp-for="@updateTrip.Description" class="col-sm-2 col-form-label"></label>
-                            <div class="col-sm-10">
-                                <textarea asp-for="@updateTrip.Description" type="text" placeholder="Your trip's short description"
-                                          value="@updateTrip.Description" class="form-control" required></textarea>
-                                <span asp-validation-for="@updateTrip.Description" id="error_message"
-                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label asp-for="@updateTrip.Details" class="col-sm-2 col-form-label"></label>
-                            <div class="col-sm-10">
-                                <textarea asp-for="@updateTrip.Details" type="text" placeholder="Your trip's full details"
-                                          value="@updateTrip.Details" class="form-control" required></textarea>
-                                <span asp-validation-for="@updateTrip.Details" id="error_message"
-                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label asp-for="@updateTrip.Note" class="col-sm-2 col-form-label"></label>
-                            <div class="col-sm-10">
-                                <textarea asp-for="@updateTrip.Note" type="text" placeholder="Your trip's note"
-                                          value="@updateTrip.Note" class="form-control" required></textarea>
-                                <span asp-validation-for="@updateTrip.Note" id="error_message"
-                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer justify-content-center">
-                        <button class="btn btn-success" type="submit" value="Update">Save</button>
-                        <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    <!-- edit fieldtrip getting there details -->
-    <div id="editgettingthere" class="modal fade" role="dialog">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
-            <div class="modal-content modal-addRoom">
-                <div class="modal-header">
-                    <h4 class="modal-title">Edit Field Trip Getting There Details</h4>
-                </div>
-                <form asp-action="ManagerUpdateFieldTripGettingThereDetail" asp-controller="Manager" method="post" asp-route-id="@details.TripId" asp-route-getId="@updateGettingThere.GettingThereId" class="form-group">
-                    <div class="modal-body">
-                        <div class="row justify-content-center">
-                            <div class="col-12 col-md-12">
-                                <input asp-for="@updateGettingThere.GettingThereId" type="number"
-                                       value="@updateGettingThere.GettingThereId" class="form-control" required hidden>
+                        <form asp-action="ManagerUpdateFieldTripDetail" asp-controller="Manager" method="post" asp-route-id="@detailsFieldTrip.TripId" class="form-group">
+                            <div class="modal-body">
+                                <div class="row justify-content-center">
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-group row">
+                                            <label asp-for="@updateTrip.TripName" class="col-sm-4 col-form-label"></label>
+                                            <div class="col-sm-8">
+                                                <input asp-for="@updateTrip.TripName" type="text" placeholder="Your trip's Name"
+                                                       value="@updateTrip.TripName" class="form-control" required>
+                                                <span asp-validation-for="@updateTrip.TripName" id="error_message"
+                                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label asp-for="@updateTrip.OpenRegistration" class="col-sm-4 col-form-label"></label>
+                                            <div class="col-sm-8">
+                                                <input asp-for="@updateTrip.OpenRegistration" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
+                                                       value="@updateTrip.OpenRegistration.ToString("yyyy-MM-ddTHH:mm")" class="form-control" required>
+                                                <span asp-validation-for="@updateTrip.OpenRegistration" id="error_message"
+                                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label asp-for="@updateTrip.RegistrationDeadline" class="col-sm-4 col-form-label"></label>
+                                            <div class="col-sm-8">
+                                                <input asp-for="@updateTrip.RegistrationDeadline" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
+                                                       value="@updateTrip.RegistrationDeadline.ToString("yyyy-MM-ddTHH:mm")" class="form-control" required>
+                                                <span asp-validation-for="@updateTrip.RegistrationDeadline" id="error_message"
+                                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label asp-for="@updateTrip.StartDate" class="col-sm-4 col-form-label"></label>
+                                            <div class="col-sm-8">
+                                                <input asp-for="@updateTrip.StartDate" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
+                                                       value="@updateTrip.StartDate.ToString("yyyy-MM-ddTHH:mm")" class="form-control" required>
+                                                <span asp-validation-for="@updateTrip.StartDate" id="error_message"
+                                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label asp-for="@updateTrip.EndDate" class="col-sm-4 col-form-label">End date:</label>
+                                            <div class="col-sm-8">
+                                                <input asp-for="@updateTrip.EndDate" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
+                                                       value="@updateTrip.EndDate.ToString("yyyy-MM-ddTHH:mm")" class="form-control" required>
+                                                <span asp-validation-for="@updateTrip.EndDate" id="error_message"
+                                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-group row">
+                                            <label asp-for="@updateTrip.NumberOfParticipantsLimit" class="col-sm-4 col-form-label"></label>
+                                            <div class="col-sm-8">
+                                                <input asp-for="@updateTrip.NumberOfParticipantsLimit" type="number" min="3"
+                                                       value="@updateTrip.NumberOfParticipantsLimit" class="form-control" required>
+                                                <span asp-validation-for="@updateTrip.NumberOfParticipantsLimit" id="error_message"
+                                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label asp-for="@updateTrip.Host" class="col-sm-4 col-form-label"></label>
+                                            <div class="col-sm-8">
+                                                <input asp-for="@updateTrip.Host" type="text" placeholder="Trip Host"
+                                                       value="@updateTrip.Host" class="form-control" required>
+                                                <span asp-validation-for="@updateTrip.Host" id="error_message"
+                                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label asp-for="@updateTrip.InCharge" class="col-sm-4 col-form-label"></label>
+                                            <div class="col-sm-8">
+                                                <input asp-for="@updateTrip.InCharge" type="text" placeholder="Staff incharge"
+                                                       value="@updateTrip.InCharge" class="form-control" required>
+                                                <span asp-validation-for="@updateTrip.InCharge" id="error_message"
+                                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label asp-for="@updateTrip.Status" class="col-sm-4 col-form-label"></label>
+                                            <div class="col-sm-8">
+                                                <select class="form-control" asp-for="@updateTrip.Status" asp-items="@defaultFieldTripStatus" class="custom-select"></select>
+                                                <span asp-validation-for="@updateTrip.Status" id="error_message"
+                                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label asp-for="@updateTrip.Fee" class="col-sm-4 col-form-label"></label>
+                                            <div class="col-sm-8">
+                                                <input asp-for="@updateTrip.Fee" type="number" min="5000"
+                                                       value="@updateTrip.Fee" class="form-control" required>
+                                                <span asp-validation-for="@updateTrip.Fee" id="error_message"
+                                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input asp-for="@updateTrip.NumberOfParticipants" type="number"
+                                       value="@updateTrip.NumberOfParticipants" required hidden>
                                 <div class="form-group row">
-                                    <label asp-for="@updateGettingThere.GettingThereStartEnd" class="col-sm-2 col-form-label"></label>
+                                    <label asp-for="@updateTrip.Address" class="col-sm-2 col-form-label"></label>
                                     <div class="col-sm-10">
-                                        <textarea asp-for="@updateGettingThere.GettingThereStartEnd"
-                                                  value="@updateGettingThere.GettingThereStartEnd" class="form-control"></textarea>
-                                        <span asp-validation-for="@updateGettingThere.GettingThereStartEnd" id="error_message"
+                                        <input asp-for="@updateTrip.Address" type="text" placeholder="Your trip's address"
+                                               value="@updateTrip.Address" class="form-control" required>
+                                        <span asp-validation-for="@updateTrip.Address" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label asp-for="@updateGettingThere.GettingThereFlight" class="col-sm-2 col-form-label"></label>
+                                    <label asp-for="@updateTrip.Description" class="col-sm-2 col-form-label"></label>
                                     <div class="col-sm-10">
-                                        <textarea asp-for="@updateGettingThere.GettingThereFlight"
-                                                  value="@updateGettingThere.GettingThereFlight" class="form-control"></textarea>
-                                        <span asp-validation-for="@updateGettingThere.GettingThereFlight" id="error_message"
+                                        <textarea asp-for="@updateTrip.Description" type="text" placeholder="Your trip's short description"
+                                                  value="@updateTrip.Description" class="form-control" required></textarea>
+                                        <span asp-validation-for="@updateTrip.Description" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label asp-for="@updateGettingThere.GettingThereTransportation" class="col-sm-2 col-form-label"></label>
+                                    <label asp-for="@updateTrip.Details" class="col-sm-2 col-form-label"></label>
                                     <div class="col-sm-10">
-                                        <textarea asp-for="@updateGettingThere.GettingThereTransportation"
-                                                  value="@updateGettingThere.GettingThereTransportation" class="form-control"></textarea>
-                                        <span asp-validation-for="@updateGettingThere.GettingThereTransportation" id="error_message"
+                                        <textarea asp-for="@updateTrip.Details" type="text" placeholder="Your trip's full details"
+                                                  value="@updateTrip.Details" class="form-control" required></textarea>
+                                        <span asp-validation-for="@updateTrip.Details" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label asp-for="@updateGettingThere.GettingThereAccommodation" class="col-sm-2 col-form-label"></label>
+                                    <label asp-for="@updateTrip.Note" class="col-sm-2 col-form-label"></label>
                                     <div class="col-sm-10">
-                                        <textarea asp-for="@updateGettingThere.GettingThereAccommodation"
-                                                  value="@updateGettingThere.GettingThereAccommodation" class="form-control"></textarea>
-                                        <span asp-validation-for="@updateGettingThere.GettingThereAccommodation" id="error_message"
+                                        <textarea asp-for="@updateTrip.Note" type="text" placeholder="Your trip's note"
+                                                  value="@updateTrip.Note" class="form-control" required></textarea>
+                                        <span asp-validation-for="@updateTrip.Note" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                            <div class="modal-footer justify-content-center">
+                                <button class="btn btn-success" type="submit" value="Update">Save</button>
+                                <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
+                            </div>
+                        </form>
                     </div>
-                    <div class="modal-footer justify-content-center">
-                        <button class="btn btn-success" type="submit" value="Update">Save</button>
-                        <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    <!-- create fieldtrip day by day details -->
-    <div id="createdaybyday" class="modal fade" role="dialog">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
-            <div class="modal-content modal-addRoom">
-                <div class="modal-header">
-                    <h4 class="modal-title">Create Field Trip Day Details</h4>
                 </div>
-                <form asp-action="ManagerCreateFieldTripDayByDay" asp-controller="Manager" method="post" asp-route-tripId="@details.TripId" class="form-group">
-                    <div class="modal-body">
-                        <div class="row justify-content-center">
-                            <div class="col-12 col-md-6">
-                                <div class="form-group row">
-                                    <label asp-for="@createDayByDay.Day" class="col-sm-4 col-form-label"></label>
-                                    <div class="col-sm-8">
-                                        <input asp-for="@createDayByDay.Day" type="number" min="@createDayByDayCount" placeholder="@createDayByDayCount"
-                                               value="@createDayByDayCount" class="form-control" required>
-                                        <span asp-validation-for="@createDayByDay.Day" id="error_message"
-                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label asp-for="@createDayByDay.MainDestination" class="col-sm-4 col-form-label"></label>
-                                    <div class="col-sm-8">
-                                        <input asp-for="@createDayByDay.MainDestination" type="text" placeholder="Your trip's destination for the day"
-                                               value="@createDayByDay.MainDestination" class="form-control" required>
-                                        <span asp-validation-for="@createDayByDay.MainDestination" id="error_message"
-                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-6">
-                                <div class="form-group row">
-                                    <label asp-for="@createDayByDay.Accommodation" class="col-sm-4 col-form-label"></label>
-                                    <div class="col-sm-8">
-                                        <input asp-for="@createDayByDay.Accommodation" type="text" placeholder="Your trip's accommodation for the day"
-                                               value="@createDayByDay.Accommodation" class="form-control" required>
-                                        <span asp-validation-for="@createDayByDay.Accommodation" id="error_message"
-                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label asp-for="@createDayByDay.MealsAndDrinks" class="col-sm-4 col-form-label"></label>
-                                    <div class="col-sm-8">
-                                        <input asp-for="@createDayByDay.MealsAndDrinks" type="text" placeholder="Your trip's meals and drinks for the day"
-                                               value="@createDayByDay.MealsAndDrinks" class="form-control" required>
-                                        <span asp-validation-for="@createDayByDay.MealsAndDrinks" id="error_message"
-                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label asp-for="@createDayByDay.Description" class="col-sm-4 col-form-label"></label>
-                            <div class="col-sm-8">
-                                <textarea asp-for="@createDayByDay.Description" placeholder="Your trip's details for the day"
-                                       value="@createDayByDay.Description" class="form-control" required></textarea>
-                                <span asp-validation-for="@createDayByDay.Description" id="error_message"
-                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer justify-content-center">
-                        <button class="btn btn-success" type="submit" value="Update">Create</button>
-                        <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
-                    </div>
-                </form>
             </div>
-        </div>
-    </div>
-    <!-- edit fieldtrip day by day details -->
-    <!-- create fieldtrip inclusion details -->
-    <div id="createinclusion" class="modal fade" role="dialog">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
-            <div class="modal-content modal-addRoom">
-                <div class="modal-header">
-                    <h4 class="modal-title">Create Field Trip Inclusion</h4>
+            <!-- edit fieldtrip getting there details -->
+            <div id="editgettingthere" class="modal fade" role="dialog">
+                <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
+                    <div class="modal-content modal-addRoom">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Edit Field Trip Getting There Details</h4>
+                        </div>
+                        <form asp-action="ManagerUpdateFieldTripGettingThereDetail" asp-controller="Manager" method="post" asp-route-id="@detailsFieldTrip.TripId" asp-route-getId="@updateGettingThere.GettingThereId" class="form-group">
+                            <div class="modal-body">
+                                <div class="row justify-content-center">
+                                    <div class="col-12 col-md-12">
+                                        <input asp-for="@updateGettingThere.GettingThereId" type="number"
+                                               value="@updateGettingThere.GettingThereId" class="form-control" required hidden>
+                                        <div class="form-group row">
+                                            <label asp-for="@updateGettingThere.GettingThereStartEnd" class="col-sm-2 col-form-label"></label>
+                                            <div class="col-sm-10">
+                                                <textarea asp-for="@updateGettingThere.GettingThereStartEnd"
+                                                          value="@updateGettingThere.GettingThereStartEnd" class="form-control"></textarea>
+                                                <span asp-validation-for="@updateGettingThere.GettingThereStartEnd" id="error_message"
+                                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label asp-for="@updateGettingThere.GettingThereFlight" class="col-sm-2 col-form-label"></label>
+                                            <div class="col-sm-10">
+                                                <textarea asp-for="@updateGettingThere.GettingThereFlight"
+                                                          value="@updateGettingThere.GettingThereFlight" class="form-control"></textarea>
+                                                <span asp-validation-for="@updateGettingThere.GettingThereFlight" id="error_message"
+                                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label asp-for="@updateGettingThere.GettingThereTransportation" class="col-sm-2 col-form-label"></label>
+                                            <div class="col-sm-10">
+                                                <textarea asp-for="@updateGettingThere.GettingThereTransportation"
+                                                          value="@updateGettingThere.GettingThereTransportation" class="form-control"></textarea>
+                                                <span asp-validation-for="@updateGettingThere.GettingThereTransportation" id="error_message"
+                                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label asp-for="@updateGettingThere.GettingThereAccommodation" class="col-sm-2 col-form-label"></label>
+                                            <div class="col-sm-10">
+                                                <textarea asp-for="@updateGettingThere.GettingThereAccommodation"
+                                                          value="@updateGettingThere.GettingThereAccommodation" class="form-control"></textarea>
+                                                <span asp-validation-for="@updateGettingThere.GettingThereAccommodation" id="error_message"
+                                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer justify-content-center">
+                                <button class="btn btn-success" type="submit" value="Update">Save</button>
+                                <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-                <form asp-action="ManagerCreateFieldTripInclusion" asp-controller="Manager" method="post" asp-route-tripId="@details.TripId" class="form-group">
-                    <div class="modal-body">
-                        <div class="row justify-content-center">
-                            <div class="col-12 col-md-12">
-                                <div class="form-group row">
-                                    <label asp-for="@createInclusion.Title" class="col-sm-4 col-form-label"></label>
-                                    <div class="col-sm-8">
-                                        <input asp-for="@createInclusion.Title" type="text" placeholder="Inclusion Name"
-                                               value="@createInclusion.Title" class="form-control" required>
-                                        <span asp-validation-for="@createInclusion.Title" id="error_message"
-                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+            </div>
+            <!-- create fieldtrip day by day details -->
+            <div id="createdaybyday" class="modal fade" role="dialog">
+                <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
+                    <div class="modal-content modal-addRoom">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Create Field Trip Day Details</h4>
+                        </div>
+                        <form asp-action="ManagerCreateFieldTripDayByDay" asp-controller="Manager" method="post" asp-route-tripId="@detailsFieldTrip.TripId" class="form-group">
+                            <div class="modal-body">
+                                <div class="row justify-content-center">
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-group row">
+                                            <label asp-for="@createDayByDay.Day" class="col-sm-4 col-form-label"></label>
+                                            <div class="col-sm-8">
+                                                <input asp-for="@createDayByDay.Day" type="number" min="@createDayByDayCount" placeholder="@createDayByDayCount"
+                                                       value="@createDayByDayCount" class="form-control" required>
+                                                <span asp-validation-for="@createDayByDay.Day" id="error_message"
+                                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label asp-for="@createDayByDay.MainDestination" class="col-sm-4 col-form-label"></label>
+                                            <div class="col-sm-8">
+                                                <input asp-for="@createDayByDay.MainDestination" type="text" placeholder="Your trip's destination for the day"
+                                                       value="@createDayByDay.MainDestination" class="form-control" required>
+                                                <span asp-validation-for="@createDayByDay.MainDestination" id="error_message"
+                                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-group row">
+                                            <label asp-for="@createDayByDay.Accommodation" class="col-sm-4 col-form-label"></label>
+                                            <div class="col-sm-8">
+                                                <input asp-for="@createDayByDay.Accommodation" type="text" placeholder="Your trip's accommodation for the day"
+                                                       value="@createDayByDay.Accommodation" class="form-control" required>
+                                                <span asp-validation-for="@createDayByDay.Accommodation" id="error_message"
+                                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label asp-for="@createDayByDay.MealsAndDrinks" class="col-sm-4 col-form-label"></label>
+                                            <div class="col-sm-8">
+                                                <input asp-for="@createDayByDay.MealsAndDrinks" type="text" placeholder="Your trip's meals and drinks for the day"
+                                                       value="@createDayByDay.MealsAndDrinks" class="form-control" required>
+                                                <span asp-validation-for="@createDayByDay.MealsAndDrinks" id="error_message"
+                                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label asp-for="@createInclusion.InclusionText" class="col-sm-4 col-form-label"></label>
+                                    <label asp-for="@createDayByDay.Description" class="col-sm-4 col-form-label"></label>
                                     <div class="col-sm-8">
-                                        <textarea asp-for="@createInclusion.InclusionText" placeholder="Inclusion full details"
-                                               value="@createInclusion.InclusionText" class="form-control" required></textarea>
-                                        <span asp-validation-for="@createInclusion.InclusionText" id="error_message"
-                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label asp-for="@createInclusion.Type" class="col-sm-4 col-form-label"></label>
-                                    <div class="col-sm-8">
-                                        <input asp-for="@createInclusion.Type" type="text" placeholder="Inclusion item type"
-                                               value="@createInclusion.Type" class="form-control" required>
-                                        <span asp-validation-for="@createInclusion.Type" id="error_message"
-                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label asp-for="@createInclusion.Inclusiontype" class="col-sm-4 col-form-label"></label>
-                                    <div class="col-sm-8">
-                                        <select class="form-control" asp-for="@createInclusion.Inclusiontype" asp-items="@defaultFieldTripInclusionTypes" class="custom-select" required></select>
-                                        <span asp-validation-for="@createInclusion.Inclusiontype" id="error_message"
+                                        <textarea asp-for="@createDayByDay.Description" placeholder="Your trip's details for the day"
+                                                  value="@createDayByDay.Description" class="form-control" required></textarea>
+                                        <span asp-validation-for="@createDayByDay.Description" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                            <div class="modal-footer justify-content-center">
+                                <button class="btn btn-success" type="submit" value="Update">Create</button>
+                                <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
+                            </div>
+                        </form>
                     </div>
-                    <div class="modal-footer justify-content-center">
-                        <button class="btn btn-success" type="submit" value="Update">Create</button>
-                        <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    <!-- edit fieldtrip inclusion details -->
-    <div id="editinclusion" class="modal fade" role="dialog">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
-            <div class="modal-content modal-addRoom">
-                <div class="modal-header">
-                    <h4 class="modal-title">Edit Field Trip</h4>
                 </div>
-                <form asp-action="ManagerUpdateFieldTripDetail" asp-controller="Manager" method="post" asp-route-id="@details.TripId" class="form-group">
-                    <div class="modal-body">
-                        <div class="row justify-content-center">
-                            <div class="col-12 col-md-8">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer justify-content-center">
-                        <button class="btn btn-success" type="submit" value="Update">Save</button>
-                        <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
-                    </div>
-                </form>
             </div>
-        </div>
-    </div>
-    <!-- create fieldtrip tour features details -->
-    <div id="createtourfeature" class="modal fade" role="dialog">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
-            <div class="modal-content modal-addRoom">
-                <div class="modal-header">
-                    <h4 class="modal-title">Create FieldTrip Tour Features</h4>
+            <!-- edit fieldtrip day by day details -->
+            <!-- create fieldtrip inclusion details -->
+            <div id="createinclusion" class="modal fade" role="dialog">
+                <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
+                    <div class="modal-content modal-addRoom">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Create Field Trip Inclusion</h4>
+                        </div>
+                        <form asp-action="ManagerCreateFieldTripInclusion" asp-controller="Manager" method="post" asp-route-tripId="@detailsFieldTrip.TripId" class="form-group">
+                            <div class="modal-body">
+                                <div class="row justify-content-center">
+                                    <div class="col-12 col-md-12">
+                                        <div class="form-group row">
+                                            <label asp-for="@createInclusion.Title" class="col-sm-4 col-form-label"></label>
+                                            <div class="col-sm-8">
+                                                <input asp-for="@createInclusion.Title" type="text" placeholder="Inclusion Name"
+                                                       value="@createInclusion.Title" class="form-control" required>
+                                                <span asp-validation-for="@createInclusion.Title" id="error_message"
+                                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label asp-for="@createInclusion.InclusionText" class="col-sm-4 col-form-label"></label>
+                                            <div class="col-sm-8">
+                                                <textarea asp-for="@createInclusion.InclusionText" placeholder="Inclusion full details"
+                                                          value="@createInclusion.InclusionText" class="form-control" required></textarea>
+                                                <span asp-validation-for="@createInclusion.InclusionText" id="error_message"
+                                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label asp-for="@createInclusion.Type" class="col-sm-4 col-form-label"></label>
+                                            <div class="col-sm-8">
+                                                <input asp-for="@createInclusion.Type" type="text" placeholder="Inclusion item type"
+                                                       value="@createInclusion.Type" class="form-control" required>
+                                                <span asp-validation-for="@createInclusion.Type" id="error_message"
+                                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label asp-for="@createInclusion.Inclusiontype" class="col-sm-4 col-form-label"></label>
+                                            <div class="col-sm-8">
+                                                <select class="form-control" asp-for="@createInclusion.Inclusiontype" asp-items="@defaultFieldTripInclusionTypes" class="custom-select" required></select>
+                                                <span asp-validation-for="@createInclusion.Inclusiontype" id="error_message"
+                                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer justify-content-center">
+                                <button class="btn btn-success" type="submit" value="Update">Create</button>
+                                <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-                <form asp-action="ManagerCreateFieldTripTourFeatures" asp-controller="Manager" method="post" asp-route-tripId="@details.TripId" class="form-group">
-                    <div class="modal-body">
-                        <div class="row justify-content-center">
-                            <div class="col-12 col-md-12">
-                                <div class="form-group row">
-                                    <label asp-for="@createTourFeatures.Title" class="col-sm-4 col-form-label"></label>
-                                    <div class="col-sm-8">
-                                        <input asp-for="@createTourFeatures.Title" type="text" placeholder="Tour Features title"
-                                               value="@createTourFeatures.Title" class="form-control" required>
-                                        <span asp-validation-for="@createTourFeatures.Title" id="error_message"
-                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label asp-for="@createTourFeatures.Description" class="col-sm-4 col-form-label"></label>
-                                    <div class="col-sm-8">
-                                        <textarea asp-for="@createTourFeatures.Description" placeholder="Tour Features description"
-                                               value="@createTourFeatures.Description" class="form-control" required></textarea>
-                                        <span asp-validation-for="@createTourFeatures.Description" id="error_message"
-                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+            </div>
+            <!-- edit fieldtrip inclusion details -->
+            <div id="editinclusion" class="modal fade" role="dialog">
+                <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
+                    <div class="modal-content modal-addRoom">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Edit Field Trip</h4>
+                        </div>
+                        <form asp-action="ManagerUpdateFieldTripDetail" asp-controller="Manager" method="post" asp-route-id="@detailsFieldTrip.TripId" class="form-group">
+                            <div class="modal-body">
+                                <div class="row justify-content-center">
+                                    <div class="col-12 col-md-8">
                                     </div>
                                 </div>
                             </div>
-                            <input asp-for="@createTourFeatures.Type" type="text"
-                                   value="@createTourFeatures.Type" class="form-control" required hidden>
-                        </div>
+                            <div class="modal-footer justify-content-center">
+                                <button class="btn btn-success" type="submit" value="Update">Save</button>
+                                <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
+                            </div>
+                        </form>
                     </div>
-                    <div class="modal-footer justify-content-center">
-                        <button class="btn btn-success" type="submit" value="Update">Save</button>
-                        <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    <!-- create fieldtrip importants details -->
-    <div id="createimportant" class="modal fade" role="dialog">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
-            <div class="modal-content modal-addRoom">
-                <div class="modal-header">
-                    <h4 class="modal-title">Create FieldTrip Important to Know</h4>
                 </div>
-                <form asp-action="ManagerCreateFieldTripImportant" asp-controller="Manager" method="post" asp-route-tripId="@details.TripId" class="form-group">
-                    <div class="modal-body">
-                        <div class="row justify-content-center">
-                            <div class="col-12 col-md-12">
-                                <div class="form-group row">
-                                    <label asp-for="@createImportant.Title" class="col-sm-4 col-form-label"></label>
-                                    <div class="col-sm-8">
-                                        <input asp-for="@createImportant.Title" type="text" placeholder="Tour Features title"
-                                               value="@createImportant.Title" class="form-control" required>
-                                        <span asp-validation-for="@createImportant.Title" id="error_message"
-                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+            </div>
+            <!-- create fieldtrip tour features details -->
+            <div id="createtourfeature" class="modal fade" role="dialog">
+                <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
+                    <div class="modal-content modal-addRoom">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Create FieldTrip Tour Features</h4>
+                        </div>
+                        <form asp-action="ManagerCreateFieldTripTourFeatures" asp-controller="Manager" method="post" asp-route-tripId="@detailsFieldTrip.TripId" class="form-group">
+                            <div class="modal-body">
+                                <div class="row justify-content-center">
+                                    <div class="col-12 col-md-12">
+                                        <div class="form-group row">
+                                            <label asp-for="@createTourFeatures.Title" class="col-sm-4 col-form-label"></label>
+                                            <div class="col-sm-8">
+                                                <input asp-for="@createTourFeatures.Title" type="text" placeholder="Tour Features title"
+                                                       value="@createTourFeatures.Title" class="form-control" required>
+                                                <span asp-validation-for="@createTourFeatures.Title" id="error_message"
+                                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label asp-for="@createTourFeatures.Description" class="col-sm-4 col-form-label"></label>
+                                            <div class="col-sm-8">
+                                                <textarea asp-for="@createTourFeatures.Description" placeholder="Tour Features description"
+                                                          value="@createTourFeatures.Description" class="form-control" required></textarea>
+                                                <span asp-validation-for="@createTourFeatures.Description" id="error_message"
+                                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label asp-for="@createImportant.Description" class="col-sm-4 col-form-label"></label>
-                                    <div class="col-sm-8">
-                                        <textarea asp-for="@createImportant.Description" placeholder="Tour Features description"
-                                                  value="@createImportant.Description" class="form-control" required></textarea>
-                                        <span asp-validation-for="@createImportant.Description" id="error_message"
-                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                    </div>
+                                    <input asp-for="@createTourFeatures.Type" type="text"
+                                           value="@createTourFeatures.Type" class="form-control" required hidden>
                                 </div>
                             </div>
-                            <input asp-for="@createImportant.Type" type="text"
-                                   value="@createImportant.Type" class="form-control" required hidden>
-                        </div>
+                            <div class="modal-footer justify-content-center">
+                                <button class="btn btn-success" type="submit" value="Update">Save</button>
+                                <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
+                            </div>
+                        </form>
                     </div>
-                    <div class="modal-footer justify-content-center">
-                        <button class="btn btn-success" type="submit" value="Update">Save</button>
-                        <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    <!-- create fieldtrip activities and transportation details -->
-    <div id="createactandtras" class="modal fade" role="dialog">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
-            <div class="modal-content modal-addRoom">
-                <div class="modal-header">
-                    <h4 class="modal-title">Create FieldTrip Activities and Transportation</h4>
                 </div>
-                <form asp-action="ManagerCreateFieldTripActAndTran" asp-controller="Manager" method="post" asp-route-tripId="@details.TripId" class="form-group">
-                    <div class="modal-body">
-                        <div class="row justify-content-center">
-                            <div class="col-12 col-md-12">
-                                <div class="form-group row">
-                                    <label asp-for="@createActAndTras.Title" class="col-sm-4 col-form-label"></label>
-                                    <div class="col-sm-8">
-                                        <input asp-for="@createActAndTras.Title" type="text" placeholder="Tour Features title"
-                                               value="@createActAndTras.Title" class="form-control" required>
-                                        <span asp-validation-for="@createActAndTras.Title" id="error_message"
-                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+            </div>
+            <!-- create fieldtrip importants details -->
+            <div id="createimportant" class="modal fade" role="dialog">
+                <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
+                    <div class="modal-content modal-addRoom">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Create FieldTrip Important to Know</h4>
+                        </div>
+                        <form asp-action="ManagerCreateFieldTripImportant" asp-controller="Manager" method="post" asp-route-tripId="@detailsFieldTrip.TripId" class="form-group">
+                            <div class="modal-body">
+                                <div class="row justify-content-center">
+                                    <div class="col-12 col-md-12">
+                                        <div class="form-group row">
+                                            <label asp-for="@createImportant.Title" class="col-sm-4 col-form-label"></label>
+                                            <div class="col-sm-8">
+                                                <input asp-for="@createImportant.Title" type="text" placeholder="Tour Features title"
+                                                       value="@createImportant.Title" class="form-control" required>
+                                                <span asp-validation-for="@createImportant.Title" id="error_message"
+                                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label asp-for="@createImportant.Description" class="col-sm-4 col-form-label"></label>
+                                            <div class="col-sm-8">
+                                                <textarea asp-for="@createImportant.Description" placeholder="Tour Features description"
+                                                          value="@createImportant.Description" class="form-control" required></textarea>
+                                                <span asp-validation-for="@createImportant.Description" id="error_message"
+                                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label asp-for="@createActAndTras.Description" class="col-sm-4 col-form-label"></label>
-                                    <div class="col-sm-8">
-                                        <textarea asp-for="@createActAndTras.Description" placeholder="Tour Features description"
-                                                  value="@createActAndTras.Description" class="form-control" required></textarea>
-                                        <span asp-validation-for="@createActAndTras.Description" id="error_message"
-                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                    </div>
+                                    <input asp-for="@createImportant.Type" type="text"
+                                           value="@createImportant.Type" class="form-control" required hidden>
                                 </div>
                             </div>
-                            <input asp-for="@createActAndTras.Type" type="text"
-                                   value="@createActAndTras.Type" class="form-control" required hidden>
-                        </div>
+                            <div class="modal-footer justify-content-center">
+                                <button class="btn btn-success" type="submit" value="Update">Save</button>
+                                <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
+                            </div>
+                        </form>
                     </div>
-                    <div class="modal-footer justify-content-center">
-                        <button class="btn btn-success" type="submit" value="Update">Save</button>
-                        <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
-                    </div>
-                </form>
+                </div>
             </div>
-        </div>
-    </div>
+            <!-- create fieldtrip activities and transportation details -->
+            <div id="createactandtras" class="modal fade" role="dialog">
+                <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
+                    <div class="modal-content modal-addRoom">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Create FieldTrip Activities and Transportation</h4>
+                        </div>
+                        <form asp-action="ManagerCreateFieldTripActAndTran" asp-controller="Manager" method="post" asp-route-tripId="@detailsFieldTrip.TripId" class="form-group">
+                            <div class="modal-body">
+                                <div class="row justify-content-center">
+                                    <div class="col-12 col-md-12">
+                                        <div class="form-group row">
+                                            <label asp-for="@createActAndTras.Title" class="col-sm-4 col-form-label"></label>
+                                            <div class="col-sm-8">
+                                                <input asp-for="@createActAndTras.Title" type="text" placeholder="Tour Features title"
+                                                       value="@createActAndTras.Title" class="form-control" required>
+                                                <span asp-validation-for="@createActAndTras.Title" id="error_message"
+                                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label asp-for="@createActAndTras.Description" class="col-sm-4 col-form-label"></label>
+                                            <div class="col-sm-8">
+                                                <textarea asp-for="@createActAndTras.Description" placeholder="Tour Features description"
+                                                          value="@createActAndTras.Description" class="form-control" required></textarea>
+                                                <span asp-validation-for="@createActAndTras.Description" id="error_message"
+                                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <input asp-for="@createActAndTras.Type" type="text"
+                                           value="@createActAndTras.Type" class="form-control" required hidden>
+                                </div>
+                            </div>
+                            <div class="modal-footer justify-content-center">
+                                <button class="btn btn-success" type="submit" value="Update">Save</button>
+                                <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+        else if (!(detailsFieldTrip.Status.Equals("Ended") || detailsFieldTrip.Status.Equals("Cancelled")))
+        {
+            <div id="editprofile" class="modal fade" role="dialog">
+                <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
+                    <div class="modal-content modal-addRoom">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Edit Contest Status</h4>
+                        </div>
+                        <form asp-action="ManagerUpdateFieldTripDetail" asp-controller="Manager" method="post" asp-route-id="@detailsFieldTrip.TripId" class="form-group">
+                            <div class="modal-body">
+                                <div class="row justify-content-center">
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-group row">
+                                            <label asp-for="@updateTrip.Status" class="col-sm-4 col-form-label"></label>
+                                            <div class="col-sm-8">
+                                                <select class="form-control" asp-for="@updateTrip.Status" asp-items="@defaultFieldTripStatus" class="custom-select" required></select>
+                                                <span asp-validation-for="@updateTrip.Status" id="error_message"
+                                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input asp-for="@updateTrip.TripName" type="text" value="@updateTrip.TripName" required hidden>
+                                <input asp-for="@updateTrip.RegistrationDeadline" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
+                                       value="@updateTrip.RegistrationDeadline.ToString("yyyy-MM-ddTHH:mm")" required hidden>
+                                <input asp-for="@updateTrip.StartDate" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
+                                       value="@updateTrip.StartDate.ToString("yyyy-MM-ddTHH:mm")" required hidden>
+                                <input asp-for="@updateTrip.EndDate" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
+                                       value="@updateTrip.EndDate.ToString("yyyy-MM-ddTHH:mm")" required hidden>
+                                <input asp-for="@updateTrip.NumberOfParticipantsLimit" type="number" value="@updateTrip.NumberOfParticipantsLimit" required hidden>
+                                <input asp-for="@updateTrip.Host" type="text" value="@updateTrip.Host" required hidden>
+                                <input asp-for="@updateTrip.InCharge" type="text" value="@updateTrip.InCharge" required hidden>
+                                <input asp-for="@updateTrip.Fee" type="number" value="@updateTrip.Fee" required hidden>
+                                <input asp-for="@updateTrip.Address" type="text" value="@updateTrip.Address" required hidden>
+                                <textarea asp-for="@updateTrip.Description" type="text" value="@updateTrip.Description" required hidden></textarea>
+                                <textarea asp-for="@updateTrip.Details" type="text" value="@updateTrip.Details" required hidden></textarea>
+                                <textarea asp-for="@updateTrip.Note" type="text" value="@updateTrip.Note" required hidden></textarea>
+                                <input asp-for="@updateTrip.NumberOfParticipants" type="number" value="@updateTrip.NumberOfParticipants" required hidden>
+                            </div>
+                            <div class="modal-footer justify-content-center">
+                                <button class="btn btn-success" type="submit" value="Update">Save</button>
+                                <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    
     <!-- update fieldtrip tour features details -->
     @* <div id="editmedias" class="modal fade" role="dialog">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="content">

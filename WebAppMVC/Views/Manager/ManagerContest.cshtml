@@ -275,14 +275,19 @@
                                     <span asp-validation-for="@createContest.Fee" id="error_message"
                                           class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
-                                    <label asp-for="@createContest.BeforeScore" class="col-md-3 col-form-label mt-3 text-md-right"></label>
-                                    <input asp-for="@createContest.BeforeScore" value="@createContest.BeforeScore" type="number" placeholder="0" class="form-control col-md-7 mt-3" rows="3" required></input>
-                                    <span asp-validation-for="@createContest.BeforeScore" id="error_message"
+                                    <label asp-for="@createContest.ReqMinElo" class="col-md-3 col-form-label mt-3 text-md-right"></label>
+                                    <input asp-for="@createContest.ReqMinElo" value="@createContest.ReqMinElo" type="number" placeholder="0" class="form-control col-md-7 mt-3" rows="3" required></input>
+                                    <span asp-validation-for="@createContest.ReqMinElo" id="error_message"
                                           class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
-                                    <label asp-for="@createContest.AfterScore" class="col-md-3 col-form-label mt-3 text-md-right"></label>
-                                    <input asp-for="@createContest.AfterScore" value="@createContest.AfterScore" type="number" placeholder="0" class="form-control col-md-7 mt-3" rows="3" required></input>
-                                    <span asp-validation-for="@createContest.AfterScore" id="error_message"
+                                    <label asp-for="@createContest.ReqMaxElo" class="col-md-3 col-form-label mt-3 text-md-right"></label>
+                                    <input asp-for="@createContest.ReqMaxElo" value="@createContest.ReqMaxElo" type="number" placeholder="0" class="form-control col-md-7 mt-3" rows="3" required></input>
+                                    <span asp-validation-for="@createContest.ReqMaxElo" id="error_message"
+                                          class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+
+                                    <label asp-for="@createContest.AfterElo" class="col-md-3 col-form-label mt-3 text-md-right"></label>
+                                    <input asp-for="@createContest.AfterElo" value="@createContest.AfterElo" type="number" placeholder="0" class="form-control col-md-7 mt-3" rows="3" required></input>
+                                    <span asp-validation-for="@createContest.AfterElo" id="error_message"
                                           class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
                                     <label asp-for="@createContest.Prize" class="col-md-3 col-form-label mt-3 text-md-right"></label>

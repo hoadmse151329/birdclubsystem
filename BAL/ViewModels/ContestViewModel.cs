@@ -59,10 +59,12 @@ namespace BAL.ViewModels
         [DateGreaterThan(comparisonProperty: "StartDate", comparisonRange: 1, comparisonType: "Day", ErrorMessage = "End Date must be greater than Start Date at least 1 day")]
         [DataType(DataType.DateTime)]
         public DateTime EndDate { get; set; }
-        [DisplayName("Before Score")]
-        public int? BeforeScore { get; set; }
-        [DisplayName("After Score")]
-        public int? AfterScore { get; set; }
+        [DisplayName("Require Minimum Elo")]
+        public int? ReqMinElo { get; set; }
+        [DisplayName("Require Maximum Elo")]
+        public int? ReqMaxElo { get; set; }
+        [DisplayName("After Elo")]
+        public int? AfterElo { get; set; }
         [Required(ErrorMessage = "Fee is required")]
         [DisplayName("Fee")]
         [Range(5000, double.MaxValue, ErrorMessage = "Fee must be at least 5000đ")]
@@ -90,7 +92,10 @@ namespace BAL.ViewModels
         public int? ParticipationNo { get; set; }
         /*[DisplayName("Club ID")]
         public int? ClubId { get; set; }*/
-
-        public List<ContestMediaViewModel>? Media { get; set; }
+        [DisplayName("Location Map Image")]
+        public ContestMediaViewModel? LocationMapImage { get; set; }
+        [DisplayName("Spotlight Image")]
+        public ContestMediaViewModel? SpotlightImage { get; set; }
+        public List<ContestMediaViewModel>? ContestPictures { get; set; }
     }
 }

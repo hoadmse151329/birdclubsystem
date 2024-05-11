@@ -38,7 +38,7 @@ namespace BAL.Services.Implements
                 contest.NumberOfParticipants = contest.NumberOfParticipantsLimit - partAmount;
                 contest.Address = locationName;
 
-                contest.Media = (media != null) ? _mapper.Map<IEnumerable<ContestMediaViewModel>>(media).ToList() : null;
+                contest.ContestPictures = (media != null) ? _mapper.Map<IEnumerable<ContestMediaViewModel>>(media).ToList() : null;
 
                 string[] temp = locationName.Split(",");
 
@@ -62,7 +62,7 @@ namespace BAL.Services.Implements
                     if (item.ContestId == itemview.ContestId)
                     {
                         var media = await _unitOfWork.ContestMediaRepository.GetContestMediasByContestId(item.ContestId);
-                        itemview.Media = (media != null) ? _mapper.Map<IEnumerable<ContestMediaViewModel>>(media).ToList() : null;
+                        itemview.ContestPictures = (media != null) ? _mapper.Map<IEnumerable<ContestMediaViewModel>>(media).ToList() : null;
 
                         locationName = await _unitOfWork.LocationRepository.GetLocationNameById(item.LocationId.Value);
 
