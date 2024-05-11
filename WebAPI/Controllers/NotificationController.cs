@@ -13,7 +13,7 @@ namespace WebAPI.Controllers
         private readonly INotificationService _notificationService;
         private readonly IUserService _userService;
         private readonly IConfiguration _config;
-        public NotificationController(INotificationService notificationService, IUserService userService IConfiguration config)
+        public NotificationController(INotificationService notificationService, IUserService userService ,IConfiguration config)
         {
             _notificationService = notificationService;
             _userService = userService;

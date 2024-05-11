@@ -72,29 +72,6 @@
     transform: translateY(0);
     transition: 0.5s;
 }
-.button.login-gg {
-    display: flex;
-    margin: auto;
-    padding: 10px;
-    border: 1px solid transparent;
-    border-radius: 2px;
-    background: #f0f0f0;
-    transition: all 0.5s;
-}
-
-    .button.login-gg a {
-        text-decoration: none;
-        color: #2c3e50;
-    }
-
-        .button.login-gg a img {
-            display: inline-block;
-            padding-right: 5px;
-        }
-
-    .button.login-gg:hover {
-        background: #61BDF6;
-    }
   .club-item .club-title {
     padding-top: 10px;
     width: 180px;
