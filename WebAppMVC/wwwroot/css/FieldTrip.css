@@ -2539,11 +2539,11 @@ a, .a {
 
     .a:focus {
         outline: none;
-        text-decoration: underline
+        text-decoration: none
     }
 
-a.txt--underline, .a--underlined {
-    text-decoration: underline
+a.txt--none, .a--noned {
+    text-decoration: noen
 }
 
 .a--dashed {
@@ -2658,11 +2658,11 @@ a.txt--underline, .a--underlined {
 }
 
 @media(hover: hover) {
-    a:not(.a--dashed):not(.a--dotted):not(.a--underlined):not(a.wildlife):hover, .a:not(.a--dashed):not(.a--dotted):not(.a--underlined):not(a.wildlife):hover {
-        text-decoration: underline
+    a:not(.a--dashed):not(.a--dotted):not(.a--noned):not(a.wildlife):hover, .a:not(.a--dashed):not(.a--dotted):not(.a--noned):not(a.wildlife):hover {
+        text-decoration: none
     }
 
-    .a--underlined:hover {
+    .a--noned:hover {
         text-decoration: none
     }
 }
@@ -2756,7 +2756,7 @@ a.txt--underline, .a--underlined {
     }
 
         .expertbar a:hover {
-            text-decoration: underline !important
+            text-decoration: none !important
         }
 
     .expertbar .expert p {
@@ -3228,89 +3228,7 @@ svg.only-defs {
     height: 100%
 }
 
-.col-0-5 {
-    width: 4.1666666667%
-}
 
-.col-1 {
-    width: 8.3333333333%
-}
-
-.col-1-5 {
-    width: 12.5%
-}
-
-.col-2 {
-    width: 16.6666666667%
-}
-
-.col-2-5 {
-    width: 20.8333333333%
-}
-
-.col-3 {
-    width: 25%
-}
-
-.col-3-5 {
-    width: 29.1666666667%
-}
-
-.col-4 {
-    width: 33.3333333333%
-}
-
-.col-4-5 {
-    width: 37.5%
-}
-
-.col-5 {
-    width: 41.6666666667%
-}
-
-.col-5-5 {
-    width: 45.8333333333%
-}
-
-.col-6 {
-    width: 50%
-}
-
-.col-6-5 {
-    width: 54.1666666667%
-}
-
-.col-7 {
-    width: 58.3333333333%
-}
-
-.col-8 {
-    width: 66.6666666667%
-}
-
-.col-8-5 {
-    width: 70.8333333333%
-}
-
-.col-9 {
-    width: 75%
-}
-
-.col-9-5 {
-    width: 79.1666666667%
-}
-
-.col-10 {
-    width: 83.3333333333%
-}
-
-.col-11 {
-    width: 91.6666666667%
-}
-
-.col-12 {
-    width: 100%
-}
 
 .col--shrink {
     width: auto
@@ -3956,7 +3874,7 @@ svg.only-defs {
     }
 
         .nav-m__item.with-subs.subs-opened .nav-m__link--level2:hover em {
-            text-decoration: underline
+            text-decoration: none
         }
 }
 
@@ -4004,11 +3922,11 @@ svg.only-defs {
         }
 
         .tabs a[role=tab]:hover {
-            text-decoration: underline
+            text-decoration: none
         }
 
             .tabs a[role=tab]:hover span {
-                text-decoration: underline
+                text-decoration: none
             }
 
         .tabs a[role=tab].active {
@@ -4378,7 +4296,7 @@ svg.only-defs {
         }
 
         .tabs--steps .tabs__link:hover {
-            text-decoration: underline !important
+            text-decoration: none !important
         }
 
     .tabs--steps .tabs__item[data-complete=false]:not([data-state=current]):before {
@@ -4808,7 +4726,7 @@ h2.titlebar--form__heading {
 
 @media(hover: hover) {
     .accordion--collapsible .accordion__key:hover .accordeon__hover-u {
-        text-decoration: underline
+        text-decoration: none
     }
 
     .accordion--chevrons .accordion__item:not([data-state=open]) .accordion__key:hover {
@@ -7190,7 +7108,7 @@ html.no-touch .calendar__inner__year ul li.inactive, html.no-touch .calendar__in
 
     .conversionblock__intro__header a {
         font-size: .8125rem;
-        text-decoration: underline;
+        text-decoration: none;
         white-space: nowrap
     }
 
@@ -7213,7 +7131,7 @@ html.no-touch .calendar__inner__year ul li.inactive, html.no-touch .calendar__in
     .conversionblock__price.price a {
         color: #2a7018;
         white-space: nowrap;
-        text-decoration: underline
+        text-decoration: none
     }
 
         .conversionblock__price.price a:hover {
@@ -7227,7 +7145,7 @@ html.no-touch .calendar__inner__year ul li.inactive, html.no-touch .calendar__in
 
 .conversionblock__pricetotal {
     color: inherit;
-    text-decoration: underline;
+    text-decoration: none;
     border: 0;
     background: none
 }
@@ -7350,7 +7268,7 @@ html.no-touch .calendar__inner__year ul li.inactive, html.no-touch .calendar__in
 
 .conversionblock__prefs a {
     color: #444;
-    text-decoration: underline;
+    text-decoration: none;
     display: inline-block
 }
 
@@ -7570,7 +7488,7 @@ html.no-touch .calendar__inner__year ul li.inactive, html.no-touch .calendar__in
 }
 
 .conversionblock__usp-link, .conversionblock__usp-link-inline {
-    text-decoration: underline
+    text-decoration: none
 }
 
     .conversionblock__usp-link:hover, .conversionblock__usp-link-inline:hover {
@@ -7601,7 +7519,7 @@ a#CybotCookiebotDialogPoweredbyCybot, div#CybotCookiebotDialogPoweredByText {
     }
 
     #CybotCookiebotDialog a {
-        text-decoration: underline !important
+        text-decoration: none !important
     }
 
         #CybotCookiebotDialog a:hover {
@@ -7800,7 +7718,7 @@ a#CybotCookiebotDialogPoweredbyCybot, div#CybotCookiebotDialogPoweredByText {
 .costbreakdown__link {
     display: inline-block;
     color: #666;
-    text-decoration: underline;
+    text-decoration: none;
     margin-top: .75rem
 }
 
@@ -7871,7 +7789,7 @@ a#CybotCookiebotDialogPoweredbyCybot, div#CybotCookiebotDialogPoweredByText {
 
         .costbreakdown-prefs a span {
             color: #444;
-            text-decoration: underline
+            text-decoration: none
         }
 
         .costbreakdown-prefs a:hover, .costbreakdown-prefs a:hover span {
@@ -10855,7 +10773,7 @@ aside .fieldset {
         }
 
         .filters__block > a.more:hover span {
-            text-decoration: underline
+            text-decoration: none
         }
 
     .filters__block > ul li {
@@ -10910,7 +10828,7 @@ aside .fieldset {
         }
 
         .filters__block > ul li:not(.inactive) label:hover span {
-            text-decoration: underline
+            text-decoration: none
         }
 
             .filters__block > ul li:not(.inactive) label:hover span span, .filters__block > ul li:not(.inactive) label:hover span + span {
@@ -12052,7 +11970,7 @@ aside .fieldset {
                     }
 
                     .inputform fieldset > div label.with-checkbox:hover {
-                        text-decoration: underline
+                        text-decoration: none
                     }
 
 @media(max-width: 743px) {
@@ -12803,7 +12721,7 @@ html.no-touch .gallery__preview {
 }
 
     html.no-touch .gallery__preview em {
-        text-decoration: underline rgba(0,0,0,0);
+        text-decoration: none rgba(0,0,0,0);
         transition: text-decoration .2s ease-in-out
     }
 
@@ -12813,7 +12731,7 @@ html.no-touch .gallery__preview {
     }
 
         html.no-touch .gallery__preview:hover em {
-            text-decoration: underline;
+            text-decoration: none;
             transition-duration: .25s
         }
 
@@ -13023,7 +12941,7 @@ html.no-touch .overlay .gallery__image:hover .btn {
 
     .overlay .gallery__caption p a {
         color: #999;
-        text-decoration: underline;
+        text-decoration: none;
         white-space: nowrap
     }
 
@@ -13295,7 +13213,7 @@ html.no-touch .overlay .gallery__image:hover .btn {
     }
 
     .list--harmonica h3:hover {
-        text-decoration: underline
+        text-decoration: none
     }
 
 .list--harmonica .harmonica-block {
@@ -13452,7 +13370,7 @@ a.wildlife, a.help.textonly {
     width: auto !important;
     height: auto !important;
     color: inherit;
-    text-decoration: underline dotted;
+    text-decoration: none dotted;
     position: relative !important;
     cursor: default;
     float: none !important;
@@ -13466,7 +13384,7 @@ a.wildlife, a.help.textonly {
     }
 
     .help--text:hover {
-        text-decoration: underline dotted !important
+        text-decoration: none dotted !important
     }
 
 .help-balloon {
@@ -15196,7 +15114,7 @@ a.wildlife, a.help.textonly {
 
 .imgpagehead__overlay__sub a {
     font-size: .875rem;
-    text-decoration: underline
+    text-decoration: none
 }
 
     .imgpagehead__overlay__sub a:hover {
@@ -15229,12 +15147,12 @@ a.wildlife, a.help.textonly {
 
     .imgpagehead__overlay__video a {
         color: #444;
-        text-decoration: underline rgba(0,0,0,0);
+        text-decoration: none rgba(0,0,0,0);
         transition: text-decoration .2s ease
     }
 
         .imgpagehead__overlay__video a:hover {
-            text-decoration: underline #444;
+            text-decoration: none #444;
             transition-duration: .25s
         }
 
@@ -18388,7 +18306,7 @@ svg.zoom-box .tip {
 
 .messagebox--red a {
     color: #ca4947;
-    text-decoration: underline
+    text-decoration: none
 }
 
 .messagebox--yellow {
@@ -18803,11 +18721,11 @@ svg.zoom-box .tip {
             }
 
             .navigation__sidebar:not(.navigation-list) ul a[role=tab]:hover {
-                text-decoration: underline
+                text-decoration: none
             }
 
                 .navigation__sidebar:not(.navigation-list) ul a[role=tab]:hover span {
-                    text-decoration: underline
+                    text-decoration: none
                 }
 
             .navigation__sidebar:not(.navigation-list) ul a[role=tab].active {
@@ -19314,7 +19232,7 @@ a.operator-snippet__data:hover {
 }
 
     a.operator-snippet__data:hover p b, a.operator-snippet__data:hover p strong {
-        text-decoration: underline !important
+        text-decoration: none !important
     }
 
 @media(max-width: 360px) {
@@ -19343,7 +19261,7 @@ a.operator-snippet__data:hover {
     }
 
         a.operator-snippet__data:hover p b, a.operator-snippet__data:hover p strong {
-            text-decoration: underline !important
+            text-decoration: none !important
         }
 }
 
@@ -20993,7 +20911,7 @@ html.no-touch .overlay__header a.close:hover {
             }
 
             .review__body__footer div .review_helpful_link:hover span {
-                text-decoration: underline
+                text-decoration: none
             }
 
         .review__body__footer div .review_helpful_no i {
@@ -21651,7 +21569,7 @@ html.no-touch .overlay__header a.close:hover {
 
 *:not(.tour__sidebar) > .sidebar__block.sidebar__block--map {
     border-radius: .3125rem;
-    text-decoration: underline rgba(0,0,0,0);
+    text-decoration: none rgba(0,0,0,0);
     transition: text-decoration .2s ease-in-out,box-shadow .2s ease-in-out
 }
 
@@ -21661,7 +21579,7 @@ html.no-touch .overlay__header a.close:hover {
 
     *:not(.tour__sidebar) > .sidebar__block.sidebar__block--map:hover {
         box-shadow: 0 0 5px rgba(0,0,0,.4);
-        text-decoration: underline;
+        text-decoration: none;
         transition-duration: .25s
     }
 
@@ -22286,7 +22204,7 @@ html.no-touch .overlay__header a.close:hover {
         }
 
             .tourpreferences .col.tourpreferences__date.filled .tourpreferences__date__extraflex label:hover {
-                text-decoration: underline
+                text-decoration: none
             }
 
             .tourpreferences .col.tourpreferences__date.filled .tourpreferences__date__extraflex label input[type=checkbox] {
@@ -22944,7 +22862,7 @@ html.no-touch .overlay__header a.close:hover {
     }
 
         .toursnippet--small a:hover h4 {
-            text-decoration: underline !important
+            text-decoration: none !important
         }
 
     .toursnippet--small:after {
@@ -24647,7 +24565,7 @@ html.no-touch .overlay__header a.close:hover {
             font-weight: normal;
             font-size: 1.1875rem;
             color: #fff;
-            text-decoration: underline;
+            text-decoration: none;
             padding-bottom: 50%;
             z-index: 1
         }
@@ -24658,7 +24576,7 @@ html.no-touch .overlay__header a.close:hover {
                 padding: 0;
                 display: inline;
                 position: absolute;
-                text-decoration: underline
+                text-decoration: none
             }
 
             .detail__content__block .park-list--alphabet:not(.navigation-list) > li > a:hover {
@@ -25322,7 +25240,7 @@ html.noscript .climate .climate__chart, html.noscript .climate h3, html.noscript
         }
 
         .favlist-modal__buttons label:hover {
-            text-decoration: underline
+            text-decoration: none
         }
 
 .favlist-modal--delete .favlist-modal__buttons .btn {
@@ -25554,8 +25472,8 @@ html.noscript .climate .climate__chart, html.noscript .climate h3, html.noscript
                 color: #444;
                 display: inline-block;
                 position: relative;
-                text-decoration: underline 1px #999;
-                text-underline-offset: 2.5px
+                text-decoration: none 1px #999;
+                text-none-offset: 2.5px
             }
 
                 .container--home-numbers .inner div a:hover {
@@ -25628,7 +25546,7 @@ html.noscript .climate .climate__chart, html.noscript .climate h3, html.noscript
         transition: opacity .2s ease-in-out,background .2s ease-in-out,color .2s ease-in-out;
         width: auto;
         font-weight: normal;
-        text-underline: none
+        text-none: none
     }
 
 html.no-touch .container--home-toprated__mobnav__buttons a:hover {
@@ -25646,7 +25564,7 @@ html.no-touch .container--home-toprated__mobnav__buttons a:hover {
 }
 
 .container--home-toprated__mobnav__buttons a:active, .container--home-toprated__mobnav__buttons a:hover {
-    text-underline: none
+    text-none: none
 }
 
 @media(max-width: 335px) {
@@ -25743,7 +25661,7 @@ html.no-touch .container--home-toprated__mobnav__buttons a:hover {
             margin-left: .9375rem;
             bottom: 1.0625rem;
             display: inline;
-            text-decoration: underline;
+            text-decoration: none;
             z-index: 10
         }
 
@@ -25803,12 +25721,12 @@ html.no-touch .container--home-toprated__mobnav__buttons a:hover {
 
     .container--home-toprated__info__content a[href="#"] {
         color: #444;
-        text-underline-offset: 2.5px;
+        text-none-offset: 2.5px;
         border-bottom: 0
     }
 
         .container--home-toprated__info__content a[href="#"], .container--home-toprated__info__content a[href="#"]:hover {
-            text-decoration: underline dotted 1px !important;
+            text-decoration: none dotted 1px !important;
             cursor: default
         }
 
@@ -25877,7 +25795,7 @@ html.no-touch .container--home-toprated__mobnav__buttons a:hover {
     }
 
     .container--home-topratedoperators .topratedoperators__snippet:hover .operator_name h2 {
-        text-decoration: underline;
+        text-decoration: none;
         transition-duration: .25s
     }
 
@@ -25984,7 +25902,7 @@ html.no-touch .container--home-toprated__mobnav__buttons a:hover {
         .container--home-topratedoperators .topratedoperators__snippet__head .operator_name h2 {
             font-size: 1.4375rem;
             padding: 1.5625rem .625rem .625rem;
-            text-decoration: underline rgba(0,0,0,0);
+            text-decoration: none rgba(0,0,0,0);
             transition: text-decoration .2s ease-in-out;
             font-family: "Gentium Basic",serif;
             background: rgba(0,0,0,.4);
@@ -26116,7 +26034,7 @@ html.no-touch .container--home-toprated__mobnav__buttons a:hover {
                 line-height: 1.875rem;
                 padding: 1.875rem 1.25rem 1.25rem;
                 color: #fff;
-                text-decoration: underline rgba(0,0,0,0);
+                text-decoration: none rgba(0,0,0,0);
                 transition: text-decoration .2s ease-in-out;
                 background: rgba(0,0,0,.4);
                 background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5) 45%, rgba(0, 0, 0, 0.9) 100%)
@@ -26127,7 +26045,7 @@ html.no-touch .container--home-toprated__mobnav__buttons a:hover {
             }
 
                 .container--home-blog .col a.post:hover h4 {
-                    text-decoration: underline;
+                    text-decoration: none;
                     transition-duration: .25s
                 }
 
@@ -26378,7 +26296,7 @@ html.no-touch .container--home-toprated__mobnav__buttons a:hover {
 
     .operator_disclaimer a {
         color: #666;
-        text-decoration: underline
+        text-decoration: none
     }
 
         .operator_disclaimer a:hover {
@@ -26438,7 +26356,7 @@ html.no-touch .container--home-toprated__mobnav__buttons a:hover {
 
                 .operator__header .row div.operator-data a.reviews-link {
                     color: #fff;
-                    text-decoration: underline
+                    text-decoration: none
                 }
 
                     .operator__header .row div.operator-data a.reviews-link:hover {
@@ -26497,7 +26415,7 @@ html.no-touch .container--home-toprated__mobnav__buttons a:hover {
 
                     .operator__header .row div.logo-block p a {
                         color: #444;
-                        text-decoration: underline
+                        text-decoration: none
                     }
 
                         .operator__header .row div.logo-block p a:hover {
@@ -26913,7 +26831,7 @@ form.signup__accommodation .acc-chain div.checkbox {
 }
 
     .signup__nav-item[data-state=current] .signup__nav-link:hover, .signup__nav-item[data-state=complete] .signup__nav-link:hover, .signup__nav-item[data-state=incomplete] .signup__nav-link:hover {
-        text-decoration: underline !important
+        text-decoration: none !important
     }
 
 .signup__btn {
@@ -27126,7 +27044,7 @@ form.signup__accommodation .acc-chain div.checkbox {
 
     .tour__head__container .price-holder a {
         white-space: nowrap;
-        text-decoration: underline;
+        text-decoration: none;
         color: #2a7018
     }
 
@@ -27142,7 +27060,7 @@ form.signup__accommodation .acc-chain div.checkbox {
         }
 
             .tour__head__container .price-holder a[rel=overlay]:hover, .tour__head__container .price-holder a[data-toggle-item]:hover {
-                text-decoration: underline
+                text-decoration: none
             }
 
     .tour__head__container .price-holder + .preferences {
@@ -27154,9 +27072,9 @@ form.signup__accommodation .acc-chain div.checkbox {
 
         .tour__head__container .price-holder + .preferences a {
             color: #444;
-            text-decoration: underline;
+            text-decoration: none;
             text-decoration-thickness: 1px;
-            text-underline-offset: 2px;
+            text-none-offset: 2px;
             font-size: 0
         }
 
@@ -27525,7 +27443,7 @@ form.signup__accommodation .acc-chain div.checkbox {
 
     .tour__content__block--quotereq .contact-operator-link {
         color: #666;
-        text-decoration: underline
+        text-decoration: none
     }
 
         .tour__content__block--quotereq .contact-operator-link:hover {
@@ -27548,7 +27466,7 @@ form.signup__accommodation .acc-chain div.checkbox {
 
     .tour__disclaimer a {
         color: #666;
-        text-decoration: underline
+        text-decoration: none
     }
 
         .tour__disclaimer a:hover {
@@ -27906,7 +27824,7 @@ form.signup__accommodation .acc-chain div.checkbox {
 
     .tour__content__block--daybyday .day__header--photo h3 a {
         color: #fff;
-        text-decoration: underline
+        text-decoration: none
     }
 
         .tour__content__block--daybyday .day__header--photo h3 a:hover {
@@ -28511,7 +28429,7 @@ form.signup__accommodation .acc-chain div.checkbox {
     }
 
         .tour__content__block--routemap .route__flow tr.country td a:hover {
-            text-decoration: underline
+            text-decoration: none
         }
 
     .tour__content__block--routemap .route__flow tr.country td img {
@@ -28600,7 +28518,7 @@ form.signup__accommodation .acc-chain div.checkbox {
         }
 
             .tour__content__block--dates a:hover span {
-                text-decoration: underline
+                text-decoration: none
             }
 
 .tour__content__block--consider .row {
@@ -29062,7 +28980,7 @@ form.signup__accommodation .acc-chain div.checkbox {
             }
 
             .tour__content__block--rates .rates-table-block-m .rates-table-block__day--collapse b:hover {
-                text-decoration: underline
+                text-decoration: none
             }
 
         .tour__content__block--rates .rates-table-block-m .rates-table-block__day--collapse em {
@@ -29211,7 +29129,7 @@ form.signup__accommodation .acc-chain div.checkbox {
 
     .container--hero__textlink {
         color: #fff;
-        text-decoration: underline
+        text-decoration: none
     }
 
     .container--hero__bg {
@@ -29514,7 +29432,7 @@ form.signup__accommodation .acc-chain div.checkbox {
 
 @media(min-width: 744px)and (hover: hover) {
     .header__nav > ul li .header__subnav ul li a:hover em {
-        text-decoration: underline
+        text-decoration: none
     }
 
     .header__search button:hover {
@@ -30147,7 +30065,7 @@ form.signup__accommodation .acc-chain div.checkbox {
     }
 
     .cookiebar__linkbutton:hover {
-        text-decoration: underline
+        text-decoration: none
     }
 }
 
@@ -30308,7 +30226,7 @@ form.signup__accommodation .acc-chain div.checkbox {
             }
 
     html.no-touch .list--operators .list__item > a:hover h2 {
-        text-decoration: underline
+        text-decoration: none
     }
 
     .list--operators .list__item > a .picture-holder {
@@ -31090,7 +31008,7 @@ form.signup__accommodation .acc-chain div.checkbox {
 
 @media(min-width: 744px) {
     .navigation__sidebar ul li a:hover em.show-ti {
-        text-decoration: underline
+        text-decoration: none
     }
 
     .navigation__sidebar ul.more-items {
@@ -31143,11 +31061,11 @@ form.signup__accommodation .acc-chain div.checkbox {
             }
 
             .navigation__sidebar.navigation-list a[role=tab]:hover {
-                text-decoration: underline
+                text-decoration: none
             }
 
                 .navigation__sidebar.navigation-list a[role=tab]:hover span {
-                    text-decoration: underline
+                    text-decoration: none
                 }
 
             .navigation__sidebar.navigation-list a[role=tab].active {
@@ -32602,7 +32520,7 @@ form.signup__accommodation .acc-chain div.checkbox {
                 }
 
                     .detail__content__block .park-list--alphabet > li > p a.serif:hover {
-                        text-decoration: underline
+                        text-decoration: none
                     }
 
             .detail__content__block .park-list--alphabet > li .review-summary--oneline {
@@ -32795,7 +32713,7 @@ form.signup__accommodation .acc-chain div.checkbox {
 
             .operator__header .logo-block p a {
                 color: #fff;
-                text-decoration: underline
+                text-decoration: none
             }
 
                 .operator__header .logo-block p a:hover {
@@ -32841,7 +32759,7 @@ form.signup__accommodation .acc-chain div.checkbox {
 
             .operator__header .operator-data a {
                 color: #fff;
-                text-decoration: underline
+                text-decoration: none
             }
 
                 .operator__header .operator-data a:hover {
@@ -33053,7 +32971,7 @@ form.signup__accommodation .acc-chain div.checkbox {
 
                 .container--home-toprated__list ul li b {
                     color: #0378a0;
-                    text-decoration: underline rgba(0,0,0,0);
+                    text-decoration: none rgba(0,0,0,0);
                     transition: text-decoration .2s ease-in-out
                 }
 
@@ -33077,7 +32995,7 @@ form.signup__accommodation .acc-chain div.checkbox {
                 }
 
                     .container--home-toprated__list ul li:hover b {
-                        text-decoration: underline
+                        text-decoration: none
                     }
 
                 .container--home-toprated__list ul li.active {
@@ -33240,7 +33158,7 @@ form.signup__accommodation .acc-chain div.checkbox {
 
     .container--home-toprated__info__content p a, .container--home-toprated__info__content .review-summary--oneline a {
         color: #fff;
-        text-decoration: underline
+        text-decoration: none
     }
 
     .container--home-toprated__info__content p em, .container--home-toprated__info__content .review-summary--oneline em {
@@ -33761,7 +33679,7 @@ form.signup__accommodation .acc-chain div.checkbox {
 
                 .tour__content__block--daybyday .day__header--photo h2 a {
                     color: #fff;
-                    text-decoration: underline
+                    text-decoration: none
                 }
 
                     .tour__content__block--daybyday .day__header--photo h2 a:hover {
@@ -34021,7 +33939,7 @@ form.signup__accommodation .acc-chain div.checkbox {
                     margin-top: .625rem;
                     z-index: 3;
                     text-shadow: 1px 1px 5px #000;
-                    text-decoration: underline rgba(0,0,0,0);
+                    text-decoration: none rgba(0,0,0,0);
                     transition: text-decoration-color .2s ease-in-out
                 }
 
@@ -34058,7 +33976,7 @@ form.signup__accommodation .acc-chain div.checkbox {
                 }
 
                 .countriesparks-list .container--main a.video-thumb:hover span {
-                    text-decoration: underline #fff;
+                    text-decoration: none #fff;
                     transition-duration: .25s
                 }
 
@@ -34675,7 +34593,7 @@ form.signup__accommodation .acc-chain div.checkbox {
     }
 
         .header__fav-link:hover .header__fav-desc {
-            text-decoration: underline
+            text-decoration: none
         }
 }
 
@@ -35239,7 +35157,7 @@ form.signup__accommodation .acc-chain div.checkbox {
         top: 3.125rem;
         left: .625rem;
         right: .625rem;
-        text-decoration: underline;
+        text-decoration: none;
         text-decoration-color: #fff;
         color: rgba(0,0,0,0);
         text-shadow: none;
@@ -35252,7 +35170,7 @@ form.signup__accommodation .acc-chain div.checkbox {
     }
 
     .list--operators .list__item:not(.unavailable) > a h2 {
-        text-decoration: underline;
+        text-decoration: none;
         text-decoration-color: rgba(0,0,0,0);
         transition: text-decoration-color ease-in-out .2s
     }
@@ -35515,7 +35433,7 @@ form.signup__accommodation .acc-chain div.checkbox {
                     }
 
                     .navigation__sidebar ul .subs label:hover i {
-                        text-decoration: underline
+                        text-decoration: none
                     }
 
                     .navigation__sidebar ul .subs label input {
@@ -35942,7 +35860,7 @@ form.signup__accommodation .acc-chain div.checkbox {
 
 @media(min-width: 970px)and (hover: hover) {
     .sidebar__block.sidebar__block--map, .sidebar__block.sidebar__block--photo {
-        text-decoration: underline rgba(0,0,0,0);
+        text-decoration: none rgba(0,0,0,0);
         transition: text-decoration .2s ease-in-out,box-shadow .2s ease-in-out
     }
 
