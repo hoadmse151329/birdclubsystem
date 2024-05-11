@@ -9,6 +9,10 @@ namespace BAL.Services.Interfaces
 {
     public interface IMeetingMediaService
     {
-        IEnumerable<MeetingMediaViewModel> GetAll();
+        Task<bool> Create(int meetingId, MeetingMediaViewModel media);
+        Task<bool> Delete(int meetingId, int pictureId);
+        Task<bool> Update(int meetingId, MeetingMediaViewModel media);
+        Task<MeetingMediaViewModel> GetById(int pictureId);
+        Task<IEnumerable<MeetingMediaViewModel>> GetAllByMeetingId(int meetingId);
     }
 }

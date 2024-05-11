@@ -215,8 +215,10 @@
                                           class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                 </div>
                                 <div class="row form-group">
-                                    <label class="col-md-3 col-form-label mt-2 text-md-right">Choose Picture</label>
-                                    <input type="file" name="photo" class="form-control col-md-7 mt-2" accept="image/*">
+                                    <label asp-for="@createMeeting.OpenRegistration" class="col-md-3 col-form-label mt-3 text-md-right"></label>
+                                    <input asp-for="@createMeeting.OpenRegistration" value="@createMeeting.OpenRegistration.ToString("yyyy-MM-ddTHH:mm")" type="datetime-local" required class="form-control col-md-7 mt-3" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}">
+                                    <span asp-validation-for="@createMeeting.OpenRegistration" id="error_message"
+                                          class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
                                     <label asp-for="@createMeeting.OpenRegistration" class="col-md-3 col-form-label mt-3 text-md-right"></label>
                                     <input asp-for="@createMeeting.OpenRegistration" value="@createMeeting.OpenRegistration.ToString("yyyy-MM-ddTHH:mm")" type="datetime-local" required class="form-control col-md-7 mt-3" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}">

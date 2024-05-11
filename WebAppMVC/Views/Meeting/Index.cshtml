@@ -83,9 +83,9 @@
 
                                 <a href="#" class="club-image">
                                     @{
-                                        if (data.MeetingPictures != null && data.MeetingPictures.Count() > 0)
+                                        if (data.SpotlightImage != null)
                                         {
-                                            <img class="img-fluid" src="@data.MeetingPictures.FirstOrDefault().Image" alt="nt1">
+                                            <img class="img-fluid" src="@data.SpotlightImage" alt="nt1">
                                         }
                                         else
                                         {

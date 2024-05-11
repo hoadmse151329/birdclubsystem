@@ -238,6 +238,7 @@ namespace WebAppMVC.Constants
             }
             return null;
         }
+
         public List<T> GetValidationTempDataList<T>(
             ControllerBase context,
             ITempDataDictionary tempData,
@@ -265,6 +266,7 @@ namespace WebAppMVC.Constants
             }
             return null;
         }
+        
         public Dictionary<string,string>? GetValidationModelStateErrorMessageList<T>(
             ControllerBase context,
             ITempDataDictionary tempData,
@@ -310,6 +312,95 @@ namespace WebAppMVC.Constants
                 return null;
             }
             return null;
+        }
+        public string? GetUrlStringIfUserSessionDataInValid(Controller context, string requireRole, bool mustBeRole = true)
+        {
+            string? accToken = context.HttpContext.Session.GetString(Constants.ACC_TOKEN);
+            if (string.IsNullOrEmpty(accToken))
+            {
+                return Constants.LOGIN_URL;
+            }
+
+            string? role = context.HttpContext.Session.GetString(Constants.ROLE_NAME);
+            if (string.IsNullOrEmpty(role))
+            {
+                return Constants.LOGIN_URL;
+            }
+            else if (!role.Equals(requireRole))
+            {
+                switch (role)
+                {
+                    case var value when value.Equals(Constants.MEMBER):
+                        {
+                            return Constants.MEMBER_URL;
+                        }
+                    case var value when value.Equals(Constants.STAFF):
+                        {
+                            return Constants.STAFF_URL;
+                        }
+                    case var value when value.Equals(Constants.MANAGER):
+                        {
+                            return Constants.MANAGER_URL;
+                        }
+                    case var value when value.Equals(Constants.ADMIN):
+                        {
+                            return Constants.ADMIN_URL;
+                        }
+                }
+            }
+
+            string? usrId = context.HttpContext.Session.GetString(Constants.USR_ID);
+            if (string.IsNullOrEmpty(usrId))
+            {
+                return Constants.LOGIN_URL;
+            }
+
+            string? usrname = context.HttpContext.Session.GetString(Constants.USR_NAME);
+            if (string.IsNullOrEmpty(usrname))
+            {
+                return Constants.LOGIN_URL;
+            }
+            string? imagepath = context.HttpContext.Session.GetString(Constants.USR_IMAGE);
+
+            context.TempData[Constants.ROLE_NAME] = role;
+            context.TempData[Constants.USR_NAME] = usrname;
+            context.TempData[Constants.USR_IMAGE] = imagepath;
+
+            return null;
+        }
+        public void SetUserDefaultData(Controller context)
+        {
+            string? accToken = context.HttpContext.Session.GetString(Constants.ACC_TOKEN);
+            string? role = context.HttpContext.Session.GetString(Constants.ROLE_NAME);
+            if (string.IsNullOrEmpty(role))
+            {
+                role = Constants.GUEST;
+            }
+            string? usrId = context.HttpContext.Session.GetString(Constants.USR_ID);
+            string? usrname = context.HttpContext.Session.GetString(Constants.USR_NAME);
+            string? imagepath = context.HttpContext.Session.GetString(Constants.USR_IMAGE);
+
+            context.TempData[Constants.ACC_TOKEN] = accToken;
+            context.TempData[Constants.ROLE_NAME] = role;
+            context.TempData[Constants.USR_ID] = usrId;
+            context.TempData[Constants.USR_NAME] = usrname;
+            context.TempData[Constants.USR_IMAGE] = imagepath;
+        }
+        public void SetUserRoleGuest(Controller context)
+        {
+            string? role = context.HttpContext.Session.GetString(Constants.ROLE_NAME);
+            if (string.IsNullOrEmpty(role))
+            {
+                role = Constants.GUEST;
+            }
+            context.TempData[Constants.ROLE_NAME] = role;
+        }
+        public void LogOut(Controller context)
+        {
+            context.HttpContext.Session.Clear();
+            context.TempData[Constants.ACC_TOKEN] = null;
+            context.TempData[Constants.ROLE_NAME] = null;
+            context.TempData[Constants.USR_ID] = null;
         }
         public ITempDataDictionary SetValidationTempData<T>(ITempDataDictionary tempData, string tempDataName, T objectForSerialize, JsonSerializerOptions jsonOptions) where T : class
         {

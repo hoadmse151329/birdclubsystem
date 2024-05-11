@@ -9,16 +9,20 @@ namespace BAL.ViewModels
 {
     public class MemberViewModel
     {
+		public MemberViewModel()
+		{
+			Birds = new List<BirdViewModel>();
+		}
 		public int UserId { get; set; }
         public string? MemberId { get; set; }
 		[Required(ErrorMessage = "Account Username is required")]
         [StringLength(20, ErrorMessage = "Username must have more than or equal 6 characters and less than or equal 20 characters", MinimumLength = 6)]
         [RegularExpression(@"^[a-zA-Z0-9_]+$", ErrorMessage = "Username is invalid")]
-        public string UserName { get; set; }
+        public string? UserName { get; set; }
 		[Required(ErrorMessage = "Full Name is required")]
         [StringLength(50, ErrorMessage = "Full Name must have more than or equal 6 characters and less than or equal 50 characters", MinimumLength = 6)]
         [RegularExpression(@"^[a-zA-Z\s]+$", ErrorMessage = "Fullname is invalid")]
-        public string FullName { get; set; }
+        public string? FullName { get; set; }
 		[EmailAddress]
 		[DataType(DataType.EmailAddress)]
 		[Required(ErrorMessage = "Email is required")]
@@ -40,5 +44,7 @@ namespace BAL.ViewModels
         public string? Description { get; set; }
 
         public string? Status { get; set; }
+
+		public List<BirdViewModel> Birds { get; set; }
     }
 }
