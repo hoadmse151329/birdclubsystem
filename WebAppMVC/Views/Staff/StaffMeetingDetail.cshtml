@@ -4,7 +4,10 @@
     ViewData["Title"] = "Staff Meeting Detail Page";
     BAL.ViewModels.MeetingViewModel detailsMeeting = Model.MeetingDetails;
     BAL.ViewModels.MeetingViewModel updateMeeting = Model.UpdateMeeting != null ? Model.UpdateMeeting : Model.MeetingDetails;
+    List<BAL.ViewModels.MeetingMediaViewModel> Media = detailsMeeting.MeetingPictures;
     List<BAL.ViewModels.MeetingParticipantViewModel> meetPartView = Model.MeetingParticipants;
+    BAL.ViewModels.MeetingMediaViewModel Spotlight = detailsMeeting.SpotlightImage;
+    BAL.ViewModels.MeetingMediaViewModel LocationMap = detailsMeeting.LocationMapImage;
     List<SelectListItem> checkInStatus = Model.SelectListParticipationStatus;
     List<SelectListItem> defaultMeetingStatus = Model.SelectListStatus;
     Layout = "~/Views/Shared/_SLayout.cshtml";
@@ -269,6 +272,126 @@
                                             <span>@detailsMeeting.Note</span>
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="card profile col-12 mb-4">
+                                <div class="card-header">
+                                    <h4>Meeting Medias</h4>
+                                    @{
+                                        if (detailsMeeting.Status.Equals("OnHold") || detailsMeeting.Status.Equals("Postponed"))
+                                        {
+                                            <div class="edit-info">
+                                                <i class='bx bxs-plus-circle' data-toggle="modal" data-target="#createmedia"></i>
+                                            </div>
+                                        }
+                                    }
+                                </div>
+                                <div class="card-body">
+                                    <div class="card-header">
+                                        <h4>Spotlight</h4>
+                                    </div>
+                                    @{
+                                        if (Spotlight != null)
+                                        {
+                                            <div class="row">
+                                                <div class="col-md-5 text-md-right">
+                                                    <label for="meeting-name">Image:</label>
+                                                </div>
+                                                <div class="col-md-7">
+                                                    <img class="img-fluid" src="@Spotlight.Image" alt="nt1">
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-5 text-md-right">
+                                                    <label for="meeting-name">Description:</label>
+                                                </div>
+                                                <div class="col-md-7">
+                                                    <span>@Spotlight.Description</span>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-5 text-md-right">
+                                                    <label for="meeting-name">Type:</label>
+                                                </div>
+                                                <div class="col-md-7">
+                                                    <span>@Spotlight.Type</span>
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+                                </div>
+                                <div class="card-body">
+                                    <div class="card-header">
+                                        <h4>Location Map</h4>
+                                    </div>
+                                    @{
+                                        if (LocationMap != null)
+                                        {
+                                            <div class="row">
+                                                <div class="col-md-5 text-md-right">
+                                                    <label for="meeting-name">Image:</label>
+                                                </div>
+                                                <div class="col-md-7">
+                                                    <img class="img-fluid" src="@LocationMap.Image" alt="nt1">
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-5 text-md-right">
+                                                    <label for="meeting-name">Description:</label>
+                                                </div>
+                                                <div class="col-md-7">
+                                                    <span>@LocationMap.Description</span>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-5 text-md-right">
+                                                    <label for="meeting-name">Type:</label>
+                                                </div>
+                                                <div class="col-md-7">
+                                                    <span>@LocationMap.Type</span>
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+                                </div>
+                                <div class="card-body">
+                                    @{
+                                        if (Media != null && Media.Count > 0)
+                                        {
+                                            @foreach (var pic in Media)
+                                            {
+                                                <div class="card-header">
+                                                    <h4>Additional Media</h4>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-5 text-md-right">
+                                                        <label for="meeting-name">Image:</label>
+                                                    </div>
+                                                    <div class="col-md-7">
+                                                        <img class="img-fluid" src="@pic.Image" alt="nt1">
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-5 text-md-right">
+                                                        <label for="meeting-name">Description:</label>
+                                                    </div>
+                                                    <div class="col-md-7">
+                                                        <span>@pic.Description</span>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-5 text-md-right">
+                                                        <label for="meeting-name">Type:</label>
+                                                    </div>
+                                                    <div class="col-md-7">
+                                                        <span>@pic.Type</span>
+                                                    </div>
+                                                </div>
+                                            }
+                                        }
+                                    }
                                 </div>
                             </div>
                         </div>
