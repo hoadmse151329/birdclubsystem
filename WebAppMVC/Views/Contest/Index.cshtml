@@ -70,7 +70,7 @@
             </div>
 
             <div class="col-9">
-                <div class="content__list row1">
+                <div class="content__list row">
                     @{
                         if (ViewBag.error != null)
                         {
@@ -103,9 +103,9 @@
                                     to @data.EndDate.ToString("MM-dd-yyyy")</p>
                                 <div class="club-address" data-toggle="tooltip" data-placement="auto"
                                     title="@data.City">
-                                    <p class="address truncate">
+                                    <p class="address truncate text-white">
                                         <i class="fas fa-map-marker-alt"></i>
-                                        <span class="district text-white">Address @data.AreaNumber,@data.Street,@data.District,@data.City</span>
+                                        <span class="district">Address @data.AreaNumber,@data.Street,@data.District,@data.City</span>
                                     </p>
                                 </div>
                                 <div class="d-flex justify-content-between">

@@ -139,7 +139,7 @@ function other(event) {
 }
 
 // select following select box
-var sel1 = document.querySelector('#motelId');
+var sel1 = document.querySelector('#clubId');
 var sel2 = document.querySelector('#typeRoom');
 var options2 = sel2.querySelectorAll('option');
 

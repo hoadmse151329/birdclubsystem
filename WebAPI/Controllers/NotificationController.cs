@@ -16,6 +16,7 @@ namespace WebAPI.Controllers
         private readonly IMemberService _memberService;
         private readonly IConfiguration _config;
         public NotificationController(INotificationService notificationService, IUserService userService, IMemberService memberService, IConfiguration config)
+
         {
             _notificationService = notificationService;
             _userService = userService;

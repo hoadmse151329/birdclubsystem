@@ -81,7 +81,7 @@
 .reg-button {
     width: 214px;
     margin-top: 15px;
-    margin-left: 75px;
+    margin-left: 83px;
 }
 
 .reg-text {
@@ -111,4 +111,28 @@
     height: 400px;
     width: 400px;
     margin-top: 20px;
+    margin-left: 100px;
 }
+.login-gg {
+    display: flex;
+    margin: auto;
+    padding: 10px;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    background: #f0f0f0;
+    transition: all 0.5s;
+}
+
+.login-gg a {
+        text-decoration: none;
+        color: #2c3e50;
+    }
+
+.login-gg a img {
+            display: inline-block;
+            padding-right: 5px;
+        }
+
+.login-gg:hover {
+        background: #61BDF6;
+    }
