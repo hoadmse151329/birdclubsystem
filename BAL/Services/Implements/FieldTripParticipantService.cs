@@ -85,7 +85,8 @@ namespace BAL.Services.Implements
 
         public async Task<bool> UpdateAllFieldTripParticipantStatus(List<FieldTripParticipantViewModel> listPart)
         {
-            var part = await _unitOfWork.FieldTripParticipantRepository.UpdateAllFieldTripParticipantStatus(_mapper.Map<List<FieldTripParticipant>>(listPart));
+            var part = await _unitOfWork.FieldTripParticipantRepository.UpdateAllFieldTripParticipantStatus
+                (_mapper.Map<List<FieldTripParticipant>>(listPart));
             if (part != null)
             {
                 _unitOfWork.Save();

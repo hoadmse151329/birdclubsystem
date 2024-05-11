@@ -1,4 +1,6 @@
-﻿namespace WebAppMVC.Constants
+﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
+
+namespace WebAppMVC.Constants
 {
 	public static class Constants
 	{
@@ -19,9 +21,11 @@
         public readonly static string MEMBER_CONTEST_REGISTRATION_TRANSACTION_COOKIE = "Member-Contest-Registration-Transaction-Cookie";
 
         public readonly static string NEW_MEMBER_REGISTRATION_TRANSACTION_TYPE = "New-Membership-Registration";
-		public readonly static string MEMBER_FIELDTRIP_REGISTRATION_TRANSACTION_TYPE = "Member-FieldTrip-Registration";
+		    public readonly static string MEMBER_FIELDTRIP_REGISTRATION_TRANSACTION_TYPE = "Member-FieldTrip-Registration";
         public readonly static string MEMBER_CONTEST_REGISTRATION_TRANSACTION_TYPE = "Member-Contest-Registration";
-
+    
+        public readonly static string CREATE_BIRD_VALID = "CBirdValid";
+        public readonly static string UPDATE_BIRD_VALID = "UBirdValid";
         public readonly static string CREATE_MEETING_VALID = "CMeetingValid";
         public readonly static string UPDATE_MEETING_VALID = "UMeetingValid";
         public readonly static string CREATE_MEETING_MEDIA_VALID = "CMeetingMediaValid";
@@ -42,7 +46,7 @@
         public readonly static string CREATE_CONTEST_VALID = "CContestValid";
         public readonly static string UPDATE_CONTEST_VALID = "UContestValid";
 
-		public readonly static string EVENT_STATUS_ON_HOLD = "OnHold";
+		    public readonly static string EVENT_STATUS_ON_HOLD = "OnHold";
         public readonly static string EVENT_STATUS_NAME_ON_HOLD = "On Hold";
         public readonly static string EVENT_STATUS_POSTPONED = "Postponed";
         public readonly static string EVENT_STATUS_NAME_POSTPONED = "Postponed";
@@ -61,7 +65,7 @@
 
         public readonly static string BIRD_STATUS_AVAILABLE = "Available";
         public readonly static string BIRD_STATUS_INJURED = "Injured";
-        public readonly static string BIRD_STATUS_UNAVAILABLE = "Unavailable";
+        public readonly static string BIRD_STATUS_UNAVAILABLE = "Inactive";
 
         public readonly static string EVENT_PARTICIPANT_STATUS_NOT_CHECKED_IN = "Not Checked-In";
         public readonly static string EVENT_PARTICIPANT_STATUS_CHECKED_IN = "Checked-In";

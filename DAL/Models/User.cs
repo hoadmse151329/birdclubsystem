@@ -15,6 +15,7 @@ namespace DAL.Models
             Feedbacks = new HashSet<Feedback>();
             Galleries = new HashSet<Gallery>();
             NewsDetail = new HashSet<News>();
+            Notifications = new HashSet<Notification>();
             Transactions = new HashSet<Transaction>();
             MemberDetail = new Member();
         }
@@ -53,6 +54,8 @@ namespace DAL.Models
         public virtual ICollection<Gallery> Galleries { get; set; }
         [InverseProperty(nameof(News.UserDetail))]
         public virtual ICollection<News> NewsDetail { get; set; }
+        [InverseProperty(nameof(Notification.UserDetail))]
+        public virtual ICollection<Notification> Notifications { get; set; }
         [InverseProperty(nameof(Transaction.UserDetail))]
         public virtual ICollection<Transaction> Transactions { get; set; }
     }
