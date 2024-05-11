@@ -12,12 +12,6 @@
     .main-container * {
         box-sizing: border-box;
     }
-.row1 {
-    display: flex;
-    flex-wrap: wrap;
-    margin-right: -0.75rem;
-    margin-left: -0.75rem;
-}
 
 /* Adjust font sizes */
 .text,
@@ -41,42 +35,50 @@
     left: 0;
     font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft Yahei UI", "Microsoft Yahei", "Source Han Sans CN", sans-serif;
     color: #000000;
-    font-size: 24px;
+    font-size: 2vw;
     font-weight: 400;
-    line-height: 29.045px;
+    line-height: 2vw;
     text-align: left;
     letter-spacing: 1.2000000000000002px;
     z-index: 149;
 }
 
+.section {
+    position: absolute;
+    width: 13vw;
+    height: 6vw;
+    top: 18vw;
+    left: 24vw;
+    transform: translate(-50%, -50%);
+    background: rgba(74, 195, 0, 0.35);
+    z-index: 147;
+    border-radius: 5vw;
+}
+
 .img-2 {
-    position: relative;
-    display:flex;
-    width: 400px;
-    height: 400px;
-    top: 0;
-    left: 705px;
+    position: absolute;
+    width: 20vw;
+    height: 20vw;
+    top: 8vw;
+    left: 65vw;
+    transform: translate(-50%, -50%);
     background: url(../images/bird.png) no-repeat center;
     background-size: cover;
     border-radius: 50%;
 }
-
-.section{
-    position: absolute;
-    width: 214px;
-    height: 55px;
-    top: 244px;
-    left: 232px;
-    background: rgba(74, 195, 0, 0.35);
-    z-index: 147;
-    border-radius: 50px;
-}
 .group {
     position: relative;
-    max-width: 605px;
-    min-height: 400px;
-    margin: 26px 0 0 67px;
+    max-width: 50vw;
+    min-height: 20vw;
+    margin: 6vw;
     z-index: 150;
+}
+.group-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%; /* Ensure content fills the container */
+    height: 100%; /* Ensure content fills the container */
 }
 .main-container {
     position: relative;
@@ -166,20 +168,20 @@
     position: relative;
     font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft Yahei UI", "Microsoft Yahei", "Source Han Sans CN", sans-serif;
     color: #000000;
-    font-size: 64px;
+    font-size: 4vw;
     font-weight: 700;
-    line-height: 77.455px;
+    line-height: 5vw;
     letter-spacing: 1.2000000000000002px;
-    margin-left: 60px;
+    margin-left: 6vw;
 }
 
 .text-2 {
     position: relative;
     font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft Yahei UI", "Microsoft Yahei", "Source Han Sans CN", sans-serif;
     color: #1f5200;
-    font-size: 64px;
+    font-size: 4vw;
     font-weight: 700;
-    line-height: 77.455px;
+    line-height: 5vw;
     text-align: left;
 }
 
@@ -187,9 +189,9 @@
     position: relative;
     font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft Yahei UI", "Microsoft Yahei", "Source Han Sans CN", sans-serif;
     color: #000000;
-    font-size: 64px;
+    font-size: 4vw;
     font-weight: 700;
-    line-height: 77.455px;
+    line-height: 5vw;
     text-align: left;
 }
 
@@ -197,10 +199,11 @@
     position: relative;
     font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft Yahei UI", "Microsoft Yahei", "Source Han Sans CN", sans-serif;
     color: #1f5200;
-    font-size: 64px;
+    font-size: 4vw;
     font-weight: 700;
-    line-height: 77.455px;
+    line-height: 5vw;
     text-align: left;
+    margin-right: 6vw;
 }
 
 
@@ -214,14 +217,14 @@
     align-items: flex-start;
     justify-content: flex-start;
     position: absolute;
-    height: 24px;
-    top: 16px;
-    left: calc(50% - 49px);
+    height: 2vw;
+    top: 2vw;
+    left: calc(50% - 5vw);
     font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft Yahei UI", "Microsoft Yahei", "Source Han Sans CN", sans-serif;
     color: #000000;
-    font-size: 20px;
+    font-size: 2vw;
     font-weight: 700;
-    line-height: 24px;
+    line-height: 2vw;
     text-align: left;
     white-space: nowrap;
     z-index: 148;

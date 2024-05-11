@@ -16,21 +16,6 @@
 	<meta name="description" content="">
 	<meta name="keywords" content="bootstrap, bootstrap4">
 
-	<!-- Bootstrap CSS -->
-	<link href="~/css/bootstrap.min.css" rel="stylesheet">
-	<link href="~/css/register.css" rel="stylesheet">
-	<link href="~/css/all.min.css" rel="stylesheet">
-	<link href="~/css/tiny-slider.css" rel="stylesheet">
-	<link href="~/css/style.css" rel="stylesheet">
-    <!-- FONT -->
-    <link
-        href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,100&family=Roboto+Condensed:wght@400;700&display=swap"
-        rel="stylesheet">
-    <!-- FONT AWESOME -->
-    <link rel="stylesheet" href="~/fonts/fontawesome-free-5.15.4-web/css/all.min.css">
-
-    <!-- main CSS -->
-    <link rel="stylesheet" href="~/css/main.css">
 	<title>Login</title>
 </head>
 
@@ -63,11 +48,24 @@
 
 										<span asp-validation-for="Password" class="text-danger"></span>
 									</div>
-									<button class="reg-button btn light-green" type="submit" value="Login">Login</button>
+                                    <a href="#" class="float-end">Forgot Password?</a>
+									<button class="reg-button btn1 light-green" type="submit" value="Login">Login</button>
+							<div>
+                                <p class="text-center my-3">Or</p>
+                                <button class="login-gg">
+                                           <a href="@Url.Action("GoogleLogin", "Auth")">
+                                    <img src="~/images/Google__G__Logo.svg" alt="logo-G"> Login with
+                                        Google</a>
+                                </button>
+                             </div>
+                                    <div>
+                            </div>
 									<div class="reg-text">
 										New to this ? Join us <a href="@Url.Action("Register","Auth")" class="link-success">Sign up</a>
 									</div>
+                                    
 								</form>
+                            
 							</div>
 						</div>
 					</div>
@@ -88,72 +86,5 @@
 				</div>
 			</div>
 	</div>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
-        referrerpolicy="no-referrer"></script>
-        <!-- Jquery Waypoint -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>
-        <!-- BS4 JS -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.5/umd/popper.min.js"></script>
-        <!-- BS4 carousels -->
-        <script>
-            $('.carousel').carousel({
-                interval: 3000
-            });
-        </script>
-        <!-- owl carousels -->
-        <script src="./assets/js/owl.carousel.min.js"></script>
-        <script>
-            $('.clubList-carousel').owlCarousel({
-                loop: true,
-                margin: 10,
-                nav: false,
-                responsive: {
-                    0: {
-                        items: 1
-                    },
-                    576: {
-                        items: 2
-                    },
-                    1200: {
-                        items: 4
-                    }
-                }
-            });
-        </script>
-        <!-- main js -->
-        <script src="~/js/user-script.js"></script>
 </body>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
-        referrerpolicy="no-referrer"></script>
-        <!-- Jquery Waypoint -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>
-        <!-- BS4 JS -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.5/umd/popper.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
-        <!-- BS4 carousels -->
-        <script>
-            $('.carousel').carousel({
-                interval: 3000
-            });
-        </script>
-        <!-- owl carousels -->
-        <script src="./assets/js/owl.carousel.min.js"></script>
-        <script>
-            $('.clubList-carousel').owlCarousel({
-                loop: true,
-                margin: 10,
-                nav: false,
-                responsive: {
-                    0: {
-                        items: 1
-                    },
-                    576: {
-                        items: 2
-                    },
-                    1200: {
-                        items: 4
-                    }
-                }
-            });
-        </script>
 </html>
