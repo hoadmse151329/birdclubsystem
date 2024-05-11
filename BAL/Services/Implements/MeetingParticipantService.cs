@@ -106,7 +106,8 @@ namespace BAL.Services.Implements
 
         public async Task<bool> UpdateAllMeetingParticipantStatus(List<MeetingParticipantViewModel> listPart)
         {
-            var part = await _unitOfWork.MeetingParticipantRepository.UpdateAllMeetingParticipantStatus(_mapper.Map<List<MeetingParticipant>>(listPart));
+            var part = await _unitOfWork.MeetingParticipantRepository.UpdateAllMeetingParticipantStatus
+                (_mapper.Map<List<MeetingParticipant>>(listPart));
             if (part != null)
             {
                 _unitOfWork.Save();

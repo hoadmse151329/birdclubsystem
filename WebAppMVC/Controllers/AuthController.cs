@@ -11,6 +11,10 @@ using WebAppMVC.Services;
 using WebAppMVC.Models.VnPay;
 using WebAppMVC.Models.Transaction;
 using BAL.ViewModels;
+using WebAppMVC.Models.Notification;
+using Microsoft.Extensions.Options;
+using System.Net.Http;
+using DAL.Models;
 
 namespace WebAppMVC.Controllers
 {
@@ -254,7 +258,7 @@ namespace WebAppMVC.Controllers
 				return View("Register");
 			}
 
-			methcall.RemoveCookie(Response, "tranKey", cookieOptions, jsonOptions);
+            methcall.RemoveCookie(Response, "tranKey", cookieOptions, jsonOptions);
 
 			UpdateNewMemberTransactionRequest unmtr = new UpdateNewMemberTransactionRequest()
 			{
@@ -287,10 +291,42 @@ namespace WebAppMVC.Controllers
 				HttpContext.Session.Remove(Constants.Constants.ACC_TOKEN);
 				HttpContext.Session.Remove(Constants.Constants.USR_NAME);
 				HttpContext.Session.Remove(Constants.Constants.ROLE_NAME);
-
 			}
             ViewBag.Success = "Account Create Successfully, Please contact the manager for your account approval!";
 
+            NotificationViewModel notif = new NotificationViewModel()
+			{
+				Title = "Account Registration",
+				Description = "You have successfully joined ChaoMao Bird Club!",
+				Date = DateTime.Now,
+				UserId = transactionResponse.Data.UserId,
+				Status = "Unread"
+			};
+            string NotificationAPI_URL = "/api/Notification/" + transactionResponse.Data.UserId + "/Create";
+
+            var notificationResponse = await methcall.CallMethodReturnObject<GetNotificationPostResponse>(
+					_httpClient: client,
+                    options: jsonOptions,
+                    methodName: "POST",
+                    url: NotificationAPI_URL,
+                    inputType: notif,
+                    accessToken: accToken,
+                    _logger: _logger);
+
+            if (notificationResponse == null)
+            {
+                ViewBag.Error =
+                    "Error while processing your request! (Create Notification).\n User Not Found!";
+                return RedirectToAction("Login", "Auth");
+            }
+            if (!notificationResponse.Status)
+            {
+                _logger.LogInformation("Error while processing your request: " + notificationResponse.Status + " , Error Message: " + notificationResponse.ErrorMessage);
+                ViewBag.Error =
+                    "Error while processing your request! (Create Meeting Media!).\n"
+                    + notificationResponse.ErrorMessage;
+                return RedirectToAction("Login", "Auth");
+            }
             return RedirectToAction("Login", "Auth");
 		}
 		[HttpPost("Register")]

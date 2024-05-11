@@ -335,6 +335,7 @@ namespace WebAppMVC.Controllers
                     + memberBird.ErrorMessage;
                 return RedirectToAction("MemberProfile");
             }
+            birdModel.CreateBird = methcall.GetValidationTempData<BirdViewModel>(this, TempData, Constants.Constants.CREATE_BIRD_VALID, "createBird", options);
             birdModel.MemberBirds = memberBird.Data;
             return View(birdModel);
         }
@@ -348,7 +349,7 @@ namespace WebAppMVC.Controllers
 
             string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
 
-            string? usrId = HttpContext.Session.GetString("USER_ID"); ;
+            string? usrId = HttpContext.Session.GetString("USER_ID");
 
             dynamic transactionModel = new ExpandoObject();
 
@@ -378,6 +379,46 @@ namespace WebAppMVC.Controllers
             transactionModel.MemberPayments = memberPayment.Data;
             //transactionModel.MemberDetail = memberDetails.Data;
             return View(transactionModel);
+        }
+        [HttpGet("Notification")]
+        public async Task<IActionResult> MemberNotification()
+        {
+            string MemberNotificationAPI_URL = "/api/Notification/AllNotifications";
+
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER));
+
+            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
+
+            string? usrId = HttpContext.Session.GetString("USER_ID");
+
+            dynamic notificationModel = new ExpandoObject();
+
+            var memberNotification = await methcall.CallMethodReturnObject<GetUserNotificationResponse>(
+                _httpClient: _httpClient,
+                options: options,
+                methodName: "POST",
+                url: MemberNotificationAPI_URL,
+                _logger: _logger,
+                inputType: usrId,
+                accessToken: accToken);
+            if (memberNotification == null)
+            {
+                ViewBag.Error =
+                    "Error while processing your request! (Getting Member!). \n Member Not Found!";
+                return RedirectToAction("MemberProfile");
+            }
+            if (!memberNotification.Status)
+            {
+                _logger.LogInformation("Error while processing your request: " + memberNotification.Status + " , Error Message: " + memberNotification.ErrorMessage);
+                ViewBag.Error =
+                    "Error while processing your request! (Getting Member Notification!). \n"
+                    + memberNotification.ErrorMessage;
+                return RedirectToAction("MemberProfile");
+            }
+            notificationModel.MemberNotifications = memberNotification.Data;
+            //transactionModel.MemberDetail = memberDetails.Data;
+            return View(notificationModel);
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace WebAppMVC.Constants
+﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
+
+namespace WebAppMVC.Constants
 {
 	public static class Constants
 	{
@@ -33,6 +35,9 @@
         public static string CREATE_CONTEST_VALID = "CContestValid";
         public static string UPDATE_CONTEST_VALID = "UContestValid";
 
+        public static string CREATE_BIRD_VALID = "CBirdValid";
+        public static string UPDATE_BIRD_VALID = "UBirdValid";
+
 		public static string EVENT_STATUS_ON_HOLD = "OnHold";
         public static string EVENT_STATUS_NAME_ON_HOLD = "On Hold";
         public static string EVENT_STATUS_POSTPONED = "Postponed";
@@ -50,9 +55,9 @@
         public static string EVENT_STATUS_ONGOING = "Ongoing";
         public static string EVENT_STATUS_NAME_ONGOING = "Ongoing";
 
-        public static string BIRD_STATUS_AVAILABLE = "Available";
+        public static string BIRD_STATUS_ACTIVE = "Active";
         public static string BIRD_STATUS_INJURED = "Injured";
-        public static string BIRD_STATUS_UNAVAILABLE = "Unavailable";
+        public static string BIRD_STATUS_INACTIVE = "Inactive";
 
         public static string EVENT_PARTICIPANT_STATUS_NOT_CHECKED_IN = "Not Checked-In";
         public static string EVENT_PARTICIPANT_STATUS_CHECKED_IN = "Checked-In";
