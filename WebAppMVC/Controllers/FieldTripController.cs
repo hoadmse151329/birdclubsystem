@@ -77,7 +77,7 @@ namespace WebAppMVC.Controllers
                 var notificationCount = await methcall.CallMethodReturnObject<GetNotificationCountResponse>(
                 _httpClient: _httpClient,
                 options: jsonOptions,
-                methodName: "POST",
+                methodName: Constants.Constants.POST_METHOD,
                 url: NotificationAPI_URL,
                 inputType: usrId,
                 _logger: _logger);
@@ -175,7 +175,7 @@ namespace WebAppMVC.Controllers
                 var notificationCount = await methcall.CallMethodReturnObject<GetNotificationCountResponse>(
                 _httpClient: _httpClient,
                 options: jsonOptions,
-                methodName: "POST",
+                methodName: Constants.Constants.POST_METHOD,
                 url: NotificationAPI_URL,
                 inputType: usrId,
                 _logger: _logger);

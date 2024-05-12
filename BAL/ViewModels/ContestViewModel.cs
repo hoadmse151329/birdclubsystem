@@ -97,5 +97,6 @@ namespace BAL.ViewModels
         [DisplayName("Spotlight Image")]
         public ContestMediaViewModel? SpotlightImage { get; set; }
         public List<ContestMediaViewModel>? ContestPictures { get; set; }
+        public List<BirdViewModel>? MemberBirdSelection { get; set; }
     }
 }
