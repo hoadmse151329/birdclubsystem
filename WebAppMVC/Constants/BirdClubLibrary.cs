@@ -430,18 +430,26 @@ namespace WebAppMVC.Constants
             tempData[tempDataName + "_" + objectId] = validJson;
             return tempData;
         }
-        public double CalculateExpectedScore(double playerElo, double opponentElo, double n)
+        // playerCurBirdElo : Bird's current Elo
+        // averageContestElo : Arithmetic Mean of all birds Elo (Arithmetic Mean) (Trung bình cộng)
+        // totalAmountOfBird : Amount of Bird joined the Contest
+        public double CalculateExpectedScore(double playerCurBirdElo, double averageContestElo, double totalAmountOfBird)
         {
-            return 1 / (1 + Math.Pow(10, ((opponentElo - playerElo) / n) / 400));
+            return 1 / (1 + Math.Pow(10, ((averageContestElo - playerCurBirdElo) / totalAmountOfBird) / 400));
         }
-
+        // playerCurBirdElo : Bird's current Elo
+        // averageContestElo : Arithmetic Mean of all birds Elo (Arithmetic Mean) (Trung bình cộng)
+        // birdContestPoints : Bird's earned elo from contest
+        // totalbirdContestPoints : Arithmetic Mean of all birds Elo earned from Contest
+        // totalAmountOfBird : Amount of Bird joined the Contest
+        // Y
         // Calculate Basic Elo Change
-        public double CalculateBasicEloChange(double playerElo, double averageElo, int birdPoints, int totalPoints, double n, List<double> Y)
+        public double CalculateBasicEloChange(double playerCurBirdElo, double averageContestElo, int birdContestPoints, int totalbirdContestPoints, double totalAmountOfBird, List<double> Y)
         {
-            double expected = CalculateExpectedScore(playerElo, averageElo, n);
-            double result = birdPoints > totalPoints / 2 ? 1 : 0;
+            double expected = CalculateExpectedScore(playerCurBirdElo, averageContestElo, totalAmountOfBird);
+            double result = birdContestPoints > totalbirdContestPoints / totalAmountOfBird ? 1 : 0;
             List<double> adjustedY = result == 1 ? Y : new List<double>(Y.ToArray().Reverse());
-            double adjustmentFactor = result == 1 ? Math.Max(0.5, 1 - (birdPoints - 1) / (totalPoints / 2.0)) : Math.Min(1.5, 1 + (birdPoints - totalPoints / 2.0) / (totalPoints / 2.0));
+            double adjustmentFactor = result == 1 ? Math.Max(0.5, 1 - (birdContestPoints - 1) / (totalbirdContestPoints / 2.0)) : Math.Min(1.5, 1 + (birdContestPoints - totalbirdContestPoints / 2.0) / (totalbirdContestPoints / 2.0));
             double K = adjustmentFactor > 1 ? 1.5 : 0.5;
             double basicEloChange = adjustedY[0] * (result - expected);
             return basicEloChange * adjustmentFactor * K;

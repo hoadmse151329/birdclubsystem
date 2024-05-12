@@ -30,7 +30,7 @@ namespace DAL.Repositories.Implements
 
         public async Task<IEnumerable<MeetingMedia>> GetAllMeetingMediasByMeetingId(int meetingId)
         {
-            return _context.MeetingMedia.AsNoTracking().Where(m => m.MeetingId.Equals(meetingId));
+            return _context.MeetingMedia.AsNoTracking().Where(m => m.MeetingId.Equals(meetingId)).ToList();
         }
     }
 }

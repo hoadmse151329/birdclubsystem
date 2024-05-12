@@ -30,7 +30,7 @@ namespace DAL.Repositories.Implements
 
         public async Task<IEnumerable<FieldtripMedia>> GetFieldTripMediasByTripId(int tripId)
         {
-            return _context.FieldtripMedia.AsNoTracking().Where(f => f.TripId.Equals(tripId));
+            return _context.FieldtripMedia.AsNoTracking().Where(f => f.TripId.Equals(tripId)).ToList();
         }
     }
 }

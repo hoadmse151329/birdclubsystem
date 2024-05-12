@@ -25,7 +25,7 @@ namespace DAL.Repositories.Implements
 
         public async Task<IEnumerable<ContestMedia>> GetContestMediasByContestId(int contestId)
         {
-            return _context.ContestMedia.AsNoTracking().Where(c => c.ContestId.Equals(contestId));
+            return _context.ContestMedia.AsNoTracking().Where(c => c.ContestId.Equals(contestId)).ToList();
         }
     }
 }
