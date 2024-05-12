@@ -21,27 +21,10 @@
 
 	<meta name="description" content="">
 	<meta name="keywords" content="bootstrap, bootstrap4">
-
-	<!-- Bootstrap CSS -->
-	<link href="~/css/bootstrap.min.css" rel="stylesheet">
-	<link href="~/css/all.min.css" rel="stylesheet">
-	<link href="~/css/tiny-slider.css" rel="stylesheet">
-	<link href="~/css/style.css" rel="stylesheet">
-	<link href="~/css/register.css" rel="stylesheet">
-	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css">
-    <!-- FONT -->
-    <link
-        href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,100&family=Roboto+Condensed:wght@400;700&display=swap"
-        rel="stylesheet">
-    <!-- FONT AWESOME -->
-    <link rel="stylesheet" href="~/fonts/fontawesome-free-5.15.4-web/css/all.min.css">
-
-    <!-- main CSS -->
-    <link rel="stylesheet" href="~/css/main.css">
 	<title>Register</title>
 </head>
 
-<body>
+<body class="background">
 	<div
 		style="background-image: url(~/images/Background.png); background-repeat:no-repeat; background-size: 100% 100%;">
 		<div class="main-container">
@@ -104,9 +87,6 @@
 									<input type="hidden" placeholder="PayAmount" asp-for="PayAmount" class="form-control form-data" value="30000" />
 								</div>
 								<button class="reg-button button light-green" type="submit" value="Register">Register</button>
-								<div class="reg-text">
-									Already a Member? <a href="@Url.Action("Login","Auth")" class="link-success">Login</a>
-								</div>
 							</form>
 						</div>
 						
@@ -121,7 +101,7 @@
 					</div>
 					<div class="row">
 						<div class="d-flex justify-content-center">
-							<img class="bird-image" src="~/images/bulbul.jpg">
+							<img class="bird-image" src="~/images/bulbul.png">
 						</div>
 					</div>
 				</div>
@@ -129,72 +109,5 @@
 			</div>
 		</div>
 	</div>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
-        referrerpolicy="no-referrer"></script>
-        <!-- Jquery Waypoint -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>
-        <!-- BS4 JS -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.5/umd/popper.min.js"></script>
-        <!-- BS4 carousels -->
-        <script>
-            $('.carousel').carousel({
-                interval: 3000
-            });
-        </script>
-        <!-- owl carousels -->
-        <script src="./assets/js/owl.carousel.min.js"></script>
-        <script>
-            $('.clubList-carousel').owlCarousel({
-                loop: true,
-                margin: 10,
-                nav: false,
-                responsive: {
-                    0: {
-                        items: 1
-                    },
-                    576: {
-                        items: 2
-                    },
-                    1200: {
-                        items: 4
-                    }
-                }
-            });
-        </script>
-        <!-- main js -->
-        <script src="~/js/user-script.js"></script>
-</body>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
-        referrerpolicy="no-referrer"></script>
-        <!-- Jquery Waypoint -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>
-        <!-- BS4 JS -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.5/umd/popper.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
-        <!-- BS4 carousels -->
-        <script>
-            $('.carousel').carousel({
-                interval: 3000
-            });
-        </script>
-        <!-- owl carousels -->
-        <script src="./assets/js/owl.carousel.min.js"></script>
-        <script>
-            $('.clubList-carousel').owlCarousel({
-                loop: true,
-                margin: 10,
-                nav: false,
-                responsive: {
-                    0: {
-                        items: 1
-                    },
-                    576: {
-                        items: 2
-                    },
-                    1200: {
-                        items: 4
-                    }
-                }
-            });
-        </script>
+	</body>
 </html>
