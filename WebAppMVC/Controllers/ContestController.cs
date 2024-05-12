@@ -168,6 +168,8 @@ namespace WebAppMVC.Controllers
 
             string NotificationAPI_URL = "/api/Notification/Count";
 
+            dynamic contestPostAndBird = new ExpandoObject();
+
             if (usrId != null)
             {
                 var notificationCount = await methcall.CallMethodReturnObject<GetNotificationCountResponse>(
@@ -221,14 +223,17 @@ namespace WebAppMVC.Controllers
                     + contestPostResponse.ErrorMessage;
                 View("Index");
             }
-            var contestmodel = contestPostResponse.Data;
-            return View(contestmodel);
+            contestPostAndBird.ContestDetails = contestPostResponse.Data;
+            contestPostAndBird.CreateBirdForContest = null;
+
+            return View(contestPostAndBird);
         }
 
-        [HttpPost("{contestId:int}/Bird/{birdId:int}/Register")]
+        [HttpPost("{contestId:int}/Register")]
         public async Task<IActionResult> ContestRegister(
             [FromRoute][Required] int contestId,
-            [FromRoute][Required] int birdId
+            int birdId,
+            [Required] BirdViewModel bird
             )
         {
             ContestAPI_URL += "/" + contestId;
@@ -479,15 +484,26 @@ namespace WebAppMVC.Controllers
 		{
 			return View();
 		}
-        /*[HttpPost("Something")]
-        public ActionResult UpdatePlayerElo(double playerElo, double averageElo, int birdPoints, int totalPoints, double n)
+        /*[HttpPost]
+        public ActionResult UpdatePlayerElo(double playerElo, List<double> playerElos, List<int> birdPoints)
         {
+            // Count the number of players participating
+            int n = playerElos.Count;
+            // Calculate the total points earned by all birds
+            int totalPoints = birdPoints.Sum();
+            // Calculate the average Elo of all players
+            double averageElo = playerElos.Sum() / n;
+
+            // List of Elo change factors
             List<double> Y = new List<double> { 40, 35, 30, 25, 20 }; // Adjust this list as needed
-            double basicEloChange = methcall.CalculateBasicEloChange(playerElo, averageElo, birdPoints, totalPoints, n, Y);
-            double updatedElo = methcall.UpdateElo(playerElo, basicEloChange);
+            // Calculate basic Elo change for the player based on the provided parameters
+            double basicEloChange = EloCalculator.CalculateBasicEloChange(playerElo, averageElo, birdPoints[0], totalPoints, n, Y);
+            // Update the player's Elo using the calculated Elo change
+            double updatedElo = EloCalculator.UpdateElo(playerElo, basicEloChange);
 
             // Update player's Elo in your database or wherever it's stored
 
+            // Return the updated Elo as JSON response
             return Json(new { updatedElo });
         }*/
     }

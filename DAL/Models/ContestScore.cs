@@ -27,7 +27,7 @@ namespace DAL.Models
         public string? Comment { get; set; }
 
         [ForeignKey(nameof(BirdId))]
-        [InverseProperty("ContestScores")]
-        public virtual Bird? Bird { get; set; }
+        [InverseProperty(nameof(Bird.ContestScores))]
+        public virtual Bird? BirdDetails { get; set; }
     }
 }

@@ -1,119 +1,134 @@
-﻿@model BAL.ViewModels.ContestViewModel
+﻿@model dynamic
 @{
     ViewData["Title"] = "Contest Post Page";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    BAL.ViewModels.ContestViewModel con = Model.ContestDetails;
+    var role = TempData["ROLE_NAME"];
+    BAL.ViewModels.BirdViewModel createOrSelectedBird = Model.CreateBirdForContest != null ? Model.CreateBirdForContest : new BAL.ViewModels.BirdViewModel();
+    List<BAL.ViewModels.BirdViewModel> memberAvailableBirdList = con.MemberBirdSelection;
+    List<SelectListItem> memberAvailableBirdSelectList = new();
+    if(con.MemberBirdSelection != null && con.MemberBirdSelection.Count > 0)
+    {
+        foreach (var bird in con.MemberBirdSelection)
+        {
+            memberAvailableBirdSelectList.Add(new SelectListItem(bird.BirdName, bird.BirdId.Value.ToString()));
+        }
+        memberAvailableBirdSelectList.FirstOrDefault().Selected = true;
+    }
 }
 
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-            <link rel="stylesheet" href="~/css/Contest.css">
-    <!-- main CSS -->
-  </head>
- <body class="background">
-    <div class="member-contest-post">
-      <div class="overlap-wrapper">
-        <div class="overlap">
-          <div class="headlines">
-            <div class="group">
-              <div class="overlap-2">
-                <div class="flexcontainer">
-                  <p class="text">
-                        @{
-                            if (ViewBag.error != null)
-                            {
-                              <span class="text-danger">@ViewBag.error</span>
-                            }
-                         }
-                    <span class="text-wrapper">Content<br /></span>
-                  </p>
-                  <p class="span-wrapper">
-                    <span class="span">
-                        @Model.Description
-                    </span>
-                  </p>
-                </div>
-                <div class="flexcontainer-2">
-                  <p class="text">
-                    <span class="text-wrapper">Notes<br /></span>
-                  </p>
-                  <p class="p">
-                    <span class="span">
-                        @Model.Note
-                    </span>
-                  </p>
-                </div>
-                <div class="tittle">
-                    <div class="div-wrapper"><div class="text-wrapper-3">Contest</div></div>
-                </div>
-                @{
-                    if (Model.SpotlightImage != null)
-                    {
-                        <img class="soi-noi-hoi-thi-chim" src="@Model.SpotlightImage.Image" alt="nt1">
-                    }
-                    else
-                    {
-                        <img class="soi-noi-hoi-thi-chim" src="~/images/contest.png" alt="nt1">
-                    }
-                }
-              </div>
-            </div>
-            <div class="info">
-              <div class="overlap-3"> 
-                <div id="map-container"></div>
-                <div class="tittle">
-                  <div class="overlap-group-2"><p class="text-wrapper-4" id="dynamicText">@Model.ContestName</p></div>
-                </div>
-                <div class="text-wrapper-5">From @Model.StartDate.ToString("MM/dd/yyyy") to @Model.EndDate.ToString("MM/dd/syyyy")</div>
-
-
-                <div class="group-2">
-                  <div class="text-wrapper-6">Participation Limit</div>
-                  <div class="text-wrapper-7">Registration Deadlines</div>
-                  <div class="text-wrapper-8">Location</div>
-                  <div class="text-wrapper-9">Contact</div>
-                  <div class="text-wrapper-10">Organizer</div>
-                  <div class="text-wrapper-17">Fee</div>
-                </div>
-
-
-
-                <div class="group-3">
-                  <div class="text-wrapper-11">@Model.AreaNumber,@Model.Street,@Model.District,@Model.City</div>
-                  @*<div class="text-wrapper-11">@Model.Street</div>*@
-                  <p class="text-wrapper-12">@Model.NumberOfParticipantsLimit</p>
-                  <div class="text-wrapper-13">@Model.RegistrationDeadline</div>
-                  <div class="text-wrapper-14">ChaoMaoClub@gmail.com</div>
-                  <div class="text-wrapper-15">@Model.Host</div>
-                  <div class="text-wrapper-18">@Model.Fee</div>
-                </div>
-                <div class="register">
-                    @{
-                        if (Model.ParticipationNo != 0 && Model.ParticipationNo != null)
-                        {
-                            <div class="overlap-group-3 text-wrapper-16">
-                                <span class="text-success">@ViewBag.PartNumber</span>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                <link rel="stylesheet" href="~/css/Contest.css">
+        <!-- main CSS -->
+        </head>
+    <body class="background">
+        <div class="member-contest-post">
+            <div class="overlap-wrapper">
+                <div class="overlap">
+                    <div class="headlines">
+                        <div class="group">
+                            <div class="overlap-2">
+                                <div class="flexcontainer">
+                                    <p class="text">
+                                        @{
+                                            if (ViewBag.error != null)
+                                            {
+                                                <span class="text-danger">@ViewBag.error</span>
+                                            }
+                                        }
+                                        <span class="text-wrapper">Content<br /></span>
+                                    </p>
+                                    <p class="span-wrapper">
+                                        <span class="span">
+                                            @con.Description
+                                        </span>
+                                    </p>
+                                </div>
+                                <div class="flexcontainer-2">
+                                    <p class="text">
+                                        <span class="text-wrapper">Notes<br /></span>
+                                    </p>
+                                    <p class="p">
+                                        <span class="span">
+                                            @con.Note
+                                        </span>
+                                    </p>
+                                </div>
+                                <div class="tittle">
+                                    <div class="div-wrapper"><div class="text-wrapper-3">Contest</div></div>
+                                </div>
+                                @{
+                                    if (con.SpotlightImage != null)
+                                    {
+                                        <img class="soi-noi-hoi-thi-chim" src="@con.SpotlightImage.Image" alt="nt1">
+                                    }
+                                    else
+                                    {
+                                        <img class="soi-noi-hoi-thi-chim" src="~/images/contest.png" alt="nt1">
+                                    }
+                                }
                             </div>
-                            <form asp-action="ContestDeRegister" asp-controller="Contest" method="post" asp-route-contestId="@Model.ContestId">
-                                <button class="overlap-group-3 text-wrapper-16" type="submit">Sign Out</button>
-                            </form> 
-                        }
-                        else
-                        {
-                            <form asp-action="ContestRegister" asp-controller="Contest" method="post" asp-route-contestId="@Model.ContestId">
-                                <button class="overlap-group-3 text-wrapper-16 button-rgb" type="submit">Register</button>
-                            </form>             
-                        }
-                    }
-                </div>      
-</div>
-              </div>
+                        </div>
+                        <div class="info">
+                            <div class="overlap-3"> 
+                                <div id="map-container"></div>
+                                <div class="tittle">
+                                    <div class="overlap-group-2"><p class="text-wrapper-4" id="dynamicText">@con.ContestName</p></div>
+                                </div>
+                                <div class="text-wrapper-5">From @con.StartDate.ToString("MM/dd/yyyy") to @con.EndDate.ToString("MM/dd/syyyy")</div>
+                                <div class="group-2">
+                                    <div class="text-wrapper-6">Participation Limit</div>
+                                    <div class="text-wrapper-7">Registration Deadlines</div>
+                                    <div class="text-wrapper-8">Location</div>
+                                    <div class="text-wrapper-9">Contact</div>
+                                    <div class="text-wrapper-10">Organizer</div>
+                                    <div class="text-wrapper-17">Fee</div>
+                                </div>
+                                <div class="group-3">
+                                    <div class="text-wrapper-11">@con.AreaNumber,@con.Street,@con.District,@con.City</div>
+                                    @*<div class="text-wrapper-11">@con.Street</div>*@
+                                    <p class="text-wrapper-12">@con.NumberOfParticipantsLimit</p>
+                                    <div class="text-wrapper-13">@con.RegistrationDeadline.ToString("MM/dd/yyyy")</div>
+                                    <div class="text-wrapper-14">ChaoMaoClub@gmail.com</div>
+                                    <div class="text-wrapper-15">@con.Host</div>
+                                    <div class="text-wrapper-18">@con.Fee</div>
+                                </div>
+                                <div class="register">
+                                @{
+                                    if(role != null && role.Equals("Member"))
+                                    {
+                                        if (con.ParticipationNo != 0 && con.ParticipationNo != null)
+                                        {
+                                            <div class="overlap-group-3 text-wrapper-16">
+                                                <span class="text-success">@ViewBag.PartNumber</span>
+                                            </div>
+                                            <form asp-action="ContestDeRegister" asp-controller="Contest" method="post" asp-route-contestId="@con.ContestId">
+                                                <button class="overlap-group-3 text-wrapper-16" type="submit">Sign Out</button>
+                                            </form>
+                                        }
+                                        else
+                                        {
+                                            <button class="overlap-group-3 text-wrapper-16 button-rgb" data-toggle="modal" data-target="#registerContest" type="submit">Register</button>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <form asp-action="ContestRegister" asp-controller="Contest" method="post" asp-route-contestId="@con.ContestId" asp-route-birdId="0">
+                                            <button class="overlap-group-3 text-wrapper-16 button-rgb" type="submit">Register</button>
+                                        </form>
+                                    }
+                                }
+                                </div>      
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-             </div>
-            </div>
-            </div>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+        </div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
         referrerpolicy="no-referrer"></script>
         <!-- Jquery Waypoint -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>
@@ -146,64 +161,185 @@
                 }
             });
         </script>
-<script>
-    // Get the overlap-group-2 container
-    const container = document.querySelector('.overlap-group-2');
+        <script>
+            // Get the overlap-group-2 container
+            const container = document.querySelector('.overlap-group-2');
     
-    // Get the dynamic text element
-    const dynamicText = document.getElementById('dynamicText');
+            // Get the dynamic text element
+            const dynamicText = document.getElementById('dynamicText');
     
-    // Get the height of the container
-    const containerHeight = container.clientHeight;
+            // Get the height of the container
+            const containerHeight = container.clientHeight;
     
-    // Get the width of the container
-    const containerWidth = container.clientWidth;
+            // Get the width of the container
+            const containerWidth = container.clientWidth;
     
-    // Get the height of the dynamic text element
-    const textHeight = dynamicText.offsetHeight;
+            // Get the height of the dynamic text element
+            const textHeight = dynamicText.offsetHeight;
     
-    // Get the width of the dynamic text element
-    const textWidth = dynamicText.offsetWidth;
+            // Get the width of the dynamic text element
+            const textWidth = dynamicText.offsetWidth;
     
-    // Calculate the new top position to center vertically
-    const newTop = (containerHeight - textHeight) / 2;
+            // Calculate the new top position to center vertically
+            const newTop = (containerHeight - textHeight) / 2;
     
-    // Calculate the new left position to center horizontally
-    const newLeft = (containerWidth - textWidth) / 2;
+            // Calculate the new left position to center horizontally
+            const newLeft = (containerWidth - textWidth) / 2;
     
-    // Apply the new styles
-    dynamicText.style.top = `${newTop}px`;
-    dynamicText.style.left = `${newLeft}px`;
-</script>
-<script>
-    function randomizeColor() {
-        return Math.floor(Math.random() * 256);
-    }
+            // Apply the new styles
+            dynamicText.style.top = `${newTop}px`;
+            dynamicText.style.left = `${newLeft}px`;
+        </script>
+        <script>
+            function randomizeColor() {
+                return Math.floor(Math.random() * 256);
+            }
 
-    function generateRandomRGB() {
-        const r = randomizeColor();
-        const g = randomizeColor();
-        const b = randomizeColor();
-        return `rgb(${r}, ${g}, ${b})`;
-    }
-    $(document).ready(function () {
-        setInterval(() => {
-            const topColor = generateRandomRGB();
-            const rightColor = generateRandomRGB();
-            const bottomColor = generateRandomRGB();
-            const leftColor = generateRandomRGB();
+            function generateRandomRGB() {
+                const r = randomizeColor();
+                const g = randomizeColor();
+                const b = randomizeColor();
+                return `rgb(${r}, ${g}, ${b})`;
+            }
+            $(document).ready(function () {
+                setInterval(() => {
+                    const topColor = generateRandomRGB();
+                    const rightColor = generateRandomRGB();
+                    const bottomColor = generateRandomRGB();
+                    const leftColor = generateRandomRGB();
 
-            $('.button-rgb').css('border-top-color', topColor);
-            $('.button-rgb').css('border-right-color', rightColor);
-            $('.button-rgb').css('border-bottom-color', bottomColor);
-            $('.button-rgb').css('border-left-color', leftColor);
-        }, 200);
-    });
-    $(document).ready(function () {
-        setInterval(() => {
-            $('.').css('background-color', generateRandomRGB());
-        }, 1000);
-    });
-</script>
-  </body>
+                    $('.button-rgb').css('border-top-color', topColor);
+                    $('.button-rgb').css('border-right-color', rightColor);
+                    $('.button-rgb').css('border-bottom-color', bottomColor);
+                    $('.button-rgb').css('border-left-color', leftColor);
+                }, 200);
+            });
+            $(document).ready(function () {
+                setInterval(() => {
+                    $('.').css('background-color', generateRandomRGB());
+                }, 1000);
+            });
+        </script>
+    </body>
+    @{
+        if (role != null && role.Equals("Member"))
+        {
+            <div id="registerContest" class="modal fade" role="dialog">
+                <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
+                    <div class="modal-content modal-addRoom">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Select your existing bird or Create a new bird to register this contest</h4>
+                        </div>
+                        @{
+                            if (con.MemberBirdSelection != null && con.MemberBirdSelection.Count > 0)
+                            {
+                                <div class="form-group row">
+                                    <label class="col-sm-4 col-form-label">Select Your Existing Bird</label>
+                                    <div class="col-sm-8">
+                                        <select class="form-control" id="birdSelection" asp-for="@con.MemberBirdSelection.FirstOrDefault().BirdId" asp-items="@memberAvailableBirdSelectList" class="custom-select" required></select>
+                                    </div>
+                                </div>
+                            }
+                        }
+                        <form asp-action="ContestRegister" asp-controller="Contest" method="post" asp-route-contestId="@con.ContestId" class="form-group">
+                            <div class="modal-body">
+                                <div class="form-group row">
+                                    <label asp-for="@createOrSelectedBird.BirdName" class="col-sm-4 col-form-label"></label>
+                                    <div class="col-sm-8">
+                                    <input asp-for="@createOrSelectedBird.BirdName" type="text" id="createOrSelectedBird_BirdName"
+                                               value="@createOrSelectedBird.BirdName" class="form-control" required>
+                                        <span asp-validation-for="@createOrSelectedBird.BirdName" id="error_message"
+                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label asp-for="@createOrSelectedBird.Age" class="col-sm-4 col-form-label"></label>
+                                    <div class="col-sm-8">
+                                        <input asp-for="@createOrSelectedBird.Age" type="number" min="0"
+                                               value="@createOrSelectedBird.Age" class="form-control" required>
+                                        <span asp-validation-for="@createOrSelectedBird.Age" id="error_message"
+                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label asp-for="@createOrSelectedBird.Description" class="col-sm-4 col-form-label">Description</label>
+                                    <div class="col-sm-8">
+                                        <textarea asp-for="@createOrSelectedBird.Description"
+                                                  value="@createOrSelectedBird.Description" class="form-control" required></textarea>
+                                        <span asp-validation-for="@createOrSelectedBird.Description" id="error_message"
+                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label asp-for="@createOrSelectedBird.Color" class="col-sm-4 col-form-label">Location</label>
+                                    <div class="col-sm-8">
+                                        <input asp-for="@createOrSelectedBird.Color" type="text"
+                                               value="@createOrSelectedBird.Color" class="form-control" required>
+                                        <span asp-validation-for="@createOrSelectedBird.Color" id="error_message"
+                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label asp-for="@createOrSelectedBird.Origin" class="col-sm-4 col-form-label">Description</label>
+                                    <div class="col-sm-8">
+                                        <textarea asp-for="@createOrSelectedBird.Origin"
+                                                  value="@createOrSelectedBird.Origin" class="form-control" required></textarea>
+                                        <span asp-validation-for="@createOrSelectedBird.Origin" id="error_message"
+                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label asp-for="@createOrSelectedBird.Elo" class="col-sm-4 col-form-label"></label>
+                                    <div class="col-sm-8">
+                                        <input asp-for="@createOrSelectedBird.Elo" type="number" min="0"
+                                               value="@createOrSelectedBird.Elo" class="form-control" required readonly>
+                                        <span asp-validation-for="@createOrSelectedBird.Elo" id="error_message"
+                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label asp-for="@createOrSelectedBird.AddDate" class="col-sm-4 col-form-label"></label>
+                                    <div class="col-sm-8">
+                                        <input asp-for="@createOrSelectedBird.AddDate" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
+                                               value="@createOrSelectedBird.AddDate.ToString("yyyy-MM-ddTHH:mm")" class="form-control" required readonly>
+                                        <span asp-validation-for="@createOrSelectedBird.AddDate" id="error_message"
+                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer justify-content-center">
+                                <button class="btn overlap-group-3 text-wrapper-16 button-rgb" type="submit" value="Update">Register</button>
+                                <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
+                            </div>
+                        </form>
+                        <div class="form-group row">
+                            <label asp-for="@con.Fee" class="col-sm-4 col-form-label">Contest Fee</label>
+                            <div class="col-sm-8">
+                                <input asp-for="@con.Fee" type="number" min="0"
+                                       value="@con.Fee" class="form-control" required readonly>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    <script>
+        $(document).ready(function () {
+            $('#birdSelection').change(function () {
+                var selectedBirdId = $(this).val();
+                var birds = @Html.Raw(Json.Serialize(memberAvailableBirdList));
+                var selectedBird = birds.find(b => b.BirdId == selectedBirdId);
+
+                // Autofill the input fields with bird data
+                $('#createOrSelectedBird_BirdName').val(selectedBird.BirdName);
+                $('#createOrSelectedBird_Age').val(selectedBird.Age);
+                $('#createOrSelectedBird_Description').val(selectedBird.Description);
+                $('#createOrSelectedBird_Color').val(selectedBird.Color);
+                $('#createOrSelectedBird_Origin').val(selectedBird.Origin);
+                $('#createOrSelectedBird_Elo').val(selectedBird.Elo);
+                $('#createOrSelectedBird_AddDate').val(selectedBird.AddDate);
+            });
+        });
+    </script>
 </html>

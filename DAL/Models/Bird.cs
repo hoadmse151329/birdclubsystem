@@ -11,7 +11,7 @@ namespace DAL.Models
     {
         public Bird()
         {
-            BirdMedia = new HashSet<BirdMedia>();
+            BirdPictures = new HashSet<BirdMedia>();
             ContestParticipants = new HashSet<ContestParticipant>();
             ContestScores = new HashSet<ContestScore>();
         }
@@ -43,13 +43,13 @@ namespace DAL.Models
         public string? Origin { get; set; }
 
         [ForeignKey(nameof(MemberId))]
-        [InverseProperty("Birds")]
-        public virtual Member Member { get; set; } = null!;
-        [InverseProperty(nameof(Models.BirdMedia.Bird))]
-        public virtual ICollection<BirdMedia> BirdMedia { get; set; }
-        [InverseProperty(nameof(ContestParticipant.Bird))]
+        [InverseProperty(nameof(Member.MemberBirds))]
+        public virtual Member MemberDetails { get; set; } = null!;
+        [InverseProperty(nameof(BirdMedia.BirdDetails))]
+        public virtual ICollection<BirdMedia> BirdPictures { get; set; }
+        [InverseProperty(nameof(ContestParticipant.BirdDetails))]
         public virtual ICollection<ContestParticipant> ContestParticipants { get; set; }
-        [InverseProperty(nameof(ContestScore.Bird))]
+        [InverseProperty(nameof(ContestScore.BirdDetails))]
         public virtual ICollection<ContestScore> ContestScores { get; set; }
     }
 }
