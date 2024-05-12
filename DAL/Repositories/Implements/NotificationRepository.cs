@@ -47,7 +47,7 @@ namespace DAL.Repositories.Implements
 
         public async Task<bool> GetBoolNotificationId(int id)
         {
-            var notif = _context.Notifications.SingleOrDefault(n => n.NotificationId == id);
+            var notif = _context.Notifications.SingleOrDefault(n => n.NotificationId.Equals(id));
             if (notif != null) return true;
             else return false;
         }

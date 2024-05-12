@@ -48,9 +48,9 @@
                     <div class="div-wrapper"><div class="text-wrapper-3">Meeting</div></div>
                   </div>
                 @{
-                                if (Model.MeetingPictures != null && Model.MeetingPictures.Count > 0)
+                    if (Model.SpotlightImage != null)
                     {
-                                    <img class="soi-noi-hoi-thi-chim" src="@Model.MeetingPictures.FirstOrDefault().Image" alt="nt1">
+                        <img class="soi-noi-hoi-thi-chim" src="@Model.SpotlightImage.Image" alt="nt1">
                     }
                     else
                     {

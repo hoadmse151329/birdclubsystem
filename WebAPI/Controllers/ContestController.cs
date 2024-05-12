@@ -313,12 +313,12 @@ namespace WebAPI.Controllers
             }
         }
 
-        [HttpPost("Participant/{id}")]
+        [HttpPost("{id:int}/Participant")]
         [Authorize(Roles = "Member")]
         [ProducesResponseType(typeof(ContestViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> GetContestAndParticipantNo(
+        public async Task<IActionResult> GetContestAndParticipantNoAndMemberBirds(
             [Required][FromRoute] int id,
             [Required][FromBody] string memId)
         {
@@ -336,8 +336,10 @@ namespace WebAPI.Controllers
                     Status = false,
                     ErrorMessage = "Member Not Found!"
                 });
+                var membirds = await _birdService.GetBirdsByMemberId(memId);
                 int participateNo = await _participantService.GetParticipationNo(id, memId);
                 cont.ParticipationNo = participateNo;
+                cont.MemberBirdSelection = membirds.ToList();
                 return Ok(new
                 {
                     Status = true,
