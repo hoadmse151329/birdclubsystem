@@ -144,7 +144,7 @@
                             <div class="row">
                                 <div class="col-lg-4">
                                     <div class="profile-pic">
-                                        <img src="assets/img/avatar.jpg" id="output" width="200"/>
+                                        <img src="@Model.ImagePath" id="output" width="200"/>
                                         <div class="upload">
                                             <button class="btn btn-warning" data-toggle="modal" data-target="#uploadImg">Details</button>                                                   
                                             <i class='bx bxs-camera-plus'></i>
@@ -275,17 +275,17 @@
         <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
             <div class="modal-content modal-addRoom">
                 <div class="modal-header">
-                    <h4 class="modal-title">Thay ảnh</h4>
+                    <h4 class="modal-title">Change Profile Picture</h4>
                 </div>
-                <form action="#">
+                <form asp-action="UploadImage" asp-controller="Staff" enctype="multipart/form-data">
                     <div class="modal-body">
                         <label class="custom-control-label d-flex">
-                            <input type="file" class="custom-file" accept=".jpg, .png" onchange="loadFile(event)">   
+                            <input asp-for="@formFile" type="file" class="custom-file" accept=".jpg, .jpeg, .png" name="photo" onchange="loadFile(event)">   
                         </label>
                     </div>
                     <div class="modal-footer justify-content-center">
-                        <button class="btn btn-success" type="submit" id="confirm">Xác nhận</button>
-                        <button class="btn btn-danger" type="button" data-dismiss="modal">Hủy</button>
+                        <button class="btn btn-success" type="submit" id="confirm">Save</button>
+                        <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
                     </div>
                 </form>
             </div>

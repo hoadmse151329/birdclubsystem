@@ -55,7 +55,7 @@ namespace BAL.Services.Implements
             return await _unitOfWork.NotificationRepository.GetCountUnreadNotificationsByMemberId(id);
         }
 
-        public async Task<bool> GetBoolNotificationId(int id)
+        public async Task<bool> GetBoolNotificationId(string id)
         {
             var notif = await _unitOfWork.NotificationRepository.GetBoolNotificationId(id);
             if (!notif) return false;

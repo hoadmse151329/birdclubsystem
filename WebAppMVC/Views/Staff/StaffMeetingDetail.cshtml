@@ -194,6 +194,14 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-5 text-md-right">
+                                            <label for="customer-name">Open Registration Date:</label>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <span>@detailsMeeting.OpenRegistration.ToString("dd-MM-yyyy HH:mm")</span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-5 text-md-right">
                                             <label for="customer-name">Registration Deadlines:</label>
                                         </div>
                                         <div class="col-md-7">
@@ -579,6 +587,8 @@
                                 </div>
                                 <input asp-for="@updateMeeting.MeetingName" type="text"
                                        value="@updateMeeting.MeetingName" required hidden>
+                                <input asp-for="@updateMeeting.OpenRegistration" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
+                                       value="@updateMeeting.OpenRegistration.ToString("yyyy-MM-ddTHH:mm")" required hidden>
                                 <input asp-for="@updateMeeting.RegistrationDeadline" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
                                        value="@updateMeeting.RegistrationDeadline.ToString("yyyy-MM-ddTHH:mm")" required hidden>
                                 <input asp-for="@updateMeeting.StartDate" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
