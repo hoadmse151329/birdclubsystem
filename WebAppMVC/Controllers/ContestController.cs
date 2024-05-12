@@ -479,7 +479,7 @@ namespace WebAppMVC.Controllers
 		{
 			return View();
 		}
-        [HttpPost("Something")]
+        /*[HttpPost("Something")]
         public ActionResult UpdatePlayerElo(double playerElo, double averageElo, int birdPoints, int totalPoints, double n)
         {
             List<double> Y = new List<double> { 40, 35, 30, 25, 20 }; // Adjust this list as needed
@@ -489,6 +489,6 @@ namespace WebAppMVC.Controllers
             // Update player's Elo in your database or wherever it's stored
 
             return Json(new { updatedElo });
-        }
+        }*/
     }
 }
