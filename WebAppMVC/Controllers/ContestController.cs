@@ -77,7 +77,7 @@ namespace WebAppMVC.Controllers
                 var notificationCount = await methcall.CallMethodReturnObject<GetNotificationCountResponse>(
                 _httpClient: _httpClient,
                 options: jsonOptions,
-                methodName: "POST",
+                methodName: Constants.Constants.POST_METHOD,
                 url: NotificationAPI_URL,
                 inputType: usrId,
                 _logger: _logger);
@@ -88,26 +88,26 @@ namespace WebAppMVC.Controllers
             var listLocationRoadResponse = await methcall.CallMethodReturnObject<GetLocationAddressResponseByList>(
                 _httpClient: _httpClient,
                 options: jsonOptions,
-                methodName: "GET",
+                methodName: Constants.Constants.GET_METHOD,
                 url: LocationAPI_URL_All_Road,
                 _logger: _logger);
             var listLocationDistrictResponse = await methcall.CallMethodReturnObject<GetLocationAddressResponseByList>(
                 _httpClient: _httpClient,
                 options: jsonOptions,
-                methodName: "GET",
+                methodName: Constants.Constants.GET_METHOD,
                 url: LocationAPI_URL_All_District,
                 _logger: _logger);
             var listLocationCityResponse = await methcall.CallMethodReturnObject<GetLocationAddressResponseByList>(
                 _httpClient: _httpClient,
                 options: jsonOptions,
-                methodName: "GET",
+                methodName: Constants.Constants.GET_METHOD,
                 url: LocationAPI_URL_All_City,
                 _logger: _logger);
 
             var listContestResponse = await methcall.CallMethodReturnObject<GetContestResponseByList>(
                 _httpClient: _httpClient,
                 options: jsonOptions,
-                methodName: "POST",
+                methodName: Constants.Constants.POST_METHOD,
                 url: ContestAPI_URL,
                 inputType: role,
                 _logger: _logger);
@@ -173,7 +173,7 @@ namespace WebAppMVC.Controllers
                 var notificationCount = await methcall.CallMethodReturnObject<GetNotificationCountResponse>(
                 _httpClient: _httpClient,
                 options: jsonOptions,
-                methodName: "POST",
+                methodName: Constants.Constants.POST_METHOD,
                 url: NotificationAPI_URL,
                 inputType: usrId,
                 _logger: _logger);
@@ -184,12 +184,12 @@ namespace WebAppMVC.Controllers
             GetContestPostResponse? contestPostResponse = new();
 
             if (!string.IsNullOrEmpty(accToken) && !string.IsNullOrEmpty(usrId) && role.Equals(Constants.Constants.MEMBER))
-            {
-                ContestAPI_URL += "Participant/" + id;
+            {   
+                ContestAPI_URL += id +"/Participant";
                 contestPostResponse = await methcall.CallMethodReturnObject<GetContestPostResponse>(
                                    _httpClient: _httpClient,
                                    options: jsonOptions,
-                                   methodName: "POST",
+                                   methodName: Constants.Constants.POST_METHOD,
                                    url: ContestAPI_URL,
                                    _logger: _logger,
                                    inputType: usrId,
@@ -201,9 +201,10 @@ namespace WebAppMVC.Controllers
                 contestPostResponse = await methcall.CallMethodReturnObject<GetContestPostResponse>(
                                    _httpClient: _httpClient,
                                    options: jsonOptions,
-                                   methodName: "GET",
+                                   methodName: Constants.Constants.GET_METHOD,
                                    url: ContestAPI_URL,
                                    _logger: _logger);
+
             }
             if (contestPostResponse == null)
             {
