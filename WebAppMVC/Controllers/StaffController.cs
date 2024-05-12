@@ -21,37 +21,39 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using System.ComponentModel.DataAnnotations;
 using WebAppMVC.Models.Staff;
+using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
 
 namespace WebAppMVC.Controllers
-{    
-	[Route("Staff")]
-	public class StaffController : Controller
-	{   
+{
+    [Route("Staff")]
+    public class StaffController : Controller
+    {
         private readonly ILogger<MeetingController> _logger;
         private readonly IConfiguration _config;
         private readonly HttpClient _httpClient = null;
-		private string StaffAPI_URL = "";
-		private readonly JsonSerializerOptions options = new JsonSerializerOptions
-		{
-			Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
-			PropertyNameCaseInsensitive = true
-		};
-		private BirdClubLibrary methcall = new();
+        private string StaffAPI_URL = "";
+        private readonly JsonSerializerOptions options = new JsonSerializerOptions
+        {
+            Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+            PropertyNameCaseInsensitive = true
+        };
+        private BirdClubLibrary methcall = new();
 
-		public StaffController(ILogger<MeetingController> logger, IConfiguration config)
-		{
-			_logger = logger;
-			_httpClient = new HttpClient();
-			var contentType = new MediaTypeWithQualityHeaderValue("application/json");
-			_httpClient.DefaultRequestHeaders.Accept.Add(contentType);
-			_httpClient.BaseAddress = new Uri(config.GetSection("DefaultApiUrl:ConnectionString").Value);
+        public StaffController(ILogger<MeetingController> logger, IConfiguration config)
+        {
+            _logger = logger;
+            _httpClient = new HttpClient();
+            var contentType = new MediaTypeWithQualityHeaderValue("application/json");
+            _httpClient.DefaultRequestHeaders.Accept.Add(contentType);
+            _httpClient.BaseAddress = new Uri(config.GetSection("DefaultApiUrl:ConnectionString").Value);
             StaffAPI_URL = "/api/";
-		}
+        }
 
-		// GET: StaffController
-		[HttpGet("Index")]
-		public IActionResult StaffIndex()
-		{
+        // GET: StaffController
+        [HttpGet("Index")]
+        public IActionResult StaffIndex()
+        {
             string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
             if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
 
@@ -72,33 +74,33 @@ namespace WebAppMVC.Controllers
             TempData["IMAGE_PATH"] = imagepath;
 
             return View();
-		}
-		[HttpGet("Meeting")]
-		public async Task<IActionResult> StaffMeeting([FromQuery] string search)
-		{
-			_logger.LogInformation(search);
-			string LocationAPI_URL_All = StaffAPI_URL + "Location/All";
-			if (search != null || !string.IsNullOrEmpty(search))
-			{
-				search = search.Trim();
-				StaffAPI_URL += "Meeting/Search?meetingName=" + search;
-			}
-			else StaffAPI_URL += "Meeting/All";
+        }
+        [HttpGet("Meeting")]
+        public async Task<IActionResult> StaffMeeting([FromQuery] string search)
+        {
+            _logger.LogInformation(search);
+            string LocationAPI_URL_All = StaffAPI_URL + "Location/All";
+            if (search != null || !string.IsNullOrEmpty(search))
+            {
+                search = search.Trim();
+                StaffAPI_URL += "Meeting/Search?meetingName=" + search;
+            }
+            else StaffAPI_URL += "Meeting/All";
 
-			dynamic testmodel = new ExpandoObject();
+            dynamic testmodel = new ExpandoObject();
 
-			string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
-			if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
+            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
+            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
 
-			string? role = HttpContext.Session.GetString("ROLE_NAME");
-			if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-			else if (!role.Equals("Staff")) return View("Index");
+            string? role = HttpContext.Session.GetString("ROLE_NAME");
+            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
+            else if (!role.Equals("Staff")) return View("Index");
 
-			string? usrId = HttpContext.Session.GetString("USER_ID");
-			if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
+            string? usrId = HttpContext.Session.GetString("USER_ID");
+            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
 
-			string? usrname = HttpContext.Session.GetString("USER_NAME");
-			if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
+            string? usrname = HttpContext.Session.GetString("USER_NAME");
+            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
 
             string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
 
@@ -107,40 +109,40 @@ namespace WebAppMVC.Controllers
             TempData["IMAGE_PATH"] = imagepath;
 
             var listLocationResponse = await methcall.CallMethodReturnObject<GetLocationResponseByList>(
-				_httpClient: _httpClient,
-				options: options,
-				methodName: Constants.Constants.GET_METHOD,
-				url: LocationAPI_URL_All,
-				_logger: _logger);
+                _httpClient: _httpClient,
+                options: options,
+                methodName: Constants.Constants.GET_METHOD,
+                url: LocationAPI_URL_All,
+                _logger: _logger);
 
-			var listMeetResponse = await methcall.CallMethodReturnObject<GetMeetingResponseByList>(
-				_httpClient: _httpClient,
-				options: options,
-				methodName: "POST",
-				url: StaffAPI_URL,
+            var listMeetResponse = await methcall.CallMethodReturnObject<GetMeetingResponseByList>(
+                _httpClient: _httpClient,
+                options: options,
+                methodName: "POST",
+                url: StaffAPI_URL,
                 inputType: role,
                 _logger: _logger);
 
-			if (listMeetResponse == null || listLocationResponse == null)
-			{
-				_logger.LogInformation(
-					"Error while processing your request! (Getting List Meeting!). List was Empty!: " + listMeetResponse);
-				ViewBag.error =
-					"Error while processing your request! (Getting List Meeting!).\n List was Empty!";
-				return View("StaffIndex");
-			}
-			else
-			if (!listMeetResponse.Status || !listLocationResponse.Status)
-			{
-				ViewBag.error =
-					"Error while processing your request! (Getting List Meeting!).\n"
-					+ listMeetResponse.ErrorMessage + "\n" + listLocationResponse.ErrorMessage;
-				return View("StaffIndex");
-			}
-			testmodel.Meetings = listMeetResponse.Data;
-			testmodel.Locations = listLocationResponse.Data;
-			return View(testmodel);
-		}
+            if (listMeetResponse == null || listLocationResponse == null)
+            {
+                _logger.LogInformation(
+                    "Error while processing your request! (Getting List Meeting!). List was Empty!: " + listMeetResponse);
+                ViewBag.error =
+                    "Error while processing your request! (Getting List Meeting!).\n List was Empty!";
+                return View("StaffIndex");
+            }
+            else
+            if (!listMeetResponse.Status || !listLocationResponse.Status)
+            {
+                ViewBag.error =
+                    "Error while processing your request! (Getting List Meeting!).\n"
+                    + listMeetResponse.ErrorMessage + "\n" + listLocationResponse.ErrorMessage;
+                return View("StaffIndex");
+            }
+            testmodel.Meetings = listMeetResponse.Data;
+            testmodel.Locations = listLocationResponse.Data;
+            return View(testmodel);
+        }
         [HttpGet("Meeting/{id:int}")]
         /*[Route("Staff/Meeting/{id:int}")]*/
         public async Task<IActionResult> StaffMeetingDetail(int id)
@@ -434,7 +436,7 @@ namespace WebAppMVC.Controllers
             [FromRoute][Required] int id,
             [Required] FieldTripViewModel updateTrip)
         {
-            StaffAPI_URL += "FieldTrip/"+ id + "/Update";
+            StaffAPI_URL += "FieldTrip/" + id + "/Update";
             string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
             if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
 
@@ -532,7 +534,7 @@ namespace WebAppMVC.Controllers
             }
             return RedirectToAction("StaffFieldTripDetail", "Staff", new { id });
         }
-    
+
         [HttpGet("Contest")]
         public async Task<IActionResult> StaffContest([FromQuery] string search)
         {
@@ -700,10 +702,10 @@ namespace WebAppMVC.Controllers
 
             string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
-            if(contestPartView.Count == 0)
+            if (contestPartView.Count == 0)
             {
                 ViewBag.Error = "Error while processing your request! (Getting List Contest Participant Status!).\n List was Empty!";
-                return RedirectToAction("StaffContestDetail", "Staff", new {id});
+                return RedirectToAction("StaffContestDetail", "Staff", new { id });
             }
 
             var contestPartStatusResponse = await methcall.CallMethodReturnObject<GetCheckInStatusUpdate>(
@@ -735,12 +737,12 @@ namespace WebAppMVC.Controllers
         }
         [HttpGet("ContestPoints")]
         public IActionResult StaffContestPoints()
-		{
-			return View();
-		}
+        {
+            return View();
+        }
         [HttpGet("Profile")]
         public async Task<IActionResult> StaffProfile()
-		{
+        {
             StaffAPI_URL += "Staff/Profile";
 
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.STAFF) != null)
@@ -773,6 +775,66 @@ namespace WebAppMVC.Controllers
                 return RedirectToAction("Index");
             }
             return View(memberDetails.Data);
-		}
-	}
+        }
+
+        [HttpPost("Upload")]
+        public async Task<IActionResult> UploadImage(IFormFile photo)
+        {
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.STAFF) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.STAFF));
+
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
+
+            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
+
+            string StaffAvatarAPI_URL = "/api/User/Upload";
+
+            if (photo != null && photo.Length > 0)
+            {
+                string connectionString = _config.GetSection("AzureStorage:BlobConnectionString").Value;
+                string containerName = _config.GetSection("AzureStorage:BlobContainerName").Value;
+                BlobServiceClient _blobServiceClient = new BlobServiceClient(connectionString);
+                BlobContainerClient _blobContainerClient = _blobServiceClient.GetBlobContainerClient(containerName);
+
+                var azureResponse = new List<BlobContentInfo>();
+                string filename = photo.FileName;
+                string uniqueBlobName = $"avatar/{Guid.NewGuid()}-{filename}";
+                using (var memoryStream = new MemoryStream())
+                {
+                    photo.CopyTo(memoryStream);
+                    memoryStream.Position = 0;
+
+                    var client = await _blobContainerClient.UploadBlobAsync(uniqueBlobName, memoryStream);
+                    azureResponse.Add(client);
+                }
+
+                var image = "https://edwinbirdclubstorage.blob.core.windows.net/images/" + uniqueBlobName;
+                dynamic imageUpload = new ExpandoObject();
+                imageUpload.ImagePath = image;
+                imageUpload.MemberId = usrId;
+
+                var getMemberAvatar = await methcall.CallMethodReturnObject<GetMemberAvatarResponse>(
+                    _httpClient: _httpClient,
+                    options: options,
+                    methodName: Constants.Constants.POST_METHOD,
+                    url: StaffAvatarAPI_URL,
+                    _logger: _logger,
+                    inputType: imageUpload,
+                    accessToken: accToken);
+                if (getMemberAvatar == null)
+                {
+                    ViewBag.error =
+                        "Error while processing your request! (Getting Staff Profile!).\n Staff Details Not Found!";
+                }
+                else if (!getMemberAvatar.Status)
+                {
+                    ViewBag.error =
+                        "Error while processing your request! (Getting Staff Profile!).\n Staff Details Not Found!"
+                    + getMemberAvatar.ErrorMessage;
+                }
+                return RedirectToAction("StaffProfile");
+            }
+            return RedirectToAction("StaffProfile");
+        }
+    }
 }

@@ -794,6 +794,8 @@
                                 </div>
                                 <input asp-for="@updateTrip.TripName" type="text"
                                        value="@updateTrip.TripName" required hidden>
+                                <input asp-for="@updateTrip.OpenRegistration" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
+                                       value="@updateTrip.OpenRegistration.ToString("yyyy-MM-ddTHH:mm")" required hidden>
                                 <input asp-for="@updateTrip.RegistrationDeadline" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
                                        value="@updateTrip.RegistrationDeadline.ToString("yyyy-MM-ddTHH:mm")" required hidden>
                                 <input asp-for="@updateTrip.StartDate" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"

@@ -244,7 +244,7 @@ namespace WebAppMVC.Controllers
 
                 var azureResponse = new List<BlobContentInfo>();
                 string filename = photo.FileName;
-                string uniqueBlobName = $"{Guid.NewGuid()}-{filename}";
+                string uniqueBlobName = $"avatar/{Guid.NewGuid()}-{filename}";
                 using (var memoryStream = new MemoryStream())
                 {
                     photo.CopyTo(memoryStream);

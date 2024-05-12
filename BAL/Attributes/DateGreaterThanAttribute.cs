@@ -51,7 +51,7 @@ namespace BAL.Attributes
                         {
                             if (_comparisonRange != null)
                             {
-                                if (currentValue.CompareTo(comparisonValue.AddDays(_comparisonRange.Value)) <= 0)
+                                if (currentValue.CompareTo(comparisonValue.AddDays(_comparisonRange.Value)) < 0)
                                 {
                                     return new ValidationResult(ErrorMessage);
                                 }
@@ -69,7 +69,7 @@ namespace BAL.Attributes
                         {
                             if (_comparisonRange != null)
                             {
-                                if (currentValue.CompareTo(comparisonValue.AddHours(_comparisonRange.Value)) <= 0)
+                                if (currentValue.CompareTo(comparisonValue.AddHours(_comparisonRange.Value)) < 0)
                                 {
                                     return new ValidationResult(ErrorMessage);
                                 }
@@ -87,7 +87,7 @@ namespace BAL.Attributes
                         {
                             if (_comparisonRange != null)
                             {
-                                if (currentValue.CompareTo(comparisonValue.AddMonths(_comparisonRange.Value)) <= 0)
+                                if (currentValue.CompareTo(comparisonValue.AddMonths(_comparisonRange.Value)) < 0)
                                 {
                                     return new ValidationResult(ErrorMessage);
                                 }
@@ -105,7 +105,7 @@ namespace BAL.Attributes
                         {
                             if (_comparisonRange != null)
                             {
-                                if (currentValue.CompareTo(comparisonValue.AddYears(_comparisonRange.Value)) <= 0)
+                                if (currentValue.CompareTo(comparisonValue.AddYears(_comparisonRange.Value)) < 0)
                                 {
                                     return new ValidationResult(ErrorMessage);
                                 }

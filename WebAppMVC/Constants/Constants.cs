@@ -4,13 +4,13 @@ namespace WebAppMVC.Constants
 {
 	public static class Constants
 	{
-		public readonly static string ADMIN_URL = "../Admin/Index";
-		public readonly static string MEMBER_URL = "../Home/Index";
-		public readonly static string MANAGER_URL = "../Manager/Index";
-		public readonly static string STAFF_URL = "../Staff/Index";
-		public readonly static string NOTFOUND_URL = "../Auth/NotFound";
-		public readonly static string LOGIN_URL = "../Auth/Login";
-		public readonly static string NEW_MEMBER_CONFIRM_REGISTRATION_URL = "../Auth/SignUp";
+		public readonly static string ADMIN_URL = "/Admin/Index";
+		public readonly static string MEMBER_URL = "/Home/Index";
+		public readonly static string MANAGER_URL = "/Manager/Index";
+		public readonly static string STAFF_URL = "/Staff/Index";
+		public readonly static string NOTFOUND_URL = "/Auth/NotFound";
+		public readonly static string LOGIN_URL = "/Auth/Login";
+		public readonly static string NEW_MEMBER_CONFIRM_REGISTRATION_URL = "/Auth/SignUp";
 
         public readonly static string NEW_MEMBER_REGISTRATION_COOKIE = "New-Membership-Registration-Cookie";
         public readonly static string NEW_MEMBER_REGISTRATION_TRANSACTION_COOKIE = "New-Membership-Registration-Transaction-Cookie";
@@ -23,6 +23,12 @@ namespace WebAppMVC.Constants
         public readonly static string NEW_MEMBER_REGISTRATION_TRANSACTION_TYPE = "New-Membership-Registration";
 		public readonly static string MEMBER_FIELDTRIP_REGISTRATION_TRANSACTION_TYPE = "Member-FieldTrip-Registration";
         public readonly static string MEMBER_CONTEST_REGISTRATION_TRANSACTION_TYPE = "Member-Contest-Registration";
+
+        public readonly static string MEMBER_STATUS_INACTIVE = "Inactive";
+        public readonly static string MEMBER_STATUS_ACTIVE = "Active";
+        public readonly static string MEMBER_STATUS_EXPIRED = "Expired";
+        public readonly static string MEMBER_STATUS_DENIED = "Denied";
+        public readonly static string MEMBER_STATUS_SUSPENDED = "Suspended";
     
         public readonly static string CREATE_BIRD_VALID = "CBirdValid";
         public readonly static string UPDATE_BIRD_VALID = "UBirdValid";
@@ -76,6 +82,15 @@ namespace WebAppMVC.Constants
 
         public readonly static string FIELDTRIP_INCLUSION_TYPE_INCLUDED = "Included";
         public readonly static string FIELDTRIP_INCLUSION_TYPE_EXCLUDED = "Excluded";
+
+        public readonly static string NOTIFICATION_TYPE_ACCOUNT_REGISTER = "Account Registration";
+        public readonly static string NOTIFICATION_TYPE_MEETING_REGISTER = "Meeting Registration";
+
+        public readonly static string NOTIFICATION_DESCRIPTION_ACCOUNT_REGISTER =
+            "You have successfully joined ChaoMao Bird Club!";
+
+        public readonly static string NOTIFICATION_STATUS_UNREAD = "Unread";
+        public readonly static string NOTIFICATION_STATUS_READ = "Read";
 
         public readonly static string ROLE_NAME = "ROLE_NAME";
         public readonly static string ACC_TOKEN = "ACCESS_TOKEN";

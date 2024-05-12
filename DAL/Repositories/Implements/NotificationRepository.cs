@@ -45,7 +45,7 @@ namespace DAL.Repositories.Implements
             return _context.Notifications.AsNoTracking().Count(n => n.UserDetail.MemberId == id && n.Status == "Unread");
         }
 
-        public async Task<bool> GetBoolNotificationId(int id)
+        public async Task<bool> GetBoolNotificationId(string id)
         {
             var notif = _context.Notifications.SingleOrDefault(n => n.NotificationId.Equals(id));
             if (notif != null) return true;

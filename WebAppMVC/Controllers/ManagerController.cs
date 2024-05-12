@@ -32,7 +32,6 @@ namespace WebAppMVC.Controllers
     [Route("Manager")]
     public class ManagerController : Controller
     {
-
         private readonly ILogger<ManagerController> _logger;
         private readonly IConfiguration _config;
         private readonly HttpClient _httpClient = null;
@@ -1397,7 +1396,7 @@ namespace WebAppMVC.Controllers
 
                 var azureResponse = new List<BlobContentInfo>();
                 string filename = photo.FileName;
-                string uniqueBlobName = $"{Guid.NewGuid()}-{filename}";
+                string uniqueBlobName = $"avatar/{Guid.NewGuid()}-{filename}";
                 using (var memoryStream = new MemoryStream())
                 {
                     photo.CopyTo(memoryStream);
@@ -1423,18 +1422,18 @@ namespace WebAppMVC.Controllers
                 if (getMemberAvatar == null)
                 {
                     ViewBag.error =
-                        "Error while processing your request! (Getting Member Profile!).\n Member Details Not Found!";
+                        "Error while processing your request! (Getting Manager Profile!).\n Manager Details Not Found!";
                 }
                 else
                 if (!getMemberAvatar.Status)
                 {
                     ViewBag.error =
-                        "Error while processing your request! (Getting Member Profile!).\n Member Details Not Found!"
+                        "Error while processing your request! (Getting Manager Profile!).\n Manager Details Not Found!"
                     + getMemberAvatar.ErrorMessage;
                 }
                 return RedirectToAction("ManagerProfile");
             }
-            return RedirectToAction("Error");
+            return RedirectToAction("ManagerProfile");
         }
         [HttpPost("Profile")]
         //[Authorize(Roles = "Member")]
@@ -1538,6 +1537,8 @@ namespace WebAppMVC.Controllers
             string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
             string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
+
+            dynamic listMemberStatusModel = new ExpandoObject();
 
             var listMemberStatusResponse = await methcall.CallMethodReturnObject<GetListMemberStatus>(
                 _httpClient: _httpClient,

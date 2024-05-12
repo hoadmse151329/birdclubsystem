@@ -17,9 +17,9 @@ namespace BAL.ViewModels
             Review = "No Feedback";
             Status = "OnHold";
             OpenRegistration = DateTime.Now.AddDays(1);
-            RegistrationDeadline = DateTime.Now.AddDays(2);
-            StartDate = DateTime.Now.AddDays(13);
-            EndDate = DateTime.Now.AddDays(14);
+            RegistrationDeadline = DateTime.Now.AddDays(11);
+            StartDate = DateTime.Now.AddDays(21);
+            EndDate = DateTime.Now.AddDays(23);
             NumberOfParticipants = 0;
         }
         public int? ContestId { get; set; }
