@@ -8,7 +8,7 @@ namespace BAL.ViewModels
 {
     public class NotificationViewModel
     {
-        public int? NotificationId { get; set; }
+        public string? NotificationId { get; set; }
         public string? Title { get; set; }
         public string? Description { get; set; }
         public DateTime? Date { get; set; }

@@ -11,7 +11,8 @@ namespace DAL.Models
     {
         [Key]
         [Column("notificationId")]
-        public int NotificationId { get; set; }
+        [StringLength(255)]
+        public string NotificationId { get; set; } = null!;
         [Column("title")]
         [StringLength(255)]
         public string? Title { get; set; }

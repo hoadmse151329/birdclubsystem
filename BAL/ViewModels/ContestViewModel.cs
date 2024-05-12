@@ -40,8 +40,8 @@ namespace BAL.ViewModels
         public DateTime RegistrationDeadline { get; set; }
         [Required(ErrorMessage = "Address is required")]
         [DisplayName("Address")]
-		[RegularExpression(@"^[a-zA-Z0-9\/?\s?]+,[a-zA-Z0-9\s?]+,[a-zA-Z0-9\s?]+,[a-zA-Z\s?]{4,}$", ErrorMessage = "Address is Invalid, it must be writen in this format:\nArea Number,Street,District,City")]
-		public string? Address { get; set; }
+        [RegularExpression(@"^[a-zA-Z0-9\/?\s?]+,[a-zA-Z0-9\s?]+,[a-zA-Z0-9\s?]+,[a-zA-Z\s,?]{4,}$", ErrorMessage = "Address is Invalid, it must be writen in this format: Area Number,Street,District,City")]
+        public string? Address { get; set; }
         public string? AreaNumber { get; set; }
         public string? Street { get; set; }
         public string? District { get; set; }

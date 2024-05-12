@@ -231,7 +231,7 @@ namespace WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Update(
             [Required][FromRoute] int id,
-            [Required][FromBody] MeetingViewModel meet)
+            [FromBody] MeetingViewModel meet)
         {
             try
             {
