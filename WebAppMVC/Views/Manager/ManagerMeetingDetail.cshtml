@@ -424,6 +424,15 @@
                                             </div>
                                         </div>
                                         <div class="form-group row">
+                                            <label asp-for="@updateMeeting.OpenRegistration" class="col-sm-4 col-form-label"></label>
+                                            <div class="col-sm-8">
+                                                <input asp-for="@updateMeeting.OpenRegistration" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
+                                                       value="@updateMeeting.OpenRegistration.ToString("yyyy-MM-ddTHH:mm")" class="form-control" required>
+                                                <span asp-validation-for="@updateMeeting.OpenRegistration" id="error_message"
+                                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
                                             <label asp-for="@updateMeeting.RegistrationDeadline" class="col-sm-4 col-form-label"></label>
                                             <div class="col-sm-8">
                                                 <input asp-for="@updateMeeting.RegistrationDeadline" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
@@ -438,15 +447,6 @@
                                                 <input asp-for="@updateMeeting.StartDate" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
                                                        value="@updateMeeting.StartDate.ToString("yyyy-MM-ddTHH:mm")" class="form-control" required>
                                                 <span asp-validation-for="@updateMeeting.StartDate" id="error_message"
-                                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label asp-for="@updateMeeting.EndDate" class="col-sm-4 col-form-label">End date:</label>
-                                            <div class="col-sm-8">
-                                                <input asp-for="@updateMeeting.EndDate" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
-                                                       value="@updateMeeting.EndDate.ToString("yyyy-MM-ddTHH:mm")" class="form-control" required>
-                                                <span asp-validation-for="@updateMeeting.EndDate" id="error_message"
                                                       class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                             </div>
                                         </div>
@@ -484,6 +484,15 @@
                                             <div class="col-sm-8">
                                                 <select class="form-control" asp-for="@updateMeeting.Status" asp-items="@defaultMeetingStatus" class="custom-select" required></select>
                                                 <span asp-validation-for="@updateMeeting.Status" id="error_message"
+                                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label asp-for="@updateMeeting.EndDate" class="col-sm-4 col-form-label">End date:</label>
+                                            <div class="col-sm-8">
+                                                <input asp-for="@updateMeeting.EndDate" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
+                                                       value="@updateMeeting.EndDate.ToString("yyyy-MM-ddTHH:mm")" class="form-control" required>
+                                                <span asp-validation-for="@updateMeeting.EndDate" id="error_message"
                                                       class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                             </div>
                                         </div>
@@ -674,6 +683,8 @@
                                     </div>
                                 </div>
                                 <input asp-for="@updateMeeting.MeetingName" type="text" value="@updateMeeting.MeetingName" required hidden>
+                                <input asp-for="@updateMeeting.OpenRegistration" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
+                                       value="@updateMeeting.OpenRegistration.ToString("yyyy-MM-ddTHH:mm")" required hidden>
                                 <input asp-for="@updateMeeting.RegistrationDeadline" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
                                        value="@updateMeeting.RegistrationDeadline.ToString("yyyy-MM-ddTHH:mm")" required hidden>
                                 <input asp-for="@updateMeeting.StartDate" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
