@@ -19,7 +19,7 @@ namespace DAL.Models
         public string? Image { get; set; }
 
         [ForeignKey(nameof(BirdId))]
-        [InverseProperty("BirdMedia")]
-        public virtual Bird? Bird { get; set; }
+        [InverseProperty(nameof(Bird.BirdPictures))]
+        public virtual Bird? BirdDetails { get; set; }
     }
 }

@@ -451,6 +451,15 @@
                                             </div>
                                         </div>
                                         <div class="form-group row">
+                                            <label asp-for="@updateContest.OpenRegistration" class="col-sm-4 col-form-label"></label>
+                                            <div class="col-sm-8">
+                                                <input asp-for="@updateContest.OpenRegistration" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
+                                                       value="@updateContest.OpenRegistration.ToString("yyyy-MM-ddTHH:mm")" class="form-control" required>
+                                                <span asp-validation-for="@updateContest.OpenRegistration" id="error_message"
+                                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
                                             <label asp-for="@updateContest.RegistrationDeadline" class="col-sm-4 col-form-label"></label>
                                             <div class="col-sm-8">
                                                 <input asp-for="@updateContest.RegistrationDeadline" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
@@ -496,6 +505,52 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-group row">
+                                            <label asp-for="@updateContest.NumberOfParticipantsLimit" class="col-sm-4 col-form-label"></label>
+                                            <div class="col-sm-8">
+                                                <input asp-for="@updateContest.NumberOfParticipantsLimit" type="number" min="3"
+                                                       value="@updateContest.NumberOfParticipantsLimit" class="form-control" required>
+                                                <span asp-validation-for="@updateContest.NumberOfParticipantsLimit" id="error_message"
+                                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label asp-for="@updateContest.Host" class="col-sm-4 col-form-label"></label>
+                                            <div class="col-sm-8">
+                                                <input asp-for="@updateContest.Host" type="text" placeholder="Trip Host"
+                                                       value="@updateContest.Host" class="form-control" required>
+                                                <span asp-validation-for="@updateContest.Host" id="error_message"
+                                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label asp-for="@updateContest.Incharge" class="col-sm-4 col-form-label"></label>
+                                            <div class="col-sm-8">
+                                                <input asp-for="@updateContest.Incharge" type="text" placeholder="Staff incharge"
+                                                       value="@updateContest.Incharge" class="form-control" required>
+                                                <span asp-validation-for="@updateContest.Incharge" id="error_message"
+                                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label asp-for="@updateContest.Fee" class="col-sm-4 col-form-label"></label>
+                                            <div class="col-sm-8">
+                                                <input asp-for="@updateContest.Fee" type="number" min="5000"
+                                                       value="@updateContest.Fee" class="form-control" required>
+                                                <span asp-validation-for="@updateContest.Fee" id="error_message"
+                                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label asp-for="@updateContest.Status" class="col-sm-4 col-form-label"></label>
+                                            <div class="col-sm-8">
+                                                <select class="form-control" asp-for="@updateContest.Status" asp-items="@defaultContestStatus" class="custom-select" required></select>
+                                                <span asp-validation-for="@updateContest.Status" id="error_message"
+                                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <input asp-for="@updateContest.NumberOfParticipants" type="number"
                                        value="@updateContest.NumberOfParticipants" required hidden>
@@ -533,15 +588,6 @@
                                         <input asp-for="@updateContest.AfterELO" type="number" min="0"
                                                value="@updateContest.AfterELO" class="form-control" required>
                                         <span asp-validation-for="@updateContest.AfterELO" id="error_message"
-                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label asp-for="@updateContest.Fee" class="col-sm-4 col-form-label"></label>
-                                    <div class="col-sm-8">
-                                        <input asp-for="@updateContest.Fee" type="number" min="0"
-                                               value="@updateContest.Fee" class="form-control" required>
-                                        <span asp-validation-for="@updateContest.Fee" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                     </div>
                                 </div>

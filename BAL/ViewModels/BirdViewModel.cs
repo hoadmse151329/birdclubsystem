@@ -43,5 +43,7 @@ namespace BAL.ViewModels
         [Required(ErrorMessage = "Origin is required")]
         [DisplayName("Origin")]
         public string? Origin { get; set; }
+
+
     }
 }

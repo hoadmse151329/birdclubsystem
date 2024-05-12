@@ -33,7 +33,7 @@ namespace DAL.Models
 
         [ForeignKey(nameof(BirdId))]
         [InverseProperty(nameof(Contest.ContestParticipants))]
-        public virtual Bird? Bird { get; set; }
+        public virtual Bird? BirdDetails { get; set; }
         [ForeignKey(nameof(ContestId))]
         [InverseProperty(nameof(Contest.ContestParticipants))]
         public virtual Contest ContestDetail { get; set; } = null!;

@@ -62,8 +62,8 @@ namespace DAL.Models
         {
             modelBuilder.Entity<Bird>(entity =>
             {
-                entity.HasOne(d => d.Member)
-                    .WithMany(p => p.Birds)
+                entity.HasOne(d => d.MemberDetails)
+                    .WithMany(p => p.MemberBirds)
                     .HasForeignKey(d => d.MemberId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Bird_Member");
@@ -74,8 +74,8 @@ namespace DAL.Models
                 entity.HasKey(e => e.PictureId)
                     .HasName("PK__BirdMedi__8C2866D8E5255F8B");
 
-                entity.HasOne(d => d.Bird)
-                    .WithMany(p => p.BirdMedia)
+                entity.HasOne(d => d.BirdDetails)
+                    .WithMany(p => p.BirdPictures)
                     .HasForeignKey(d => d.BirdId)
                     .HasConstraintName("FK_BirdMedia_Bird");
             });
@@ -133,7 +133,7 @@ namespace DAL.Models
                 entity.HasKey(e => new { e.ContestId, e.MemberId })
                     .HasName("PK_ContestParticipant");
 
-                entity.HasOne(d => d.Bird)
+                entity.HasOne(d => d.BirdDetails)
                     .WithMany(p => p.ContestParticipants)
                     .HasForeignKey(d => d.BirdId)
                     .HasConstraintName("FK__TournamentP__BID__0E6E26BF");
@@ -156,7 +156,7 @@ namespace DAL.Models
                 entity.HasKey(e => e.ScoreId)
                     .HasName("PK__ContestS__B56A0C8D45AE357B");
 
-                entity.HasOne(d => d.Bird)
+                entity.HasOne(d => d.BirdDetails)
                     .WithMany(p => p.ContestScores)
                     .HasForeignKey(d => d.BirdId)
                     .HasConstraintName("FK_ContestScore_Bird");

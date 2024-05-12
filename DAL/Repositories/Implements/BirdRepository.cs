@@ -20,12 +20,12 @@ namespace DAL.Repositories.Implements
 
         public async Task<IEnumerable<Bird>> GetBirdsByMemberId(string memberId)
         {
-            return _context.Birds.Where(m => m.MemberId == memberId).ToList();
+            return _context.Birds.Where(m => m.MemberId == memberId).OrderBy(b => b.BirdName).ToList();
         }
 
         public async Task<IEnumerable<Bird>> GetBirdsByMemberIdInclude(string memberId)
         {
-            return _context.Birds.Where(m => m.MemberId == memberId).Include(m => m.Member).ToList();
+            return _context.Birds.Where(m => m.MemberId == memberId).Include(m => m.MemberDetails).ToList();
         }
 
         public async Task<int> GetBirdIdByMemberId(string memberId)
