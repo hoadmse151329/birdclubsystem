@@ -4,13 +4,13 @@ namespace WebAppMVC.Constants
 {
 	public static class Constants
 	{
-		public readonly static string ADMIN_URL = "../Admin/Index";
-		public readonly static string MEMBER_URL = "../Home/Index";
-		public readonly static string MANAGER_URL = "../Manager/Index";
-		public readonly static string STAFF_URL = "../Staff/Index";
-		public readonly static string NOTFOUND_URL = "../Auth/NotFound";
-		public readonly static string LOGIN_URL = "../Auth/Login";
-		public readonly static string NEW_MEMBER_CONFIRM_REGISTRATION_URL = "../Auth/SignUp";
+		public readonly static string ADMIN_URL = "/Admin/Index";
+		public readonly static string MEMBER_URL = "/Home/Index";
+		public readonly static string MANAGER_URL = "/Manager/Index";
+		public readonly static string STAFF_URL = "/Staff/Index";
+		public readonly static string NOTFOUND_URL = "/Auth/NotFound";
+		public readonly static string LOGIN_URL = "/Auth/Login";
+		public readonly static string NEW_MEMBER_CONFIRM_REGISTRATION_URL = "/Auth/SignUp";
 
         public readonly static string NEW_MEMBER_REGISTRATION_COOKIE = "New-Membership-Registration-Cookie";
         public readonly static string NEW_MEMBER_REGISTRATION_TRANSACTION_COOKIE = "New-Membership-Registration-Transaction-Cookie";
