@@ -13,6 +13,6 @@ namespace DAL.Repositories.Interfaces
         Task<IEnumerable<Notification>> GetAllNotificationsByUserId(int id);
         Task<IEnumerable<Notification>> UpdateAllNotificationStatus(List<Notification> notif);
         Task<int> GetCountUnreadNotificationsByMemberId(string id);
-        Task<bool> GetBoolNotificationId(int id);
+        Task<bool> GetBoolNotificationId(string id);
     }
 }

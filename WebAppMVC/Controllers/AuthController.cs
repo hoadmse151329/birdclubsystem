@@ -310,13 +310,14 @@ namespace WebAppMVC.Controllers
 			}
             ViewBag.Success = "Account Create Successfully, Please contact the manager for your account approval!";
 
-            NotificationViewModel notif = new NotificationViewModel()
+			NotificationViewModel notif = new NotificationViewModel()
 			{
-				Title = "Account Registration",
-				Description = "You have successfully joined ChaoMao Bird Club!",
+
+				Title = Constants.Constants.NOTIFICATION_TYPE_ACCOUNT_REGISTER,
+				Description = Constants.Constants.NOTIFICATION_DESCRIPTION_ACCOUNT_REGISTER,
 				Date = DateTime.Now,
 				UserId = transactionResponse.Data.UserId,
-				Status = "Unread"
+				Status = Constants.Constants.NOTIFICATION_STATUS_UNREAD
 			};
             string NotificationAPI_URL = "/api/Notification/" + transactionResponse.Data.UserId + "/Create";
 
