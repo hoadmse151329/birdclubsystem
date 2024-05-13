@@ -107,5 +107,17 @@ namespace BAL.Services.Implements
             }
             return false;
         }
+
+        public async Task<bool> UpdateAllContestParticipantScore(List<ContestParticipantViewModel> listPart)
+        {
+            var part = await _unitOfWork.ContestParticipantRepository
+                .UpdateAllContestParticipantStatus(_mapper.Map<List<ContestParticipant>>(listPart));
+            if (part != null)
+            {
+                _unitOfWork.Save();
+                return true;
+            }
+            return false;
+        }
     }
 }

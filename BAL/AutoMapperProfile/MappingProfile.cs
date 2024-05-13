@@ -128,12 +128,25 @@ namespace BAL.AutoMapperProfile
             CreateMap<ContestParticipant, ContestParticipantViewModel>()
                 .AfterMap((src, dest) =>
                 {
+                    dest.ContestElo = src.Elo;
+                    if (src.BirdDetails != null)
+                    {
+                        dest.ParticipantElo = src.BirdDetails.Elo;
+                    }
                     dest.MemberName = src.MemberDetail.FullName;
                 })
                 .ReverseMap()
                 .AfterMap((src, dest) =>
                 {
                     dest.MemberDetail = new();
+                    if (src.ContestElo != null)
+                    {
+                        dest.Elo = src.ContestElo.Value;
+                    }
+                    if (dest.BirdDetails != null)
+                    {
+                        dest.BirdDetails.Elo = src.ParticipantElo;
+                    }
                     dest.MemberDetail.FullName = src.MemberName;
                 });
             CreateMap<Meeting, MeetingViewModel>()

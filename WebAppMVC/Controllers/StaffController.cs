@@ -744,10 +744,50 @@ namespace WebAppMVC.Controllers
             }
             return RedirectToAction("StaffContestDetail", "Staff", new { id });
         }
-        [HttpGet("ContestPoints")]
-        public IActionResult StaffContestPoints()
+        [HttpPost("Contest/{id:int}/Participant/All/Score/Update")]
+        public async Task<IActionResult> StaffUpdateContestPartScore(
+            [FromRoute][Required] int id,
+            [Required] List<ContestParticipantViewModel> contestPartView)
         {
-            return View();
+            StaffAPI_URL += "Staff/Contest/" + id + "/Participant/All/Score/Update";
+
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.STAFF) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.STAFF));
+
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
+
+            if (contestPartView.Count == 0)
+            {
+                ViewBag.Error = "Error while processing your request! (Getting List Contest Participant Status!).\n List was Empty!";
+                return RedirectToAction("StaffContestDetail", "Staff", new { id });
+            }
+
+            var contestPartStatusResponse = await methcall.CallMethodReturnObject<GetCheckInStatusUpdate>(
+                                _httpClient: _httpClient,
+                                options: options,
+                                methodName: Constants.Constants.PUT_METHOD,
+                                url: StaffAPI_URL,
+                                inputType: contestPartView,
+                                accessToken: accToken,
+                                _logger: _logger);
+
+            if (contestPartStatusResponse == null)
+            {
+                _logger.LogInformation(
+                    "Error while processing your request! (Getting List Contest Participant Score!). List was Empty!: " + contestPartStatusResponse);
+                ViewBag.Error =
+                    "Error while processing your request! (Getting List Contest Participant Score!).\n List was Empty!";
+                return RedirectToAction("StaffContestDetail", "Staff", new { id });
+            }
+            else
+            if (!contestPartStatusResponse.Status)
+            {
+                ViewBag.Error =
+                    "Error while processing your request! (Getting List Contest Participant Score!).\n"
+                    + contestPartStatusResponse.ErrorMessage;
+                return RedirectToAction("StaffContestDetail", "Staff", new { id });
+            }
+            return RedirectToAction("StaffContestDetail", "Staff", new { id });
         }
         [HttpGet("Profile")]
         public async Task<IActionResult> StaffProfile()

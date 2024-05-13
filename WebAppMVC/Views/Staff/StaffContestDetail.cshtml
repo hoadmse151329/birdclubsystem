@@ -311,9 +311,9 @@
                                             <table class="table table-hover table-borderless">
                                                 <thead>
                                                     <tr>
-                                                        <th>Participant No:</th>
-                                                        <th>Name:</th>
-                                                        <th>CheckInStatus:</th>
+                                                        <th>Participant No</th>
+                                                        <th>Participant Name</th>
+                                                        <th>Check-In Status</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -361,18 +361,21 @@
                         else if (detailsContest.Status.Equals("Ongoing"))
                         {
                             <div class="col-lg-5 cardFB">
-                                <form asp-action="StaffUpdateContestPartStatus" asp-controller="Staff" asp-route-id="@detailsContest.ContestId" method="post">
+                                <form asp-action="StaffUpdateContestPartScore" asp-controller="Staff" asp-route-id="@detailsContest.ContestId" method="post">
                                     <div class="card border-0 d-flex">
                                         <div class="card-header">
-                                            <h4>Edit Participant Status</h4>
+                                            <h4>Edit Participant Score</h4>
                                         </div>
                                         <div class="card-body">
                                             <table class="table table-hover table-borderless">
                                                 <thead>
                                                     <tr>
-                                                        <th>Participant No:</th>
-                                                        <th>Name:</th>
-                                                        <th>Score points:</th>
+                                                        <th>Participant No</th>
+                                                        <th>Participant Name</th>
+                                                        <th>Check-In Status</th>
+                                                        <th>Score points</th>
+                                                        <th>Participant Old Elo</th>
+                                                        <th>Participant Scored Elo</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -390,7 +393,25 @@
                                                                 @contestPartView[i].MemberName
                                                             </td>
                                                             <td>
-                                                                <input type="number" asp-for="@contestPartView[i].Score" name="contestPartView[@i].Score" value="@contestPartView[i].Score" class="form-control" />
+                                                                @contestPartView[i].CheckInStatus
+                                                            </td>
+                                                            <td>
+                                                                @{
+                                                                    if (contestPartView[i].CheckInStatus.Equals("Checked-In"))
+                                                                    {
+                                                                        <input type="number" asp-for="@contestPartView[i].Score" name="contestPartView[@i].Score" value="@contestPartView[i].Score" class="form-control" />
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <input type="number" asp-for="@contestPartView[i].Score" name="contestPartView[@i].Score" value="@contestPartView[i].Score" class="form-control" readonly/>
+                                                                    }
+                                                                }
+                                                            </td>
+                                                            <td>
+                                                                @contestPartView[i].ParticipantElo
+                                                            </td>
+                                                            <td>
+                                                                @contestPartView[i].ContestElo
                                                             </td>
                                                         </tr>
                                                     }

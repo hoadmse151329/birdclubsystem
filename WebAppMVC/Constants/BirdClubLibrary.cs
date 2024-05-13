@@ -431,58 +431,6 @@ namespace WebAppMVC.Constants
             return tempData;
         }
 
-        // playerCurBirdElo : Bird's current Elo
-        // averageContestElo : Arithmetic Mean of all birds Elo (Arithmetic Mean) (Trung bình cộng)
-        // Calculate Expected score
-        public static double CalculateExpectedScore(double playerCurBirdElo, double averageContestElo)
-        {
-            // Calculate the expected score of a player based on their Elo and the average Elo of all players
-            return 1 / (1 + Math.Pow(10, ((averageContestElo - playerCurBirdElo) / 400)));
-        }
-
-        // playerCurBirdElo : Bird's current Elo
-        // averageContestElo : Arithmetic Mean of all birds Elo (Arithmetic Mean) (Trung bình cộng)
-        // birdContestPoints : Bird's earned elo from contest
-        // totalbirdContestPoints : Arithmetic Mean of all birds Elo earned from Contest
-        // totalAmountOfBird : Amount of Bird joined the Contest
-        // Y : 
-        // Calculate Basic Elo Change
-        public static double CalculateBasicEloChange(double playerCurBirdElo, double averageContestElo, int birdContestPoints, int totalbirdContestPoints, int totalAmountOfBird, List<double> Y)
-        {
-            // Calculate the expected score of the player
-            double expected = CalculateExpectedScore(playerCurBirdElo, averageContestElo);
-            // Determine if the player won or lost the match based on bird points
-            double result = birdContestPoints > totalbirdContestPoints / totalAmountOfBird ? 1 : 0;
-
-            // Adjustment Factor Logic
-            double adjustmentFactor;
-            if (result == 1)
-            {
-                // If the player won, adjust the factor based on whether their Elo is higher or lower than the average
-                adjustmentFactor = playerCurBirdElo > averageContestElo ? 0.5 : 1.5; // Add points
-            }
-            else
-            {
-                // If the player lost, adjust the factor based on whether their Elo is higher or lower than the average
-                adjustmentFactor = playerCurBirdElo > averageContestElo ? 1.5 : 0.5; // Subtract points
-            }
-
-            // Calculate K factor
-            double K = adjustmentFactor > 1 ? 1.5 : 0.5;
-            // Calculate basic Elo change using the Elo change factor and the difference between expected and actual results
-            double basicEloChange = Y[0] * (result - expected);
-
-            // Return the basic Elo change with adjustments
-            return basicEloChange * adjustmentFactor * K;
-        }
-
-        // Update Elo
-        public static double UpdateElo(double originalElo, double realEloChange)
-        {
-            // Update the player's Elo rating based on the calculated real Elo change
-            return originalElo + realEloChange;
-        }
-
         /* Getter
          * testmodel2.CreateFieldTrip = null;
         if (TempData.Peek(Constants.Constants.CREATE_FIELDTRIP_VALID) != null)

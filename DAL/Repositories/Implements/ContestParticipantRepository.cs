@@ -30,7 +30,7 @@ namespace DAL.Repositories.Implements
 
         public async Task<IEnumerable<ContestParticipant>> GetContestParticipantsByContestId(int contestId)
         {
-            return _context.ContestParticipants.Where(con => con.ContestId == contestId).Include(m => m.MemberDetail).OrderBy(p => p.ParticipantNo).ToList();
+            return _context.ContestParticipants.Where(con => con.ContestId == contestId).Include(m => m.MemberDetail).Include(b => b.BirdDetails).OrderBy(p => p.ParticipantNo).ToList();
         }
 
         public async Task<IEnumerable<ContestParticipant>> GetContestParticipantsByBirdId(int birdId)
@@ -104,5 +104,94 @@ namespace DAL.Repositories.Implements
             }
             return part;
         }
-	}
+
+        public async Task<IEnumerable<ContestParticipant>> UpdateAllContestParticipantScore(List<ContestParticipant> part, bool isContestEnded = false)
+        {
+            int n = part.Count;
+            // Calculate the total points earned by all birds
+            int totalPoints = part.Sum(c => c.Score);
+            // Calculate the average Elo of all players
+            double averageElo = part.Sum(c => c.BirdDetails.Elo) / n;
+            // List of Elo change factors
+            List<int> Y = new List<int> { 40, 35, 30, 25, 20 }; // Adjust this list as needed
+
+            foreach (var participant in part)
+            {
+                var conpart = _context.ContestParticipants.Include(b => b.BirdDetails)
+                    .SingleOrDefault(p => p.ContestId == participant.ContestId && p.MemberId == participant.MemberId);
+                if (conpart != null)
+                {
+                    if (conpart.Score != participant.Score)
+                    {
+                        conpart.Score = participant.Score;
+
+                        // Calculate basic Elo change for the player based on the provided parameters
+                        double basicEloChange = CalculateBasicEloChange(conpart.BirdDetails.Elo, averageElo, conpart.Score, totalPoints, n, Y);
+                        // Update the player's Elo using the calculated Elo change
+                        int updatedElo = UpdateElo(conpart.BirdDetails.Elo, (int)Math.Round(basicEloChange, MidpointRounding.AwayFromZero));
+
+                        conpart.Elo = updatedElo;
+
+                        if (isContestEnded)
+                        {
+                            conpart.BirdDetails.Elo = conpart.Elo;
+                        }
+                        _context.Update(conpart);
+                    }
+                }
+            }
+            return part;
+        }
+        // playerCurBirdElo : Bird's current Elo
+        // averageContestElo : Arithmetic Mean of all birds Elo (Arithmetic Mean) (Trung bình cộng)
+        // Calculate Expected score
+        private static double CalculateExpectedScore(int playerCurBirdElo, double averageContestElo)
+        {
+            // Calculate the expected score of a player based on their Elo and the average Elo of all players
+            return 1 / (1 + Math.Pow(10, ((averageContestElo - playerCurBirdElo) / 400)));
+        }
+
+        // playerCurBirdElo : Bird's current Elo
+        // averageContestElo : Arithmetic Mean of all birds Elo (Arithmetic Mean) (Trung bình cộng)
+        // birdContestPoints : Bird's earned score from contest
+        // totalbirdContestPoints : Arithmetic Mean of all birds Elo earned from Contest
+        // totalAmountOfBird : Amount of Bird joined the Contest
+        // Y : 
+        // Calculate Basic Elo Change
+        private static double CalculateBasicEloChange(int playerCurBirdElo, double averageContestElo, int birdContestPoints, int totalbirdContestPoints, int totalAmountOfBird, List<int> Y)
+        {
+            // Calculate the expected score of the player
+            int expected = (int)Math.Round( CalculateExpectedScore(playerCurBirdElo, averageContestElo), MidpointRounding.AwayFromZero);
+            // Determine if the player won or lost the match based on bird points
+            int result = birdContestPoints > totalbirdContestPoints / totalAmountOfBird ? 1 : 0;
+
+            // Adjustment Factor Logic
+            double adjustmentFactor;
+            if (result == 1)
+            {
+                // If the player won, adjust the factor based on whether their Elo is higher or lower than the average
+                adjustmentFactor = playerCurBirdElo > averageContestElo ? 0.5 : 1.5; // Add points
+            }
+            else
+            {
+                // If the player lost, adjust the factor based on whether their Elo is higher or lower than the average
+                adjustmentFactor = playerCurBirdElo > averageContestElo ? 1.5 : 0.5; // Subtract points
+            }
+
+            // Calculate K factor
+            double K = adjustmentFactor > 1 ? 1.5 : 0.5;
+            // Calculate basic Elo change using the Elo change factor and the difference between expected and actual results
+            double basicEloChange = Y[0] * (result - expected);
+
+            // Return the basic Elo change with adjustments
+            return basicEloChange * adjustmentFactor * K;
+        }
+
+        // Update Elo
+        private static int UpdateElo(int originalElo, int realEloChange)
+        {
+            // Update the player's Elo rating based on the calculated real Elo change
+            return originalElo + realEloChange;
+        }
+    }
 }
