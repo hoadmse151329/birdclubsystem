@@ -1,4 +1,6 @@
-﻿using BAL.ViewModels;
+﻿using Azure.Storage.Blobs.Models;
+using Azure.Storage.Blobs;
+using BAL.ViewModels;
 using BAL.ViewModels.Authenticates;
 using DAL.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -232,14 +234,23 @@ namespace WebAppMVC.Controllers
         [HttpPost("{contestId:int}/Register")]
         public async Task<IActionResult> ContestRegister(
             [FromRoute][Required] int contestId,
-            int? birdId,
             [Required] BirdViewModel createOrSelectedBird
             )
         {
             ContestAPI_URL += "/" + contestId;
             string MemberAPI_URL = "/api/Member/Profile";
-            string BirdAPI_URL = "/api/Bird/" + birdId;
-
+            string BirdAPI_URL = "/api/Bird/";
+            string BirdMethod = Constants.Constants.POST_METHOD;
+            if (createOrSelectedBird.BirdId != null)
+            {
+                BirdAPI_URL += createOrSelectedBird.BirdId + "/Update";
+                BirdMethod = Constants.Constants.PUT_METHOD;
+            }
+            else
+            {
+                BirdAPI_URL += "Create";
+            }
+            
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER) != null)
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER));
 
@@ -252,7 +263,29 @@ namespace WebAppMVC.Controllers
             string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
             string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
+            createOrSelectedBird.MemberId = usrId;
+            if (createOrSelectedBird.BirdMainImage != null && createOrSelectedBird.BirdMainImage.Length > 0 )
+            {
+                string connectionString = _config.GetSection("AzureStorage:BlobConnectionString").Value;
+                string containerName = _config.GetSection("AzureStorage:BlobContainerName").Value;
+                BlobServiceClient _blobServiceClient = new BlobServiceClient(connectionString);
+                BlobContainerClient _blobContainerClient = _blobServiceClient.GetBlobContainerClient(containerName);
 
+                var azureResponse = new List<BlobContentInfo>();
+                string filename = createOrSelectedBird.BirdMainImage.FileName;
+                string uniqueBlobName = $"avatar/{Guid.NewGuid()}-{filename}";
+                using (var memoryStream = new MemoryStream())
+                {
+                    createOrSelectedBird.BirdMainImage.CopyTo(memoryStream);
+                    memoryStream.Position = 0;
+
+                    var client = await _blobContainerClient.UploadBlobAsync(uniqueBlobName, memoryStream);
+                    azureResponse.Add(client);
+                }
+
+                var image = "https://edwinbirdclubstorage.blob.core.windows.net/images/" + uniqueBlobName;
+                createOrSelectedBird.ProfilePic = image;
+            }
             var contestPostResponse = await methcall.CallMethodReturnObject<GetContestPostResponse>(
                                    _httpClient: _httpClient,
                                    options: jsonOptions,
@@ -272,8 +305,10 @@ namespace WebAppMVC.Controllers
             var birdDetails = await methcall.CallMethodReturnObject<GetBirdResponse>(
                 _httpClient: _httpClient,
                 options: jsonOptions,
-                methodName: Constants.Constants.GET_METHOD,
+                methodName: BirdMethod,
                 url: BirdAPI_URL,
+                inputType: createOrSelectedBird,
+                accessToken: accToken,
                 _logger: _logger);
 
             if (contestPostResponse == null)
@@ -358,7 +393,7 @@ namespace WebAppMVC.Controllers
 
             methcall.RemoveCookie(Response, Constants.Constants.MEMBER_FIELDTRIP_REGISTRATION_COOKIE, cookieOptions, jsonOptions);
 
-            ContestAPI_URL += conId + "Bird/" + birdId + "/Register";
+            ContestAPI_URL += "/" + conId + "/Bird/" + birdId + "/Register";
 
             string TransactionAPI_URL = "/api/Transaction/UpdateUser";
             string MemberAPI_URL = "/api/Member/Profile";

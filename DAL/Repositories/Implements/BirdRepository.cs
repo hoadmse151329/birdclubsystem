@@ -44,12 +44,22 @@ namespace DAL.Repositories.Implements
 
         public async Task<Bird> GetBirdById(int birdId)
         {
-            return _context.Birds.AsNoTracking().SingleOrDefault(b => b.Equals(birdId));
+            return _context.Birds.AsNoTracking().SingleOrDefault(b => b.BirdId.Equals(birdId));
         }
 
         public async Task<Bird> GetBirdByIdTracking(int birdId)
         {
-            return _context.Birds.SingleOrDefault(b => b.Equals(birdId));
+            return _context.Birds.SingleOrDefault(b => b.BirdId.Equals(birdId));
+        }
+
+        public async Task<Bird> GetBirdByName(string birdName)
+        {
+            return _context.Birds.AsNoTracking().SingleOrDefault(b => b.BirdName.Equals(birdName));
+        }
+
+        public async Task<Bird> GetBirdByNameTracking(string birdName)
+        {
+            return _context.Birds.SingleOrDefault(b => b.BirdName.Equals(birdName));
         }
     }
 }

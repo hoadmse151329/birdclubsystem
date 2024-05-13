@@ -86,7 +86,7 @@ namespace BAL.Services.Implements
         {
             return _mapper.Map<LocationViewModel>(_unitOfWork.LocationRepository.GetById(id));
         }
-        public async Task<IEnumerable<MeetingViewModel>> GetFilteredMeetings(string locationSearchAddress)
+        /*public async Task<IEnumerable<MeetingViewModel>> GetFilteredMeetings(string locationSearchAddress)
         {
             // Split the location search address
             var searchParams = locationSearchAddress.Split(',');
@@ -108,6 +108,6 @@ namespace BAL.Services.Implements
             }
 
             return _mapper.Map<IEnumerable<MeetingViewModel>>(meetings);
-        }
+        }*/
     }
 }
