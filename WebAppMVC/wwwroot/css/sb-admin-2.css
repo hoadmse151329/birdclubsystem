@@ -58,7 +58,7 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
   display: block;
 }
 
-body1 {
+body11 {
   margin: 0;
   font-family: "Nunito", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-size: 1rem;
@@ -1492,7 +1492,7 @@ pre code {
   border-bottom: 2px solid #e3e6f0;
 }
 
-.table tbody + tbody {
+.table tbody11 + tbody1 {
   border-top: 2px solid #e3e6f0;
 }
 
@@ -1518,15 +1518,15 @@ pre code {
 .table-borderless th,
 .table-borderless td,
 .table-borderless thead th,
-.table-borderless tbody + tbody {
+.table-borderless tbody1 + tbody1 {
   border: 0;
 }
 
-.table-striped tbody tr:nth-of-type(odd) {
+.table-striped tbody1 tr:nth-of-type(odd) {
   background-color: rgba(0, 0, 0, 0.05);
 }
 
-.table-hover tbody tr:hover {
+.table-hover tbody1 tr:hover {
   color: #858796;
   background-color: rgba(0, 0, 0, 0.075);
 }
@@ -1540,7 +1540,7 @@ pre code {
 .table-primary th,
 .table-primary td,
 .table-primary thead th,
-.table-primary tbody + tbody {
+.table-primary tbody1 + tbody1 {
   border-color: #a3b6ee;
 }
 
@@ -1562,7 +1562,7 @@ pre code {
 .table-secondary th,
 .table-secondary td,
 .table-secondary thead th,
-.table-secondary tbody + tbody {
+.table-secondary tbody1 + tbody1 {
   border-color: #c0c1c8;
 }
 
@@ -1584,7 +1584,7 @@ pre code {
 .table-success th,
 .table-success td,
 .table-success thead th,
-.table-success tbody + tbody {
+.table-success tbody1 + tbody1 {
   border-color: #89e2c2;
 }
 
@@ -1606,7 +1606,7 @@ pre code {
 .table-info th,
 .table-info td,
 .table-info thead th,
-.table-info tbody + tbody {
+.table-info tbody1 + tbody1 {
   border-color: #96dbe4;
 }
 
@@ -1628,7 +1628,7 @@ pre code {
 .table-warning th,
 .table-warning td,
 .table-warning thead th,
-.table-warning tbody + tbody {
+.table-warning tbody1 + tbody1 {
   border-color: #fadf9b;
 }
 
@@ -1650,7 +1650,7 @@ pre code {
 .table-danger th,
 .table-danger td,
 .table-danger thead th,
-.table-danger tbody + tbody {
+.table-danger tbody1 + tbody1 {
   border-color: #f3a199;
 }
 
@@ -1672,7 +1672,7 @@ pre code {
 .table-light th,
 .table-light td,
 .table-light thead th,
-.table-light tbody + tbody {
+.table-light tbody1 + tbody1 {
   border-color: #fbfcfd;
 }
 
@@ -1694,7 +1694,7 @@ pre code {
 .table-dark th,
 .table-dark td,
 .table-dark thead th,
-.table-dark tbody + tbody {
+.table-dark tbody1 + tbody1 {
   border-color: #a9aab1;
 }
 
@@ -1749,11 +1749,11 @@ pre code {
   border: 0;
 }
 
-.table-dark.table-striped tbody tr:nth-of-type(odd) {
+.table-dark.table-striped tbody1 tr:nth-of-type(odd) {
   background-color: rgba(255, 255, 255, 0.05);
 }
 
-.table-dark.table-hover tbody tr:hover {
+.table-dark.table-hover tbody1 tr:hover {
   color: #fff;
   background-color: rgba(255, 255, 255, 0.075);
 }
@@ -4514,7 +4514,7 @@ input[type="button"].btn-block {
   border-top: 0;
 }
 
-.card-body {
+.card-body1 {
   flex: 1 1 auto;
   min-height: 1px;
   padding: 1.25rem;
@@ -5217,7 +5217,7 @@ a.badge-dark:focus, a.badge-dark.focus {
   align-items: flex-start;
 }
 
-.media-body {
+.media-body1 {
   flex: 1;
 }
 
@@ -5625,7 +5625,7 @@ a.close.disabled {
   border-top-right-radius: calc(0.25rem - 1px);
 }
 
-.toast-body {
+.toast-body1 {
   padding: 0.75rem;
 }
 
@@ -5691,7 +5691,7 @@ a.close.disabled {
   flex-shrink: 0;
 }
 
-.modal-dialog-scrollable .modal-body {
+.modal-dialog-scrollable .modal-body1 {
   overflow-y: auto;
 }
 
@@ -5775,7 +5775,7 @@ a.close.disabled {
   line-height: 1.5;
 }
 
-.modal-body {
+.modal-body1 {
   position: relative;
   flex: 1 1 auto;
   padding: 1rem;
@@ -6109,7 +6109,7 @@ a.close.disabled {
   display: none;
 }
 
-.popover-body {
+.popover-body1 {
   padding: 0.5rem 0.75rem;
   color: #858796;
 }
@@ -9647,7 +9647,7 @@ a.text-dark:hover, a.text-dark:focus {
   color: #373840 !important;
 }
 
-.text-body {
+.text-body1 {
   color: #858796 !important;
 }
 
@@ -9733,7 +9733,7 @@ a.text-dark:hover, a.text-dark:focus {
   @page {
     size: a3;
   }
-  body {
+  body1 {
     min-width: 992px !important;
   }
   .container {
@@ -9762,7 +9762,7 @@ a.text-dark:hover, a.text-dark:focus {
   .table-dark th,
   .table-dark td,
   .table-dark thead th,
-  .table-dark tbody + tbody {
+  .table-dark tbody1 + tbody1 {
     border-color: #e3e6f0;
   }
   .table .thead-dark th {
@@ -9776,7 +9776,7 @@ html {
   min-height: 100%;
 }
 
-body {
+body1 {
   height: 100%;
 }
 
@@ -11264,6 +11264,6 @@ footer.sticky-footer .copyright {
   font-size: 0.8rem;
 }
 
-body.sidebar-toggled footer.sticky-footer {
+body1.sidebar-toggled footer.sticky-footer {
   width: 100%;
 }
