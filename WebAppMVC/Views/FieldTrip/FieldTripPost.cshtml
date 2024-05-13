@@ -110,9 +110,12 @@
                                         <div class="overlap-group-3 text-wrapper-16">
                                             <span class="text-success">@ViewBag.PartNumber</span>
                                         </div>
-                                                <form asp-action="FieldTripDeRegister" asp-controller="FieldTrip" method="post" asp-route-tripId="@fieldtripDetails.TripId">
-                                            <button class="overlap-group-3 text-wrapper-16" type="submit">Sign Out</button>
-                                        </form>
+                                        if (Model.Status.Equals("OpenRegistration"))
+                                        {
+                                            <form asp-action="FieldTripDeRegister" asp-controller="FieldTrip" method="post" asp-route-tripId="@fieldtripDetails.TripId">
+                                                <button class="overlap-group-3 text-wrapper-16" type="submit">Sign Out</button>
+                                            </form>
+                                        }
                                     }
                                     else
                                     {

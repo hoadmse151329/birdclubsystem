@@ -105,9 +105,12 @@
                                             <div class="overlap-group-3 text-wrapper-16">
                                                 <span class="text-success">@ViewBag.PartNumber</span>
                                             </div>
-                                            <form asp-action="ContestDeRegister" asp-controller="Contest" method="post" asp-route-contestId="@con.ContestId">
-                                                <button class="overlap-group-3 text-wrapper-16" type="submit">Sign Out</button>
-                                            </form>
+                                            if (Model.Status.Equals("OpenRegistration"))
+                                            {
+                                                <form asp-action="ContestDeRegister" asp-controller="Contest" method="post" asp-route-contestId="@con.ContestId">
+                                                    <button class="overlap-group-3 text-wrapper-16" type="submit">Sign Out</button>
+                                                </form>
+                                            }
                                         }
                                         else
                                         {
@@ -128,6 +131,152 @@
                 </div>
             </div>
         </div>
+        @{
+            if (role != null && role.Equals("Member"))
+            {
+                <div id="registerContest" class="modal fade" role="dialog">
+                    <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
+                        <div class="modal-content modal-addRoom">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Select your existing bird or Create a new bird to register this contest</h4>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="col-12 col-md-10">
+                                    <div class="form-group row">
+                                        <label asp-for="@con.Fee" class="col-sm-4 col-form-label">Contest Fee</label>
+                                        <div class="col-sm-8">
+                                            <input asp-for="@con.Fee" type="number" min="0"
+                                                   value="@con.Fee" class="form-control" required readonly>
+                                        </div>
+                                    </div>
+                                    <ul class="nav nav-tabs">
+                                        <li class="nav-item">
+                                            <a class="nav-link active" data-toggle="tab" href="#home1">
+                                                <i class='bx bx-home-alt-2'></i>
+                                                <span class="title">Overview</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                    @{
+                                        if (con.MemberBirdSelection != null && con.MemberBirdSelection.Count > 0)
+                                        {
+                                            <div class="form-group row">
+                                                <label class="col-sm-4 col-form-label">Select Your Existing Bird or input your new bird infomations below</label>
+                                                <div class="col-sm-8">
+                                                    <select class="form-control" id="birdSelection" asp-for="@con.MemberBirdSelection.FirstOrDefault().BirdId" asp-items="@memberAvailableBirdSelectList" class="custom-select" required></select>
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+                                    <form asp-action="ContestRegister" asp-controller="Contest" method="post" asp-route-contestId="@con.ContestId" class="form-group">
+                                        <div class="modal-body">
+                                            <div class="form-group row">
+                                                <label asp-for="@createOrSelectedBird.ProfilePic" class="col-sm-4 col-form-label"></label>
+                                                <div class="col-sm-8">
+                                                    <input asp-for="@createOrSelectedBird.ProfilePic" type="file" accept=".jpg, .jpeg, .png"
+                                                           value="@createOrSelectedBird.ProfilePic" class="form-control" required>
+                                                    <span asp-validation-for="@createOrSelectedBird.ProfilePic" id="error_message"
+                                                          class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label asp-for="@createOrSelectedBird.BirdName" class="col-sm-4 col-form-label"></label>
+                                                <div class="col-sm-8">
+                                                    <input asp-for="@createOrSelectedBird.BirdName" type="text" id="createOrSelectedBird_BirdName"
+                                                           value="@createOrSelectedBird.BirdName" class="form-control" required>
+                                                    <span asp-validation-for="@createOrSelectedBird.BirdName" id="error_message"
+                                                          class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label asp-for="@createOrSelectedBird.Age" class="col-sm-4 col-form-label"></label>
+                                                <div class="col-sm-8">
+                                                    <input asp-for="@createOrSelectedBird.Age" type="number" min="0"
+                                                           value="@createOrSelectedBird.Age" class="form-control" required>
+                                                    <span asp-validation-for="@createOrSelectedBird.Age" id="error_message"
+                                                          class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label asp-for="@createOrSelectedBird.Description" class="col-sm-4 col-form-label">Description</label>
+                                                <div class="col-sm-8">
+                                                    <textarea asp-for="@createOrSelectedBird.Description"
+                                                              value="@createOrSelectedBird.Description" class="form-control" required></textarea>
+                                                    <span asp-validation-for="@createOrSelectedBird.Description" id="error_message"
+                                                          class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label asp-for="@createOrSelectedBird.Color" class="col-sm-4 col-form-label">Location</label>
+                                                <div class="col-sm-8">
+                                                    <input asp-for="@createOrSelectedBird.Color" type="text"
+                                                           value="@createOrSelectedBird.Color" class="form-control" required>
+                                                    <span asp-validation-for="@createOrSelectedBird.Color" id="error_message"
+                                                          class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label asp-for="@createOrSelectedBird.Origin" class="col-sm-4 col-form-label">Description</label>
+                                                <div class="col-sm-8">
+                                                    <textarea asp-for="@createOrSelectedBird.Origin"
+                                                              value="@createOrSelectedBird.Origin" class="form-control" required></textarea>
+                                                    <span asp-validation-for="@createOrSelectedBird.Origin" id="error_message"
+                                                          class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label asp-for="@createOrSelectedBird.Elo" class="col-sm-4 col-form-label"></label>
+                                                <div class="col-sm-8">
+                                                    <input asp-for="@createOrSelectedBird.Elo" type="number" min="0"
+                                                           value="@createOrSelectedBird.Elo" class="form-control" required readonly>
+                                                    <span asp-validation-for="@createOrSelectedBird.Elo" id="error_message"
+                                                          class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label asp-for="@createOrSelectedBird.AddDate" class="col-sm-4 col-form-label"></label>
+                                                <div class="col-sm-8">
+                                                    <input asp-for="@createOrSelectedBird.AddDate" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
+                                                           value="@createOrSelectedBird.AddDate.ToString("yyyy-MM-ddTHH:mm")" class="form-control" required readonly>
+                                                    <span asp-validation-for="@createOrSelectedBird.AddDate" id="error_message"
+                                                          class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer justify-content-center">
+                                            <button class="btn overlap-group-3 text-wrapper-16 button-rgb" type="submit" value="Update">Register</button>
+                                            <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        <script>
+            $(document).ready(function () {
+                const birdSelection = document.querySelector('#birdSelection');
+
+                birdSelection.addEventListener('change', function (event) {
+                    const selectedBirdId = event.target.value;
+                    const birds = @Html.Raw(Json.Serialize(memberAvailableBirdList));
+                    const selectedBird = birds.find(bird => bird.BirdId === parseInt(selectedBirdId));
+
+                    // Autofill the input fields with bird data
+                    $('#createOrSelectedBird_BirdName, #createOrSelectedBird_Age, #createOrSelectedBird_Description, #createOrSelectedBird_Color, #createOrSelectedBird_Origin, #createOrSelectedBird_Elo, #createOrSelectedBird_AddDate').val([
+                        selectedBird.BirdName,
+                        selectedBird.Age,
+                        selectedBird.Description,
+                        selectedBird.Color,
+                        selectedBird.Origin,
+                        selectedBird.Elo,
+                        selectedBird.AddDate
+                    ]);
+                });
+            });
+        </script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
         referrerpolicy="no-referrer"></script>
         <!-- Jquery Waypoint -->
@@ -221,129 +370,4 @@
             });
         </script>
     </body>
-    @{
-        if (role != null && role.Equals("Member"))
-        {
-            <div id="registerContest" class="modal fade" role="dialog">
-                <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
-                    <div class="modal-content modal-addRoom">
-                        <div class="modal-header">
-                            <h4 class="modal-title">Select your existing bird or Create a new bird to register this contest</h4>
-                        </div>
-                        <div class="row justify-content-center">
-                            <div class="col-12 col-md-6">
-                                @{
-                                    if (con.MemberBirdSelection != null && con.MemberBirdSelection.Count > 0)
-                                    {
-                                        <div class="form-group row">
-                                            <label class="col-sm-4 col-form-label">Select Your Existing Bird</label>
-                                            <div class="col-sm-8">
-                                                <select class="form-control" id="birdSelection" asp-for="@con.MemberBirdSelection.FirstOrDefault().BirdId" asp-items="@memberAvailableBirdSelectList" class="custom-select" required></select>
-                                            </div>
-                                        </div>
-                                    }
-                                }
-                                <form asp-action="ContestRegister" asp-controller="Contest" method="post" asp-route-contestId="@con.ContestId" class="form-group">
-                                    <div class="modal-body">
-                                        <div class="form-group row">
-                                            <label asp-for="@createOrSelectedBird.BirdName" class="col-sm-4 col-form-label"></label>
-                                            <div class="col-sm-8">
-                                            <input asp-for="@createOrSelectedBird.BirdName" type="text" id="createOrSelectedBird_BirdName"
-                                                       value="@createOrSelectedBird.BirdName" class="form-control" required>
-                                                <span asp-validation-for="@createOrSelectedBird.BirdName" id="error_message"
-                                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label asp-for="@createOrSelectedBird.Age" class="col-sm-4 col-form-label"></label>
-                                            <div class="col-sm-8">
-                                                <input asp-for="@createOrSelectedBird.Age" type="number" min="0"
-                                                       value="@createOrSelectedBird.Age" class="form-control" required>
-                                                <span asp-validation-for="@createOrSelectedBird.Age" id="error_message"
-                                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label asp-for="@createOrSelectedBird.Description" class="col-sm-4 col-form-label">Description</label>
-                                            <div class="col-sm-8">
-                                                <textarea asp-for="@createOrSelectedBird.Description"
-                                                          value="@createOrSelectedBird.Description" class="form-control" required></textarea>
-                                                <span asp-validation-for="@createOrSelectedBird.Description" id="error_message"
-                                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label asp-for="@createOrSelectedBird.Color" class="col-sm-4 col-form-label">Location</label>
-                                            <div class="col-sm-8">
-                                                <input asp-for="@createOrSelectedBird.Color" type="text"
-                                                       value="@createOrSelectedBird.Color" class="form-control" required>
-                                                <span asp-validation-for="@createOrSelectedBird.Color" id="error_message"
-                                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label asp-for="@createOrSelectedBird.Origin" class="col-sm-4 col-form-label">Description</label>
-                                            <div class="col-sm-8">
-                                                <textarea asp-for="@createOrSelectedBird.Origin"
-                                                          value="@createOrSelectedBird.Origin" class="form-control" required></textarea>
-                                                <span asp-validation-for="@createOrSelectedBird.Origin" id="error_message"
-                                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label asp-for="@createOrSelectedBird.Elo" class="col-sm-4 col-form-label"></label>
-                                            <div class="col-sm-8">
-                                                <input asp-for="@createOrSelectedBird.Elo" type="number" min="0"
-                                                       value="@createOrSelectedBird.Elo" class="form-control" required readonly>
-                                                <span asp-validation-for="@createOrSelectedBird.Elo" id="error_message"
-                                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label asp-for="@createOrSelectedBird.AddDate" class="col-sm-4 col-form-label"></label>
-                                            <div class="col-sm-8">
-                                                <input asp-for="@createOrSelectedBird.AddDate" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
-                                                       value="@createOrSelectedBird.AddDate.ToString("yyyy-MM-ddTHH:mm")" class="form-control" required readonly>
-                                                <span asp-validation-for="@createOrSelectedBird.AddDate" id="error_message"
-                                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer justify-content-center">
-                                        <button class="btn overlap-group-3 text-wrapper-16 button-rgb" type="submit" value="Update">Register</button>
-                                        <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
-                                    </div>
-                                </form>
-                                <div class="form-group row">
-                                    <label asp-for="@con.Fee" class="col-sm-4 col-form-label">Contest Fee</label>
-                                    <div class="col-sm-8">
-                                        <input asp-for="@con.Fee" type="number" min="0"
-                                               value="@con.Fee" class="form-control" required readonly>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        }
-    }
-    <script>
-        $(document).ready(function () {
-            $('#birdSelection').change(function () {
-                var selectedBirdId = $(this).val();
-                var birds = @Html.Raw(Json.Serialize(memberAvailableBirdList));
-                var selectedBird = birds.find(b => b.BirdId == selectedBirdId);
-
-                // Autofill the input fields with bird data
-                $('#createOrSelectedBird_BirdName').val(selectedBird.BirdName);
-                $('#createOrSelectedBird_Age').val(selectedBird.Age);
-                $('#createOrSelectedBird_Description').val(selectedBird.Description);
-                $('#createOrSelectedBird_Color').val(selectedBird.Color);
-                $('#createOrSelectedBird_Origin').val(selectedBird.Origin);
-                $('#createOrSelectedBird_Elo').val(selectedBird.Elo);
-                $('#createOrSelectedBird_AddDate').val(selectedBird.AddDate);
-            });
-        });
-    </script>
 </html>
