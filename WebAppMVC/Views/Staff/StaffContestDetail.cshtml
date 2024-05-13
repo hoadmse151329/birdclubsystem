@@ -325,11 +325,11 @@
                                                             <input type="hidden" asp-for="@contestPartView[i].ContestId" name="contestPartView[@i].ContestId" value="@contestPartView[i].ContestId" class="form-control" />
                                                             <input type="hidden" asp-for="@contestPartView[i].MemberId" name="contestPartView[@i].MemberId" value="@contestPartView[i].MemberId" class="form-control" />
                                                             <td class="sorting_1">
-                                                                <input type="hidden" asp-for="@contestPartView[i].ParticipantNo" name="contestPartView[@i].ParticipantNo" value="@contestPartView[i].ParticipantNo" class="form-control" />
+                                                                @*<input type="hidden" asp-for="@contestPartView[i].ParticipantNo" name="contestPartView[@i].ParticipantNo" value="@contestPartView[i].ParticipantNo" class="form-control" />*@
                                                                 @contestPartView[i].ParticipantNo
                                                             </td>
                                                             <td>
-                                                                <input type="hidden" asp-for="@contestPartView[i].MemberName" name="contestPartView[@i].MemberName" value="@contestPartView[i].MemberName" class="form-control" />
+                                                                @*<input type="hidden" asp-for="@contestPartView[i].MemberName" name="contestPartView[@i].MemberName" value="@contestPartView[i].MemberName" class="form-control" />*@
                                                                 @contestPartView[i].MemberName
                                                             </td>
                                                             <td>
@@ -372,7 +372,7 @@
                                                     <tr>
                                                         <th>Participant No:</th>
                                                         <th>Name:</th>
-                                                        <th>CheckInStatus:</th>
+                                                        <th>Score points:</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -384,25 +384,13 @@
                                                             <input type="hidden" asp-for="@contestPartView[i].ContestId" name="contestPartView[@i].ContestId" value="@contestPartView[i].ContestId" class="form-control" />
                                                             <input type="hidden" asp-for="@contestPartView[i].MemberId" name="contestPartView[@i].MemberId" value="@contestPartView[i].MemberId" class="form-control" />
                                                             <td class="sorting_1">
-                                                                <input type="hidden" asp-for="@contestPartView[i].ParticipantNo" name="contestPartView[@i].ParticipantNo" value="@contestPartView[i].ParticipantNo" class="form-control" />
                                                                 @contestPartView[i].ParticipantNo
                                                             </td>
                                                             <td>
-                                                                <input type="hidden" asp-for="@contestPartView[i].MemberName" name="contestPartView[@i].MemberName" value="@contestPartView[i].MemberName" class="form-control" />
                                                                 @contestPartView[i].MemberName
                                                             </td>
                                                             <td>
-                                                                @{
-                                                                    foreach (var status in checkInStatus)
-                                                                    {
-                                                                        if (status.Text.Equals(contestPartView[i].CheckInStatus))
-                                                                        {
-                                                                            status.Selected = true;
-                                                                        }
-                                                                    }
-                                                                    <select class="form-control" asp-for="@contestPartView[i].CheckInStatus" asp-items="@checkInStatus" class="custom-select" name="contestPartView[@i].checkInStatus">
-                                                                    </select>
-                                                                }
+                                                                <input type="number" asp-for="@contestPartView[i].Score" name="contestPartView[@i].Score" value="@contestPartView[i].Score" class="form-control" />
                                                             </td>
                                                         </tr>
                                                     }

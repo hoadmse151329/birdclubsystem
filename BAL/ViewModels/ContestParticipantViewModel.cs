@@ -13,6 +13,7 @@ namespace BAL.ViewModels
         public string? MemberName { get; set; }
         public int? BirdId { get; set; }
         public int? Elo { get; set; }
+        public int? Score { get; set; }
         public string? ParticipantNo { get; set; }
         public string? CheckInStatus { get; set; }
     }

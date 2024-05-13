@@ -55,6 +55,7 @@ namespace WebAppMVC.Constants
         public readonly static string UPDATE_CONTEST_VALID = "UContestValid";
         public readonly static string CREATE_CONTEST_MEDIA_VALID = "CContestMediaValid";
         public readonly static string UPDATE_CONTEST_MEDIA_VALID = "UContestMediaValid";
+        public readonly static string CREATE_CONTEST_PARTICIPATION_VALID = "CContestparticipantValid";
 
         public readonly static string EVENT_STATUS_ON_HOLD = "OnHold";
         public readonly static string EVENT_STATUS_NAME_ON_HOLD = "On Hold";

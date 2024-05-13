@@ -23,6 +23,8 @@ using System.ComponentModel.DataAnnotations;
 using WebAppMVC.Models.Staff;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
+using DAL.Models;
+using Microsoft.AspNetCore.Http.Json;
 
 namespace WebAppMVC.Controllers
 {
@@ -663,6 +665,13 @@ namespace WebAppMVC.Controllers
 
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.STAFF) != null)
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.STAFF));
+
+            if (!ModelState.IsValid)
+            {
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_CONTEST_VALID, updateContest, options);
+                return RedirectToAction("StaffContestDetail", "Staff", new { id });
+            }
+
             string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
             var contestPostResponse = await methcall.CallMethodReturnObject<GetContestPostResponse>(
@@ -695,7 +704,7 @@ namespace WebAppMVC.Controllers
             [FromRoute][Required] int id,
             [Required] List<ContestParticipantViewModel> contestPartView)
         {
-            StaffAPI_URL += "Staff/ContestStatus/Update/" + id;
+            StaffAPI_URL += "Staff/Contest/" + id + "/Participant/All/Status/Update";
 
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.STAFF) != null)
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.STAFF));

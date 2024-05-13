@@ -213,7 +213,7 @@ namespace WebAppMVC.Controllers
                 //_logger.LogInformation("Username or Password is invalid: " + contestPostResponse.Status + " , Error Message: " + contestPostResponse.ErrorMessage);
                 ViewBag.error =
                     "Error while processing your request! (Getting Contest!).\n Contest Not Found!";
-                View("Index");
+                return View("Index");
             }
             if (!contestPostResponse.Status)
             {
@@ -221,10 +221,10 @@ namespace WebAppMVC.Controllers
                 ViewBag.error =
                     "Error while processing your request! (Getting Contest Post!).\n"
                     + contestPostResponse.ErrorMessage;
-                View("Index");
+                return View("Index");
             }
             contestPostAndBird.ContestDetails = contestPostResponse.Data;
-            contestPostAndBird.CreateBirdForContest = null;
+            contestPostAndBird.CreateBirdForContest = methcall.GetValidationTempData<BirdViewModel>(this, TempData, Constants.Constants.CREATE_CONTEST_PARTICIPATION_VALID, "createOrSelectedBird", jsonOptions); ;
 
             return View(contestPostAndBird);
         }
@@ -242,6 +242,12 @@ namespace WebAppMVC.Controllers
 
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER) != null)
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER));
+
+            if (!ModelState.IsValid)
+            {
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.CREATE_CONTEST_PARTICIPATION_VALID, createOrSelectedBird, jsonOptions);
+                return RedirectToAction("ContestPost", new { id = contestId });
+            }
 
             string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
@@ -274,39 +280,39 @@ namespace WebAppMVC.Controllers
             {
                 ViewBag.error =
                     "Error while processing your request! (Getting Contest!).\n Contest Not Found!";
-                RedirectToAction("Index");
+                return RedirectToAction("Index");
             }
             if (!contestPostResponse.Status)
             {
                 ViewBag.error =
                     "Error while processing your request! (Getting Contest Post!).\n"
                     + contestPostResponse.ErrorMessage;
-                RedirectToAction("Index");
+                return RedirectToAction("Index");
             }
             if (memberDetails == null)
             {
                 ViewBag.error =
                     "Error while processing your request! (Getting Member!).\n Member Not Found!";
-                RedirectToAction("ContestPost", new { id = contestId });
+                return RedirectToAction("ContestPost", new { id = contestId });
             }
             if (!memberDetails.Status)
             {
                 ViewBag.error =
                     "Error while processing your request! (Getting Member!).\n"
                     + contestPostResponse.ErrorMessage;
-                RedirectToAction("ContestPost", new { id = contestId });
+                return RedirectToAction("ContestPost", new { id = contestId });
             }
             if (birdDetails == null)
             {
                 ViewBag.error =
                     "Error while processing your request! (Getting Bird for Contest Registration!).\n Bird Not Found!";
-                RedirectToAction("ContestPost",new { id = contestId});
+                return RedirectToAction("ContestPost",new { id = contestId});
             }
             if (!birdDetails.Status)
             {
                 ViewBag.error =
                    "Error while processing your request! (Getting Bird for Contest Registration!).\n";
-                RedirectToAction("ContestPost", new { id = contestId });
+                return RedirectToAction("ContestPost", new { id = contestId });
             }
             if (birdDetails.Data.Elo >= contestPostResponse.Data.ReqMinELO && birdDetails.Data.Elo <= contestPostResponse.Data.ReqMaxELO)
             {
@@ -314,7 +320,7 @@ namespace WebAppMVC.Controllers
                    "Error while processing your request! (Your Bird Elo must be more than "
                    + contestPostResponse.Data.ReqMinELO + " and less than "
                    + contestPostResponse.Data.ReqMaxELO + " to register a Contest!).\n";
-                RedirectToAction("ContestPost", new { id = contestId });
+                return RedirectToAction("ContestPost", new { id = contestId });
             }
             methcall.SetCookie(Response, Constants.Constants.MEMBER_CONTEST_REGISTRATION_COOKIE, contestPostResponse.Data, cookieOptions, jsonOptions, 20);
 
