@@ -329,7 +329,7 @@ $(document).ready(function () {
             });
         });
 
-let vnd = Intl.NumberFormat("vi-VN", {
+var vnd = Intl.NumberFormat("vi-VN", {
   style: "currency",
   currency: "VND",
   useGrouping: true,

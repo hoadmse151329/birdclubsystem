@@ -78,15 +78,18 @@ namespace WebAppMVC.Controllers
             if (!string.IsNullOrEmpty(meetingName))
             {
                 meetingName = meetingName.Trim();
-                MeetingAPI_URL += "meetingName=" + meetingName + "&";
+                MeetingAPI_URL += $"meetingName={Uri.EscapeDataString(meetingName)}&";
             }
             if (!string.IsNullOrEmpty(locationAddress))
             {
                 locationAddress = locationAddress.Trim();
-                MeetingAPI_URL += "locationAddress=" + locationAddress + "&";
+                MeetingAPI_URL += $"locationAddress={Uri.EscapeDataString(locationAddress)}&";
             }
-            if(MeetingAPI_URL.Contains("Search")) MeetingAPI_URL.Substring(0,MeetingAPI_URL.Length - 1);
-            
+            if (MeetingAPI_URL.Contains("Search"))
+            {
+                MeetingAPI_URL = MeetingAPI_URL.Substring(0, MeetingAPI_URL.Length - 1); // Remove the trailing '&'
+            }
+
             string LocationAPI_URL_All_Road = "/api/Location/AllAddressRoads";
             string LocationAPI_URL_All_District = "/api/Location/AllAddressDistricts";
             string LocationAPI_URL_All_City = "/api/Location/AllAddressCities";
@@ -157,43 +160,25 @@ namespace WebAppMVC.Controllers
                     + listMeetResponse.ErrorMessage + "\n" + listLocationRoadResponse.ErrorMessage;
                 Redirect("~/Home/Index");
             }
-            /*else
+            else
             {
-                foreach (var meeting in listMeetResponse.Data)
-                {
-                    // Check if the current date and time is between the start and end dates of the meeting
-                    if (DateTime.Now >= meeting.StartDate && DateTime.Now <= meeting.EndDate)
-                    {
-                        // If the current date and time is between the start and end dates of the meeting, update the status to 'open registration'
-                        if (meeting.Status == "on hold")
-                        {
-                            bool success = await UpdateMeetingStatus(meeting.MeetingId, "open registration");
+                
+        foreach (var meeting in listMeetResponse.Data)
+        {
+            if (meeting.EndDate < DateTime.Now && meeting.Status == "open registration")
+            {
+                // If the current date and time is after the end date of the meeting and its status is 'open registration',
+                // update the status to 'end registration'
+                //bool success = await UpdateMeetingStatus(meeting.MeetingId, "end registration");
 
-                            if (!success)
-                            {
-                                ViewBag.error =
-                    "Error while processing your request! (Contact Manager!).\n";
-                                View("Index");
-                            }
-                        }
-                    }
-                    else
-                    {
-                        // If the current date and time is not between the start and end dates of the meeting, update the status to 'end registration'
-                        if (meeting.Status == "open registration")
-                        {
-                            bool success = await UpdateMeetingStatus(meeting.MeetingId, "end registration");
-
-                            if (!success)
-                            {
-                                ViewBag.error =
-                    "Error while processing your request! (Contact Manager!).\n";
-                                View("Index");
-                            }
-                        }
-                    }
-                }
-            }*/
+                //if (!success)
+                //{
+                //    ViewBag.error = "Error while updating meeting status.";
+                //    return View("Index", testmodel);
+                //}
+            }
+        }
+    }
             testmodel.Meetings = listMeetResponse.Data;
 
             List<SelectListItem> roads = new();

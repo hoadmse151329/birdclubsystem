@@ -59,7 +59,7 @@
                                     locationSearchAddress = "," + locationSearchRoad + "," + locationSearchDistrict + "," + locationSearchCity;
                                 }
                                 
-                                <button class="button--primary" type="submit"><i class="fa fa-filter"></i> Filter</button>
+                                <button class="button--primary " id="filterButton" type="submit"><i class="fa fa-filter"></i> Filter</button>
                             </div>
                         </form>
                         <div class="col-bg">
@@ -94,7 +94,7 @@
                                     }
                                 </a>
                                 <div class="club-title">
-                                    <a href="@Url.Action("MeetingPost", "Meeting",new {id = data.MeetingId})" class="text-decoration-none">@data.MeetingName</a>
+                                    <a href="@Url.Action("MeetingPost", "Meeting",new {id = data.MeetingId})" class="text-decoration-none truncate">@data.MeetingName</a>
                                 </div>
 
                                 <p class="club-price"><i class="fas fa-calendar-alt"></i>
@@ -102,9 +102,9 @@
                                     to @data.EndDate.ToString("MM-dd-yyyy")</p>
                                 <div class="club-address" data-toggle="tooltip" data-placement="auto"
                                     title="@data.City">
-                                    <p class="address truncate">
+                                    <p class="address">
                                         <i class="fas fa-map-marker-alt" style="color:white"></i>
-                                        <span class="district text-white">Address @data.AreaNumber,@data.Street,@data.District,@data.City</span>
+                                        <span class="district text-white truncate">Address @data.AreaNumber,@data.Street,@data.District,@data.City</span>
                                     </p>
                                 </div>
                                 <div class="d-flex justify-content-between">
@@ -222,5 +222,27 @@
             });
         });
     </script>
+    <script>
+    $(document).ready(function () {
+    // Function to handle form submission
+    $(document).ready(function () {
+    // Function to handle form submission
+    $('#filterButton').click(function (event) {
+        event.preventDefault(); // Prevent default form submission behavior
+
+        // Get selected filter options
+        var road = $('#road').val();
+        var district = $('#district').val();
+        var city = $('#city').val();
+
+        // Construct the URL with filter parameters
+        var url = '@Url.Action("Index", "Meeting")' +
+            '?locationAddress=' + encodeURIComponent(road + ',' + district + ',' + city);
+
+        // Redirect to the filtered page
+        window.location.href = url;
+    });
+});
+</script>
   </body>
 </html>
