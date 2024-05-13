@@ -468,61 +468,54 @@
                         else if (detailsMeeting.Status.Equals("Ongoing"))
                         {
                             <div class="col-lg-5 cardFB">
-                                <form asp-action="StaffUpdateMeetingPartStatus" asp-controller="Staff" asp-route-id="@detailsMeeting.MeetingId" method="post">
-                                    <div class="card border-0 d-flex">
-                                        <div class="card-header">
-                                            <h4>Edit Participant Status</h4>
-                                        </div>
-                                        <div class="card-body">
-                                            <table class="table table-hover table-borderless">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Participant No:</th>
-                                                        <th>Name:</th>
-                                                        <th>Check In Status:</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @for (int i = 0; i < meetPartView.Count(); i++)
-                                                    {
-                                                        <tr class="@("clickable-row "+ (i%2 == 0 ? "even" : "odd")) " data-href="#"
-                                                            data-bs-toggle="tooltip" data-bs-placement="right"
-                                                            title="More Details">
-                                                            <input type="hidden" asp-for="@meetPartView[i].MeetingId" name="meetPartView[@i].MeetingId" value="@meetPartView[i].MeetingId" class="form-control" />
-                                                            <input type="hidden" asp-for="@meetPartView[i].MemberId" name="meetPartView[@i].MemberId" value="@meetPartView[i].MemberId" class="form-control" />
-                                                            <td class="sorting_1">
-                                                                <input type="hidden" asp-for="@meetPartView[i].ParticipantNo" name="meetPartView[@i].ParticipantNo" value="@meetPartView[i].ParticipantNo" class="form-control" />
-                                                                @meetPartView[i].ParticipantNo
-                                                            </td>
-                                                            <td>
-                                                                <input type="hidden" asp-for="@meetPartView[i].MemberName" name="meetPartView[@i].MemberName" value="@meetPartView[i].MemberName" class="form-control" />
-                                                                @meetPartView[i].MemberName
-                                                            </td>
-                                                            <td>
-                                                                @{
-                                                                    foreach (var status in checkInStatus)
+                                <div class="card border-0 d-flex">
+                                    <div class="card-header">
+                                        <h4>Edit Participant Status</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <table class="table table-hover table-borderless">
+                                            <thead>
+                                                <tr>
+                                                    <th>Participant No:</th>
+                                                    <th>Name:</th>
+                                                    <th>Check In Status:</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @for (int i = 0; i < meetPartView.Count(); i++)
+                                                {
+                                                    <tr class="@("clickable-row "+ (i%2 == 0 ? "even" : "odd")) " data-href="#"
+                                                        data-bs-toggle="tooltip" data-bs-placement="right"
+                                                        title="More Details">
+                                                        <input type="hidden" asp-for="@meetPartView[i].MeetingId" name="meetPartView[@i].MeetingId" value="@meetPartView[i].MeetingId" class="form-control" />
+                                                        <input type="hidden" asp-for="@meetPartView[i].MemberId" name="meetPartView[@i].MemberId" value="@meetPartView[i].MemberId" class="form-control" />
+                                                        <td class="sorting_1">
+                                                            <input type="hidden" asp-for="@meetPartView[i].ParticipantNo" name="meetPartView[@i].ParticipantNo" value="@meetPartView[i].ParticipantNo" class="form-control" />
+                                                            @meetPartView[i].ParticipantNo
+                                                        </td>
+                                                        <td>
+                                                            <input type="hidden" asp-for="@meetPartView[i].MemberName" name="meetPartView[@i].MemberName" value="@meetPartView[i].MemberName" class="form-control" />
+                                                            @meetPartView[i].MemberName
+                                                        </td>
+                                                        <td>
+                                                            @{
+                                                                foreach (var status in checkInStatus)
+                                                                {
+                                                                    if (status.Text.Equals(meetPartView[i].CheckInStatus))
                                                                     {
-                                                                        if (status.Text.Equals(meetPartView[i].CheckInStatus))
-                                                                        {
-                                                                            status.Selected = true;
-                                                                        }
+                                                                        status.Selected = true;
                                                                     }
                                                                 }
-                                                                <select class="form-control" asp-for="@meetPartView[i].CheckInStatus" asp-items="@checkInStatus" class="custom-select" name="meetPartView[@i].checkInStatus">
-                                                                </select>
-                                                            </td>
-                                                        </tr>
-                                                    }
-                                                </tbody>
-                                            </table>
-                                            @*<div class="row col-12 d-flex">
-                                                <div class="rating-club">
-                                                    <button class="button--primary btn-success bg-success shadow btn-xs text-white" type="submit">Save Changes</button>
-                                                </div>
-                                            </div>*@
-                                        </div>
+                                                            }
+                                                            <select class="form-control" asp-for="@meetPartView[i].CheckInStatus" asp-items="@checkInStatus" class="custom-select" name="meetPartView[@i].checkInStatus">
+                                                            </select>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
                                     </div>
-                                </form>
+                                </div>
                             </div>
                         }
                         else

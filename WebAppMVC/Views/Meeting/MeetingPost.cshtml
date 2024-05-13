@@ -93,9 +93,12 @@
                             <div class="overlap-group-3 text-wrapper-16">
                                 <span class="text-success">@ViewBag.PartNumber</span>
                             </div>
-                            <form asp-action="MeetingDeRegister" asp-controller="Meeting" method="post" asp-route-meetingId="@Model.MeetingId">
-                                <button class="overlap-group-3 text-wrapper-16" type="submit">Sign Out</button>
-                            </form> 
+                            if (Model.Status.Equals("OpenRegistration"))
+                            {
+                                <form asp-action="MeetingDeRegister" asp-controller="Meeting" method="post" asp-route-meetingId="@Model.MeetingId">
+                                    <button class="overlap-group-3 text-wrapper-16" type="submit">Sign Out</button>
+                                </form>
+                            }
                         }
                         else
                         {

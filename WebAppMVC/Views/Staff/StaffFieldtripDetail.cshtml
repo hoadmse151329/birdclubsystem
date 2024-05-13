@@ -675,61 +675,54 @@
                         else if (detailsTrip.Status.Equals("Ongoing"))
                         {
                             <div class="col-lg-5 cardFB">
-                                <form asp-action="StaffUpdateFieldTripPartStatus" asp-controller="Staff" asp-route-id="@detailsTrip.TripId" method="post">
-                                    <div class="card border-0 d-flex">
-                                        <div class="card-header">
-                                            <h4>Edit Participant Status</h4>
-                                        </div>
-                                        <div class="card-body">
-                                            <table class="table table-hover table-borderless">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Participant No:</th>
-                                                        <th>Name:</th>
-                                                        <th>Check In Status:</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @for (int i = 0; i < tripPartView.Count(); i++)
-                                                    {
-                                                        <tr class="@("clicks-row "+ (i%2 == 0 ? "even" : "odd")) " data-href="#"
-                                                            data-bs-toggle="tooltip" data-bs-placement="right"
-                                                            title="More Details">
-                                                            <input type="hidden" asp-for="@tripPartView[i].TripId" name="tripPartView[@i].TripId" value="@tripPartView[i].TripId" class="form-control" />
-                                                            <input type="hidden" asp-for="@tripPartView[i].MemberId" name="tripPartView[@i].MemberId" value="@tripPartView[i].MemberId" class="form-control" />
-                                                            <td class="sorting_1">
-                                                                <input type="hidden" asp-for="@tripPartView[i].ParticipantNo" name="tripPartView[@i].ParticipantNo" value="@tripPartView[i].ParticipantNo" class="form-control" />
-                                                                @tripPartView[i].ParticipantNo
-                                                            </td>
-                                                            <td>
-                                                                <input type="hidden" asp-for="@tripPartView[i].MemberName" name="tripPartView[@i].MemberName" value="@tripPartView[i].MemberName" class="form-control" />
-                                                                @tripPartView[i].MemberName
-                                                            </td>
-                                                            <td>
-                                                                @{
-                                                                    foreach (var status in checkInStatus)
+                                <div class="card border-0 d-flex">
+                                    <div class="card-header">
+                                        <h4>Edit Participant Status</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <table class="table table-hover table-borderless">
+                                            <thead>
+                                                <tr>
+                                                    <th>Participant No:</th>
+                                                    <th>Name:</th>
+                                                    <th>Check In Status:</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @for (int i = 0; i < tripPartView.Count(); i++)
+                                                {
+                                                    <tr class="@("clicks-row "+ (i%2 == 0 ? "even" : "odd")) " data-href="#"
+                                                        data-bs-toggle="tooltip" data-bs-placement="right"
+                                                        title="More Details">
+                                                        <input type="hidden" asp-for="@tripPartView[i].TripId" name="tripPartView[@i].TripId" value="@tripPartView[i].TripId" class="form-control" />
+                                                        <input type="hidden" asp-for="@tripPartView[i].MemberId" name="tripPartView[@i].MemberId" value="@tripPartView[i].MemberId" class="form-control" />
+                                                        <td class="sorting_1">
+                                                            <input type="hidden" asp-for="@tripPartView[i].ParticipantNo" name="tripPartView[@i].ParticipantNo" value="@tripPartView[i].ParticipantNo" class="form-control" />
+                                                            @tripPartView[i].ParticipantNo
+                                                        </td>
+                                                        <td>
+                                                            <input type="hidden" asp-for="@tripPartView[i].MemberName" name="tripPartView[@i].MemberName" value="@tripPartView[i].MemberName" class="form-control" />
+                                                            @tripPartView[i].MemberName
+                                                        </td>
+                                                        <td>
+                                                            @{
+                                                                foreach (var status in checkInStatus)
+                                                                {
+                                                                    if (status.Text.Equals(tripPartView[i].CheckInStatus))
                                                                     {
-                                                                        if (status.Text.Equals(tripPartView[i].CheckInStatus))
-                                                                        {
-                                                                            status.Selected = true;
-                                                                        }
+                                                                        status.Selected = true;
                                                                     }
                                                                 }
-                                                                <select class="form-control" asp-for="@tripPartView[i].CheckInStatus" asp-items="@checkInStatus" class="custom-select" name="tripPartView[@i].checkInStatus">
-                                                                </select>
-                                                            </td>
-                                                        </tr>
-                                                    }
-                                                </tbody>
-                                            </table>
-                                            <div class="row col-12 d-flex">
-                                                <div class="rating-club">
-                                                    <button class="button--primary btn-success bg-success shadow btn-xs text-white" type="submit">Save Changes</button>
-                                                </div>
-                                            </div>
-                                        </div>
+                                                            }
+                                                            <select class="form-control" asp-for="@tripPartView[i].CheckInStatus" asp-items="@checkInStatus" class="custom-select" name="tripPartView[@i].checkInStatus">
+                                                            </select>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
                                     </div>
-                                </form>
+                                </div>
                             </div>
                         }
                         else

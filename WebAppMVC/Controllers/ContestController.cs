@@ -232,8 +232,8 @@ namespace WebAppMVC.Controllers
         [HttpPost("{contestId:int}/Register")]
         public async Task<IActionResult> ContestRegister(
             [FromRoute][Required] int contestId,
-            int birdId,
-            [Required] BirdViewModel bird
+            int? birdId,
+            [Required] BirdViewModel createOrSelectedBird
             )
         {
             ContestAPI_URL += "/" + contestId;
