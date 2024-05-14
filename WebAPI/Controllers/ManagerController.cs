@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using BAL.Services.Interfaces;
 using System.ComponentModel.DataAnnotations;
 using BAL.ViewModels.Manager;
+using BAL.Services.Implements;
 
 namespace WebAPI.Controllers
 {
@@ -22,10 +23,14 @@ namespace WebAPI.Controllers
         private const string SUCCESS = "~/Manager/ManagerProfile";*/
         private readonly IMemberService _memberService;
         private readonly IConfiguration _config;
+        private readonly IContestService _contestService;
+        private readonly IContestParticipantService _contestParticipantService;
 
-        public ManagerController(IMemberService memberService, IConfiguration config)
+        public ManagerController(IMemberService memberService, IContestService contestService, IContestParticipantService contestParticipantService, IConfiguration config)
         {
             _memberService = memberService;
+            _contestService = contestService;
+            _contestParticipantService = contestParticipantService;
             _config = config;
         }
         #region old Upload Image Code
@@ -175,6 +180,59 @@ namespace WebAPI.Controllers
                         ErrorMessage = "All Member Status Updating failed!"
                     });
                 }
+                return Ok(new
+                {
+                    Status = true,
+                    Data = result
+                });
+            }
+            catch (Exception ex)
+            {
+                if (ex.InnerException != null)
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = ex.Message,
+                        InnerExceptionMessage = ex.InnerException.Message
+                    });
+                }
+                // Log the exception if needed
+                return BadRequest(new
+                {
+                    Status = false,
+                    ErrorMessage = ex.Message
+                });
+            }
+        }
+        [HttpPut("Contest/{id:int}/Participant/Score/Update")]
+        [Authorize(Roles = "Manager")]
+        [ProducesResponseType(typeof(IEnumerable<ContestParticipantViewModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> UpdateAllContestParticipantScoreLast(
+            [Required][FromRoute] int id,
+            [Required][FromBody] List<ContestParticipantViewModel> listPart)
+        {
+            try
+            {
+                var check = await _contestService.GetById(id);
+                if (check == null) return NotFound(new
+                {
+                    Status = false,
+                    ErrorMessage = "Contest does not exist"
+                });
+                if (!check.Status.Equals("Ended")) NotFound(new
+                {
+                    Status = false,
+                    ErrorMessage = "Contest status is not \"Ended\" to use this feature"
+                });
+                var result = await _contestParticipantService.UpdateAllContestParticipantScore(listPart, true);
+                if (!result) return NotFound(new
+                {
+                    Status = false,
+                    ErrorMessage = "All Contest Participant Score Update Failed"
+                });
                 return Ok(new
                 {
                     Status = true,

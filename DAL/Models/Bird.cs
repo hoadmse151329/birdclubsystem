@@ -13,7 +13,6 @@ namespace DAL.Models
         {
             BirdPictures = new HashSet<BirdMedia>();
             ContestParticipants = new HashSet<ContestParticipant>();
-            ContestScores = new HashSet<ContestScore>();
         }
 
         [Key]
@@ -51,6 +50,5 @@ namespace DAL.Models
         public virtual ICollection<ContestParticipant> ContestParticipants { get; set; }
         [InverseProperty(nameof(ContestScore.BirdDetails))]
         public virtual ICollection<ContestScore> ContestScores { get; set; }
-        public virtual Bird? BirdDetail { get; set; }
     }
 }

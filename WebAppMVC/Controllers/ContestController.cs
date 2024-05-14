@@ -1,4 +1,6 @@
-﻿using BAL.ViewModels;
+﻿using Azure.Storage.Blobs.Models;
+using Azure.Storage.Blobs;
+using BAL.ViewModels;
 using BAL.ViewModels.Authenticates;
 using DAL.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -213,7 +215,7 @@ namespace WebAppMVC.Controllers
                 //_logger.LogInformation("Username or Password is invalid: " + contestPostResponse.Status + " , Error Message: " + contestPostResponse.ErrorMessage);
                 ViewBag.error =
                     "Error while processing your request! (Getting Contest!).\n Contest Not Found!";
-                View("Index");
+                return View("Index");
             }
             if (!contestPostResponse.Status)
             {
@@ -221,10 +223,10 @@ namespace WebAppMVC.Controllers
                 ViewBag.error =
                     "Error while processing your request! (Getting Contest Post!).\n"
                     + contestPostResponse.ErrorMessage;
-                View("Index");
+                return View("Index");
             }
             contestPostAndBird.ContestDetails = contestPostResponse.Data;
-            contestPostAndBird.CreateBirdForContest = null;
+            contestPostAndBird.CreateBirdForContest = methcall.GetValidationTempData<BirdViewModel>(this, TempData, Constants.Constants.CREATE_CONTEST_PARTICIPATION_VALID, "createOrSelectedBird", jsonOptions); ;
 
             return View(contestPostAndBird);
         }
@@ -232,21 +234,59 @@ namespace WebAppMVC.Controllers
         [HttpPost("{contestId:int}/Register")]
         public async Task<IActionResult> ContestRegister(
             [FromRoute][Required] int contestId,
-            int? birdId,
             [Required] BirdViewModel createOrSelectedBird
             )
         {
             ContestAPI_URL += "/" + contestId;
             string MemberAPI_URL = "/api/Member/Profile";
-            string BirdAPI_URL = "/api/Bird/" + birdId;
-
+            string BirdAPI_URL = "/api/Bird/";
+            string BirdMethod = Constants.Constants.POST_METHOD;
+            if (createOrSelectedBird.BirdId != null)
+            {
+                BirdAPI_URL += createOrSelectedBird.BirdId + "/Update";
+                BirdMethod = Constants.Constants.PUT_METHOD;
+            }
+            else
+            {
+                BirdAPI_URL += "Create";
+            }
+            
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER) != null)
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER));
+
+            if (!ModelState.IsValid)
+            {
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.CREATE_CONTEST_PARTICIPATION_VALID, createOrSelectedBird, jsonOptions);
+                return RedirectToAction("ContestPost", new { id = contestId });
+            }
 
             string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
             string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
+            createOrSelectedBird.MemberId = usrId;
+            if (createOrSelectedBird.BirdMainImage != null && createOrSelectedBird.BirdMainImage.Length > 0 )
+            {
+                string connectionString = _config.GetSection("AzureStorage:BlobConnectionString").Value;
+                string containerName = _config.GetSection("AzureStorage:BlobContainerName").Value;
+                BlobServiceClient _blobServiceClient = new BlobServiceClient(connectionString);
+                BlobContainerClient _blobContainerClient = _blobServiceClient.GetBlobContainerClient(containerName);
 
+                var azureResponse = new List<BlobContentInfo>();
+                string filename = createOrSelectedBird.BirdMainImage.FileName;
+                string uniqueBlobName = $"avatar/{Guid.NewGuid()}-{filename}";
+                using (var memoryStream = new MemoryStream())
+                {
+                    createOrSelectedBird.BirdMainImage.CopyTo(memoryStream);
+                    memoryStream.Position = 0;
+
+                    var client = await _blobContainerClient.UploadBlobAsync(uniqueBlobName, memoryStream);
+                    azureResponse.Add(client);
+                }
+
+                var image = "https://edwinbirdclubstorage.blob.core.windows.net/images/" + uniqueBlobName;
+                createOrSelectedBird.ProfilePic = image;
+                createOrSelectedBird.BirdMainImage = null;
+            }
             var contestPostResponse = await methcall.CallMethodReturnObject<GetContestPostResponse>(
                                    _httpClient: _httpClient,
                                    options: jsonOptions,
@@ -266,47 +306,49 @@ namespace WebAppMVC.Controllers
             var birdDetails = await methcall.CallMethodReturnObject<GetBirdResponse>(
                 _httpClient: _httpClient,
                 options: jsonOptions,
-                methodName: Constants.Constants.GET_METHOD,
+                methodName: BirdMethod,
                 url: BirdAPI_URL,
+                inputType: createOrSelectedBird,
+                accessToken: accToken,
                 _logger: _logger);
 
             if (contestPostResponse == null)
             {
                 ViewBag.error =
                     "Error while processing your request! (Getting Contest!).\n Contest Not Found!";
-                RedirectToAction("Index");
+                return RedirectToAction("Index");
             }
             if (!contestPostResponse.Status)
             {
                 ViewBag.error =
                     "Error while processing your request! (Getting Contest Post!).\n"
                     + contestPostResponse.ErrorMessage;
-                RedirectToAction("Index");
+                return RedirectToAction("Index");
             }
             if (memberDetails == null)
             {
                 ViewBag.error =
                     "Error while processing your request! (Getting Member!).\n Member Not Found!";
-                RedirectToAction("ContestPost", new { id = contestId });
+                return RedirectToAction("ContestPost", new { id = contestId });
             }
             if (!memberDetails.Status)
             {
                 ViewBag.error =
                     "Error while processing your request! (Getting Member!).\n"
                     + contestPostResponse.ErrorMessage;
-                RedirectToAction("ContestPost", new { id = contestId });
+                return RedirectToAction("ContestPost", new { id = contestId });
             }
             if (birdDetails == null)
             {
                 ViewBag.error =
                     "Error while processing your request! (Getting Bird for Contest Registration!).\n Bird Not Found!";
-                RedirectToAction("ContestPost",new { id = contestId});
+                return RedirectToAction("ContestPost",new { id = contestId});
             }
             if (!birdDetails.Status)
             {
                 ViewBag.error =
                    "Error while processing your request! (Getting Bird for Contest Registration!).\n";
-                RedirectToAction("ContestPost", new { id = contestId });
+                return RedirectToAction("ContestPost", new { id = contestId });
             }
             if (birdDetails.Data.Elo >= contestPostResponse.Data.ReqMinELO && birdDetails.Data.Elo <= contestPostResponse.Data.ReqMaxELO)
             {
@@ -314,7 +356,7 @@ namespace WebAppMVC.Controllers
                    "Error while processing your request! (Your Bird Elo must be more than "
                    + contestPostResponse.Data.ReqMinELO + " and less than "
                    + contestPostResponse.Data.ReqMaxELO + " to register a Contest!).\n";
-                RedirectToAction("ContestPost", new { id = contestId });
+                return RedirectToAction("ContestPost", new { id = contestId });
             }
             methcall.SetCookie(Response, Constants.Constants.MEMBER_CONTEST_REGISTRATION_COOKIE, contestPostResponse.Data, cookieOptions, jsonOptions, 20);
 
@@ -352,7 +394,7 @@ namespace WebAppMVC.Controllers
 
             methcall.RemoveCookie(Response, Constants.Constants.MEMBER_FIELDTRIP_REGISTRATION_COOKIE, cookieOptions, jsonOptions);
 
-            ContestAPI_URL += conId + "Bird/" + birdId + "/Register";
+            ContestAPI_URL += "/" + conId + "/Bird/" + birdId + "/Register";
 
             string TransactionAPI_URL = "/api/Transaction/UpdateUser";
             string MemberAPI_URL = "/api/Member/Profile";
