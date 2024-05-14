@@ -1,4 +1,4 @@
-﻿@*@model dynamic
+﻿@model dynamic
 @{
     ViewData["Title"] = "Member Birds Page";
     List<BAL.ViewModels.BirdViewModel>? birds = Model.MemberBirds;
@@ -12,6 +12,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
+    <link rel='stylesheet' href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css'>
+        <!-- Other-->
+        <link rel="stylesheet" href="https://unpkg.com/filepond-plugin-file-poster/dist/filepond-plugin-file-poster.css" >
+    <link rel="stylesheet" href="~/css/bird-style.css">
 </head>
 <body>
 
@@ -31,8 +35,7 @@
             <div class="navigation col-2" style="background:white">
                 <ul class="slide-menu" style="background-color:white">
                     <li>
-                        <a
-                            href="@Url.Action("MemberProfile", "Member")">
+                        <a href="@Url.Action("MemberProfile", "Member")">
                             <span><i class="bx bx-user"></i></span>
                             <span class="title">Account</span>
                         </a>
@@ -55,148 +58,20 @@
                             <span class="title">Payment</span>
                         </a>
                     </li>
+                    <li>
+                        <a href="@Url.Action("MemberNotification", "Member")">
+                            <span><i class="bx bx-history"></i></span>
+                            <span class="title">Notifications</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
-
-            <div class="main-content col-10 p-0">
-                <div class="main">
-                    <div class="container-fluid">
-                        <section>
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <div class="table-responsive">
-                                                <div id="history-table_wrapper" class="dataTables_wrapper no-footer">
-                                                    <table id="history-table"
-                                                        class="table table-striped table-bordered dataTable no-footer"
-                                                        aria-describedby="history-table_info">
-                                                        <thead>
-                                                            <tr>
-                                                                <th class="sorting sorting_asc" tabindex="0"
-                                                                    aria-controls="history-table" rowspan="1"
-                                                                    colspan="1" aria-sort="ascending"
-                                                                    aria-label="Bird ID: activate to sort column descending">
-                                                                    Bird ID</th>
-                                                                <th class="sorting" tabindex="0"
-                                                                    aria-controls="history-table" rowspan="1"
-                                                                    colspan="1"
-                                                                    aria-label="Bird Name: activate to sort column ascending">
-                                                                    Bird Name</th>
-                                                                <th class="sorting" tabindex="0"
-                                                                    aria-controls="history-table" rowspan="1"
-                                                                    colspan="1"
-                                                                    aria-label="ELO: activate to sort column ascending">
-                                                                    ELO</th>
-                                                                <th class="sorting" tabindex="0"
-                                                                    aria-controls="history-table" rowspan="1"
-                                                                    colspan="1"
-                                                                    aria-label="Age: activate to sort column ascending">
-                                                                    Age</th>
-                                                                <th class="sorting" tabindex="0"
-                                                                    aria-controls="history-table" rowspan="1"
-                                                                    colspan="1"
-                                                                    aria-label="Description: activate to sort column ascending">
-                                                                    Description</th>
-                                                                <th class="sorting" tabindex="0"
-                                                                    aria-controls="history-table" rowspan="1"
-                                                                    colspan="1"
-                                                                    aria-label="Added Date: activate to sort column ascending">
-                                                                    Added Date</th>
-                                                                <th class="sorting" tabindex="0"
-                                                                    aria-controls="history-table" rowspan="1"
-                                                                    colspan="1"
-                                                                    aria-label="Color: activate to sort column ascending">
-                                                                    Color</th>
-                                                                <th class="sorting" tabindex="0"
-                                                                    aria-controls="history-table" rowspan="1"
-                                                                    colspan="1"
-                                                                    aria-label="Tình trạng: activate to sort column ascending">
-                                                                    Status</th>
-                                                                <th class="sorting" tabindex="0"
-                                                                    aria-controls="history-table" rowspan="1"
-                                                                    colspan="1"
-                                                                    aria-label="Origin: activate to sort column ascending">
-                                                                    Origin</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            @for(int i = 0; i < birds.Count(); i++)
-                                                            {
-                                                                <tr class="@("clickable-row "+ (i%2 == 0 ? "even" : "odd")) " data-href="#"
-                                                                data-bs-toggle="tooltip" data-bs-placement="right"
-                                                                title="More Details">
-                                                                    <td class="sorting_1">@birds[i].BirdId</td>
-                                                                    <td>@birds[i].BirdName</td>
-                                                                    <td>@birds[i].Elo</td>
-                                                                    <td>@birds[i].Age</td>
-                                                                    <td>@birds[i].Description</td>
-                                                                    <td>@birds[i].AddDate</td>
-                                                                    <td>@birds[i].Color</td>
-                                                                    <td>@birds[i].Status</td>
-                                                                    <td>@birds[i].Origin</td>
-                                                                    <!-- feedback -->
-                                                                    <!-- end feedback -->
-                                                                    <!-- Report -->
-                                                                    <!-- end Report -->
-                                                                    <!-- feedback form -->
-                                                                </tr>
-                                                            }
-                                                            
-
-                                                            @*<tr class="clickable-row even" data-href="#"
-                                                                data-bs-toggle="tooltip" data-bs-placement="right"
-                                                                title="More Details">
-                                                                <td class="sorting_1">Contest06</td>
-                                                                <td>Red-whiskered Bulbul Singing Showdown</td>
-                                                                <td>2023-10-15 </td>
-                                                                <td>200000</td>
-
-
-                                                                <td>Canceled</td>
-                                                                <td>
-                                                                    <div class="d-flex justify-content-around">
-                                                                        <a href="@Url.Action("MeetingPost", "Meeting")"
-                                                                            class="button--primary bg-primary text-white clickable-row">Review Event</a>
-                                                                    </div>
-                                                                </td>
-
-                                                                <!-- feedback form -->
-                                                            </tr>
-
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- /# card -->
-                                </div>
-                                <!-- /# column -->
-                            </div>
-                        </section>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="main-content">
+    <div class="main-content col-10 p-0">
         <div class="main">
             <div class="container-fluid">
                 <section>
                     <div class="card">
                         <div class="card-body">
-                            <!-- Nav tabs -->
-                            <ul class="nav nav-tabs">
-                                <li class="nav-item">
-                                    <a class="nav-link active" data-toggle="tab" href="#home1">
-                                        <i class='bx bx-home-alt-2'></i>
-                                        <span>Bird</span>
-                                    </a>
-                                </li>              
-                            </ul>
-                            
-                            <!-- Tab panes -->
                             <div class="tab-content">
                                 <!-- home1 -->
                                 <div class="tab-pane active" id="home1" role="tabpanel">
@@ -256,7 +131,18 @@
                                                         <div class="club-title">
                                                             <ul>
                                                                 <li>
-                                                                    <span>@data.ProfilePic</span>
+                                                                    <a href="#" class="club-image">
+                                                                         @{
+                                                                            if (data.ProfilePic != null)
+                                                                               {
+                                                                                   <img class="img-fluid" src="@data.ProfilePic.Image" alt="nt1">
+                                                                               }
+                                                                            else
+                                                                               {
+                                                                                   <img class="img-fluid" src="~/images/meeting.png" alt="nt1">
+                                                                               }
+                                                                          }
+                                                                    </a>
                                                                 </li>
                                                                 <li>
                                                                     <h6>Bird Name:</h6>
@@ -328,7 +214,8 @@
             </div>
         </div>
     </div>
-
+    </div>
+    </div>
     <div id="addBird" class="modal fade" role="dialog">
         <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
             <div class="modal-content modal-addRoom">
@@ -390,6 +277,13 @@
             </div>
         </div>
     </div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+        referrerpolicy="no-referrer"></script>
+        <!-- Jquery Waypoint -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>
+        <!-- BS4 JS -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.5/umd/popper.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
 </body>
-</html>*@
+</html>

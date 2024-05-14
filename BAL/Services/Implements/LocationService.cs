@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using BAL.Services.Implements;
+
 namespace BAL.Services.Implements
 {
     public class LocationService : ILocationService

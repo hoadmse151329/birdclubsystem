@@ -37,7 +37,7 @@ namespace BAL.ViewModels
         [DisplayName("Date Added")]
         public DateTime AddDate { get; set; }
         [DisplayName("Profile Picture")]
-        public string? ProfilePic { get; set; }
+        public BirdMediaViewModel? ProfilePic { get; set; }
         [DisplayName("Status")]
         public string? Status { get; set; }
         [Required(ErrorMessage = "Origin is required")]

@@ -51,5 +51,6 @@ namespace DAL.Models
         public virtual ICollection<ContestParticipant> ContestParticipants { get; set; }
         [InverseProperty(nameof(ContestScore.BirdDetails))]
         public virtual ICollection<ContestScore> ContestScores { get; set; }
+        public virtual Bird? BirdDetail { get; set; }
     }
 }
