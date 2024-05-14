@@ -486,7 +486,7 @@ namespace WebAppMVC.Controllers
             [FromRoute][Required] int birdId
             )
         {
-            ContestAPI_URL += contestId + "/Bird/" + birdId + "/Participant/Remove";
+            ContestAPI_URL += "/" + contestId + "/Bird/" + birdId + "/Participant/Remove";
 
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER) != null)
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER));

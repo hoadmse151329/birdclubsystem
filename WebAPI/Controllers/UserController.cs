@@ -559,11 +559,7 @@ namespace WebAPI.Controllers
             try
             {
                 var result = await _userService.UpdateUserAvatar(uploadmem.MemberId, uploadmem.ImagePath);
-                if (!result)
-                {
-                    throw new Exception("Image Update Error !");
-                }
-
+                if (!result) throw new Exception("Image Update Error !");
                 return Ok(new
                 {
                     Status = true,

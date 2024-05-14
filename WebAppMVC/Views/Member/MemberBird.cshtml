@@ -1,4 +1,4 @@
-﻿@*@model dynamic
+﻿@model dynamic
 @{
     ViewData["Title"] = "Member Birds Page";
     List<BAL.ViewModels.BirdViewModel>? birds = Model.MemberBirds;
@@ -53,6 +53,12 @@
                         <a href="@Url.Action("MemberPayment", "Member")">
                             <span><i class="bx bx-history"></i></span>
                             <span class="title">Payment</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("MemberNotification", "Member")">
+                            <span><i class="bx bx-history"></i></span>
+                            <span class="title">Notifications</span>
                         </a>
                     </li>
                 </ul>
@@ -162,7 +168,7 @@
                                                                 </td>
 
                                                                 <!-- feedback form -->
-                                                            </tr>
+                                                            </tr>*@
 
                                                         </tbody>
                                                     </table>
@@ -392,4 +398,4 @@
     </div>
     <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
 </body>
-</html>*@
+</html>
