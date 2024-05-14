@@ -12,7 +12,7 @@ namespace BAL.Services.Interfaces
     public interface IContestParticipantService
     {
         Task<int> Create(int contestId, string memberId, int birdId);
-        Task<bool> Delete(int contestId, string memberId, int birdId);
+        Task<bool> Delete(int contestId, string memberId);
         Task<IEnumerable<ContestParticipantViewModel>> GetAll();
         Task<IEnumerable<ContestParticipantViewModel>> GetAllByBirdId(int birdId);
         Task<IEnumerable<GetEventParticipation>> GetAllByBirdIdInclude(int birdId);
@@ -22,6 +22,6 @@ namespace BAL.Services.Interfaces
         Task<int> GetCurrentParticipantAmounts(int contestId);
         Task<int> GetParticipationNo(int contestId, string memberId, int? birdId = null);
         Task<bool> UpdateAllContestParticipantStatus(List<ContestParticipantViewModel> listPart);
-        Task<bool> UpdateAllContestParticipantScore(List<ContestParticipantViewModel> listPart);
+        Task<bool> UpdateAllContestParticipantScore(List<ContestParticipantViewModel> listPart, bool isContestEnded = false);
     }
 }
