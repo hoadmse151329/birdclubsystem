@@ -23,6 +23,8 @@ using System.ComponentModel.DataAnnotations;
 using WebAppMVC.Models.Staff;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
+using DAL.Models;
+using Microsoft.AspNetCore.Http.Json;
 
 namespace WebAppMVC.Controllers
 {
@@ -663,6 +665,13 @@ namespace WebAppMVC.Controllers
 
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.STAFF) != null)
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.STAFF));
+
+            if (!ModelState.IsValid)
+            {
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_CONTEST_VALID, updateContest, options);
+                return RedirectToAction("StaffContestDetail", "Staff", new { id });
+            }
+
             string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
             var contestPostResponse = await methcall.CallMethodReturnObject<GetContestPostResponse>(
@@ -695,7 +704,7 @@ namespace WebAppMVC.Controllers
             [FromRoute][Required] int id,
             [Required] List<ContestParticipantViewModel> contestPartView)
         {
-            StaffAPI_URL += "Staff/ContestStatus/Update/" + id;
+            StaffAPI_URL += "Staff/Contest/" + id + "/Participant/All/Status/Update";
 
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.STAFF) != null)
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.STAFF));
@@ -735,10 +744,50 @@ namespace WebAppMVC.Controllers
             }
             return RedirectToAction("StaffContestDetail", "Staff", new { id });
         }
-        [HttpGet("ContestPoints")]
-        public IActionResult StaffContestPoints()
+        [HttpPost("Contest/{id:int}/Participant/All/Score/Update")]
+        public async Task<IActionResult> StaffUpdateContestPartScore(
+            [FromRoute][Required] int id,
+            [Required] List<ContestParticipantViewModel> contestPartView)
         {
-            return View();
+            StaffAPI_URL += "Staff/Contest/" + id + "/Participant/All/Score/Update";
+
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.STAFF) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.STAFF));
+
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
+
+            if (contestPartView.Count == 0)
+            {
+                ViewBag.Error = "Error while processing your request! (Getting List Contest Participant Status!).\n List was Empty!";
+                return RedirectToAction("StaffContestDetail", "Staff", new { id });
+            }
+
+            var contestPartScoresResponse = await methcall.CallMethodReturnObject<GetCheckInStatusUpdate>(
+                                _httpClient: _httpClient,
+                                options: options,
+                                methodName: Constants.Constants.PUT_METHOD,
+                                url: StaffAPI_URL,
+                                inputType: contestPartView,
+                                accessToken: accToken,
+                                _logger: _logger);
+
+            if (contestPartScoresResponse == null)
+            {
+                _logger.LogInformation(
+                    "Error while processing your request! (Getting List Contest Participant Score!). List was Empty!: " + contestPartScoresResponse);
+                ViewBag.Error =
+                    "Error while processing your request! (Getting List Contest Participant Score!).\n List was Empty!";
+                return RedirectToAction("StaffContestDetail", "Staff", new { id });
+            }
+            else
+            if (!contestPartScoresResponse.Status)
+            {
+                ViewBag.Error =
+                    "Error while processing your request! (Getting List Contest Participant Score!).\n"
+                    + contestPartScoresResponse.ErrorMessage;
+                return RedirectToAction("StaffContestDetail", "Staff", new { id });
+            }
+            return RedirectToAction("StaffContestDetail", "Staff", new { id });
         }
         [HttpGet("Profile")]
         public async Task<IActionResult> StaffProfile()

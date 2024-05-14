@@ -1,5 +1,6 @@
 ﻿using BAL.Services.Interfaces;
 using BAL.ViewModels;
+using DAL.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -109,24 +110,36 @@ namespace WebAPI.Controllers
                 });
             }
         }
-        [HttpPost("{id}/Create/Bird")]
+        [HttpPost("Create")]
         [Authorize(Roles = "Member")]
         [ProducesResponseType(typeof(BirdViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CreateBird(
-            [Required][FromRoute] string id,
             [Required][FromBody] BirdViewModel bird)
         {
             try
             {
-                if (await _birdService.Create(id, bird))
+                var birdExistedName = await _birdService.GetByBirdName(bird.BirdName);
+                if(birdExistedName != null)
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, new
+                    {
+                        Status = true,
+                        Message = "Bird create failed, bird name already existed",
+                        Data = false
+                    });
+                }
+                if (await _birdService.Create(bird.MemberId, bird))
+                {
+                    var birdResult = await _birdService.GetByBirdName(bird.BirdName);
                     return Ok(new
                     {
                         Status = true,
                         Message = "Bird Create successfully!",
-                        Data = true
+                        Data = birdResult
                     });
+                }
                 else return StatusCode(StatusCodes.Status500InternalServerError, new
                 {
                     Status = true,
@@ -153,19 +166,18 @@ namespace WebAPI.Controllers
                 });
             }
         }
-        [HttpPut("{memberId}/Bird/{birdId:int}/Update")]
+        [HttpPut("{birdId:int}/Update")]
         [Authorize(Roles = "Member")]
         [ProducesResponseType(typeof(BirdViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> UpdateBird(
-            [Required][FromRoute] string memberId,
             [Required][FromRoute] int birdId,
             [Required][FromBody] BirdViewModel birdModel)
         {
             try
             {
-                var check = _memberService.GetById(memberId).Result;
+                var check = _memberService.GetById(birdModel.MemberId).Result;
                 if (check == null) return NotFound(new
                 {
                     Status = false,
@@ -177,12 +189,16 @@ namespace WebAPI.Controllers
                     Status = false,
                     ErrorMessage = "Bird does not exist!"
                 });
-                var result = await _birdService.Update(memberId, birdModel);
-                if (result) return Ok(new
+                var result = await _birdService.Update(birdModel.MemberId, birdModel);
+                if (result)
                 {
-                    Status = true,
-                    Data = result
-                });
+                    bird = await _birdService.GetById(birdId);
+                    return Ok(new
+                    {
+                        Status = true,
+                        Data = bird
+                    });
+                }
                 return NotFound(new
                 {
                     Status = false,
