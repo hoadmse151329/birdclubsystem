@@ -52,11 +52,11 @@ namespace BAL.Services.Implements
             return await _unitOfWork.ContestParticipantRepository.GetCountContestParticipantsByContestId(contestId);
         }
 
-        public async Task<bool> Delete(int contestId, string memberId)
+        public async Task<bool> Delete(int contestId, string memberId, int birdId)
         {
-            bool check = await _unitOfWork.ContestParticipantRepository.GetBoolContestParticipantById(contestId, memberId);
+            bool check = await _unitOfWork.ContestParticipantRepository.GetBoolContestParticipantById(contestId, memberId, birdId);
             if (!check) return false;
-            var contestParticipant = await _unitOfWork.ContestParticipantRepository.GetContestParticipantById(contestId, memberId);
+            var contestParticipant = await _unitOfWork.ContestParticipantRepository.GetContestParticipantById(contestId, memberId, birdId);
             _unitOfWork.ContestParticipantRepository.Delete(contestParticipant);
             _unitOfWork.Save();
             return true;
@@ -100,18 +100,6 @@ namespace BAL.Services.Implements
         {
             var part = await _unitOfWork.ContestParticipantRepository
                 .UpdateAllContestParticipantStatus(_mapper.Map<List<ContestParticipant>>(listPart));
-            if (part != null)
-            {
-                _unitOfWork.Save();
-                return true;
-            }
-            return false;
-        }
-
-        public async Task<bool> UpdateAllContestParticipantScore(List<ContestParticipantViewModel> listPart, bool isContestEnded = false)
-        {
-            var part = await _unitOfWork.ContestParticipantRepository
-                .UpdateAllContestParticipantScore(_mapper.Map<List<ContestParticipant>>(listPart),isContestEnded);
             if (part != null)
             {
                 _unitOfWork.Save();

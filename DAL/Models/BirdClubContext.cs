@@ -26,6 +26,7 @@ namespace DAL.Models
         public virtual DbSet<Contest> Contests { get; set; } = null!;
         public virtual DbSet<ContestMedia> ContestMedia { get; set; } = null!;
         public virtual DbSet<ContestParticipant> ContestParticipants { get; set; } = null!;
+        public virtual DbSet<ContestScore> ContestScores { get; set; } = null!;
         public virtual DbSet<Feedback> Feedbacks { get; set; } = null!;
         public virtual DbSet<FieldTrip> FieldTrips { get; set; } = null!;
         public virtual DbSet<FieldTripParticipant> FieldTripParticipants { get; set; } = null!;
@@ -148,6 +149,17 @@ namespace DAL.Models
                     .HasForeignKey(d => d.MemberId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__TournamentP__MID");
+            });
+
+            modelBuilder.Entity<ContestScore>(entity =>
+            {
+                entity.HasKey(e => e.ScoreId)
+                    .HasName("PK__ContestS__B56A0C8D45AE357B");
+
+                entity.HasOne(d => d.BirdDetails)
+                    .WithMany(p => p.ContestScores)
+                    .HasForeignKey(d => d.BirdId)
+                    .HasConstraintName("FK_ContestScore_Bird");
             });
 
             modelBuilder.Entity<Feedback>(entity =>

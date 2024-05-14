@@ -19,8 +19,8 @@ namespace DAL.Models
         [Column("transactionType")]
         [StringLength(255)]
         public string? TransactionType { get; set; }
-        [Column("value")]
-        public int? Value { get; set; }
+        [Column("value", TypeName = "decimal(10, 2)")]
+        public decimal? Value { get; set; }
         [Column("transactionDate", TypeName = "datetime")]
         public DateTime? TransactionDate { get; set; }
         [Column("paymentDate", TypeName = "datetime")]

@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -13,17 +12,12 @@ namespace BAL.ViewModels
     {
         public BirdViewModel()
         {
-            BirdId = null;
-            BirdName = "New Bird";
-            Age = 5;
             AddDate = DateTime.Now;
             Status = "Active";
             Elo = 1500;
-            BirdMainImage = null;
-            ProfilePic = "Placeholder";
         }
         public int? BirdId { get; set; }
-        public string? MemberId { get; set; }
+        public int? MemberId { get; set; }
         [Required(ErrorMessage = "Bird Name is required")]
         [DisplayName("Bird Name")]
         public string? BirdName { get; set; }
@@ -49,7 +43,7 @@ namespace BAL.ViewModels
         [Required(ErrorMessage = "Origin is required")]
         [DisplayName("Origin")]
         public string? Origin { get; set; }
-        [DisplayName("Main Image")]
-        public IFormFile? BirdMainImage { get; set; }
+
+
     }
 }

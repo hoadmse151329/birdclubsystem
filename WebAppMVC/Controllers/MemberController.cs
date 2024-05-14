@@ -58,8 +58,8 @@ namespace WebAppMVC.Controllers
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER) != null)
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER));
 
-            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
-            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
+            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
+            string? usrId = HttpContext.Session.GetString("USER_ID");
 
             string NotificationAPI_URL = "/api/Notification/Count";
 
@@ -68,7 +68,7 @@ namespace WebAppMVC.Controllers
                 var notificationCount = await methcall.CallMethodReturnObject<GetNotificationCountResponse>(
                 _httpClient: _httpClient,
                 options: options,
-                methodName: Constants.Constants.POST_METHOD,
+                methodName: "POST",
                 url: NotificationAPI_URL,
                 inputType: usrId,
                 _logger: _logger);
@@ -79,7 +79,7 @@ namespace WebAppMVC.Controllers
             var memberDetails = await methcall.CallMethodReturnObject<GetMemberProfileResponse>(
                 _httpClient: _httpClient,
                 options: options,
-                methodName: Constants.Constants.POST_METHOD,
+                methodName: "POST",
                 url: MemberInfoAPI_URL,
                 _logger: _logger,
                 inputType: usrId,
@@ -110,16 +110,16 @@ namespace WebAppMVC.Controllers
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER) != null)
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER));
 
-            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
+            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
 
-            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
+            string? usrId = HttpContext.Session.GetString("USER_ID");
 
             memberDetail.MemberId = usrId;
 
             var memberDetailupdate = await methcall.CallMethodReturnObject<GetMemberProfileResponse>(
                 _httpClient: _httpClient,
                 options: options,
-                methodName: Constants.Constants.PUT_METHOD,
+                methodName: "PUT",
                 url: MemberInfoAPI_URL,
                 _logger: _logger,
                 inputType: memberDetail,
@@ -146,9 +146,9 @@ namespace WebAppMVC.Controllers
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER) != null)
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER));
 
-            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
+            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
 
-            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
+            string? usrId = HttpContext.Session.GetString("USER_ID");
 
             string NotificationAPI_URL = "/api/Notification/Count";
 
@@ -157,7 +157,7 @@ namespace WebAppMVC.Controllers
                 var notificationCount = await methcall.CallMethodReturnObject<GetNotificationCountResponse>(
                 _httpClient: _httpClient,
                 options: options,
-                methodName: Constants.Constants.POST_METHOD,
+                methodName: "POST",
                 url: NotificationAPI_URL,
                 inputType: usrId,
                 _logger: _logger);
@@ -174,7 +174,7 @@ namespace WebAppMVC.Controllers
             var memberMeetingPart = await methcall.CallMethodReturnObject<GetListEventParticipation>(
                 _httpClient: _httpClient,
                 options: options,
-                methodName: Constants.Constants.POST_METHOD,
+                methodName: "POST",
                 url: MemberMeetingPartAPI_URL,
                 _logger: _logger,
                 inputType: usrId,
@@ -183,7 +183,7 @@ namespace WebAppMVC.Controllers
             var memberFieldTripPart = await methcall.CallMethodReturnObject<GetListEventParticipation>(
                 _httpClient: _httpClient,
                 options: options,
-                methodName: Constants.Constants.POST_METHOD,
+                methodName: "POST",
                 url: MemberFieldTripPartAPI_URL,
                 _logger: _logger,
                 inputType: usrId,
@@ -192,7 +192,7 @@ namespace WebAppMVC.Controllers
             var memberContestPart = await methcall.CallMethodReturnObject<GetListEventParticipation>(
                 _httpClient: _httpClient,
                 options: options,
-                methodName: Constants.Constants.POST_METHOD,
+                methodName: "POST",
                 url: MemberContestPartAPI_URL,
                 _logger: _logger,
                 inputType: usrId,
@@ -229,9 +229,9 @@ namespace WebAppMVC.Controllers
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER) != null)
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER));
 
-            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
+            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
 
-            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
+            string? usrId = HttpContext.Session.GetString("USER_ID");
 
             string MemberAvatarAPI_URL = "/api/User/Upload";
 
@@ -262,7 +262,7 @@ namespace WebAppMVC.Controllers
                 var getMemberAvatar = await methcall.CallMethodReturnObject<GetMemberAvatarResponse>(
                     _httpClient: _httpClient,
                     options: options,
-                    methodName: Constants.Constants.POST_METHOD,
+                    methodName: "POST",
                     url: MemberAvatarAPI_URL,
                     _logger: _logger,
                     inputType: imageUpload,
@@ -292,16 +292,16 @@ namespace WebAppMVC.Controllers
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER) != null)
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER));
 
-            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
+            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
 
-            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
+            string? usrId = HttpContext.Session.GetString("USER_ID");
 
             memberPassword.userId = usrId;
 
             var memberDetailupdate = await methcall.CallMethodReturnObject<GetMemberPasswordChangeResponse>(
                 _httpClient: _httpClient,
                 options: options,
-                methodName: Constants.Constants.PUT_METHOD,
+                methodName: "PUT",
                 url: MemberChangePasswordAPI_URL,
                 _logger: _logger,
                 inputType: memberPassword,
@@ -337,9 +337,9 @@ namespace WebAppMVC.Controllers
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER) != null)
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER));
 
-            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
+            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
 
-            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
+            string? usrId = HttpContext.Session.GetString("USER_ID");
 
             string NotificationAPI_URL = "/api/Notification/Count";
 
@@ -348,7 +348,7 @@ namespace WebAppMVC.Controllers
                 var notificationCount = await methcall.CallMethodReturnObject<GetNotificationCountResponse>(
                 _httpClient: _httpClient,
                 options: options,
-                methodName: Constants.Constants.POST_METHOD,
+                methodName: "POST",
                 url: NotificationAPI_URL,
                 inputType: usrId,
                 _logger: _logger);
@@ -361,7 +361,7 @@ namespace WebAppMVC.Controllers
             var memberBird = await methcall.CallMethodReturnObject<GetListBirdByMemberResponse>(
                 _httpClient: _httpClient,
                 options: options,
-                methodName: Constants.Constants.POST_METHOD,
+                methodName: "POST",
                 url: MemberBirdAPI_URL,
                 _logger: _logger,
                 inputType: usrId,
@@ -393,9 +393,9 @@ namespace WebAppMVC.Controllers
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER) != null)
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER));
 
-            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
+            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
 
-            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
+            string? usrId = HttpContext.Session.GetString("USER_ID");
 
             string NotificationAPI_URL = "/api/Notification/Count";
 
@@ -404,7 +404,7 @@ namespace WebAppMVC.Controllers
                 var notificationCount = await methcall.CallMethodReturnObject<GetNotificationCountResponse>(
                 _httpClient: _httpClient,
                 options: options,
-                methodName: Constants.Constants.POST_METHOD,
+                methodName: "POST",
                 url: NotificationAPI_URL,
                 inputType: usrId,
                 _logger: _logger);
@@ -417,7 +417,7 @@ namespace WebAppMVC.Controllers
             var memberPayment = await methcall.CallMethodReturnObject<GetUserPaymentResponse>(
                 _httpClient: _httpClient,
                 options: options,
-                methodName: Constants.Constants.POST_METHOD,
+                methodName: "POST",
                 url: MemberPaymentAPI_URL,
                 _logger: _logger,
                 inputType: usrId,
@@ -449,9 +449,9 @@ namespace WebAppMVC.Controllers
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER) != null)
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER));
 
-            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
+            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
 
-            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
+            string? usrId = HttpContext.Session.GetString("USER_ID");
 
             string NotificationAPI_URL = "/api/Notification/Count";
 
@@ -460,7 +460,7 @@ namespace WebAppMVC.Controllers
                 var notificationCount = await methcall.CallMethodReturnObject<GetNotificationCountResponse>(
                 _httpClient: _httpClient,
                 options: options,
-                methodName: Constants.Constants.POST_METHOD,
+                methodName: "POST",
                 url: NotificationAPI_URL,
                 inputType: usrId,
                 _logger: _logger);
@@ -473,7 +473,7 @@ namespace WebAppMVC.Controllers
             var memberNotification = await methcall.CallMethodReturnObject<GetUserNotificationResponse>(
                 _httpClient: _httpClient,
                 options: options,
-                methodName: Constants.Constants.POST_METHOD,
+                methodName: "POST",
                 url: MemberNotificationAPI_URL,
                 _logger: _logger,
                 inputType: usrId,

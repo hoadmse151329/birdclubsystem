@@ -42,10 +42,10 @@ namespace DAL.Models
         public int? ReqMaxELO { get; set; }
         [Column("afterELO")]
         public int? AfterELO { get; set; }
-        [Column("fee")]
-        public int? Fee { get; set; }
-        [Column("prize")]
-        public int? Prize { get; set; }
+        [Column("fee", TypeName = "decimal(10, 2)")]
+        public decimal? Fee { get; set; }
+        [Column("prize", TypeName = "decimal(12, 2)")]
+        public decimal? Prize { get; set; }
         [Column("host")]
         [StringLength(100)]
         public string? Host { get; set; }

@@ -74,8 +74,8 @@ namespace BAL.ViewModels
         public int? NumberOfParticipantsLimit { get; set; }
         [Required(ErrorMessage = "Fee is required")]
         [DisplayName("Fee")]
-        [Range(5000, int.MaxValue, ErrorMessage = "Fee must be at least 5000đ")]
-        public int? Fee { get; set; }
+        [Range(5000, double.MaxValue, ErrorMessage = "Fee must be at least 5000đ")]
+        public decimal? Fee { get; set; }
         [DisplayName("Participant Number")]
         public int? ParticipationNo { get; set; }
         [DisplayName("Review")]

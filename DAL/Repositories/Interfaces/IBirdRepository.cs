@@ -16,7 +16,5 @@ namespace DAL.Repositories.Interfaces
         Task<int> GetELOByBirdId(int birdId);
         Task<Bird> GetBirdById(int birdId);
         Task<Bird> GetBirdByIdTracking(int birdId);
-        Task<Bird> GetBirdByName(string birdName);
-        Task<Bird> GetBirdByNameTracking(string birdName);
     }
 }

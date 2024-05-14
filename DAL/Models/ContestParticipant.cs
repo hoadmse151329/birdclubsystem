@@ -12,7 +12,6 @@ namespace DAL.Models
         public ContestParticipant()
         {
             CheckInStatus = "Not Checked-In";
-            Score = 0;
         }
         [Key]
         [Column("contestId")]
@@ -25,8 +24,6 @@ namespace DAL.Models
         public int? BirdId { get; set; }
         [Column("ELO")]
         public int Elo { get; set; }
-        [Column("score")]
-        public int Score { get; set; }
         [Column("participantNo")]
         [StringLength(50)]
         public string ParticipantNo { get; set; } = null!;

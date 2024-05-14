@@ -226,7 +226,7 @@ namespace WebAPI.Controllers
                 });
             }
         }
-        [HttpPut("Contest/{id:int}/Participant/Status/Update")]
+        [HttpPut("ContestStatus/Update/{id:int}")]
         [Authorize(Roles = "Staff")]
         [ProducesResponseType(typeof(IEnumerable<ContestParticipantViewModel>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -253,59 +253,6 @@ namespace WebAPI.Controllers
                 {
                     Status = false,
                     ErrorMessage = "All Contest Participant Status Update Failed"
-                });
-                return Ok(new
-                {
-                    Status = true,
-                    Data = result
-                });
-            }
-            catch (Exception ex)
-            {
-                if (ex.InnerException != null)
-                {
-                    return BadRequest(new
-                    {
-                        Status = false,
-                        ErrorMessage = ex.Message,
-                        InnerExceptionMessage = ex.InnerException.Message
-                    });
-                }
-                // Log the exception if needed
-                return BadRequest(new
-                {
-                    Status = false,
-                    ErrorMessage = ex.Message
-                });
-            }
-        }
-        [HttpPut("Contest/{id:int}/Participant/Score/Update")]
-        [Authorize(Roles = "Staff")]
-        [ProducesResponseType(typeof(IEnumerable<ContestParticipantViewModel>), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> UpdateAllContestParticipantScore(
-            [Required][FromRoute] int id,
-            [Required][FromBody] List<ContestParticipantViewModel> listPart)
-        {
-            try
-            {
-                var check = await _contestService.GetById(id);
-                if (check == null) return NotFound(new
-                {
-                    Status = false,
-                    ErrorMessage = "Contest does not exist"
-                });
-                if (!check.Status.Equals("Ongoing")) NotFound(new
-                {
-                    Status = false,
-                    ErrorMessage = "Contest status is not \"Ongoing\" to use this feature"
-                });
-                var result = await _contestParticipantService.UpdateAllContestParticipantScore(listPart);
-                if (!result) return NotFound(new
-                {
-                    Status = false,
-                    ErrorMessage = "All Contest Participant Score Update Failed"
                 });
                 return Ok(new
                 {

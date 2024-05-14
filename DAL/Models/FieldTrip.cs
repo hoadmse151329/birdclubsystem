@@ -46,8 +46,8 @@ namespace DAL.Models
         public int? NumberOfParticipants { get; set; }
         [Column("numberOfParticipantsLimit")]
         public int? NumberOfParticipantsLimit { get; set; }
-        [Column("fee")]
-        public int? Fee { get; set; }
+        [Column("fee", TypeName = "decimal(10, 2)")]
+        public decimal? Fee { get; set; }
         [Column("host")]
         [StringLength(100)]
         public string? Host { get; set; }

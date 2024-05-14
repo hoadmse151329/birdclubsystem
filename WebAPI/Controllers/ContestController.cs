@@ -367,13 +367,14 @@ namespace WebAPI.Controllers
             }
         }
 
-        [HttpPost("{contestId:int}/Participant/Remove")]
+        [HttpPost("{contestId:int}/Bird/{birdId:int}/Participant/Remove")]
         [Authorize(Roles = "Member,Manager")]
         [ProducesResponseType(typeof(ContestParticipantViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> RemoveParticipant(
             [Required][FromRoute] int contestId,
+            [Required][FromRoute] int birdId,
             [Required][FromBody] string memId)
         {
             try
@@ -390,7 +391,13 @@ namespace WebAPI.Controllers
                     Status = false,
                     ErrorMessage = "Member Not Found!"
                 });
-                var result = await _participantService.Delete(contestId, memId);
+                var bird = await _birdService.GetById(birdId);
+                if (bird == null) return NotFound(new
+                {
+                    Status = false,
+                    ErrorMessage = "Bird Not Found!"
+                });
+                var result = await _participantService.Delete(contestId, memId,birdId);
                 return Ok(new
                 {
                     Status = true,

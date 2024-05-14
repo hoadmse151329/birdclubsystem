@@ -67,10 +67,10 @@ namespace BAL.ViewModels
         public int? AfterELO { get; set; }
         [Required(ErrorMessage = "Fee is required")]
         [DisplayName("Fee")]
-        [Range(5000, int.MaxValue, ErrorMessage = "Fee must be at least 5000đ")]
-        public int? Fee { get; set; }
+        [Range(5000, double.MaxValue, ErrorMessage = "Fee must be at least 5000đ")]
+        public decimal? Fee { get; set; }
         [DisplayName("Prize")]
-        public int? Prize { get; set; }
+        public decimal? Prize { get; set; }
         [Required(ErrorMessage = "Host is required")]
         [DisplayName("Host")]
         public string? Host { get; set; }
@@ -98,6 +98,5 @@ namespace BAL.ViewModels
         public ContestMediaViewModel? SpotlightImage { get; set; }
         public List<ContestMediaViewModel>? ContestPictures { get; set; }
         public List<BirdViewModel>? MemberBirdSelection { get; set; }
-        public List<ContestParticipantViewModel>? ContestParticipants { get; set; }
     }
 }
