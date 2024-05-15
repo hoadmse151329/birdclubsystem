@@ -346,7 +346,7 @@ namespace WebAppMVC.Controllers
                    "Error while processing your request! (Getting Bird for Contest Registration!).\n";
                 return RedirectToAction("ContestPost", new { id = contestId });
             }
-            if (birdDetails.Data.Elo >= contestPostResponse.Data.ReqMinELO && birdDetails.Data.Elo <= contestPostResponse.Data.ReqMaxELO)
+            if (birdDetails.Data.Elo < contestPostResponse.Data.ReqMinELO && birdDetails.Data.Elo > contestPostResponse.Data.ReqMaxELO)
             {
                 ViewBag.error =
                    "Error while processing your request! (Your Bird Elo must be more than "

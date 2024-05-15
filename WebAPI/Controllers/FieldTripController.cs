@@ -128,6 +128,49 @@ namespace WebAPI.Controllers
                 });
             }
         }
+        [HttpGet("{id:int}/Lite")]
+        [ProducesResponseType(typeof(FieldTripViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetFieldTripByIdLite([FromRoute][Required] int id)
+        {
+            try
+            {
+                var result = await _fieldTripService.GetByIdWithoutInclude(id);
+                if (result == null)
+                {
+                    return NotFound(new
+                    {
+                        status = false,
+                        errorMessage = "Field Trip Not Found!"
+                    });
+                }
+
+                return Ok(new
+                {
+                    status = true,
+                    Data = result
+                });
+            }
+            catch (Exception ex)
+            {
+                if (ex.InnerException != null)
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = ex.Message,
+                        InnerExceptionMessage = ex.InnerException.Message
+                    });
+                }
+                // Log the exception if needed
+                return BadRequest(new
+                {
+                    Status = false,
+                    ErrorMessage = ex.Message
+                });
+            }
+        }
         [HttpPost("Create")]
         [Authorize(Roles = "Manager")]
         [ProducesResponseType(typeof(FieldTripViewModel), StatusCodes.Status200OK)]

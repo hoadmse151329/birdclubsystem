@@ -194,5 +194,31 @@ namespace BAL.Services.Implements
             if (!trip) return false;
             return true;
         }
+
+        public async Task<FieldTripViewModel?> GetByIdWithoutInclude(int id)
+        {
+            var trip = await _unitOfWork.FieldTripRepository.GetFieldTripByIdWithoutInclude(id);
+            if (trip != null)
+            {
+                var locationName = await _unitOfWork.LocationRepository.GetLocationNameById(trip.LocationId.Value);
+                if (locationName == null) return null;
+
+                var locationSplit = locationName.Split(",");
+
+                int partAmount = await _unitOfWork.FieldTripParticipantRepository.GetCountFieldTripParticipantsByTripId(trip.TripId);
+
+                var fieldTrip = _mapper.Map<FieldTripViewModel>(trip);
+
+                fieldTrip.NumberOfParticipants = fieldTrip.NumberOfParticipantsLimit - partAmount;
+                fieldTrip.Address = locationName;
+
+                fieldTrip.AreaNumber = Int32.Parse(locationSplit[0]);
+                fieldTrip.Street = locationSplit[1];
+                fieldTrip.District = locationSplit[2];
+                fieldTrip.City = locationSplit[3];
+                return fieldTrip;
+            }
+            return null;
+        }
     }
 }

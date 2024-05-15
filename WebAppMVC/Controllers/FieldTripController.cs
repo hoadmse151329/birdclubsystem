@@ -242,7 +242,7 @@ namespace WebAppMVC.Controllers
             [FromRoute][Required] int tripId
             )
         {
-            FieldTripAPI_URL += "/" + tripId;
+            FieldTripAPI_URL += "/" + tripId + "/Lite";
             string MemberAPI_URL = "/api/Member/Profile";
 
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER) != null)
@@ -266,7 +266,32 @@ namespace WebAppMVC.Controllers
                 _logger: _logger,
                 inputType: usrId,
                 accessToken: accToken);
-
+            if (fieldtripPostResponse == null)
+            {
+                ViewBag.error =
+                    "Error while processing your request! (Getting FieldTrip!).\n FieldTrip Not Found!";
+                return RedirectToAction("Index");
+            }
+            if (!fieldtripPostResponse.Status)
+            {
+                ViewBag.error =
+                    "Error while processing your request! (Getting FieldTrip Post!).\n"
+                    + fieldtripPostResponse.ErrorMessage;
+                return RedirectToAction("Index");
+            }
+            if (memberDetails == null)
+            {
+                ViewBag.error =
+                    "Error while processing your request! (Getting Member Details!).\n Member Details Not Found!";
+                return RedirectToAction("Index");
+            }
+            if (!memberDetails.Status)
+            {
+                ViewBag.error =
+                    "Error while processing your request! (Getting Member Details!).\n"
+                    + memberDetails.ErrorMessage;
+                return RedirectToAction("Index");
+            }
             methcall.SetCookie(Response, Constants.Constants.MEMBER_FIELDTRIP_REGISTRATION_COOKIE, fieldtripPostResponse.Data, cookieOptions, jsonOptions, 20);
 
             PaymentInformationModel model = new PaymentInformationModel()
