@@ -226,8 +226,13 @@ namespace WebAppMVC.Controllers
                 return View("Index");
             }
             contestPostAndBird.ContestDetails = contestPostResponse.Data;
-            contestPostAndBird.CreateBirdForContest = methcall.GetValidationTempData<BirdViewModel>(this, TempData, Constants.Constants.CREATE_CONTEST_PARTICIPATION_VALID, "createOrSelectedBird", jsonOptions); ;
-
+            var birdForContestRegistration = methcall.GetValidationTempData<BirdViewModel>(this, TempData, Constants.Constants.CREATE_CONTEST_PARTICIPATION_VALID, "createOrSelectedBird", jsonOptions);
+            /*if(birdForContestRegistration != null)
+            {
+                birdForContestRegistration.BirdMainImage = await methcall.GetCookieForTempFile(Request, Constants.Constants.CREATE_OR_UPDATE_BIRD_PROFILE_PICTURE_VALID, jsonOptions);
+                methcall.RemoveCookieTempFile(Response, Constants.Constants.CREATE_OR_UPDATE_BIRD_PROFILE_PICTURE_VALID, birdForContestRegistration.BirdMainImage, cookieOptions);
+            }*/
+            contestPostAndBird.CreateBirdForContest = birdForContestRegistration;
             return View(contestPostAndBird);
         }
 
@@ -256,7 +261,10 @@ namespace WebAppMVC.Controllers
 
             if (!ModelState.IsValid)
             {
+                //methcall.SetCookieForTempFile(Response, Constants.Constants.CREATE_OR_UPDATE_BIRD_PROFILE_PICTURE_VALID, createOrSelectedBird.BirdMainImage, cookieOptions, jsonOptions);
+                createOrSelectedBird.BirdMainImage = null;
                 TempData = methcall.SetValidationTempData(TempData, Constants.Constants.CREATE_CONTEST_PARTICIPATION_VALID, createOrSelectedBird, jsonOptions);
+
                 return RedirectToAction("ContestPost", new { id = contestId });
             }
 
@@ -273,7 +281,7 @@ namespace WebAppMVC.Controllers
 
                 var azureResponse = new List<BlobContentInfo>();
                 string filename = createOrSelectedBird.BirdMainImage.FileName;
-                string uniqueBlobName = $"avatar/{Guid.NewGuid()}-{filename}";
+                string uniqueBlobName = $"bird/{Guid.NewGuid()}-{filename}";
                 using (var memoryStream = new MemoryStream())
                 {
                     createOrSelectedBird.BirdMainImage.CopyTo(memoryStream);
@@ -392,7 +400,8 @@ namespace WebAppMVC.Controllers
             }
             int birdId = bird.BirdId.Value;
 
-            methcall.RemoveCookie(Response, Constants.Constants.MEMBER_FIELDTRIP_REGISTRATION_COOKIE, cookieOptions, jsonOptions);
+            methcall.RemoveCookie(Response, Constants.Constants.MEMBER_CONTEST_REGISTRATION_COOKIE, cookieOptions, jsonOptions);
+            methcall.RemoveCookie(Response, Constants.Constants.MEMBER_CONTEST_BIRD_REGISTRATION_COOKIE, cookieOptions, jsonOptions);
 
             ContestAPI_URL += "/" + conId + "/Bird/" + birdId + "/Register";
 
