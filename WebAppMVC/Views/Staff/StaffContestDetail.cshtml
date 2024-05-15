@@ -375,8 +375,8 @@
                                                         <th>Participant Name</th>
                                                         <th>Check-In Status</th>
                                                         <th>Score points</th>
-                                                        <th>Participant Old Elo</th>
-                                                        <th>Participant Scored Elo</th>
+                                                        <th>Old Elo</th>
+                                                        <th>Scored Elo</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -404,7 +404,7 @@
                                                                 @{
                                                                     if (contestPartView[i].CheckInStatus.Equals("Checked-In"))
                                                                     {
-                                                                        <input type="number" asp-for="@contestPartView[i].Score" name="contestPartView[@i].Score" value="@contestPartView[i].Score" class="form-control" />
+                                                                        <input type="number" asp-for="@contestPartView[i].Score" name="contestPartView[@i].Score" step="5" value="@contestPartView[i].Score" class="form-control" />
                                                                     }
                                                                     else
                                                                     {
@@ -417,7 +417,7 @@
                                                                 @contestPartView[i].ParticipantElo
                                                             </td>
                                                             <td>
-                                                                <input type="hidden" asp-for="@contestPartView[i].ContestElo" name="contestPartView[@i].ContestElo" value="@contestPartView[i].ContestElo" class="form-control" />
+                                                                <input type="hidden" style="text-align:left" asp-for="@contestPartView[i].ContestElo" name="contestPartView[@i].ContestElo" value="@contestPartView[i].ContestElo" class="form-control" />
                                                                 @contestPartView[i].ContestElo
                                                             </td>
                                                         </tr>

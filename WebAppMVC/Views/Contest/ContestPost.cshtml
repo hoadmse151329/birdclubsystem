@@ -1,4 +1,5 @@
-﻿@model dynamic
+﻿@using System.Globalization
+@model dynamic
 @{
     ViewData["Title"] = "Contest Post Page";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -89,6 +90,7 @@
                                     <div class="text-wrapper-9">Contact</div>
                                     <div class="text-wrapper-10">Organizer</div>
                                     <div class="text-wrapper-17">Fee</div>
+                                <div class="text-wrapper-17">Fee</div>
                                 </div>
                                 <div class="group-3">
                                     <div class="text-wrapper-11">@con.AreaNumber,@con.Street,@con.District,@con.City</div>
@@ -97,37 +99,46 @@
                                     <div class="text-wrapper-13">@con.RegistrationDeadline.ToString("MM/dd/yyyy")</div>
                                     <div class="text-wrapper-14">ChaoMaoClub@gmail.com</div>
                                     <div class="text-wrapper-15">@con.Host</div>
-                                    <div class="text-wrapper-18">@con.Fee</div>
+                                    <div class="text-wrapper-18">
+                                    @{
+                                        string value = con.Fee.Value.ToString("0,0", CultureInfo.CurrentCulture);
+                                    }
+                                    @value vnd
+                                    </div>
                                 </div>
-                                <div class="register">
                                 @{
                                     if(role != null && role.Equals("Member"))
                                     {
                                         if (con.ParticipationNo != 0 && con.ParticipationNo != null)
                                         {
-                                                <div class="overlap-group-3 text-wrapper-16">
-                                                    <span class="text-success">@ViewBag.PartNumber</span>
-                                                </div>
+                                            <div class="overlap-group-3 text-wrapper-16">
+                                                <span class="text-success">@ViewBag.PartNumber</span>
+                                            </div>
                                             if (con.Status.Equals("OpenRegistration"))
                                             {
+                                                <div class="register">
                                                     <form asp-action="ContestDeRegister" asp-controller="Contest" method="post" asp-route-contestId="@con.ContestId">
                                                         <button class="overlap-group-3 text-wrapper-16" type="submit">Sign Out</button>
                                                     </form>
+                                                </div>
                                             }
                                         }
                                         else
                                         {
+                                            <div class="register">
                                                 <button class="overlap-group-3 text-wrapper-16 button-rgb" data-toggle="modal" data-target="#registerContest" type="submit">Register</button>
+                                            </div>
                                         }
                                     }
                                     else
                                     {
+                                        <div class="register">
                                             <form asp-action="ContestRegister" asp-controller="Contest" method="post" asp-route-contestId="@con.ContestId" asp-route-birdId="0">
                                                 <button class="overlap-group-3 text-wrapper-16 button-rgb" type="submit">Register</button>
                                             </form>
+                                        </div>   
                                     }
-                                }
-                                </div>      
+                                }     
                             </div>
                         </div>
                     </div>
@@ -182,7 +193,6 @@
 
                                                         <div class="avatar-wrapper form-group">
                                                             <img class="profile-pic" style="width:300px; height:300px" src="@selectedBird.ProfilePic" id="createBirdImage" />
-                                                            <input asp-for="@selectedBird.BirdMainImage" class="file-upload" type="file" accept=".jpg, .jpeg, .png" id="createBirdTempImage" value="@selectedBird.BirdMainImage" />
                                                             <input asp-for="@selectedBird.ProfilePic" type="text" id="createBirdProfilePic"
                                                                    value="@selectedBird.ProfilePic" class="form-control" required hidden>
                                                         </div>

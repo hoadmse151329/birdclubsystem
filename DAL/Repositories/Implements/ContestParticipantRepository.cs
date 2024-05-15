@@ -107,18 +107,19 @@ namespace DAL.Repositories.Implements
 
         public async Task<IEnumerable<ContestParticipant>> UpdateAllContestParticipantScore(List<ContestParticipant> part, bool isContestEnded = false)
         {
+            var conpartList = _context.ContestParticipants.Include(b => b.BirdDetails).Where(c => c.ContestId.Equals(part.FirstOrDefault().ContestId));
+
             int n = part.Count;
             // Calculate the total points earned by all birds
             int totalPoints = part.Sum(c => c.Score);
             // Calculate the average Elo of all players
-            double averageElo = part.Sum(c => c.BirdDetails.Elo) / n;
+            double averageElo = conpartList.Sum(c => c.BirdDetails.Elo) / n;
             // List of Elo change factors
             List<int> Y = new List<int> { 40, 35, 30, 25, 20 }; // Adjust this list as needed
 
             foreach (var participant in part)
             {
-                var conpart = _context.ContestParticipants.Include(b => b.BirdDetails)
-                    .SingleOrDefault(p => p.ContestId == participant.ContestId && p.MemberId == participant.MemberId);
+                var conpart = conpartList.SingleOrDefault(p => p.ContestId == participant.ContestId && p.MemberId == participant.MemberId);
                 if (conpart != null)
                 {
                     if (conpart.Score != participant.Score)

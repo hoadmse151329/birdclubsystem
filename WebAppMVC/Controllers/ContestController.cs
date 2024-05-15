@@ -243,17 +243,7 @@ namespace WebAppMVC.Controllers
         {
             ContestAPI_URL += "/" + contestId;
             string MemberAPI_URL = "/api/Member/Profile";
-            string BirdAPI_URL = "/api/Bird/";
-            string BirdMethod = Constants.Constants.POST_METHOD;
-            if (selectedBird.BirdId != null)
-            {
-                BirdAPI_URL += selectedBird.BirdId + "/Update";
-                BirdMethod = Constants.Constants.PUT_METHOD;
-            }
-            else
-            {
-                BirdAPI_URL += "Create";
-            }
+            string BirdAPI_URL = "/api/Bird/" + selectedBird.BirdId;
             
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER) != null)
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER));
@@ -270,7 +260,7 @@ namespace WebAppMVC.Controllers
             string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
             string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
-            selectedBird.MemberId = usrId;
+            /*selectedBird.MemberId = usrId;
             if (selectedBird.BirdMainImage != null && selectedBird.BirdMainImage.Length > 0 )
             {
                 string connectionString = _config.GetSection("AzureStorage:BlobConnectionString").Value;
@@ -293,7 +283,7 @@ namespace WebAppMVC.Controllers
                 var image = "https://edwinbirdclubstorage.blob.core.windows.net/images/" + uniqueBlobName;
                 selectedBird.ProfilePic = image;
                 selectedBird.BirdMainImage = null;
-            }
+            }*/
             var contestPostResponse = await methcall.CallMethodReturnObject<GetContestPostResponse>(
                                    _httpClient: _httpClient,
                                    options: jsonOptions,
@@ -313,9 +303,8 @@ namespace WebAppMVC.Controllers
             var birdDetails = await methcall.CallMethodReturnObject<GetBirdResponse>(
                 _httpClient: _httpClient,
                 options: jsonOptions,
-                methodName: BirdMethod,
+                methodName: Constants.Constants.GET_METHOD,
                 url: BirdAPI_URL,
-                inputType: selectedBird,
                 accessToken: accToken,
                 _logger: _logger);
 
