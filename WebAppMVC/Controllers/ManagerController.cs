@@ -1207,6 +1207,7 @@ namespace WebAppMVC.Controllers
                     + contestPostResponse.ErrorMessage;
                 return RedirectToAction("ManagerContest");
             }
+            contestPostResponse.Data.ContestParticipants = contestpartPostResponse.Data;
             contestDetailBigModel.UpdateContest = methcall.GetValidationTempData<ContestViewModel>(this, TempData, Constants.Constants.UPDATE_CONTEST_VALID, "updateContest", options);
             contestDetailBigModel.CreateContestMedia = methcall.GetValidationTempData<ContestMediaViewModel>(this, TempData, Constants.Constants.CREATE_CONTEST_MEDIA_VALID, "createMedia", options);
 
@@ -1258,6 +1259,36 @@ namespace WebAppMVC.Controllers
                     + contestPostResponse.ErrorMessage;
                 return RedirectToAction("ManagerContestDetail", "Manager", new { id });
             }
+            if (contestPostResponse.Data.Status.Equals(Constants.Constants.EVENT_STATUS_ENDED) && contestPostResponse.Data.ContestParticipants != null && contestPostResponse.Data.ContestParticipants.Count > 0)
+            {
+                string ManagerContestEndedAPI_URL = "/api/Manager/Contest/" + id + "/Participant/All/Score/Update";
+
+                var contestLastUpdateResponse = await methcall.CallMethodReturnObject<GetContestEndedUpdateResponse>(
+                                _httpClient: _httpClient,
+                                options: options,
+                                methodName: Constants.Constants.PUT_METHOD,
+                                url: ManagerContestEndedAPI_URL,
+                                inputType: contestPostResponse.Data.ContestParticipants,
+                                accessToken: accToken,
+                                _logger: _logger);
+                if (contestLastUpdateResponse == null)
+                {
+                    _logger.LogInformation(
+                        "Error while processing your request! (Getting List Contest Participant Score!). List was Empty!: " + contestLastUpdateResponse);
+                    ViewBag.Error =
+                        "Error while processing your request! (Getting List Contest Participant Score!).\n List was Empty!";
+                    return RedirectToAction("ManagerContestDetail", "Manager", new { id });
+                }
+                else
+                if (!contestLastUpdateResponse.Status)
+                {
+                    ViewBag.Error =
+                        "Error while processing your request! (Getting List Contest Participant Score!).\n"
+                        + contestLastUpdateResponse.ErrorMessage;
+                    return RedirectToAction("ManagerContestDetail", "Manager", new { id });
+                }
+            }
+
             return RedirectToAction("ManagerContestDetail", "Manager", new { id });
         }
         [HttpPost("Contest/Create")]

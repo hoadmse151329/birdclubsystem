@@ -13,10 +13,14 @@ namespace BAL.ViewModels
     {
         public BirdViewModel()
         {
+            BirdId = null;
+            BirdName = "New Bird";
+            Age = 5;
             AddDate = DateTime.Now;
             Status = "Active";
             Elo = 1500;
             BirdMainImage = null;
+            ProfilePic = "Placeholder";
         }
         public int? BirdId { get; set; }
         public string? MemberId { get; set; }

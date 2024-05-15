@@ -285,6 +285,7 @@ namespace WebAppMVC.Controllers
 
                 var image = "https://edwinbirdclubstorage.blob.core.windows.net/images/" + uniqueBlobName;
                 createOrSelectedBird.ProfilePic = image;
+                createOrSelectedBird.BirdMainImage = null;
             }
             var contestPostResponse = await methcall.CallMethodReturnObject<GetContestPostResponse>(
                                    _httpClient: _httpClient,

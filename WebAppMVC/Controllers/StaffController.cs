@@ -762,7 +762,7 @@ namespace WebAppMVC.Controllers
                 return RedirectToAction("StaffContestDetail", "Staff", new { id });
             }
 
-            var contestPartStatusResponse = await methcall.CallMethodReturnObject<GetCheckInStatusUpdate>(
+            var contestPartScoresResponse = await methcall.CallMethodReturnObject<GetCheckInStatusUpdate>(
                                 _httpClient: _httpClient,
                                 options: options,
                                 methodName: Constants.Constants.PUT_METHOD,
@@ -771,20 +771,20 @@ namespace WebAppMVC.Controllers
                                 accessToken: accToken,
                                 _logger: _logger);
 
-            if (contestPartStatusResponse == null)
+            if (contestPartScoresResponse == null)
             {
                 _logger.LogInformation(
-                    "Error while processing your request! (Getting List Contest Participant Score!). List was Empty!: " + contestPartStatusResponse);
+                    "Error while processing your request! (Getting List Contest Participant Score!). List was Empty!: " + contestPartScoresResponse);
                 ViewBag.Error =
                     "Error while processing your request! (Getting List Contest Participant Score!).\n List was Empty!";
                 return RedirectToAction("StaffContestDetail", "Staff", new { id });
             }
             else
-            if (!contestPartStatusResponse.Status)
+            if (!contestPartScoresResponse.Status)
             {
                 ViewBag.Error =
                     "Error while processing your request! (Getting List Contest Participant Score!).\n"
-                    + contestPartStatusResponse.ErrorMessage;
+                    + contestPartScoresResponse.ErrorMessage;
                 return RedirectToAction("StaffContestDetail", "Staff", new { id });
             }
             return RedirectToAction("StaffContestDetail", "Staff", new { id });

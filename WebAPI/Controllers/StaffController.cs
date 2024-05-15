@@ -296,10 +296,10 @@ namespace WebAPI.Controllers
                     Status = false,
                     ErrorMessage = "Contest does not exist"
                 });
-                if (!check.Status.Equals("CheckingIn")) NotFound(new
+                if (!check.Status.Equals("Ongoing")) NotFound(new
                 {
                     Status = false,
-                    ErrorMessage = "Contest status is not \"Checking-In\" to use this feature"
+                    ErrorMessage = "Contest status is not \"Ongoing\" to use this feature"
                 });
                 var result = await _contestParticipantService.UpdateAllContestParticipantScore(listPart);
                 if (!result) return NotFound(new
