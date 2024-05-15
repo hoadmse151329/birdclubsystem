@@ -31,6 +31,7 @@ namespace WebAppMVC.Constants
         public readonly static string MEMBER_STATUS_SUSPENDED = "Suspended";
     
         public readonly static string CREATE_BIRD_VALID = "CBirdValid";
+        public readonly static string CREATE_OR_UPDATE_BIRD_PROFILE_PICTURE_VALID = "CBirdProfilePicValid";
         public readonly static string UPDATE_BIRD_VALID = "UBirdValid";
         public readonly static string CREATE_MEETING_VALID = "CMeetingValid";
         public readonly static string UPDATE_MEETING_VALID = "UMeetingValid";
@@ -109,5 +110,7 @@ namespace WebAppMVC.Constants
         public readonly static string POST_METHOD = "POST";
 		public readonly static string PUT_METHOD = "PUT";
 		public readonly static string DELETE_METHOD = "DELETE";
+
+        public readonly static string TEMP_FILE_LOCATION_FOLDER = "wwwroot/tempFiles";
     }
 }

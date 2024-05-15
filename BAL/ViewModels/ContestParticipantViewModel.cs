@@ -23,6 +23,8 @@ namespace BAL.ViewModels
         [Required(ErrorMessage = "Bird Id is required")]
         [DisplayName("Bird Id")]
         public int? BirdId { get; set; }
+        [DisplayName("Bird Name")]
+        public int? BirdName { get; set; }
         [DisplayName("Participant Old Elo")]
         public int ParticipantElo { get; set; }
         [DisplayName("Participant Scored Elo")]

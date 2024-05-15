@@ -226,7 +226,7 @@ namespace WebAPI.Controllers
                 });
             }
         }
-        [HttpPut("Contest/{id:int}/Participant/Status/Update")]
+        [HttpPut("Contest/{id:int}/Participant/All/Status/Update")]
         [Authorize(Roles = "Staff")]
         [ProducesResponseType(typeof(IEnumerable<ContestParticipantViewModel>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -279,7 +279,7 @@ namespace WebAPI.Controllers
                 });
             }
         }
-        [HttpPut("Contest/{id:int}/Participant/Score/Update")]
+        [HttpPut("Contest/{id:int}/Participant/All/Score/Update")]
         [Authorize(Roles = "Staff")]
         [ProducesResponseType(typeof(IEnumerable<ContestParticipantViewModel>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

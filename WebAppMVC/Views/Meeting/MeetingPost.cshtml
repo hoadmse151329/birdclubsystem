@@ -86,7 +86,6 @@
                       <div class="text-wrapper-14">ChaoMaoClub@gmail.com</div>
                       <div class="text-wrapper-15">@Model.Host</div>
                 </div>
-                <div class="register">
                     @{
                         if (Model.ParticipationNo != 0 && Model.ParticipationNo != null)
                         {
@@ -95,19 +94,22 @@
                             </div>
                             if (Model.Status.Equals("OpenRegistration"))
                             {
-                                <form asp-action="MeetingDeRegister" asp-controller="Meeting" method="post" asp-route-meetingId="@Model.MeetingId">
-                                    <button class="overlap-group-3 text-wrapper-16 button-rgb" type="submit">Sign Out</button>
-                                </form>
+                                <div class="register">
+                                    <form asp-action="MeetingDeRegister" asp-controller="Meeting" method="post" asp-route-meetingId="@Model.MeetingId">
+                                        <button class="overlap-group-3 text-wrapper-16" type="submit">Sign Out</button>
+                                    </form>
+                                </div>
                             }
                         }
                         else
                         {
-                            <form asp-action="MeetingRegister" asp-controller="Meeting" method="post" asp-route-meetingId="@Model.MeetingId">
-                                <button class="overlap-group-3 text-wrapper-16 button-rgb" type="submit">Register</button>
-                            </form>             
+                            <div class="register">
+                                <form asp-action="MeetingRegister" asp-controller="Meeting" method="post" asp-route-meetingId="@Model.MeetingId">
+                                    <button class="overlap-group-3 text-wrapper-16" type="submit">Register</button>
+                                </form>
+                            </div>
                         }
                     }
-                </div>
               </div>
             </div>
           </div>

@@ -1,3 +1,4 @@
+@using System.Globalization
 @model dynamic
 ﻿@{
     ViewData["Title"] = "Field Trip Post Page";
@@ -98,31 +99,38 @@
                                 <div class="text-wrapper-13">@fieldtripDetails.RegistrationDeadline</div>
                                 <div class="text-wrapper-14">ChaoMaoClub@gmail.com</div>
                                 <div class="text-wrapper-15">@fieldtripDetails.Host</div>
-                                <div class="text-wrapper-18">@fieldtripDetails.Fee</div>
+                                <div class="text-wrapper-18">
+                                    @{
+                                        string value = fieldtripDetails.Fee.Value.ToString("0,0", CultureInfo.CurrentCulture);
+                                    }
+                                    @value vnd
+                                </div>
                             </div>
 
-                            <div class="register">
-                                @{
-                                    if (fieldtripDetails.ParticipationNo != 0 && fieldtripDetails.ParticipationNo != null)
+                            @{
+                                if (fieldtripDetails.ParticipationNo != 0 && fieldtripDetails.ParticipationNo != null)
+                                {
+                                    <div class="overlap-group-3 text-wrapper-16">
+                                        <span class="text-success">@ViewBag.PartNumber</span>
+                                    </div>
+                                    if (fieldtripDetails.Status.Equals("OpenRegistration"))
                                     {
-                                        <div class="overlap-group-3 text-wrapper-16">
-                                            <span class="text-success">@ViewBag.PartNumber</span>
-                                        </div>
-                                        if (Model.Status.Equals("OpenRegistration"))
-                                        {
+                                        <div class="register">
                                             <form asp-action="FieldTripDeRegister" asp-controller="FieldTrip" method="post" asp-route-tripId="@fieldtripDetails.TripId">
                                                 <button class="overlap-group-3 text-wrapper-16 button-rgb" type="submit">Sign Out</button>
                                             </form>
-                                        }
+                                        </div>
                                     }
-                                    else
-                                    {
+                                }
+                                else
+                                {
+                                    <div class="register">
                                         <form asp-action="FieldTripRegister" asp-controller="FieldTrip" method="post" asp-route-tripId="@fieldtripDetails.TripId">
                                             <button class="overlap-group-3 text-wrapper-16 button-rgb" type="submit">Register</button>
                                         </form>
-                                    }
+                                    </div>
                                 }
-                            </div>                                                       
+                            }
                         </div>
                     </div>
                     <section class="field-trips-section">

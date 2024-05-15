@@ -387,7 +387,7 @@ namespace WebAppMVC.Controllers
 			{
 				Fullname = newmemRequest.FullName,
 				PayAmount = newmemRequest.PayAmount,
-				TransactionType = "New-Membership-Registration",
+				TransactionType = Constants.Constants.NEW_MEMBER_REGISTRATION_TRANSACTION_TYPE,
 			};
 			var url = _vnPayService.CreatePaymentUrl(model, HttpContext);
 			return Redirect(url);

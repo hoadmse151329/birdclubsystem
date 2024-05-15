@@ -66,6 +66,7 @@ namespace BAL.ViewModels
         [DisplayName("After ELO")]
         public int? AfterELO { get; set; }
         [Required(ErrorMessage = "Fee is required")]
+        [DisplayFormat(ApplyFormatInEditMode = true, ConvertEmptyStringToNull = true,DataFormatString = "{0:0,0}")]
         [DisplayName("Fee")]
         [Range(5000, int.MaxValue, ErrorMessage = "Fee must be at least 5000đ")]
         public int? Fee { get; set; }
