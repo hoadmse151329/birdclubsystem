@@ -34,26 +34,30 @@
                             
                             <!-- Tab panes -->
                             <div class="tab-content">
-                                <!-- home1 -->
                                 <div class="tab-pane active" id="home1" role="tabpanel">
                                     <div class="row search">
                                         <div class="col-sm-12 d-flex">
-                                            <div class="col-sm-6 d-flex address-home">
+                                            <div class="col-sm-7 d-flex address-home">
                                                 @{
                                                     if (ViewBag.error != null)
                                                     {
-                                                        <span class="text-danger">@ViewBag.error</span>
+                                                            <span class="text-danger">@ViewBag.error</span>
                                                     }
                                                 }
                                             </div>
-                                            <div class="col-sm-6 d-flex justify-content-end">
-                                                <form asp-action="ManagerFieldTrip" asp-controller="Manager" method="get" asp-route-search="@search">                   
+                                            <div class="col-sm-5 d-flex justify-content-end search-details">
+                                                <form asp-action="ManagerMeeting" asp-controller="Manager" method="get" asp-route-search="@search" class="filter form-group">                   
                                                     <div>
                                                         <label>
                                                             <input asp-for="@search" class="form-control" type="text" name="search" placeholder="Search..." value="@search">
                                                             <i class='bx bx-search-alt'></i>
                                                         </label>
                                                     </div>
+                                                    <div class="vertical-line"></div>
+                                                    <select name="fillter" id="">
+                                                            <option selected value="none">Choose..</option>
+                                                            <option value="Status">Status</option>
+                                                        </select>
                                                 </form>
                                             </div>
                                         </div>
@@ -83,20 +87,20 @@
                                                                     case "CheckingIn":
                                                                     case "OpenRegistration":
                                                                         {
-                                                                            <span class="stt1" style="float: left;">Status:<h6>@data.Status</h6></span>
+                                                                                <span class="stt1" style="float: left;">Status:<h6>@data.Status</h6></span>
                                                                             break;
                                                                         }
                                                                     case "OnHold":
                                                                     case "ClosedRegistration":
                                                                         {
-                                                                            <span class="stt3" style="float: left;">Status:<h6>@data.Status</h6></span>
+                                                                                <span class="stt3" style="float: left;">Status:<h6>@data.Status</h6></span>
                                                                             break;
                                                                         }
                                                                     case "Ended":
                                                                     case "Postponed":
                                                                     case "Cancelled":
                                                                         {
-                                                                            <span class="stt2" style="float: left;">Status:<h6>@data.Status</h6></span>
+                                                                                <span class="stt2" style="float: left;">Status:<h6>@data.Status</h6></span>
                                                                             break;
                                                                         }
                                                                 }
@@ -149,16 +153,16 @@
                                                         @{
                                                             if (data.Status.Equals("OnHold") || data.Status.Equals("Postponed") || data.Status.Equals("CheckingIn") || data.Status.Equals("Ongoing"))
                                                             {
-                                                        <form asp-action="Meeting" asp-controller="Manager" method="get" asp-route-id="@data.MeetingId">
-                                                            <button class="btn btn-primary clickable-row btn-border" type="submit">See Detail</button>
-                                                        </form>                                                          
-                                                                <button class="btn btn-danger" data-toggle="modal" data-target="#deleteMeeting_@data.MeetingId" type="submit">Cancel</button>
+                                                            <form asp-action="Meeting" asp-controller="Manager" method="get" asp-route-id="@data.MeetingId">
+                                                                <button class="btn btn-primary clickable-row btn-border" type="submit">See Detail</button>
+                                                            </form>                                                          
+                                                                    <button class="btn btn-danger" data-toggle="modal" data-target="#deleteMeeting_@data.MeetingId" type="submit">Cancel</button>
                                                             }
                                                             else
                                                             {
-                                                        <form asp-action="Meeting" asp-controller="Manager" method="get" asp-route-id="@data.MeetingId">
-                                                            <button class="btn btn-primary clickable-row btn-border" type="submit" style="align-self:center">See Detail</button>
-                                                        </form>
+                                                            <form asp-action="Meeting" asp-controller="Manager" method="get" asp-route-id="@data.MeetingId">
+                                                                <button class="btn btn-primary clickable-row btn-border" type="submit" style="align-self:center">See Detail</button>
+                                                            </form>
                                                             }
                                                         }
                                                     </div>

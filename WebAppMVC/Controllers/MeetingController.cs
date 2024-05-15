@@ -322,16 +322,16 @@ namespace WebAppMVC.Controllers
 
             return RedirectToAction("MeetingPost", new { id = meetingId });
         }
-        [HttpPost("DeRegister/{meetingId:int}")]
+        [HttpPost("{meetingId:int}/DeRegister")]
         //[Authorize(Roles = "Member")]
-        public async Task<IActionResult> MeetingDeRegister(int meetingId)
+        public async Task<IActionResult> MeetingDeRegister([FromRoute][Required] int meetingId)
         {
-            MeetingAPI_URL += "/RemoveParticipant/" + meetingId;
+            MeetingAPI_URL += "/" + meetingId + "/Participant/Remove";
 
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER) != null)
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER));
 
-            string? accToken = HttpContext.Session.GetString(Constants.Constants.ROLE_NAME);
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
             string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
 

@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using BAL.Services.Implements;
+
 namespace BAL.Services.Implements
 {
     public class LocationService : ILocationService
@@ -86,28 +86,5 @@ namespace BAL.Services.Implements
         {
             return _mapper.Map<LocationViewModel>(_unitOfWork.LocationRepository.GetById(id));
         }
-        /*public async Task<IEnumerable<MeetingViewModel>> GetFilteredMeetings(string locationSearchAddress)
-        {
-            // Split the location search address
-            var searchParams = locationSearchAddress.Split(',');
-
-            // Get meetings based on location parameters
-            // Implement the logic to filter meetings based on road, district, and city
-            // You can use LINQ to filter meetings based on the searchParams
-
-            // Example:
-            var meetings = await _unitOfWork.MeetingRepository.GetAllMeetings(); // Assuming you have a method to get all meetings
-            if (searchParams.Length >= 3)
-            {
-                string road = searchParams[0];
-                string district = searchParams[1];
-                string city = searchParams[2];
-
-                // Filter meetings based on the provided parameters
-                meetings = meetings.Where(m => m.Road == road && m.District == district && m.City == city);
-            }
-
-            return _mapper.Map<IEnumerable<MeetingViewModel>>(meetings);
-        }*/
     }
 }

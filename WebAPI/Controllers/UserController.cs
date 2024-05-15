@@ -168,28 +168,21 @@ namespace WebAPI.Controllers
                 var result = await _userService.GetByEmailModel(email);
                 if (result == null)
                 {
-                    string sRanName = otpname.GenerateRandomOTP();
-                    string sRanPassword = otpname.GenerateRandomOTP();
-                    var usr = new UserViewModel()
-                    {
-                        UserName = "NewGoogleUser" + sRanName,
-                        Password = sRanPassword,
-                        Email = email
-                    };
-                    _userService.Create(usr);
-                    result = await _userService.GetByEmailModel(email);
+                    // Handle the case where user is not found
+                    return NotFound(new { ErrorMessage = "User not found." });
                 }
+
                 var loguser = new AuthenRequest()
                 {
                     Username = result.UserName,
-                    Password = result.Password
+                    Password = null // No need to specify password
                 };
                 var login = _userService.AuthenticateUser(loguser);
                 return Ok(new
                 {
                     Status = true,
-					Data = login
-				});
+                    Data = login
+                });
             }
             catch (Exception ex)
             {
@@ -559,11 +552,7 @@ namespace WebAPI.Controllers
             try
             {
                 var result = await _userService.UpdateUserAvatar(uploadmem.MemberId, uploadmem.ImagePath);
-                if (!result)
-                {
-                    throw new Exception("Image Update Error !");
-                }
-
+                if (!result) throw new Exception("Image Update Error !");
                 return Ok(new
                 {
                     Status = true,

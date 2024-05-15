@@ -15,10 +15,6 @@ using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
 using WebAppMVC.Models.Notification;
-using Microsoft.Extensions.Options;
-using System.Net.Http;
-using DAL.Models;
-
 namespace WebAppMVC.Controllers
 {
     [Route("Auth")]
@@ -74,33 +70,38 @@ namespace WebAppMVC.Controllers
 
             return View();
 		}
-
+		[HttpGet("LoginByThirdParty")]
 		#region Old Google Login Code (Deprecated)
-		[HttpGet("GoogleLogin")]
-		public IActionResult GoogleLogin()
+		public async Task GoogleLogin()
 		{
-			var properties = new AuthenticationProperties
-			{
-				RedirectUri = Url.Action(nameof(GoogleResponse))
-			};
-			return Challenge(properties, GoogleDefaults.AuthenticationScheme);
+			await HttpContext.ChallengeAsync(GoogleDefaults.AuthenticationScheme,
+				new AuthenticationProperties
+				{
+					RedirectUri = Url.Action("GoogleResponse")
+				});
 		}
-		[HttpGet("GoogleResponse")]
 		public async Task<IActionResult> GoogleResponse()
 		{
 			var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
-			if (result?.Succeeded != true)
+			var claims = result.Principal.Identities.FirstOrDefault().Claims.Select(claim => new
 			{
-				// Handle failed authentication
-				return RedirectToAction(nameof(Login));
-			}
+				claim.Issuer,
+				claim.OriginalIssuer,
+				claim.Type,
+				claim.Value
+			});
+			//*if (result.Succeeded)
+			{
 
-			var authenResponse = await methcall.CallMethodReturnObject<GetAuthenResponse>(
+			}
+			var newmemRequest = await methcall.GetCookie<CreateNewMember>(Request, Constants.Constants.NEW_MEMBER_REGISTRATION_COOKIE, jsonOptions);
+			var authenResponse = await methcall.CallMethodReturnObject<GetGGAuthenResponse>(
 				_httpClient: client,
 				options: jsonOptions,
 				methodName: "POST",
 				url: AuthenAPI_URL,
+				//inputType: newmemRequest,
 				_logger: _logger);
 
 			if (authenResponse == null)
@@ -109,7 +110,6 @@ namespace WebAppMVC.Controllers
 				ViewBag.error = "Error while registering your new account ! ";
 				return View("Register");
 			}
-
 			var responseAuth = authenResponse.Data;
 
 			if (authenResponse.Status)
@@ -148,8 +148,8 @@ namespace WebAppMVC.Controllers
 				return base.Redirect(Constants.Constants.MEMBER_URL);
 			}
 		}
-			#endregion
-			[HttpGet("Logout")]
+		#endregion
+		[HttpGet("Logout")]
         public IActionResult Logout()
         {
 			client.DefaultRequestHeaders.Authorization = null;

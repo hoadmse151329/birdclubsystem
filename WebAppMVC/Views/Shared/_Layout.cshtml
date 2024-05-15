@@ -21,7 +21,6 @@
         <link rel="stylesheet" href="~/css/owl.theme.default.min.css">
         <link rel="stylesheet" href="~/css/sb-admin-2.css">
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <!-- FONT -->
 </head>
 <body>
 <div id="loading-screen">
@@ -167,35 +166,33 @@
         </div>
     </div>
 </footer>
- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
-        referrerpolicy="no-referrer"></script>
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/loading.js" defer></script>
-    <script>
-//document.addEventListener('DOMContentLoaded', function () {
-//    var loadingAudio = document.getElementById('loading-audio');
+@*    <script>
+document.addEventListener('DOMContentLoaded', function () {
+    var loadingAudio = document.getElementById('loading-audio');
 
-//    // Function to play the audio
-//    function playAudio() {
-//        if (loadingAudio.paused) {
-//            loadingAudio.play();
-//        }
-//    }
+    // Function to play the audio
+    function playAudio() {
+        if (loadingAudio.paused) {
+            loadingAudio.play();
+        }
+    }
 
-//    // Play the audio when the user interacts with the document
-//    document.addEventListener('click', playAudio);
-//});
-</script>
+    // Play the audio when the user interacts with the document
+    document.addEventListener('click', playAudio);
+});
+</script>*@
 <script>
     function sendEmail(email) {
         var mailtoLink = 'mailto:' + email;
         window.open(mailtoLink, '_self');
     }
 </script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-        <script src="~/js/user-script.js"></script>
 <script>
     function randomizeColor() {
         return Math.floor(Math.random() * 256);
@@ -226,6 +223,17 @@
         }, 1000);
     });*@
 </script>
+<script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+        <!-- <script src="assets/js/owner-script.js"></script> -->
+
+        <script src="~/js/user-script.js"></script>
+        <script>
+            $(document).ready(function () {
+                $("#notification-table").DataTable({
+                    pagingType: "full_numbers",
+                });
+            });
+        </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

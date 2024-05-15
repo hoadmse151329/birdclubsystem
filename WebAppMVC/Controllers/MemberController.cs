@@ -21,6 +21,7 @@ using WebAppMVC.Models.Bird;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using WebAppMVC.Models.Notification;
+using System.ComponentModel.DataAnnotations;
 
 namespace WebAppMVC.Controllers
 {
@@ -168,7 +169,7 @@ namespace WebAppMVC.Controllers
             string MemberMeetingPartAPI_URL = "/api/Meeting/Participation/AllMeetings";
             string MemberFieldTripPartAPI_URL = "/api/FieldTrip/Participation/AllFieldTrips";
             string MemberContestPartAPI_URL = "/api/Contest/Participation/AllContests";
-            
+
             dynamic registeredModel = new ExpandoObject();
 
             var memberMeetingPart = await methcall.CallMethodReturnObject<GetListEventParticipation>(
@@ -384,6 +385,92 @@ namespace WebAppMVC.Controllers
             birdModel.CreateBird = methcall.GetValidationTempData<BirdViewModel>(this, TempData, Constants.Constants.CREATE_BIRD_VALID, "createBird", options);
             birdModel.MemberBirds = memberBird.Data;
             return View(birdModel);
+        }
+        [HttpGet("Bird/{birdId:int}")]
+        public async Task<IActionResult> MemberBirdDetail([FromRoute][Required] int birdId)
+        {
+            string MemberBirdAPI_URL = "/api/Bird/" + birdId;
+
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER));
+
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
+
+            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
+
+            var memberBirdDetail = await methcall.CallMethodReturnObject<GetBirdResponse>(
+                _httpClient: _httpClient,
+                options: options,
+                methodName: Constants.Constants.POST_METHOD,
+                url: MemberBirdAPI_URL,
+                _logger: _logger,
+                inputType: usrId,
+                accessToken: accToken
+                );
+            if (memberBirdDetail == null)
+            {
+                ViewBag.Error =
+                    "Error while processing your request! (Getting Bird Detail!). \n Bird Not Found!";
+                return RedirectToAction("MemberProfile");
+            }
+            if (!memberBirdDetail.Status)
+            {
+                _logger.LogInformation("Error while processing your request: " + memberBirdDetail.Status + " , Error Message: " + memberBirdDetail.ErrorMessage);
+                ViewBag.Error =
+                    "Error while processing your request! (Getting Bird Detail!). \n"
+                    + memberBirdDetail.ErrorMessage;
+                return RedirectToAction("MemberProfile");
+            }
+
+            dynamic memberBirdVM = new ExpandoObject();
+            memberBirdVM.MemberBirdDetails = memberBirdDetail.Data;
+            memberBirdVM.UpdateBird = methcall.GetValidationTempData<BirdViewModel>(this, TempData, Constants.Constants.UPDATE_BIRD_VALID, "updateBird", options);
+            return View(memberBirdVM);
+        }
+        [HttpPost("Bird/Create")]
+        public async Task<IActionResult> MemberCreateBird(BirdViewModel createBird)
+        {
+            string MemberBirdAPI_URL = "/api/Bird/Create";
+
+            if (!ModelState.IsValid)
+            {
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.CREATE_BIRD_VALID, createBird, options);
+                return RedirectToAction("MemberBird");
+            }
+
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER));
+
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
+
+            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
+
+            createBird.MemberId = usrId;
+
+            var memberBirdResponse = await methcall.CallMethodReturnObject<GetBirdResponse>(
+                                _httpClient: _httpClient,
+                                options: options,
+                                methodName: Constants.Constants.POST_METHOD,
+                                url: MemberBirdAPI_URL,
+                                inputType: createBird,
+                                accessToken: accToken,
+                                _logger: _logger);
+
+            if (memberBirdResponse == null)
+            {
+                ViewBag.Error =
+                    "Error while processing your request! (Create Bird!).\n Not Found!";
+                return RedirectToAction("MemberBird");
+            }
+            if (!memberBirdResponse.Status)
+            {
+                _logger.LogInformation("Error while processing your request: " + memberBirdResponse.Status + " , Error Message: " + memberBirdResponse.ErrorMessage);
+                ViewBag.Error =
+                    "Error while processing your request! (Create Bird!).\n"
+                    + memberBirdResponse.ErrorMessage;
+                return RedirectToAction("MemberBird");
+            }
+            return RedirectToAction("MemberBird");
         }
         [HttpGet("Payment")]
         public async Task<IActionResult> MemberPayment()

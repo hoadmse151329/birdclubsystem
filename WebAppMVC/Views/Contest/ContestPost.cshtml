@@ -90,7 +90,7 @@
                                     <div class="text-wrapper-9">Contact</div>
                                     <div class="text-wrapper-10">Organizer</div>
                                     <div class="text-wrapper-17">Fee</div>
-                                <div class="text-wrapper-17">Fee</div>
+                                    <div class="text-wrapper-19">Prize</div>
                                 </div>
                                 <div class="group-3">
                                     <div class="text-wrapper-11">@con.AreaNumber,@con.Street,@con.District,@con.City</div>
@@ -99,12 +99,8 @@
                                     <div class="text-wrapper-13">@con.RegistrationDeadline.ToString("MM/dd/yyyy")</div>
                                     <div class="text-wrapper-14">ChaoMaoClub@gmail.com</div>
                                     <div class="text-wrapper-15">@con.Host</div>
-                                    <div class="text-wrapper-18">
-                                    @{
-                                        string value = con.Fee.Value.ToString("0,0", CultureInfo.CurrentCulture);
-                                    }
-                                    @value vnd
-                                    </div>
+                                    <div class="text-wrapper-18"><span class="price-format" data-price="@con.Fee""></span></div>
+                                    <div class="text-wrapper-20"><span class="price-format" data-price="@con.Prize""></span></div>
                                 </div>
                                 @{
                                     if(role != null && role.Equals("Member"))
@@ -136,7 +132,7 @@
                                             <form asp-action="ContestRegister" asp-controller="Contest" method="post" asp-route-contestId="@con.ContestId" asp-route-birdId="0">
                                                 <button class="overlap-group-3 text-wrapper-16 button-rgb" type="submit">Register</button>
                                             </form>
-                                        </div>   
+                                        </div>
                                     }
                                 }     
                             </div>
@@ -290,44 +286,6 @@
         <!-- BS4 JS -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.5/umd/popper.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
-        <!-- main js -->
-        <script src="~/js/user-script.js"></script>
-
-        <script>
-            function randomizeColor() {
-                return Math.floor(Math.random() * 256);
-            }
-
-            function generateRandomRGB() {
-                const r = randomizeColor();
-                const g = randomizeColor();
-                const b = randomizeColor();
-                return `rgb(${r}, ${g}, ${b})`;
-            }
-            $(document).ready(function () {
-                setInterval(() => {
-                    const topColor = generateRandomRGB();
-                    const rightColor = generateRandomRGB();
-                    const bottomColor = generateRandomRGB();
-                    const leftColor = generateRandomRGB();
-
-                    $('.button-rgb').css('border-top-color', topColor);
-                    $('.button-rgb').css('border-right-color', rightColor);
-                    $('.button-rgb').css('border-bottom-color', bottomColor);
-                    $('.button-rgb').css('border-left-color', leftColor);
-                }, 200);
-            });
-            $(document).ready(function () {
-                setInterval(() => {
-                    $('.').css('background-color', generateRandomRGB());
-                }, 1000);
-            });
-        </script>
-        <script>
-            console.log("Selected Bird ID:", selectedBirdId);
-            console.log("Birds:", birds);
-            console.log("Selected Bird:", selectedBird);
-        </script>
         <script>
         $(document).ready(function () {
             $('#birdSelection').change(function () {
