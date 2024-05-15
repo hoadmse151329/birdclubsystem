@@ -1,5 +1,6 @@
 using BAL.Services.Implements;
 using BAL.Services.Interfaces;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using WebAppMVC.Services;
@@ -17,12 +18,15 @@ namespace WebAppMVC
 				options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
 				options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
 			}).AddCookie()
-			.AddGoogle(GoogleDefaults.AuthenticationScheme, options =>
+			.AddGoogle(options =>
 			{
-				options.ClientId = builder.Configuration.GetSection("GoogleKeys:ClientId").Value;
-				options.ClientSecret = builder.Configuration.GetSection("GoogleKeys:ClientSecret").Value;
+				IConfigurationSection googleAuthNSection = builder.Configuration.GetSection("Authentication:Google");
+				options.ClientId = googleAuthNSection["ClientId"];
+				options.ClientSecret = googleAuthNSection["ClientSecret"];
+				options.CallbackPath = "/Auth/GoogleResponse";
+				options.SaveTokens = true;
 			});
-
+			builder.Services.AddHttpClient();
 			// Add services to the container.
 			builder.Services.AddControllersWithViews();
 
@@ -55,7 +59,7 @@ namespace WebAppMVC
 			app.UseCors();
 
 			app.UseAuthorization();
-
+			app.UseAuthentication();
 			app.MapControllerRoute(
 				name: "default",
 				pattern: "{controller=Home}/{action=Index}/{id?}");

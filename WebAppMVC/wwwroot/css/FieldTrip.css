@@ -1064,7 +1064,7 @@ tour__content__block--consider .row {
     position: relative;
     width: 778px;
     height: 1254px;
-    border-radius: 50px;
+    border-radius: 58px;
     border: 5px solid black;
     box-shadow: 1px 1px 5px #b0b0b0;
     top: 0;
@@ -1221,7 +1221,7 @@ tour__content__block--consider .row {
     }
 .member-field-trips-post .div-wrapper {
     position: relative;
-    width: 770px;
+    width: 767px;
     height: 100px;
     background-color: #99ffad;
     border-radius: 50px 50px 0px 0px;
@@ -1242,7 +1242,7 @@ tour__content__block--consider .row {
     }
 .member-field-trips-post .soi-noi-hoi-thi-chim {
     position: absolute;
-    width: 772px;
+    width: 768px;
     height: 317px;
     top: 99px;
     left: 0;
@@ -1256,11 +1256,11 @@ tour__content__block--consider .row {
 .member-field-trips-post .info {
     position: absolute;
     background-color: white;
-    border-radius: 50px;
-    border: 3px solid black;
+    border-radius: 58px;
+    border: 6px solid black;
     box-shadow: 1px 1px 5px #b0b0b0;
     width: 540px;
-    height: 1132px;
+    height: 840px;
     top: 100px;
     left: 804px;
 }
@@ -1305,7 +1305,7 @@ tour__content__block--consider .row {
 
 .member-field-trips-post .overlap-group-2 {
     position: relative;
-    width: 534px;
+    width: 528px;
     height: 100px;
     background-color: #99ffad;
     border-radius: 50px 50px 0px 0px;
@@ -1419,7 +1419,7 @@ tour__content__block--consider .row {
 
     .member-field-trips-post .group-3 {
         position: absolute;
-        width: 312px;
+        width: 300px;
         height: 362px;
         top: 183px;
         left: 224px;
@@ -1496,18 +1496,17 @@ tour__content__block--consider .row {
         position: absolute;
         width: 216px;
         height: 55px;
-        top: 1042px;
+        top: 725px;
         left: 159px;
     }
 
 .member-field-trips-post .overlap-group-3 {
-    position: relative;
-    width: 214px;
     height: 55px;
     background-color: #99ffad;
     border-radius: 50px;
-    border: 3px solid transparent;
+    border: 6px solid transparent;
     box-shadow: 1px 1px 5px #b0b0b0;
+    transition: border-color 1s ease;
 }
 
 .member-field-trips-post .text-wrapper-16 {

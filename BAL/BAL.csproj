@@ -7,13 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="12.0.1" />
-    <PackageReference Include="Azure.Storage.Blobs" Version="12.19.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17" />
+    <Compile Remove="ViewModels\Meeting\**" />
+    <EmbeddedResource Remove="ViewModels\Meeting\**" />
+    <None Remove="ViewModels\Meeting\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ViewModels\Meeting\" />
+    <PackageReference Include="AutoMapper" Version="12.0.1" />
+    <PackageReference Include="Azure.Storage.Blobs" Version="12.19.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17" />
   </ItemGroup>
 
   <ItemGroup>

@@ -96,14 +96,14 @@
                             if (Model.Status.Equals("OpenRegistration"))
                             {
                                 <form asp-action="MeetingDeRegister" asp-controller="Meeting" method="post" asp-route-meetingId="@Model.MeetingId">
-                                    <button class="overlap-group-3 text-wrapper-16" type="submit">Sign Out</button>
+                                    <button class="overlap-group-3 text-wrapper-16 button-rgb" type="submit">Sign Out</button>
                                 </form>
                             }
                         }
                         else
                         {
                             <form asp-action="MeetingRegister" asp-controller="Meeting" method="post" asp-route-meetingId="@Model.MeetingId">
-                                <button class="overlap-group-3 text-wrapper-16" type="submit">Register</button>
+                                <button class="overlap-group-3 text-wrapper-16 button-rgb" type="submit">Register</button>
                             </form>             
                         }
                     }
@@ -121,60 +121,5 @@
         <!-- BS4 JS -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.5/umd/popper.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
-        <!-- BS4 carousels -->
-        <script>
-            $('.carousel').carousel({
-                interval: 3000
-            });
-        </script>
-        <!-- owl carousels -->
-        <script src="./assets/js/owl.carousel.min.js"></script>
-        <script>
-            $('.clubList-carousel').owlCarousel({
-                loop: true,
-                margin: 10,
-                nav: false,
-                responsive: {
-                    0: {
-                        items: 1
-                    },
-                    576: {
-                        items: 2
-                    },
-                    1200: {
-                        items: 4
-                    }
-                }
-            });
-        </script>
-        <script>
-    // Get the overlap-group-2 container
-    const container = document.querySelector('.overlap-group-2');
-    
-    // Get the dynamic text element
-    const dynamicText = document.getElementById('dynamicText');
-    
-    // Get the height of the container
-    const containerHeight = container.clientHeight;
-    
-    // Get the width of the container
-    const containerWidth = container.clientWidth;
-    
-    // Get the height of the dynamic text element
-    const textHeight = dynamicText.offsetHeight;
-    
-    // Get the width of the dynamic text element
-    const textWidth = dynamicText.offsetWidth;
-    
-    // Calculate the new top position to center vertically
-    const newTop = (containerHeight - textHeight) / 2;
-    
-    // Calculate the new left position to center horizontally
-    const newLeft = (containerWidth - textWidth) / 2;
-    
-    // Apply the new styles
-    dynamicText.style.top = `${newTop}px`;
-    dynamicText.style.left = `${newLeft}px`;
-</script>
   </body>
 </html>

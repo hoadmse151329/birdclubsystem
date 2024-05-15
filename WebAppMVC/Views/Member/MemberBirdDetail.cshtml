@@ -1,4 +1,4 @@
-﻿@*@model dynamic
+﻿@model dynamic
 @{
     ViewData["Title"] = "Member Birds Page";
     BAL.ViewModels.BirdViewModel detailsBird = Model.MemberBirds;
@@ -12,8 +12,10 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="~/images/Red_whiskered_bulbul_bird_logo_eps_10_generated 1.png">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
+    <link rel='stylesheet' href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css'>
+        <!-- Other-->
+        <link rel="stylesheet" href="https://unpkg.com/filepond-plugin-file-poster/dist/filepond-plugin-file-poster.css" >
 </head>
 <body>
     <hr>
@@ -53,6 +55,12 @@
                         <a href="@Url.Action("MemberPayment", "Member")">
                             <span><i class="bx bx-history"></i></span>
                             <span class="title">Payment</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("MemberNotification", "Member")">
+                            <span><i class="bx bx-history"></i></span>
+                            <span class="title">Notifications</span>
                         </a>
                     </li>
                 </ul>
@@ -255,6 +263,13 @@
             </div>
         </div>
     </div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+        referrerpolicy="no-referrer"></script>
+        <!-- Jquery Waypoint -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>
+        <!-- BS4 JS -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.5/umd/popper.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
 </body>
-</html>*@
+</html>

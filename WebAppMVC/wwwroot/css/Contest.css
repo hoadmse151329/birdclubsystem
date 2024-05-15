@@ -861,8 +861,8 @@
         position: relative;
         width: 778px;
         height: 1254px;
-        border-radius: 50px;
-        border: 3px solid black;
+        border-radius: 58px;
+        border: 5px solid black;
         box-shadow: 1px 1px 5px #b0b0b0;
         top: 0;
         left: 0;
@@ -1009,7 +1009,7 @@
 
     .member-contest-post .div-wrapper {
         position: relative;
-        width: 770px;
+        width: 767px;
         height: 100px;
         background-color: #99ffad;
         border-radius: 50px 50px 0px 0px;
@@ -1031,7 +1031,7 @@
 
     .member-contest-post .soi-noi-hoi-thi-chim {
         position: absolute;
-        width: 765px;
+        width: 768px;
         height: 317px;
         top: 99px;
         left: 0;
@@ -1041,11 +1041,11 @@
     .member-contest-post .info {
         position: absolute;
         background-color: white;
-        border-radius: 30px;
-        border: 2px solid black;
+        border-radius: 57px;
+        border: 6px solid black;
         box-shadow: 1px 1px 5px #b0b0b0;
         width: 532px;
-        height: 1132px;
+        height: 840px;
         top: 100px;
         left: 804px;
     }
@@ -1055,10 +1055,7 @@
         top: -1px;
         left: -1px;
         width: 532px;
-        height: 1132px;
-        border-radius: 30px;
-        border: 2px solid black;
-        box-shadow: 1px 1px 5px #b0b0b0;
+        height: 840px;
     }
 
     .member-contest-post .rectangle-5 {
@@ -1093,7 +1090,7 @@
 
     .member-contest-post .overlap-group-2 {
         position: relative;
-        width: 534px;
+        width: 520px;
         height: 100px;
         background-color: #99ffad;
         border-radius: 50px 50px 0px 0px;
@@ -1208,7 +1205,7 @@
 
     .member-contest-post .group-3 {
         position: absolute;
-        width: 312px;
+        width: 300px;
         height: 362px;
         top: 183px;
         left: 224px;
@@ -1285,16 +1282,17 @@
         position: absolute;
         width: 216px;
         height: 55px;
-        top: 1042px;
-        left: 159px;
+        top: 725px;
+        left: 150px;
     }
 
     .member-contest-post .overlap-group-3 {
-        position: relative;
-        width: 214px;
         height: 55px;
-        background-color: #4ac30059;
+        background-color: #99ffad;
         border-radius: 50px;
+        border: 6px solid transparent;
+        box-shadow: 1px 1px 5px #b0b0b0;
+        transition: border-color 1s ease;
     }
 
     .member-contest-post .text-wrapper-16 {
@@ -1380,15 +1378,16 @@
 
     .member-contest-post .text-wrapper-19 {
         position: absolute;
-        top: 16px;
-        left: 71px;
+        width: 167px;
+        height: 29px;
+        top: 500px;
         font-family: "Inter-Bold", Helvetica;
         font-weight: 700;
         color: #000000;
-        font-size: 20px;
-        letter-spacing: 0;
+        font-size: 24px;
+        text-align: left;
+        letter-spacing: 1.2px;
         line-height: normal;
-        white-space: nowrap;
     }
 
     .member-contest-post .navbar {
@@ -1438,16 +1437,15 @@
     }
 
     .member-contest-post .text-wrapper-20 {
+        top: 489px;
         position: absolute;
-        height: 19px;
-        top: 22px;
-        left: 336px;
-        font-family: "Inter-Bold", Helvetica;
-        font-weight: 700;
+        height: 24px;
+        font-family: "Inter-Medium", Helvetica;
+        font-weight: 500;
         color: #000000;
-        font-size: 16px;
-        text-align: center;
-        letter-spacing: 0;
+        font-size: 20px;
+        text-align: left;
+        letter-spacing: 1px;
         line-height: normal;
         white-space: nowrap;
     }
