@@ -20,7 +20,7 @@ namespace BAL.ViewModels
             Status = "Active";
             Elo = 1500;
             BirdMainImage = null;
-            ProfilePic = "Placeholder";
+            ProfilePic = "https://edwinbirdclubstorage.blob.core.windows.net/images/bird/bulbul_placeholder.jpg";
         }
         public int? BirdId { get; set; }
         public string? MemberId { get; set; }

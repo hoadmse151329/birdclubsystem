@@ -481,13 +481,12 @@ namespace WebAppMVC.Controllers
             return RedirectToAction("ContestPost", new { id = conId });
         }
 
-        [HttpPost("{contestId:int}/Bird/{birdId:int}/DeRegister")]
+        [HttpPost("{contestId:int}/DeRegister")]
         public async Task<IActionResult> ContestDeRegister(
-            [FromRoute][Required] int contestId,
-            [FromRoute][Required] int birdId
+            [FromRoute][Required] int contestId
             )
         {
-            ContestAPI_URL += "/" + contestId + "/Bird/" + birdId + "/Participant/Remove";
+            ContestAPI_URL += "/" + contestId + "/Participant/Remove";
 
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER) != null)
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER));
