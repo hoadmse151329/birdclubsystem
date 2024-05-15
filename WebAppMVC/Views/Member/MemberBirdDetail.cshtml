@@ -1,9 +1,14 @@
 ﻿@model dynamic
 @{
-    ViewData["Title"] = "Member Birds Page";
-    BAL.ViewModels.BirdViewModel detailsBird = Model.MemberBirds;
+    ViewData["Title"] = "Member Bird Detail Page";
+    BAL.ViewModels.BirdViewModel detailsBird = Model.MemberBirdDetails;
     BAL.ViewModels.BirdViewModel updateBird = Model.UpdateBird != null ? Model.UpdateBird : new BAL.ViewModels.BirdViewModel();
-    List<SelectListItem> birdStatus = Model.SelectListStatus;
+    List<SelectListItem> birdStatus = new()
+    {
+        new SelectListItem {Text = "Inactive", Value = "Inactive"},
+        new SelectListItem {Text = "Injured", Value = "Injured"},
+        new SelectListItem {Text = "Active", Value = "Active"}
+    };
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <html lang="en">
