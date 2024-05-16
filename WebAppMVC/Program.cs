@@ -1,3 +1,4 @@
+using BAL.AutoMapperProfile;
 using BAL.Services.Implements;
 using BAL.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication;
@@ -29,7 +30,7 @@ namespace WebAppMVC
 			builder.Services.AddHttpClient();
 			// Add services to the container.
 			builder.Services.AddControllersWithViews();
-
+			builder.Services.AddAutoMapper(typeof(MappingProfile));
 			builder.Services.AddSession(options =>
 			{
 				options.Cookie.IsEssential = true;
@@ -63,7 +64,6 @@ namespace WebAppMVC
 			app.MapControllerRoute(
 				name: "default",
 				pattern: "{controller=Home}/{action=Index}/{id?}");
-
 			app.Run();
 		}
 	}

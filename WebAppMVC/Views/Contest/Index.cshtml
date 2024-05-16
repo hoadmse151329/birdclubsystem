@@ -39,6 +39,15 @@
                         </div>
                         <div class="tabs-left-filter" style="background-color:white">
                             <div class="input-group mb-3">
+                                <select class="custom-select" name="elo"  id="inputGroupSelect02">
+                                    <option value="500--3000"> Elo Range </option>
+                                    <option value="500--1000"> Below 1000 Elo</option>
+                                    <option value="1000--1500">1000--1500 Elo</option>
+                                    <option value="1500--2000">1500--2000 Elo</option>
+                                    <option value="2000--3000">Above 2000 Elo</option>
+                                </select>
+                            </div>
+                            <div class="input-group mb-3">
                                 <select asp-for="@locationSearchRoad" asp-items="@Model.Roads" class="custom-select" name="road" id="road">
                                     <option value="">Road</option>
                                 </select>

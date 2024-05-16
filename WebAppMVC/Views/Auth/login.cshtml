@@ -18,17 +18,58 @@
 	 <link rel="stylesheet" href="~/css/main.css">
 	<title>Login</title>
 </head>
-
+<div class="background">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 offset-lg-3 p-lg-0">
+                    <div class="login row">
+                        <div class="col-12 text-center">
+                            <a href="ShowMotelController"><img src="assets/img/logo2-1.png" alt="logo"></a>
+                            <h4 class="text-center my-3">Điền thông tin đăng nhập</h4>
+                        </div>
+                        <div class="col-12 px-5">
+                            <form class="form" action="MainController" method="POST">
+                                <div class="form-item input-field col-12">
+                                    <label for="userId">Tên đăng nhập</label>
+                                    <input type="text" id="userName" name="userId"/>
+                                </div>
+                                <div class="form-item input-field col-12">
+                                    <label for="password">Mật khẩu</label>
+                                    <input type="password" name="password" id="password"> <!-- id="password" minlength="6" maxlength="32" -->
+                                    <a href="#" class="float-end">Quên mật khẩu?</a>
+                                </div>
+                                <span class="danger fs-16 font-w500 text-end d-block" style="color: red"><em>${requestScope.ERROR} </em></span>
+                                
+                                <button type="submit" name="action" value="Login" class="btn-signup btn btn-danger">Đăng nhập</button>
+                            </form>
+                                <!-- login by gg -->
+                            <div>
+                                <p class="text-center my-3">Or</p>
+                                <button class="login-gg">
+                                    <a href="https://accounts.google.com/o/oauth2/auth?scope=profile%20email&redirect_uri=<%=Constants.GOOGLE_REDIRECT_URI%>&response_type=code&client_id=<%=Constants.GOOGLE_CLIENT_ID%>&approval_prompt=force">
+                                    <img src="assets/img/Google__G__Logo.svg" alt="logo-G"> Đăng nhập bằng
+                                        Google</a>
+                                </button>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-center pt-lg-5">
+                                <p class="mb-0 me-2">Don't have an account? </p>
+                                <a href="signup.jsp" class="signup"> Đăng ký.</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 <body class="background">
-	<div style="background-image: url(~/images/Background.png); background-repeat:no-repeat; background-size: 100% 100%;">
-			<div class="main-container">
-				<div class="row justify-content-between">
-					<div class="col-lg-6">
-						<div class="box-container">
-							<div class="d-flex justify-content-center box-header light-green">
-								<h5><b>Member login</b></h5>
+			<div class="container">
+				<div class="col-lg-6 offset-lg-3 p-lg-0">
+                    <div class="login row">
+                        <div class="col-12 text-center">
+                            <a href="@Url.Action("Index", "Home")"><img src="~/images/Red_whiskered_bulbul_bird_logo_eps_10_generated 1.png" alt="logo"></a>
+                            <h4 class="text-center my-3">Login</h4>
 							</div>
-							<div class="d-flex box-body justify-content-center">
+							<div class="col-12 px-5">
 								<form class="reg-form" asp-action="Authorize" asp-controller="Auth">
 									@{
 										if (ViewBag.error != null)
@@ -36,7 +77,9 @@
 											<span class="text-danger">@ViewBag.error</span>
 										}
 									}
-									<div class="form-group">
+									<div class="form-item input-field col-12">
+
+                                        <label for="userId">Username</label>
 
 										<input placeholder="Username" asp-for="Username" class="form-control"/>
 
@@ -49,10 +92,11 @@
 										<span asp-validation-for="Password" class="text-danger"></span>
 									</div>
                                     <a href="#" class="float-end">Forgot Password?</a>
-									<button class="reg-button btn1 light-green" type="submit" value="Login">Login</button>
-							<div>
+									<button class="reg-button btn1 light-green" type="submit" value="Login">Login</button>   
+								</form>
+                            <div>
                                 <p class="text-center my-3">Or</p>
-                                <button class="login-gg">
+                                <button class="login-gg" href="@Url.Action("GoogleLogin", "Auth")">
                                            <a href="@Url.Action("GoogleLogin", "Auth")">
                                     <img src="~/images/Google__G__Logo.svg" alt="logo-G"> Login with
                                         Google</a>
@@ -63,9 +107,6 @@
 									<div class="reg-text">
 										New to this ? Join us <a href="@Url.Action("Register","Auth")" class="link-success">Sign up</a>
 									</div>
-                                    
-								</form>
-                            
 							</div>
 						</div>
 					</div>

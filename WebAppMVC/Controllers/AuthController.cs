@@ -97,7 +97,7 @@ namespace WebAppMVC.Controllers
 
 			var model = new CreateNewMember
 			{
-				GoogleUserName = userInfo.UserName,
+				UserName = userInfo.UserName,
 			};
 
 			var authenResponse = await methcall.CallMethodReturnObject<GetAuthenResponse>(

@@ -47,7 +47,5 @@ namespace BAL.ViewModels.Member
 		[Required(ErrorMessage = "Payment Amount is Required")]
 		public decimal PayAmount { get; set; }
 		public string? ImagePath { get; set; }
-		[DisplayName("Google Username")]
-		public string? GoogleUserName { get; set; }
 	}
 }

@@ -99,12 +99,7 @@
                                 <div class="text-wrapper-13">@fieldtripDetails.RegistrationDeadline</div>
                                 <div class="text-wrapper-14">ChaoMaoClub@gmail.com</div>
                                 <div class="text-wrapper-15">@fieldtripDetails.Host</div>
-                                <div class="text-wrapper-18">
-                                    @{
-                                        string value = fieldtripDetails.Fee.Value.ToString("0,0", CultureInfo.CurrentCulture);
-                                    }
-                                    @value vnd
-                                </div>
+                                <div class="text-wrapper-18"><span class="price-format" data-price="@fieldtripDetails.Fee""></span></div>
                             </div>
 
                             @{

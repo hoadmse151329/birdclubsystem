@@ -34,7 +34,9 @@
                 <div class="content__filter col-3">
                     <div class="content__filter-tabs-left">
                         <form asp-action="Index" asp-controller="Meeting" method="get" asp-route-locationAddress="@locationSearchAddress">
-                            <div class="tabs-left-title">
+                            
+                        </form>
+                        <div class="tabs-left-title">
                                 <h3 class="heading">Filter</h3>
                             </div>
                             <div class="tabs-left-filter" style="background-color:white">
@@ -58,10 +60,8 @@
                                 @{
                                     locationSearchAddress = "," + locationSearchRoad + "," + locationSearchDistrict + "," + locationSearchCity;
                                 }
-                                
                                 <button class="button--primary " id="filterButton" type="submit"><i class="fa fa-filter"></i> Filter</button>
                             </div>
-                        </form>
                         <div class="col-bg">
                         <img class="bg-1" src="~/images/meeting.png"></img>
                         <img class="bg-2" src="~/images/Club-Meeting-Minutes.jpg"></img>
@@ -154,5 +154,36 @@
         <!-- BS4 JS -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.5/umd/popper.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
+        <script>
+            $(document).ready(function() {
+            $('#filterButton').click(function(event) {
+            event.preventDefault();
+            var road = $('#road').val().toLowerCase(),
+                district = $('#district').val().toLowerCase(),
+                city = $('#city').val().toLowerCase();
+
+            var table = $(".content__list-room .content__list");
+            var items = table.find('.club-item');
+            items.hide();
+
+        items.each(function(index, elem) {
+            var meetingData = $(elem).data('meeting');
+            if (
+                (road === "" || meetingData.areaNumber.toLowerCase() === road) &&
+                (district === "" || meetingData.district.toLowerCase() === district) &&
+                (city === "" || meetingData.city.toLowerCase() === city)
+            ) {
+                $(elem).show();
+            }
+        });
+
+        var visibleItems = table.find('.club-item:visible');
+
+        if (visibleItems.length === 0) {
+            alert("No Records Found!!!");
+        }
+    });
+});
+        </script>
   </body>
 </html>
