@@ -69,12 +69,14 @@ namespace WebAPI.Controllers
                 });
             }
         }
-        [HttpPost("{birdId:int}")]
+        [HttpGet("{birdId:int}")]
         [Authorize(Roles = "Member")]
         [ProducesResponseType(typeof(BirdViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> GetBirdById([FromRoute][Required] int birdId)
+        public async Task<IActionResult> GetBirdById(
+            [FromRoute][Required] int birdId
+            )
         {
             try
             {

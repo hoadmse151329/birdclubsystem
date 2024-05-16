@@ -1223,6 +1223,7 @@ namespace WebAppMVC.Controllers
             [Required] ContestViewModel updateContest
             )
         {
+            string ManagerContestDetailAPI_URL = ManagerAPI_URL + "Contest/AllParticipants/" + id;
             ManagerAPI_URL += "Contest/Update/" + id;
             if (!ModelState.IsValid)
             {
@@ -1259,8 +1260,32 @@ namespace WebAppMVC.Controllers
                     + contestPostResponse.ErrorMessage;
                 return RedirectToAction("ManagerContestDetail", "Manager", new { id });
             }
-            if (contestPostResponse.Data.Status.Equals(Constants.Constants.EVENT_STATUS_ENDED) && contestPostResponse.Data.ContestParticipants != null && contestPostResponse.Data.ContestParticipants.Count > 0)
+            if (contestPostResponse.Data.Status.Equals(Constants.Constants.EVENT_STATUS_ENDED))
             {
+                var contestpartPostResponse = await methcall.CallMethodReturnObject<GetListContestParticipation>(
+                                _httpClient: _httpClient,
+                                options: options,
+                                methodName: Constants.Constants.GET_METHOD,
+                                url: ManagerContestDetailAPI_URL,
+                                accessToken: accToken,
+                                _logger: _logger);
+                if (contestpartPostResponse == null)
+                {
+                    ViewBag.Error =
+                        "Error while processing your request! (Updating Contest!).\n Contest Not Found!";
+                    return RedirectToAction("ManagerContestDetail", "Manager", new { id });
+                }
+                if (!contestpartPostResponse.Status)
+                {
+                    _logger.LogInformation("Error while processing your request: " + contestpartPostResponse.Status + " , Error Message: " + contestpartPostResponse.ErrorMessage);
+                    ViewBag.Error =
+                        "Error while processing your request! (Updating Contest Post!).\n"
+                        + contestpartPostResponse.ErrorMessage;
+                    return RedirectToAction("ManagerContestDetail", "Manager", new { id });
+                }
+                var contestToUpdate = contestPostResponse.Data;
+                contestToUpdate.ContestParticipants = contestpartPostResponse.Data;
+
                 string ManagerContestEndedAPI_URL = "/api/Manager/Contest/" + id + "/Participant/All/Score/Update";
 
                 var contestLastUpdateResponse = await methcall.CallMethodReturnObject<GetContestEndedUpdateResponse>(
@@ -1268,7 +1293,7 @@ namespace WebAppMVC.Controllers
                                 options: options,
                                 methodName: Constants.Constants.PUT_METHOD,
                                 url: ManagerContestEndedAPI_URL,
-                                inputType: contestPostResponse.Data.ContestParticipants,
+                                inputType: contestToUpdate.ContestParticipants,
                                 accessToken: accToken,
                                 _logger: _logger);
                 if (contestLastUpdateResponse == null)

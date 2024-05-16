@@ -430,6 +430,82 @@ namespace WebAppMVC.Constants
             tempData[tempDataName + "_" + objectId] = validJson;
             return tempData;
         }
+        public void SetCookieForTempFile(HttpResponse response, string key, IFormFile inputType, CookieOptions cookieOptions, JsonSerializerOptions jsonOptions, int? expireTime = null)
+        {
+            string path = Path.Combine(Directory.GetCurrentDirectory(), Constants.TEMP_FILE_LOCATION_FOLDER);
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
+            /*FileInfo fileInfo = new FileInfo(inputType.FileName);
+            string fileName = inputType. + fileInfo.Extension;*/
+
+            string fileNameWithPath = Path.Combine(path, inputType.FileName);
+
+            using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
+            {
+                try
+                {
+                    inputType.CopyTo(stream);
+                }
+                catch (Exception e)
+                {
+                    stream.Dispose();
+                    throw;
+                }
+                finally
+                {
+                    stream.Dispose();
+                }
+            }
+            string json = JsonSerializer.Serialize(fileNameWithPath, jsonOptions);
+            if (expireTime.HasValue)
+            {
+                CookieOptions privatecookieOptions = new CookieOptions
+                {
+                    Expires = DateTime.Now.AddMinutes(expireTime.Value),
+                    MaxAge = TimeSpan.FromMinutes(10),
+                    Secure = true,
+                    IsEssential = true,
+                };
+                response.Cookies.Append(key, json, privatecookieOptions);
+            }
+            else
+                response.Cookies.Append(key, json, cookieOptions);
+        }
+        public async Task<IFormFile> GetCookieForTempFile(HttpRequest request, string key, JsonSerializerOptions jsonOptions)
+        {
+            string value = request.Cookies.FirstOrDefault(c => c.Key == key).Value;
+            if (value == null) return null;
+            var filepath = JsonSerializer.Deserialize<string>(value, jsonOptions);
+            using (var stream = new FileStream(filepath, FileMode.Open))
+            {
+                var ms = new MemoryStream();
+                try
+                {
+                    return new FormFile(stream, 0, stream.Length, null, Path.GetFileName( stream.Name));
+                }
+                catch (Exception e)
+                {
+                    stream.Dispose();
+                    ms.Dispose();
+                    throw;
+                }
+                finally
+                {
+                    ms.Dispose();
+                    stream.Dispose();
+                }
+            }
+        }
+        public void RemoveCookieTempFile(HttpResponse response, string key, IFormFile inputType, CookieOptions cookieOptions)
+        {
+            response.Cookies.Delete(key, cookieOptions);
+            string path = Path.Combine(Directory.GetCurrentDirectory(), Constants.TEMP_FILE_LOCATION_FOLDER);
+            string fileNameWithPath = Path.Combine(path, inputType.FileName);
+            if (File.Exists(fileNameWithPath))
+            {
+                File.Delete(fileNameWithPath);
+            }
+        }
 
         /* Getter
          * testmodel2.CreateFieldTrip = null;

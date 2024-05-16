@@ -13,7 +13,7 @@ namespace BAL.ViewModels
     {
         public BirdViewModel()
         {
-            BirdId = null;
+            BirdId = 0;
             BirdName = "New Bird";
             Age = 5;
             AddDate = DateTime.Now;
@@ -41,6 +41,7 @@ namespace BAL.ViewModels
         public string? Color { get; set; }
         [Required(ErrorMessage = "Date Added is required")]
         [DisplayName("Date Added")]
+        [DataType(DataType.DateTime)]
         public DateTime AddDate { get; set; }
         [DisplayName("Profile Picture")]
         public string? ProfilePic { get; set; }

@@ -31,6 +31,7 @@ namespace WebAppMVC.Constants
         public readonly static string MEMBER_STATUS_SUSPENDED = "Suspended";
     
         public readonly static string CREATE_BIRD_VALID = "CBirdValid";
+        public readonly static string CREATE_OR_UPDATE_BIRD_PROFILE_PICTURE_VALID = "CBirdProfilePicValid";
         public readonly static string UPDATE_BIRD_VALID = "UBirdValid";
         public readonly static string CREATE_MEETING_VALID = "CMeetingValid";
         public readonly static string UPDATE_MEETING_VALID = "UMeetingValid";
@@ -115,5 +116,6 @@ namespace WebAppMVC.Constants
         public const string GOOGLE_GRANT_TYPE = "authorization_code";
         public const string GOOGLE_LINK_GET_TOKEN = "https://accounts.google.com/o/oauth2/token";
         public const string GOOGLE_LINK_GET_USER_INFO = "https://www.googleapis.com/oauth2/v1/userinfo?access_token=";
+        public readonly static string TEMP_FILE_LOCATION_FOLDER = "wwwroot/tempFiles";
     }
 }

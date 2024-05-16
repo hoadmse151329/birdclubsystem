@@ -49,5 +49,11 @@ namespace DAL.Repositories.Implements
             }
             else return false;
         }
+
+        public async Task<FieldTrip?> GetFieldTripByIdWithoutInclude(int id)
+        {
+            return _context.FieldTrips.AsNoTracking()
+                .SingleOrDefault(trip => trip.TripId == id);
+        }
     }
 }
