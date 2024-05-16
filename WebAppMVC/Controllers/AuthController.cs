@@ -70,46 +70,51 @@ namespace WebAppMVC.Controllers
 
             return View();
 		}
-		[HttpGet("LoginByThirdParty")]
 		#region Old Google Login Code (Deprecated)
-		public async Task GoogleLogin()
+		[HttpGet("GoogleLogin")]
+		public IActionResult GoogleLogin()
 		{
-			await HttpContext.ChallengeAsync(GoogleDefaults.AuthenticationScheme,
-				new AuthenticationProperties
-				{
-					RedirectUri = Url.Action("GoogleResponse")
-				});
+			var properties = new AuthenticationProperties
+			{
+				RedirectUri = Url.Action("GoogleResponse")
+			};
+			return Challenge(properties, GoogleDefaults.AuthenticationScheme);
 		}
+
 		public async Task<IActionResult> GoogleResponse()
 		{
 			var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
-			var claims = result.Principal.Identities.FirstOrDefault().Claims.Select(claim => new
+			if (!result.Succeeded)
 			{
-				claim.Issuer,
-				claim.OriginalIssuer,
-				claim.Type,
-				claim.Value
-			});
-			//*if (result.Succeeded)
-			{
-
+				return RedirectToAction("Login");
 			}
-			var newmemRequest = await methcall.GetCookie<CreateNewMember>(Request, Constants.Constants.NEW_MEMBER_REGISTRATION_COOKIE, jsonOptions);
-			var authenResponse = await methcall.CallMethodReturnObject<GetGGAuthenResponse>(
+
+			var code = result.Properties.GetTokenValue("code");
+
+			var accessToken = await GoogleUtils.GetToken(code);
+			var userInfo = await GoogleUtils.GetUserInfo(accessToken);
+
+			var model = new CreateNewMember
+			{
+				GoogleUserName = userInfo.UserName,
+			};
+
+			var authenResponse = await methcall.CallMethodReturnObject<GetAuthenResponse>(
 				_httpClient: client,
 				options: jsonOptions,
 				methodName: "POST",
 				url: AuthenAPI_URL,
-				//inputType: newmemRequest,
+				inputType: model,
 				_logger: _logger);
 
 			if (authenResponse == null)
 			{
-				_logger.LogInformation("Error while registering your new account: ");
-				ViewBag.error = "Error while registering your new account ! ";
+				_logger.LogError("Error while registering your new account");
+				ViewBag.error = "Error while registering your new account !";
 				return View("Register");
 			}
+
 			var responseAuth = authenResponse.Data;
 
 			if (authenResponse.Status)
@@ -127,17 +132,19 @@ namespace WebAppMVC.Controllers
 				TempData["USER_NAME"] = responseAuth.UserName;
 				TempData["IMAGE_PATH"] = responseAuth.ImagePath;
 			}
-			if (responseAuth!.RoleName == Constants.Constants.ADMIN)
+
+			// Redirect the user to the appropriate page based on their role
+			if (responseAuth.RoleName == Constants.Constants.ADMIN)
 			{
 				_logger.LogInformation("Admin Login Successful: " + TempData["ROLE_NAME"] + " , Id: " + TempData["USER_ID"]);
 				return base.Redirect(Constants.Constants.ADMIN_URL);
 			}
-			else if (responseAuth!.RoleName == Constants.Constants.MANAGER)
+			else if (responseAuth.RoleName == Constants.Constants.MANAGER)
 			{
 				_logger.LogInformation("Manager Login Successful: " + TempData["ROLE_NAME"] + " , Id: " + TempData["USER_ID"]);
 				return base.Redirect(Constants.Constants.MANAGER_URL);
 			}
-			else if (responseAuth!.RoleName == Constants.Constants.STAFF)
+			else if (responseAuth.RoleName == Constants.Constants.STAFF)
 			{
 				_logger.LogInformation("Staff Login Successful: " + TempData["ROLE_NAME"] + " , Id: " + TempData["USER_ID"]);
 				return base.Redirect(Constants.Constants.STAFF_URL);
@@ -392,64 +399,5 @@ namespace WebAppMVC.Controllers
 			var url = _vnPayService.CreatePaymentUrl(model, HttpContext);
 			return Redirect(url);
 		}
-		#region Old SignUp Code (Deprecated)
-		/*[HttpPost("SignUp")]
-		public async Task<IActionResult> SignUp(CreateNewMember newmemRequest)
-		{
-			AuthenAPI_URL += "/Register";
-
-			var authenResponse = await methcall.CallMethodReturnObject<GetAuthenResponse>(
-				_httpClient: client,
-				options: jsonOptions,
-				methodName: "POST",
-				url: AuthenAPI_URL,
-				inputType: newmemRequest,
-				_logger: _logger);
-
-			if (authenResponse == null)
-			{
-				_logger.LogInformation("Error while registering your new account: ");
-				ViewBag.error = "Error while registering your new account ! ";
-				return View("Register");
-			}
-
-			var responseAuth = authenResponse.Data;
-
-			if (authenResponse.Status)
-			{
-				HttpContext.Session.SetString("ACCESS_TOKEN", responseAuth.AccessToken);
-				HttpContext.Session.SetString("ROLE_NAME", responseAuth.RoleName);
-				HttpContext.Session.SetString("USER_ID", responseAuth.UserId);
-				HttpContext.Session.SetString("USER_NAME", responseAuth.UserName);
-
-				client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", responseAuth.AccessToken);
-
-				TempData["ACCESS_TOKEN"] = responseAuth.AccessToken;
-				TempData["ROLE_NAME"] = responseAuth.RoleName;
-				TempData["USER_ID"] = responseAuth.UserId;
-				TempData["USER_NAME"] = responseAuth.UserName;
-			}
-			if (responseAuth!.RoleName == Constants.Constants.ADMIN)
-			{
-				_logger.LogInformation("Admin Register Successful: " + TempData["ROLE_NAME"] + " , Id: " + TempData["USER_ID"]);
-				return base.Redirect(Constants.Constants.ADMIN_URL);
-			}
-			else if (responseAuth!.RoleName == Constants.Constants.MANAGER)
-			{
-				_logger.LogInformation("Manager Register Successful: " + TempData["ROLE_NAME"] + " , Id: " + TempData["USER_ID"]);
-				return base.Redirect(Constants.Constants.MANAGER_URL);
-			}
-			else if (responseAuth!.RoleName == Constants.Constants.STAFF)
-			{
-				_logger.LogInformation("Staff Register Successful: " + TempData["ROLE_NAME"] + " , Id: " + TempData["USER_ID"]);
-				return base.Redirect(Constants.Constants.STAFF_URL);
-			}
-			else
-			{
-				_logger.LogInformation("Member Register Successful: " + TempData["ROLE_NAME"] + " , Id: " + TempData["USER_ID"]);
-				return base.Redirect(Constants.Constants.MEMBER_URL);
-			}
-		}*/
-		#endregion
 	}
 }
