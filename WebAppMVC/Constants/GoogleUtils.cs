@@ -2,9 +2,10 @@
 using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
-using DAL.Models;
+using BAL.ViewModels.Member;
 using Newtonsoft.Json;
 using WebAppMVC.Constants;
+using WebAppMVC.Models;
 
 public static class GoogleUtils
 {
@@ -23,18 +24,32 @@ public static class GoogleUtils
 
             var response = await client.PostAsync(Constants.GOOGLE_LINK_GET_TOKEN, formContent);
             var responseString = await response.Content.ReadAsStringAsync();
+            if (responseString == null) return null;
             dynamic responseData = JsonConvert.DeserializeObject(responseString);
             return responseData.access_token;
         }
     }
 
-    public static async Task<GoogleUserInfo> GetUserInfo(string accessToken)
+    public static async Task<CreateNewMember> GetUserInfo(string accessToken)
     {
         using (var client = new HttpClient())
         {
             var response = await client.GetAsync(Constants.GOOGLE_LINK_GET_USER_INFO + accessToken);
             var responseString = await response.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<GoogleUserInfo>(responseString);
+            var item = JsonConvert.DeserializeObject<GoogleUserVM>(responseString);
+            if(item != null)
+            {
+                var googleusr = new CreateNewMember()
+                {
+                    UserName = item.Given_name,
+                    FullName = item.Name,
+                    Email = item.Email,
+                    ImagePath = item.Picture
+                };
+                return googleusr;
+            }
+            return null;
+            //return JsonConvert.DeserializeObject<GoogleUserInfo>(responseString);
         }
     }
 }

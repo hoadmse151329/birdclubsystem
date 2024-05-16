@@ -110,12 +110,16 @@ namespace WebAppMVC.Constants
         public readonly static string POST_METHOD = "POST";
 		public readonly static string PUT_METHOD = "PUT";
 		public readonly static string DELETE_METHOD = "DELETE";
+
         public const string GOOGLE_CLIENT_ID = "512436843720-39hmp0e2e18a6t2mjeqiuhda548t4s8r.apps.googleusercontent.com";
         public const string GOOGLE_CLIENT_SECRET = "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";
+        public const string GOOGLE_ACCESS_TOKEN_KEY_NAME = ".Token.access_token";
+        public const string GOOGLE_ACC_COOKIE = "New-Membership-Google-Registration-Cookie";
         public const string GOOGLE_REDIRECT_URI = "https://localhost:7005/Auth/GoogleResponse";
         public const string GOOGLE_GRANT_TYPE = "authorization_code";
         public const string GOOGLE_LINK_GET_TOKEN = "https://accounts.google.com/o/oauth2/token";
         public const string GOOGLE_LINK_GET_USER_INFO = "https://www.googleapis.com/oauth2/v1/userinfo?access_token=";
+
         public readonly static string TEMP_FILE_LOCATION_FOLDER = "wwwroot/tempFiles";
     }
 }
