@@ -401,10 +401,9 @@ namespace WebAppMVC.Controllers
             var memberBirdDetail = await methcall.CallMethodReturnObject<GetBirdResponse>(
                 _httpClient: _httpClient,
                 options: options,
-                methodName: Constants.Constants.POST_METHOD,
+                methodName: Constants.Constants.GET_METHOD,
                 url: MemberBirdAPI_URL,
                 _logger: _logger,
-                inputType: usrId,
                 accessToken: accToken
                 );
             if (memberBirdDetail == null)
