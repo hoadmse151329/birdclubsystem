@@ -94,11 +94,9 @@
                                                     <tbody>
                                                         @for (int i = 0; i < events.Count(); i++)
                                                         {
-                                                            <tr class="clickable-row" data-href="@Url.Action(events[i].EventType + "Post", events[i].EventType, new { id = events[i].EventId })"
-                                                                data-bs-toggle="tooltip" data-bs-placement="right"
-                                                                title="More Details">
+                                                            <tr>
                                                                 <td class="sorting_1">@events[i].EventId</td>
-                                                                <td>@events[i].EventName</td>
+                                                                <td title="More Details"><a class="title" href="@Url.Action(events[i].EventType + "Post", events[i].EventType,new {id = events[i].EventId})">@events[i].EventName</a></td>
                                                                 <td>@events[i].EventType</td>
                                                                 <td>@events[i].RegistrationDeadline</td>
                                                                 <td>@events[i].StartDate</td>
