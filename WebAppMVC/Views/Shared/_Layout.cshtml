@@ -45,16 +45,13 @@
                 088 873 8852</a>
         </div>
         <div class="header__right">
-            <ul class="nav">
                             @if ((string)TempData["ROLE_NAME"] != "Guest")
                             {
                                 <!-- Display this when the user is logged in -->
-                                <li class="nav-item nav-item-text">
                                      <div class="notification-dropdown dropdown">
                                           <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                 <i class="fa fa-bell"></i><span class="notification">@ViewBag.NotificationCount</span>
-                                                     <span type="hidden" name="notificationId" value="${o.notificationId}"></span>  
                                           </button>
                                      <div class="dropdown-menu notification-table animate__animated animate__fadeInDown"
                                      aria-labelledby="dropdownMenuButton">
@@ -70,8 +67,6 @@
                                           </div>
                                      </div>
                                      </div>
-                                </li>
-                                <li class="nav-item nav-item-text">
                                      <div class="user-dropdown dropdown">
                                         <button class="btn-user-dropdown text-white btn dropdown-toggle" type="button"
                                                 id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -87,16 +82,11 @@
                                             <a class="dropdown-item" href="@Url.Action("Logout", "Auth")">Logout</a>
                                         </div>
                                     </div>
-                                </li>
                             }
                             else
                             {
-                                <!-- Display this when the user is not logged in -->
-                                <li class="nav-item nav-item-text">
                                     <a class="nav-link" href="@Url.Action("login", "Auth")">Login</a>
-                                </li>
                             }
-                        </ul>
         </div>
         </div>
         <div class="header__bottom">

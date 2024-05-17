@@ -1,18 +1,15 @@
-//Đối tượng
+// Validator Object
 function Validator(options) {
     var selectorRules = {};
 
     function validate(inputElement, rule) {
-        var errorElement = inputElement.parentElement.querySelector(
-            options.errorSelector
-        );
+        var errorElement = inputElement.parentElement.querySelector(options.errorSelector);
         var errorMessage;
 
-        // Lấy ra các rules của selector
+        // Get the rules for the selector
         var rules = selectorRules[rule.selector];
 
-        // Lặp qua từng rule & kiểm tra
-        // Nếu lỗi break
+        // Iterate through each rule and check for errors
         for (var i = 0; i < rules.length; ++i) {
             errorMessage = rules[i](inputElement.value);
             if (errorMessage) break;
@@ -26,29 +23,29 @@ function Validator(options) {
             inputElement.parentElement.classList.remove("invalid");
         }
     }
-    // Lấy element của form cần validate
+
+    // Get the form element to validate
     var formElement = document.querySelector(options.form);
     if (formElement) {
         options.rules.forEach(function (rule) {
-            // Lưu lại các rules cho mỗi input
+            // Save the rules for each input
             if (Array.isArray(selectorRules[rule.selector])) {
                 selectorRules[rule.selector].push(rule.test);
             } else {
                 selectorRules[rule.selector] = [rule.test];
             }
+
             var inputElement = formElement.querySelector(rule.selector);
 
             if (inputElement) {
-                //xử lý trường hơp blur ra ngoài
+                // Handle blur event
                 inputElement.onblur = function () {
                     validate(inputElement, rule);
                 };
 
-                // xử lý khi người dùng nhập vào input
+                // Handle input event
                 inputElement.oninput = function () {
-                    var errorElement = inputElement.parentElement.querySelector(
-                        options.errorSelector
-                    );
+                    var errorElement = inputElement.parentElement.querySelector(options.errorSelector);
                     errorElement.innerText = "";
                     inputElement.parentElement.classList.remove("invalid");
                 };
@@ -57,20 +54,14 @@ function Validator(options) {
     }
 }
 
-// Định nghĩa rules
-// Nguyên tắc của các rules
-// 1. Error -> msg báo lỗi
-// 2. Hợp lệ -> không trả ra gì
-
+// Define validation rules
 Validator.isRequired = function (selector, message) {
     return {
         selector: selector,
         test: function (value) {
             var regex = /^[A-Za-z0-9_.]+$/;
-            return regex.test(value.trim())
-                ? undefined
-                : message || "Vui lòng nhập đúng cú pháp!";
-        },
+            return regex.test(value.trim()) ? undefined : message || "Vui lòng nhập đúng cú pháp!";
+        }
     };
 };
 
@@ -79,7 +70,7 @@ Validator.isNotEmpty = function (selector, message) {
         selector: selector,
         test: function (value) {
             return value.trim() ? undefined : message || "Vui lòng không để trống";
-        },
+        }
     };
 };
 
@@ -88,10 +79,8 @@ Validator.isTextOnly = function (selector, message) {
         selector: selector,
         test: function (value) {
             var regex = /^[A-Za-z ]+$/;
-            return regex.test(value.trim())
-                ? undefined
-                : message || "Vui lòng nhập đúng cú pháp!";
-        },
+            return regex.test(value.trim()) ? undefined : message || "Vui lòng nhập đúng cú pháp!";
+        }
     };
 };
 
@@ -100,10 +89,8 @@ Validator.isNumberOnly = function (selector, message) {
         selector: selector,
         test: function (value) {
             var regex = /^[0-9]+$/;
-            return regex.test(value.trim())
-                ? undefined
-                : message || "Vui lòng nhập đúng cú pháp!";
-        },
+            return regex.test(value.trim()) ? undefined : message || "Vui lòng nhập đúng cú pháp!";
+        }
     };
 };
 
@@ -112,10 +99,8 @@ Validator.isEmail = function (selector, message) {
         selector: selector,
         test: function (value) {
             var regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-            return regex.test(value.trim())
-                ? undefined
-                : message || "Trường này phải là email!";
-        },
+            return regex.test(value.trim()) ? undefined : message || "Trường này phải là email!";
+        }
     };
 };
 
@@ -123,10 +108,8 @@ Validator.minLength = function (selector, min, message) {
     return {
         selector: selector,
         test: function (value) {
-            return value.length >= min
-                ? undefined
-                : message || `Vui lòng nhập tối thiểu ${min} kí tự`;
-        },
+            return value.length >= min ? undefined : message || `Vui lòng nhập tối thiểu ${min} kí tự`;
+        }
     };
 };
 
@@ -134,18 +117,12 @@ Validator.isConfirmed = function (selector, getConfirmValue, message) {
     return {
         selector: selector,
         test: function (value) {
-            return value === getConfirmValue()
-                ? undefined
-                : message || "Giá trị nhập vào không chính xác";
-        },
+            return value === getConfirmValue() ? undefined : message || "Giá trị nhập vào không chính xác";
+        }
     };
 };
 
-
-
-// ===================Thuy detail=====================
-/***AVATAR SCRIPT***/
-
+// Avatar script
 function readURL(input) {
     if (input.files && input.files[0]) {
         var reader = new FileReader();
@@ -156,13 +133,16 @@ function readURL(input) {
         reader.readAsDataURL(input.files[0]);
     }
 }
+
 $(".file-upload").on("change", function () {
     readURL(this);
 });
+
 $(".upload-button").on("click", function () {
     $(".file-upload").click();
 });
-// ======================pagination====================
+
+// Pagination script
 function getPageList(totalPages, page, maxLength) {
     function range(start, end) {
         return Array.from(Array(end - start + 1), (_, i) => i + start);
@@ -177,25 +157,14 @@ function getPageList(totalPages, page, maxLength) {
     }
 
     if (page <= maxLength - sideWidth - 1 - rightWidth) {
-        return range(1, maxLength - sideWidth - 1).concat(
-            0,
-            range(totalPages - sideWidth + 1, totalPages)
-        );
+        return range(1, maxLength - sideWidth - 1).concat(0, range(totalPages - sideWidth + 1, totalPages));
     }
 
     if (page >= totalPages - sideWidth - 1 - rightWidth) {
-        return range(1, sideWidth).concat(
-            0,
-            range(totalPages - sideWidth - 1 - rightWidth - leftWidth, totalPages)
-        );
+        return range(1, sideWidth).concat(0, range(totalPages - sideWidth - 1 - rightWidth - leftWidth, totalPages));
     }
 
-    return range(1, sideWidth).concat(
-        0,
-        range(page - leftWidth, page + rightWidth),
-        0,
-        range(totalPages - sideWidth + 1, totalPages)
-    );
+    return range(1, sideWidth).concat(0, range(page - leftWidth, page + rightWidth), 0, range(totalPages - sideWidth + 1, totalPages));
 }
 
 $(function () {
@@ -208,23 +177,14 @@ $(function () {
     function showPage(whichPage) {
         if (whichPage < 1 || whichPage > totalPages) return false;
         currentPage = whichPage;
-        $(".content__list .club-item")
-            .hide()
-            .slice((currentPage - 1) * limitPerPage, currentPage * limitPerPage)
-            .show();
+        $(".content__list .club-item").hide().slice((currentPage - 1) * limitPerPage, currentPage * limitPerPage).show();
         $(".pagination li").slice(1, -1).remove();
         getPageList(totalPages, currentPage, paginationSize).forEach((item) => {
             $("<li>")
-                .addClass("pages")
-                .addClass("page-item")
+                .addClass("pages page-item")
                 .addClass(item ? "current-page" : "dots")
                 .toggleClass("active", item === currentPage)
-                .append(
-                    $("<a>")
-                        .addClass("page-link")
-                        .attr({ href: "javascript: void(0)" })
-                        .text(item || "...")
-                )
+                .append($("<a>").addClass("page-link").attr({ href: "javascript: void(0)" }).text(item || "..."))
                 .insertBefore(".next-page");
         });
 
@@ -232,50 +192,33 @@ $(function () {
         $(".next-page").toggleClass("disabled", currentPage === totalPages);
         return true;
     }
+
     $(".pagination").append(
-        $("<li>")
-            .addClass("page-item")
-            .addClass("previous-page")
-            .append(
-                $("<a>")
-                    .addClass("page-link")
-                    .addClass("btn")
-                    .attr({ href: "javascript: void(0)" })
-                    .append($("<i>").addClass("fa fa-angle-left"))
-            ),
-        $("<li>")
-            .addClass("page-item")
-            .addClass("next-page")
-            .append(
-                $("<a>")
-                    .addClass("page-link")
-                    .addClass("btn")
-                    .attr({ href: "javascript: void(0)" })
-                    .append($("<i>").addClass("fa fa-angle-right"))
-            )
+        $("<li>").addClass("page-item previous-page").append(
+            $("<a>").addClass("page-link btn").attr({ href: "javascript: void(0)" }).append($("<i>").addClass("fa fa-angle-left"))
+        ),
+        $("<li>").addClass("page-item next-page").append(
+            $("<a>").addClass("page-link btn").attr({ href: "javascript: void(0)" }).append($("<i>").addClass("fa fa-angle-right"))
+        )
     );
 
     $(".content__list").show();
     showPage(1);
 
-    $(document).on(
-        "click",
-        ".pagination li.current-page:not(.active)",
-        function () {
-            return showPage(+$(this).text());
-        }
-    );
+    $(document).on("click", ".pagination li.current-page:not(.active)", function () {
+        return showPage(+$(this).text());
+    });
 
     $(".next-page").on("click", function () {
         return showPage(currentPage + 1);
     });
+
     $(".previous-page").on("click", function () {
         return showPage(currentPage - 1);
     });
 });
 
-//truncate content
-
+// Truncate content
 $(document).ready(function () {
     (function () {
         var showChar = 0;
@@ -286,18 +229,14 @@ $(document).ready(function () {
             if (content.length > showChar) {
                 var c = content.substr(0, showChar);
                 var h = content;
-                var html =
-                    '<div class="truncate-text" style="display:block">' +
-                    c +
-                    '<span class="moreellipses">' +
-                    ellipsestext +
-                    '&nbsp;&nbsp;<a href="" class="moreless more">Xem thêm</a></span></span></div><div class="truncate-text" style="display:none">' +
-                    h +
-                    '<a href="" class="moreless less">Thu gọn</a></span></div>';
+                var html = '<div class="truncate-text" style="display:block">' + c +
+                    '<span class="moreellipses">' + ellipsestext + '&nbsp;&nbsp;<a href="" class="moreless more">Xem thêm</a></span></div>' +
+                    '<div class="truncate-text" style="display:none">' + h + '<a href="" class="moreless less">Thu gọn</a></div>';
 
                 $(this).html(html);
             }
         });
+
         $(".moreless").click(function () {
             var thisEl = $(this);
             var cT = thisEl.closest(".truncate-text");
@@ -312,29 +251,23 @@ $(document).ready(function () {
             }
             return false;
         });
-        /* end iffe */
     })();
-
-    /* end ready */
 });
-//data-href
-// $(document).ready(function () {
-//   $(".clickable-row").click(function () {
-//     window.location = $(this).data("href");
-//   });
-// });
 
+// Clickable row
 $(document).ready(function () {
     $(".clickable").click(function () {
         window.location = $(this).data("href");
     });
 });
-// ===================Thuy detail=====================
-let vnd = Intl.NumberFormat("vi-VN", {
+
+// Price format
+var vnd = Intl.NumberFormat("vi-VN", {
     style: "currency",
     currency: "VND",
-    useGrouping: true,
+    useGrouping: true
 });
+
 function price_format() {
     $(".price-format").each(function () {
         var $price = $(this).data("price"),
@@ -342,55 +275,10 @@ function price_format() {
         $(this).html(html);
     });
 }
+
 $(function () {
     price_format();
 });
-$(function () {
-    app_a.setUp();
-});
 
-var app_a = {
-    tbl: "#app_a",
-    h: "input.hour_val",
-    r: "input.club_val",
-    t: ".row_total",
-    am: ".amount",
-    p: ".price",
-    setUp: function () {
-        var _this = this;
-        _this.amount();
-        $(this.tbl)
-            .find("input")
-            .change(function () {
-                _this.amount();
-            });
-    },
-    amount: function () {
-        var _this = this,
-            am = $(_this.am),
-            amount = 0;
-        $(this.tbl)
-            .find("tbody tr")
-            .each(function () {
-                amount += _this.rowtotal(this);
-            });
-        am.html(_this.toCur(amount));
-    },
-    rowtotal: function (row) {
-        var _this = this,
-            r = $(row),
-            h = r.find(_this.h),
-            p = r.find(_this.p),
-            rm = r.find(_this.r),
-            h_val = h.val(),
-            r_val = rm.val(),
-            p_val = p.val(),
-            t = r.find(_this.t),
-            total = h_val * r_val * p_val;
-        t.html(_this.toCur(total));
-        return total;
-    },
-    toCur: function (val) {
-        return vnd.format(val);
-    },
-};
+
+// App A setup

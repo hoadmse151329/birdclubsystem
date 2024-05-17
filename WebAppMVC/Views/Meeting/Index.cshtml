@@ -40,11 +40,11 @@
                             </div>
                             <div class="tabs-left-filter" style="background-color:white">
                                 <div class="input-group mb-3">
-                                 @foreach (var road in Model.Roads)
-                                   {
+                                 @foreach (var data in meetingList)
+                    {
                                         <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="road_@road.Value" value="@road.Value">
-                                        <label class="form-check-label" for="road_@road.Value">@road.Text</label>
+                                        <input class="form-check-input" type="checkbox" id="road_@data.Street" value="@data.Street">
+                                        <label class="form-check-label" for="road_@data.Street">@data.Street</label>
                                         </div>
                                }
                                 </div>
