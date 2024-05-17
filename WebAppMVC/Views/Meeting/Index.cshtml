@@ -1,12 +1,6 @@
 ﻿@model dynamic
 @{
     ViewData["Title"] = "Meeting Page";
-    string locationSearchName = string.Empty;
-    string locationSearchAddress = string.Empty;
-    string locationSearchRoad = string.Empty;
-    string locationSearchDistrict = string.Empty;
-    string locationSearchCity = string.Empty;
-
     List<BAL.ViewModels.MeetingViewModel> meetingList = Model.Meetings;
 }
 
@@ -39,35 +33,65 @@
                                 <h3 class="heading">Filter</h3>
                             </div>
                             <div class="tabs-left-filter" style="background-color:white">
-                                <div class="input-group mb-3">
-                                 @foreach (var data in meetingList)
-                    {
-                                        <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="road_@data.Street" value="@data.Street">
-                                        <label class="form-check-label" for="road_@data.Street">@data.Street</label>
-                                        </div>
-                               }
-                                </div>
-                                <div class="input-group mb-3">
-                                 @foreach (var district in Model.Districts)
-                                   {
-                                        <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="road_@district.Value" value="@district.Value">
-                                        <label class="form-check-label" for="district_@district.Value">@district.Text</label>
-                                        </div>
-                               }
-                                </div>
-                                <div class="input-group mb-3">
-                                 @foreach (var city in Model.Citys)
-                                   {
-                                        <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="road_@city.Value" value="@city.Value">
-                                        <label class="form-check-label" for="city_@city.Value">@city.Text</label>
-                                        </div>
-                               }
-                                </div>
-                               <@*
-                                <div class="input-group mb-3">
+                                <form id="filterForm">
+    <fieldset class="filter-group">
+    <legend>Road</legend>
+    <div class="checkboxes">
+        @foreach (var data in meetingList)
+        {
+            <div class="input-group">
+                <div class="form-check">
+                    <input class="form-check-input road-checkbox" type="checkbox" name="road" id="road_@data.Street" value="@data.Street">
+                    <label class="form-check-label" for="road_@data.Street">@data.Street</label>
+                </div>
+            </div>
+        }
+    </div>
+    @if (meetingList.Count() > 3)
+    {
+        <button class="toggle-btn" aria-expanded="false" aria-label="Toggle More"><span>More</span></button>
+    }
+</fieldset>
+
+<fieldset class="filter-group">
+    <legend>District</legend>
+    <div class="checkboxes">
+        @foreach (var data in meetingList)
+        {
+                    <div class="input-group">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="district" id="district_@data.District" value="@data.District">
+                            <label class="form-check-label" for="district_@data.District">@data.District</label>
+                        </div>
+                    </div>
+        }
+    </div>
+    @if (meetingList.Count() > 3)
+    {
+        <button class="toggle-btn" aria-expanded="false" aria-label="Toggle More"><span>More</span></button>
+    }
+</fieldset>
+
+<fieldset class="filter-group">
+    <legend>City</legend>
+    <div class="checkboxes">
+        @foreach (var data in meetingList)
+        {
+                    <div class="input-group">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="city" id="city_@data.City" value="@data.City">
+                            <label class="form-check-label" for="city_@data.City">@data.City</label>
+                        </div>
+                    </div>
+        }
+    </div>
+    @if (meetingList.Count() > 3)
+    {
+        <button class="toggle-btn" aria-expanded="false" aria-label="Toggle More"><span>More</span></button>
+    }
+</fieldset>
+</form>
+@*                                <div class="input-group mb-3">
                                     <select asp-for="@locationSearchRoad" asp-items="@Model.Roads" class="custom-select" name="road" id="roadDropdown">
                                         <option value="All">All Road</option>
                                     </select>
@@ -87,8 +111,8 @@
                                 @{
                                     locationSearchAddress = "," + locationSearchRoad + "," + locationSearchDistrict + "," + locationSearchCity;
                                 }
-                                <button class="button--primary " id="filterButton" type="submit"><i class="fa fa-filter"></i> Filter</button>
-                            </div>*@
+                                <button class="button--primary " id="filterButton" type="submit"><i class="fa fa-filter"></i> Filter</button>*@
+                            </div>
                         <div class="col-bg">
                         <img class="bg-1" src="~/images/meeting.png"></img>
                         <img class="bg-2" src="~/images/Club-Meeting-Minutes.jpg"></img>
@@ -215,5 +239,34 @@
     }
 });
         </script>
+<script>
+    $(document).ready(function() {
+        $('.toggle-btn').on('click', function(event) {
+            event.preventDefault(); // Prevent the default behavior of the button
+            
+            var fieldset = $(this).closest('.filter-group');
+            var checkBoxes = fieldset.find('.input-group');
+            
+            var isExpanded = $(this).attr('aria-expanded') === 'true';
+
+            if (isExpanded) {
+                checkBoxes.slice(3).hide();
+                $(this).attr('aria-expanded', 'false').find('span').text('More');
+            } else {
+                checkBoxes.show();
+                $(this).attr('aria-expanded', 'true').find('span').text('Less');
+            }
+        });
+
+        $('.filter-group').each(function() {
+            var checkBoxes = $(this).find('.input-group');
+            if (checkBoxes.length <= 3) {
+                $(this).find('.toggle-btn').attr('aria-expanded', 'true').find('span').text('Less');
+            } else {
+                checkBoxes.slice(3).hide();
+            }
+        });
+    });
+</script>
   </body>
 </html>

@@ -70,8 +70,11 @@ namespace WebAppMVC.Controllers
         }*/
         [HttpGet("Index")]
         public async Task<IActionResult> Index(
-            [FromQuery] string meetingName,
-            [FromQuery] string locationAddress)
+    [FromQuery] string meetingName,
+    [FromQuery] string locationAddress,
+    [FromQuery(Name = "road")] List<string> selectedRoads,
+    [FromQuery(Name = "district")] List<string> selectedDistricts,
+    [FromQuery(Name = "city")] List<string> selectedCities)
         {
             if (string.IsNullOrEmpty(meetingName) && string.IsNullOrEmpty(locationAddress)) MeetingAPI_URL += "/All";
             else MeetingAPI_URL += "/Search?";
@@ -88,33 +91,49 @@ namespace WebAppMVC.Controllers
                 locationAddress = locationAddress.Trim();
                 MeetingAPI_URL += $"locationAddress={Uri.EscapeDataString(locationAddress)}&";
             }
+            if (selectedRoads != null && selectedRoads.Any())
+            {
+                foreach (var road in selectedRoads)
+                {
+                    MeetingAPI_URL += $"road={Uri.EscapeDataString(road)}&";
+                }
+            }
+            if (selectedDistricts != null && selectedDistricts.Any())
+            {
+                foreach (var district in selectedDistricts)
+                {
+                    MeetingAPI_URL += $"district={Uri.EscapeDataString(district)}&";
+                }
+            }
+            if (selectedCities != null && selectedCities.Any())
+            {
+                foreach (var city in selectedCities)
+                {
+                    MeetingAPI_URL += $"city={Uri.EscapeDataString(city)}&";
+                }
+            }
             if (MeetingAPI_URL.Contains("Search"))
             {
                 MeetingAPI_URL = MeetingAPI_URL.Substring(0, MeetingAPI_URL.Length - 1); // Remove the trailing '&'
             }
 
-            string LocationAPI_URL_All_Road = "/api/Location/AllAddressRoads";
-            string LocationAPI_URL_All_District = "/api/Location/AllAddressDistricts";
-            string LocationAPI_URL_All_City = "/api/Location/AllAddressCities";
             dynamic testmodel = new ExpandoObject();
 
             methcall.SetUserDefaultData(this);
 
             string? role = HttpContext.Session.GetString(Constants.Constants.ROLE_NAME);
-
             string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
-
             string NotificationAPI_URL = "/api/Notification/Count";
 
             if (usrId != null)
             {
                 var notificationCount = await methcall.CallMethodReturnObject<GetNotificationCountResponse>(
-                _httpClient: _httpClient,
-                options: options,
-                methodName: "POST",
-                url: NotificationAPI_URL,
-                inputType: usrId,
-                _logger: _logger);
+                    _httpClient: _httpClient,
+                    options: options,
+                    methodName: "POST",
+                    url: NotificationAPI_URL,
+                    inputType: usrId,
+                    _logger: _logger);
 
                 ViewBag.NotificationCount = notificationCount.Data;
             }
@@ -138,7 +157,6 @@ namespace WebAppMVC.Controllers
                 url: LocationAPI_URL_All_City,
                 _logger: _logger);
 
-
             var listMeetResponse = await methcall.CallMethodReturnObject<GetMeetingResponseByList>(
                 _httpClient: _httpClient,
                 options: options,
@@ -155,33 +173,31 @@ namespace WebAppMVC.Controllers
                     "Error while processing your request! (Getting List Meeting!).\n List was Empty!";
                 Redirect("~/Home/Index");
             }
-            else
-            if (!listMeetResponse.Status || !listLocationRoadResponse.Status || !listLocationDistrictResponse.Status || !listLocationCityResponse.Status)
+            else if (!listMeetResponse.Status || !listLocationRoadResponse.Status || !listLocationDistrictResponse.Status || !listLocationCityResponse.Status)
             {
                 ViewBag.error =
                     "Error while processing your request! (Getting List Meeting!).\n"
                     + listMeetResponse.ErrorMessage + "\n" + listLocationRoadResponse.ErrorMessage;
                 Redirect("~/Home/Index");
             }
-            else
-            {
+            //else
+            //{
+            //    foreach (var meeting in listMeetResponse.Data)
+            //    {
+            //        if (meeting.EndDate < DateTime.Now && meeting.Status == "open registration")
+            //        {
+            //            // If the current date and time is after the end date of the meeting and its status is 'open registration',
+            //            // update the status to 'end registration'
+            //            //bool success = await UpdateMeetingStatus(meeting.MeetingId, "end registration");
 
-                foreach (var meeting in listMeetResponse.Data)
-                {
-                    if (meeting.EndDate < DateTime.Now && meeting.Status == "open registration")
-                    {
-                        // If the current date and time is after the end date of the meeting and its status is 'open registration',
-                        // update the status to 'end registration'
-                        //bool success = await UpdateMeetingStatus(meeting.MeetingId, "end registration");
-
-                        //if (!success)
-                        //{
-                        //    ViewBag.error = "Error while updating meeting status.";
-                        //    return View("Index", testmodel);
-                        //}
-                    }
-                }
-            }
+            //            //if (!success)
+            //            //{
+            //            //    ViewBag.error = "Error while updating meeting status.";
+            //            //    return View("Index", testmodel);
+            //            //}
+            //        }
+            //    }
+            //}
             testmodel.Meetings = listMeetResponse.Data;
 
             List<SelectListItem> roads = new();
@@ -211,7 +227,7 @@ namespace WebAppMVC.Controllers
 
 
 
-            [HttpGet("Post/{id:int}")]
+        [HttpGet("Post/{id:int}")]
 		public async Task<IActionResult> MeetingPost(
             [FromRoute][Required] int id
             )
