@@ -2,8 +2,10 @@
 
 namespace WebAppMVC.Models.Member
 {
-    public class GetMemberProfileResponse : DefaultResponseViewModel
+    public class GetMemberProfileResponse : DefaultResponseViewModel<MemberViewModel>
     {
-        public MemberViewModel? Data { get; set; }
+        public GetMemberProfileResponse(bool status, string? errorMessage, string? successMessage) : base(status, errorMessage, successMessage)
+        {
+        }
     }
 }

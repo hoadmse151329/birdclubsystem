@@ -88,13 +88,13 @@ namespace WebAPI.Controllers
                     {
                         Status = true,
                         Message = "New notification created!",
-                        Data = true
+                        BoolData = true
                     });
                 else return StatusCode(StatusCodes.Status500InternalServerError, new
                 {
                     Status = true,
                     Message = "Notification Create Failed!",
-                    Data = false
+                    BoolData = false
                 });
             }
             catch (Exception ex)
@@ -142,7 +142,7 @@ namespace WebAPI.Controllers
                 return Ok(new
                 {
                     Status = true,
-                    Data = result
+                    BoolData = result
                 });
             }
             catch (Exception ex)
@@ -182,7 +182,7 @@ namespace WebAPI.Controllers
                 return Ok(new
                 {
                     Status = true,
-                    Data = result
+                    IntData = result
                 });
             }
             catch (Exception ex)

@@ -10,6 +10,7 @@ using Azure;
 using BAL.ViewModels;
 using Org.BouncyCastle.Ocsp;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using WebAppMVC.Models;
 
 namespace WebAppMVC.Constants
 {
@@ -55,10 +56,11 @@ namespace WebAppMVC.Constants
             if (!response.IsSuccessStatusCode)
             {
                 _logger.LogError("Error while processing your request!: " + response.StatusCode + "\t\nApi Url: " + url + "\t\nError Message: " + jsonResponse);
-                return null;
+                var error = JsonSerializer.Deserialize<T>(jsonResponse, options);
+                return error;
             };
             var result = JsonSerializer.Deserialize<T>(jsonResponse, options);
-            _logger.LogInformation("Processing your Request Successfully!: " + response.StatusCode + "\t\nApi Url: " + url + "\t\nSuccess Message: " + jsonResponse);
+            _logger.LogInformation("Processing your request Successfully!: " + response.StatusCode + "\t\nApi Url: " + url + "\t\nSuccess Message: " + jsonResponse);
             return result;
         }
 

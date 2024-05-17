@@ -2,8 +2,10 @@
 
 namespace WebAppMVC.Models.Meeting
 {
-	public class GetMeetingResponseByList : DefaultResponseViewModel
+	public class GetMeetingResponseByList : DefaultResponseViewModel<List<MeetingViewModel>>
 	{
-		public List<MeetingViewModel>? Data { get; set; }
+        public GetMeetingResponseByList(bool status, string? errorMessage, string? successMessage) : base(status, errorMessage, successMessage)
+        {
+        }
 	}
 }

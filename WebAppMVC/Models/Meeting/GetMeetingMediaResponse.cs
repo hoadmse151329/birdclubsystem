@@ -1,7 +1,9 @@
 ﻿namespace WebAppMVC.Models.Meeting
 {
-    public class GetMeetingMediaResponse : DefaultResponseViewModel
+    public class GetMeetingMediaResponse : DefaultResponseViewModel<object>
     {
-        public bool? Data { get; set; }
+        public GetMeetingMediaResponse(bool status, string? errorMessage, string? successMessage) : base(status, errorMessage, successMessage)
+        {
+        }
     }
 }

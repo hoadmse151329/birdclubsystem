@@ -74,7 +74,7 @@ namespace WebAppMVC.Controllers
                 inputType: usrId,
                 _logger: _logger);
 
-                ViewBag.NotificationCount = notificationCount.Data;
+                ViewBag.NotificationCount = notificationCount.IntData;
             }
 
             var memberDetails = await methcall.CallMethodReturnObject<GetMemberProfileResponse>(
@@ -163,7 +163,7 @@ namespace WebAppMVC.Controllers
                 inputType: usrId,
                 _logger: _logger);
 
-                ViewBag.NotificationCount = notificationCount.Data;
+                ViewBag.NotificationCount = notificationCount.IntData;
             }
 
             string MemberMeetingPartAPI_URL = "/api/Meeting/Participation/AllMeetings";
@@ -354,7 +354,7 @@ namespace WebAppMVC.Controllers
                 inputType: usrId,
                 _logger: _logger);
 
-                ViewBag.NotificationCount = notificationCount.Data;
+                ViewBag.NotificationCount = notificationCount.IntData;
             }
 
             dynamic birdModel = new ExpandoObject();
@@ -496,7 +496,7 @@ namespace WebAppMVC.Controllers
                 inputType: usrId,
                 _logger: _logger);
 
-                ViewBag.NotificationCount = notificationCount.Data;
+                ViewBag.NotificationCount = notificationCount.IntData;
             }
 
             dynamic transactionModel = new ExpandoObject();
@@ -552,7 +552,7 @@ namespace WebAppMVC.Controllers
                 inputType: usrId,
                 _logger: _logger);
 
-                ViewBag.NotificationCount = notificationCount.Data;
+                ViewBag.NotificationCount = notificationCount.IntData;
             }
 
             dynamic notificationModel = new ExpandoObject();

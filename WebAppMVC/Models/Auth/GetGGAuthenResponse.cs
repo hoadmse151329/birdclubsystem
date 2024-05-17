@@ -2,8 +2,10 @@
 
 namespace WebAppMVC.Models.Auth
 {
-	public class GetGGAuthenResponse : DefaultResponseViewModel
+	public class GetGGAuthenResponse : DefaultResponseViewModel<GGAuthenResponse>
 	{
-		public GGAuthenResponse? Data { get; set; }
+        public GetGGAuthenResponse(bool status, string? errorMessage, string? successMessage) : base(status, errorMessage, successMessage)
+        {
+        }
 	}
 }

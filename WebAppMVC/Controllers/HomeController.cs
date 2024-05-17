@@ -83,7 +83,7 @@ namespace WebAppMVC.Controllers
                 inputType: usrId,
                 _logger: _logger);
 
-                ViewBag.NotificationCount = notificationCount.Data;
+                ViewBag.NotificationCount = notificationCount.IntData;
             }
 
             var listFieldTripResponse = await methcall.CallMethodReturnObject<GetFieldTripResponseByList>(

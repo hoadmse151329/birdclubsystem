@@ -111,12 +111,12 @@ namespace WebAppMVC.Controllers
                 var notificationCount = await methcall.CallMethodReturnObject<GetNotificationCountResponse>(
                 _httpClient: _httpClient,
                 options: options,
-                methodName: "POST",
+                methodName: Constants.Constants.POST_METHOD,
                 url: NotificationAPI_URL,
                 inputType: usrId,
                 _logger: _logger);
 
-                ViewBag.NotificationCount = notificationCount.Data;
+                ViewBag.NotificationCount = notificationCount.IntData;
             }
 
             var listLocationRoadResponse = await methcall.CallMethodReturnObject<GetLocationAddressResponseByList>(
@@ -238,7 +238,7 @@ namespace WebAppMVC.Controllers
                 inputType: usrId,
                 _logger: _logger);
 
-                ViewBag.NotificationCount = notificationCount.Data;
+                ViewBag.NotificationCount = notificationCount.IntData;
             }
 
             GetMeetingPostResponse? meetPostResponse = new();

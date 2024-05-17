@@ -87,6 +87,8 @@ namespace WebAppMVC.Constants
 
         public readonly static string NOTIFICATION_TYPE_ACCOUNT_REGISTER = "Account Registration";
         public readonly static string NOTIFICATION_TYPE_MEETING_REGISTER = "Meeting Registration";
+        public readonly static string NOTIFICATION_TYPE_FIELDTRIP_REGISTER = "FieldTrip Registration";
+        public readonly static string NOTIFICATION_TYPE_CONTEST_REGISTER = "Contest Registration";
 
         public readonly static string NOTIFICATION_DESCRIPTION_ACCOUNT_REGISTER =
             "You have successfully joined ChaoMao Bird Club!";
@@ -111,15 +113,23 @@ namespace WebAppMVC.Constants
 		public readonly static string PUT_METHOD = "PUT";
 		public readonly static string DELETE_METHOD = "DELETE";
 
-        public const string GOOGLE_CLIENT_ID = "512436843720-39hmp0e2e18a6t2mjeqiuhda548t4s8r.apps.googleusercontent.com";
-        public const string GOOGLE_CLIENT_SECRET = "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";
+        public const string GOOGLE_CLIENT_ID = "Authentication:Google:ClientId";
+        public const string GOOGLE_CLIENT_SECRET = "Authentication:Google:ClientSecret";
+
         public const string GOOGLE_ACCESS_TOKEN_KEY_NAME = ".Token.access_token";
         public const string GOOGLE_ACC_COOKIE = "New-Membership-Google-Registration-Cookie";
+
         public const string GOOGLE_REDIRECT_URI = "https://localhost:7005/Auth/GoogleResponse";
+        public const string GOOGLE_REDIRECT_URI_PATH = "/Auth/GoogleResponse";
+
         public const string GOOGLE_GRANT_TYPE = "authorization_code";
+
         public const string GOOGLE_LINK_GET_TOKEN = "https://accounts.google.com/o/oauth2/token";
         public const string GOOGLE_LINK_GET_USER_INFO = "https://www.googleapis.com/oauth2/v1/userinfo?access_token=";
 
         public readonly static string TEMP_FILE_LOCATION_FOLDER = "wwwroot/tempFiles";
+
+        public readonly static string SYSTEM_DEFAULT_ACCOUNT_USR_NAME = "Authentication:DefaultSystemLogin:Username";
+        public readonly static string SYSTEM_DEFAULT_ACCOUNT_USR_PASSWORD = "Authentication:DefaultSystemLogin:Password";
     }
 }

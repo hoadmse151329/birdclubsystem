@@ -18,7 +18,7 @@ using WebAppMVC.Models.Member;
 using WebAppMVC.Models.Notification;
 using WebAppMVC.Models.Transaction;
 using WebAppMVC.Models.VnPay;
-using WebAppMVC.Services;
+using WebAppMVC.Services.Interfaces;
 using static Org.BouncyCastle.Math.EC.ECCurve;
 
 namespace WebAppMVC.Controllers
@@ -82,7 +82,7 @@ namespace WebAppMVC.Controllers
                 inputType: usrId,
                 _logger: _logger);
 
-                ViewBag.NotificationCount = notificationCount.Data;
+                ViewBag.NotificationCount = notificationCount.IntData;
             }
 
             var listLocationRoadResponse = await methcall.CallMethodReturnObject<GetLocationAddressResponseByList>(
@@ -180,7 +180,7 @@ namespace WebAppMVC.Controllers
                 inputType: usrId,
                 _logger: _logger);
 
-                ViewBag.NotificationCount = notificationCount.Data;
+                ViewBag.NotificationCount = notificationCount.IntData;
             }
 
             dynamic fieldtripDetail = new ExpandoObject();

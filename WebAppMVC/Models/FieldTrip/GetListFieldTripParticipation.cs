@@ -2,8 +2,10 @@
 
 namespace WebAppMVC.Models.FieldTrip
 {
-    public class GetListFieldTripParticipation : DefaultResponseViewModel
+    public class GetListFieldTripParticipation : DefaultResponseViewModel<List<FieldTripParticipantViewModel>>
     {
-        public List<FieldTripParticipantViewModel>? Data { get; set; }
+        public GetListFieldTripParticipation(bool status, string? errorMessage, string? successMessage) : base(status, errorMessage, successMessage)
+        {
+        }
     }
 }
