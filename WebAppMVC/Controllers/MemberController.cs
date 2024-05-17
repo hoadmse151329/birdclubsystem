@@ -404,7 +404,6 @@ namespace WebAppMVC.Controllers
                 methodName: Constants.Constants.GET_METHOD,
                 url: MemberBirdAPI_URL,
                 _logger: _logger,
-                inputType: usrId,
                 accessToken: accToken
                 );
             if (memberBirdDetail == null)
