@@ -520,7 +520,7 @@ namespace WebAPI.Controllers
                 });
             }
         }
-        [HttpPost("RemoveParticipant/{id}")]
+        [HttpPost("{id:int}/Participant/Remove")]
         [Authorize(Roles = "Member,Manager")]
         [ProducesResponseType(typeof(MeetingParticipantViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

@@ -44,6 +44,7 @@ namespace BAL.AutoMapperProfile
                 .AfterMap((src, dest) =>
                 {
                     dest.EventId = src.MeetingId;
+                    dest.EventIdFull = "meeting" + src.MeetingId;
                     dest.EventName = src.MeetingDetail.MeetingName;
                     dest.EventType = "Meeting";
                     dest.EventHost = src.MeetingDetail.Host;
@@ -72,6 +73,7 @@ namespace BAL.AutoMapperProfile
                 .AfterMap((src, dest) =>
                 {
                     dest.EventId = src.TripId;
+                    dest.EventIdFull = "fieldtrip" + src.TripId;
                     dest.EventName = src.Trip.TripName;
                     dest.EventType = "FieldTrip";
                     dest.EventHost = src.Trip.Host;
@@ -89,6 +91,7 @@ namespace BAL.AutoMapperProfile
                 .AfterMap((src, dest) =>
                 {
                     dest.EventId = src.ContestId;
+                    dest.EventIdFull = "contest" + src.ContestId;
                     dest.EventName = src.ContestDetail.ContestName;
                     dest.EventType = "Contest";
                     dest.EventHost = src.ContestDetail.Host;
@@ -187,6 +190,7 @@ namespace BAL.AutoMapperProfile
                 .ReverseMap();
             CreateMap<Bird, BirdViewModel>() .ReverseMap();
             CreateMap<Notification, NotificationViewModel>() .ReverseMap();
+            CreateMap<Feedback, FeedbackViewModel>() .ReverseMap();
         }
     }
 }

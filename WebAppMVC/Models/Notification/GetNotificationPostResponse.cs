@@ -1,7 +1,9 @@
-﻿namespace WebAppMVC.Models.Notification
+﻿using BAL.ViewModels;
+
+namespace WebAppMVC.Models.Notification
 {
     public class GetNotificationPostResponse : DefaultResponseViewModel
     {
-        public bool? Data { get; set; }
+        public NotificationViewModel? Data { get; set; }
     }
 }

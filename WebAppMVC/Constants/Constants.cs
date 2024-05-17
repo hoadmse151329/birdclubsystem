@@ -75,9 +75,10 @@ namespace WebAppMVC.Constants
         public readonly static string EVENT_STATUS_ONGOING = "Ongoing";
         public readonly static string EVENT_STATUS_NAME_ONGOING = "Ongoing";
 
-        public readonly static string BIRD_STATUS_AVAILABLE = "Active";
+        public readonly static string BIRD_STATUS_ACTIVE = "Active";
         public readonly static string BIRD_STATUS_INJURED = "Injured";
-        public readonly static string BIRD_STATUS_UNAVAILABLE = "Inactive";
+        public readonly static string BIRD_STATUS_INACTIVE = "Inactive";
+        public readonly static string BIRD_STATUS_UNAVAILABLE = "Unavailable";
 
         public readonly static string EVENT_PARTICIPANT_STATUS_NOT_CHECKED_IN = "Not Checked-In";
         public readonly static string EVENT_PARTICIPANT_STATUS_CHECKED_IN = "Checked-In";
@@ -87,9 +88,26 @@ namespace WebAppMVC.Constants
 
         public readonly static string NOTIFICATION_TYPE_ACCOUNT_REGISTER = "Account Registration";
         public readonly static string NOTIFICATION_TYPE_MEETING_REGISTER = "Meeting Registration";
+        public readonly static string NOTIFICATION_TYPE_FIELDTRIP_REGISTER = "Field Trip Registration";
+        public readonly static string NOTIFICATION_TYPE_CONTEST_REGISTER = "Contest Registration";
+        public readonly static string NOTIFICATION_TYPE_MEETING_DEREGISTER = "Meeting Deregistration";
+        public readonly static string NOTIFICATION_TYPE_FIELDTRIP_DEREGISTER = "Field Trip Deregistration";
+        public readonly static string NOTIFICATION_TYPE_CONTEST_DEREGISTER = "Contest Deregistration";
 
         public readonly static string NOTIFICATION_DESCRIPTION_ACCOUNT_REGISTER =
             "You have successfully joined ChaoMao Bird Club!";
+        public readonly static string NOTIFICATION_DESCRIPTION_MEETING_REGISTER =
+            "You have successfully registered in the meeting: ";
+        public readonly static string NOTIFICATION_DESCRIPTION_FIELDTRIP_REGISTER =
+            "You have successfully registered in the field trip: ";
+        public readonly static string NOTIFICATION_DESCRIPTION_CONTEST_REGISTER =
+            "You have successfully registered in the bird contest: ";
+        public readonly static string NOTIFICATION_DESCRIPTION_MEETING_DEREGISTER =
+            "You no longer register in the meeting: ";
+        public readonly static string NOTIFICATION_DESCRIPTION_FIELDTRIP_DEREGISTER =
+            "You no longer register in the field trip: ";
+        public readonly static string NOTIFICATION_DESCRIPTION_CONTEST_DEREGISTER =
+            "You no longer register in the contest: ";
 
         public readonly static string NOTIFICATION_STATUS_UNREAD = "Unread";
         public readonly static string NOTIFICATION_STATUS_READ = "Read";

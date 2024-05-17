@@ -228,5 +228,35 @@ namespace WebAPI.Controllers
                 });
             }
         }
+        [HttpPost("Feedback/Create")]
+        [Authorize(Roles = "Member")]
+        [ProducesResponseType(typeof(FeedbackViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> CreateFeedback([FromBody] FeedbackViewModel feedback)
+        {
+            try
+            {
+                return null;
+            }
+            catch (Exception ex)
+            {
+                if (ex.InnerException != null)
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = ex.Message,
+                        InnerExceptionMessage = ex.InnerException.Message
+                    });
+                }
+                // Log the exception if needed
+                return BadRequest(new
+                {
+                    Status = false,
+                    ErrorMessage = ex.Message
+                });
+            }
+        }
     }
 }

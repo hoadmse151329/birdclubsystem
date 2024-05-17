@@ -13,6 +13,7 @@ using System.Text.Encodings.Web;
 using Microsoft.AspNetCore.Http.Json;
 using System;
 using WebAppMVC.Models.Notification;
+using BAL.ViewModels.Event;
 
 namespace WebAppMVC.Controllers
 {
@@ -71,19 +72,29 @@ namespace WebAppMVC.Controllers
             TempData["USER_NAME"] = usrname;
             TempData["IMAGE_PATH"] = imagepath;
 
-            string NotificationAPI_URL = "/api/Notification/Count";
-
             if (usrId != null)
             {
+                string NotificationCountAPI_URL = "/api/Notification/Count";
+                string NotificationTitleAPI_URL = "/api/Notification/Unread";
+
                 var notificationCount = await methcall.CallMethodReturnObject<GetNotificationCountResponse>(
                 _httpClient: _httpClient,
                 options: options,
                 methodName: "POST",
-                url: NotificationAPI_URL,
+                url: NotificationCountAPI_URL,
                 inputType: usrId,
                 _logger: _logger);
 
+                var notificationTitle = await methcall.CallMethodReturnObject<GetNotificationTitleResponse>(
+                _httpClient: _httpClient,
+                options: options,
+                methodName: "POST",
+                url: NotificationTitleAPI_URL,
+                inputType: usrId,
+                _logger: _logger);
+                
                 ViewBag.NotificationCount = notificationCount.Data;
+                ViewBag.NotificationTitle = notificationTitle.Data.ToList();
             }
 
             var listFieldTripResponse = await methcall.CallMethodReturnObject<GetFieldTripResponseByList>(

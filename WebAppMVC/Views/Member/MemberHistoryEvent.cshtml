@@ -97,7 +97,7 @@
                                                             <tr class="clickable-row" data-href="@Url.Action(events[i].EventType + "Post", events[i].EventType, new { id = events[i].EventId })"
                                                                 data-bs-toggle="tooltip" data-bs-placement="right"
                                                                 title="More Details">
-                                                                <td class="sorting_1">@events[i].EventId</td>
+                                                                <td class="sorting_1">@events[i].EventIdFull</td>
                                                                 <td>@events[i].EventName</td>
                                                                 <td>@events[i].EventType</td>
                                                                 <td>@events[i].RegistrationDeadline</td>
@@ -276,7 +276,7 @@
                                                                 Feedback Event
                                                             </h4>
                                                         </div>
-                                                        <form action="MemberController" method="post">
+                                                        
                                                             <div class="modal-body">
                                                                 <div class="row p-4">
                                                                     <div class="col-12">
@@ -354,11 +354,11 @@
                                                                     <button class="button--primary bg-danger text-white"
                                                                             type="button"
                                                                             data-dismiss="modal">
-                                                                        Cancle
+                                                                        Cancel
                                                                     </button>
                                                                 </div>
                                                             </div>
-                                                        </form>
+                                                        
                                                     </div>
                                                 </div>
                                             </div>

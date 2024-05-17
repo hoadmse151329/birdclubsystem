@@ -312,14 +312,14 @@ namespace WebAppMVC.Controllers
 
 			NotificationViewModel notif = new NotificationViewModel()
 			{
-
+				NotificationId = Guid.NewGuid().ToString(),
 				Title = Constants.Constants.NOTIFICATION_TYPE_ACCOUNT_REGISTER,
 				Description = Constants.Constants.NOTIFICATION_DESCRIPTION_ACCOUNT_REGISTER,
 				Date = DateTime.Now,
 				UserId = transactionResponse.Data.UserId,
 				Status = Constants.Constants.NOTIFICATION_STATUS_UNREAD
 			};
-            string NotificationAPI_URL = "/api/Notification/" + transactionResponse.Data.UserId + "/Create";
+            string NotificationAPI_URL = "/api/Notification/CreateRegister";
 
             var notificationResponse = await methcall.CallMethodReturnObject<GetNotificationPostResponse>(
 					_httpClient: client,
@@ -340,7 +340,7 @@ namespace WebAppMVC.Controllers
             {
                 _logger.LogInformation("Error while processing your request: " + notificationResponse.Status + " , Error Message: " + notificationResponse.ErrorMessage);
                 ViewBag.Error =
-                    "Error while processing your request! (Create Meeting Media!).\n"
+                    "Error while processing your request! (Create Notification!).\n"
                     + notificationResponse.ErrorMessage;
                 return RedirectToAction("Login", "Auth");
             }
