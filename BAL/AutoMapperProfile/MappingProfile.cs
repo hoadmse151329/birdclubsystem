@@ -40,6 +40,7 @@ namespace BAL.AutoMapperProfile
                 })
                 ;
             CreateMap<Member, GetMemberStatus>().ReverseMap();
+            CreateMap<Member, GetMembershipExpire>().ReverseMap();
             CreateMap<MeetingParticipant, GetEventParticipation>()
                 .AfterMap((src, dest) =>
                 {

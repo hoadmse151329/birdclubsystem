@@ -154,7 +154,8 @@ namespace WebAPI.Controllers
                     return NotFound(new
                     {
                         Status = false,
-                        ErrorMessage = "Notification Create Failed!"
+                        ErrorMessage = "Notification Create Failed!",
+                        BoolData = true
                     });
                 }
                 return Ok(new
@@ -209,7 +210,7 @@ namespace WebAPI.Controllers
                 return Ok(new
                 {
                     Status = true,
-                    Data = result
+                    BoolData = result
                 });
             }
             catch (Exception ex)
@@ -249,7 +250,7 @@ namespace WebAPI.Controllers
                 return Ok(new
                 {
                     Status = true,
-                    Data = result
+                    IntData = result
                 });
             }
             catch (Exception ex)

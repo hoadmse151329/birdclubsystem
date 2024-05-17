@@ -129,7 +129,7 @@ namespace WebAPI.Controllers
                     {
                         Status = true,
                         Message = "Bird create failed, bird name already existed",
-                        Data = false
+                        BoolData = false
                     });
                 }
                 if (await _birdService.Create(bird.MemberId, bird))
@@ -144,9 +144,9 @@ namespace WebAPI.Controllers
                 }
                 else return StatusCode(StatusCodes.Status500InternalServerError, new
                 {
-                    Status = true,
+                    Status = false,
                     Message = "Bird Create Failed!",
-                    Data = false
+                    BoolData = false
                 });
             }
             catch (Exception ex)

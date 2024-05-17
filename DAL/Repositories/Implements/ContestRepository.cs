@@ -41,5 +41,10 @@ namespace DAL.Repositories.Implements
         {
             return _context.Contests.SingleOrDefault(c => c.ContestId == id);
         }
+
+        public async Task<Contest?> GetContestByIdWithoutInclude(int id)
+        {
+            return _context.Contests.AsNoTracking().SingleOrDefault(c => c.ContestId == id);
+        }
     }
 }

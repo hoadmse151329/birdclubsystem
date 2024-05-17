@@ -24,7 +24,10 @@ namespace WebAppMVC.Controllers
     [Route("Meeting")]
 	public class MeetingController : Controller
 	{
-		private readonly ILogger<MeetingController> _logger;
+        private readonly string LocationAPI_URL_All_Road = "/api/Location/AllAddressRoads";
+        private readonly string LocationAPI_URL_All_District = "/api/Location/AllAddressDistricts";
+        private readonly string LocationAPI_URL_All_City = "/api/Location/AllAddressCities";
+        private readonly ILogger<MeetingController> _logger;
         private readonly IConfiguration _config;
 		private readonly HttpClient _httpClient = null;
 		private string MeetingAPI_URL = "";
@@ -68,10 +71,10 @@ namespace WebAppMVC.Controllers
             }
         }*/
         [HttpGet("Index")]
-		public async Task<IActionResult> Index(
-            [FromQuery] string meetingName, 
+        public async Task<IActionResult> Index(
+            [FromQuery] string meetingName,
             [FromQuery] string locationAddress)
-		{
+        {
             if (string.IsNullOrEmpty(meetingName) && string.IsNullOrEmpty(locationAddress)) MeetingAPI_URL += "/All";
             else MeetingAPI_URL += "/Search?";
 
@@ -110,12 +113,12 @@ namespace WebAppMVC.Controllers
                 var notificationCount = await methcall.CallMethodReturnObject<GetNotificationCountResponse>(
                 _httpClient: _httpClient,
                 options: options,
-                methodName: "POST",
+                methodName: Constants.Constants.POST_METHOD,
                 url: NotificationAPI_URL,
                 inputType: usrId,
                 _logger: _logger);
 
-                ViewBag.NotificationCount = notificationCount.Data;
+                ViewBag.NotificationCount = notificationCount.IntData;
             }
 
             var listLocationRoadResponse = await methcall.CallMethodReturnObject<GetLocationAddressResponseByList>(
@@ -139,10 +142,10 @@ namespace WebAppMVC.Controllers
 
 
             var listMeetResponse = await methcall.CallMethodReturnObject<GetMeetingResponseByList>(
-				_httpClient: _httpClient,
-				options: options,
-				methodName: Constants.Constants.POST_METHOD,
-				url: MeetingAPI_URL,
+                _httpClient: _httpClient,
+                options: options,
+                methodName: Constants.Constants.POST_METHOD,
+                url: MeetingAPI_URL,
                 inputType: role,
                 _logger: _logger);
 
@@ -164,27 +167,27 @@ namespace WebAppMVC.Controllers
             }
             else
             {
-                
-        foreach (var meeting in listMeetResponse.Data)
-        {
-            if (meeting.EndDate < DateTime.Now && meeting.Status == "open registration")
-            {
-                // If the current date and time is after the end date of the meeting and its status is 'open registration',
-                // update the status to 'end registration'
-                //bool success = await UpdateMeetingStatus(meeting.MeetingId, "end registration");
 
-                //if (!success)
-                //{
-                //    ViewBag.error = "Error while updating meeting status.";
-                //    return View("Index", testmodel);
-                //}
+                foreach (var meeting in listMeetResponse.Data)
+                {
+                    if (meeting.EndDate < DateTime.Now && meeting.Status == "open registration")
+                    {
+                        // If the current date and time is after the end date of the meeting and its status is 'open registration',
+                        // update the status to 'end registration'
+                        //bool success = await UpdateMeetingStatus(meeting.MeetingId, "end registration");
+
+                        //if (!success)
+                        //{
+                        //    ViewBag.error = "Error while updating meeting status.";
+                        //    return View("Index", testmodel);
+                        //}
+                    }
+                }
             }
-        }
-    }
             testmodel.Meetings = listMeetResponse.Data;
 
             List<SelectListItem> roads = new();
-            foreach(var road in listLocationRoadResponse.Data)
+            foreach (var road in listLocationRoadResponse.Data)
             {
                 roads.Add(new SelectListItem(text: road, value: road));
             }
@@ -206,10 +209,11 @@ namespace WebAppMVC.Controllers
             testmodel.Cities = cities;
 
             return View(testmodel);
-		}
+        }
 
 
-		[HttpGet("Post/{id:int}")]
+
+            [HttpGet("Post/{id:int}")]
 		public async Task<IActionResult> MeetingPost(
             [FromRoute][Required] int id
             )
@@ -236,7 +240,7 @@ namespace WebAppMVC.Controllers
                 inputType: usrId,
                 _logger: _logger);
 
-                ViewBag.NotificationCount = notificationCount.Data;
+                ViewBag.NotificationCount = notificationCount.IntData;
             }
 
             GetMeetingPostResponse? meetPostResponse = new();

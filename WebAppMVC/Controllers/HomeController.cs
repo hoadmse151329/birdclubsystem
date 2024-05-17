@@ -84,7 +84,7 @@ namespace WebAppMVC.Controllers
                 url: NotificationCountAPI_URL,
                 inputType: usrId,
                 _logger: _logger);
-
+                
                 var notificationTitle = await methcall.CallMethodReturnObject<GetNotificationTitleResponse>(
                 _httpClient: _httpClient,
                 options: options,
@@ -93,7 +93,7 @@ namespace WebAppMVC.Controllers
                 inputType: usrId,
                 _logger: _logger);
                 
-                ViewBag.NotificationCount = notificationCount.Data;
+                ViewBag.NotificationCount = notificationCount.IntData;
                 ViewBag.NotificationTitle = notificationTitle.Data.ToList();
             }
 

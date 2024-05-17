@@ -133,10 +133,11 @@ namespace DAL.Repositories.Implements
 
                         conpart.Elo = updatedElo;
 
-                        if (isContestEnded)
-                        {
-                            conpart.BirdDetails.Elo = conpart.Elo;
-                        }
+                        _context.Update(conpart);
+                    }
+                    if (isContestEnded)
+                    {
+                        conpart.BirdDetails.Elo = conpart.Elo;
                         _context.Update(conpart);
                     }
                 }
