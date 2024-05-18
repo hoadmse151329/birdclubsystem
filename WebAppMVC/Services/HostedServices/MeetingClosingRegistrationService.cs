@@ -16,7 +16,7 @@ namespace WebAppMVC.Services.HostedServices
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly IConfiguration _config;
         private Timer _timer;
-        private string MembershipAPI_URL = "/api/Meeting/All/Status/OpenRegistration";
+        private string MembershipAPI_URL = "/api/Meeting/All/Status/";
         private string MembershipUpdateAPI_URL = "/api/Meeting/Update/Status";
         private readonly MediaTypeWithQualityHeaderValue contentType = new("application/json");
         private readonly JsonSerializerOptions jsonOptions = new JsonSerializerOptions
@@ -48,7 +48,7 @@ namespace WebAppMVC.Services.HostedServices
             {
                 var _systemLoginService = scope.ServiceProvider.GetRequiredService<ISystemLoginService>();
                 var today = DateTime.UtcNow;
-                int accUpdateExpired = 0;
+                int meetingStatusUpdated = 0;
 
                 var client = _httpClientFactory.CreateClient();
 
@@ -57,46 +57,45 @@ namespace WebAppMVC.Services.HostedServices
 
                 string? accToken = await _systemLoginService.GetTokenAsync();
 
-                var listMembership = await methcall.CallMethodReturnObject<GetListMemberResponse>(
+                var listMeetingStatus = await methcall.CallMethodReturnObject<GetListMeetingStatus>(
                                     _httpClient: client,
                                     options: jsonOptions,
                                     methodName: Constants.Constants.GET_METHOD,
                                     url: MembershipAPI_URL,
                                     _logger: _logger,
                                     accessToken: accToken);
-                if (listMembership == null || !listMembership.Status)
+                if (listMeetingStatus == null || !listMeetingStatus.Status)
                 {
-                    _logger.LogError("Failed to retrieving List of members");
+                    _logger.LogError("Failed to retrieving list of meetings");
                     return;
                 }
-                _logger.LogInformation("Succeed Retrieved list of {Count} members via API.", listMembership.Data.Count);
-                foreach (var membership in listMembership.Data)
+                _logger.LogInformation("Succeed Retrieved list of {Count} meetings via API.", listMeetingStatus.Data.Count);
+                foreach (var meetingToUpdate in listMeetingStatus.Data)
                 {
-                    if (membership.ExpiryDate <= today && !membership.Status.Equals(Constants.Constants.MEMBER_STATUS_EXPIRED))
+                    if (meetingToUpdate.OpenRegistration <= today && meetingToUpdate.Status.Equals(Constants.Constants.EVENT_STATUS_ON_HOLD))
                     {
-                        membership.Status = Constants.Constants.MEMBER_STATUS_EXPIRED;
-                        membership.ExpiryDate = null;
+                        meetingToUpdate.Status = Constants.Constants.EVENT_STATUS_OPEN_REGISTRATION;
                         // Call the API to update the membership status
                         var memberStatusResponse = await methcall.CallMethodReturnObject<GetMemberStatusExpireResponse>(
                                         _httpClient: client,
                                         options: jsonOptions,
                                         methodName: Constants.Constants.PUT_METHOD,
                                         url: MembershipUpdateAPI_URL,
-                                        inputType: membership,
+                                        inputType: meetingToUpdate,
                                         _logger: _logger,
                                         accessToken: accToken);
                         if (memberStatusResponse == null || !memberStatusResponse.Status || memberStatusResponse.Data == null)
                         {
-                            _logger.LogError("Failed to update Member's membership status with ID: {MemberId} via API.", membership.MemberId);
+                            _logger.LogError("Failed to update Member's membership status with ID: {MeetingId} via API.", meetingToUpdate.MeetingId);
                         }
                         else
                         {
-                            accUpdateExpired += 1;
-                            _logger.LogInformation("Succeed updating Member's membership status with ID: {MemberId} via API.", membership.MemberId);
+                            meetingStatusUpdated += 1;
+                            _logger.LogInformation("Succeed updating Member's membership status with ID: {MeetingId} via API.", meetingToUpdate.MeetingId);
                         }
                     }
                 }
-                _logger.LogInformation("Membership Expiry Service has updated {accUpdateExpired} memberships to 'Expired' status.", accUpdateExpired);
+                _logger.LogInformation("Membership Expiry Service has updated {meetingStatusUpdated} memberships to 'Expired' status.", meetingStatusUpdated);
             }
         }
 

@@ -52,7 +52,7 @@ namespace WebAppMVC.Services.HostedServices
             {
                 var _systemLoginService = scope.ServiceProvider.GetRequiredService<ISystemLoginService>();
                 var today = DateTime.UtcNow;
-                int accUpdateExpired = 0;
+                int accStatusUpdateExpired = 0;
 
                 var client = _httpClientFactory.CreateClient();
 
@@ -70,13 +70,13 @@ namespace WebAppMVC.Services.HostedServices
                                     accessToken: accToken);
                 if (listMembership == null || !listMembership.Status)
                 {
-                    _logger.LogError("Failed to retrieving List of members");
+                    _logger.LogError("Failed to retrieving list of members");
                     return;
                 }
                 _logger.LogInformation("Succeed Retrieved list of {Count} members via API.", listMembership.Data.Count);
                 foreach (var membership in listMembership.Data)
                 {
-                    if (membership.ExpiryDate <= today && !membership.Status.Equals(Constants.Constants.MEMBER_STATUS_EXPIRED))
+                    if (membership.ExpiryDate <= today && membership.Status.Equals(Constants.Constants.MEMBER_STATUS_ACTIVE))
                     {
                         membership.Status = Constants.Constants.MEMBER_STATUS_EXPIRED;
                         membership.ExpiryDate = null;
@@ -95,12 +95,12 @@ namespace WebAppMVC.Services.HostedServices
                         }
                         else
                         {
-                            accUpdateExpired += 1;
+                            accStatusUpdateExpired += 1;
                             _logger.LogInformation("Succeed updating Member's membership status with ID: {MemberId} via API.", membership.MemberId);
                         }
                     }
                 }
-                _logger.LogInformation("Membership Expiry Service has updated {accUpdateExpired} memberships to 'Expired' status.", accUpdateExpired);
+                _logger.LogInformation("Membership Expiry Service has updated {accStatusUpdateExpired} memberships to 'Expired' status.", accStatusUpdateExpired);
             }
         }
 
