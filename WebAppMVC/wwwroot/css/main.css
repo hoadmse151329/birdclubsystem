@@ -120,7 +120,7 @@ body .lb-cancel {
 }
 
 .truncate {
-  width: 230.5px;
+  width: 250.5px;
   display: -webkit-box;
   max-width: 60%;
   -webkit-line-clamp: 2;
