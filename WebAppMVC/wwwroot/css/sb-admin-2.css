@@ -11286,8 +11286,6 @@ body1.sidebar-toggled footer.sticky-footer {
 }
 
 .toggle-btn {
-    background-color: transparent;
-    border: none;
     color: black;
     cursor: pointer;
     font-size: 14px;

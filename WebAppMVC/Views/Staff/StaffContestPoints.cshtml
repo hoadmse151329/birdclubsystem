@@ -1,6 +1,6 @@
 ﻿@{
     ViewData["Title"] = "Staff BirdContest Points Page";
-        Layout = "~/Views/Shared/_SLayout.cshtml";
+    Layout = "~/Views/Shared/_SLayout.cshtml";
 }
 <html lang="en">
 <head>
@@ -17,20 +17,20 @@
     <!--Boxicons-->
     <link rel='stylesheet' href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css'>
     <!-- Other-->
-    <link rel="stylesheet" href="https://unpkg.com/filepond-plugin-file-poster/dist/filepond-plugin-file-poster.css" >
+    <link rel="stylesheet" href="https://unpkg.com/filepond-plugin-file-poster/dist/filepond-plugin-file-poster.css">
 </head>
 <body>
     <!-- sidebar -->
     <div class="sidebar">
         <div class="container">
-            <div class="navigation">  
+            <div class="navigation">
                 <ul class="slide-menu">
                     <div class="logo">
                         <a href="@Url.Action("StaffIndex", "Staff")">
                             <img class="logo" src="~/images/Red_whiskered_bulbul_bird_logo_eps_10_generated 1.png" alt="logo">
                         </a>
                     </div>
-                    <li class="active" data-toggle="tooltip"data-placement="right" title="Overview">
+                    <li class="active" data-toggle="tooltip" data-placement="right" title="Overview">
                         <a href="@Url.Action("StaffIndex", "Staff")">
                             <span><i class='bx bx-tachometer'></i></span>
                             <span class="title">Overview</span>
@@ -43,19 +43,19 @@
                             <i class='bx bxs-chevron-down drop'></i>
                         </a>
                         <ul class="collapse sub-menu" id="collapseOne">
-                            <li data-toggle="tooltip"data-placement="right" title="Manage Meeting">
+                            <li data-toggle="tooltip" data-placement="right" title="Manage Meeting">
                                 <a href="@Url.Action("StaffMeeting", "Staff")" li class="dropdown-item">
                                     <i class='bx bx-home-alt-2'></i>
                                     <span class="title">Meeting</span>
-                                </a> 
+                                </a>
                             </li>
-                            <li data-toggle="tooltip"data-placement="right" title="Manage Fieldtrip">
+                            <li data-toggle="tooltip" data-placement="right" title="Manage Fieldtrip">
                                 <a href="@Url.Action("StaffFieldTrip", "Staff")" li class="dropdown-item">
                                     <i class='bx bx-calendar-edit'></i>
                                     <span class="title">Fieldtrip</span>
                                 </a>
-                            </li> 
-                            <li data-toggle="tooltip"data-placement="right" title="Manage Bird Contest">
+                            </li>
+                            <li data-toggle="tooltip" data-placement="right" title="Manage Bird Contest">
                                 <a href="@Url.Action("StaffContest", "Staff")" li class="dropdown-item">
                                     <i class='bx bx-trophy'></i>
                                     <span class="title">Bird Contest</span>
@@ -64,7 +64,7 @@
                         </ul>
                     </li>
                     </li>
-                    <li data-toggle="tooltip"data-placement="right" title="Staff Profile">
+                    <li data-toggle="tooltip" data-placement="right" title="Staff Profile">
                         <a href="@Url.Action("StaffProfile", "Staff")">
                             <span><i class='bx bx-user'></i></span>
                             <span class="title">Staff Profile</span>
@@ -75,25 +75,24 @@
         </div>
     </div>
     <!-- End sidebar -->
-
     <!-- Header -->
     <div class="header">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-sm-12">
-                        <div class="toggle float-left">
-                            <i class='bx bx-menu'></i>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="toggle float-left">
+                        <i class='bx bx-menu'></i>
+                    </div>
+                    <div class="float-left">
+                        <div class="dashboard_bar d-flex">
+                            Home
                         </div>
-                        <div class="float-left">
-                            <div class="dashboard_bar d-flex">
-                                Home
-                            </div>
-                        </div>
-                        <div class="float-right">
-                            <div class="btn-group me-1 mb-1">
-                                <div class="dropdown">
-                                    @if (TempData["ROLE_NAME"] != null)
-                                    {
+                    </div>
+                    <div class="float-right">
+                        <div class="btn-group me-1 mb-1">
+                            <div class="dropdown">
+                                @if (TempData["ROLE_NAME"] != null)
+                                {
                                     <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         @TempData["USER_NAME"]
                                     </button>
@@ -102,16 +101,15 @@
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="@Url.Action("Logout", "Auth")">Logout</a>
                                     </div>
-                                    }
-                                </div>  
+                                }
                             </div>
-                        </div>   
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
     <!-- End header -->
-
     <!-- List club -->
     <div class="main-content">
         <div class="main">
@@ -144,7 +142,7 @@
                                 <div class="card-header">
                                     <h4>Thông tin người thuê</h4>
                                     <div class="edit-info">
-                                        <i class='bx bxs-edit-alt'data-toggle="modal" data-target="#editprofile"></i>
+                                        <i class='bx bxs-edit-alt' data-toggle="modal" data-target="#editprofile"></i>
                                     </div>
                                 </div>
                                 <div class="card-body">
@@ -187,7 +185,7 @@
                                         <div class="col-sm-7 text-sm-left">
                                             <span>25/05/2022</span>
                                         </div>
-                                        
+
                                     </div>
                                     <div class="row mb-sm-2">
                                         <div class="col-sm-5 text-sm-right">
@@ -264,7 +262,7 @@
                             <div class="card rating">
                                 <div class="card-body">
                                     <div class="d-flex justify-content-center pb-3">
-                                        <h5 >Dịch vụ sử dụng</h5>
+                                        <h5>Dịch vụ sử dụng</h5>
                                     </div>
                                     <div class="row">
                                         <div class="table-responsive">
@@ -303,7 +301,7 @@
                             <div class="card">
                                 <div class="card-body flex-wrap">
                                     <div class="d-flex justify-content-center pb-3">
-                                        <h5 >Tổng tiền</h5>
+                                        <h5>Tổng tiền</h5>
                                     </div>
                                     <div class="row">
                                         <div class="table-responsive">
@@ -345,7 +343,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                     </div>
                 </div>
             </div>
@@ -399,7 +397,7 @@
             </div>
         </div>
     </div>
-   
+
 
     <!-- jQuery first, then Popper.js, then Bootstrap JS. -->
 

@@ -320,8 +320,8 @@
                                                     @for (int i = 0; i < contestPartView.Count(); i++)
                                                     {
                                                         <tr class="@("clickable-row "+ (i%2 == 0 ? "even" : "odd")) " data-href="#"
-                                                            data-bs-toggle="tooltip" data-bs-placement="right"
-                                                            title="More Details">
+                                                    data-bs-toggle="tooltip" data-bs-placement="right"
+                                                    title="More Details">
                                                             <input type="hidden" asp-for="@contestPartView[i].ContestId" name="contestPartView[@i].ContestId" value="@contestPartView[i].ContestId" class="form-control" />
                                                             <input type="hidden" asp-for="@contestPartView[i].MemberId" name="contestPartView[@i].MemberId" value="@contestPartView[i].MemberId" class="form-control" />
                                                             <input type="hidden" asp-for="@contestPartView[i].BirdId" name="contestPartView[@i].BirdId" value="@contestPartView[i].BirdId" class="form-control" />
@@ -383,8 +383,8 @@
                                                     @for (int i = 0; i < contestPartView.Count(); i++)
                                                     {
                                                         <tr class="@("clickable-row "+ (i%2 == 0 ? "even" : "odd")) " data-href="#"
-                                                            data-bs-toggle="tooltip" data-bs-placement="right"
-                                                            title="More Details">
+                                                    data-bs-toggle="tooltip" data-bs-placement="right"
+                                                    title="More Details">
                                                             <input type="hidden" asp-for="@contestPartView[i].ContestId" name="contestPartView[@i].ContestId" value="@contestPartView[i].ContestId" class="form-control" />
                                                             <input type="hidden" asp-for="@contestPartView[i].MemberId" name="contestPartView[@i].MemberId" value="@contestPartView[i].MemberId" class="form-control" />
                                                             <input type="hidden" asp-for="@contestPartView[i].BirdId" name="contestPartView[@i].BirdId" value="@contestPartView[i].BirdId" class="form-control" />
@@ -408,7 +408,7 @@
                                                                     }
                                                                     else
                                                                     {
-                                                                        <input type="number" asp-for="@contestPartView[i].Score" name="contestPartView[@i].Score" value="@contestPartView[i].Score" class="form-control" readonly/>
+                                                                        <input type="number" asp-for="@contestPartView[i].Score" name="contestPartView[@i].Score" value="@contestPartView[i].Score" class="form-control" readonly />
                                                                     }
                                                                 }
                                                             </td>
@@ -488,18 +488,18 @@
                                             <div class="col-sm-8">
                                                 <select class="form-control" asp-for="@updateContest.Status" asp-items="@defaultContestStatus" class="custom-select" required></select>
                                                 <span asp-validation-for="@updateContest.Status" id="error_message"
-                                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <input asp-for="@updateContest.ContestName" type="text" value="@updateContest.ContestName" required hidden>
                                 <input asp-for="@updateContest.RegistrationDeadline" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
-                                       value="@updateContest.RegistrationDeadline.ToString("yyyy-MM-ddTHH:mm")" required hidden>
+                               value="@updateContest.RegistrationDeadline.ToString("yyyy-MM-ddTHH:mm")" required hidden>
                                 <input asp-for="@updateContest.StartDate" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
-                                       value="@updateContest.StartDate.ToString("yyyy-MM-ddTHH:mm")" required hidden>
+                               value="@updateContest.StartDate.ToString("yyyy-MM-ddTHH:mm")" required hidden>
                                 <input asp-for="@updateContest.EndDate" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
-                                       value="@updateContest.EndDate.ToString("yyyy-MM-ddTHH:mm")" required hidden>
+                               value="@updateContest.EndDate.ToString("yyyy-MM-ddTHH:mm")" required hidden>
                                 <input asp-for="@updateContest.NumberOfParticipantsLimit" type="number" value="@updateContest.NumberOfParticipantsLimit" required hidden>
                                 <input asp-for="@updateContest.Host" type="text" value="@updateContest.Host" required hidden>
                                 <input asp-for="@updateContest.ReqMinELO" type="number" value="@updateContest.ReqMinELO" required hidden />

@@ -21,7 +21,7 @@
     <!--Boxicons-->
     <link rel='stylesheet' href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css'>
     <!-- Other-->
-    <link rel="stylesheet" href="https://unpkg.com/filepond-plugin-file-poster/dist/filepond-plugin-file-poster.css" >
+    <link rel="stylesheet" href="https://unpkg.com/filepond-plugin-file-poster/dist/filepond-plugin-file-poster.css">
 </head>
 <body>
     <!-- List club -->
@@ -51,9 +51,9 @@
                                         <i class='bx bx-home-alt-2'></i>
                                         <span>Contest</span>
                                     </a>
-                                </li>             
+                                </li>
                             </ul>
-                            
+
                             <!-- Tab panes -->
                             <div class="tab-content">
                                 <!-- home1 -->
@@ -69,7 +69,7 @@
                                                 }
                                             </div>
                                             <div class="col-sm-6 d-flex justify-content-end">
-                                                <form asp-action="StaffFieldTrip" asp-controller="Staff" method="get" asp-route-search="@search">                   
+                                                <form asp-action="StaffFieldTrip" asp-controller="Staff" method="get" asp-route-search="@search">
                                                     <div>
                                                         <label>
                                                             <input asp-for="@search" class="form-control" type="text" name="search" placeholder="Search..." value="@search">
@@ -81,7 +81,7 @@
                                         </div>
                                     </div>
                                     <div class="row card-content">
-                                        
+
                                         <!-- dung vong for o day -->
                                         @foreach (var data in contestList)
                                         {
@@ -158,19 +158,19 @@
                                                     <div class="form-group mx-auto">
                                                         <form asp-action="Contest" asp-controller="Staff" method="get" asp-route-id="@data.ContestId">
                                                             <button class="btn btn-primary clickable-row" type="submit">See Detail</button>
-                                                        </form> 
+                                                        </form>
                                                     </div>
                                                 </div>
                                             </div>
                                         }
-                                </div>                               
-                            <!-- end tapnet -->
-                        </div>
-                    </div>
+                                    </div>
+                                    <!-- end tapnet -->
+                                </div>
+                            </div>
                 </section>
             </div>
         </div>
     </div>
-        <!-- jQuery first, then Popper.js, then Bootstrap JS. -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS. -->
 </body>
 </html>
