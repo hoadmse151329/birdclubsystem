@@ -44,7 +44,8 @@ namespace WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetAllMeetings(
-            [FromBody] string? role
+            [FromBody] string? role,
+            [FromQuery] string? status
             )
         {
             try
