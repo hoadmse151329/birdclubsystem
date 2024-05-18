@@ -2,8 +2,11 @@
 
 namespace WebAppMVC.Models.Auth
 {
-	public class GetAuthenResponse : DefaultResponseViewModel
+	public class GetAuthenResponse : DefaultResponseViewModel<AuthenResponse>
 	{
-		public AuthenResponse? Data { get; set; }
+        public GetAuthenResponse(bool status, string? errorMessage, string? successMessage) : base(status, errorMessage, successMessage)
+        {
+        }
+
 	}
 }

@@ -101,6 +101,7 @@ namespace BAL.Services.Implements
 			usr.MemberDetail = new Member();
 			usr.MemberDetail.MemberId = Guid.NewGuid().ToString();
 			usr.MemberDetail.Status = "Inactive";
+            usr.MemberDetail.Role = "Member";
 			usr.MemberDetail.Email = entity.Email;
 			if (newmem != null)
             {

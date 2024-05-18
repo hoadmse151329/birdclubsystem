@@ -19,6 +19,11 @@ namespace DAL.Repositories.Implements
             _context = context;
         }
 
+        public async Task<IEnumerable<Member>> GetAllByRole(string role)
+        {
+            return _context.Members.AsNoTracking().Where(x => x.Role == role).ToList();
+        }
+
         public async Task<Member?> GetByEmail(string email)
         {
             return _context.Members.AsNoTrackingWithIdentityResolution().SingleOrDefault(mem => mem.Email == email);
