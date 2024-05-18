@@ -10,7 +10,11 @@ let numOfmonth = document.getElementById('month');
 for (let i = 0; i < numOfmonth.length; i++) {
   month.push({x : Date.parse(numOfmonth.options[i].innerText), y : numOfmonth.options[i].value})
 }
-
+var year = [];
+let numOfyear = document.getElementById('year');
+for (let i = 0; i < numOfyear.length; i++) {
+    year.push({ x: Date.parse(numOfyear.options[i].innerText), y: numOfyear.options[i].value })
+}
 const ctx = document.getElementById('numOfAccess').getContext('2d');
 const chart = new Chart(ctx, {   
         type: 'line',

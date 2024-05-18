@@ -11267,3 +11267,34 @@ footer.sticky-footer .copyright {
 body1.sidebar-toggled footer.sticky-footer {
   width: 100%;
 }
+.filter-group {
+    border: none;
+    margin-bottom: 20px;
+}
+
+    .filter-group legend {
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+.input-group {
+    margin-bottom: 5px;
+}
+
+.form-check-input {
+    margin-right: 5px;
+}
+
+.toggle-btn {
+    background-color: transparent;
+    border: none;
+    color: black;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 0;
+}
+
+    .toggle-btn:hover {
+        text-decoration: underline;
+        color:palegreen;
+    }
