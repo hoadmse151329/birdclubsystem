@@ -1,4 +1,4 @@
-﻿namespace WebAppMVC.Models
+﻿namespace WebAppMVC.Models.ViewModels
 {
     public class GoogleUserVM
     {

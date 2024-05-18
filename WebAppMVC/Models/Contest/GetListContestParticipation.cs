@@ -2,8 +2,11 @@
 
 namespace WebAppMVC.Models.Contest
 {
-    public class GetListContestParticipation : DefaultResponseViewModel
+    public class GetListContestParticipation : DefaultResponseViewModel<List<ContestParticipantViewModel>>
     {
-        public List<ContestParticipantViewModel>? Data { get; set; }
+        public GetListContestParticipation(bool status, string? errorMessage, string? successMessage) : base(status, errorMessage, successMessage)
+        {
+        }
+
     }
 }

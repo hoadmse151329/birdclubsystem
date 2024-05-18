@@ -1,7 +1,9 @@
 ﻿namespace WebAppMVC.Models.FieldTrip
 {
-    public class GetFieldTripPostDeRegister : DefaultResponseViewModel
+    public class GetFieldTripPostDeRegister : DefaultResponseViewModel<object>
     {
-        public bool Data { get; set; }
+        public GetFieldTripPostDeRegister(bool status, string? errorMessage, string? successMessage) : base(status, errorMessage, successMessage)
+        {
+        }
     }
 }

@@ -1,7 +1,9 @@
 ﻿namespace WebAppMVC.Models.Contest
 {
-    public class GetContestParticipationNo : DefaultResponseViewModel
+    public class GetContestParticipationNo : DefaultResponseViewModel<object>
     {
-        public int Data { get; set; }
+        public GetContestParticipationNo(bool status, string? errorMessage, string? successMessage) : base(status, errorMessage, successMessage)
+        {
+        }
     }
 }

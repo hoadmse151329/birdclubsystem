@@ -43,12 +43,14 @@ namespace WebAPI.Controllers
         [ProducesResponseType(typeof(List<MeetingViewModel>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> GetAllMeetings([FromBody] string? role)
+        public async Task<IActionResult> GetAllMeetings(
+            [FromBody] string? role
+            )
         {
             try
             {
                 var result = await _meetingService.GetAllMeetings(role);
-                if (result == null)
+                if (result == null || !result.Any())
                 {
                     return NotFound(new
                     {
@@ -65,20 +67,11 @@ namespace WebAPI.Controllers
             }
             catch (Exception ex)
             {
-                if (ex.InnerException != null)
-                {
-                    return BadRequest(new
-                    {
-                        Status = false,
-                        ErrorMessage = ex.Message,
-                        InnerExceptionMessage = ex.InnerException.Message
-                    });
-                }
-                // Log the exception if needed
                 return BadRequest(new
                 {
                     Status = false,
-                    ErrorMessage = ex.Message
+                    ErrorMessage = ex.Message,
+                    InnerExceptionMessage = ex.InnerException?.Message
                 });
             }
         }
@@ -124,20 +117,11 @@ namespace WebAPI.Controllers
             }
             catch (Exception ex)
             {
-                if (ex.InnerException != null)
-                {
-                    return BadRequest(new
-                    {
-                        Status = false,
-                        ErrorMessage = ex.Message,
-                        InnerExceptionMessage = ex.InnerException.Message
-                    });
-                }
-                // Log the exception if needed
                 return BadRequest(new
                 {
                     Status = false,
-                    ErrorMessage = ex.Message
+                    ErrorMessage = ex.Message,
+                    InnerExceptionMessage = ex.InnerException?.Message
                 });
             }
         }
@@ -169,20 +153,11 @@ namespace WebAPI.Controllers
             }
             catch (Exception ex)
             {
-                if (ex.InnerException != null)
-                {
-                    return BadRequest(new
-                    {
-                        Status = false,
-                        ErrorMessage = ex.Message,
-                        InnerExceptionMessage = ex.InnerException.Message
-                    });
-                }
-                // Log the exception if needed
                 return BadRequest(new
                 {
                     Status = false,
-                    ErrorMessage = ex.Message
+                    ErrorMessage = ex.Message,
+                    InnerExceptionMessage = ex.InnerException?.Message
                 });
             }
         }
@@ -207,20 +182,11 @@ namespace WebAPI.Controllers
             }
             catch (Exception ex)
             {
-                if (ex.InnerException != null)
-                {
-                    return BadRequest(new
-                    {
-                        Status = false,
-                        ErrorMessage = ex.Message,
-                        InnerExceptionMessage = ex.InnerException.Message
-                    });
-                }
-                // Log the exception if needed
                 return BadRequest(new
                 {
                     Status = false,
-                    ErrorMessage = ex.Message
+                    ErrorMessage = ex.Message,
+                    InnerExceptionMessage = ex.InnerException?.Message
                 });
             }
         }
@@ -255,20 +221,11 @@ namespace WebAPI.Controllers
             }
             catch (Exception ex)
             {
-                if (ex.InnerException != null)
-                {
-                    return BadRequest(new
-                    {
-                        Status = false,
-                        ErrorMessage = ex.Message,
-                        InnerExceptionMessage = ex.InnerException.Message
-                    });
-                }
-                // Log the exception if needed
                 return BadRequest(new
                 {
                     Status = false,
-                    ErrorMessage = ex.Message
+                    ErrorMessage = ex.Message,
+                    InnerExceptionMessage = ex.InnerException?.Message
                 });
             }
         }
@@ -303,20 +260,11 @@ namespace WebAPI.Controllers
             }
             catch (Exception ex)
             {
-                if (ex.InnerException != null)
-                {
-                    return BadRequest(new
-                    {
-                        Status = false,
-                        ErrorMessage = ex.Message,
-                        InnerExceptionMessage = ex.InnerException.Message
-                    });
-                }
-                // Log the exception if needed
                 return BadRequest(new
                 {
                     Status = false,
-                    ErrorMessage = ex.Message
+                    ErrorMessage = ex.Message,
+                    InnerExceptionMessage = ex.InnerException?.Message
                 });
             }
         }
@@ -336,31 +284,22 @@ namespace WebAPI.Controllers
                     {
                         Status = true,
                         Message = "Meeting Media Create successfully!",
-                        Data = true
+                        BoolData = true
                     });
                 else return StatusCode(StatusCodes.Status500InternalServerError, new
                 {
                     Status = true,
                     Message = "Meeting Media Create Failed!",
-                    Data = false
+                    BoolData = false
                 });
             }
             catch (Exception ex)
             {
-                if (ex.InnerException != null)
-                {
-                    return BadRequest(new
-                    {
-                        Status = false,
-                        ErrorMessage = ex.Message,
-                        InnerExceptionMessage = ex.InnerException.Message
-                    });
-                }
-                // Log the exception if needed
                 return BadRequest(new
                 {
                     Status = false,
-                    ErrorMessage = ex.Message
+                    ErrorMessage = ex.Message,
+                    InnerExceptionMessage = ex.InnerException?.Message
                 });
             }
         }
@@ -392,7 +331,7 @@ namespace WebAPI.Controllers
                 if (result) return Ok(new
                 {
                     Status = true,
-                    Data = result
+                    BoolData = result
                 });
                 return NotFound(new
                 {
@@ -402,20 +341,11 @@ namespace WebAPI.Controllers
             }
             catch (Exception ex)
             {
-                if (ex.InnerException != null)
-                {
-                    return BadRequest(new
-                    {
-                        Status = false,
-                        ErrorMessage = ex.Message,
-                        InnerExceptionMessage = ex.InnerException.Message
-                    });
-                }
-                // Log the exception if needed
                 return BadRequest(new
                 {
                     Status = false,
-                    ErrorMessage = ex.Message
+                    ErrorMessage = ex.Message,
+                    InnerExceptionMessage = ex.InnerException?.Message
                 });
             }
         }
@@ -447,25 +377,16 @@ namespace WebAPI.Controllers
                 {
                     Status = true,
                     Message = "Add Member Participation successfully !",
-                    Data = participateNo
+                    IntData = participateNo
                 });
             }
             catch (Exception ex)
             {
-                if (ex.InnerException != null)
-                {
-                    return BadRequest(new
-                    {
-                        Status = false,
-                        ErrorMessage = ex.Message,
-                        InnerExceptionMessage = ex.InnerException.Message
-                    });
-                }
-                // Log the exception if needed
                 return BadRequest(new
                 {
                     Status = false,
-                    ErrorMessage = ex.Message
+                    ErrorMessage = ex.Message,
+                    InnerExceptionMessage = ex.InnerException?.Message
                 });
             }
         }
@@ -503,24 +424,15 @@ namespace WebAPI.Controllers
             }
             catch (Exception ex)
             {
-                if (ex.InnerException != null)
-                {
-                    return BadRequest(new
-                    {
-                        Status = false,
-                        ErrorMessage = ex.Message,
-                        InnerExceptionMessage = ex.InnerException.Message
-                    });
-                }
-                // Log the exception if needed
                 return BadRequest(new
                 {
                     Status = false,
-                    ErrorMessage = ex.Message
+                    ErrorMessage = ex.Message,
+                    InnerExceptionMessage = ex.InnerException?.Message
                 });
             }
         }
-        [HttpPost("RemoveParticipant/{id}")]
+        [HttpPost("{id:int}/Participant/Remove")]
         [Authorize(Roles = "Member,Manager")]
         [ProducesResponseType(typeof(MeetingParticipantViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -541,26 +453,17 @@ namespace WebAPI.Controllers
                 return Ok(new
                 {
                     Status = true,
-                    Data = result,
+                    BoolData = result,
                     SuccessMessage = "Remove Meeting Participation successfully !",
                 });
             }
             catch (Exception ex)
             {
-                if (ex.InnerException != null)
-                {
-                    return BadRequest(new
-                    {
-                        Status = false,
-                        ErrorMessage = ex.Message,
-                        InnerExceptionMessage = ex.InnerException.Message
-                    });
-                }
-                // Log the exception if needed
                 return BadRequest(new
                 {
                     Status = false,
-                    ErrorMessage = ex.Message
+                    ErrorMessage = ex.Message,
+                    InnerExceptionMessage = ex.InnerException?.Message
                 });
             }
         }
@@ -592,20 +495,11 @@ namespace WebAPI.Controllers
             }
             catch (Exception ex)
             {
-                if (ex.InnerException != null)
-                {
-                    return BadRequest(new
-                    {
-                        Status = false,
-                        ErrorMessage = ex.Message,
-                        InnerExceptionMessage = ex.InnerException.Message
-                    });
-                }
-                // Log the exception if needed
                 return BadRequest(new
                 {
                     Status = false,
-                    ErrorMessage = ex.Message
+                    ErrorMessage = ex.Message,
+                    InnerExceptionMessage = ex.InnerException?.Message
                 });
             }
         }
@@ -637,20 +531,11 @@ namespace WebAPI.Controllers
             }
             catch (Exception ex)
             {
-                if (ex.InnerException != null)
-                {
-                    return BadRequest(new
-                    {
-                        Status = false,
-                        ErrorMessage = ex.Message,
-                        InnerExceptionMessage = ex.InnerException.Message
-                    });
-                }
-                // Log the exception if needed
                 return BadRequest(new
                 {
                     Status = false,
-                    ErrorMessage = ex.Message
+                    ErrorMessage = ex.Message,
+                    InnerExceptionMessage = ex.InnerException?.Message
                 });
             }
         }
@@ -683,20 +568,11 @@ namespace WebAPI.Controllers
             }
             catch (Exception ex)
             {
-                if (ex.InnerException != null)
-                {
-                    return BadRequest(new
-                    {
-                        Status = false,
-                        ErrorMessage = ex.Message,
-                        InnerExceptionMessage = ex.InnerException.Message
-                    });
-                }
-                // Log the exception if needed
                 return BadRequest(new
                 {
                     Status = false,
-                    ErrorMessage = ex.Message
+                    ErrorMessage = ex.Message,
+                    InnerExceptionMessage = ex.InnerException?.Message
                 });
             }
         }
