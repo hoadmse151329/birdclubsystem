@@ -61,6 +61,12 @@ namespace WebAppMVC.Services.HostedServices
 
                 string? accToken = await _systemLoginService.GetTokenAsync();
 
+                if(accToken == null)
+                {
+                    _logger.LogError("Failed to login system account. Skipping Task...");
+                    return;
+                }
+
                 var listMembership = await methcall.CallMethodReturnObject<GetListMemberResponse>(
                                     _httpClient: client,
                                     options: jsonOptions,
