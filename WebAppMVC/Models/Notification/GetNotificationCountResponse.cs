@@ -1,9 +1,7 @@
 ﻿namespace WebAppMVC.Models.Notification
 {
-    public class GetNotificationCountResponse : DefaultResponseViewModel<object>
+    public class GetNotificationCountResponse : DefaultResponseViewModel
     {
-        public GetNotificationCountResponse(bool status, string? errorMessage, string? successMessage) : base(status, errorMessage, successMessage)
-        {
-        }
+        public int Data { get; set; }
     }
 }

@@ -1,10 +1,12 @@
 ﻿using BAL.Services.Implements;
 using BAL.Services.Interfaces;
 using BAL.ViewModels;
-using BAL.ViewModels.Manager;
+using BAL.ViewModels.Member;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
+using System.Data;
 
 namespace WebAPI.Controllers
 {
@@ -72,113 +74,6 @@ namespace WebAPI.Controllers
                 });
             }
 		}
-        /// <summary>
-        /// Get member informations by Member ID
-        /// </summary>
-        ///      <param name="id">Member's Details ID</param>
-        /// <returns>Return result of action and error message</returns>
-        // GET api/<UserController>/5
-        [HttpGet("All/Role/Member")]
-        [Authorize(Roles = "Manager")]
-        [ProducesResponseType(typeof(List<GetMembershipExpire>), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> GetListofMembers()
-        {
-            try
-            {
-                var result = await _memberService.GetAllMemberStatusWithExpireByRole("Member");
-                if (result == null)
-                {
-                    return NotFound(new
-                    {
-                        Status = false,
-                        ErrorMessage = "Member Details Not Found!"
-                    });
-                }
-
-                return Ok(new
-                {
-                    Status = true,
-                    Data = result
-                });
-            }
-            catch (Exception ex)
-            {
-                // Log the exception if needed
-                if (ex.InnerException != null)
-                {
-                    return BadRequest(new
-                    {
-                        Status = false,
-                        ErrorMessage = ex.Message,
-                        InnerExceptionMessage = ex.InnerException.Message
-                    });
-                }
-                // Log the exception if needed
-                return BadRequest(new
-                {
-                    Status = false,
-                    ErrorMessage = ex.Message
-                });
-            }
-        }
-        /// <summary>
-        /// Get member informations by Member ID
-        /// </summary>
-        /// <returns>Return result of action and error message</returns>
-        // GET api/<UserController>/5
-        [HttpPut("Update/Status")]
-        [Authorize(Roles = "Manager")]
-        [ProducesResponseType(typeof(MemberViewModel), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> UpdateMemberDetails(
-            [Required][FromBody] GetMembershipExpire member
-            )
-        {
-            try
-            {
-                var result = await _memberService.GetById(member.MemberId);
-                if (result == null)
-                {
-                    return NotFound(new
-                    {
-                        Status = false,
-                        ErrorMessage = "Member Details Not Found!"
-                    });
-                }
-                if (member.Status == null)
-                {
-                    member.Status = result.Status;
-                }
-                _memberService.UpdateMemberStatus(member);
-                result = await _memberService.GetById(member.MemberId);
-                return Ok(new
-                {
-                    Status = true,
-                    Data = result
-                });
-            }
-            catch (Exception ex)
-            {
-                if (ex.InnerException != null)
-                {
-                    return BadRequest(new
-                    {
-                        Status = false,
-                        ErrorMessage = ex.Message,
-                        InnerExceptionMessage = ex.InnerException.Message
-                    });
-                }
-                // Log the exception if needed
-                return BadRequest(new
-                {
-                    Status = false,
-                    ErrorMessage = ex.Message
-                });
-            }
-        }
         /// <summary>
         /// Get member informations by Member ID
         /// </summary>
@@ -258,6 +153,10 @@ namespace WebAPI.Controllers
                 {
 					member.Status = result.Status;
 				}
+                if (member.Status == null)
+                {
+                    member.Status = result.Status;
+                }
                 _memberService.Update(member);
 				result = await _memberService.GetById(member.MemberId);
 				return Ok(new
@@ -309,36 +208,6 @@ namespace WebAPI.Controllers
                     Status = true,
                     Data = result
                 });
-            }
-            catch (Exception ex)
-            {
-                if (ex.InnerException != null)
-                {
-                    return BadRequest(new
-                    {
-                        Status = false,
-                        ErrorMessage = ex.Message,
-                        InnerExceptionMessage = ex.InnerException.Message
-                    });
-                }
-                // Log the exception if needed
-                return BadRequest(new
-                {
-                    Status = false,
-                    ErrorMessage = ex.Message
-                });
-            }
-        }
-        [HttpPost("Feedback/Create")]
-        [Authorize(Roles = "Member")]
-        [ProducesResponseType(typeof(FeedbackViewModel), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> CreateFeedback([FromBody] FeedbackViewModel feedback)
-        {
-            try
-            {
-                return null;
             }
             catch (Exception ex)
             {

@@ -2,11 +2,8 @@
 
 namespace WebAppMVC.Models.FieldTrip
 {
-    public class GetFieldTripDayByDayResponse : DefaultResponseViewModel<object>
+    public class GetFieldTripDayByDayResponse : DefaultResponseViewModel
     {
-        public GetFieldTripDayByDayResponse(bool status, string? errorMessage, string? successMessage) : base(status, errorMessage, successMessage)
-        {
-        }
-
+        public bool? Data { get; set; }
     }
 }

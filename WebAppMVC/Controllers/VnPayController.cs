@@ -10,7 +10,7 @@ using WebAppMVC.Constants;
 using WebAppMVC.Models.Meeting;
 using WebAppMVC.Models.Transaction;
 using WebAppMVC.Models.VnPay;
-using WebAppMVC.Services.Interfaces;
+using WebAppMVC.Services;
 using static Org.BouncyCastle.Math.EC.ECCurve;
 
 namespace WebAppMVC.Controllers

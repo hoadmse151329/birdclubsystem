@@ -1,9 +1,7 @@
 ﻿namespace WebAppMVC.Models.Staff
 {
-    public class GetCheckInStatusUpdate : DefaultResponseViewModel<object>
+    public class GetCheckInStatusUpdate : DefaultResponseViewModel
     {
-        public GetCheckInStatusUpdate(bool status, string? errorMessage, string? successMessage) : base(status, errorMessage, successMessage)
-        {
-        }
+        public bool Data { get; set; }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using BAL.Services.Implements;
 using BAL.Services.Interfaces;
 using BAL.ViewModels;
-using BAL.ViewModels.Event;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
@@ -74,95 +73,28 @@ namespace WebAPI.Controllers
             }
         }
 
-        [HttpPost("CreateRegister")]
+        [HttpPost("{id:int}/Create")]
         [ProducesResponseType(typeof(NotificationViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> CreateNotificationRegister(
+        public async Task<IActionResult> CreateNotification(
+            [Required][FromRoute] int id,
             [Required][FromBody] NotificationViewModel notif)
         {
             try
             {
-                _notificationService.Create(notif);
-                var result = await _notificationService.GetNotificationById(notif.NotificationId);
-                if (result == null)
-                {
-                    return NotFound(new
+                if (await _notificationService.Create(id, notif))
+                    return Ok(new
                     {
-                        Status = false,
-                        ErrorMessage = "Notification Create Failed!"
+                        Status = true,
+                        Message = "New notification created!",
+                        Data = true
                     });
-                }
-                return Ok(new
+                else return StatusCode(StatusCodes.Status500InternalServerError, new
                 {
                     Status = true,
-                    Message = "Notification Create successfully !",
-                    Data = result
-                });
-            }
-            catch (Exception ex)
-            {
-                if (ex.InnerException != null)
-                {
-                    return BadRequest(new
-                    {
-                        Status = false,
-                        ErrorMessage = ex.Message,
-                        InnerExceptionMessage = ex.InnerException.Message
-                    });
-                }
-                // Log the exception if needed
-                return BadRequest(new
-                {
-                    Status = false,
-                    ErrorMessage = ex.Message
-                });
-            }
-        }
-
-        [HttpPost("CreateEvent")]
-        [ProducesResponseType(typeof(NotificationViewModel), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> CreateNotificationEvent(
-            [Required][FromBody] CreateNotificationRequest notif)
-        {
-            try
-            {
-                var usr = await _userService.GetByMemberId(notif.MemberId);
-                if (usr == null)
-                {
-                    return NotFound(new
-                    {
-                        Status = false,
-                        ErrorMessage = "User does not exist!"
-                    });
-                }
-                NotificationViewModel notification = new NotificationViewModel()
-                {
-                    NotificationId = Guid.NewGuid().ToString(),
-                    Title = notif.Title,
-                    Description = notif.Description,
-                    Date = DateTime.Now,
-                    UserId = usr.UserId,
-                    Status = "Unread"
-                };
-                _notificationService.Create(notification);
-                var result = await _notificationService.GetNotificationById(notification.NotificationId);
-                if (result == null)
-                {
-                    return NotFound(new
-                    {
-                        Status = false,
-                        ErrorMessage = "Notification Create Failed!",
-                        BoolData = true
-                    });
-                }
-                return Ok(new
-                {
-                    Status = true,
-                    Message = "Notification Create successfully !",
-                    Data = result
+                    Message = "Notification Create Failed!",
+                    Data = false
                 });
             }
             catch (Exception ex)
@@ -210,7 +142,7 @@ namespace WebAPI.Controllers
                 return Ok(new
                 {
                     Status = true,
-                    BoolData = result
+                    Data = result
                 });
             }
             catch (Exception ex)
@@ -247,46 +179,6 @@ namespace WebAPI.Controllers
                     ErrorMessage = "Member Not Found"
                 });
                 var result = await _notificationService.GetCountUnreadNotificationsByMemberId(id);
-                return Ok(new
-                {
-                    Status = true,
-                    IntData = result
-                });
-            }
-            catch (Exception ex)
-            {
-                if (ex.InnerException != null)
-                {
-                    return BadRequest(new
-                    {
-                        Status = false,
-                        ErrorMessage = ex.Message,
-                        InnerExceptionMessage = ex.InnerException.Message
-                    });
-                }
-                // Log the exception if needed
-                return BadRequest(new
-                {
-                    Status = false,
-                    ErrorMessage = ex.Message
-                });
-            }
-        }
-        [HttpPost("Unread")]
-        [ProducesResponseType(typeof(NotificationViewModel), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> GetUnreadNotificationTitle([FromBody] string id)
-        {
-            try
-            {
-                var mem = await _memberService.GetBoolById(id);
-                if (!mem) return NotFound(new
-                {
-                    Status = false,
-                    ErrorMessage = "Member Not Found"
-                });
-                var result = await _notificationService.GetUnreadNotificationTitle(id);
                 return Ok(new
                 {
                     Status = true,

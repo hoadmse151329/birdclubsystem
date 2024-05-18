@@ -272,13 +272,13 @@ namespace WebAPI.Controllers
                 {
                     Status = true,
                     Message = "Field Trip Day Create successfully!",
-                    BoolData = true
+                    Data = true
                 });
                 else return StatusCode(StatusCodes.Status500InternalServerError,new
                 {
                     Status = true,
                     Message = "Field Trip Day Create Failed!",
-                    BoolData = false
+                    Data = false
                 });
             }
             catch (Exception ex)
@@ -316,13 +316,13 @@ namespace WebAPI.Controllers
                     {
                         Status = true,
                         Message = "Field Trip Inclusion Create successfully!",
-                        BoolData = true
+                        Data = true
                     });
                 else return StatusCode(StatusCodes.Status500InternalServerError, new
                 {
                     Status = true,
                     Message = "Field Trip Inclusion Create Failed!",
-                    BoolData = false
+                    Data = false
                 });
             }
             catch (Exception ex)
@@ -361,13 +361,13 @@ namespace WebAPI.Controllers
                     {
                         Status = true,
                         Message = "Field Trip Additional Detail Create successfully!",
-                        BoolData = true
+                        Data = true
                     });
                 else return StatusCode(StatusCodes.Status500InternalServerError, new
                 {
                     Status = true,
                     Message = "Field Trip Additional Detai Create Failed!",
-                    BoolData = false
+                    Data = false
                 });
             }
             catch (Exception ex)
@@ -417,7 +417,7 @@ namespace WebAPI.Controllers
                 {
                     Status = true,
                     Message = "Add Member Participation successfully !",
-                    IntData = participantNo
+                    Data = participantNo
                 });
             }
             catch (Exception ex)

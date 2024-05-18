@@ -27,11 +27,15 @@ namespace BAL.Services.Implements
                 _unitOfWork.NotificationRepository.GetAllNotificationsByUserId(id));
         }
 
-        public void Create(NotificationViewModel notifModel)
+        public async Task<bool> Create(int id, NotificationViewModel notifModel)
         {
+            var usr = await _unitOfWork.UserRepository.GetByIdNoTracking(id);
+            if (usr == null) return false;
             var notif = _mapper.Map<Notification>(notifModel);
+            notif.UserId = id;
             _unitOfWork.NotificationRepository.Create(notif);
             _unitOfWork.Save();
+            return true;
         }
 
         public async Task<bool> UpdateAllNotificationStatus(List<NotificationViewModel> listNotif)
@@ -56,24 +60,6 @@ namespace BAL.Services.Implements
             var notif = await _unitOfWork.NotificationRepository.GetBoolNotificationId(id);
             if (!notif) return false;
             return true;
-        }
-
-        public async Task<NotificationViewModel?> GetNotificationById(string id)
-        {
-            var notif = await _unitOfWork.NotificationRepository.GetNotificationById(id);
-            if (notif != null)
-            {
-                var notification = _mapper.Map<NotificationViewModel>(notif);
-                return notification;
-            }
-            return null;
-        }
-
-        public async Task<IEnumerable<string?>?> GetUnreadNotificationTitle(string id)
-        {
-            var notif = await _unitOfWork.NotificationRepository.GetUnreadNotificationTitle(id);
-            if (notif != null) return notif;
-            return null;
         }
     }
 }

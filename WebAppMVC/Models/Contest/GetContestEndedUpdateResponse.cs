@@ -1,9 +1,7 @@
 ﻿namespace WebAppMVC.Models.Contest
 {
-    public class GetContestEndedUpdateResponse : DefaultResponseViewModel<object>
+    public class GetContestEndedUpdateResponse : DefaultResponseViewModel
     {
-        public GetContestEndedUpdateResponse(bool status, string? errorMessage, string? successMessage) : base(status, errorMessage, successMessage)
-        {
-        }
+        public bool Data { get; set; }
     }
 }

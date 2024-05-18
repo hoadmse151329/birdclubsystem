@@ -2,10 +2,8 @@
 
 namespace WebAppMVC.Models.Location
 {
-    public class GetLocationResponse : DefaultResponseViewModel<LocationViewModel>
+    public class GetLocationResponse : DefaultResponseViewModel
     {
-        public GetLocationResponse(bool status, string? errorMessage, string? successMessage) : base(status, errorMessage, successMessage)
-        {
-        }
+        public LocationViewModel Data { get; set; }
     }
 }

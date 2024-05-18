@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 using BAL.ViewModels.Member;
 using Newtonsoft.Json;
 using WebAppMVC.Constants;
-using WebAppMVC.Models.ViewModels;
+using WebAppMVC.Models;
 
 public static class GoogleUtils
 {
-    /*public static async Task<string> GetToken(string code)
+    public static async Task<string> GetToken(string code)
     {
         using (var client = new HttpClient())
         {
@@ -28,7 +28,7 @@ public static class GoogleUtils
             dynamic responseData = JsonConvert.DeserializeObject(responseString);
             return responseData.access_token;
         }
-    }*/
+    }
 
     public static async Task<CreateNewMember> GetUserInfo(string accessToken)
     {

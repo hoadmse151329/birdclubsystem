@@ -10,7 +10,6 @@ using Azure;
 using BAL.ViewModels;
 using Org.BouncyCastle.Ocsp;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using WebAppMVC.Models;
 
 namespace WebAppMVC.Constants
 {
@@ -56,11 +55,10 @@ namespace WebAppMVC.Constants
             if (!response.IsSuccessStatusCode)
             {
                 _logger.LogError("Error while processing your request!: " + response.StatusCode + "\t\nApi Url: " + url + "\t\nError Message: " + jsonResponse);
-                var error = JsonSerializer.Deserialize<T>(jsonResponse, options);
-                return error;
+                return null;
             };
             var result = JsonSerializer.Deserialize<T>(jsonResponse, options);
-            _logger.LogInformation("Processing your request Successfully!: " + response.StatusCode + "\t\nApi Url: " + url + "\t\nSuccess Message: " + jsonResponse);
+            _logger.LogInformation("Processing your Request Successfully!: " + response.StatusCode + "\t\nApi Url: " + url + "\t\nSuccess Message: " + jsonResponse);
             return result;
         }
 
@@ -236,47 +234,6 @@ namespace WebAppMVC.Constants
                     }
             }
             return defaultEventStatus;
-        }
-
-        public List<SelectListItem> GetBirdStatusSelectableList(string birdStatus)
-        {
-            List<SelectListItem> defaultBirdStatus = new();
-            switch (birdStatus)
-            {
-                case var value when value.Equals(Constants.BIRD_STATUS_INACTIVE):
-                    {
-                        defaultBirdStatus.Add(new SelectListItem { Text = Constants.BIRD_STATUS_INACTIVE, Value = Constants.BIRD_STATUS_INACTIVE, Selected = true });
-                        defaultBirdStatus.Add(new SelectListItem { Text = Constants.BIRD_STATUS_ACTIVE, Value = Constants.BIRD_STATUS_ACTIVE });
-                        defaultBirdStatus.Add(new SelectListItem { Text = Constants.BIRD_STATUS_INJURED, Value = Constants.BIRD_STATUS_INJURED });
-                        defaultBirdStatus.Add(new SelectListItem { Text = Constants.BIRD_STATUS_UNAVAILABLE, Value = Constants.BIRD_STATUS_UNAVAILABLE });
-                        break;
-                    }
-                case var value when value.Equals(Constants.BIRD_STATUS_ACTIVE):
-                    {
-                        defaultBirdStatus.Add(new SelectListItem { Text = Constants.BIRD_STATUS_INACTIVE, Value = Constants.BIRD_STATUS_INACTIVE });
-                        defaultBirdStatus.Add(new SelectListItem { Text = Constants.BIRD_STATUS_ACTIVE, Value = Constants.BIRD_STATUS_ACTIVE, Selected = true });
-                        defaultBirdStatus.Add(new SelectListItem { Text = Constants.BIRD_STATUS_INJURED, Value = Constants.BIRD_STATUS_INJURED });
-                        defaultBirdStatus.Add(new SelectListItem { Text = Constants.BIRD_STATUS_UNAVAILABLE, Value = Constants.BIRD_STATUS_UNAVAILABLE });
-                        break;
-                    }
-                case var value when value.Equals(Constants.BIRD_STATUS_INJURED):
-                    {
-                        defaultBirdStatus.Add(new SelectListItem { Text = Constants.BIRD_STATUS_INACTIVE, Value = Constants.BIRD_STATUS_INACTIVE });
-                        defaultBirdStatus.Add(new SelectListItem { Text = Constants.BIRD_STATUS_ACTIVE, Value = Constants.BIRD_STATUS_ACTIVE });
-                        defaultBirdStatus.Add(new SelectListItem { Text = Constants.BIRD_STATUS_INJURED, Value = Constants.BIRD_STATUS_INJURED, Selected = true });
-                        defaultBirdStatus.Add(new SelectListItem { Text = Constants.BIRD_STATUS_UNAVAILABLE, Value = Constants.BIRD_STATUS_UNAVAILABLE });
-                        break;
-                    }
-                case var value when value.Equals(Constants.BIRD_STATUS_UNAVAILABLE):
-                    {
-                        defaultBirdStatus.Add(new SelectListItem { Text = Constants.BIRD_STATUS_INACTIVE, Value = Constants.BIRD_STATUS_INACTIVE });
-                        defaultBirdStatus.Add(new SelectListItem { Text = Constants.BIRD_STATUS_ACTIVE, Value = Constants.BIRD_STATUS_ACTIVE });
-                        defaultBirdStatus.Add(new SelectListItem { Text = Constants.BIRD_STATUS_INJURED, Value = Constants.BIRD_STATUS_INJURED });
-                        defaultBirdStatus.Add(new SelectListItem { Text = Constants.BIRD_STATUS_UNAVAILABLE, Value = Constants.BIRD_STATUS_UNAVAILABLE, Selected = true });
-                        break;
-                    }
-            }
-            return defaultBirdStatus;
         }
 
         public T GetValidationTempData<T>(

@@ -2,10 +2,8 @@
 
 namespace WebAppMVC.Models.Member
 {
-    public class GetUserNotificationResponse : DefaultResponseViewModel<IEnumerable<NotificationViewModel>>
+    public class GetUserNotificationResponse : DefaultResponseViewModel
     {
-        public GetUserNotificationResponse(bool status, string? errorMessage, string? successMessage) : base(status, errorMessage, successMessage)
-        {
-        }
+        public IEnumerable<NotificationViewModel>? Data { get; set; }
     }
 }

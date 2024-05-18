@@ -1,9 +1,7 @@
 ﻿namespace WebAppMVC.Models.Manager
 {
-    public class GetListMemberStatusUpdate : DefaultResponseViewModel<object>
+    public class GetListMemberStatusUpdate : DefaultResponseViewModel
     {
-        public GetListMemberStatusUpdate(bool status, string? errorMessage, string? successMessage) : base(status, errorMessage, successMessage)
-        {
-        }
+        public bool Data { get; set; }
     }
 }

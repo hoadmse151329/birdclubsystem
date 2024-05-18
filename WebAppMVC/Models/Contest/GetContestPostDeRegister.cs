@@ -1,9 +1,7 @@
 ﻿namespace WebAppMVC.Models.Contest
 {
-    public class GetContestPostDeRegister : DefaultResponseViewModel<object>
+    public class GetContestPostDeRegister : DefaultResponseViewModel
     {
-        public GetContestPostDeRegister(bool status, string? errorMessage, string? successMessage) : base(status, errorMessage, successMessage)
-        {
-        }
+        public bool Data { get; set; }
     }
 }

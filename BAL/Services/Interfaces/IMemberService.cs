@@ -12,7 +12,6 @@ namespace BAL.Services.Interfaces
     public interface IMemberService
     {
         Task<IEnumerable<GetMemberStatus?>> GetAllMemberStatus();
-        Task<IEnumerable<GetMembershipExpire?>> GetAllMemberStatusWithExpireByRole(string role);
         Task<MemberViewModel?> GetById(string id);
 		Task<bool> GetBoolById(string id);
 		bool GetByEmail(string email);
@@ -21,7 +20,6 @@ namespace BAL.Services.Interfaces
 		void Create(MemberViewModel entity);
 		/*void Update(UserViewModel entity);*/
 		void Update(MemberViewModel entity);
-        void UpdateMemberStatus(GetMembershipExpire entity);
         void UpdateMembership(string id, DateTime membershipDatetime);
         Task<bool> UpdateAllMemberStatus (List<GetMemberStatus> listMem);
 		Task<MemberViewModel?> GetByEmailModel(string email);

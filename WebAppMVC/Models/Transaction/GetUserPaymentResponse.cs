@@ -2,10 +2,8 @@
 
 namespace WebAppMVC.Models.Transaction
 {
-    public class GetUserPaymentResponse : DefaultResponseViewModel<IEnumerable<TransactionViewModel>>
+    public class GetUserPaymentResponse : DefaultResponseViewModel
     {
-        public GetUserPaymentResponse(bool status, string? errorMessage, string? successMessage) : base(status, errorMessage, successMessage)
-        {
-        }
+        public IEnumerable<TransactionViewModel>? Data { get; set; }
     }
 }

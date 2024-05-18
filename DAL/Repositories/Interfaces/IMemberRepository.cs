@@ -10,7 +10,6 @@ namespace DAL.Repositories.Interfaces
 {
     public interface IMemberRepository : IRepositoryBase<Member>
     {
-        Task<IEnumerable<Member>> GetAllByRole(string role);
         Task<Member?> GetByIdNoTracking(string id);
         Task<Member?> GetByIdTracking(string id);
         Task<string?> GetMemberNameById(string id);

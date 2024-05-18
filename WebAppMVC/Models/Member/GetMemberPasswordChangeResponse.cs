@@ -1,10 +1,7 @@
 ﻿namespace WebAppMVC.Models.Member
 {
-    public class GetMemberPasswordChangeResponse : DefaultResponseViewModel<object>
+    public class GetMemberPasswordChangeResponse : DefaultResponseViewModel
     {
-        public GetMemberPasswordChangeResponse(bool status, string? errorMessage, string? successMessage) : base(status, errorMessage, successMessage)
-        {
-        }
-
+        public bool Data { get; set; }
     }
 }

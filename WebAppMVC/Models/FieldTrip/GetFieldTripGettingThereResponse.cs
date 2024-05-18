@@ -2,10 +2,8 @@
 
 namespace WebAppMVC.Models.FieldTrip
 {
-    public class GetFieldTripGettingThereResponse : DefaultResponseViewModel<FieldtripGettingThereViewModel>
+    public class GetFieldTripGettingThereResponse : DefaultResponseViewModel
     {
-        public GetFieldTripGettingThereResponse(bool status, string? errorMessage, string? successMessage) : base(status, errorMessage, successMessage)
-        {
-        }
+        public FieldtripGettingThereViewModel? Data { get; set; }
     }
 }

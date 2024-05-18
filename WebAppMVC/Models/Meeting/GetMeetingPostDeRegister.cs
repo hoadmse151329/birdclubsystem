@@ -1,9 +1,7 @@
 ﻿namespace WebAppMVC.Models.Meeting
 {
-    public class GetMeetingPostDeRegister : DefaultResponseViewModel<object>
+    public class GetMeetingPostDeRegister : DefaultResponseViewModel
     {
-        public GetMeetingPostDeRegister(bool status, string? errorMessage, string? successMessage) : base(status, errorMessage, successMessage)
-        {
-        }
+        public bool Data { get; set; }
     }
 }

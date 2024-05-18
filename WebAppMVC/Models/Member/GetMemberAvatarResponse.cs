@@ -2,10 +2,8 @@
 
 namespace WebAppMVC.Models.Member
 {
-    public class GetMemberAvatarResponse : DefaultResponseViewModel<UpdateMemberAvatar>
+    public class GetMemberAvatarResponse : DefaultResponseViewModel
     {
-        public GetMemberAvatarResponse(bool status, string? errorMessage, string? successMessage) : base(status, errorMessage, successMessage)
-        {
-        }
+        public UpdateMemberAvatar? Data { get; set; }
     }
 }

@@ -9,7 +9,6 @@ namespace BAL.ViewModels.Event
     public class GetEventParticipation
     {
         public int? EventId { get; set; }
-        public string? EventIdFull { get; set; }
         public string? EventName { get; set; }
         public string? EventType { get; set; }
         public DateTime? RegistrationDeadline { get; set; }

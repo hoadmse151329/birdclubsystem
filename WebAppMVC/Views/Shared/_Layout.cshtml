@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@*@model BAL.ViewModels.NotificationViewModel*@
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -6,156 +8,132 @@
     <title>@ViewData["Title"] - birdclubsystem</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <link href="~/css/register.css" rel="stylesheet">
-    <link href="~/css/all.min.css" rel="stylesheet">
-    <link href="~/css/tiny-slider.css" rel="stylesheet">
+	<link href="~/css/all.min.css" rel="stylesheet">
+	<link href="~/css/tiny-slider.css" rel="stylesheet">
     <link rel="stylesheet" href="~/css/main.css">
     <link rel="stylesheet" href="~/vendor/bootstrap-4.5.3-dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/loading.css" />
+    <link rel="stylesheet" href="~/css/loading.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,100&family=Roboto+Condensed:wght@400;700&display=swap"
-          rel="stylesheet">
-    <link rel="stylesheet" href="~/css/owl.carousel.min.css">
-    <link rel="stylesheet" href="~/css/owl.theme.default.min.css">
-    <link rel="stylesheet" href="~/css/sb-admin-2.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,100&family=Roboto+Condensed:wght@400;700&display=swap"
+        rel="stylesheet">
+        <link rel="stylesheet" href="~/css/owl.carousel.min.css">
+        <link rel="stylesheet" href="~/css/owl.theme.default.min.css">
+        <link rel="stylesheet" href="~/css/sb-admin-2.css">
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
 <body>
-    <div id="loading-screen">
-        <!--<audio id="loading-audio" autoplay>
-            <source src="~/images/media/LoadingSound.mp3" type="audio/mp3">
-        </audio> --->
-        <div class="loader">
-            <img src="~/images/Red_whiskered_bulbul_bird_logo_eps_10_generated 1.png" alt="Loading Image" class="loading-img">
-            <div class="text-animation">Loading... Please wait</div>
-        </div>
+<div id="loading-screen">
+    <!--<audio id="loading-audio" autoplay>
+        <source src="~/images/media/LoadingSound.mp3" type="audio/mp3">
+    </audio> --->
+    <div class="loader">
+        <img src="~/images/Red_whiskered_bulbul_bird_logo_eps_10_generated 1.png" alt="Loading Image" class="loading-img">
+        <div class="text-animation">Loading... Please wait</div>
     </div>
+</div>
     <header>
         <div class="header__top d-flex justify-content-between align-items-center container-fluid py-2 fixed-top">
-            <div class="header__left">
-                <a href="https://www.facebook.com/groups/606292706975811/?hoisted_section_header_type=recently_seen&multi_permalinks=1480594572878949" target="_blank"><i class="fab fa-facebook-f"></i></a>
-                <a href="https://github.com/hoadmse151329/birdclubsystem" target="_blank">
-                    <i class="fab fa-github"></i>
-                </a>
-                <a href="#" class="text-decoration-none" onclick="sendEmail('hotrankhanhduy16@gmail.com')">
-                    <i class="fa fa-envelope"></i> hotrankhanhduy16@gmail.com
-                </a>
-                <a href="tel:0396421901" class="mr-4 text-decoration-none">
-                    <i class="fas fa-phone-alt"></i>
-                    088 873 8852
-                </a>
-            </div>
-            <div class="header__right">
-                <ul class="nav">
-                    @if ((string)TempData["ROLE_NAME"] != "Guest")
-                    {
-                        <!-- Display this when the user is logged in -->
-                        <li class="nav-item nav-item-text">
-                            <div class="notification-dropdown dropdown">
-                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
-                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="fa fa-bell"></i><span class="notification">@ViewBag.NotificationCount</span>
-                                    <span type="hidden" name="notificationId" value="${o.notificationId}"></span>
-                                </button>
-                                <div class="dropdown-menu notification-table animate__animated animate__fadeInDown"
+        <div class="header__left">
+            <a href="https://www.facebook.com/groups/606292706975811/?hoisted_section_header_type=recently_seen&multi_permalinks=1480594572878949" target="_blank"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://github.com/hoadmse151329/birdclubsystem" target="_blank"><i
+                    class="fab fa-github"></i></a>
+            <a href="#" class="text-decoration-none" onclick="sendEmail('hotrankhanhduy16@gmail.com')">
+            <i class="fa fa-envelope"></i> hotrankhanhduy16@gmail.com</a>
+            <a href="tel:0396421901" class="mr-4 text-decoration-none"><i
+                    class="fas fa-phone-alt"></i>
+                088 873 8852</a>
+        </div>
+        <div class="header__right">
+                            @if ((string)TempData["ROLE_NAME"] != "Guest")
+                            {
+                                <!-- Display this when the user is logged in -->
+                                     <div class="notification-dropdown dropdown">
+                                          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="fa fa-bell"></i><span class="notification">@ViewBag.NotificationCount</span>
+                                          </button>
+                                     <div class="dropdown-menu notification-table animate__animated animate__fadeInDown"
                                      aria-labelledby="dropdownMenuButton">
-                                    <div class="dropdown-header">
-                                        <span class="triangle"></span>
-                                        <span class="heading">Notification</span>
+                                          <div class="dropdown-header">
+                                                 <span class="triangle"></span>
+                                                 <span class="heading">Notification</span>
+                                          </div>
+                                          <div class="dropdown-body">
+                                                 <a class="dropdown-item" href="@Url.Action("MemberNotification", "Member")">
+                                                 <p class="truncate"> See All <i class="fa fa-angle-right"></i></p>
+                                                 </a>
+                                                 <a class="dropdown-item" href="@Url.Action("MemberNotification", "Member")"><p class="truncate">You have new notification</p></a>
+                                          </div>
+                                     </div>
+                                     </div>
+                                     <div class="user-dropdown dropdown">
+                                        <button class="btn-user-dropdown text-white btn dropdown-toggle" type="button"
+                                                id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <span>Hello, @TempData["USER_NAME"]</span>
+                                            <span><img id="profile-pic" class="img-fluid" src=@TempData["IMAGE_PATH"] alt="fullname"></span>
+                                        </button>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <a class="dropdown-item" href="@Url.Action("MemberProfile", "Member")">
+                                                Member Profile</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item" href="@Url.Action("MemberHistoryEvent", "Member")">HistoryEvents</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item" href="@Url.Action("Logout", "Auth")">Logout</a>
+                                        </div>
                                     </div>
-                                    <div class="dropdown-body">
-                                        <a class="dropdown-item" href="@Url.Action("MemberNotification", "Member")">
-                                            <p class="truncate"> See All <i class="fa fa-angle-right"></i></p>
-                                        </a>
-                                        @if (ViewBag.NotificationTitle != null)
-                                        {
-                                            foreach (var title in ViewBag.NotificationTitle)
-                                            {
-                                                <a class="dropdown-item" href="@Url.Action("MemberNotification", "Member")">
-                                                    <p class="truncate">@title</p>
-                                                </a>
-                                            }
-                                        }
-                                        @*<a class="dropdown-item" href="@Url.Action("MemberNotification", "Member")">
-                                            <p class="truncate">You have new notification</p>
-                                        </a>*@
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="nav-item nav-item-text">
-                            <div class="user-dropdown dropdown">
-                                <button class="btn-user-dropdown text-white btn dropdown-toggle" type="button"
-                                        id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <span>Hello, @TempData["USER_NAME"]</span>
-                                    <span><img id="profile-pic" class="img-fluid" src=@TempData["IMAGE_PATH"] alt="fullname"></span>
-                                </button>
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item" href="@Url.Action("MemberProfile", "Member")">
-                                        Member Profile
-                                    </a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="@Url.Action("MemberHistoryEvent", "Member")">HistoryEvents</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="@Url.Action("Logout", "Auth")">Logout</a>
-                                </div>
-                            </div>
-                        </li>
-                    }
-                    else
-                    {
-                        <!-- Display this when the user is not logged in -->
-                        <li class="nav-item nav-item-text">
-                            <a class="nav-link" href="@Url.Action("login", "Auth")">Login</a>
-                        </li>
-                    }
-                </ul>
-            </div>
+                            }
+                            else
+                            {
+                                    <a class="nav-link" href="@Url.Action("login", "Auth")">Login</a>
+                            }
+        </div>
         </div>
         <div class="header__bottom">
-            <nav class="myNavBar navbar navbar-expand-lg navbar-dark container-fluid">
-                <div class="container-fluid">
-                    <a class="navbar-brand nav-name-text" href="@Url.Action("Index", "Home")">
-                        <img class="d-inline-block" src="/images/Red_whiskered_bulbul_bird_logo_eps_10_generated 1.png" />
-                        <a class="navbar-brand nav-name-text" style="color:black" href="@Url.Action("Index", "Home")">ChaoMao Club</a>
-                    </a>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse" id="navbarText">
-                        <ul class="navbar-nav ms-auto mb-2 mb-xl-0">
-                            <li class="nav-item nav-item-text">
-                                <a class="nav-link" href="@Url.Action("Index", "Home")">Home</a>
-                            </li>
-                            <li class="nav-item nav-item-text">
-                                <a class="nav-link" href="#">News</a>
-                            </li>
-                            <li class="nav-item nav-item-text">
-                                <a class="nav-link" href="@Url.Action("Index","Meeting")">Meetings</a>
-                            </li>
-                            <li class="nav-item nav-item-text">
-                                <a class="nav-link" href="@Url.Action("Index", "FieldTrip")">Field trips</a>
-                            </li>
-                            <li class="nav-item nav-item-text">
-                                <a class="nav-link nav-item-text" href="@Url.Action("Index", "Contest")">Contests</a>
-                                @*<button class=""
-                                <a class="nav-link p-0 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                </a>
-                                <ul class="nav-item nav-item-text dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+        <nav class="myNavBar navbar navbar-expand-lg navbar-dark container-fluid">
+            <div class="container-fluid">
+                <a class="navbar-brand nav-name-text" href="@Url.Action("Index", "Home")">
+                    <img class="d-inline-block" src="/images/Red_whiskered_bulbul_bird_logo_eps_10_generated 1.png" />
+                    <a class="navbar-brand nav-name-text" style="color:black" href="@Url.Action("Index", "Home")">ChaoMao Club</a>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarText">
+                    <ul class="navbar-nav ms-auto mb-2 mb-xl-0">
+                        <li class="nav-item nav-item-text">
+                            <a class="nav-link" href="@Url.Action("Index", "Home")">Home</a>
+                        </li>
+                        <li class="nav-item nav-item-text">
+                            <a class="nav-link" href="#">News</a>
+                        </li>
+                        <li class="nav-item nav-item-text">
+                            <a class="nav-link" href="@Url.Action("Index","Meeting")">Meetings</a>
+                        </li>
+                        <li class="nav-item nav-item-text">
+                            <a class="nav-link" href="@Url.Action("Index", "FieldTrip")">Field trips</a>
+                        </li>
+                        <li class="nav-item nav-item-text">
+                            <a class="nav-link nav-item-text" href="@Url.Action("Index", "Contest")">Contests</a>
+                            @*<button class=""
+                            <a class="nav-link p-0 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            </a>
+                            <ul class="nav-item nav-item-text dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                 <li>
-                                <a class="dropdown-item" href="@Url.Action("LeaderBoard", "Contest")">LeaderBoard</a>
+                                    <a class="dropdown-item" href="@Url.Action("LeaderBoard", "Contest")">LeaderBoard</a>
                                 </li>
-                                </ul>*@
-                            </li>
-                            <li class="nav-item nav-item-text">
-                                <a class="nav-link" href="#">Gallery</a>
-                            </li>
-                            <li class="nav-item nav-item-text">
-                                <a class="nav-link" href="#">Community</a>
-                            </li>
-                        </ul>
-                    </div>
+                            </ul>*@
+                        </li>
+                        <li class="nav-item nav-item-text">
+                            <a class="nav-link" href="#">Gallery</a>
+                        </li>
+                        <li class="nav-item nav-item-text">
+                            <a class="nav-link" href="#">Community</a>
+                        </li>
+                    </ul>
                 </div>
-            </nav>
+            </div>
+        </nav>
         </div>
     </header>
     <div class="container-fluid">
@@ -164,88 +142,88 @@
         </main>
     </div>
     <footer class="footer">
-        <div class="container-sm">
-            <p class="row bottom-text text-wrap mx-3 text-color">
-                We welcome donations in any amount to help fund club initiatives and activities, such as the purchase of
-                bird seed for feeding birds, necessaries for harmed bird treatments, the annual Contests, Field trips
-                and other club events, the purchase of supplies and tools for our volunteer projects, etc.
-            </p>
-            <a class="row button" href="/VnPay/Index">
-                <div class="d-flex justify-content-center bottom-text">Donate</div>
-            </a>
-            <div class="row justify-content-between">
-                <div class="col d-flex bottom-text text-color">@@2024 ChaoMao BirdClub</div>
-            </div>
+    <div class="container-sm">
+        <p class="row bottom-text text-wrap mx-3 text-color">
+            We welcome donations in any amount to help fund club initiatives and activities, such as the purchase of
+            bird seed for feeding birds, necessaries for harmed bird treatments, the annual Contests, Field trips
+            and other club events, the purchase of supplies and tools for our volunteer projects, etc.
+        </p>
+        <a class="row button" href="/VnPay/Index">
+            <div class="d-flex justify-content-center bottom-text">Donate</div>
+        </a>
+        <div class="row justify-content-between">
+            <div class="col d-flex bottom-text text-color">@@2024 ChaoMao BirdClub</div>
         </div>
-    </footer>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    </div>
+</footer>
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/loading.js" defer></script>
-    @*    <script>
-    document.addEventListener('DOMContentLoaded', function () {
+@*    <script>
+document.addEventListener('DOMContentLoaded', function () {
     var loadingAudio = document.getElementById('loading-audio');
 
     // Function to play the audio
     function playAudio() {
-    if (loadingAudio.paused) {
-    loadingAudio.play();
-    }
+        if (loadingAudio.paused) {
+            loadingAudio.play();
+        }
     }
 
     // Play the audio when the user interacts with the document
     document.addEventListener('click', playAudio);
+});
+</script>*@
+<script>
+    function sendEmail(email) {
+        var mailtoLink = 'mailto:' + email;
+        window.open(mailtoLink, '_self');
+    }
+</script>
+<script>
+    function randomizeColor() {
+        return Math.floor(Math.random() * 256);
+    }
+
+    function generateRandomRGB() {
+        const r = randomizeColor();
+        const g = randomizeColor();
+        const b = randomizeColor();
+        return `rgb(${r}, ${g}, ${b})`;
+    }
+    $(document).ready(function () {
+        setInterval(() => {
+            const topColor = generateRandomRGB();
+            const rightColor = generateRandomRGB();
+            const bottomColor = generateRandomRGB();
+            const leftColor = generateRandomRGB();
+
+            $('.button-rgb').css('border-top-color', topColor);
+            $('.button-rgb').css('border-right-color', rightColor);
+            $('.button-rgb').css('border-bottom-color', bottomColor);
+            $('.button-rgb').css('border-left-color', leftColor);
+        }, 200);
     });
-    </script>*@
-    <script>
-        function sendEmail(email) {
-            var mailtoLink = 'mailto:' + email;
-            window.open(mailtoLink, '_self');
-        }
-    </script>
-    <script>
-        function randomizeColor() {
-            return Math.floor(Math.random() * 256);
-        }
-
-        function generateRandomRGB() {
-            const r = randomizeColor();
-            const g = randomizeColor();
-            const b = randomizeColor();
-            return `rgb(${r}, ${g}, ${b})`;
-        }
-        $(document).ready(function () {
-            setInterval(() => {
-                const topColor = generateRandomRGB();
-                const rightColor = generateRandomRGB();
-                const bottomColor = generateRandomRGB();
-                const leftColor = generateRandomRGB();
-
-                $('.button-rgb').css('border-top-color', topColor);
-                $('.button-rgb').css('border-right-color', rightColor);
-                $('.button-rgb').css('border-bottom-color', bottomColor);
-                $('.button-rgb').css('border-left-color', leftColor);
-            }, 200);
-        });
-        @* $(document).ready(function () {
-            setInterval(() => {
+   @* $(document).ready(function () {
+        setInterval(() => {
             $('').css('background-color', generateRandomRGB());
-            }, 1000);
-            });*@
-    </script>
-    <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
-    <!-- <script src="assets/js/owner-script.js"></script> -->
+        }, 1000);
+    });*@
+</script>
+<script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+        <!-- <script src="assets/js/owner-script.js"></script> -->
 
-    <script src="~/js/user-script.js"></script>
-    <script>
-        $(document).ready(function () {
-            $("#notification-table").DataTable({
-                pagingType: "full_numbers",
+        <script src="~/js/user-script.js"></script>
+        <script>
+            $(document).ready(function () {
+                $("#notification-table").DataTable({
+                    pagingType: "full_numbers",
+                });
             });
-        });
-    </script>
+        </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

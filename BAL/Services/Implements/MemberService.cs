@@ -31,11 +31,6 @@ namespace BAL.Services.Implements
 			_unitOfWork.Save();
 		}
 
-        public async Task<IEnumerable<GetMembershipExpire?>> GetAllMemberStatusWithExpireByRole(string role)
-        {
-            return _mapper.Map<IEnumerable<GetMembershipExpire>>(await _unitOfWork.MemberRepository.GetAllByRole(role));
-        }
-
         public async Task<IEnumerable<GetMemberStatus?>> GetAllMemberStatus()
         {
 			return _mapper.Map<IEnumerable<GetMemberStatus>>(_unitOfWork.MemberRepository.GetAll());
@@ -113,18 +108,6 @@ namespace BAL.Services.Implements
 			_unitOfWork.MemberRepository.Update(mem);
 			_unitOfWork.Save();
 		}
-
-        public void UpdateMemberStatus(GetMembershipExpire entity)
-        {
-            var member = _unitOfWork.MemberRepository.GetByIdNoTracking(entity.MemberId).Result;
-            if (member == null)
-            {
-                throw new Exception("User not Found!");
-            }
-			member.Status = entity.Status;
-            _unitOfWork.MemberRepository.Update(member);
-            _unitOfWork.Save();
-        }
 
         public async Task<bool> UpdateAllMemberStatus(List<GetMemberStatus> listMem)
         {

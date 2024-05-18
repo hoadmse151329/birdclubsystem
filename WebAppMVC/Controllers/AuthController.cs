@@ -7,6 +7,7 @@ using BAL.ViewModels.Member;
 using WebAppMVC.Models.Auth;
 using WebAppMVC.Constants;
 using Microsoft.AspNetCore.Authentication;
+using WebAppMVC.Services;
 using WebAppMVC.Models.VnPay;
 using WebAppMVC.Models.Transaction;
 using BAL.ViewModels;
@@ -14,7 +15,6 @@ using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
 using WebAppMVC.Models.Notification;
-using WebAppMVC.Services.Interfaces;
 namespace WebAppMVC.Controllers
 {
     [Route("Auth")]
@@ -51,11 +51,11 @@ namespace WebAppMVC.Controllers
 		[HttpGet("Register")]
 		public async Task<IActionResult> Register()
 		{
-            string? role = HttpContext.Session.GetString(Constants.Constants.ROLE_NAME);
+            string? role = HttpContext.Session.GetString("ROLE_NAME");
 
-            if (role == null) role = Constants.Constants.GUEST;
+            if (role == null) role = "Guest";
 
-            TempData[Constants.Constants.ROLE_NAME] = role;
+            TempData["ROLE_NAME"] = role;
 
 			var googleLoginDetails = await methcall.GetCookie<CreateNewMember>(Request, Constants.Constants.GOOGLE_ACC_COOKIE, jsonOptions);
 			if(googleLoginDetails != null)
@@ -67,11 +67,11 @@ namespace WebAppMVC.Controllers
 		[HttpGet("Login")]
 		public IActionResult Login()
 		{
-            string? role = HttpContext.Session.GetString(Constants.Constants.ROLE_NAME);
+            string? role = HttpContext.Session.GetString("ROLE_NAME");
 
             if (role == null) role = "Guest";
 
-            TempData[Constants.Constants.ROLE_NAME] = role;
+            TempData["ROLE_NAME"] = role;
 
             return View();
 		}
@@ -118,9 +118,9 @@ namespace WebAppMVC.Controllers
         {
 			client.DefaultRequestHeaders.Authorization = null;
             HttpContext.Session.Clear();
-            TempData[Constants.Constants.ACC_TOKEN] = null;
-            TempData[Constants.Constants.ROLE_NAME] = null;
-            TempData[Constants.Constants.USR_ID] = null;
+            TempData["ACCESS_TOKEN"] = null;
+            TempData["ROLE_NAME"] = null;
+            TempData["USER_ID"] = null;
 			SignOut();
 
             // If using ASP.NET Identity, you may want to sign out the user
@@ -136,18 +136,18 @@ namespace WebAppMVC.Controllers
             var authenResponse = await methcall.CallMethodReturnObject<GetAuthenResponse>(
                 _httpClient: client,
                 options: jsonOptions,
-                methodName: Constants.Constants.POST_METHOD,
+                methodName: "POST",
                 url: AuthenAPI_URL,
 				inputType: authenRequest,
                 _logger: _logger);
 
             if (authenResponse == null)
 			{
-                string? role = HttpContext.Session.GetString(Constants.Constants.ROLE_NAME);
+                string? role = HttpContext.Session.GetString("ROLE_NAME");
 
-                if (role == null) role = Constants.Constants.GUEST;
+                if (role == null) role = "Guest";
 
-                TempData[Constants.Constants.ROLE_NAME] = role;
+                TempData["ROLE_NAME"] = role;
                 _logger.LogInformation("Username or Password is invalid.");
                 ViewBag.error = "Username or Password is invalid.";
 				return View("Login");
@@ -156,37 +156,37 @@ namespace WebAppMVC.Controllers
 
 			if (authenResponse.Status)
 			{
-				HttpContext.Session.SetString(Constants.Constants.ACC_TOKEN, responseAuth.AccessToken);
-				HttpContext.Session.SetString(Constants.Constants.ROLE_NAME, responseAuth.RoleName);
-				HttpContext.Session.SetString(Constants.Constants.USR_ID, responseAuth.UserId);
-                HttpContext.Session.SetString(Constants.Constants.USR_NAME, responseAuth.UserName);
-				HttpContext.Session.SetString(Constants.Constants.USR_IMAGE, responseAuth.ImagePath);
+				HttpContext.Session.SetString("ACCESS_TOKEN", responseAuth.AccessToken);
+				HttpContext.Session.SetString("ROLE_NAME", responseAuth.RoleName);
+				HttpContext.Session.SetString("USER_ID", responseAuth.UserId);
+                HttpContext.Session.SetString("USER_NAME", responseAuth.UserName);
+				HttpContext.Session.SetString("IMAGE_PATH", responseAuth.ImagePath);
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", responseAuth.AccessToken);
 
-				TempData[Constants.Constants.ACC_TOKEN] = responseAuth.AccessToken;
-				TempData[Constants.Constants.ROLE_NAME] = responseAuth.RoleName;
-				TempData[Constants.Constants.USR_ID] = responseAuth.UserId;
-				TempData[Constants.Constants.USR_NAME] = responseAuth.UserName;
-				TempData[Constants.Constants.USR_IMAGE] = responseAuth.ImagePath;
+				TempData["ACCESS_TOKEN"] = responseAuth.AccessToken;
+				TempData["ROLE_NAME"] = responseAuth.RoleName;
+				TempData["USER_ID"] = responseAuth.UserId;
+				TempData["USER_NAME"] = responseAuth.UserName;
+				TempData["IMAGE_PATH"] = responseAuth.ImagePath;
 			}
 			if (responseAuth!.RoleName == Constants.Constants.ADMIN)
 			{
-				_logger.LogInformation("Admin Login Successful: " + TempData[Constants.Constants.ROLE_NAME] + " , Id: " + TempData[Constants.Constants.USR_ID]);
+				_logger.LogInformation("Admin Login Successful: " + TempData["ROLE_NAME"] + " , Id: " + TempData["USER_ID"]);
 				return base.Redirect(Constants.Constants.ADMIN_URL);
 			}
 			else if (responseAuth!.RoleName == Constants.Constants.MANAGER)
 			{
-                _logger.LogInformation("Manager Login Successful: " + TempData[Constants.Constants.ROLE_NAME] + " , Id: " + TempData[Constants.Constants.USR_ID]);
+                _logger.LogInformation("Manager Login Successful: " + TempData["ROLE_NAME"] + " , Id: " + TempData["USER_ID"]);
                 return base.Redirect(Constants.Constants.MANAGER_URL);
 			}
 			else if (responseAuth!.RoleName == Constants.Constants.STAFF)
 			{
-                _logger.LogInformation("Staff Login Successful: " + TempData[Constants.Constants.ROLE_NAME] + " , Id: " + TempData[Constants.Constants.USR_ID]);
+                _logger.LogInformation("Staff Login Successful: " + TempData["ROLE_NAME"] + " , Id: " + TempData["USER_ID"]);
                 return base.Redirect(Constants.Constants.STAFF_URL);
 			}
 			else
 			{
-                _logger.LogInformation("Member Login Successful: " + TempData[Constants.Constants.ROLE_NAME] + " , Id: " + TempData[Constants.Constants.USR_ID]);
+                _logger.LogInformation("Member Login Successful: " + TempData["ROLE_NAME"] + " , Id: " + TempData["USER_ID"]);
                 return base.Redirect(Constants.Constants.MEMBER_URL);
 			}
 		}
@@ -212,7 +212,7 @@ namespace WebAppMVC.Controllers
 			var authenResponse = await methcall.CallMethodReturnObject<GetAuthenResponse>(
 				_httpClient: client,
 				options: jsonOptions,
-				methodName: Constants.Constants.POST_METHOD,
+				methodName: "POST",
 				url: AuthenAPI_URL,
 				inputType: newmemRequest,
 				_logger: _logger);
@@ -247,12 +247,12 @@ namespace WebAppMVC.Controllers
 				TransactionId = tran.TransactionId
 			};
 
-			string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
+			string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
 
 			var transactionResponse = await methcall.CallMethodReturnObject<GetTransactionResponse>(
 				_httpClient: client,
 				options: jsonOptions,
-				methodName: Constants.Constants.PUT_METHOD,
+				methodName: "PUT",
 				url: TransactionAPI_URL,
 				inputType: unmtr,
 				accessToken: accToken,
@@ -277,19 +277,19 @@ namespace WebAppMVC.Controllers
 
 			NotificationViewModel notif = new NotificationViewModel()
 			{
-				NotificationId = Guid.NewGuid().ToString(),
+
 				Title = Constants.Constants.NOTIFICATION_TYPE_ACCOUNT_REGISTER,
 				Description = Constants.Constants.NOTIFICATION_DESCRIPTION_ACCOUNT_REGISTER,
 				Date = DateTime.Now,
 				UserId = transactionResponse.Data.UserId,
 				Status = Constants.Constants.NOTIFICATION_STATUS_UNREAD
 			};
-            string NotificationAPI_URL = "/api/Notification/CreateRegister";
+            string NotificationAPI_URL = "/api/Notification/" + transactionResponse.Data.UserId + "/Create";
 
             var notificationResponse = await methcall.CallMethodReturnObject<GetNotificationPostResponse>(
 					_httpClient: client,
                     options: jsonOptions,
-                    methodName: Constants.Constants.POST_METHOD,
+                    methodName: "POST",
                     url: NotificationAPI_URL,
                     inputType: notif,
                     accessToken: accToken,
@@ -305,7 +305,7 @@ namespace WebAppMVC.Controllers
             {
                 _logger.LogInformation("Error while processing your request: " + notificationResponse.Status + " , Error Message: " + notificationResponse.ErrorMessage);
                 ViewBag.Error =
-                    "Error while processing your request! (Create Notification!).\n"
+                    "Error while processing your request! (Create Meeting Media!).\n"
                     + notificationResponse.ErrorMessage;
                 return RedirectToAction("Login", "Auth");
             }
@@ -325,7 +325,7 @@ namespace WebAppMVC.Controllers
             var authenResponse = await methcall.CallMethodReturnObject<GetAuthenResponse>(
 				_httpClient: client,
 				options: jsonOptions,
-				methodName: Constants.Constants.POST_METHOD,
+				methodName: "POST",
 				url: AuthenAPI_URL,
 				inputType: newmemRequest,
 				_logger: _logger);
@@ -340,9 +340,9 @@ namespace WebAppMVC.Controllers
 
 			if (authenResponse.Status)
 			{
-				HttpContext.Session.SetString(Constants.Constants.ACC_TOKEN, responseAuth.AccessToken);
-				HttpContext.Session.SetString(Constants.Constants.ROLE_NAME, responseAuth.RoleName);
-				HttpContext.Session.SetString(Constants.Constants.USR_NAME, responseAuth.UserName);
+				HttpContext.Session.SetString("ACCESS_TOKEN", responseAuth.AccessToken);
+				HttpContext.Session.SetString("ROLE_NAME", responseAuth.RoleName);
+				HttpContext.Session.SetString("USER_NAME", responseAuth.UserName);
 
 				client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", responseAuth.AccessToken);
 			}

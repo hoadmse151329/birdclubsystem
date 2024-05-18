@@ -16,8 +16,6 @@ using System.Text.Encodings.Web;
 using System.ComponentModel.DataAnnotations;
 using System;
 using WebAppMVC.Models.Notification;
-using BAL.ViewModels.Event;
-using Microsoft.AspNetCore.Http.Json;
 
 namespace WebAppMVC.Controllers
 {
@@ -130,16 +128,15 @@ namespace WebAppMVC.Controllers
             if (usrId != null)
             {
                 var notificationCount = await methcall.CallMethodReturnObject<GetNotificationCountResponse>(
-                _httpClient: _httpClient,
-                options: options,
-                methodName: Constants.Constants.POST_METHOD,
-                url: NotificationAPI_URL,
-                inputType: usrId,
-                _logger: _logger);
+                    _httpClient: _httpClient,
+                    options: options,
+                    methodName: "POST",
+                    url: NotificationAPI_URL,
+                    inputType: usrId,
+                    _logger: _logger);
 
                 ViewBag.NotificationCount = notificationCount.Data;
             }
-
 
             var listLocationRoadResponse = await methcall.CallMethodReturnObject<GetLocationAddressResponseByList>(
                 _httpClient: _httpClient,
@@ -257,7 +254,7 @@ namespace WebAppMVC.Controllers
                 inputType: usrId,
                 _logger: _logger);
 
-                ViewBag.NotificationCount = notificationCount.IntData;
+                ViewBag.NotificationCount = notificationCount.Data;
             }
 
             GetMeetingPostResponse? meetPostResponse = new();
@@ -312,8 +309,6 @@ namespace WebAppMVC.Controllers
 		{
             MeetingAPI_URL += "/Register/" + meetingId;
 
-            string NotificationAPI_URL = "/api/Notification/CreateEvent";
-
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER) != null)
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER));
 
@@ -343,63 +338,6 @@ namespace WebAppMVC.Controllers
                     "Error while processing your request! (Registering Meeting Participation!).\n"
 					+ participationNo.ErrorMessage;
                 RedirectToAction("MeetingPost", new { id = meetingId });
-            }
-
-            string MeetingPostAPI_URL = "/api/Meeting/" + meetingId;
-
-            var meetPostResponse = await methcall.CallMethodReturnObject<GetMeetingPostResponse>(
-                                   _httpClient: _httpClient,
-                                   options: options,
-                                   methodName: Constants.Constants.GET_METHOD,
-                                   url: MeetingPostAPI_URL,
-                                   _logger: _logger);
-
-            if (meetPostResponse == null)
-            {
-                //_logger.LogInformation("Username or Password is invalid: " + meetPostResponse.Status + " , Error Message: " + meetPostResponse.ErrorMessage);
-                ViewBag.error =
-                    "Error while processing your request! (Getting Meeting!).\n Meeting Not Found!";
-                View("Index");
-            }
-
-            if (!meetPostResponse.Status)
-            {
-                _logger.LogInformation("Username or Password is invalid: " + meetPostResponse.Status + " , Error Message: " + meetPostResponse.ErrorMessage);
-                ViewBag.error =
-                    "Error while processing your request! (Getting Meeting Post!).\n"
-                    + meetPostResponse.ErrorMessage;
-                View("Index");
-            }
-
-            CreateNotificationRequest notif = new CreateNotificationRequest()
-            {
-                Title = Constants.Constants.NOTIFICATION_TYPE_MEETING_REGISTER,
-                Description = Constants.Constants.NOTIFICATION_DESCRIPTION_MEETING_REGISTER + meetPostResponse.Data.MeetingName,
-                MemberId = usrId
-            };
-
-            var notificationResponse = await methcall.CallMethodReturnObject<GetNotificationPostResponse>(
-                    _httpClient: _httpClient,
-                    options: options,
-                    methodName: "POST",
-                    url: NotificationAPI_URL,
-                    inputType: notif,
-                    accessToken: accToken,
-                    _logger: _logger);
-
-            if (notificationResponse == null)
-            {
-                ViewBag.Error =
-                    "Error while processing your request! (Create Notification).\n User Not Found!";
-                return RedirectToAction("MeetingPost", new {id = meetingId});
-            }
-            if (!notificationResponse.Status)
-            {
-                _logger.LogInformation("Error while processing your request: " + notificationResponse.Status + " , Error Message: " + notificationResponse.ErrorMessage);
-                ViewBag.Error =
-                    "Error while processing your request! (Create Notification!).\n"
-                    + notificationResponse.ErrorMessage;
-                return RedirectToAction("MeetingPost", new { id = meetingId });
             }
 
             return RedirectToAction("MeetingPost", new { id = meetingId });

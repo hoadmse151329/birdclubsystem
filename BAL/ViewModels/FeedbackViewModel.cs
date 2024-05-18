@@ -10,12 +10,10 @@ namespace BAL.ViewModels
     {
         public int? FeedbackId { get; set; }
         public int? UserId { get; set; }
-        public string? EventId { get; set; }
         public string? Title { get; set; }
         public string? Detail { get; set; }
         public DateTime? Date { get; set; }
         public string? Category { get; set; }
-        public double? Rating { get; set; }
         public string? Status { get; set; }
     }
 }

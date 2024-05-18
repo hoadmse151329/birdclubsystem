@@ -2,10 +2,8 @@
 
 namespace WebAppMVC.Models.Bird
 {
-    public class GetBirdResponse : DefaultResponseViewModel<BirdViewModel>
+    public class GetBirdResponse : DefaultResponseViewModel
     {
-        public GetBirdResponse(bool status, string? errorMessage, string? successMessage) : base(status, errorMessage, successMessage)
-        {
-        }
+        public BirdViewModel Data { get; set; }
     }
 }

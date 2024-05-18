@@ -2,10 +2,8 @@
 
 namespace WebAppMVC.Models.Transaction
 {
-	public class GetTransactionResponse : DefaultResponseViewModel<TransactionViewModel>
+	public class GetTransactionResponse : DefaultResponseViewModel
 	{
-        public GetTransactionResponse(bool status, string? errorMessage, string? successMessage) : base(status, errorMessage, successMessage)
-        {
-        }
+		public TransactionViewModel? Data { get; set; }
 	}
 }
