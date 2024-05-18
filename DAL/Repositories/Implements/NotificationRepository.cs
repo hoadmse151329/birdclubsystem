@@ -51,5 +51,18 @@ namespace DAL.Repositories.Implements
             if (notif != null) return true;
             else return false;
         }
+
+        public async Task<Notification?> GetNotificationById(string id)
+        {
+            return _context.Notifications.AsNoTracking().SingleOrDefault(n => n.NotificationId == id);
+        }
+
+        public async Task<IEnumerable<string?>> GetUnreadNotificationTitle(string id)
+        {
+            return _context.Notifications.AsNoTracking()
+                .Where(n => n.UserDetail.MemberId == id && n.Status == "Unread")
+                .OrderByDescending(n => n.Date)
+                .Select(n => n.Title).ToList();
+        }
     }
 }

@@ -5,6 +5,7 @@
     BAL.ViewModels.BirdViewModel createBird = Model.CreateBird != null ? Model.CreateBird : new BAL.ViewModels.BirdViewModel();
     string? search = string.Empty;
     Layout = "~/Views/Shared/_Layout.cshtml";
+    IFormFile formFile = null;
 }
 <html lang="en">
 
@@ -154,8 +155,10 @@
                                           class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                 </div>
                                 <div class="row form-group">
-                                    <label class="col-md-3 col-form-label mt-2 text-md-right">Choose Picture</label>
-                                    <input type="file" name="photo" class="form-control col-md-7 mt-2" accept="image/*">
+                                    <label asp-for="@createBird.ProfilePic" class="col-md-3 col-form-label mt-2 text-md-right">Choose Picture</label>
+                                    <img class="profile-pic" style="width:300px; height:300px" src="@createBird.ProfilePic" />
+                                    <input asp-for="@createBird.BirdMainImage" type="file" class="file-upload" accept=".jpg, .jpeg, .png" value="@createBird.BirdMainImage">
+                                    <input asp-for="@createBird.ProfilePic" type="text" value="@createBird.ProfilePic" class="form-control" required hidden>
 
                                     <label asp-for="@createBird.AddDate" class="col-md-3 col-form-label mt-3 text-md-right"></label>
                                     <input asp-for="@createBird.AddDate" value="@createBird.AddDate.ToString("yyyy-MM-ddTHH:mm")" type="datetime-local" readonly class="form-control col-md-7 mt-3" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}">

@@ -336,13 +336,13 @@ namespace WebAPI.Controllers
                     {
                         Status = true,
                         Message = "Meeting Media Create successfully!",
-                        Data = true
+                        BoolData = true
                     });
                 else return StatusCode(StatusCodes.Status500InternalServerError, new
                 {
                     Status = true,
                     Message = "Meeting Media Create Failed!",
-                    Data = false
+                    BoolData = false
                 });
             }
             catch (Exception ex)
@@ -392,7 +392,7 @@ namespace WebAPI.Controllers
                 if (result) return Ok(new
                 {
                     Status = true,
-                    Data = result
+                    BoolData = result
                 });
                 return NotFound(new
                 {
@@ -447,7 +447,7 @@ namespace WebAPI.Controllers
                 {
                     Status = true,
                     Message = "Add Member Participation successfully !",
-                    Data = participateNo
+                    IntData = participateNo
                 });
             }
             catch (Exception ex)
@@ -520,7 +520,7 @@ namespace WebAPI.Controllers
                 });
             }
         }
-        [HttpPost("RemoveParticipant/{id}")]
+        [HttpPost("{id:int}/Participant/Remove")]
         [Authorize(Roles = "Member,Manager")]
         [ProducesResponseType(typeof(MeetingParticipantViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -541,7 +541,7 @@ namespace WebAPI.Controllers
                 return Ok(new
                 {
                     Status = true,
-                    Data = result,
+                    BoolData = result,
                     SuccessMessage = "Remove Meeting Participation successfully !",
                 });
             }

@@ -1,6 +1,7 @@
 ﻿using WebAppMVC.Models.VnPay;
+using WebAppMVC.Services.Interfaces;
 
-namespace WebAppMVC.Services
+namespace WebAppMVC.Services.Implements
 {
     public class VnPayService : IVnPayService
     {
