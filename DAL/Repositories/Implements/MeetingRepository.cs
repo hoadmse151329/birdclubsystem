@@ -38,87 +38,89 @@ namespace DAL.Repositories.Implements
             DateTime? startDate = null,
             DateTime? endDate = null,
             int? numberOfParticipants = null,
-            string? locationAddress = null,
-            string? orderBy = null
+            List<string>? roads = null,
+            List<string>? districts = null,
+            List<string>? cities = null,
+            List<string>? statuses = null,
+            string? orderBy = null,
+            bool isMemberOrGuest = false
             )
         {
-            var meetings = _context.Meetings.AsNoTracking();
-            if (meetingId != null)
+
+
+            var roadLocationIds = roads != null && roads.Any() ? GetLocationIdListByLocationName(roads).ToList() : new List<int>();
+            var districtLocationIds = districts != null && districts.Any() ? GetLocationIdListByLocationName(districts).ToList() : new List<int>();
+            var cityLocationIds = cities != null && cities.Any() ? GetLocationIdListByLocationName(cities).ToList() : new List<int>();
+
+            var meetings = _context.Meetings.AsNoTracking().AsQueryable();
+
+            List<string> statusListDefault = new List<string> { "OnHold", "OpenRegistration", "ClosedRegistration", "CheckingIn", "Ongoing", "Ended", "Postponed", "Cancelled" };
+
+            if (isMemberOrGuest)
             {
-                meetings = meetings.AsNoTracking().Where(m => m.MeetingId.Equals(meetingId));
+                statuses = new List<string>() { "OpenRegistration" };
             }
 
-            if (meetingName != null)
+            if (meetingId.HasValue)
+            {
+                meetings = meetings.AsNoTracking().Where(m => m.MeetingId.Equals(meetingId.Value));
+            }
+
+            if (!string.IsNullOrEmpty(meetingName))
             {
                 meetings = meetings.AsNoTracking().Where(m => m.MeetingName.Contains(meetingName));
             }
 
-            if (registrationDeadline != null)
+            if (registrationDeadline.HasValue)
             {
-                meetings = meetings.AsNoTracking().Where(m => m.RegistrationDeadline == registrationDeadline);
+                meetings = meetings.AsNoTracking().Where(m => m.RegistrationDeadline == registrationDeadline.Value);
             }
-            if (startDate != null)
+            if (startDate.HasValue)
             {
-                meetings = meetings.AsNoTracking().Where(m => m.StartDate == startDate);
+                meetings = meetings.AsNoTracking().Where(m => m.StartDate == startDate.Value);
             }
-            if (endDate != null)
+            if (endDate.HasValue)
             {
-                meetings = meetings.AsNoTracking().Where(m => m.EndDate == endDate);
+                meetings = meetings.AsNoTracking().Where(m => m.EndDate == endDate.Value);
             }
-            if (numberOfParticipants != null)
+            if (numberOfParticipants.HasValue)
             {
-                meetings = meetings.AsNoTracking().Where(m => m.NumberOfParticipants == numberOfParticipants);
+                meetings = meetings.AsNoTracking().Where(m => m.NumberOfParticipants == numberOfParticipants.Value);
             }
-            if (locationAddress != null)
+            if (roadLocationIds.Any())
             {
-                var locationAddressCut = locationAddress.Split(",");
-                for(int i = 0; i < locationAddressCut.Length; i++)
-                {
-                    
-                }
-                /*var list = _context.Locations.Where(l => l.LocationName.Contains(locationAddress)).ToList();
-
-                foreach(var location in list)
-                {
-                    meetings = meetings.AsNoTracking().DistinctBy(m => m.LocationId);
-                }*/
-
+                meetings = meetings.Where(m => roadLocationIds.Contains(m.LocationId.Value));
+            }
+            if (districtLocationIds.Any())
+            {
+                meetings = meetings.Where(m => districtLocationIds.Contains(m.LocationId.Value));
             }
 
-            if (!string.IsNullOrEmpty(orderBy))
+            if (cityLocationIds.Any())
             {
-                switch (orderBy)
-                {
-                    case "meetingname_asc":
-                        meetings = meetings.OrderBy(m => m.MeetingName);
-                        break;
-                    case "meetingname_desc":
-                        meetings = meetings.OrderByDescending(m => m.MeetingName);
-                        break;
-                    case "registrationdeadline_asc":
-                        meetings = meetings.OrderBy(m => m.RegistrationDeadline);
-                        break;
-                    case "registrationdeadline_desc":
-                        meetings = meetings.OrderByDescending(m => m.RegistrationDeadline);
-                        break;
-                    case "startdate_asc":
-                        meetings = meetings.OrderBy(m => m.StartDate);
-                        break;
-                    case "startdate_desc":
-                        meetings = meetings.OrderByDescending(m => m.StartDate);
-                        break;
-                    case "enddate_asc":
-                        meetings = meetings.OrderBy(m => m.EndDate);
-                        break;
-                    case "enddate_desc":
-                        meetings = meetings.OrderByDescending(m => m.EndDate);
-                        break;
-                }
+                meetings = meetings.Where(m => cityLocationIds.Contains(m.LocationId.Value));
             }
-            else
+            if (statuses != null && statuses.Any())
             {
-                meetings = meetings.OrderBy(m => m.MeetingId);
+                meetings = meetings.Where(m => statuses.Contains(m.Status));
             }
+            meetings = orderBy switch
+            {
+                "meetingname_asc" => meetings.OrderBy(m => m.MeetingName),
+                "meetingname_desc" => meetings.OrderByDescending(m => m.MeetingName),
+                "openregistration_asc" => meetings.OrderBy(m => m.OpenRegistration),
+                "openregistration_desc" => meetings.OrderByDescending(m => m.OpenRegistration),
+                "registrationdeadline_asc" => meetings.OrderBy(m => m.RegistrationDeadline),
+                "registrationdeadline_desc" => meetings.OrderByDescending(m => m.RegistrationDeadline),
+                "startdate_asc" => meetings.OrderBy(m => m.StartDate),
+                "startdate_desc" => meetings.OrderByDescending(m => m.StartDate),
+                "enddate_asc" => meetings.OrderBy(m => m.EndDate),
+                "enddate_desc" => meetings.OrderByDescending(m => m.EndDate),
+                "status_asc" => meetings.OrderBy(m => statusListDefault.IndexOf(m.Status)),
+                "status_desc" => meetings.OrderByDescending(m => statusListDefault.IndexOf(m.Status)),
+                _ => meetings.OrderBy(m => m.MeetingId)
+            };
+
             return meetings.ToList();
         }
 
@@ -141,6 +143,17 @@ namespace DAL.Repositories.Implements
             var meet = _context.Meetings.SingleOrDefault(m => m.MeetingId == id);
             if (meet != null) return true;
             else return false;
+        }
+
+        private List<int> GetLocationIdListByLocationName(List<string>? locationNames)
+        {
+            var nameLocationList = new List<Location>();
+            foreach (var locationName in locationNames)
+            {
+                var list = _context.Locations.AsNoTracking().Where(l => l.LocationName.Contains(locationName)).ToList();
+                nameLocationList.AddRange(list);
+            }
+            return nameLocationList.Select(l => l.LocationId).ToList();
         }
     }
 }

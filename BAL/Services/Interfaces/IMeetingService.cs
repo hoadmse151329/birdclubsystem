@@ -12,15 +12,19 @@ namespace BAL.Services.Interfaces
         Task<MeetingViewModel?> GetById(int id);
         Task<IEnumerable<MeetingViewModel>> GetAllMeetings(string? role);
         IEnumerable<MeetingViewModel> GetAllByRegistrationDeadline(DateTime registrationDeadline);
-        IEnumerable<MeetingViewModel> GetSortedMeetings(
+        Task<IEnumerable<MeetingViewModel>?> GetSortedMeetings(
             int? meetingId,
             string? meetingName,
             DateTime? registrationDeadline,
             DateTime? startDate,
             DateTime? endDate,
             int? numberOfParticipants,
-            string? locationAddress,
-            string? orderBy
+            List<string>? roads,
+            List<string>? districts,
+            List<string>? cities,
+            List<string>? statuses,
+            string? orderBy,
+            bool isMemberOrGuest = false
             );
         List<string> GetAllMeetingName();
         void Create(MeetingViewModel entity);
