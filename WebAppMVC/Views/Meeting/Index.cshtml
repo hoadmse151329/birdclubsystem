@@ -26,9 +26,6 @@
         <div class="row contain">
             <div class="content__filter col-3">
                 <div class="content__filter-tabs-left">
-                    @*                        <form asp-action="Index" asp-controller="Meeting" method="get" asp-route-locationAddress="@locationSearchAddress">
-
-                    </form>*@
                     <div class="tabs-left-title">
                         <h3 class="heading">Filter</h3>
                     </div>
@@ -112,6 +109,8 @@
                         locationSearchAddress = "," + locationSearchRoad + "," + locationSearchDistrict + "," + locationSearchCity;
                         }
                         <button class="button--primary " id="filterButton" type="submit"><i class="fa fa-filter"></i> Filter</button>*@
+                                    <button class="toggle-btn button--primary" aria-expanded="false" aria-label="Toggle More"><span>More</span></button>
+                                }
                     </div>
                     <div class="col-bg">
                         <img class="bg-1" src="~/images/meeting.png"></img>
@@ -208,8 +207,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.5/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        $(document).ready(function() {
-            $('.form-check-input').change(function() {
+        $(document).ready(function () {
+            $('.form-check-input').change(function () {
                 applyFilters();
             });
 
@@ -218,32 +217,80 @@
                 var selectedDistricts = [];
                 var selectedCities = [];
 
-                // Collect selected checkboxes
-                $('input[type=checkbox]:checked').each(function() {
-                    var checkboxId = $(this).attr('id');
-                    var checkboxValue = $(this).val();
-
-                    if (checkboxId.startsWith('road')) {
-                        selectedRoads.push(checkboxValue);
-                    } else if (checkboxId.startsWith('district')) {
-                        selectedDistricts.push(checkboxValue);
-                    } else if (checkboxId.startsWith('city')) {
-                        selectedCities.push(checkboxValue);
-                    }
+                $('input[name="road"]:checked').each(function () {
+                    selectedRoads.push($(this).val());
                 });
 
-                // Redirect to Index action with selected filters
-                var url = '@Url.Action("Index", "Meeting")';
-                url += '?road=' + selectedRoads.join('&road=');
-                url += '&district=' + selectedDistricts.join('&district=');
-                url += '&city=' + selectedCities.join('&city=');
-                window.location.href = url;
+                $('input[name="district"]:checked').each(function () {
+                    selectedDistricts.push($(this).val());
+                });
+
+                $('input[name="city"]:checked').each(function () {
+                    selectedCities.push($(this).val());
+                });
+
+                // Make AJAX POST request to filter meetings
+                $.ajax({
+                    url: '@Url.Action("IndexFilter", "Meeting")',
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        road: selectedRoads,
+                        district: selectedDistricts,
+                        city: selectedCities
+                    }),
+                    success: function (response) {
+                        renderMeetings(response);
+                    }
+                });
             }
-        });
+
+        //    function renderMeetings(meetings) {
+        //        var meetingList = $('#meeting-list');
+        //        meetingList.empty();
+
+        //        if (meetings.length === 0) {
+        //            meetingList.append('<p>No meetings found</p>');
+        //            return;
+        //        }
+
+        //        $.each(meetings, function (index, data) {
+        //            var meetingItem = `
+        //                        <div class="col-4 p-0">
+        //                            <div class="club-item">
+        //                                <a href="#" class="club-image">
+        //                                    ${data.spotlightImage ? `<img class="img-fluid" src="${data.spotlightImage.image}" alt="nt1">` : `<img class="img-fluid" src="~/images/meeting.png" alt="nt1">`}
+        //                                </a>
+        //                                <div class="club-title">
+        //                                            <a href="../Meeting/Post/${data.meetingId}" class="text-decoration-none truncate">${data.meetingName}</a>
+        //                                </div>
+        //                                <p class="club-price">
+        //                                    <i class="fas fa-calendar-alt"></i>
+        //                                    From ${new Date(data.startDate).toLocaleDateString()} to ${new Date(data.endDate).toLocaleDateString()}
+        //                                </p>
+        //                                <div class="club-address" data-toggle="tooltip" data-placement="auto" title="${data.city}">
+        //                                    <p class="address">
+        //                                        <i class="fas fa-map-marker-alt" style="color:white"></i>
+        //                                        <span class="district text-white truncate" id="address">Address ${data.areaNumber}, ${data.street}, ${data.district}, ${data.city}</span>
+        //                                    </p>
+        //                                </div>
+        //                                <div class="d-flex justify-content-between">
+        //                                    <p class="address truncate text-white"><i class="fas fa-comment-alt"></i>${data.description}</p>
+        //                                                            <form action="../Meeting/Post/${data.meetingId}" method="get">
+        //                                        <button class="button--primary text-black text-wrapper-16" type="submit">See Now</button>
+        //                                    </form>
+        //                                </div>
+        //                            </div>
+        //                        </div>
+        //                    `;
+        //            meetingList.append(meetingItem);
+        //        });
+        //    }
+        //});
     </script>
     <script>
-        $(document).ready(function() {
-            $('.toggle-btn').on('click', function(event) {
+        $(document).ready(function () {
+            $('.toggle-btn').on('click', function (event) {
                 event.preventDefault(); // Prevent the default behavior of the button
 
                 var fieldset = $(this).closest('.filter-group');
@@ -259,8 +306,7 @@
                     $(this).attr('aria-expanded', 'true').find('span').text('Less');
                 }
             });
-
-            $('.filter-group').each(function() {
+            $('.filter-group').each(function () {
                 var checkBoxes = $(this).find('.input-group');
                 if (checkBoxes.length <= 3) {
                     $(this).find('.toggle-btn').attr('aria-expanded', 'true').find('span').text('Less');

@@ -44,8 +44,7 @@ namespace WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetAllMeetings(
-            [FromBody] string? role,
-            [FromQuery] string? status
+            [FromBody] string? role
             )
         {
             try
@@ -76,31 +75,44 @@ namespace WebAPI.Controllers
                 });
             }
         }
-        [HttpGet("Search")]
+        [HttpPost("Search")]
         [ProducesResponseType(typeof(List<MeetingViewModel>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetMeetingsByAttributes(
+            [FromBody] string? role,
             [FromQuery] int? meetingId,
             [FromQuery] string? meetingName,
             [FromQuery] DateTime? registrationDeadline,
             [FromQuery] DateTime? startDate,
             [FromQuery] DateTime? endDate,
             [FromQuery] int? numberOfParticipants,
-            [FromQuery] string? locationAddress,
+            [FromQuery] List<string>? road,
+            [FromQuery] List<string>? district,
+            [FromQuery] List<string>? city,
+            [FromQuery] List<string>? statuses,
             [FromQuery] string? orderBy)
         {
             try
             {
-                var result = _meetingService.GetSortedMeetings(
+                bool isMemberOrGuest = false;
+                if(!string.IsNullOrEmpty(role) && (role.Equals("Member") || role.Equals("Guest")))
+                {
+                    isMemberOrGuest = true;
+                }
+                var result = await _meetingService.GetSortedMeetings(
                     meetingId: meetingId,
                     meetingName: meetingName,
                     registrationDeadline: registrationDeadline,
                     startDate: startDate,
                     endDate: endDate,
                     numberOfParticipants: numberOfParticipants,
-                    locationAddress: locationAddress,
-                    orderBy: orderBy);
+                    roads: road,
+                    districts: district,
+                    cities: city,
+                    statuses: statuses,
+                    orderBy: orderBy,
+                    isMemberOrGuest);
                 if (result == null)
                 {
                     return NotFound(new
