@@ -1,7 +1,10 @@
 ﻿@model dynamic
 @{
     ViewData["Title"] = "Meeting Page";
-    List<BAL.ViewModels.MeetingViewModel> meetingList = Model.Meetings;
+    List<BAL.ViewModels.MeetingViewModel> meetingList = Model.Meetings != null ? Model.Meetings : new List<BAL.ViewModels.MeetingViewModel>();
+    List<string> roadNameList = Model.Roads != null ? Model.Roads : new List<string>();
+    List<string> districtNameList = Model.Districts != null ? Model.Districts : new List<string>();
+    List<string> cityNameList = Model.Cities != null ? Model.Cities : new List<string>();
 }
 
 <html>
@@ -34,57 +37,57 @@
                             <fieldset class="filter-group">
                                 <legend>Road</legend>
                                 <div class="checkboxes">
-                                    @foreach (var data in meetingList)
+                                    @foreach (var data in roadNameList)
                                     {
                                         <div class="input-group">
                                             <div class="form-check">
-                                                <input class="form-check-input road-checkbox" type="checkbox" name="road" id="road_@data.Street" value="@data.Street">
-                                                <label class="form-check-label" for="road_@data.Street">@data.Street</label>
+                                                <input class="form-check-input road-checkbox" type="checkbox" name="road" id="road_@data.Trim()" value="@data.Trim()">
+                                                <label class="form-check-label" for="road_@data.Trim()">@data.Trim()</label>
                                             </div>
                                         </div>
                                     }
                                 </div>
-                                @if (meetingList.Count() > 3)
+                                @if (roadNameList.Count() > 3)
                                 {
-                                    <button class="toggle-btn" aria-expanded="false" aria-label="Toggle More"><span>More</span></button>
+                                    <button class="toggle-btn btn btn-primary" aria-expanded="false" aria-label="Toggle More"><span>More</span></button>
                                 }
                             </fieldset>
 
                             <fieldset class="filter-group">
                                 <legend>District</legend>
                                 <div class="checkboxes">
-                                    @foreach (var data in meetingList)
+                                    @foreach (var data in districtNameList)
                                     {
                                         <div class="input-group">
                                             <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" name="district" id="district_@data.District" value="@data.District">
-                                                <label class="form-check-label" for="district_@data.District">@data.District</label>
+                                                <input class="form-check-input" type="checkbox" name="district" id="district_@data.Trim()" value="@data.Trim()">
+                                                <label class="form-check-label" for="district_@data.Trim()">@data.Trim()</label>
                                             </div>
                                         </div>
                                     }
                                 </div>
-                                @if (meetingList.Count() > 3)
+                                @if (districtNameList.Count() > 3)
                                 {
-                                    <button class="toggle-btn" aria-expanded="false" aria-label="Toggle More"><span>More</span></button>
+                                    <button class="toggle-btn btn btn-primary" aria-expanded="false" aria-label="Toggle More"><span>More</span></button>
                                 }
                             </fieldset>
 
                             <fieldset class="filter-group">
                                 <legend>City</legend>
                                 <div class="checkboxes">
-                                    @foreach (var data in meetingList)
+                                    @foreach (var data in cityNameList)
                                     {
                                         <div class="input-group">
                                             <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" name="city" id="city_@data.City" value="@data.City">
-                                                <label class="form-check-label" for="city_@data.City">@data.City</label>
+                                                <input class="form-check-input" type="checkbox" name="city" id="city_@data.Trim()" value="@data.Trim()">
+                                                <label class="form-check-label" for="city_@data.Trim()">@data.Trim()</label>
                                             </div>
                                         </div>
                                     }
                                 </div>
-                                @if (meetingList.Count() > 3)
+                                @if (cityNameList.Count() > 3)
                                 {
-                                    <button class="toggle-btn" aria-expanded="false" aria-label="Toggle More"><span>More</span></button>
+                                    <button class="toggle-btn btn btn-primary" aria-expanded="false" aria-label="Toggle More"><span>More</span></button>
                                 }
                             </fieldset>
                         </form>
@@ -96,82 +99,11 @@
                 </div>
             </div>
             <div class="col-9">
-                <div class="content__list row">
-                    @{
-                        if (ViewBag.error != null)
-                        {
-                            <span class="text-danger">@ViewBag.error</span>
-                        }
-                    }
-                    @foreach (var data in meetingList)
-                    {
-                        <div class="col-4 p-0">
-                            <div class="club-item">
-
-                                <a href="#" class="club-image">
-                                    @{
-                                        if (data.SpotlightImage != null)
-                                        {
-                                            <img class="img-fluid" src="@data.SpotlightImage.Image" alt="nt1">
-                                        }
-                                        else
-                                        {
-                                            <img class="img-fluid" src="~/images/meeting.png" alt="nt1">
-                                        }
-                                    }
-                                </a>
-                                <div class="club-title">
-                                    <a href="@Url.Action("MeetingPost", "Meeting",new {id = data.MeetingId})" class="text-decoration-none truncate">@data.MeetingName</a>
-                                </div>
-
-                                <p class="club-price">
-                                    <i class="fas fa-calendar-alt"></i>
-                                    From @data.StartDate.ToString("MM-dd-yyyy")
-                                    to @data.EndDate.ToString("MM-dd-yyyy")
-                                </p>
-                                <div class="club-address" data-toggle="tooltip" data-placement="auto"
-                                     title="@data.City">
-                                    <p class="address">
-                                        <i class="fas fa-map-marker-alt" style="color:white"></i>
-                                        <span class="district text-white truncate" id="address">Address @data.AreaNumber,@data.Street,@data.District,@data.City</span>
-                                    </p>
-                                </div>
-                                <div class="d-flex justify-content-between">
-                                    <p class="address truncate text-white"><i class="fas fa-comment-alt"></i>@data.Description</p>
-                                    <form asp-action="MeetingPost" asp-controller="Meeting" method="get" asp-route-id="@data.MeetingId">
-                                        <button class="button--primary text-black text-wrapper-16" type="submit">See Now</button>
-                                    </form>
-                                </div>
-
-                            </div>
-                        </div>
-                    }
+                <div id="meeting-list" class="content__list row">
+                    <!-- Render the initial meeting list -->
+                    @Html.RenderPartialAsync("_MeetingListPartial", meetingList)
                 </div>
                 <div class="pagination mb-3">
-                    <!-- <li class="page-item previous-page disabled">
-                        <a class="page-link btn" href="#">Prev</i></a>
-                    </li>
-                    <li class="pages page-item current-page ">
-                        <a class="page page-link" href="#">1</a>
-                    </li>
-                    <li class="pages page-item dots">
-                        <a class="page page-link" href="#">...</a>
-                    </li>
-                    <li class="pages page-item current-page ">
-                        <a class="page page-link" href="#">5</a>
-                    </li>
-                    <li class="pages page-item current-page ">
-                        <a class="page page-link" href="#">6</a>
-                    </li>
-                    <li class="pages page-item dots">
-                        <a class="page page-link" href="#">...</a>
-                    </li>
-                    <li class="pages page-item current-page ">
-                        <a class="page page-link" href="#">10</a>
-                    </li>
-                    <li class="page-item next-page">
-                        <a class="page-link btn" href="#">Next</i></a>
-                    </li> -->
                 </div>
             </div>
         </div>
@@ -207,66 +139,53 @@
                     selectedCities.push($(this).val());
                 });
 
-                // Make AJAX POST request to filter meetings
+                var queryString = $.param({
+                    road: selectedRoads,
+                    district: selectedDistricts,
+                    city: selectedCities
+                });
+                console.log(queryString);
+
+                // Make AJAX GET request to filter meetings
                 $.ajax({
-                    url: '@Url.Action("IndexFilter", "Meeting")',
-                    method: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify({
-                        road: selectedRoads,
-                        district: selectedDistricts,
-                        city: selectedCities
-                    }),
+                    url: '@Url.Action("IndexFilter", "Meeting")?' + queryString,
+                    method: 'GET',
                     success: function (response) {
-                        renderMeetings(response);
+                        $('#meeting-list').html(response);
                     }
                 });
             }
 
-            function renderMeetings(meetings) {
-                var meetingList = $('#meeting-list');
-                meetingList.empty();
+            // Toggle functionality for filter checkboxes
+            $('.toggle-btn').on('click', function (event) {
+                event.preventDefault(); // Prevent the default behavior of the button
 
-                if (meetings.length === 0) {
-                    meetingList.append('<p>No meetings found</p>');
-                    return;
+                var fieldset = $(this).closest('.filter-group');
+                var checkBoxes = fieldset.find('.input-group');
+
+                var isExpanded = $(this).attr('aria-expanded') === 'true';
+
+                if (isExpanded) {
+                    checkBoxes.slice(3).hide();
+                    $(this).attr('aria-expanded', 'false').find('span').text('More');
+                } else {
+                    checkBoxes.show();
+                    $(this).attr('aria-expanded', 'true').find('span').text('Less');
                 }
+            });
 
-                $.each(meetings, function (index, data) {
-                    var meetingItem = `
-                                <div class="col-4 p-0">
-                                    <div class="club-item">
-                                        <a href="#" class="club-image">
-                                            ${data.spotlightImage ? `<img class="img-fluid" src="${data.spotlightImage.image}" alt="nt1">` : `<img class="img-fluid" src="~/images/meeting.png" alt="nt1">`}
-                                        </a>
-                                        <div class="club-title">
-                                                    <a href="../Meeting/Post/${data.meetingId}" class="text-decoration-none truncate">${data.meetingName}</a>
-                                        </div>
-                                        <p class="club-price">
-                                            <i class="fas fa-calendar-alt"></i>
-                                            From ${new Date(data.startDate).toLocaleDateString()} to ${new Date(data.endDate).toLocaleDateString()}
-                                        </p>
-                                        <div class="club-address" data-toggle="tooltip" data-placement="auto" title="${data.city}">
-                                            <p class="address">
-                                                <i class="fas fa-map-marker-alt" style="color:white"></i>
-                                                <span class="district text-white truncate" id="address">Address ${data.areaNumber}, ${data.street}, ${data.district}, ${data.city}</span>
-                                            </p>
-                                        </div>
-                                        <div class="d-flex justify-content-between">
-                                            <p class="address truncate text-white"><i class="fas fa-comment-alt"></i>${data.description}</p>
-                                                                    <form action="../Meeting/Post/${data.meetingId}" method="get">
-                                                <button class="button--primary text-black text-wrapper-16" type="submit">See Now</button>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            `;
-                    meetingList.append(meetingItem);
-                });
-            }
+            // Initialize toggle button states
+            $('.filter-group').each(function () {
+                var checkBoxes = $(this).find('.input-group');
+                if (checkBoxes.length <= 3) {
+                    $(this).find('.toggle-btn').attr('aria-expanded', 'true').find('span').text('Less');
+                } else {
+                    checkBoxes.slice(3).hide();
+                }
+            });
         });
     </script>
-    <script>
+    @* <script>
         $(document).ready(function () {
             $('.toggle-btn').on('click', function (event) {
                 event.preventDefault(); // Prevent the default behavior of the button
@@ -294,6 +213,6 @@
                 }
             });
         });
-    </script>
+    </script> *@
 </body>
 </html>

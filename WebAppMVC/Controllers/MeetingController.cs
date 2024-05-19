@@ -161,27 +161,9 @@ namespace WebAppMVC.Controllers
             }
             testmodel.Meetings = listMeetResponse.Data;
 
-            List<SelectListItem> roads = new();
-            foreach (var roadOption in listLocationRoadResponse.Data)
-            {
-                roads.Add(new SelectListItem(text: roadOption, value: roadOption));
-            }
-
-            List<SelectListItem> districts = new();
-            foreach (var districtOption in listLocationDistrictResponse.Data)
-            {
-                districts.Add(new SelectListItem(text: districtOption, value: districtOption));
-            }
-
-            List<SelectListItem> cities = new();
-            foreach (var cityOption in listLocationCityResponse.Data)
-            {
-                cities.Add(new SelectListItem(text: cityOption, value: cityOption));
-            }
-
-            testmodel.Roads = roads;
-            testmodel.Districts = districts;
-            testmodel.Cities = cities;
+            testmodel.Roads = listLocationRoadResponse.Data;
+            testmodel.Districts = listLocationDistrictResponse.Data;
+            testmodel.Cities = listLocationCityResponse.Data;
 
             return View(testmodel);
         }
@@ -283,7 +265,7 @@ namespace WebAppMVC.Controllers
             testmodel.Districts = districts;
             testmodel.Cities = cities;*/
 
-            return Json(testmodel);
+            return PartialView("_MeetingListPartial", listMeetResponse.Data);
         }
 
         [HttpGet("Post/{id:int}")]
