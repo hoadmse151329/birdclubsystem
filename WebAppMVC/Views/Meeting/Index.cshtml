@@ -34,62 +34,15 @@
                     </div>
                     <div class="tabs-left-filter" style="background-color:white">
                         <form id="filterForm">
-                            <fieldset class="filter-group">
-                                <legend>Road</legend>
-                                <div class="checkboxes">
-                                    @foreach (var data in roadNameList)
-                                    {
-                                        <div class="input-group">
-                                            <div class="form-check">
-                                                <input class="form-check-input road-checkbox" type="checkbox" name="road" id="road_@data.Trim()" value="@data.Trim()">
-                                                <label class="form-check-label" for="road_@data.Trim()">@data.Trim()</label>
-                                            </div>
-                                        </div>
-                                    }
-                                </div>
-                                @if (roadNameList.Count() > 3)
-                                {
-                                    <button class="toggle-btn btn btn-primary" aria-expanded="false" aria-label="Toggle More"><span>More</span></button>
-                                }
-                            </fieldset>
-
-                            <fieldset class="filter-group">
-                                <legend>District</legend>
-                                <div class="checkboxes">
-                                    @foreach (var data in districtNameList)
-                                    {
-                                        <div class="input-group">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" name="district" id="district_@data.Trim()" value="@data.Trim()">
-                                                <label class="form-check-label" for="district_@data.Trim()">@data.Trim()</label>
-                                            </div>
-                                        </div>
-                                    }
-                                </div>
-                                @if (districtNameList.Count() > 3)
-                                {
-                                    <button class="toggle-btn btn btn-primary" aria-expanded="false" aria-label="Toggle More"><span>More</span></button>
-                                }
-                            </fieldset>
-
-                            <fieldset class="filter-group">
-                                <legend>City</legend>
-                                <div class="checkboxes">
-                                    @foreach (var data in cityNameList)
-                                    {
-                                        <div class="input-group">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" name="city" id="city_@data.Trim()" value="@data.Trim()">
-                                                <label class="form-check-label" for="city_@data.Trim()">@data.Trim()</label>
-                                            </div>
-                                        </div>
-                                    }
-                                </div>
-                                @if (cityNameList.Count() > 3)
-                                {
-                                    <button class="toggle-btn btn btn-primary" aria-expanded="false" aria-label="Toggle More"><span>More</span></button>
-                                }
-                            </fieldset>
+                            @{
+                                await Html.RenderPartialAsync("_MeetingRoadNameListPartial", roadNameList);
+                            }
+                            @{
+                                await Html.RenderPartialAsync("_MeetingDistrictNameListPartial", districtNameList);
+                            }
+                            @{
+                                await Html.RenderPartialAsync("_MeetingCityNameListPartial", cityNameList);
+                            }
                         </form>
                     </div>
                     <div class="col-bg">
@@ -101,7 +54,9 @@
             <div class="col-9">
                 <div id="meeting-list" class="content__list row">
                     <!-- Render the initial meeting list -->
-                    @Html.RenderPartialAsync("_MeetingListPartial", meetingList)
+                    @{
+                        await Html.RenderPartialAsync("_MeetingListPartial", meetingList);
+                    }
                 </div>
                 <div class="pagination mb-3">
                 </div>
@@ -139,7 +94,7 @@
                     selectedCities.push($(this).val());
                 });
 
-                var queryString = $.param({
+                var queryString = customParam({
                     road: selectedRoads,
                     district: selectedDistricts,
                     city: selectedCities
@@ -148,12 +103,42 @@
 
                 // Make AJAX GET request to filter meetings
                 $.ajax({
-                    url: '@Url.Action("IndexFilter", "Meeting")?' + queryString,
+                    url: '@Url.Action("IndexFilter", "Meeting")' + '?' + queryString,
                     method: 'GET',
                     success: function (response) {
-                        $('#meeting-list').html(response);
+                        renderMeetings(response);
                     }
                 });
+            }
+
+            function renderMeetings(meetingsHtml) {
+                var meetingList = $('#meeting-list');
+                meetingList.html(meetingsHtml);
+            }
+
+            function customParam(object) {
+                var serializedParams = [];
+
+                function serialize(params, prefix) {
+                    for (var key in params) {
+                        if (Object.prototype.hasOwnProperty.call(params, key)) {
+                            var paramKey = prefix ? prefix + "[" + key + "]" : key;
+                            var paramValue = params[key];
+
+                            if (typeof paramValue === "object") {
+                                serialize(paramValue, paramKey);
+                            } else {
+                                serializedParams.push(
+                                    encodeURIComponent(paramKey) + "=" + encodeURIComponent(paramValue)
+                                );
+                            }
+                        }
+                    }
+                }
+
+                serialize(object);
+
+                return serializedParams.join("&");
             }
 
             // Toggle functionality for filter checkboxes
@@ -185,34 +170,5 @@
             });
         });
     </script>
-    @* <script>
-        $(document).ready(function () {
-            $('.toggle-btn').on('click', function (event) {
-                event.preventDefault(); // Prevent the default behavior of the button
-
-                var fieldset = $(this).closest('.filter-group');
-                var checkBoxes = fieldset.find('.input-group');
-
-                var isExpanded = $(this).attr('aria-expanded') === 'true';
-
-                if (isExpanded) {
-                    checkBoxes.slice(3).hide();
-                    $(this).attr('aria-expanded', 'false').find('span').text('More');
-                } else {
-                    checkBoxes.show();
-                    $(this).attr('aria-expanded', 'true').find('span').text('Less');
-                }
-            });
-
-            $('.filter-group').each(function () {
-                var checkBoxes = $(this).find('.input-group');
-                if (checkBoxes.length <= 3) {
-                    $(this).find('.toggle-btn').attr('aria-expanded', 'true').find('span').text('Less');
-                } else {
-                    checkBoxes.slice(3).hide();
-                }
-            });
-        });
-    </script> *@
 </body>
 </html>

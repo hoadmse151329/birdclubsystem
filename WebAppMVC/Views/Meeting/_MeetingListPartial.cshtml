@@ -1,5 +1,4 @@
 ﻿@model List<BAL.ViewModels.MeetingViewModel>
-
 @{
 }
 @foreach (var data in Model)
@@ -29,7 +28,7 @@
                 to @data.EndDate.ToString("MM-dd-yyyy")
             </p>
             <div class="club-address" data-toggle="tooltip" data-placement="auto"
-                 title="@data.City">
+                    title="@data.City">
                 <p class="address">
                     <i class="fas fa-map-marker-alt" style="color:white"></i>
                     <span class="district text-white truncate" id="address">Address @data.AreaNumber,@data.Street,@data.District,@data.City</span>

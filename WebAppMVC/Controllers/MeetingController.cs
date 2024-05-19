@@ -175,9 +175,7 @@ namespace WebAppMVC.Controllers
             [FromQuery] List<string>? city
             )
         {
-            if ((road == null || road.Count == 0) && (district == null || district.Count == 0) &&
-                city == null ||
-                city.Count == 0) MeetingAPI_URL += "/All";
+            if ((road == null || road.Count == 0) && (district == null || district.Count == 0) && (city == null || city.Count == 0)) MeetingAPI_URL += "/All";
             else MeetingAPI_URL += "/Search?";
 
             if (road != null && road.Any())
@@ -221,20 +219,6 @@ namespace WebAppMVC.Controllers
 
             string? role = HttpContext.Session.GetString(Constants.Constants.ROLE_NAME);
             string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
-            string NotificationAPI_URL = "/api/Notification/Count";
-
-            if (usrId != null)
-            {
-                var notificationCount = await methcall.CallMethodReturnObject<GetNotificationCountResponse>(
-                _httpClient: _httpClient,
-                options: options,
-                methodName: Constants.Constants.POST_METHOD,
-                url: NotificationAPI_URL,
-                inputType: usrId,
-                _logger: _logger);
-
-                ViewBag.NotificationCount = notificationCount.Data;
-            }
 
             var listMeetResponse = await methcall.CallMethodReturnObject<GetMeetingResponseByList>(
                 _httpClient: _httpClient,
