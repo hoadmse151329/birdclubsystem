@@ -1,5 +1,6 @@
 ﻿using BAL.ViewModels;
 using BAL.ViewModels.Authenticates;
+using BAL.ViewModels.Event;
 using DAL.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -70,20 +71,43 @@ namespace WebAppMVC.Controllers
 
             string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
 
-            string NotificationAPI_URL = "/api/Notification/Count";
-
+            #region NotificationBell
+            // show read and unread notifications when you click on the bell in the header bar
             if (usrId != null)
             {
+                string NotificationCountAPI_URL = "/api/Notification/Count";
+                string NotificationUnreadAPI_URL = "/api/Notification/Unread";
+                string NotificationReadAPI_URL = "/api/Notification/Read";
+
                 var notificationCount = await methcall.CallMethodReturnObject<GetNotificationCountResponse>(
                 _httpClient: _httpClient,
                 options: jsonOptions,
-                methodName: Constants.Constants.POST_METHOD,
-                url: NotificationAPI_URL,
+                methodName: "POST",
+                url: NotificationCountAPI_URL,
+                inputType: usrId,
+                _logger: _logger);
+
+                var notificationUnread = await methcall.CallMethodReturnObject<GetNotificationTitleResponse>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: "POST",
+                url: NotificationUnreadAPI_URL,
+                inputType: usrId,
+                _logger: _logger);
+
+                var notificationRead = await methcall.CallMethodReturnObject<GetNotificationTitleResponse>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: "POST",
+                url: NotificationReadAPI_URL,
                 inputType: usrId,
                 _logger: _logger);
 
                 ViewBag.NotificationCount = notificationCount.IntData;
+                ViewBag.NotificationUnread = notificationUnread.Data.ToList();
+                ViewBag.NotificationRead = notificationRead.Data.ToList();
             }
+            #endregion
 
             var listLocationRoadResponse = await methcall.CallMethodReturnObject<GetLocationAddressResponseByList>(
                 _httpClient: _httpClient,
@@ -315,6 +339,7 @@ namespace WebAppMVC.Controllers
                 return RedirectToAction("Index");
             }
             int tripId = fieldTrip.TripId.Value;
+            string tripName = fieldTrip.TripName;
 
             methcall.RemoveCookie(Response, Constants.Constants.MEMBER_FIELDTRIP_REGISTRATION_COOKIE, cookieOptions, jsonOptions);
 
@@ -401,6 +426,39 @@ namespace WebAppMVC.Controllers
                     "\nPlease contact the birdclub manager for assistance with resolving this issue!";
 
                 return View("Register");
+            }
+
+            CreateNotificationRequest notif = new CreateNotificationRequest()
+            {
+                Title = Constants.Constants.NOTIFICATION_TYPE_FIELDTRIP_REGISTER,
+                Description = Constants.Constants.NOTIFICATION_DESCRIPTION_FIELDTRIP_REGISTER + tripName,
+                MemberId = usrId
+            };
+
+            string NotificationAPI_URL = "/api/Notification/CreateEvent";
+
+            var notificationResponse = await methcall.CallMethodReturnObject<GetNotificationPostResponse>(
+                    _httpClient: _httpClient,
+                    options: jsonOptions,
+                    methodName: "POST",
+                    url: NotificationAPI_URL,
+                    inputType: notif,
+                    accessToken: accToken,
+                    _logger: _logger);
+
+            if (notificationResponse == null)
+            {
+                ViewBag.Error =
+                    "Error while processing your request! (Create Notification).\n User Not Found!";
+                return RedirectToAction("FieldTripPost", new { id = tripId });
+            }
+            if (!notificationResponse.Status)
+            {
+                _logger.LogInformation("Error while processing your request: " + notificationResponse.Status + " , Error Message: " + notificationResponse.ErrorMessage);
+                ViewBag.Error =
+                    "Error while processing your request! (Create Notification!).\n"
+                    + notificationResponse.ErrorMessage;
+                return RedirectToAction("FieldTripPost", new { id = tripId });
             }
 
             return RedirectToAction("FieldTripPost", new { id = tripId });

@@ -75,5 +75,12 @@ namespace BAL.Services.Implements
             if (notif != null) return notif;
             return null;
         }
+
+        public async Task<IEnumerable<string?>?> GetReadNotificationTitle(string id)
+        {
+            var notif = await _unitOfWork.NotificationRepository.GetReadNotificationTitle(id);
+            if (notif != null) return notif;
+            return null;
+        }
     }
 }

@@ -32,7 +32,7 @@ namespace WebAppMVC.Controllers
         private readonly IConfiguration _config;
         private readonly HttpClient _httpClient = null;
         private string MemberInfoAPI_URL = "";
-        private JsonSerializerOptions options = new JsonSerializerOptions
+        private JsonSerializerOptions jsonOptions = new JsonSerializerOptions
         {
             Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
             PropertyNameCaseInsensitive = true,
@@ -62,24 +62,44 @@ namespace WebAppMVC.Controllers
             string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
             string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
 
-            string NotificationAPI_URL = "/api/Notification/Count";
-
             if (usrId != null)
             {
+                string NotificationCountAPI_URL = "/api/Notification/Count";
+                string NotificationUnreadAPI_URL = "/api/Notification/Unread";
+                string NotificationReadAPI_URL = "/api/Notification/Read";
+
                 var notificationCount = await methcall.CallMethodReturnObject<GetNotificationCountResponse>(
                 _httpClient: _httpClient,
-                options: options,
+                options: jsonOptions,
                 methodName: Constants.Constants.POST_METHOD,
-                url: NotificationAPI_URL,
+                url: NotificationCountAPI_URL,
+                inputType: usrId,
+                _logger: _logger);
+
+                var notificationUnread = await methcall.CallMethodReturnObject<GetNotificationTitleResponse>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: "POST",
+                url: NotificationUnreadAPI_URL,
+                inputType: usrId,
+                _logger: _logger);
+
+                var notificationRead = await methcall.CallMethodReturnObject<GetNotificationTitleResponse>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: "POST",
+                url: NotificationReadAPI_URL,
                 inputType: usrId,
                 _logger: _logger);
 
                 ViewBag.NotificationCount = notificationCount.IntData;
+                ViewBag.NotificationUnread = notificationUnread.Data.ToList();
+                ViewBag.NotificationRead = notificationRead.Data.ToList();
             }
 
             var memberDetails = await methcall.CallMethodReturnObject<GetMemberProfileResponse>(
                 _httpClient: _httpClient,
-                options: options,
+                options: jsonOptions,
                 methodName: Constants.Constants.POST_METHOD,
                 url: MemberInfoAPI_URL,
                 _logger: _logger,
@@ -119,7 +139,7 @@ namespace WebAppMVC.Controllers
 
             var memberDetailupdate = await methcall.CallMethodReturnObject<GetMemberProfileResponse>(
                 _httpClient: _httpClient,
-                options: options,
+                options: jsonOptions,
                 methodName: Constants.Constants.PUT_METHOD,
                 url: MemberInfoAPI_URL,
                 _logger: _logger,
@@ -157,7 +177,7 @@ namespace WebAppMVC.Controllers
             {
                 var notificationCount = await methcall.CallMethodReturnObject<GetNotificationCountResponse>(
                 _httpClient: _httpClient,
-                options: options,
+                options: jsonOptions,
                 methodName: Constants.Constants.POST_METHOD,
                 url: NotificationAPI_URL,
                 inputType: usrId,
@@ -174,7 +194,7 @@ namespace WebAppMVC.Controllers
 
             var memberMeetingPart = await methcall.CallMethodReturnObject<GetListEventParticipation>(
                 _httpClient: _httpClient,
-                options: options,
+                options: jsonOptions,
                 methodName: Constants.Constants.POST_METHOD,
                 url: MemberMeetingPartAPI_URL,
                 _logger: _logger,
@@ -183,7 +203,7 @@ namespace WebAppMVC.Controllers
 
             var memberFieldTripPart = await methcall.CallMethodReturnObject<GetListEventParticipation>(
                 _httpClient: _httpClient,
-                options: options,
+                options: jsonOptions,
                 methodName: Constants.Constants.POST_METHOD,
                 url: MemberFieldTripPartAPI_URL,
                 _logger: _logger,
@@ -192,7 +212,7 @@ namespace WebAppMVC.Controllers
 
             var memberContestPart = await methcall.CallMethodReturnObject<GetListEventParticipation>(
                 _httpClient: _httpClient,
-                options: options,
+                options: jsonOptions,
                 methodName: Constants.Constants.POST_METHOD,
                 url: MemberContestPartAPI_URL,
                 _logger: _logger,
@@ -262,7 +282,7 @@ namespace WebAppMVC.Controllers
 
                 var getMemberAvatar = await methcall.CallMethodReturnObject<GetMemberAvatarResponse>(
                     _httpClient: _httpClient,
-                    options: options,
+                    options: jsonOptions,
                     methodName: Constants.Constants.POST_METHOD,
                     url: MemberAvatarAPI_URL,
                     _logger: _logger,
@@ -301,7 +321,7 @@ namespace WebAppMVC.Controllers
 
             var memberDetailupdate = await methcall.CallMethodReturnObject<GetMemberPasswordChangeResponse>(
                 _httpClient: _httpClient,
-                options: options,
+                options: jsonOptions,
                 methodName: Constants.Constants.PUT_METHOD,
                 url: MemberChangePasswordAPI_URL,
                 _logger: _logger,
@@ -348,7 +368,7 @@ namespace WebAppMVC.Controllers
             {
                 var notificationCount = await methcall.CallMethodReturnObject<GetNotificationCountResponse>(
                 _httpClient: _httpClient,
-                options: options,
+                options: jsonOptions,
                 methodName: Constants.Constants.POST_METHOD,
                 url: NotificationAPI_URL,
                 inputType: usrId,
@@ -361,7 +381,7 @@ namespace WebAppMVC.Controllers
 
             var memberBird = await methcall.CallMethodReturnObject<GetListBirdByMemberResponse>(
                 _httpClient: _httpClient,
-                options: options,
+                options: jsonOptions,
                 methodName: Constants.Constants.POST_METHOD,
                 url: MemberBirdAPI_URL,
                 _logger: _logger,
@@ -382,7 +402,7 @@ namespace WebAppMVC.Controllers
                     + memberBird.ErrorMessage;
                 return RedirectToAction("MemberProfile");
             }
-            birdModel.CreateBird = methcall.GetValidationTempData<BirdViewModel>(this, TempData, Constants.Constants.CREATE_BIRD_VALID, "createBird", options);
+            birdModel.CreateBird = methcall.GetValidationTempData<BirdViewModel>(this, TempData, Constants.Constants.CREATE_BIRD_VALID, "createBird", jsonOptions);
             birdModel.MemberBirds = memberBird.Data;
             return View(birdModel);
         }
@@ -400,7 +420,7 @@ namespace WebAppMVC.Controllers
 
             var memberBirdDetail = await methcall.CallMethodReturnObject<GetBirdResponse>(
                 _httpClient: _httpClient,
-                options: options,
+                options: jsonOptions,
                 methodName: Constants.Constants.GET_METHOD,
                 url: MemberBirdAPI_URL,
                 _logger: _logger,
@@ -423,7 +443,7 @@ namespace WebAppMVC.Controllers
 
             dynamic memberBirdVM = new ExpandoObject();
             memberBirdVM.MemberBirdDetails = memberBirdDetail.Data;
-            memberBirdVM.UpdateBird = methcall.GetValidationTempData<BirdViewModel>(this, TempData, Constants.Constants.UPDATE_BIRD_VALID, "updateBird", options);
+            memberBirdVM.UpdateBird = methcall.GetValidationTempData<BirdViewModel>(this, TempData, Constants.Constants.UPDATE_BIRD_VALID, "updateBird", jsonOptions);
             return View(memberBirdVM);
         }
         [HttpPost("Bird/Create")]
@@ -433,7 +453,7 @@ namespace WebAppMVC.Controllers
 
             if (!ModelState.IsValid)
             {
-                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.CREATE_BIRD_VALID, createBird, options);
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.CREATE_BIRD_VALID, createBird, jsonOptions);
                 return RedirectToAction("MemberBird");
             }
 
@@ -470,11 +490,12 @@ namespace WebAppMVC.Controllers
                 createBird.ProfilePic = image;
             }
 
+            createBird.BirdMainImage = null;
             createBird.MemberId = usrId;
 
             var memberBirdResponse = await methcall.CallMethodReturnObject<GetBirdResponse>(
                                 _httpClient: _httpClient,
-                                options: options,
+                                options: jsonOptions,
                                 methodName: Constants.Constants.POST_METHOD,
                                 url: MemberBirdAPI_URL,
                                 inputType: createBird,
@@ -515,7 +536,7 @@ namespace WebAppMVC.Controllers
             {
                 var notificationCount = await methcall.CallMethodReturnObject<GetNotificationCountResponse>(
                 _httpClient: _httpClient,
-                options: options,
+                options: jsonOptions,
                 methodName: Constants.Constants.POST_METHOD,
                 url: NotificationAPI_URL,
                 inputType: usrId,
@@ -528,7 +549,7 @@ namespace WebAppMVC.Controllers
 
             var memberPayment = await methcall.CallMethodReturnObject<GetUserPaymentResponse>(
                 _httpClient: _httpClient,
-                options: options,
+                options: jsonOptions,
                 methodName: Constants.Constants.POST_METHOD,
                 url: MemberPaymentAPI_URL,
                 _logger: _logger,
@@ -565,13 +586,15 @@ namespace WebAppMVC.Controllers
 
             string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
 
+            string? NotificationReadAllAPI_URL = "/api/Notification/Update";
+
             string NotificationAPI_URL = "/api/Notification/Count";
 
             if (usrId != null)
             {
                 var notificationCount = await methcall.CallMethodReturnObject<GetNotificationCountResponse>(
                 _httpClient: _httpClient,
-                options: options,
+                options: jsonOptions,
                 methodName: Constants.Constants.POST_METHOD,
                 url: NotificationAPI_URL,
                 inputType: usrId,
@@ -584,7 +607,7 @@ namespace WebAppMVC.Controllers
 
             var memberNotification = await methcall.CallMethodReturnObject<GetUserNotificationResponse>(
                 _httpClient: _httpClient,
-                options: options,
+                options: jsonOptions,
                 methodName: Constants.Constants.POST_METHOD,
                 url: MemberNotificationAPI_URL,
                 _logger: _logger,
@@ -604,6 +627,40 @@ namespace WebAppMVC.Controllers
                     + memberNotification.ErrorMessage;
                 return RedirectToAction("MemberProfile");
             }
+
+            var readAllNotifications = await methcall.CallMethodReturnObject<GetUserNotificationReadAll>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: Constants.Constants.PUT_METHOD,
+                url: NotificationReadAllAPI_URL,
+                inputType: memberNotification.Data,
+                _logger: _logger,
+                accessToken: accToken);
+
+            if (readAllNotifications == null)
+            {
+                ViewBag.Error =
+                    "Error while processing your request! (Reading All Notifications!). \n Member Not Found!";
+                return RedirectToAction("MemberProfile");
+            }
+            if (!readAllNotifications.Status)
+            {
+                _logger.LogInformation("Error while processing your request: " + readAllNotifications.Status + " , Error Message: " + readAllNotifications.ErrorMessage);
+                ViewBag.Error =
+                    "Error while processing your request! (Reading All Notifications!). \n"
+                    + readAllNotifications.ErrorMessage;
+                return RedirectToAction("MemberProfile");
+            }
+
+            memberNotification = await methcall.CallMethodReturnObject<GetUserNotificationResponse>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: Constants.Constants.POST_METHOD,
+                url: MemberNotificationAPI_URL,
+                _logger: _logger,
+                inputType: usrId,
+                accessToken: accToken);
+
             notificationModel.MemberNotifications = memberNotification.Data;
             //transactionModel.MemberDetail = memberDetails.Data;
             return View(notificationModel);

@@ -30,9 +30,9 @@ namespace DAL.Repositories.Implements
                     .SingleOrDefault(n => n.UserId == notification.UserId && n.NotificationId == notification.NotificationId);
                 if (usrnotif != null)
                 {
-                    if (usrnotif.Status != notification.Status)
+                    if (usrnotif.Status != "Read")
                     {
-                        usrnotif.Status = notification.Status;
+                        usrnotif.Status = "Read";
                         _context.Update(usrnotif);
                     }
                 }
@@ -61,6 +61,14 @@ namespace DAL.Repositories.Implements
         {
             return _context.Notifications.AsNoTracking()
                 .Where(n => n.UserDetail.MemberId == id && n.Status == "Unread")
+                .OrderByDescending(n => n.Date)
+                .Select(n => n.Title).ToList();
+        }
+
+        public async Task<IEnumerable<string?>> GetReadNotificationTitle(string id)
+        {
+            return _context.Notifications.AsNoTracking()
+                .Where(n => n.UserDetail.MemberId == id && n.Status == "Read")
                 .OrderByDescending(n => n.Date)
                 .Select(n => n.Title).ToList();
         }

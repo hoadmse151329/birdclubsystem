@@ -7,6 +7,5 @@ namespace WebAppMVC.Models.Manager
         public GetListMemberStatus(bool status, string? errorMessage, string? successMessage) : base(status, errorMessage, successMessage)
         {
         }
-
     }
 }
