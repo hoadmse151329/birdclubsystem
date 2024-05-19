@@ -22,6 +22,7 @@ using WebAppMVC.Models.Notification;
 using WebAppMVC.Models.Transaction;
 using WebAppMVC.Models.VnPay;
 using WebAppMVC.Services.Interfaces;
+using BAL.ViewModels.Event;
 
 namespace WebAppMVC.Controllers
 {
@@ -72,20 +73,43 @@ namespace WebAppMVC.Controllers
 
             string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
 
-            string NotificationAPI_URL = "/api/Notification/Count";
-
+            #region NotificationBell
+            // show read and unread notifications when you click on the bell in the header bar
             if (usrId != null)
             {
+                string NotificationCountAPI_URL = "/api/Notification/Count";
+                string NotificationUnreadAPI_URL = "/api/Notification/Unread";
+                string NotificationReadAPI_URL = "/api/Notification/Read";
+
                 var notificationCount = await methcall.CallMethodReturnObject<GetNotificationCountResponse>(
                 _httpClient: _httpClient,
                 options: jsonOptions,
-                methodName: Constants.Constants.POST_METHOD,
-                url: NotificationAPI_URL,
+                methodName: "POST",
+                url: NotificationCountAPI_URL,
+                inputType: usrId,
+                _logger: _logger);
+
+                var notificationUnread = await methcall.CallMethodReturnObject<GetNotificationTitleResponse>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: "POST",
+                url: NotificationUnreadAPI_URL,
+                inputType: usrId,
+                _logger: _logger);
+
+                var notificationRead = await methcall.CallMethodReturnObject<GetNotificationTitleResponse>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: "POST",
+                url: NotificationReadAPI_URL,
                 inputType: usrId,
                 _logger: _logger);
 
                 ViewBag.NotificationCount = notificationCount.IntData;
+                ViewBag.NotificationUnread = notificationUnread.Data.ToList();
+                ViewBag.NotificationRead = notificationRead.Data.ToList();
             }
+            #endregion
 
             var listLocationRoadResponse = await methcall.CallMethodReturnObject<GetLocationAddressResponseByList>(
                 _httpClient: _httpClient,
@@ -379,6 +403,7 @@ namespace WebAppMVC.Controllers
                 return RedirectToAction("Index");
             }
             int conId = contest.ContestId.Value;
+            string conName = contest.ContestName;
 
             var bird = await methcall.GetCookie<BirdViewModel>(Request, Constants.Constants.MEMBER_CONTEST_BIRD_REGISTRATION_COOKIE, jsonOptions);
 
@@ -474,6 +499,13 @@ namespace WebAppMVC.Controllers
 
                 return RedirectToAction("ContestPost", new { id = conId });
             }
+
+            CreateNotificationRequest notif = new CreateNotificationRequest()
+            {
+                Title = Constants.Constants.NOTIFICATION_TYPE_CONTEST_REGISTER,
+                Description = Constants.Constants.NOTIFICATION_DESCRIPTION_CONTEST_REGISTER + conName,
+                MemberId = usrId
+            };
 
             return RedirectToAction("ContestPost", new { id = conId });
         }

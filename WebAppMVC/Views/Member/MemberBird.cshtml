@@ -147,7 +147,7 @@
                     <h4 class="modal-title">Add new Bird</h4>
                 </div>
                 <div class="modal-body">
-                    <form asp-action="MemberCreateBird" asp-controller="Member" method="post" id="form">
+                    <form asp-action="MemberCreateBird" asp-controller="Member" method="post" id="form" enctype="multipart/form-data">
                         <div class="row p-4">
                             <div class="col-12">
                                 <div class="row form-group">
@@ -157,9 +157,9 @@
                                           class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                 </div>
                                 <div class="row form-group">
-                                    <label asp-for="@createBird.ProfilePic" class="col-md-3 col-form-label mt-2 text-md-right">Choose Picture</label>
+                                    <label asp-for="@createBird.ProfilePic" class="col-md-3 col-form-label mt-2 text-md-right">Upload Bird Profile Pic</label>
                                     <img class="profile-pic" style="width:300px; height:300px" src="@createBird.ProfilePic" />
-                                    <input asp-for="@createBird.BirdMainImage" type="file" class="file-upload" accept=".jpg, .jpeg, .png" value="@createBird.BirdMainImage">
+                                    <input asp-for="@createBird.BirdMainImage" type="file" class="file-upload" accept=".jpg, .jpeg, .png">
                                     <input asp-for="@createBird.ProfilePic" type="text" value="@createBird.ProfilePic" class="form-control" required hidden>
 
                                     <label asp-for="@createBird.AddDate" class="col-md-3 col-form-label mt-3 text-md-right"></label>
@@ -203,7 +203,7 @@
             </div>
         </div>
     </div>
-         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
             referrerpolicy="no-referrer"></script>
     <!-- Jquery Waypoint -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>

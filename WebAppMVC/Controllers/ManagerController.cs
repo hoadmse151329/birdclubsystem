@@ -36,7 +36,7 @@ namespace WebAppMVC.Controllers
         private readonly IConfiguration _config;
         private readonly HttpClient _httpClient = null;
         private string ManagerAPI_URL = "";
-        private readonly JsonSerializerOptions options = new JsonSerializerOptions
+        private readonly JsonSerializerOptions jsonOptions = new JsonSerializerOptions
         {
             Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
             PropertyNameCaseInsensitive = true
@@ -92,14 +92,14 @@ namespace WebAppMVC.Controllers
 
             var listLocationResponse = await methcall.CallMethodReturnObject<GetLocationAddressResponseByList>(
                 _httpClient: _httpClient,
-                options: options,
+                options: jsonOptions,
                 methodName: Constants.Constants.GET_METHOD,
                 url: LocationAPI_URL_All,
                 _logger: _logger);
 
             var listMeetResponse = await methcall.CallMethodReturnObject<GetMeetingResponseByList>(
                 _httpClient: _httpClient,
-                options: options,
+                options: jsonOptions,
                 methodName: Constants.Constants.POST_METHOD,
                 url: ManagerAPI_URL,
                 inputType: role,
@@ -122,7 +122,7 @@ namespace WebAppMVC.Controllers
                 return View("ManagerIndex");
             }
 
-            testmodel.CreateMeeting = methcall.GetValidationTempData<MeetingViewModel>(this, TempData, Constants.Constants.CREATE_MEETING_VALID, "createMeeting", options);
+            testmodel.CreateMeeting = methcall.GetValidationTempData<MeetingViewModel>(this, TempData, Constants.Constants.CREATE_MEETING_VALID, "createMeeting", jsonOptions);
             testmodel.Locations = listLocationResponse.Data;
             testmodel.Meetings = listMeetResponse.Data;
             return View(testmodel);
@@ -146,13 +146,13 @@ namespace WebAppMVC.Controllers
 
             var meetPostResponse = await methcall.CallMethodReturnObject<GetMeetingPostResponse>(
                                 _httpClient: _httpClient,
-                                options: options,
+                                options: jsonOptions,
                                 methodName: Constants.Constants.GET_METHOD,
                                 url: ManagerAPI_URL,
                                 _logger: _logger);
             var meetpartPostResponse = await methcall.CallMethodReturnObject<GetListMeetingParticipation>(
                                 _httpClient: _httpClient,
-                                options: options,
+                                options: jsonOptions,
                                 methodName: Constants.Constants.GET_METHOD,
                                 url: ManagerMeetingDetailAPI_URL,
                                 accessToken: accToken,
@@ -171,10 +171,10 @@ namespace WebAppMVC.Controllers
                     + meetPostResponse.ErrorMessage;
                 return RedirectToAction("ManagerMeeting");
             }
-            meetingDetailBigModel.UpdateMeeting = methcall.GetValidationTempData<MeetingViewModel>(this, TempData, Constants.Constants.UPDATE_MEETING_VALID, "updateMeeting", options);
+            meetingDetailBigModel.UpdateMeeting = methcall.GetValidationTempData<MeetingViewModel>(this, TempData, Constants.Constants.UPDATE_MEETING_VALID, "updateMeeting", jsonOptions);
             meetingDetailBigModel.SelectListStatus = methcall.GetManagerEventStatusSelectableList(meetPostResponse.Data.Status);
 
-            meetingDetailBigModel.CreateMeetingMedia = methcall.GetValidationTempData<MeetingMediaViewModel>(this, TempData, Constants.Constants.CREATE_MEETING_MEDIA_VALID, "createMedia", options);
+            meetingDetailBigModel.CreateMeetingMedia = methcall.GetValidationTempData<MeetingMediaViewModel>(this, TempData, Constants.Constants.CREATE_MEETING_MEDIA_VALID, "createMedia", jsonOptions);
 
             meetingDetailBigModel.MeetingDetails = meetPostResponse.Data;
             meetingDetailBigModel.MeetingParticipants = meetpartPostResponse.Data;
@@ -191,7 +191,7 @@ namespace WebAppMVC.Controllers
 
             if (!ModelState.IsValid)
             {
-                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_MEETING_VALID, updateMeeting, options);
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_MEETING_VALID, updateMeeting, jsonOptions);
                 return RedirectToAction("ManagerMeetingDetail", new { id });
             }
 
@@ -204,7 +204,7 @@ namespace WebAppMVC.Controllers
 
             var meetPostResponse = await methcall.CallMethodReturnObject<GetMeetingPostResponse>(
                                 _httpClient: _httpClient,
-                                options: options,
+                                options: jsonOptions,
                                 methodName: Constants.Constants.PUT_METHOD,
                                 url: ManagerAPI_URL,
                                 inputType: updateMeeting,
@@ -212,7 +212,7 @@ namespace WebAppMVC.Controllers
                                 _logger: _logger);
             if (meetPostResponse == null)
             {
-                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_MEETING_VALID, updateMeeting, options);
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_MEETING_VALID, updateMeeting, jsonOptions);
 
                 ViewBag.Error =
                     "Error while processing your request! (Updating Meeting!).\n Meeting Not Found!";
@@ -220,7 +220,7 @@ namespace WebAppMVC.Controllers
             }
             if (!meetPostResponse.Status)
             {
-                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_MEETING_VALID, updateMeeting, options);
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_MEETING_VALID, updateMeeting, jsonOptions);
 
                 _logger.LogInformation("Error while processing your request: " + meetPostResponse.Status + " , Error Message: " + meetPostResponse.ErrorMessage);
                 ViewBag.Error =
@@ -237,7 +237,7 @@ namespace WebAppMVC.Controllers
             ManagerAPI_URL += "Meeting/Create";
             if (!ModelState.IsValid)
             {
-                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.CREATE_MEETING_VALID, createMeeting, options);
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.CREATE_MEETING_VALID, createMeeting, jsonOptions);
                 return RedirectToAction("ManagerMeeting");
             }
 
@@ -248,7 +248,7 @@ namespace WebAppMVC.Controllers
 
             var meetPostResponse = await methcall.CallMethodReturnObject<GetMeetingPostResponse>(
                                 _httpClient: _httpClient,
-                                options: options,
+                                options: jsonOptions,
                                 methodName: Constants.Constants.POST_METHOD,
                                 url: ManagerAPI_URL,
                                 inputType: createMeeting,
@@ -256,7 +256,7 @@ namespace WebAppMVC.Controllers
                                 _logger: _logger);
             if (meetPostResponse == null)
             {
-                string validJson = JsonSerializer.Serialize(createMeeting, options);
+                string validJson = JsonSerializer.Serialize(createMeeting, jsonOptions);
                 TempData[Constants.Constants.CREATE_MEETING_VALID] = validJson;
                 ViewBag.Error =
                     "Error while processing your request! (Create Meeting!).\n Meeting Not Found!";
@@ -264,7 +264,7 @@ namespace WebAppMVC.Controllers
             }
             if (!meetPostResponse.Status)
             {
-                string validJson = JsonSerializer.Serialize(createMeeting, options);
+                string validJson = JsonSerializer.Serialize(createMeeting, jsonOptions);
                 TempData[Constants.Constants.CREATE_MEETING_VALID] = validJson;
                 _logger.LogInformation("Error while processing your request: " + meetPostResponse.Status + " , Error Message: " + meetPostResponse.ErrorMessage);
                 ViewBag.Error =
@@ -283,7 +283,7 @@ namespace WebAppMVC.Controllers
             ManagerAPI_URL += "Meeting/" + meetingId + "/Create/Media";
             if (!ModelState.IsValid)
             {
-                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.CREATE_MEETING_MEDIA_VALID, createMedia, options);
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.CREATE_MEETING_MEDIA_VALID, createMedia, jsonOptions);
                 return RedirectToAction("ManagerMeetingDetail", new { id = meetingId });
             }
 
@@ -293,7 +293,7 @@ namespace WebAppMVC.Controllers
 
             var meetMediaResponse = await methcall.CallMethodReturnObject<GetMeetingMediaResponse>(
                     _httpClient: _httpClient,
-                    options: options,
+                    options: jsonOptions,
                     methodName: Constants.Constants.POST_METHOD,
                     url: ManagerAPI_URL,
                     inputType: createMedia,
@@ -331,7 +331,7 @@ namespace WebAppMVC.Controllers
 
             var meetPostResponse = await methcall.CallMethodReturnObject<GetMeetingPostResponse>(
                                 _httpClient: _httpClient,
-                                options: options,
+                                options: jsonOptions,
                                 methodName: Constants.Constants.GET_METHOD,
                                 url: ManagerAPI_URL,
                                 accessToken: accToken,
@@ -375,14 +375,14 @@ namespace WebAppMVC.Controllers
 
             var listLocationResponse = await methcall.CallMethodReturnObject<GetLocationAddressResponseByList>(
                 _httpClient: _httpClient,
-                options: options,
+                options: jsonOptions,
                 methodName: Constants.Constants.GET_METHOD,
                 url: LocationAPI_URL_All,
                 _logger: _logger);
 
             var listFieldTripResponse = await methcall.CallMethodReturnObject<GetFieldTripResponseByList>(
                 _httpClient: _httpClient,
-                options: options,
+                options: jsonOptions,
                 methodName: Constants.Constants.POST_METHOD,
                 url: ManagerAPI_URL,
                 inputType: role,
@@ -405,7 +405,7 @@ namespace WebAppMVC.Controllers
                 return View("ManagerIndex");
             }
 
-            fieldtripIndexVM.CreateFieldTrip = methcall.GetValidationTempData<FieldTripViewModel>(this, TempData, Constants.Constants.CREATE_FIELDTRIP_VALID, "createFieldTrip", options);
+            fieldtripIndexVM.CreateFieldTrip = methcall.GetValidationTempData<FieldTripViewModel>(this, TempData, Constants.Constants.CREATE_FIELDTRIP_VALID, "createFieldTrip", jsonOptions);
             fieldtripIndexVM.FieldTrips = listFieldTripResponse.Data;
             fieldtripIndexVM.Locations = listLocationResponse.Data;
             return View(fieldtripIndexVM);
@@ -427,13 +427,13 @@ namespace WebAppMVC.Controllers
 
             var fieldtripPostResponse = await methcall.CallMethodReturnObject<GetFieldTripPostResponse>(
                                 _httpClient: _httpClient,
-                                options: options,
+                                options: jsonOptions,
                                 methodName: Constants.Constants.GET_METHOD,
                                 url: ManagerAPI_URL,
                                 _logger: _logger);
             var fieldtrippartPostResponse = await methcall.CallMethodReturnObject<GetListFieldTripParticipation>(
                                 _httpClient: _httpClient,
-                                options: options,
+                                options: jsonOptions,
                                 methodName: Constants.Constants.GET_METHOD,
                                 url: ManagerFieldTripDetailAPI_URL,
                                 accessToken: accToken,
@@ -452,26 +452,26 @@ namespace WebAppMVC.Controllers
                     + fieldtripPostResponse.ErrorMessage;
                 return RedirectToAction("ManagerFieldTrip");
             }
-            fieldtripDetailVM.UpdateFieldTrip = methcall.GetValidationTempData<FieldTripViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_VALID, "updateTrip", options);
-            fieldtripDetailVM.UpdateFieldTripGettingThere = methcall.GetValidationTempData<FieldtripGettingThereViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_GETTHERE_VALID, "updateGettingThere", options);
-            fieldtripDetailVM.UpdateFieldTripDayByDayErrors = methcall.GetValidationModelStateErrorMessageList<FieldtripDaybyDayViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_DAYBYDAY_VALID, "updateDayByDay", options);
-            fieldtripDetailVM.UpdateFieldTripDayByDays = methcall.GetValidationTempDataList<FieldtripDaybyDayViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_DAYBYDAY_VALID, "updateDayByDay", options);
-            fieldtripDetailVM.UpdateFieldTripInclusionErrors = methcall.GetValidationModelStateErrorMessageList<FieldtripInclusionViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_INCLUSION_VALID, "updateInclusion", options);
-            fieldtripDetailVM.UpdateFieldTripInclusions = methcall.GetValidationTempDataList<FieldtripInclusionViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_INCLUSION_VALID, "updateInclusion", options);
-            fieldtripDetailVM.UpdateFieldTripTourFeatureErrors = methcall.GetValidationModelStateErrorMessageList<FieldTripAdditionalDetailViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_TOURFEATURES_VALID, "updateTourFeature", options);
-            fieldtripDetailVM.UpdateFieldTripTourFeatures = methcall.GetValidationTempDataList<FieldTripAdditionalDetailViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_TOURFEATURES_VALID, "updateTourFeature", options);
-            fieldtripDetailVM.UpdateFieldTripImportantErrors = methcall.GetValidationModelStateErrorMessageList<FieldTripAdditionalDetailViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_IMPORTANTTOKNOW_VALID, "updateImportant", options);
-            fieldtripDetailVM.UpdateFieldTripImportants = methcall.GetValidationTempDataList<FieldTripAdditionalDetailViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_IMPORTANTTOKNOW_VALID, "updateImportant", options);
-            fieldtripDetailVM.UpdateFieldTripActAndTrasErrors = methcall.GetValidationModelStateErrorMessageList<FieldTripAdditionalDetailViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_ACTIVITIESANDTRANSPORTATION_VALID, "updateActAndTras", options);
-            fieldtripDetailVM.UpdateFieldTripActAndTrass = methcall.GetValidationTempDataList<FieldTripAdditionalDetailViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_ACTIVITIESANDTRANSPORTATION_VALID, "updateActAndTras", options);
+            fieldtripDetailVM.UpdateFieldTrip = methcall.GetValidationTempData<FieldTripViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_VALID, "updateTrip", jsonOptions);
+            fieldtripDetailVM.UpdateFieldTripGettingThere = methcall.GetValidationTempData<FieldtripGettingThereViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_GETTHERE_VALID, "updateGettingThere", jsonOptions);
+            fieldtripDetailVM.UpdateFieldTripDayByDayErrors = methcall.GetValidationModelStateErrorMessageList<FieldtripDaybyDayViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_DAYBYDAY_VALID, "updateDayByDay", jsonOptions);
+            fieldtripDetailVM.UpdateFieldTripDayByDays = methcall.GetValidationTempDataList<FieldtripDaybyDayViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_DAYBYDAY_VALID, "updateDayByDay", jsonOptions);
+            fieldtripDetailVM.UpdateFieldTripInclusionErrors = methcall.GetValidationModelStateErrorMessageList<FieldtripInclusionViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_INCLUSION_VALID, "updateInclusion", jsonOptions);
+            fieldtripDetailVM.UpdateFieldTripInclusions = methcall.GetValidationTempDataList<FieldtripInclusionViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_INCLUSION_VALID, "updateInclusion", jsonOptions);
+            fieldtripDetailVM.UpdateFieldTripTourFeatureErrors = methcall.GetValidationModelStateErrorMessageList<FieldTripAdditionalDetailViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_TOURFEATURES_VALID, "updateTourFeature", jsonOptions);
+            fieldtripDetailVM.UpdateFieldTripTourFeatures = methcall.GetValidationTempDataList<FieldTripAdditionalDetailViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_TOURFEATURES_VALID, "updateTourFeature", jsonOptions);
+            fieldtripDetailVM.UpdateFieldTripImportantErrors = methcall.GetValidationModelStateErrorMessageList<FieldTripAdditionalDetailViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_IMPORTANTTOKNOW_VALID, "updateImportant", jsonOptions);
+            fieldtripDetailVM.UpdateFieldTripImportants = methcall.GetValidationTempDataList<FieldTripAdditionalDetailViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_IMPORTANTTOKNOW_VALID, "updateImportant", jsonOptions);
+            fieldtripDetailVM.UpdateFieldTripActAndTrasErrors = methcall.GetValidationModelStateErrorMessageList<FieldTripAdditionalDetailViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_ACTIVITIESANDTRANSPORTATION_VALID, "updateActAndTras", jsonOptions);
+            fieldtripDetailVM.UpdateFieldTripActAndTrass = methcall.GetValidationTempDataList<FieldTripAdditionalDetailViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_ACTIVITIESANDTRANSPORTATION_VALID, "updateActAndTras", jsonOptions);
 
 
-            fieldtripDetailVM.CreateFieldTripDayByDay = methcall.GetValidationTempData<FieldtripDaybyDayViewModel>(this, TempData, Constants.Constants.CREATE_FIELDTRIP_DAYBYDAY_VALID, "createDayByDay", options);
-            fieldtripDetailVM.CreateFieldTripInclusion = methcall.GetValidationTempData<FieldtripInclusionViewModel>(this, TempData, Constants.Constants.CREATE_FIELDTRIP_INCLUSION_VALID, "createInclusion", options);
-            fieldtripDetailVM.CreateFieldTripTourFeatures = methcall.GetValidationTempData<FieldTripAdditionalDetailViewModel>(this, TempData, Constants.Constants.CREATE_FIELDTRIP_TOURFEATURES_VALID, "createTourFeatures", options);
-            fieldtripDetailVM.CreateFieldTripImportant = methcall.GetValidationTempData<FieldTripAdditionalDetailViewModel>(this, TempData, Constants.Constants.CREATE_FIELDTRIP_IMPORTANTTOKNOW_VALID, "createImportant", options);
-            fieldtripDetailVM.CreateFieldTripActAndTras = methcall.GetValidationTempData<FieldTripAdditionalDetailViewModel>(this, TempData, Constants.Constants.CREATE_FIELDTRIP_ACTIVITIESANDTRANSPORTATION_VALID, "createActAndTras", options);
-            fieldtripDetailVM.CreateFieldTripMedia = methcall.GetValidationTempData<FieldtripMediaViewModel>(this, TempData, Constants.Constants.CREATE_FIELDTRIP_MEDIA_VALID, "createMedia", options);
+            fieldtripDetailVM.CreateFieldTripDayByDay = methcall.GetValidationTempData<FieldtripDaybyDayViewModel>(this, TempData, Constants.Constants.CREATE_FIELDTRIP_DAYBYDAY_VALID, "createDayByDay", jsonOptions);
+            fieldtripDetailVM.CreateFieldTripInclusion = methcall.GetValidationTempData<FieldtripInclusionViewModel>(this, TempData, Constants.Constants.CREATE_FIELDTRIP_INCLUSION_VALID, "createInclusion", jsonOptions);
+            fieldtripDetailVM.CreateFieldTripTourFeatures = methcall.GetValidationTempData<FieldTripAdditionalDetailViewModel>(this, TempData, Constants.Constants.CREATE_FIELDTRIP_TOURFEATURES_VALID, "createTourFeatures", jsonOptions);
+            fieldtripDetailVM.CreateFieldTripImportant = methcall.GetValidationTempData<FieldTripAdditionalDetailViewModel>(this, TempData, Constants.Constants.CREATE_FIELDTRIP_IMPORTANTTOKNOW_VALID, "createImportant", jsonOptions);
+            fieldtripDetailVM.CreateFieldTripActAndTras = methcall.GetValidationTempData<FieldTripAdditionalDetailViewModel>(this, TempData, Constants.Constants.CREATE_FIELDTRIP_ACTIVITIESANDTRANSPORTATION_VALID, "createActAndTras", jsonOptions);
+            fieldtripDetailVM.CreateFieldTripMedia = methcall.GetValidationTempData<FieldtripMediaViewModel>(this, TempData, Constants.Constants.CREATE_FIELDTRIP_MEDIA_VALID, "createMedia", jsonOptions);
 
             fieldtripDetailVM.SelectListStatus = methcall.GetManagerEventStatusSelectableList(fieldtripPostResponse.Data.Status);
             fieldtripDetailVM.SelectListInclusionTypes = methcall.GetManagerFieldTripInclusionTypeSelectableList(Constants.Constants.FIELDTRIP_INCLUSION_TYPE_INCLUDED);
@@ -494,7 +494,7 @@ namespace WebAppMVC.Controllers
             ManagerAPI_URL += "FieldTrip/" + id + "/Update";
             if (!ModelState.IsValid)
             {
-                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_FIELDTRIP_VALID, updateTrip, options);
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_FIELDTRIP_VALID, updateTrip, jsonOptions);
                 return RedirectToAction("ManagerFieldTripDetail", new { id });
             }
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
@@ -504,7 +504,7 @@ namespace WebAppMVC.Controllers
 
             var fieldtripPostResponse = await methcall.CallMethodReturnObject<GetFieldTripPostResponse>(
                                 _httpClient: _httpClient,
-                                options: options,
+                                options: jsonOptions,
                                 methodName: Constants.Constants.PUT_METHOD,
                                 url: ManagerAPI_URL,
                                 inputType: updateTrip,
@@ -537,7 +537,7 @@ namespace WebAppMVC.Controllers
             ManagerAPI_URL += "FieldTrip/" + id + "/GettingThere/" + getId + "/Update";
             if (!ModelState.IsValid)
             {
-                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_FIELDTRIP_GETTHERE_VALID, updateGettingThere, options);
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_FIELDTRIP_GETTHERE_VALID, updateGettingThere, jsonOptions);
                 return RedirectToAction("ManagerFieldTripDetail", new { id });
             }
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
@@ -549,7 +549,7 @@ namespace WebAppMVC.Controllers
 
             var ftGettingThereResponse = await methcall.CallMethodReturnObject<GetFieldTripGettingThereResponse>(
                                 _httpClient: _httpClient,
-                                options: options,
+                                options: jsonOptions,
                                 methodName: Constants.Constants.PUT_METHOD,
                                 url: ManagerAPI_URL,
                                 inputType: updateGettingThere,
@@ -582,7 +582,7 @@ namespace WebAppMVC.Controllers
             ManagerAPI_URL += "FieldTrip/" + id + "/DayByDay/" + dayId + "/Update";
             if (!ModelState.IsValid)
             {
-                TempData = methcall.SetValidationTempDataWithId(TempData, Constants.Constants.UPDATE_FIELDTRIP_DAYBYDAY_VALID, dayId, updateDayByDay, options);
+                TempData = methcall.SetValidationTempDataWithId(TempData, Constants.Constants.UPDATE_FIELDTRIP_DAYBYDAY_VALID, dayId, updateDayByDay, jsonOptions);
                 return RedirectToAction("ManagerFieldTripDetail", new { id });
             }
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
@@ -594,7 +594,7 @@ namespace WebAppMVC.Controllers
 
             var ftDayByDayResponse = await methcall.CallMethodReturnObject<GetFieldTripDayByDayResponse>(
                                 _httpClient: _httpClient,
-                                options: options,
+                                options: jsonOptions,
                                 methodName: Constants.Constants.PUT_METHOD,
                                 url: ManagerAPI_URL,
                                 inputType: updateDayByDay,
@@ -627,7 +627,7 @@ namespace WebAppMVC.Controllers
             ManagerAPI_URL += "FieldTrip/" + id + "/Inclusion/" + incId + "/Update";
             if (!ModelState.IsValid)
             {
-                TempData = methcall.SetValidationTempDataWithId(TempData, Constants.Constants.UPDATE_FIELDTRIP_INCLUSION_VALID, incId, updateInclusion, options);
+                TempData = methcall.SetValidationTempDataWithId(TempData, Constants.Constants.UPDATE_FIELDTRIP_INCLUSION_VALID, incId, updateInclusion, jsonOptions);
                 return RedirectToAction("ManagerFieldTripDetail", new { id });
             }
 
@@ -640,7 +640,7 @@ namespace WebAppMVC.Controllers
 
             var ftInclusionResponse = await methcall.CallMethodReturnObject<GetFieldTripInclusionResponse>(
                                 _httpClient: _httpClient,
-                                options: options,
+                                options: jsonOptions,
                                 methodName: Constants.Constants.PUT_METHOD,
                                 url: ManagerAPI_URL,
                                 inputType: updateInclusion,
@@ -673,7 +673,7 @@ namespace WebAppMVC.Controllers
             ManagerAPI_URL += "FieldTrip/" + id + "/AdditionalDetail/" + addDeId + "/Update";
             if (!ModelState.IsValid)
             {
-                TempData = methcall.SetValidationTempDataWithId(TempData, Constants.Constants.UPDATE_FIELDTRIP_TOURFEATURES_VALID, addDeId, updateTourFeature, options);
+                TempData = methcall.SetValidationTempDataWithId(TempData, Constants.Constants.UPDATE_FIELDTRIP_TOURFEATURES_VALID, addDeId, updateTourFeature, jsonOptions);
                 return RedirectToAction("ManagerFieldTripDetail", new { id });
             }
 
@@ -686,7 +686,7 @@ namespace WebAppMVC.Controllers
 
             var ftTourFeaturesResponse = await methcall.CallMethodReturnObject<GetFieldTripAdditionalDetailResponse>(
                                 _httpClient: _httpClient,
-                                options: options,
+                                options: jsonOptions,
                                 methodName: Constants.Constants.PUT_METHOD,
                                 url: ManagerAPI_URL,
                                 inputType: updateTourFeature,
@@ -719,7 +719,7 @@ namespace WebAppMVC.Controllers
             ManagerAPI_URL += "FieldTrip/" + id + "/AdditionalDetail/" + addDeId + "/Update";
             if (!ModelState.IsValid)
             {
-                TempData = methcall.SetValidationTempDataWithId(TempData, Constants.Constants.UPDATE_FIELDTRIP_IMPORTANTTOKNOW_VALID, addDeId, updateImportant, options);
+                TempData = methcall.SetValidationTempDataWithId(TempData, Constants.Constants.UPDATE_FIELDTRIP_IMPORTANTTOKNOW_VALID, addDeId, updateImportant, jsonOptions);
                 return RedirectToAction("ManagerFieldTripDetail", new { id });
             }
 
@@ -732,7 +732,7 @@ namespace WebAppMVC.Controllers
 
             var ftImportantResponse = await methcall.CallMethodReturnObject<GetFieldTripAdditionalDetailResponse>(
                                 _httpClient: _httpClient,
-                                options: options,
+                                options: jsonOptions,
                                 methodName: Constants.Constants.PUT_METHOD,
                                 url: ManagerAPI_URL,
                                 inputType: updateImportant,
@@ -765,7 +765,7 @@ namespace WebAppMVC.Controllers
             ManagerAPI_URL += "FieldTrip/" + id + "/AdditionalDetail/" + addDeId + "/Update";
             if (!ModelState.IsValid)
             {
-                TempData = methcall.SetValidationTempDataWithId(TempData, Constants.Constants.UPDATE_FIELDTRIP_ACTIVITIESANDTRANSPORTATION_VALID, addDeId, updateActAndTras, options);
+                TempData = methcall.SetValidationTempDataWithId(TempData, Constants.Constants.UPDATE_FIELDTRIP_ACTIVITIESANDTRANSPORTATION_VALID, addDeId, updateActAndTras, jsonOptions);
                 return RedirectToAction("ManagerFieldTripDetail", new { id });
             }
 
@@ -778,7 +778,7 @@ namespace WebAppMVC.Controllers
 
             var ftActAndTrasResponse = await methcall.CallMethodReturnObject<GetFieldTripAdditionalDetailResponse>(
                                 _httpClient: _httpClient,
-                                options: options,
+                                options: jsonOptions,
                                 methodName: Constants.Constants.PUT_METHOD,
                                 url: ManagerAPI_URL,
                                 inputType: updateActAndTras,
@@ -807,7 +807,7 @@ namespace WebAppMVC.Controllers
             ManagerAPI_URL += "FieldTrip/Create";
             if (!ModelState.IsValid)
             {
-                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.CREATE_FIELDTRIP_VALID, createFieldTrip, options);
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.CREATE_FIELDTRIP_VALID, createFieldTrip, jsonOptions);
                 return RedirectToAction("ManagerFieldtrip");
             }
 
@@ -820,7 +820,7 @@ namespace WebAppMVC.Controllers
 
             var fieldtripPostResponse = await methcall.CallMethodReturnObject<GetFieldTripPostResponse>(
                                 _httpClient: _httpClient,
-                                options: options,
+                                options: jsonOptions,
                                 methodName: Constants.Constants.POST_METHOD,
                                 url: ManagerAPI_URL,
                                 inputType: createFieldTrip,
@@ -853,7 +853,7 @@ namespace WebAppMVC.Controllers
             ManagerAPI_URL += "FieldTrip/" + tripId + "/Create/DayByDay";
             if (!ModelState.IsValid)
             {
-                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.CREATE_FIELDTRIP_DAYBYDAY_VALID, createDayByDay, options);
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.CREATE_FIELDTRIP_DAYBYDAY_VALID, createDayByDay, jsonOptions);
                 return RedirectToAction("ManagerFieldTripDetail", new { id = tripId });
             }
 
@@ -866,7 +866,7 @@ namespace WebAppMVC.Controllers
 
             var ftDayByDayResponse = await methcall.CallMethodReturnObject<GetFieldTripDayByDayResponse>(
                                 _httpClient: _httpClient,
-                                options: options,
+                                options: jsonOptions,
                                 methodName: Constants.Constants.POST_METHOD,
                                 url: ManagerAPI_URL,
                                 inputType: createDayByDay,
@@ -899,7 +899,7 @@ namespace WebAppMVC.Controllers
             ManagerAPI_URL += "FieldTrip/" + tripId + "/Create/Inclusion";
             if (!ModelState.IsValid)
             {
-                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.CREATE_FIELDTRIP_INCLUSION_VALID, createInclusion, options);
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.CREATE_FIELDTRIP_INCLUSION_VALID, createInclusion, jsonOptions);
                 return RedirectToAction("ManagerFieldTripDetail", new { id = tripId });
             }
 
@@ -912,7 +912,7 @@ namespace WebAppMVC.Controllers
 
             var ftInclusionResponse = await methcall.CallMethodReturnObject<GetFieldTripInclusionResponse>(
                                 _httpClient: _httpClient,
-                                options: options,
+                                options: jsonOptions,
                                 methodName: Constants.Constants.POST_METHOD,
                                 url: ManagerAPI_URL,
                                 inputType: createInclusion,
@@ -945,7 +945,7 @@ namespace WebAppMVC.Controllers
             ManagerAPI_URL += "FieldTrip/" + tripId + "/Create/AdditionalDetail";
             if (!ModelState.IsValid)
             {
-                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.CREATE_FIELDTRIP_TOURFEATURES_VALID, createTourFeatures, options);
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.CREATE_FIELDTRIP_TOURFEATURES_VALID, createTourFeatures, jsonOptions);
                 return RedirectToAction("ManagerFieldTripDetail", new { id = tripId });
             }
 
@@ -958,7 +958,7 @@ namespace WebAppMVC.Controllers
 
             var ftDayByDayResponse = await methcall.CallMethodReturnObject<GetFieldTripAdditionalDetailResponse>(
                                 _httpClient: _httpClient,
-                                options: options,
+                                options: jsonOptions,
                                 methodName: Constants.Constants.POST_METHOD,
                                 url: ManagerAPI_URL,
                                 inputType: createTourFeatures,
@@ -991,7 +991,7 @@ namespace WebAppMVC.Controllers
             ManagerAPI_URL += "FieldTrip/" + tripId + "/Create/AdditionalDetail";
             if (!ModelState.IsValid)
             {
-                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.CREATE_FIELDTRIP_INCLUSION_VALID, createImportant, options);
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.CREATE_FIELDTRIP_INCLUSION_VALID, createImportant, jsonOptions);
                 return RedirectToAction("ManagerFieldTripDetail", new { id = tripId });
             }
 
@@ -1004,7 +1004,7 @@ namespace WebAppMVC.Controllers
 
             var ftImportantResponse = await methcall.CallMethodReturnObject<GetFieldTripDayByDayResponse>(
                                 _httpClient: _httpClient,
-                                options: options,
+                                options: jsonOptions,
                                 methodName: Constants.Constants.POST_METHOD,
                                 url: ManagerAPI_URL,
                                 inputType: createImportant,
@@ -1037,7 +1037,7 @@ namespace WebAppMVC.Controllers
             ManagerAPI_URL += "FieldTrip/" + tripId + "/Create/AdditionalDetail";
             if (!ModelState.IsValid)
             {
-                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.CREATE_FIELDTRIP_ACTIVITIESANDTRANSPORTATION_VALID, createActAndTras, options);
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.CREATE_FIELDTRIP_ACTIVITIESANDTRANSPORTATION_VALID, createActAndTras, jsonOptions);
                 return RedirectToAction("ManagerFieldTripDetail", new { id = tripId });
             }
 
@@ -1048,7 +1048,7 @@ namespace WebAppMVC.Controllers
 
             var ftActAndTrasResponse = await methcall.CallMethodReturnObject<GetFieldTripDayByDayResponse>(
                                 _httpClient: _httpClient,
-                                options: options,
+                                options: jsonOptions,
                                 methodName: Constants.Constants.POST_METHOD,
                                 url: ManagerAPI_URL,
                                 inputType: createActAndTras,
@@ -1086,7 +1086,7 @@ namespace WebAppMVC.Controllers
 
             var fieldtripPostResponse = await methcall.CallMethodReturnObject<GetMeetingPostResponse>(
                                 _httpClient: _httpClient,
-                                options: options,
+                                options: jsonOptions,
                                 methodName: Constants.Constants.GET_METHOD,
                                 url: ManagerAPI_URL,
                                 accessToken: accToken,
@@ -1129,14 +1129,14 @@ namespace WebAppMVC.Controllers
 
             var listLocationResponse = await methcall.CallMethodReturnObject<GetLocationAddressResponseByList>(
                 _httpClient: _httpClient,
-                options: options,
+                options: jsonOptions,
                 methodName: Constants.Constants.GET_METHOD,
                 url: LocationAPI_URL_All,
                 _logger: _logger);
 
             var listContestResponse = await methcall.CallMethodReturnObject<GetContestResponseByList>(
                 _httpClient: _httpClient,
-                options: options,
+                options: jsonOptions,
                 methodName: Constants.Constants.POST_METHOD,
                 url: ManagerAPI_URL,
                 inputType: role,
@@ -1158,7 +1158,7 @@ namespace WebAppMVC.Controllers
                     + listContestResponse.ErrorMessage + "\n" + listLocationResponse.ErrorMessage;
                 return View("ManagerIndex");
             }
-            testmodel3.CreateContest = methcall.GetValidationTempData<ContestViewModel>(this, TempData, Constants.Constants.CREATE_CONTEST_VALID, "createContest", options);
+            testmodel3.CreateContest = methcall.GetValidationTempData<ContestViewModel>(this, TempData, Constants.Constants.CREATE_CONTEST_VALID, "createContest", jsonOptions);
             testmodel3.Contests = listContestResponse.Data;
             testmodel3.Locations = listLocationResponse.Data;
             return View(testmodel3);
@@ -1182,13 +1182,13 @@ namespace WebAppMVC.Controllers
 
             var contestPostResponse = await methcall.CallMethodReturnObject<GetContestPostResponse>(
                                 _httpClient: _httpClient,
-                                options: options,
+                                options: jsonOptions,
                                 methodName: Constants.Constants.GET_METHOD,
                                 url: ManagerAPI_URL,
                                 _logger: _logger);
             var contestpartPostResponse = await methcall.CallMethodReturnObject<GetListContestParticipation>(
                                 _httpClient: _httpClient,
-                                options: options,
+                                options: jsonOptions,
                                 methodName: Constants.Constants.GET_METHOD,
                                 url: ManagerContestDetailAPI_URL,
                                 accessToken: accToken,
@@ -1208,8 +1208,8 @@ namespace WebAppMVC.Controllers
                 return RedirectToAction("ManagerContest");
             }
             contestPostResponse.Data.ContestParticipants = contestpartPostResponse.Data;
-            contestDetailBigModel.UpdateContest = methcall.GetValidationTempData<ContestViewModel>(this, TempData, Constants.Constants.UPDATE_CONTEST_VALID, "updateContest", options);
-            contestDetailBigModel.CreateContestMedia = methcall.GetValidationTempData<ContestMediaViewModel>(this, TempData, Constants.Constants.CREATE_CONTEST_MEDIA_VALID, "createMedia", options);
+            contestDetailBigModel.UpdateContest = methcall.GetValidationTempData<ContestViewModel>(this, TempData, Constants.Constants.UPDATE_CONTEST_VALID, "updateContest", jsonOptions);
+            contestDetailBigModel.CreateContestMedia = methcall.GetValidationTempData<ContestMediaViewModel>(this, TempData, Constants.Constants.CREATE_CONTEST_MEDIA_VALID, "createMedia", jsonOptions);
 
             contestDetailBigModel.SelectListStatus = methcall.GetManagerEventStatusSelectableList(contestPostResponse.Data.Status);
             contestDetailBigModel.ContestDetails = contestPostResponse.Data;
@@ -1227,7 +1227,7 @@ namespace WebAppMVC.Controllers
             ManagerAPI_URL += "Contest/Update/" + id;
             if (!ModelState.IsValid)
             {
-                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_CONTEST_VALID, updateContest, options);
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_CONTEST_VALID, updateContest, jsonOptions);
                 return RedirectToAction("ManagerContestDetail", "Manager", new { id });
             }
 
@@ -1240,7 +1240,7 @@ namespace WebAppMVC.Controllers
 
             var contestPostResponse = await methcall.CallMethodReturnObject<GetContestPostResponse>(
                                 _httpClient: _httpClient,
-                                options: options,
+                                options: jsonOptions,
                                 methodName: Constants.Constants.PUT_METHOD,
                                 url: ManagerAPI_URL,
                                 inputType: updateContest,
@@ -1264,7 +1264,7 @@ namespace WebAppMVC.Controllers
             {
                 var contestpartPostResponse = await methcall.CallMethodReturnObject<GetListContestParticipation>(
                                 _httpClient: _httpClient,
-                                options: options,
+                                options: jsonOptions,
                                 methodName: Constants.Constants.GET_METHOD,
                                 url: ManagerContestDetailAPI_URL,
                                 accessToken: accToken,
@@ -1290,7 +1290,7 @@ namespace WebAppMVC.Controllers
 
                 var contestLastUpdateResponse = await methcall.CallMethodReturnObject<GetContestEndedUpdateResponse>(
                                 _httpClient: _httpClient,
-                                options: options,
+                                options: jsonOptions,
                                 methodName: Constants.Constants.PUT_METHOD,
                                 url: ManagerContestEndedAPI_URL,
                                 inputType: contestToUpdate.ContestParticipants,
@@ -1323,7 +1323,7 @@ namespace WebAppMVC.Controllers
             ManagerAPI_URL += "Contest/Create";
             if (!ModelState.IsValid)
             {
-                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.CREATE_CONTEST_VALID, createContest, options);
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.CREATE_CONTEST_VALID, createContest, jsonOptions);
                 return RedirectToAction("ManagerContest");
             }
 
@@ -1336,7 +1336,7 @@ namespace WebAppMVC.Controllers
 
             var contestPostResponse = await methcall.CallMethodReturnObject<GetContestPostResponse>(
                                 _httpClient: _httpClient,
-                                options: options,
+                                options: jsonOptions,
                                 methodName: Constants.Constants.POST_METHOD,
                                 url: ManagerAPI_URL,
                                 inputType: createContest,
@@ -1374,7 +1374,7 @@ namespace WebAppMVC.Controllers
 
             var contestPostResponse = await methcall.CallMethodReturnObject<GetContestPostResponse>(
                                 _httpClient: _httpClient,
-                                options: options,
+                                options: jsonOptions,
                                 methodName: Constants.Constants.GET_METHOD,
                                 url: ManagerAPI_URL,
                                 accessToken: accToken,
@@ -1409,7 +1409,7 @@ namespace WebAppMVC.Controllers
 
             var memberDetails = await methcall.CallMethodReturnObject<GetMemberProfileResponse>(
                 _httpClient: _httpClient,
-                options: options,
+                options: jsonOptions,
                 methodName: Constants.Constants.POST_METHOD,
                 url: ManagerAPI_URL,
                 _logger: _logger,
@@ -1469,7 +1469,7 @@ namespace WebAppMVC.Controllers
 
                 var getMemberAvatar = await methcall.CallMethodReturnObject<GetMemberAvatarResponse>(
                     _httpClient: _httpClient,
-                    options: options,
+                    options: jsonOptions,
                     methodName: Constants.Constants.POST_METHOD,
                     url: ManagerAvatarAPI_URL,
                     _logger: _logger,
@@ -1508,7 +1508,7 @@ namespace WebAppMVC.Controllers
 
             var memberDetailupdate = await methcall.CallMethodReturnObject<GetMemberProfileResponse>(
                 _httpClient: _httpClient,
-                options: options,
+                options: jsonOptions,
                 methodName: Constants.Constants.PUT_METHOD,
                 url: ManagerAPI_URL,
                 _logger: _logger,
@@ -1547,7 +1547,7 @@ namespace WebAppMVC.Controllers
 
             var memberDetailupdate = await methcall.CallMethodReturnObject<GetMemberPasswordChangeResponse>(
                 _httpClient: _httpClient,
-                options: options,
+                options: jsonOptions,
                 methodName: Constants.Constants.PUT_METHOD,
                 url: ManagerChangePasswordAPI_URL,
                 _logger: _logger,
@@ -1598,7 +1598,7 @@ namespace WebAppMVC.Controllers
 
             var listMemberStatusResponse = await methcall.CallMethodReturnObject<GetListMemberStatus>(
                 _httpClient: _httpClient,
-                options: options,
+                options: jsonOptions,
                 methodName: Constants.Constants.GET_METHOD,
                 url: ManagerAPI_URL,
                 accessToken: accToken,
@@ -1636,7 +1636,7 @@ namespace WebAppMVC.Controllers
 
             var listMemberStatusResponse = await methcall.CallMethodReturnObject<GetListMemberStatusUpdate>(
                 _httpClient: _httpClient,
-                options: options,
+                options: jsonOptions,
                 methodName: Constants.Constants.PUT_METHOD,
                 inputType: listRequest,
                 url: ManagerAPI_URL,

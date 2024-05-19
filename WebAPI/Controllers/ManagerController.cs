@@ -183,7 +183,7 @@ namespace WebAPI.Controllers
                 return Ok(new
                 {
                     Status = true,
-                    Data = result
+                    BoolData = result
                 });
             }
             catch (Exception ex)
@@ -236,7 +236,7 @@ namespace WebAPI.Controllers
                 return Ok(new
                 {
                     Status = true,
-                    Data = result
+                    BoolData = result
                 });
             }
             catch (Exception ex)

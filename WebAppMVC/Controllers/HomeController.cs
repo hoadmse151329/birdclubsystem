@@ -23,7 +23,7 @@ namespace WebAppMVC.Controllers
         private readonly IConfiguration _config;
         private readonly HttpClient _httpClient = null;
         private string HomeAPI_URL = "";
-        private JsonSerializerOptions options = new JsonSerializerOptions
+        private JsonSerializerOptions jsonOptions = new JsonSerializerOptions
         {
             Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
             PropertyNameCaseInsensitive = true,
@@ -72,34 +72,47 @@ namespace WebAppMVC.Controllers
             TempData["USER_NAME"] = usrname;
             TempData["IMAGE_PATH"] = imagepath;
 
+            #region NotificationBell
+            // show read and unread notifications when you click on the bell in the header bar
             if (usrId != null)
             {
                 string NotificationCountAPI_URL = "/api/Notification/Count";
-                string NotificationTitleAPI_URL = "/api/Notification/Unread";
+                string NotificationUnreadAPI_URL = "/api/Notification/Unread";
+                string NotificationReadAPI_URL = "/api/Notification/Read";
 
                 var notificationCount = await methcall.CallMethodReturnObject<GetNotificationCountResponse>(
                 _httpClient: _httpClient,
-                options: options,
+                options: jsonOptions,
                 methodName: "POST",
                 url: NotificationCountAPI_URL,
                 inputType: usrId,
                 _logger: _logger);
                 
-                var notificationTitle = await methcall.CallMethodReturnObject<GetNotificationTitleResponse>(
+                var notificationUnread = await methcall.CallMethodReturnObject<GetNotificationTitleResponse>(
                 _httpClient: _httpClient,
-                options: options,
+                options: jsonOptions,
                 methodName: "POST",
-                url: NotificationTitleAPI_URL,
+                url: NotificationUnreadAPI_URL,
                 inputType: usrId,
                 _logger: _logger);
-                
+
+                var notificationRead = await methcall.CallMethodReturnObject<GetNotificationTitleResponse>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: "POST",
+                url: NotificationReadAPI_URL,
+                inputType: usrId,
+                _logger: _logger);
+
                 ViewBag.NotificationCount = notificationCount.IntData;
-                ViewBag.NotificationTitle = notificationTitle.Data.ToList();
+                ViewBag.NotificationUnread = notificationUnread.Data.ToList();
+                ViewBag.NotificationRead = notificationRead.Data.ToList();
             }
+            #endregion
 
             var listFieldTripResponse = await methcall.CallMethodReturnObject<GetFieldTripResponseByList>(
                 _httpClient: _httpClient,
-                options: options,
+                options: jsonOptions,
                 methodName: "POST",
                 url: FieldTripAPI_URL_All,
                 inputType: role,
@@ -107,7 +120,7 @@ namespace WebAppMVC.Controllers
 
             var listMeetResponse = await methcall.CallMethodReturnObject<GetMeetingResponseByList>(
                 _httpClient: _httpClient,
-                options: options,
+                options: jsonOptions,
                 methodName: "POST",
                 url: MeetingAPI_URL,
                 inputType: role,
@@ -115,7 +128,7 @@ namespace WebAppMVC.Controllers
 
 			var listContestResponse = await methcall.CallMethodReturnObject<GetContestResponseByList>(
 				_httpClient: _httpClient,
-				options: options,
+				options: jsonOptions,
 				methodName: "POST",
 				url: ContestAPI_URL_All,
                 inputType: role,

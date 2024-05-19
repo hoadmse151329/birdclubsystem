@@ -31,7 +31,7 @@ namespace WebAppMVC.Controllers
         private readonly IConfiguration _config;
 		private readonly HttpClient _httpClient = null;
 		private string MeetingAPI_URL = "";
-        private readonly JsonSerializerOptions options = new JsonSerializerOptions
+        private readonly JsonSerializerOptions jsonOptions = new JsonSerializerOptions
         {
             Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
             PropertyNameCaseInsensitive = true,
@@ -106,36 +106,59 @@ namespace WebAppMVC.Controllers
 
             string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
 
-            string NotificationAPI_URL = "/api/Notification/Count";
-
+            #region NotificationBell
+            // show read and unread notifications when you click on the bell in the header bar
             if (usrId != null)
             {
+                string NotificationCountAPI_URL = "/api/Notification/Count";
+                string NotificationUnreadAPI_URL = "/api/Notification/Unread";
+                string NotificationReadAPI_URL = "/api/Notification/Read";
+
                 var notificationCount = await methcall.CallMethodReturnObject<GetNotificationCountResponse>(
                 _httpClient: _httpClient,
-                options: options,
-                methodName: Constants.Constants.POST_METHOD,
-                url: NotificationAPI_URL,
+                options: jsonOptions,
+                methodName: "POST",
+                url: NotificationCountAPI_URL,
+                inputType: usrId,
+                _logger: _logger);
+
+                var notificationUnread = await methcall.CallMethodReturnObject<GetNotificationTitleResponse>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: "POST",
+                url: NotificationUnreadAPI_URL,
+                inputType: usrId,
+                _logger: _logger);
+
+                var notificationRead = await methcall.CallMethodReturnObject<GetNotificationTitleResponse>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: "POST",
+                url: NotificationReadAPI_URL,
                 inputType: usrId,
                 _logger: _logger);
 
                 ViewBag.NotificationCount = notificationCount.IntData;
+                ViewBag.NotificationUnread = notificationUnread.Data.ToList();
+                ViewBag.NotificationRead = notificationRead.Data.ToList();
             }
+            #endregion
 
             var listLocationRoadResponse = await methcall.CallMethodReturnObject<GetLocationAddressResponseByList>(
                 _httpClient: _httpClient,
-                options: options,
+                options: jsonOptions,
                 methodName: Constants.Constants.GET_METHOD,
                 url: LocationAPI_URL_All_Road,
                 _logger: _logger);
             var listLocationDistrictResponse = await methcall.CallMethodReturnObject<GetLocationAddressResponseByList>(
                 _httpClient: _httpClient,
-                options: options,
+                options: jsonOptions,
                 methodName: Constants.Constants.GET_METHOD,
                 url: LocationAPI_URL_All_District,
                 _logger: _logger);
             var listLocationCityResponse = await methcall.CallMethodReturnObject<GetLocationAddressResponseByList>(
                 _httpClient: _httpClient,
-                options: options,
+                options: jsonOptions,
                 methodName: Constants.Constants.GET_METHOD,
                 url: LocationAPI_URL_All_City,
                 _logger: _logger);
@@ -143,7 +166,7 @@ namespace WebAppMVC.Controllers
 
             var listMeetResponse = await methcall.CallMethodReturnObject<GetMeetingResponseByList>(
                 _httpClient: _httpClient,
-                options: options,
+                options: jsonOptions,
                 methodName: Constants.Constants.POST_METHOD,
                 url: MeetingAPI_URL,
                 inputType: role,
@@ -211,12 +234,9 @@ namespace WebAppMVC.Controllers
             return View(testmodel);
         }
 
-
-
-            [HttpGet("Post/{id:int}")]
+        [HttpGet("Post/{id:int}")]
 		public async Task<IActionResult> MeetingPost(
-            [FromRoute][Required] int id
-            )
+            [FromRoute][Required] int id)
 		{
 			MeetingAPI_URL += "/";
 
@@ -234,7 +254,7 @@ namespace WebAppMVC.Controllers
             {
                 var notificationCount = await methcall.CallMethodReturnObject<GetNotificationCountResponse>(
                 _httpClient: _httpClient,
-                options: options,
+                options: jsonOptions,
                 methodName: "POST",
                 url: NotificationAPI_URL,
                 inputType: usrId,
@@ -250,7 +270,7 @@ namespace WebAppMVC.Controllers
                 MeetingAPI_URL += "Participant/" + id;
                 meetPostResponse = await methcall.CallMethodReturnObject<GetMeetingPostResponse>(
                                    _httpClient: _httpClient,
-                                   options: options,
+                                   options: jsonOptions,
                                    methodName: Constants.Constants.POST_METHOD,
                                    url: MeetingAPI_URL,
                                    _logger: _logger,
@@ -262,7 +282,7 @@ namespace WebAppMVC.Controllers
                 MeetingAPI_URL += id;
                 meetPostResponse = await methcall.CallMethodReturnObject<GetMeetingPostResponse>(
                                    _httpClient: _httpClient,
-                                   options: options,
+                                   options: jsonOptions,
                                    methodName: Constants.Constants.GET_METHOD,
                                    url: MeetingAPI_URL,
                                    _logger: _logger);
@@ -306,7 +326,7 @@ namespace WebAppMVC.Controllers
 
             var participationNo = await methcall.CallMethodReturnObject<GetMeetingParticipationNo>(
                 _httpClient: _httpClient,
-                options: options,
+                options: jsonOptions,
                 methodName: Constants.Constants.POST_METHOD,
                 url: MeetingAPI_URL,
                 _logger: _logger,
@@ -332,7 +352,7 @@ namespace WebAppMVC.Controllers
 
             var meetPostResponse = await methcall.CallMethodReturnObject<GetMeetingPostResponse>(
                                    _httpClient: _httpClient,
-                                   options: options,
+                                   options: jsonOptions,
                                    methodName: Constants.Constants.GET_METHOD,
                                    url: MeetingPostAPI_URL,
                                    _logger: _logger);
@@ -363,7 +383,7 @@ namespace WebAppMVC.Controllers
 
             var notificationResponse = await methcall.CallMethodReturnObject<GetNotificationPostResponse>(
                     _httpClient: _httpClient,
-                    options: options,
+                    options: jsonOptions,
                     methodName: "POST",
                     url: NotificationAPI_URL,
                     inputType: notif,
@@ -402,7 +422,7 @@ namespace WebAppMVC.Controllers
 
             var participationNo = await methcall.CallMethodReturnObject<GetMeetingPostDeRegister>(
                 _httpClient: _httpClient,
-                options: options,
+                options: jsonOptions,
                 methodName: Constants.Constants.POST_METHOD,
                 url: MeetingAPI_URL,
                 _logger: _logger,
@@ -423,6 +443,65 @@ namespace WebAppMVC.Controllers
                     "Error while processing your request! (Remove Meeting Participation Registration!).\n"
                     + participationNo.ErrorMessage;
                 RedirectToAction("MeetingPost", new { id = meetingId });
+            }
+
+            string MeetingPostAPI_URL = "/api/Meeting/" + meetingId;
+
+            var meetPostResponse = await methcall.CallMethodReturnObject<GetMeetingPostResponse>(
+                                   _httpClient: _httpClient,
+                                   options: jsonOptions,
+                                   methodName: Constants.Constants.GET_METHOD,
+                                   url: MeetingPostAPI_URL,
+                                   _logger: _logger);
+
+            if (meetPostResponse == null)
+            {
+                //_logger.LogInformation("Username or Password is invalid: " + meetPostResponse.Status + " , Error Message: " + meetPostResponse.ErrorMessage);
+                ViewBag.error =
+                    "Error while processing your request! (Getting Meeting!).\n Meeting Not Found!";
+                View("Index");
+            }
+
+            if (!meetPostResponse.Status)
+            {
+                _logger.LogInformation("Username or Password is invalid: " + meetPostResponse.Status + " , Error Message: " + meetPostResponse.ErrorMessage);
+                ViewBag.error =
+                    "Error while processing your request! (Getting Meeting Post!).\n"
+                    + meetPostResponse.ErrorMessage;
+                View("Index");
+            }
+
+            CreateNotificationRequest notif = new CreateNotificationRequest()
+            {
+                Title = Constants.Constants.NOTIFICATION_TYPE_MEETING_DEREGISTER,
+                Description = Constants.Constants.NOTIFICATION_DESCRIPTION_MEETING_DEREGISTER + meetPostResponse.Data.MeetingName,
+                MemberId = usrId
+            };
+
+            string NotificationAPI_URL = "/api/Notification/CreateEvent";
+
+            var notificationResponse = await methcall.CallMethodReturnObject<GetNotificationPostResponse>(
+                    _httpClient: _httpClient,
+                    options: jsonOptions,
+                    methodName: "POST",
+                    url: NotificationAPI_URL,
+                    inputType: notif,
+                    accessToken: accToken,
+                    _logger: _logger);
+
+            if (notificationResponse == null)
+            {
+                ViewBag.Error =
+                    "Error while processing your request! (Create Notification).\n User Not Found!";
+                return RedirectToAction("MeetingPost", new { id = meetingId });
+            }
+            if (!notificationResponse.Status)
+            {
+                _logger.LogInformation("Error while processing your request: " + notificationResponse.Status + " , Error Message: " + notificationResponse.ErrorMessage);
+                ViewBag.Error =
+                    "Error while processing your request! (Create Notification!).\n"
+                    + notificationResponse.ErrorMessage;
+                return RedirectToAction("MeetingPost", new { id = meetingId });
             }
 
             return RedirectToAction("MemberHistoryEvent","Member");
