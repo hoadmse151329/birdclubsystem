@@ -205,7 +205,7 @@ namespace WebAppMVC.Controllers
             
             var listMeetResponse = await methcall.CallMethodReturnObject<GetMeetingResponseByList>(
                 _httpClient: _httpClient,
-                options: options,
+                options: jsonOptions,
                 methodName: Constants.Constants.POST_METHOD,
                 url: MeetingAPI_URL,
                 inputType: role,
