@@ -83,6 +83,7 @@
                 var selectedDistricts = [];
                 var selectedCities = [];
 
+                // Collect selected checkboxes
                 $('input[name="road"]:checked').each(function () {
                     selectedRoads.push($(this).val());
                 });
@@ -111,11 +112,9 @@
                     }
                 });
             }
-    </script>
-    <script>
-        $(document).ready(function () {
+
             function renderMeetings(meetingsHtml) {
-                var meetingList = $('#meeting-list');
+                var meetingList = $('#full-filter');
                 meetingList.html(meetingsHtml);
             }
 
@@ -143,7 +142,8 @@
 
                 return serializedParams.join("&");
             }
-
+            </Script>
+<Script>
             // Toggle functionality for filter checkboxes
             $('.toggle-btn').on('click', function (event) {
                 event.preventDefault(); // Prevent the default behavior of the button
