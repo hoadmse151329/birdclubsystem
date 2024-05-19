@@ -1,0 +1,45 @@
+﻿@model List<BAL.ViewModels.MeetingViewModel>
+@{
+}
+@foreach (var data in Model)
+{
+    <div class="col-4 p-0">
+        <div class="club-item">
+
+            <a href="#" class="club-image">
+                @{
+                    if (data.SpotlightImage != null)
+                    {
+                        <img class="img-fluid" src="@data.SpotlightImage.Image" alt="nt1">
+                    }
+                    else
+                    {
+                        <img class="img-fluid" src="~/images/meeting.png" alt="nt1">
+                    }
+                }
+            </a>
+            <div class="club-title">
+                <a href="@Url.Action("MeetingPost", "Meeting",new {id = data.MeetingId})" class="text-decoration-none truncate">@data.MeetingName</a>
+            </div>
+
+            <p class="club-price">
+                <i class="fas fa-calendar-alt"></i>
+                From @data.StartDate.ToString("MM-dd-yyyy")
+                to @data.EndDate.ToString("MM-dd-yyyy")
+            </p>
+            <div class="club-address" data-toggle="tooltip" data-placement="auto"
+                    title="@data.City">
+                <p class="address">
+                    <i class="fas fa-map-marker-alt" style="color:white"></i>
+                    <span class="district text-white truncate" id="address">Address @data.AreaNumber,@data.Street,@data.District,@data.City</span>
+                </p>
+            </div>
+            <div class="d-flex justify-content-between">
+                <p class="address truncate text-white"><i class="fas fa-comment-alt"></i>@data.Description</p>
+                <form asp-action="MeetingPost" asp-controller="Meeting" method="get" asp-route-id="@data.MeetingId">
+                    <button class="button--primary text-black text-wrapper-16" type="submit">See Now</button>
+                </form>
+            </div>
+        </div>
+    </div>
+}

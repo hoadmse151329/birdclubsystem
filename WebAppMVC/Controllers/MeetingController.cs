@@ -161,27 +161,9 @@ namespace WebAppMVC.Controllers
             }
             testmodel.Meetings = listMeetResponse.Data;
 
-            List<SelectListItem> roads = new();
-            foreach (var roadOption in listLocationRoadResponse.Data)
-            {
-                roads.Add(new SelectListItem(text: roadOption, value: roadOption));
-            }
-
-            List<SelectListItem> districts = new();
-            foreach (var districtOption in listLocationDistrictResponse.Data)
-            {
-                districts.Add(new SelectListItem(text: districtOption, value: districtOption));
-            }
-
-            List<SelectListItem> cities = new();
-            foreach (var cityOption in listLocationCityResponse.Data)
-            {
-                cities.Add(new SelectListItem(text: cityOption, value: cityOption));
-            }
-
-            testmodel.Roads = roads;
-            testmodel.Districts = districts;
-            testmodel.Cities = cities;
+            testmodel.Roads = listLocationRoadResponse.Data;
+            testmodel.Districts = listLocationDistrictResponse.Data;
+            testmodel.Cities = listLocationCityResponse.Data;
 
             return View(testmodel);
         }
@@ -193,9 +175,7 @@ namespace WebAppMVC.Controllers
             [FromQuery] List<string>? city
             )
         {
-            if ((road == null || road.Count == 0) && (district == null || district.Count == 0) &&
-                city == null ||
-                city.Count == 0) MeetingAPI_URL += "/All";
+            if ((road == null || road.Count == 0) && (district == null || district.Count == 0) && (city == null || city.Count == 0)) MeetingAPI_URL += "/All";
             else MeetingAPI_URL += "/Search?";
 
             if (road != null && road.Any())
@@ -239,20 +219,6 @@ namespace WebAppMVC.Controllers
 
             string? role = HttpContext.Session.GetString(Constants.Constants.ROLE_NAME);
             string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
-            string NotificationAPI_URL = "/api/Notification/Count";
-
-            if (usrId != null)
-            {
-                var notificationCount = await methcall.CallMethodReturnObject<GetNotificationCountResponse>(
-                _httpClient: _httpClient,
-                options: options,
-                methodName: Constants.Constants.POST_METHOD,
-                url: NotificationAPI_URL,
-                inputType: usrId,
-                _logger: _logger);
-
-                ViewBag.NotificationCount = notificationCount.Data;
-            }
 
             var listMeetResponse = await methcall.CallMethodReturnObject<GetMeetingResponseByList>(
                 _httpClient: _httpClient,
@@ -283,7 +249,7 @@ namespace WebAppMVC.Controllers
             testmodel.Districts = districts;
             testmodel.Cities = cities;*/
 
-            return Json(testmodel);
+            return PartialView("_MeetingListPartial", listMeetResponse.Data);
         }
 
         [HttpGet("Post/{id:int}")]
