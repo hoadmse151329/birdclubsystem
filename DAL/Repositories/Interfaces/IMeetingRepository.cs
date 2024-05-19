@@ -18,8 +18,12 @@ namespace DAL.Repositories.Interfaces
             DateTime? startDate,
             DateTime? endDate,
             int? numberOfParticipants,
-            string? locationAddress,
-            string? orderBy
+            List<string>? roads,
+            List<string>? districts,
+            List<string>? cities,
+            List<string>? statuses,
+            string? orderBy,
+            bool isMemberOrGuest = false
             );
         IEnumerable<string> GetAllMeetingName();
         Task<IEnumerable<Meeting>> GetAllMeetings(string? role);

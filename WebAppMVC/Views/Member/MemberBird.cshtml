@@ -88,12 +88,12 @@
                                                         aria-describedby="history-table_info">
                                                         <thead>
                                                             <tr>
-                                                                <th>Bird ID</th>
-                                                                <th>Bird Name</th>
+                                                                <th>BirdID</th>
+                                                                <th>BirdName</th>
                                                                 <th>ELO</th>
                                                                 <th>Age</th>
                                                                 <th>Description</th>
-                                                                <th>Added Date</th>
+                                                                <th>AddedDate</th>
                                                                 <th>Color</th>
                                                                 <th>Status</th>
                                                                 <th>Origin</th>
@@ -103,9 +103,7 @@
                                                         <tbody>
                                                             @for(int i = 0; i < birds.Count(); i++)
                                                             {
-                                                                <tr class="@("clickable-row "+ (i%2 == 0 ? "even" : "odd")) " data-href="#"
-                                                                data-bs-toggle="tooltip" data-bs-placement="right"
-                                                                title="More Details">
+                                                                <tr>
                                                                     <td class="sorting_1">@birds[i].BirdId</td>
                                                                     <td>@birds[i].BirdName</td>
                                                                     <td>@birds[i].Elo</td>

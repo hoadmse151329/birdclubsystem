@@ -39,6 +39,8 @@ namespace BAL.Services.Implements
 
                         locationName = await _unitOfWork.LocationRepository.GetLocationNameById(item.LocationId.Value);
 
+                        itemview.Address = locationName;
+
                         string[] temp = locationName.Split(",");
                         itemview.AreaNumber = temp[0];
                         itemview.Street = temp[1];
@@ -128,26 +130,72 @@ namespace BAL.Services.Implements
             return null;
         }
 
-        public IEnumerable<MeetingViewModel> GetSortedMeetings(
+        public async Task<IEnumerable<MeetingViewModel>?> GetSortedMeetings(
             int? meetingId,
             string? meetingName,
             DateTime? registrationDeadline,
             DateTime? startDate,
             DateTime? endDate,
-            int? numberOfParticipants,
-            string? locationAddress,
-            string? orderBy)
+            int? numberOfParticipants, 
+            List<string>? roads = null,
+            List<string>? districts = null,
+            List<string>? cities = null,
+            List<string>? statuses = null,
+            string? orderBy = null,
+            bool isMemberOrGuest = false)
         {
-            return _mapper.Map<IEnumerable<MeetingViewModel>>(_unitOfWork.MeetingRepository.GetSortedMeetings(
+            var listmeet = _unitOfWork.MeetingRepository.GetSortedMeetings(
                 meetingId,
                 meetingName,
                 registrationDeadline,
                 startDate,
                 endDate,
                 numberOfParticipants,
-                locationAddress,
-                orderBy
+                roads,
+                districts,
+                cities,
+                statuses,
+                orderBy,
+                isMemberOrGuest
+                );
+            var listmeetview = _mapper.Map<IEnumerable<MeetingViewModel>>(_unitOfWork.MeetingRepository.GetSortedMeetings(
+                meetingId,
+                meetingName,
+                registrationDeadline,
+                startDate,
+                endDate,
+                numberOfParticipants,
+                roads,
+                districts,
+                cities,
+                statuses,
+                orderBy,
+                isMemberOrGuest
                 ));
+            string locationName;
+            foreach (var itemview in listmeetview)
+            {
+                foreach (var item in listmeet)
+                {
+                    if (item.MeetingId == itemview.MeetingId)
+                    {
+                        //int partAmount = await _unitOfWork.MeetingParticipantRepository.GetCountMeetingParticipantsByMeetId(meet.MeetingId);
+                        var media = await _unitOfWork.MeetingMediaRepository.GetAllMeetingMediasByMeetingId(item.MeetingId);
+                        itemview.MeetingPictures = (media.Count() > 0) ? _mapper.Map<IEnumerable<MeetingMediaViewModel>>(media).ToList() : itemview.MeetingPictures;
+
+                        locationName = await _unitOfWork.LocationRepository.GetLocationNameById(item.LocationId.Value);
+
+                        itemview.Address = locationName;
+
+                        string[] temp = locationName.Split(",");
+                        itemview.AreaNumber = temp[0];
+                        itemview.Street = temp[1];
+                        itemview.District = temp[2];
+                        itemview.City = temp[3];
+                    }
+                }
+            }
+            return listmeetview;
         }
 
         public List<string> GetAllMeetingName()

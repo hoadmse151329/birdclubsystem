@@ -1,0 +1,133 @@
+﻿@model WebAppMVC.Models.ViewModels.MeetingIndexVM
+@{
+    ViewData["Title"] = "Meeting Page";
+    List<BAL.ViewModels.MeetingViewModel> meetingList = Model.Meetings;
+    List<string> roadNameList = Model.Roads;
+    List<string> districtNameList = Model.Districts;
+    List<string> cityNameList = Model.Cities;
+    List<string> selectedRoadNameList = Model.SelectedRoads;
+    List<string> selectedDistrictList = Model.SelectedDistricts;
+    List<string> selectedCityNameList = Model.SelectedCities;
+}
+@{
+}
+<div class="row contain">
+    <div class="content__filter col-3">
+        <div class="content__filter-tabs-left">
+            <div class="tabs-left-title">
+                <h3 class="heading">Filter</h3>
+            </div>
+            <div class="tabs-left-filter" style="background-color:white">
+                <form id="filterForm">
+                    <fieldset class="filter-group">
+                        <legend>Road</legend>
+                        <div class="checkboxes">
+                            @foreach (var data in roadNameList)
+                            {
+                                <div class="input-group">
+                                    <div class="form-check">
+                                        <input class="form-check-input road-checkbox" type="checkbox" name="road" id="road_@data.Trim()" value="@data.Trim()" @(selectedRoadNameList.Contains(data.Trim()) ? "checked" : "")>
+                                        <label class="form-check-label" for="road_@data.Trim()">@data.Trim()</label>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                        @if (roadNameList.Count() > 3)
+                        {
+                            <button class="toggle-btn btn btn-primary" aria-expanded="false" aria-label="Toggle More"><span>More</span></button>
+                        }
+                    </fieldset>
+                    <fieldset class="filter-group">
+                        <legend>District</legend>
+                        <div class="checkboxes">
+                            @foreach (var data in districtNameList)
+                            {
+                                <div class="input-group">
+                                    <div class="form-check">
+                                        <input class="form-check-input district-checkbox" type="checkbox" name="district" id="district_@data.Trim()" value="@data.Trim()" @(selectedDistrictList.Contains(data.Trim()) ? "checked" : "")>
+                                        <label class="form-check-label" for="district_@data.Trim()">@data.Trim()</label>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                        @if (districtNameList.Count() > 3)
+                        {
+                            <button class="toggle-btn btn btn-primary" aria-expanded="false" aria-label="Toggle More"><span>More</span></button>
+                        }
+                    </fieldset>
+                    <fieldset class="filter-group">
+                        <legend>City</legend>
+                        <div class="checkboxes">
+                            @foreach (var data in cityNameList)
+                            {
+                                <div class="input-group">
+                                    <div class="form-check">
+                                        <input class="form-check-input city-checkbox" type="checkbox" name="city" id="city_@data.Trim()" value="@data.Trim()" @(selectedCityNameList.Contains(data.Trim()) ? "checked" : "")>
+                                        <label class="form-check-label" for="city_@data.Trim()">@data.Trim()</label>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                        @if (cityNameList.Count() > 3)
+                        {
+                            <button class="toggle-btn btn btn-primary" aria-expanded="false" aria-label="Toggle More"><span>More</span></button>
+                        }
+                    </fieldset>
+                </form>
+            </div>
+            <div class="col-bg">
+                <img class="bg-1" src="~/images/meeting.png"></img>
+                <img class="bg-2" src="~/images/Club-Meeting-Minutes.jpg"></img>
+            </div>
+        </div>
+    </div>
+    <div class="col-9">
+        <div id="meeting-list" class="content__list row">
+            <!-- Render the initial meeting list -->
+            @foreach (var data in meetingList)
+            {
+                <div class="col-4 p-0">
+                    <div class="club-item">
+
+                        <a href="#" class="club-image">
+                            @{
+                                if (data.SpotlightImage != null)
+                                {
+                                    <img class="img-fluid" src="@data.SpotlightImage.Image" alt="nt1">
+                                }
+                                else
+                                {
+                                    <img class="img-fluid" src="~/images/meeting.png" alt="nt1">
+                                }
+                            }
+                        </a>
+                        <div class="club-title">
+                            <a href="@Url.Action("MeetingPost", "Meeting",new {id = data.MeetingId})" class="text-decoration-none truncate">@data.MeetingName</a>
+                        </div>
+
+                        <p class="club-price">
+                            <i class="fas fa-calendar-alt"></i>
+                            From @data.StartDate.ToString("MM-dd-yyyy")
+                            to @data.EndDate.ToString("MM-dd-yyyy")
+                        </p>
+                        <div class="club-address" data-toggle="tooltip" data-placement="auto"
+                             title="@data.City">
+                            <p class="address">
+                                <i class="fas fa-map-marker-alt" style="color:white"></i>
+                                <span class="district text-white truncate" id="address">Address @data.AreaNumber,@data.Street,@data.District,@data.City</span>
+                            </p>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <p class="address truncate text-white"><i class="fas fa-comment-alt"></i>@data.Description</p>
+                            <form asp-action="MeetingPost" asp-controller="Meeting" method="get" asp-route-id="@data.MeetingId">
+                                <button class="button--primary text-black text-wrapper-16" type="submit">See Now</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="pagination mb-3">
+        </div>
+    </div>
+</div>

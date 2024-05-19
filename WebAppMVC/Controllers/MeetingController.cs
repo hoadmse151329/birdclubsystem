@@ -18,96 +18,52 @@ using System;
 using WebAppMVC.Models.Notification;
 using BAL.ViewModels.Event;
 using Microsoft.AspNetCore.Http.Json;
+using WebAppMVC.Models.ViewModels;
 
 namespace WebAppMVC.Controllers
 {
     [Route("Meeting")]
-	public class MeetingController : Controller
-	{
+    public class MeetingController : Controller
+    {
         private readonly string LocationAPI_URL_All_Road = "/api/Location/AllAddressRoads";
         private readonly string LocationAPI_URL_All_District = "/api/Location/AllAddressDistricts";
         private readonly string LocationAPI_URL_All_City = "/api/Location/AllAddressCities";
         private readonly ILogger<MeetingController> _logger;
         private readonly IConfiguration _config;
-		private readonly HttpClient _httpClient = null;
-		private string MeetingAPI_URL = "";
+		    private readonly HttpClient _httpClient = null;
+		    private string MeetingAPI_URL = "";
         private readonly JsonSerializerOptions jsonOptions = new JsonSerializerOptions
         {
             Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
             PropertyNameCaseInsensitive = true,
         };
-		private BirdClubLibrary methcall = new();
+        private BirdClubLibrary methcall = new();
         public MeetingController(ILogger<MeetingController> logger, IConfiguration config)
-		{
+        {
 
-			_logger = logger;
+            _logger = logger;
             _config = config;
-			_httpClient = new HttpClient();
-			var contentType = new MediaTypeWithQualityHeaderValue("application/json");
-			_httpClient.DefaultRequestHeaders.Accept.Add(contentType);
-			_httpClient.BaseAddress = new Uri(config.GetSection("DefaultApiUrl:ConnectionString").Value);
-			MeetingAPI_URL = "/api/Meeting";
-		}
-        /*private async Task<bool> UpdateMeetingStatus(int? meetingId, string newStatus)
-        {
-            // Prepare the API URL
-            string apiUrl = $"{_config["DefaultApiUrl:ConnectionString"]}/api/Meeting/{meetingId}/{newStatus}";
-
-            // Prepare the HTTP client
-            HttpClient httpClient = new HttpClient();
-            httpClient.BaseAddress = new Uri(_config["DefaultApiUrl:ConnectionString"]);
-
-            // Send the HTTP request
-            HttpResponseMessage response = await httpClient.PutAsync(apiUrl, null);
-
-            // Check the response status code
-            if (response.IsSuccessStatusCode)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }*/
+            _httpClient = new HttpClient();
+            var contentType = new MediaTypeWithQualityHeaderValue("application/json");
+            _httpClient.DefaultRequestHeaders.Accept.Add(contentType);
+            _httpClient.BaseAddress = new Uri(config.GetSection("DefaultApiUrl:ConnectionString").Value);
+            MeetingAPI_URL = "/api/Meeting";
+        }
         [HttpGet("Index")]
-        public async Task<IActionResult> Index(
-            [FromQuery] string meetingName,
-            [FromQuery] string locationAddress)
+        public async Task<IActionResult> Index()
         {
-            if (string.IsNullOrEmpty(meetingName) && string.IsNullOrEmpty(locationAddress)) MeetingAPI_URL += "/All";
-            else MeetingAPI_URL += "/Search?";
+            MeetingAPI_URL += "/All";
 
-            _logger.LogInformation(locationAddress);
-
-            if (!string.IsNullOrEmpty(meetingName))
-            {
-                meetingName = meetingName.Trim();
-                MeetingAPI_URL += $"meetingName={Uri.EscapeDataString(meetingName)}&";
-            }
-            if (!string.IsNullOrEmpty(locationAddress))
-            {
-                locationAddress = locationAddress.Trim();
-                MeetingAPI_URL += $"locationAddress={Uri.EscapeDataString(locationAddress)}&";
-            }
-            if (MeetingAPI_URL.Contains("Search"))
-            {
-                MeetingAPI_URL = MeetingAPI_URL.Substring(0, MeetingAPI_URL.Length - 1); // Remove the trailing '&'
-            }
-
-            string LocationAPI_URL_All_Road = "/api/Location/AllAddressRoads";
-            string LocationAPI_URL_All_District = "/api/Location/AllAddressDistricts";
-            string LocationAPI_URL_All_City = "/api/Location/AllAddressCities";
-            dynamic testmodel = new ExpandoObject();
+            MeetingIndexVM testmodel = new();
 
             methcall.SetUserDefaultData(this);
 
             string? role = HttpContext.Session.GetString(Constants.Constants.ROLE_NAME);
-
             string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
-
+            
             #region NotificationBell
             // show read and unread notifications when you click on the bell in the header bar
+            string NotificationAPI_URL = "/api/Notification/Count";
             if (usrId != null)
             {
                 string NotificationCountAPI_URL = "/api/Notification/Count";
@@ -137,13 +93,12 @@ namespace WebAppMVC.Controllers
                 url: NotificationReadAPI_URL,
                 inputType: usrId,
                 _logger: _logger);
-
                 ViewBag.NotificationCount = notificationCount.IntData;
                 ViewBag.NotificationUnread = notificationUnread.Data.ToList();
                 ViewBag.NotificationRead = notificationRead.Data.ToList();
             }
             #endregion
-
+            
             var listLocationRoadResponse = await methcall.CallMethodReturnObject<GetLocationAddressResponseByList>(
                 _httpClient: _httpClient,
                 options: jsonOptions,
@@ -162,8 +117,6 @@ namespace WebAppMVC.Controllers
                 methodName: Constants.Constants.GET_METHOD,
                 url: LocationAPI_URL_All_City,
                 _logger: _logger);
-
-
             var listMeetResponse = await methcall.CallMethodReturnObject<GetMeetingResponseByList>(
                 _httpClient: _httpClient,
                 options: jsonOptions,
@@ -172,7 +125,7 @@ namespace WebAppMVC.Controllers
                 inputType: role,
                 _logger: _logger);
 
-            if (listMeetResponse == null || listLocationRoadResponse == null || listLocationDistrictResponse == null || listLocationCityResponse == null)
+            if (listMeetResponse == null)
             {
                 _logger.LogInformation(
                     "Error while processing your request! (Getting List Meeting!). List was Empty!: " + listMeetResponse + " , Error Message: " + listMeetResponse.ErrorMessage);
@@ -180,65 +133,114 @@ namespace WebAppMVC.Controllers
                     "Error while processing your request! (Getting List Meeting!).\n List was Empty!";
                 Redirect("~/Home/Index");
             }
-            else
-            if (!listMeetResponse.Status || !listLocationRoadResponse.Status || !listLocationDistrictResponse.Status || !listLocationCityResponse.Status)
+            else if (!listMeetResponse.Status)
             {
                 ViewBag.error =
                     "Error while processing your request! (Getting List Meeting!).\n"
-                    + listMeetResponse.ErrorMessage + "\n" + listLocationRoadResponse.ErrorMessage;
+                    + listMeetResponse.ErrorMessage;
                 Redirect("~/Home/Index");
-            }
-            else
-            {
-
-                foreach (var meeting in listMeetResponse.Data)
-                {
-                    if (meeting.EndDate < DateTime.Now && meeting.Status == "open registration")
-                    {
-                        // If the current date and time is after the end date of the meeting and its status is 'open registration',
-                        // update the status to 'end registration'
-                        //bool success = await UpdateMeetingStatus(meeting.MeetingId, "end registration");
-
-                        //if (!success)
-                        //{
-                        //    ViewBag.error = "Error while updating meeting status.";
-                        //    return View("Index", testmodel);
-                        //}
-                    }
-                }
             }
             testmodel.Meetings = listMeetResponse.Data;
 
-            List<SelectListItem> roads = new();
-            foreach (var road in listLocationRoadResponse.Data)
-            {
-                roads.Add(new SelectListItem(text: road, value: road));
-            }
-
-            List<SelectListItem> districts = new();
-            foreach (var district in listLocationDistrictResponse.Data)
-            {
-                districts.Add(new SelectListItem(text: district, value: district));
-            }
-
-            List<SelectListItem> cities = new();
-            foreach (var city in listLocationCityResponse.Data)
-            {
-                cities.Add(new SelectListItem(text: city, value: city));
-            }
-
-            testmodel.Roads = roads;
-            testmodel.Districts = districts;
-            testmodel.Cities = cities;
+            testmodel.Roads = listMeetResponse.Data.Select(m => m.Street).Distinct().ToList();
+            testmodel.Districts = listMeetResponse.Data.Select(m => m.District).Distinct().ToList();
+            testmodel.Cities = listMeetResponse.Data.Select(m => m.City).Distinct().ToList();
 
             return View(testmodel);
         }
 
+        [HttpGet("Index/Filter")]
+        public async Task<IActionResult> IndexFilter(
+            [FromQuery] List<string>? road,
+            [FromQuery] List<string>? district,
+            [FromQuery] List<string>? city
+            )
+        {
+            if ((road == null || road.Count == 0) && (district == null || district.Count == 0) && (city == null || city.Count == 0)) MeetingAPI_URL += "/All";
+            else MeetingAPI_URL += "/Search?";
+
+            MeetingIndexVM meetingFilteredM = new();
+
+            if (road != null && road.Any())
+            {
+                foreach (var selectedRoad in road)
+                {
+                    if (selectedRoad != null)
+                    {
+                        MeetingAPI_URL += $"road={Uri.EscapeDataString(selectedRoad.Trim())}&";
+                        meetingFilteredM.SelectedRoads.Add(selectedRoad);
+                    }
+                }
+            }
+            if (district != null && district.Any())
+            {
+                foreach (var selectedDistrict in district)
+                {
+                    if (selectedDistrict != null)
+                    {
+                        MeetingAPI_URL += $"district={Uri.EscapeDataString(selectedDistrict.Trim())}&";
+                        meetingFilteredM.SelectedDistricts.Add(selectedDistrict);
+                    }
+                }
+            }
+            if (city != null && city.Any())
+            {
+                foreach (var selectedCity in city)
+                {
+                    if (selectedCity != null)
+                    {
+                        MeetingAPI_URL += $"city={Uri.EscapeDataString(selectedCity.Trim())}&";
+                        meetingFilteredM.SelectedCities.Add(selectedCity);
+                    }
+                }
+            }
+            if (MeetingAPI_URL.Contains("Search"))
+            {
+                MeetingAPI_URL = MeetingAPI_URL.Substring(0, MeetingAPI_URL.Length - 1); // Remove the trailing '&'
+            }
+
+            methcall.SetUserDefaultData(this);
+
+            string? role = HttpContext.Session.GetString(Constants.Constants.ROLE_NAME);
+            
+            var listMeetResponse = await methcall.CallMethodReturnObject<GetMeetingResponseByList>(
+                _httpClient: _httpClient,
+                options: options,
+                methodName: Constants.Constants.POST_METHOD,
+                url: MeetingAPI_URL,
+                inputType: role,
+                _logger: _logger);
+
+            if (listMeetResponse == null)
+            {
+                _logger.LogInformation(
+                    "Error while processing your request! (Getting List Meeting!). List was Empty!: " + listMeetResponse + " , Error Message: " + listMeetResponse.ErrorMessage);
+                ViewBag.error =
+                    "Error while processing your request! (Getting List Meeting!).\n List was Empty!";
+                Redirect("~/Home/Index");
+            }
+            else if (!listMeetResponse.Status)
+            {
+                ViewBag.error =
+                    "Error while processing your request! (Getting List Meeting!).\n"
+                    + listMeetResponse.ErrorMessage;
+                Redirect("~/Home/Index");
+            }
+            meetingFilteredM.Meetings = listMeetResponse.Data;
+
+            meetingFilteredM.Roads = listMeetResponse.Data.Select(m => m.Street).Distinct().ToList();
+            meetingFilteredM.Districts = listMeetResponse.Data.Select(m => m.District).Distinct().ToList();
+            meetingFilteredM.Cities = listMeetResponse.Data.Select(m => m.City).Distinct().ToList();
+
+            return PartialView("_MeetingListPartial", meetingFilteredM);
+        }
+
         [HttpGet("Post/{id:int}")]
-		public async Task<IActionResult> MeetingPost(
-            [FromRoute][Required] int id)
-		{
-			MeetingAPI_URL += "/";
+        public async Task<IActionResult> MeetingPost(
+            [FromRoute][Required] int id
+            )
+        {
+            MeetingAPI_URL += "/";
 
             methcall.SetUserDefaultData(this);
 
@@ -266,7 +268,7 @@ namespace WebAppMVC.Controllers
             GetMeetingPostResponse? meetPostResponse = new();
 
             if (!string.IsNullOrEmpty(accToken) && !string.IsNullOrEmpty(usrId) && role.Equals(Constants.Constants.MEMBER))
-			{
+            {
                 MeetingAPI_URL += "Participant/" + id;
                 meetPostResponse = await methcall.CallMethodReturnObject<GetMeetingPostResponse>(
                                    _httpClient: _httpClient,
@@ -277,8 +279,8 @@ namespace WebAppMVC.Controllers
                                    inputType: usrId,
                                    accessToken: accToken);
             }
-			else
-			{
+            else
+            {
                 MeetingAPI_URL += id;
                 meetPostResponse = await methcall.CallMethodReturnObject<GetMeetingPostResponse>(
                                    _httpClient: _httpClient,
@@ -297,22 +299,22 @@ namespace WebAppMVC.Controllers
 
             var meetmodel = meetPostResponse.Data;
             if (!meetPostResponse.Status)
-			{
+            {
                 _logger.LogInformation("Username or Password is invalid: " + meetPostResponse.Status + " , Error Message: " + meetPostResponse.ErrorMessage);
                 ViewBag.error =
-					"Error while processing your request! (Getting Meeting Post!).\n"
-					+ meetPostResponse.ErrorMessage;
+                    "Error while processing your request! (Getting Meeting Post!).\n"
+                    + meetPostResponse.ErrorMessage;
                 View("Index");
-			}
-			/*if(TempData["PartakeNo"] != null)
+            }
+            /*if(TempData["PartakeNo"] != null)
 				ViewBag.PartNumber = Int32.Parse(TempData["PartakeNo"].ToString());*/
             return View(meetmodel);
-		}
+        }
 
-		[HttpPost("{meetingId:int}/Register")]
+        [HttpPost("{meetingId:int}/Register")]
         //[Authorize(Roles = "Member")]
         public async Task<IActionResult> MeetingRegister(int meetingId)
-		{
+        {
             MeetingAPI_URL += "/Register/" + meetingId;
 
             string NotificationAPI_URL = "/api/Notification/CreateEvent";
@@ -331,20 +333,21 @@ namespace WebAppMVC.Controllers
                 url: MeetingAPI_URL,
                 _logger: _logger,
                 inputType: usrId,
-				accessToken: accToken);
-			if(participationNo == null)
-			{
+                accessToken: accToken);
+            if (participationNo == null)
+            {
                 _logger.LogInformation("Error while processing your request! (Registering Meeting Participation!): Meeting Not Found!");
                 ViewBag.error =
                     "Error while processing your request! (Registering Meeting Participation!).\n Meeting Not Found!";
                 RedirectToAction("MeetingPost", new { id = meetingId });
-            }else
+            }
+            else
             if (!participationNo.Status)
             {
                 _logger.LogInformation("Error while processing your request! (Registering Meeting Participation!): " + participationNo.Status + " , Error Message: " + participationNo.ErrorMessage);
                 ViewBag.error =
                     "Error while processing your request! (Registering Meeting Participation!).\n"
-					+ participationNo.ErrorMessage;
+                    + participationNo.ErrorMessage;
                 RedirectToAction("MeetingPost", new { id = meetingId });
             }
 
@@ -394,7 +397,7 @@ namespace WebAppMVC.Controllers
             {
                 ViewBag.Error =
                     "Error while processing your request! (Create Notification).\n User Not Found!";
-                return RedirectToAction("MeetingPost", new {id = meetingId});
+                return RedirectToAction("MeetingPost", new { id = meetingId });
             }
             if (!notificationResponse.Status)
             {
@@ -444,7 +447,6 @@ namespace WebAppMVC.Controllers
                     + participationNo.ErrorMessage;
                 RedirectToAction("MeetingPost", new { id = meetingId });
             }
-
             string MeetingPostAPI_URL = "/api/Meeting/" + meetingId;
 
             var meetPostResponse = await methcall.CallMethodReturnObject<GetMeetingPostResponse>(

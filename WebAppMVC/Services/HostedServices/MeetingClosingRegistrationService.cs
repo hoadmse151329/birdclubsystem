@@ -16,7 +16,7 @@ namespace WebAppMVC.Services.HostedServices
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly IConfiguration _config;
         private Timer _timer;
-        private string MembershipAPI_URL = "/api/Meeting/All/Status/";
+        private string MembershipAPI_URL = "/api/Meeting/Search?status=";
         private string MembershipUpdateAPI_URL = "/api/Meeting/Update/Status";
         private readonly MediaTypeWithQualityHeaderValue contentType = new("application/json");
         private readonly JsonSerializerOptions jsonOptions = new JsonSerializerOptions
