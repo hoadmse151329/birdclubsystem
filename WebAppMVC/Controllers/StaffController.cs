@@ -35,7 +35,7 @@ namespace WebAppMVC.Controllers
         private readonly IConfiguration _config;
         private readonly HttpClient _httpClient = null;
         private string StaffAPI_URL = "";
-        private readonly JsonSerializerOptions options = new JsonSerializerOptions
+        private readonly JsonSerializerOptions jsonOptions = new JsonSerializerOptions
         {
             Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
             PropertyNameCaseInsensitive = true
@@ -112,14 +112,14 @@ namespace WebAppMVC.Controllers
 
             var listLocationResponse = await methcall.CallMethodReturnObject<GetLocationResponseByList>(
                 _httpClient: _httpClient,
-                options: options,
+                options: jsonOptions,
                 methodName: Constants.Constants.GET_METHOD,
                 url: LocationAPI_URL_All,
                 _logger: _logger);
 
             var listMeetResponse = await methcall.CallMethodReturnObject<GetMeetingResponseByList>(
                 _httpClient: _httpClient,
-                options: options,
+                options: jsonOptions,
                 methodName: "POST",
                 url: StaffAPI_URL,
                 inputType: role,
@@ -174,13 +174,13 @@ namespace WebAppMVC.Controllers
 
             var meetPostResponse = await methcall.CallMethodReturnObject<GetMeetingPostResponse>(
                                 _httpClient: _httpClient,
-                                options: options,
+                                options: jsonOptions,
                                 methodName: Constants.Constants.GET_METHOD,
                                 url: StaffAPI_URL,
                                 _logger: _logger);
             var meetpartPostResponse = await methcall.CallMethodReturnObject<GetListMeetingParticipation>(
                                 _httpClient: _httpClient,
-                                options: options,
+                                options: jsonOptions,
                                 methodName: Constants.Constants.GET_METHOD,
                                 url: StaffMeetingDetailAPI_URL,
                                 accessToken: accToken,
@@ -199,7 +199,7 @@ namespace WebAppMVC.Controllers
                     + meetPostResponse.ErrorMessage;
                 return RedirectToAction("StaffMeeting");
             }
-            meetingDetailBigModel.UpdateMeeting = methcall.GetValidationTempData<MeetingViewModel>(this, TempData, Constants.Constants.UPDATE_MEETING_VALID, "updateMeeting", options);
+            meetingDetailBigModel.UpdateMeeting = methcall.GetValidationTempData<MeetingViewModel>(this, TempData, Constants.Constants.UPDATE_MEETING_VALID, "updateMeeting", jsonOptions);
             meetingDetailBigModel.SelectListStatus = methcall.GetStaffEventStatusSelectableList(meetPostResponse.Data.Status);
             meetingDetailBigModel.SelectListParticipationStatus = methcall.GetStaffEventParticipationStatusSelectableList(meetPostResponse.Data.Status);
             meetingDetailBigModel.MeetingDetails = meetPostResponse.Data;
@@ -220,7 +220,7 @@ namespace WebAppMVC.Controllers
 
             var meetPostResponse = await methcall.CallMethodReturnObject<GetMeetingPostResponse>(
                                 _httpClient: _httpClient,
-                                options: options,
+                                options: jsonOptions,
                                 methodName: Constants.Constants.PUT_METHOD,
                                 url: StaffAPI_URL,
                                 inputType: updateMeeting,
@@ -228,7 +228,7 @@ namespace WebAppMVC.Controllers
                                 _logger: _logger);
             if (meetPostResponse == null)
             {
-                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_MEETING_VALID, updateMeeting, options);
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_MEETING_VALID, updateMeeting, jsonOptions);
 
                 ViewBag.Error =
                     "Error while processing your request! (Updating Meeting Status!).\n Meeting Not Found!";
@@ -236,7 +236,7 @@ namespace WebAppMVC.Controllers
             }
             if (!meetPostResponse.Status)
             {
-                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_MEETING_VALID, updateMeeting, options);
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_MEETING_VALID, updateMeeting, jsonOptions);
 
                 _logger.LogInformation("Error while processing your request: " + meetPostResponse.Status + " , Error Message: " + meetPostResponse.ErrorMessage);
                 ViewBag.Error =
@@ -275,7 +275,7 @@ namespace WebAppMVC.Controllers
 
             var meetPartStatusResponse = await methcall.CallMethodReturnObject<GetCheckInStatusUpdate>(
                                 _httpClient: _httpClient,
-                                options: options,
+                                options: jsonOptions,
                                 methodName: "PUT",
                                 url: StaffAPI_URL,
                                 inputType: meetPartView,
@@ -335,14 +335,14 @@ namespace WebAppMVC.Controllers
 
             var listLocationResponse = await methcall.CallMethodReturnObject<GetLocationResponseByList>(
                 _httpClient: _httpClient,
-                options: options,
+                options: jsonOptions,
                 methodName: Constants.Constants.GET_METHOD,
                 url: LocationAPI_URL_All,
                 _logger: _logger);
 
             var listFieldTripResponse = await methcall.CallMethodReturnObject<GetFieldTripResponseByList>(
                 _httpClient: _httpClient,
-                options: options,
+                options: jsonOptions,
                 methodName: "POST",
                 url: StaffAPI_URL,
                 inputType: role,
@@ -397,13 +397,13 @@ namespace WebAppMVC.Controllers
 
             var fieldtripPostResponse = await methcall.CallMethodReturnObject<GetFieldTripPostResponse>(
                                 _httpClient: _httpClient,
-                                options: options,
+                                options: jsonOptions,
                                 methodName: Constants.Constants.GET_METHOD,
                                 url: StaffAPI_URL,
                                 _logger: _logger);
             var fieldtrippartPostResponse = await methcall.CallMethodReturnObject<GetListFieldTripParticipation>(
                                 _httpClient: _httpClient,
-                                options: options,
+                                options: jsonOptions,
                                 methodName: Constants.Constants.GET_METHOD,
                                 url: StaffFieldTripDetailAPI_URL,
                                 accessToken: accToken,
@@ -423,7 +423,7 @@ namespace WebAppMVC.Controllers
                 return RedirectToAction("StaffFieldTrip");
             }
             fieldtripDetailBigModel.FieldTripDetails = fieldtripPostResponse.Data;
-            fieldtripDetailBigModel.UpdateFieldTrip = methcall.GetValidationTempData<FieldTripViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_VALID, "updateTrip", options);
+            fieldtripDetailBigModel.UpdateFieldTrip = methcall.GetValidationTempData<FieldTripViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_VALID, "updateTrip", jsonOptions);
             fieldtripDetailBigModel.FieldTripTourFeatures = fieldtripPostResponse.Data.FieldtripAdditionalDetails.Where(f => f.Type.Equals("tour_features")).ToList();
             fieldtripDetailBigModel.FieldTripImportantToKnows = fieldtripPostResponse.Data.FieldtripAdditionalDetails.Where(f => f.Type.Equals("important_to_know")).ToList();
             fieldtripDetailBigModel.FieldTripActivitiesAndTransportation = fieldtripPostResponse.Data.FieldtripAdditionalDetails.Where(f => f.Type.Equals("activities_and_transportation")).ToList();
@@ -460,7 +460,7 @@ namespace WebAppMVC.Controllers
 
             var fieldtripPostResponse = await methcall.CallMethodReturnObject<GetFieldTripPostResponse>(
                                 _httpClient: _httpClient,
-                                options: options,
+                                options: jsonOptions,
                                 methodName: "PUT",
                                 url: StaffAPI_URL,
                                 inputType: updateTrip,
@@ -511,7 +511,7 @@ namespace WebAppMVC.Controllers
 
             var tripPartStatusResponse = await methcall.CallMethodReturnObject<GetCheckInStatusUpdate>(
                                 _httpClient: _httpClient,
-                                options: options,
+                                options: jsonOptions,
                                 methodName: "PUT",
                                 url: StaffAPI_URL,
                                 inputType: tripPartView,
@@ -572,14 +572,14 @@ namespace WebAppMVC.Controllers
 
             var listLocationResponse = await methcall.CallMethodReturnObject<GetLocationResponseByList>(
                 _httpClient: _httpClient,
-                options: options,
+                options: jsonOptions,
                 methodName: Constants.Constants.GET_METHOD,
                 url: LocationAPI_URL_All,
                 _logger: _logger);
 
             var listContestResponse = await methcall.CallMethodReturnObject<GetContestResponseByList>(
                 _httpClient: _httpClient,
-                options: options,
+                options: jsonOptions,
                 methodName: "POST",
                 url: StaffAPI_URL,
                 inputType: role,
@@ -622,13 +622,13 @@ namespace WebAppMVC.Controllers
 
             var contestPostResponse = await methcall.CallMethodReturnObject<GetContestPostResponse>(
                                 _httpClient: _httpClient,
-                                options: options,
+                                options: jsonOptions,
                                 methodName: Constants.Constants.GET_METHOD,
                                 url: StaffAPI_URL,
                                 _logger: _logger);
             var contestpartPostResponse = await methcall.CallMethodReturnObject<GetListContestParticipation>(
                                 _httpClient: _httpClient,
-                                options: options,
+                                options: jsonOptions,
                                 methodName: Constants.Constants.GET_METHOD,
                                 url: StaffContestDetailAPI_URL,
                                 accessToken: accToken,
@@ -648,7 +648,7 @@ namespace WebAppMVC.Controllers
                 return RedirectToAction("StaffContest");
             }
 
-            contestDetailBigModel.UpdateContest = methcall.GetValidationTempData<ContestViewModel>(this, TempData, Constants.Constants.UPDATE_CONTEST_VALID, "updateContest", options);
+            contestDetailBigModel.UpdateContest = methcall.GetValidationTempData<ContestViewModel>(this, TempData, Constants.Constants.UPDATE_CONTEST_VALID, "updateContest", jsonOptions);
             contestDetailBigModel.ContestDetails = contestPostResponse.Data;
             contestDetailBigModel.ContestParticipants = contestpartPostResponse.Data;
             contestDetailBigModel.SelectListParticipationStatus = methcall.GetStaffEventParticipationStatusSelectableList(contestPostResponse.Data.Status);
@@ -668,7 +668,7 @@ namespace WebAppMVC.Controllers
 
             if (!ModelState.IsValid)
             {
-                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_CONTEST_VALID, updateContest, options);
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_CONTEST_VALID, updateContest, jsonOptions);
                 return RedirectToAction("StaffContestDetail", "Staff", new { id });
             }
 
@@ -676,7 +676,7 @@ namespace WebAppMVC.Controllers
 
             var contestPostResponse = await methcall.CallMethodReturnObject<GetContestPostResponse>(
                                 _httpClient: _httpClient,
-                                options: options,
+                                options: jsonOptions,
                                 methodName: Constants.Constants.PUT_METHOD,
                                 url: StaffAPI_URL,
                                 inputType: updateContest,
@@ -719,7 +719,7 @@ namespace WebAppMVC.Controllers
 
             var contestPartStatusResponse = await methcall.CallMethodReturnObject<GetCheckInStatusUpdate>(
                                 _httpClient: _httpClient,
-                                options: options,
+                                options: jsonOptions,
                                 methodName: Constants.Constants.PUT_METHOD,
                                 url: StaffAPI_URL,
                                 inputType: contestPartView,
@@ -764,7 +764,7 @@ namespace WebAppMVC.Controllers
 
             var contestPartScoresResponse = await methcall.CallMethodReturnObject<GetCheckInStatusUpdate>(
                                 _httpClient: _httpClient,
-                                options: options,
+                                options: jsonOptions,
                                 methodName: Constants.Constants.PUT_METHOD,
                                 url: StaffAPI_URL,
                                 inputType: contestPartView,
@@ -803,7 +803,7 @@ namespace WebAppMVC.Controllers
 
             var memberDetails = await methcall.CallMethodReturnObject<GetMemberProfileResponse>(
                 _httpClient: _httpClient,
-                options: options,
+                options: jsonOptions,
                 methodName: Constants.Constants.POST_METHOD,
                 url: StaffAPI_URL,
                 _logger: _logger,
@@ -864,7 +864,7 @@ namespace WebAppMVC.Controllers
 
                 var getMemberAvatar = await methcall.CallMethodReturnObject<GetMemberAvatarResponse>(
                     _httpClient: _httpClient,
-                    options: options,
+                    options: jsonOptions,
                     methodName: Constants.Constants.POST_METHOD,
                     url: StaffAvatarAPI_URL,
                     _logger: _logger,

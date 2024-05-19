@@ -535,7 +535,7 @@
                         <div class="modal-header">
                             <h4 class="modal-title">Create Meeting Additional Media</h4>
                         </div>
-                        <form asp-action="ManagerCreateMeetingMedia" asp-controller="Manager" method="post" asp-route-meetingId="@detailsMeeting.MeetingId" class="form-group">
+                        <form asp-action="ManagerCreateMeetingMedia" asp-controller="Manager" method="post" asp-route-meetingId="@detailsMeeting.MeetingId" class="form-group" enctype="multipart/form-data">
                             <div class="modal-content modal-addRoom">
                                 <div class="row justify-content-center">
                                     <div class="col-12 col-md-6">
@@ -576,10 +576,16 @@
                         <div class="modal-header">
                             <h4 class="modal-title">Create Meeting Spotlight Media</h4>
                         </div>
-                        <form asp-action="ManagerCreateMeetingMedia" asp-controller="Manager" method="post" asp-route-meetingId="@detailsMeeting.MeetingId" class="form-group">
+                        <form asp-action="ManagerCreateMeetingMedia" asp-controller="Manager" method="post" asp-route-meetingId="@detailsMeeting.MeetingId" class="form-group" enctype="multipart/form-data">
                             <div class="modal-content modal-addRoom">
                                 <div class="row justify-content-center">
                                     <div class="col-12 col-md-6">
+                                        <div class="form-group row">
+                                            <label asp-for="@createMedia.Image" class="col-sm-4 col-form-label">Upload Meeting Spotlight Image</label>
+                                            <img class="profile-pic" style="width:300px; height:300px" src="@createMedia.Image" />
+                                            <input asp-for="@createMedia.ImageUpload" type="file" class="file-upload" accept=".jpg, .png, .jpeg">
+                                            <input asp-for="@createMedia.Image" type="text" value="@createMedia.Image" class="form-control" required hidden>
+                                        </div>
                                         <div class="form-group row">
                                             <label asp-for="@createMedia.Description" class="col-sm-4 col-form-label"></label>
                                             <div class="col-sm-8">
@@ -596,8 +602,6 @@
                                                        value="Spotlight" class="form-control" readonly>
                                             </div>
                                         </div>
-                                        <input asp-for="@createMedia.Image" type="text" class="form-control"
-                                               value="https://edwinbirdclubstorage.blob.core.windows.net/images/meeting/meeting_image_1.png" hidden />
                                     </div>
                                 </div>
                             </div>
@@ -617,7 +621,7 @@
                         <div class="modal-header">
                             <h4 class="modal-title">Create Meeting Location Map Media</h4>
                         </div>
-                        <form asp-action="ManagerCreateMeetingMedia" asp-controller="Manager" method="post" asp-route-meetingId="@detailsMeeting.MeetingId" class="form-group">
+                        <form asp-action="ManagerCreateMeetingMedia" asp-controller="Manager" method="post" asp-route-meetingId="@detailsMeeting.MeetingId" class="form-group" enctype="multipart/form-data">
                             <div class="modal-content modal-addRoom">
                                 <div class="row justify-content-center">
                                     <div class="col-12 col-md-6">
@@ -700,5 +704,6 @@
             </div>
         }
     }
+    <script src="~/js/user-script.js"></script>
 </body>
 </html>

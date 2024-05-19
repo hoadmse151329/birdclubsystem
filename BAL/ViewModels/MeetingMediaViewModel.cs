@@ -11,6 +11,10 @@ namespace BAL.ViewModels
 {
     public class MeetingMediaViewModel
     {
+        public MeetingMediaViewModel()
+        {
+            Image = "https://edwinbirdclubstorage.blob.core.windows.net/images/meeting/meeting_image_1.png";
+        }
         public int? PictureId { get; set; }
         public int? MeetingId { get; set; }
         [Required(ErrorMessage = "Description is required")]
@@ -21,5 +25,6 @@ namespace BAL.ViewModels
         [Required(ErrorMessage = "Type is required")]
         [DisplayName("Type")]
         public string? Type { get; set; }
+        public IFormFile? ImageUpload { get; set; }
     }
 }

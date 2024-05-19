@@ -13,7 +13,7 @@ namespace WebAppMVC.Controllers
 		private readonly IConfiguration _config;
 		private readonly HttpClient _httpClient = null;
 		private string AdminAPI_URL = "";
-		private readonly JsonSerializerOptions options = new JsonSerializerOptions
+		private readonly JsonSerializerOptions jsonOptions = new JsonSerializerOptions
 		{
             Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
             PropertyNameCaseInsensitive = true

@@ -67,18 +67,24 @@
                                         <a class="dropdown-item" href="@Url.Action("MemberNotification", "Member")">
                                             <p class="truncate"> See All <i class="fa fa-angle-right"></i></p>
                                         </a>
-                                        @if (ViewBag.NotificationTitle != null)
+                                        @if (ViewBag.NotificationUnread != null)
                                         {
-                                            foreach (var title in ViewBag.NotificationTitle)
+                                            foreach (var unread in ViewBag.NotificationUnread)
                                             {
                                                 <a class="dropdown-item" href="@Url.Action("MemberNotification", "Member")">
-                                                    <p class="truncate">@title</p>
+                                                    <p class="truncate">@unread</p>
                                                 </a>
                                             }
                                         }
-                                        @*<a class="dropdown-item" href="@Url.Action("MemberNotification", "Member")">
-                                            <p class="truncate">You have new notification</p>
-                                        </a>*@
+                                        @if (ViewBag.NotificationRead != null)
+                                        {
+                                            foreach (var read in ViewBag.NotificationRead)
+                                            {
+                                                <a class="dropdown-item" href="@Url.Action("MemberNotification", "Member")">
+                                                    <p class="truncate">@read</p>
+                                                </a>
+                                            }
+                                        }
                                     </div>
                                 </div>
                             </div>

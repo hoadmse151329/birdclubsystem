@@ -16,5 +16,6 @@ namespace DAL.Repositories.Interfaces
         Task<bool> GetBoolNotificationId(string id);
         Task<Notification?> GetNotificationById(string id);
         Task<IEnumerable<string?>> GetUnreadNotificationTitle(string id);
+        Task<IEnumerable<string?>> GetReadNotificationTitle(string id);
     }
 }

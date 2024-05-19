@@ -185,22 +185,15 @@ namespace WebAPI.Controllers
             }
         }
 
-        [HttpPut("{id:int}/Update")]
+        [HttpPut("Update")]
         [ProducesResponseType(typeof(IEnumerable<NotificationViewModel>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> UpdateAllNotificationStatus(
-            [Required][FromRoute] string id,
             [Required][FromBody] List<NotificationViewModel> listNotif)
         {
             try
             {
-                var check = await _notificationService.GetBoolNotificationId(id);
-                if (!check) return NotFound(new
-                {
-                    Status = false,
-                    ErrorMessage = "Notification does not exist"
-                });
                 var result = await _notificationService.UpdateAllNotificationStatus(listNotif);
                 if (!result) return NotFound(new
                 {
@@ -287,6 +280,46 @@ namespace WebAPI.Controllers
                     ErrorMessage = "Member Not Found"
                 });
                 var result = await _notificationService.GetUnreadNotificationTitle(id);
+                return Ok(new
+                {
+                    Status = true,
+                    Data = result
+                });
+            }
+            catch (Exception ex)
+            {
+                if (ex.InnerException != null)
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = ex.Message,
+                        InnerExceptionMessage = ex.InnerException.Message
+                    });
+                }
+                // Log the exception if needed
+                return BadRequest(new
+                {
+                    Status = false,
+                    ErrorMessage = ex.Message
+                });
+            }
+        }
+        [HttpPost("Read")]
+        [ProducesResponseType(typeof(NotificationViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetReadNotificationTitle([FromBody] string id)
+        {
+            try
+            {
+                var mem = await _memberService.GetBoolById(id);
+                if (!mem) return NotFound(new
+                {
+                    Status = false,
+                    ErrorMessage = "Member Not Found"
+                });
+                var result = await _notificationService.GetReadNotificationTitle(id);
                 return Ok(new
                 {
                     Status = true,
