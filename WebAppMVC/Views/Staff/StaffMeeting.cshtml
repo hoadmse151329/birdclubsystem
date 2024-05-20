@@ -6,7 +6,7 @@
     List<BAL.ViewModels.MeetingViewModel> meetingList = Model.Meetings;
     BAL.ViewModels.MeetingViewModel createMeet = new();
     string? search = string.Empty;
-        Layout = "~/Views/Shared/_SLayout.cshtml";
+    Layout = "~/Views/Shared/_SLayout.cshtml";
 }
 <html lang="en">
 <head>
@@ -21,7 +21,7 @@
     <!--Boxicons-->
     <link rel='stylesheet' href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css'>
     <!-- Other-->
-    <link rel="stylesheet" href="https://unpkg.com/filepond-plugin-file-poster/dist/filepond-plugin-file-poster.css" >
+    <link rel="stylesheet" href="https://unpkg.com/filepond-plugin-file-poster/dist/filepond-plugin-file-poster.css">
 </head>
 <body>
     <!-- List club -->
@@ -50,9 +50,9 @@
                                         <i class='bx bx-home-alt-2'></i>
                                         <span>Meeting</span>
                                     </a>
-                                </li>              
+                                </li>
                             </ul>
-                            
+
                             <!-- Tab panes -->
                             <div class="tab-content">
                                 <!-- home1 -->
@@ -68,7 +68,7 @@
                                                 }
                                             </div>
                                             <div class="col-sm-6 d-flex justify-content-end">
-                                                <form asp-action="StaffMeeting" asp-controller="Staff" method="get" asp-route-search="@search">                   
+                                                <form asp-action="StaffMeeting" asp-controller="Staff" method="get" asp-route-search="@search">
                                                     <div>
                                                         <label>
                                                             <input asp-for="@search" class="form-control" type="text" name="search" placeholder="Search..." value="@search">
@@ -80,7 +80,7 @@
                                         </div>
                                     </div>
                                     <div class="row card-content">
-                                        @foreach(var data in meetingList)
+                                        @foreach (var data in meetingList)
                                         {
                                             <div class="col-xl-3 col-lg-6 col-sm-6 my-3">
                                                 <div class="card card-child">
@@ -159,24 +159,24 @@
                                                     <div class="form-group mx-auto">
                                                         <form asp-action="Meeting" asp-controller="Staff" method="get" asp-route-id="@data.MeetingId">
                                                             <button class="btn btn-primary clickable-row" type="submit">See Detail</button>
-                                                        </form>                                                        
+                                                        </form>
                                                     </div>
                                                 </div>
                                             </div>
                                         }
-                                </div>                               
-                            <!-- end tapnet -->
-                        </div>
-                    </div>
+                                    </div>
+                                    <!-- end tapnet -->
+                                </div>
+                            </div>
                 </section>
             </div>
         </div>
     </div>
-       
+
     <script>
-    function redirectToDetailPage() {
-        window.location.href = '@Url.Action("StaffMeetingDetail", "Staff")';
-    }
-</script>
+        function redirectToDetailPage() {
+            window.location.href = '@Url.Action("StaffMeetingDetail", "Staff")';
+        }
+    </script>
 </body>
 </html>

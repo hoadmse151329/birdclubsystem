@@ -633,8 +633,8 @@
                                                     @for (int i = 0; i < tripPartView.Count(); i++)
                                                     {
                                                         <tr class="@("clicks-row "+ (i%2 == 0 ? "even" : "odd")) " data-href="#"
-                                                            data-bs-toggle="tooltip" data-bs-placement="right"
-                                                            title="More Details">
+                                                    data-bs-toggle="tooltip" data-bs-placement="right"
+                                                    title="More Details">
                                                             <input type="hidden" asp-for="@tripPartView[i].TripId" name="tripPartView[@i].TripId" value="@tripPartView[i].TripId" class="form-control" />
                                                             <input type="hidden" asp-for="@tripPartView[i].MemberId" name="tripPartView[@i].MemberId" value="@tripPartView[i].MemberId" class="form-control" />
                                                             <td class="sorting_1">
@@ -692,8 +692,8 @@
                                                 @for (int i = 0; i < tripPartView.Count(); i++)
                                                 {
                                                     <tr class="@("clicks-row "+ (i%2 == 0 ? "even" : "odd")) " data-href="#"
-                                                        data-bs-toggle="tooltip" data-bs-placement="right"
-                                                        title="More Details">
+                                                data-bs-toggle="tooltip" data-bs-placement="right"
+                                                title="More Details">
                                                         <input type="hidden" asp-for="@tripPartView[i].TripId" name="tripPartView[@i].TripId" value="@tripPartView[i].TripId" class="form-control" />
                                                         <input type="hidden" asp-for="@tripPartView[i].MemberId" name="tripPartView[@i].MemberId" value="@tripPartView[i].MemberId" class="form-control" />
                                                         <td class="sorting_1">
@@ -780,39 +780,39 @@
                                             <div class="col-sm-8">
                                                 <select class="form-control" asp-for="@updateTrip.Status" asp-items="@defaultTripStatus" class="custom-select" required></select>
                                                 <span asp-validation-for="@updateTrip.Status" id="error_message"
-                                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <input asp-for="@updateTrip.TripName" type="text"
-                                       value="@updateTrip.TripName" required hidden>
+                               value="@updateTrip.TripName" required hidden>
                                 <input asp-for="@updateTrip.OpenRegistration" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
-                                       value="@updateTrip.OpenRegistration.ToString("yyyy-MM-ddTHH:mm")" required hidden>
+                               value="@updateTrip.OpenRegistration.ToString("yyyy-MM-ddTHH:mm")" required hidden>
                                 <input asp-for="@updateTrip.RegistrationDeadline" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
-                                       value="@updateTrip.RegistrationDeadline.ToString("yyyy-MM-ddTHH:mm")" required hidden>
+                               value="@updateTrip.RegistrationDeadline.ToString("yyyy-MM-ddTHH:mm")" required hidden>
                                 <input asp-for="@updateTrip.StartDate" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
-                                       value="@updateTrip.StartDate.ToString("yyyy-MM-ddTHH:mm")" required hidden>
+                               value="@updateTrip.StartDate.ToString("yyyy-MM-ddTHH:mm")" required hidden>
                                 <input asp-for="@updateTrip.EndDate" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
-                                       value="@updateTrip.EndDate.ToString("yyyy-MM-ddTHH:mm")" required hidden>
+                               value="@updateTrip.EndDate.ToString("yyyy-MM-ddTHH:mm")" required hidden>
                                 <input asp-for="@updateTrip.NumberOfParticipantsLimit" type="number"
-                                       value="@updateTrip.NumberOfParticipantsLimit" required hidden>
+                               value="@updateTrip.NumberOfParticipantsLimit" required hidden>
                                 <input asp-for="@updateTrip.Host" type="text"
-                                       value="@updateTrip.Host" required hidden>
+                               value="@updateTrip.Host" required hidden>
                                 <input asp-for="@updateTrip.InCharge" type="text"
-                                       value="@updateTrip.InCharge" required hidden>
+                               value="@updateTrip.InCharge" required hidden>
                                 <input asp-for="@updateTrip.Fee" type="number"
-                                       value="@updateTrip.Fee" required hidden>
+                               value="@updateTrip.Fee" required hidden>
                                 <input asp-for="@updateTrip.Address" type="text"
-                                       value="@updateTrip.Address" required hidden>
+                               value="@updateTrip.Address" required hidden>
                                 <textarea asp-for="@updateTrip.Description" type="text"
-                                          value="@updateTrip.Description" required hidden></textarea>
+                                  value="@updateTrip.Description" required hidden></textarea>
                                 <textarea asp-for="@updateTrip.Details" type="text"
-                                          value="@updateTrip.Details" required hidden></textarea>
+                                  value="@updateTrip.Details" required hidden></textarea>
                                 <textarea asp-for="@updateTrip.Note" type="text"
-                                          value="@updateTrip.Note" required hidden></textarea>
+                                  value="@updateTrip.Note" required hidden></textarea>
                                 <input asp-for="@updateTrip.NumberOfParticipants" type="number"
-                                       value="@updateTrip.NumberOfParticipants" required hidden>
+                               value="@updateTrip.NumberOfParticipants" required hidden>
                             </div>
                             <div class="modal-footer justify-content-center">
                                 <button class="btn btn-success" type="submit" value="Update">Save</button>

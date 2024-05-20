@@ -10,14 +10,14 @@
         new SelectListItem {Text = "Female",Value = "Female"},
         new SelectListItem {Text = "Other",Value = "Other"}
     };
-    foreach(var gender in genders)
+    foreach (var gender in genders)
     {
         if (Model.Gender.Equals(gender.Text))
         {
             gender.Selected = true;
         }
     }
-        Layout = "~/Views/Shared/_SLayout.cshtml";
+    Layout = "~/Views/Shared/_SLayout.cshtml";
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -36,16 +36,16 @@
 
 <body>
     <!-- sidebar -->
-        <div class="sidebar">
+    <div class="sidebar">
         <div class="container">
-            <div class="navigation">  
+            <div class="navigation">
                 <ul class="slide-menu">
                     <div class="logo">
                         <a href="@Url.Action("StaffIndex", "Staff")">
                             <img class="logo" src="~/images/Red_whiskered_bulbul_bird_logo_eps_10_generated 1.png" alt="logo">
                         </a>
                     </div>
-                    <li class="active" data-toggle="tooltip"data-placement="right" title="Overview">
+                    <li class="active" data-toggle="tooltip" data-placement="right" title="Overview">
                         <a href="@Url.Action("StaffIndex", "Staff")">
                             <span><i class='bx bx-tachometer'></i></span>
                             <span class="title">Overview</span>
@@ -58,27 +58,27 @@
                             <i class='bx bxs-chevron-down drop'></i>
                         </a>
                         <ul class="collapse sub-menu" id="collapseOne">
-                            <li data-toggle="tooltip"data-placement="right" title="Manage Meeting">
+                            <li data-toggle="tooltip" data-placement="right" title="Manage Meeting">
                                 <a href="@Url.Action("StaffMeeting", "Staff")" li class="dropdown-item">
                                     <i class='bx bx-home-alt-2'></i>
                                     <span class="title">Meeting</span>
-                                </a> 
+                                </a>
                             </li>
-                            <li data-toggle="tooltip"data-placement="right" title="Manage Fieldtrip">
+                            <li data-toggle="tooltip" data-placement="right" title="Manage Fieldtrip">
                                 <a href="@Url.Action("StaffFieldtrip", "Staff")" li class="dropdown-item">
                                     <i class='bx bx-calendar-edit'></i>
                                     <span class="title">Fieldtrip</span>
                                 </a>
-                            </li> 
-                            <li data-toggle="tooltip"data-placement="right" title="Manage Bird Contest">
+                            </li>
+                            <li data-toggle="tooltip" data-placement="right" title="Manage Bird Contest">
                                 <a href="@Url.Action("StaffContest", "Staff")" li class="dropdown-item">
                                     <i class='bx bx-trophy'></i>
                                     <span class="title">Bird Contest</span>
                                 </a>
-                            </li>                          
+                            </li>
                         </ul>
                     </li>
-                    <li data-toggle="tooltip"data-placement="right" title="Staff Profile">
+                    <li data-toggle="tooltip" data-placement="right" title="Staff Profile">
                         <a href="@Url.Action("StaffProfile", "Staff")">
                             <span><i class='bx bx-user'></i></span>
                             <span class="title">Staff Profile</span>
@@ -89,25 +89,24 @@
         </div>
     </div>
     <!-- End sidebar -->
-
     <!-- Header -->
     <div class="header">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-sm-12">
-                        <div class="toggle float-left">
-                            <i class='bx bx-menu'></i>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="toggle float-left">
+                        <i class='bx bx-menu'></i>
+                    </div>
+                    <div class="float-left">
+                        <div class="dashboard_bar d-flex">
+                            Home
                         </div>
-                        <div class="float-left">
-                            <div class="dashboard_bar d-flex">
-                                Home
-                            </div>
-                        </div>
-                        <div class="float-right">
-                            <div class="btn-group me-1 mb-1">
-                                <div class="dropdown">
-                                    @if (TempData["ROLE_NAME"] != null)
-                                    {
+                    </div>
+                    <div class="float-right">
+                        <div class="btn-group me-1 mb-1">
+                            <div class="dropdown">
+                                @if (TempData["ROLE_NAME"] != null)
+                                {
                                     <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         @TempData["USER_NAME"]
                                     </button>
@@ -116,14 +115,14 @@
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="@Url.Action("Logout", "Auth")">Logout</a>
                                     </div>
-                                    }
-                                </div>  
+                                }
                             </div>
-                        </div>   
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
     <!-- End header -->
 
     <div class="main-content">
@@ -133,7 +132,7 @@
                 <div class="card-header card-setting" id="headingOne">
                     <h5 class="mb-0">
                         <button class="btn btn-link" data-toggle="collapse" data-target="#profile"
-                            aria-expanded="true" aria-controls="profile">
+                                aria-expanded="true" aria-controls="profile">
                             My Profile <i class='bx bx-chevron-right'></i>
                         </button>
                     </h5>
@@ -144,15 +143,15 @@
                             <div class="row">
                                 <div class="col-lg-4">
                                     <div class="profile-pic">
-                                        <img src="@Model.ImagePath" id="output" width="200"/>
+                                        <img src="@Model.ImagePath" id="output" width="200" />
                                         <div class="upload">
-                                            <button class="btn btn-warning" data-toggle="modal" data-target="#uploadImg">Details</button>                                                   
+                                            <button class="btn btn-warning" data-toggle="modal" data-target="#uploadImg">Details</button>
                                             <i class='bx bxs-camera-plus'></i>
                                         </div>
                                     </div>
                                     <div class="profile-name">@Model.FullName</div>
                                 </div>
-                                <div class="col-lg-8">                                
+                                <div class="col-lg-8">
                                     <div class="profile-content">
                                         <div class="contact-infor">
                                             <div class="info-title">
@@ -216,10 +215,10 @@
                                                     <div class="row pt-3 d-flex">
                                                         <button type="submit" class="offset-3 btn btn-success">Confirm Changes</button>
                                                     </div>
-                                                </form>     
-                                            </div>  
+                                                </form>
+                                            </div>
                                         </div>
-                                        
+
                                     </div>
                                 </div>
                             </div>
@@ -232,7 +231,7 @@
                 <div class="card-header card-setting" id="headingTwo">
                     <h5 class="mb-0">
                         <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo"
-                            aria-expanded="false" aria-controls="collapseTwo">
+                                aria-expanded="false" aria-controls="collapseTwo">
                             Change Password <i class='bx bx-chevron-right'></i>
                         </button>
                     </h5>
@@ -280,7 +279,7 @@
                 <form asp-action="UploadImage" asp-controller="Staff" enctype="multipart/form-data">
                     <div class="modal-body">
                         <label class="custom-control-label d-flex">
-                            <input asp-for="@formFile" type="file" class="custom-file" accept=".jpg, .jpeg, .png" name="photo" onchange="loadFile(event)">   
+                            <input asp-for="@formFile" type="file" class="custom-file" accept=".jpg, .jpeg, .png" name="photo" onchange="loadFile(event)">
                         </label>
                     </div>
                     <div class="modal-footer justify-content-center">

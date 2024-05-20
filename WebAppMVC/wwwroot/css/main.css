@@ -1061,6 +1061,7 @@ body .lb-cancel {
                 color: white;
                 padding-right: 5px;
                 transition: 0.5s;
+                padding-top: 5px;
             }
 
                 .header__top .header__right .notification-dropdown > button .fa-bell::before {

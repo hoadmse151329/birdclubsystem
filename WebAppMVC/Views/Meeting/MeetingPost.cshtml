@@ -5,123 +5,123 @@
 }
 
 <html lang="en">
-  <head>
+<head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-            <link rel="stylesheet" href="~/css/Meeting.css">
+    <link rel="stylesheet" href="~/css/Meeting.css">
     <!-- main CSS -->
-  </head>
- <body class="background">
+</head>
+<body class="background">
     <div class="member-meeting-post">
-      <div class="overlap-wrapper">
-        <div class="overlap">
-          <div class="headlines">
-            <div class="group">
-              <div class="overlap-2">
-                <div class="flexcontainer">
-                  <p class="text">
-                      @{
-						    if (ViewBag.error != null)
-						    {
-							    <span class="text-danger">@ViewBag.error</span>
-						    }
-					    }
-                    <span class="text-wrapper">Content<br /></span>
-                  </p>
-                  <p class="span-wrapper">
-                    <span class="span">
-                        @Model.Description
-                    </span>
-                  </p>
-                </div>
-                <div class="flexcontainer-2">
-                  <p class="text">
-                    <span class="text-wrapper">Notes<br /></span>
-                  </p>
-                  <p class="p">
-                    <span class="span">
-                        @Model.Note
-                    </span>
-                  </p>
-                </div>
-                <div class="tittle">
-                    <div class="div-wrapper"><div class="text-wrapper-3">Meeting</div></div>
-                  </div>
-                @{
-                    if (Model.SpotlightImage != null)
-                    {
-                        <img class="soi-noi-hoi-thi-chim" src="@Model.SpotlightImage.Image" alt="nt1">
-                    }
-                    else
-                    {
-                        <img class="soi-noi-hoi-thi-chim" src="~/images/meeting.png" alt="nt1">
-                    }
-                }
-              </div>
-            </div>
-            <div class="info">
-              <div class="overlap-3"> 
-                <div id="map-container"></div>
-                <div class="tittle">
-                  <div class="overlap-group-2"><p class="text-wrapper-4" id="dynamicText">@Model.MeetingName</p></div>
-                </div>
-                <div class="text-wrapper-5">From @Model.StartDate.ToString("MM/dd/yyyy") to @Model.EndDate.ToString("MM/dd/syyyy")</div>
-
-
-                <div class="group-2">
-                  <div class="text-wrapper-6">Participation Limit</div>
-                  <div class="text-wrapper-7">Registration Deadlines</div>
-                  <div class="text-wrapper-8">Location</div>
-                  <div class="text-wrapper-9">Contact</div>
-                  <div class="text-wrapper-10">Organizer</div>
-                </div>
-
-
-
-                <div class="group-3">
-                      <div class="text-wrapper-11">@Model.AreaNumber,@Model.Street,@Model.District,@Model.City</div>
-                      @*<div class="text-wrapper-11">@Model.Street</div>*@
-                      <p class="text-wrapper-12">@Model.NumberOfParticipantsLimit</p>
-                      <div class="text-wrapper-13">@Model.RegistrationDeadline</div>
-                      <div class="text-wrapper-14">ChaoMaoClub@gmail.com</div>
-                      <div class="text-wrapper-15">@Model.Host</div>
-                </div>
-                    @{
-                        if (Model.ParticipationNo != 0 && Model.ParticipationNo != null)
-                        {
-                            <div class="overlap-group-3 text-wrapper-16">
-                                <span class="text-success">@ViewBag.PartNumber</span>
+        <div class="overlap-wrapper">
+            <div class="overlap">
+                <div class="headlines">
+                    <div class="group">
+                        <div class="overlap-2">
+                            <div class="flexcontainer">
+                                <p class="text">
+                                    @{
+                                        if (ViewBag.error != null)
+                                        {
+                                            <span class="text-danger">@ViewBag.error</span>
+                                        }
+                                    }
+                                    <span class="text-wrapper">Content<br /></span>
+                                </p>
+                                <p class="span-wrapper">
+                                    <span class="span">
+                                        @Model.Description
+                                    </span>
+                                </p>
                             </div>
-                            if (Model.Status.Equals("OpenRegistration"))
-                            {
-                                <div class="register">
-                                    <form asp-action="MeetingDeRegister" asp-controller="Meeting" method="post" asp-route-meetingId="@Model.MeetingId">
-                                        <button class="overlap-group-3 text-wrapper-16" type="submit">Sign Out</button>
-                                    </form>
-                                </div>
+                            <div class="flexcontainer-2">
+                                <p class="text">
+                                    <span class="text-wrapper">Notes<br /></span>
+                                </p>
+                                <p class="p">
+                                    <span class="span">
+                                        @Model.Note
+                                    </span>
+                                </p>
+                            </div>
+                            <div class="tittle">
+                                <div class="div-wrapper"><div class="text-wrapper-3">Meeting</div></div>
+                            </div>
+                            @{
+                                if (Model.SpotlightImage != null)
+                                {
+                                    <img class="soi-noi-hoi-thi-chim" src="@Model.SpotlightImage.Image" alt="nt1">
+                                }
+                                else
+                                {
+                                    <img class="soi-noi-hoi-thi-chim" src="~/images/meeting.png" alt="nt1">
+                                }
                             }
-                        }
-                        else
-                        {
-                            <div class="register">
-                                <form asp-action="MeetingRegister" asp-controller="Meeting" method="post" asp-route-meetingId="@Model.MeetingId">
-                                    <button class="overlap-group-3 text-wrapper-16" type="submit">Register</button>
-                                </form>
+                        </div>
+                    </div>
+                    <div class="info">
+                        <div class="overlap-3">
+                            <div id="map-container"></div>
+                            <div class="tittle">
+                                <div class="overlap-group-2"><p class="text-wrapper-4" id="dynamicText">@Model.MeetingName</p></div>
                             </div>
-                        }
-                    }
-              </div>
+                            <div class="text-wrapper-5">From @Model.StartDate.ToString("MM/dd/yyyy") to @Model.EndDate.ToString("MM/dd/syyyy")</div>
+
+
+                            <div class="group-2">
+                                <div class="text-wrapper-6">Participation Limit</div>
+                                <div class="text-wrapper-7">Registration Deadlines</div>
+                                <div class="text-wrapper-8">Location</div>
+                                <div class="text-wrapper-9">Contact</div>
+                                <div class="text-wrapper-10">Organizer</div>
+                            </div>
+
+
+
+                            <div class="group-3">
+                                <div class="text-wrapper-11">@Model.AreaNumber,@Model.Street,@Model.District,@Model.City</div>
+                                @*<div class="text-wrapper-11">@Model.Street</div>*@
+                                <p class="text-wrapper-12">@Model.NumberOfParticipantsLimit</p>
+                                <div class="text-wrapper-13">@Model.RegistrationDeadline</div>
+                                <div class="text-wrapper-14">ChaoMaoClub@gmail.com</div>
+                                <div class="text-wrapper-15">@Model.Host</div>
+                            </div>
+                            @{
+                                if (Model.ParticipationNo != 0 && Model.ParticipationNo != null)
+                                {
+                                    <div class="overlap-group-3 text-wrapper-16">
+                                        <span class="text-success">@ViewBag.PartNumber</span>
+                                    </div>
+                                    if (Model.Status.Equals("OpenRegistration"))
+                                    {
+                                        <div class="register">
+                                            <form asp-action="MeetingDeRegister" asp-controller="Meeting" method="post" asp-route-meetingId="@Model.MeetingId">
+                                                <button class="overlap-group-3 text-wrapper-16" type="submit">Sign Out</button>
+                                            </form>
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <div class="register">
+                                        <form asp-action="MeetingRegister" asp-controller="Meeting" method="post" asp-route-meetingId="@Model.MeetingId">
+                                                <button class="overlap-group-3 text-wrapper-16 button-rgb" data-toggle="modal" data-target="#registerContest" type="submit">Register</button>
+                                        </form>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
-        referrerpolicy="no-referrer"></script>
-        <!-- Jquery Waypoint -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>
-        <!-- BS4 JS -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.5/umd/popper.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
-  </body>
+            referrerpolicy="no-referrer"></script>
+    <!-- Jquery Waypoint -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>
+    <!-- BS4 JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.5/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
 </html>
