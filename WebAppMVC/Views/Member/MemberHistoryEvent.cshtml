@@ -240,15 +240,15 @@
                                                                             <fieldset class='set'>*@
                                                                             <div class="form-group col-md-5 stars" id="starRating">
                                                                                 @*<label for='chx' class='half'></label>*@
-                                                                                <input class="star star-5" id="star-5" type="radio" name="rating" value="5" />
+                                                                                <input class="star star-5" id="star-5" type="radio" name="rating" value="5" data-default="5"/>
                                                                                 <label class="star star-5" for="star-5"></label>
-                                                                                <input class="star star-4" id="star-4" type="radio" name="rating" value="4" />
+                                                                                <input class="star star-4" id="star-4" type="radio" name="rating" value="4" data-default="4"/>
                                                                                 <label class="star star-4" for="star-4"></label>
-                                                                                <input class="star star-3" id="star-3" type="radio" name="rating" value="3" />
+                                                                                <input class="star star-3" id="star-3" type="radio" name="rating" value="3" data-default="3"/>
                                                                                 <label class="star star-3" for="star-3"></label>
-                                                                                <input class="star star-2" id="star-2" type="radio" name="rating" value="2" />
+                                                                                <input class="star star-2" id="star-2" type="radio" name="rating" value="2" data-default="2"/>
                                                                                 <label class="star star-2" for="star-2"></label>
-                                                                                <input class="star star-1" id="star-1" type="radio" name="rating" value="1" />
+                                                                                <input class="star star-1" id="star-1" type="radio" name="rating" value="1" data-default="1"/>
                                                                                 <label class="star star-1" for="star-1"></label>
                                                                             </div>
                                                                             @*</fieldset>*@
@@ -316,9 +316,8 @@
         });
     </script>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function () {
     var stars = document.querySelectorAll('.stars label.star');
-    var inputs = document.querySelectorAll('.stars input.star');
 
     stars.forEach(function(star) {
         star.addEventListener('mousemove', function(e) {
@@ -342,33 +341,36 @@
         star.addEventListener('click', function(e) {
             var rect = star.getBoundingClientRect();
             var percentage = (e.clientX - rect.left) / rect.width;
-            var input = document.getElementById(star.htmlFor); // Get the corresponding input element
 
-            // Remove 'data-clicked' attribute from all stars
+            // Reset all stars to their default values
             stars.forEach(function(s) {
+                var input = document.querySelector(`input[id="${s.htmlFor}"]`);
+                if (input) {
+                    var defaultValue = parseFloat(input.getAttribute('data-default'));
+                    input.value = defaultValue;
+                }
                 s.removeAttribute('data-clicked');
                 s.classList.remove('half');
             });
 
+            // Set the value of the clicked star
+            var input = document.querySelector(`input[id="${star.htmlFor}"]`);
+            if (input) {
+                var defaultValue = parseFloat(input.getAttribute('data-default'));
+                if (percentage < 0.5) {
+                    input.value = defaultValue - 0.5;
+                } else {
+                    input.value = defaultValue;
+                }
+            }
+
             // Set the clicked state
             if (percentage < 0.5) {
-                if (input) {
-                    var prevInput = input.previousElementSibling;
-                    while (prevInput && prevInput.tagName !== 'INPUT') {
-                        prevInput = prevInput.previousElementSibling;
-                    }
-                    if (prevInput) {
-                        prevInput.checked = true;
-                        star.setAttribute('data-clicked', 'half');
-                        star.classList.add('half');
-                    }
-                }
+                star.setAttribute('data-clicked', 'half');
+                star.classList.add('half');
             } else {
-                if (input) {
-                    input.checked = true;
-                    star.setAttribute('data-clicked', 'full');
-                    star.classList.remove('half');
-                }
+                star.setAttribute('data-clicked', 'full');
+                star.classList.remove('half');
             }
         });
     });
