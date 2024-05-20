@@ -1895,12 +1895,14 @@
                                     </div>
                                 </div>
                                 <input asp-for="@updateTrip.TripName" type="text" value="@updateTrip.TripName" required hidden>
-                                <input asp-for="@updateTrip.RegistrationDeadline" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
-                                       value="@updateTrip.RegistrationDeadline.ToString("yyyy-MM-ddTHH:mm")" required hidden>
-                                <input asp-for="@updateTrip.StartDate" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
-                                       value="@updateTrip.StartDate.ToString("yyyy-MM-ddTHH:mm")" required hidden>
-                                <input asp-for="@updateTrip.EndDate" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
-                                       value="@updateTrip.EndDate.ToString("yyyy-MM-ddTHH:mm")" required hidden>
+                                <input asp-for="@updateTrip.OpenRegistration" type="datetime-local" asp-format="{0:yyyy-MM-ddTHH:mm}"
+                                       value="@updateTrip.OpenRegistration.ToString("yyyy-MM-ddTHH:mm")" required hidden />
+                                <input asp-for="@updateTrip.RegistrationDeadline" type="datetime-local" asp-format="{0:yyyy-MM-ddTHH:mm}"
+                                       value="@updateTrip.RegistrationDeadline.ToString("yyyy-MM-ddTHH:mm")" required hidden />
+                                <input asp-for="@updateTrip.StartDate" type="datetime-local" asp-format="{0:yyyy-MM-ddTHH:mm}"
+                                       value="@updateTrip.StartDate.ToString("yyyy-MM-ddTHH:mm")" required hidden />
+                                <input asp-for="@updateTrip.EndDate" type="datetime-local" asp-format="{0:yyyy-MM-ddTHH:mm}"
+                                       value="@updateTrip.EndDate.ToString("yyyy-MM-ddTHH:mm")" required hidden />
                                 <input asp-for="@updateTrip.NumberOfParticipantsLimit" type="number" value="@updateTrip.NumberOfParticipantsLimit" required hidden>
                                 <input asp-for="@updateTrip.Host" type="text" value="@updateTrip.Host" required hidden>
                                 <input asp-for="@updateTrip.InCharge" type="text" value="@updateTrip.InCharge" required hidden>

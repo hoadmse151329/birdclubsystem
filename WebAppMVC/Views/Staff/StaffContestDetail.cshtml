@@ -104,10 +104,26 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-5 text-md-right">
+                                            <label for="customer-name">Open Registration Date:</label>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <span>@detailsContest.OpenRegistration.ToString("dd-MM-yyyy HH:mm")</span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-5 text-md-right">
                                             <label for="customer-name">Registration Deadlines:</label>
                                         </div>
                                         <div class="col-md-7">
-                                            <span>@detailsContest.RegistrationDeadline.ToString("MM-dd-yyyy")</span>
+                                            <span>@detailsContest.RegistrationDeadline.ToString("dd-MM-yyyy HH:mm")</span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-5 text-md-right">
+                                            <label for="customer-name">Registration Deadlines:</label>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <span>@detailsContest.RegistrationDeadline.ToString("dd-MM-yyyy HH:mm")</span>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -115,7 +131,7 @@
                                             <label for="customer-name">Start Date:</label>
                                         </div>
                                         <div class="col-md-7">
-                                            <span>@detailsContest.StartDate.ToString("MM-dd-yyyy")</span>
+                                            <span>@detailsContest.StartDate.ToString("dd-MM-yyyy HH:mm")</span>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -494,12 +510,14 @@
                                     </div>
                                 </div>
                                 <input asp-for="@updateContest.ContestName" type="text" value="@updateContest.ContestName" required hidden>
-                                <input asp-for="@updateContest.RegistrationDeadline" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
-                               value="@updateContest.RegistrationDeadline.ToString("yyyy-MM-ddTHH:mm")" required hidden>
-                                <input asp-for="@updateContest.StartDate" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
-                               value="@updateContest.StartDate.ToString("yyyy-MM-ddTHH:mm")" required hidden>
-                                <input asp-for="@updateContest.EndDate" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
-                               value="@updateContest.EndDate.ToString("yyyy-MM-ddTHH:mm")" required hidden>
+                                <input asp-for="@updateContest.OpenRegistration" type="datetime-local" asp-format="{0:yyyy-MM-ddTHH:mm}"
+                                       value="@updateContest.OpenRegistration.ToString("yyyy-MM-ddTHH:mm")" required hidden />
+                                <input asp-for="@updateContest.RegistrationDeadline" type="datetime-local" asp-format="{0:yyyy-MM-ddTHH:mm}"
+                                       value="@updateContest.RegistrationDeadline.ToString("yyyy-MM-ddTHH:mm")" required hidden />
+                                <input asp-for="@updateContest.StartDate" type="datetime-local" asp-format="{0:yyyy-MM-ddTHH:mm}"
+                                       value="@updateContest.StartDate.ToString("yyyy-MM-ddTHH:mm")" required hidden />
+                                <input asp-for="@updateContest.EndDate" type="datetime-local" asp-format="{0:yyyy-MM-ddTHH:mm}"
+                                       value="@updateContest.EndDate.ToString("yyyy-MM-ddTHH:mm")" required hidden />
                                 <input asp-for="@updateContest.NumberOfParticipantsLimit" type="number" value="@updateContest.NumberOfParticipantsLimit" required hidden>
                                 <input asp-for="@updateContest.Host" type="text" value="@updateContest.Host" required hidden>
                                 <input asp-for="@updateContest.ReqMinELO" type="number" value="@updateContest.ReqMinELO" required hidden />

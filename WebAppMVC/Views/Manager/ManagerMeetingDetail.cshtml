@@ -678,14 +678,14 @@
                                     </div>
                                 </div>
                                 <input asp-for="@updateMeeting.MeetingName" type="text" value="@updateMeeting.MeetingName" required hidden>
-                                <input asp-for="@updateMeeting.OpenRegistration" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
-                                       value="@updateMeeting.OpenRegistration.ToString("yyyy-MM-ddTHH:mm")" required hidden>
-                                <input asp-for="@updateMeeting.RegistrationDeadline" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
-                                       value="@updateMeeting.RegistrationDeadline.ToString("yyyy-MM-ddTHH:mm")" required hidden>
-                                <input asp-for="@updateMeeting.StartDate" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
-                                       value="@updateMeeting.StartDate.ToString("yyyy-MM-ddTHH:mm")" required hidden>
-                                <input asp-for="@updateMeeting.EndDate" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
-                                       value="@updateMeeting.EndDate.ToString("yyyy-MM-ddTHH:mm")" required hidden>
+                                <input asp-for="@updateMeeting.OpenRegistration" type="datetime-local" asp-format="{0:yyyy-MM-ddTHH:mm}"
+                                       value="@updateMeeting.OpenRegistration.ToString("yyyy-MM-ddTHH:mm")" required hidden />
+                                <input asp-for="@updateMeeting.RegistrationDeadline" type="datetime-local" asp-format="{0:yyyy-MM-ddTHH:mm}"
+                                       value="@updateMeeting.RegistrationDeadline.ToString("yyyy-MM-ddTHH:mm")" required hidden />
+                                <input asp-for="@updateMeeting.StartDate" type="datetime-local" asp-format="{0:yyyy-MM-ddTHH:mm}"
+                                       value="@updateMeeting.StartDate.ToString("yyyy-MM-ddTHH:mm")" required hidden />
+                                <input asp-for="@updateMeeting.EndDate" type="datetime-local" asp-format="{0:yyyy-MM-ddTHH:mm}"
+                                       value="@updateMeeting.EndDate.ToString("yyyy-MM-ddTHH:mm")" required hidden />
                                 <input asp-for="@updateMeeting.NumberOfParticipantsLimit" type="number" value="@updateMeeting.NumberOfParticipantsLimit" required hidden>
                                 <input asp-for="@updateMeeting.Host" type="text" value="@updateMeeting.Host" required hidden>
                                 <input asp-for="@updateMeeting.Incharge" type="text" value="@updateMeeting.Incharge" required hidden>
