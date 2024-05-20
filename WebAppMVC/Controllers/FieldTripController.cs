@@ -150,7 +150,7 @@ namespace WebAppMVC.Controllers
             if ((road == null || road.Count == 0) && (district == null || district.Count == 0) && (city == null || city.Count == 0)) FieldTripAPI_URL += "/All";
             else FieldTripAPI_URL += "/Search?";
 
-            FieldTripIndexVM fieldtripFilteredM = new();
+            FieldTripIndexVM fieldtripFilteredVM = new();
 
             if (road != null && road.Any())
             {
@@ -159,7 +159,7 @@ namespace WebAppMVC.Controllers
                     if (selectedRoad != null)
                     {
                         FieldTripAPI_URL += $"road={Uri.EscapeDataString(selectedRoad.Trim())}&";
-                        fieldtripFilteredM.SelectedRoads.Add(selectedRoad);
+                        fieldtripFilteredVM.SelectedRoads.Add(selectedRoad);
                     }
                 }
             }
@@ -170,7 +170,7 @@ namespace WebAppMVC.Controllers
                     if (selectedDistrict != null)
                     {
                         FieldTripAPI_URL += $"district={Uri.EscapeDataString(selectedDistrict.Trim())}&";
-                        fieldtripFilteredM.SelectedDistricts.Add(selectedDistrict);
+                        fieldtripFilteredVM.SelectedDistricts.Add(selectedDistrict);
                     }
                 }
             }
@@ -181,7 +181,7 @@ namespace WebAppMVC.Controllers
                     if (selectedCity != null)
                     {
                         FieldTripAPI_URL += $"city={Uri.EscapeDataString(selectedCity.Trim())}&";
-                        fieldtripFilteredM.SelectedCities.Add(selectedCity);
+                        fieldtripFilteredVM.SelectedCities.Add(selectedCity);
                     }
                 }
             }
@@ -217,13 +217,13 @@ namespace WebAppMVC.Controllers
                     + listTripResponse.ErrorMessage;
                 Redirect("~/Home/Index");
             }
-            fieldtripFilteredM.FieldTrips = listTripResponse.Data;
+            fieldtripFilteredVM.FieldTrips = listTripResponse.Data;
 
-            fieldtripFilteredM.Roads = listTripResponse.Data.Select(m => m.Street).Distinct().ToList();
-            fieldtripFilteredM.Districts = listTripResponse.Data.Select(m => m.District).Distinct().ToList();
-            fieldtripFilteredM.Cities = listTripResponse.Data.Select(m => m.City).Distinct().ToList();
+            fieldtripFilteredVM.Roads = listTripResponse.Data.Select(m => m.Street).Distinct().ToList();
+            fieldtripFilteredVM.Districts = listTripResponse.Data.Select(m => m.District).Distinct().ToList();
+            fieldtripFilteredVM.Cities = listTripResponse.Data.Select(m => m.City).Distinct().ToList();
 
-            return PartialView("_FieldTripListPartial", fieldtripFilteredM);
+            return PartialView("_FieldTripListPartial", fieldtripFilteredVM);
         }
 
         [HttpGet("Post/{id:int}")]

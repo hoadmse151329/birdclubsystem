@@ -23,6 +23,7 @@ using WebAppMVC.Models.Transaction;
 using WebAppMVC.Models.VnPay;
 using WebAppMVC.Services.Interfaces;
 using BAL.ViewModels.Event;
+using WebAppMVC.Models.ViewModels;
 
 namespace WebAppMVC.Controllers
 {
@@ -63,10 +64,7 @@ namespace WebAppMVC.Controllers
         public async Task<IActionResult> Index()
 		{
             ContestAPI_URL += "/All";
-            string LocationAPI_URL_All_Road = "/api/Location/AllAddressRoads";
-            string LocationAPI_URL_All_District = "/api/Location/AllAddressDistricts";
-            string LocationAPI_URL_All_City = "/api/Location/AllAddressCities";
-            dynamic testmodel = new ExpandoObject();
+            ContestIndexVM contestListVM = new();
 
             methcall.SetUserDefaultData(this);
             string? role = HttpContext.Session.GetString(Constants.Constants.ROLE_NAME);
@@ -111,24 +109,92 @@ namespace WebAppMVC.Controllers
             }
             #endregion
 
-            var listLocationRoadResponse = await methcall.CallMethodReturnObject<GetLocationAddressResponseByList>(
+            var listContestResponse = await methcall.CallMethodReturnObject<GetContestResponseByList>(
                 _httpClient: _httpClient,
                 options: jsonOptions,
-                methodName: Constants.Constants.GET_METHOD,
-                url: LocationAPI_URL_All_Road,
+                methodName: Constants.Constants.POST_METHOD,
+                url: ContestAPI_URL,
+                inputType: role,
                 _logger: _logger);
-            var listLocationDistrictResponse = await methcall.CallMethodReturnObject<GetLocationAddressResponseByList>(
-                _httpClient: _httpClient,
-                options: jsonOptions,
-                methodName: Constants.Constants.GET_METHOD,
-                url: LocationAPI_URL_All_District,
-                _logger: _logger);
-            var listLocationCityResponse = await methcall.CallMethodReturnObject<GetLocationAddressResponseByList>(
-                _httpClient: _httpClient,
-                options: jsonOptions,
-                methodName: Constants.Constants.GET_METHOD,
-                url: LocationAPI_URL_All_City,
-                _logger: _logger);
+
+            if (listContestResponse == null)
+            {
+                _logger.LogInformation(
+                    "Error while processing your request! (Getting List Contest!). List was Empty!: " + listContestResponse + " , Error Message: " + listContestResponse.ErrorMessage);
+                ViewBag.error =
+                    "Error while processing your request! (Getting List Contest!).\n List was Empty!";
+                Redirect("~/Home/Index");
+            }
+            else
+            if (!listContestResponse.Status)
+            {
+                ViewBag.error =
+                    "Error while processing your request! (Getting List Meeting!).\n"
+                    + listContestResponse.ErrorMessage;
+                Redirect("~/Home/Index");
+            }
+
+            contestListVM.Contests = listContestResponse.Data;
+            contestListVM.Roads = listContestResponse.Data.Select(c => c.Street).Distinct().ToList();
+            contestListVM.Districts = listContestResponse.Data.Select(c => c.District).Distinct().ToList();
+            contestListVM.Cities = listContestResponse.Data.Select(c => c.City).Distinct().ToList();
+
+            return View(contestListVM);
+		}
+
+        [HttpGet("Index/Filter")]
+        public async Task<IActionResult> IndexFilter(
+            [FromQuery] List<string>? road,
+            [FromQuery] List<string>? district,
+            [FromQuery] List<string>? city
+            )
+        {
+            if ((road == null || road.Count == 0) && (district == null || district.Count == 0) && (city == null || city.Count == 0)) ContestAPI_URL += "/All";
+            else ContestAPI_URL += "/Search?";
+
+            ContestIndexVM contestFilteredVM = new();
+
+            if (road != null && road.Any())
+            {
+                foreach (var selectedRoad in road)
+                {
+                    if (selectedRoad != null)
+                    {
+                        ContestAPI_URL += $"road={Uri.EscapeDataString(selectedRoad.Trim())}&";
+                        contestFilteredVM.SelectedRoads.Add(selectedRoad);
+                    }
+                }
+            }
+            if (district != null && district.Any())
+            {
+                foreach (var selectedDistrict in district)
+                {
+                    if (selectedDistrict != null)
+                    {
+                        ContestAPI_URL += $"district={Uri.EscapeDataString(selectedDistrict.Trim())}&";
+                        contestFilteredVM.SelectedDistricts.Add(selectedDistrict);
+                    }
+                }
+            }
+            if (city != null && city.Any())
+            {
+                foreach (var selectedCity in city)
+                {
+                    if (selectedCity != null)
+                    {
+                        ContestAPI_URL += $"city={Uri.EscapeDataString(selectedCity.Trim())}&";
+                        contestFilteredVM.SelectedCities.Add(selectedCity);
+                    }
+                }
+            }
+            if (ContestAPI_URL.Contains("Search"))
+            {
+                ContestAPI_URL = ContestAPI_URL.Substring(0, ContestAPI_URL.Length - 1); // Remove the trailing '&'
+            }
+
+            methcall.SetUserDefaultData(this);
+
+            string? role = HttpContext.Session.GetString(Constants.Constants.ROLE_NAME);
 
             var listContestResponse = await methcall.CallMethodReturnObject<GetContestResponseByList>(
                 _httpClient: _httpClient,
@@ -138,7 +204,7 @@ namespace WebAppMVC.Controllers
                 inputType: role,
                 _logger: _logger);
 
-            if (listContestResponse == null || listLocationRoadResponse == null || listLocationDistrictResponse == null || listLocationCityResponse == null)
+            if (listContestResponse == null)
             {
                 _logger.LogInformation(
                     "Error while processing your request! (Getting List Contest!). List was Empty!: " + listContestResponse + " , Error Message: " + listContestResponse.ErrorMessage);
@@ -146,39 +212,21 @@ namespace WebAppMVC.Controllers
                     "Error while processing your request! (Getting List Contest!).\n List was Empty!";
                 Redirect("~/Home/Index");
             }
-            else
-            if (!listContestResponse.Status || !listLocationRoadResponse.Status || !listLocationDistrictResponse.Status || !listLocationCityResponse.Status)
+            else if (!listContestResponse.Status)
             {
                 ViewBag.error =
-                    "Error while processing your request! (Getting List Meeting!).\n"
-                    + listContestResponse.ErrorMessage + "\n" + listLocationRoadResponse.ErrorMessage;
+                    "Error while processing your request! (Getting List Contest!).\n"
+                    + listContestResponse.ErrorMessage;
                 Redirect("~/Home/Index");
             }
+            contestFilteredVM.Contests = listContestResponse.Data;
 
-            List<SelectListItem> roads = new();
-            foreach (var road in listLocationRoadResponse.Data)
-            {
-                roads.Add(new SelectListItem(text: road, value: road));
-            }
-            testmodel.Roads = roads;
+            contestFilteredVM.Roads = listContestResponse.Data.Select(m => m.Street).Distinct().ToList();
+            contestFilteredVM.Districts = listContestResponse.Data.Select(m => m.District).Distinct().ToList();
+            contestFilteredVM.Cities = listContestResponse.Data.Select(m => m.City).Distinct().ToList();
 
-            List<SelectListItem> districts = new();
-            foreach (var district in listLocationDistrictResponse.Data)
-            {
-                districts.Add(new SelectListItem(text: district, value: district));
-            }
-            testmodel.Districts = districts;
-
-            List<SelectListItem> cities = new();
-            foreach (var city in listLocationCityResponse.Data)
-            {
-                cities.Add(new SelectListItem(text: city, value: city));
-            }
-            testmodel.Cities = cities;
-
-            testmodel.Contests = listContestResponse.Data;
-            return View(testmodel);
-		}
+            return PartialView("_ContestListPartial", contestFilteredVM);
+        }
 
         [HttpGet("Post/{id:int}")]
         public async Task<IActionResult> ContestPost(
