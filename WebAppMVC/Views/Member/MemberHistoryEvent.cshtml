@@ -14,6 +14,8 @@
     <link rel='stylesheet' href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css'>
     <!-- Other-->
     <link rel="stylesheet" href="https://unpkg.com/filepond-plugin-file-poster/dist/filepond-plugin-file-poster.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
+    <link rel='stylesheet prefetch' href='https://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css'>
 </head>
 <body>
 
@@ -106,11 +108,10 @@
                                                                 <td>@events[i].Status</td>
                                                                 <td>@events[i].CheckInStatus</td>
                                                                 <td>
-                                                                    <div class="d-flex justify-content-around">
-
-                                                                        <div class="rating-club">
-                                                                            <a class="button--primary btn-info bg-info shadow btn-xs text-white"
-                                                                           href="@Url.Action(events[i].EventType + "Post", events[i].EventType,new {id = events[i].EventId})">Details</a>
+                                                                    <div class="d-flex">
+                                                                        <div class="add-club">
+                                                                            <button class="button--primary bg-primary text-white clickable-row"
+                                                                           href="@Url.Action(events[i].EventType + "Post", events[i].EventType,new {id = events[i].EventId})">Details</button>
                                                                         </div>
                                                                         @switch (events[i].EventType)
                                                                         {
@@ -119,42 +120,24 @@
                                                                                     switch (events[i].Status)
                                                                                     {
                                                                                         case "Preparing":
-                                                                                            {
-                                                                                                <form asp-action="@(events[i].EventType)Deregister" asp-controller="@events[i].EventType" method="post" asp-route-meetingId="@events[i].EventId">
-                                                                                                    <div class="report-club">
-                                                                                                        <button class="button--primary btn-danger bg-danger shadow btn-xs text-white" type="submit">Sign Out</button>
-                                                                                                    </div>
-                                                                                                </form>
-                                                                                                break;
-                                                                                            }
                                                                                         case "Open":
                                                                                         case "OnGoing":
                                                                                             {
                                                                                                 <form asp-action="@(events[i].EventType)Deregister" asp-controller="@events[i].EventType" method="post" asp-route-meetingId="@events[i].EventId">
-                                                                                                    <div class="report-club">
-                                                                                                        <button class="button--primary btn-danger bg-danger shadow btn-xs text-white" type="submit">Sign Out</button>
+                                                                                                    <div class="add-club">
+                                                                                                        <button class="button--primary btn-danger shadow btn-xs sharp text-white bg-danger" type="submit">Sign Out</button>
                                                                                                     </div>
                                                                                                 </form>
                                                                                                 break;
                                                                                             }
                                                                                         case "Ended":
-                                                                                            {
-                                                                                                <div class="report-club">
-                                                                                                    <button data-toggle="modal"
-                                                                                data-target="#feedback"
-                                                                                class="button--primary btn-danger shadow btn-xs sharp text-white bg-danger">
-                                                                                                        <span>Feedback</span>
-                                                                                                    </button>
-                                                                                                </div>
-                                                                                                break;
-                                                                                            }
                                                                                         case "Cancelled":
                                                                                             {
-                                                                                                <div class="report-club">
+                                                                                                <div class="add-club">
                                                                                                     <button data-toggle="modal"
-                                                                                data-target="#report"
-                                                                                class="button--primary btn-danger shadow btn-xs sharp text-white bg-danger">
-                                                                                                        <span>Report</span>
+                                                                                data-target="#feedback"
+                                                                                class="button--primary btn-info m-b-xs shadow btn-xs sharp me-1 text-white bg-success">
+                                                                                                        <span>Feedback</span>
                                                                                                     </button>
                                                                                                 </div>
                                                                                                 break;
@@ -167,41 +150,23 @@
                                                                                     switch (events[i].Status)
                                                                                     {
                                                                                         case "Preparing":
-                                                                                            {
-                                                                                                <form asp-action="@(events[i].EventType)Deregister" asp-controller="@events[i].EventType" method="post" asp-route-tripId="@events[i].EventId">
-                                                                                                    <div class="report-club">
-                                                                                                        <button class="button--primary btn-danger bg-danger shadow btn-xs text-white" type="submit">Sign Out</button>
-                                                                                                    </div>
-                                                                                                </form>
-                                                                                                break;
-                                                                                            }
                                                                                         case "Open":
                                                                                         case "OnGoing":
                                                                                             {
                                                                                                 <form asp-action="@(events[i].EventType)Deregister" asp-controller="@events[i].EventType" method="post" asp-route-tripId="@events[i].EventId">
-                                                                                                    <div class="report-club">
-                                                                                                        <button class="button--primary btn-danger bg-danger shadow btn-xs text-white" type="submit">Sign Out</button>
+                                                                                                    <div class="add-club">
+                                                                                                        <button class="button--primary btn-danger shadow btn-xs sharp text-white bg-danger" type="submit">Sign Out</button>
                                                                                                     </div>
                                                                                                 </form>
                                                                                                 break;
                                                                                             }
                                                                                         case "Ended":
-                                                                                            {
-                                                                                                <div class="report-club">
-                                                                                                    <button data-toggle="modal"
-                                                                                data-target="#feedback"
-                                                                                class="button--primary btn-danger shadow btn-xs sharp text-white bg-danger">
-                                                                                                        <span>Feedback</span>
-                                                                                                    </button>
-                                                                                                </div>
-                                                                                                break;
-                                                                                            }
                                                                                         case "Cancelled":
                                                                                             {
-                                                                                                <div class="report-club">
+                                                                                                <div class="add-club">
                                                                                                     <button data-toggle="modal"
                                                                                 data-target="#feedback"
-                                                                                class="button--primary btn-danger shadow btn-xs sharp text-white bg-danger">
+                                                                                class="button--primary btn-info m-b-xs shadow btn-xs sharp me-1 text-white bg-success">
                                                                                                         <span>Feedback</span>
                                                                                                     </button>
                                                                                                 </div>
@@ -215,42 +180,24 @@
                                                                                     switch (events[i].Status)
                                                                                     {
                                                                                         case "Preparing":
-                                                                                            {
-                                                                                                <form asp-action="@(events[i].EventType)Deregister" asp-controller="@events[i].EventType" method="post" asp-route-contestId="@events[i].EventId">
-                                                                                                    <div class="report-club">
-                                                                                                        <button class="button--primary btn-danger bg-danger shadow btn-xs text-white" type="submit">Sign Out</button>
-                                                                                                    </div>
-                                                                                                </form>
-                                                                                                break;
-                                                                                            }
                                                                                         case "Open":
                                                                                         case "OnGoing":
                                                                                             {
                                                                                                 <form asp-action="@(events[i].EventType)Deregister" asp-controller="@events[i].EventType" method="post" asp-route-contestId="@events[i].EventId">
-                                                                                                    <div class="report-club">
-                                                                                                        <button class="button--primary btn-danger bg-danger shadow btn-xs text-white" type="submit">Sign Out</button>
+                                                                                                    <div class="add-club">
+                                                                                                        <button class="button--primary btn-danger shadow btn-xs sharp text-white bg-danger" type="submit">Sign Out</button>
                                                                                                     </div>
                                                                                                 </form>
                                                                                                 break;
                                                                                             }
                                                                                         case "Ended":
-                                                                                            {
-                                                                                                <div class="report-club">
-                                                                                                    <button data-toggle="modal"
-                                                                                data-target="#feedback"
-                                                                                class="button--primary btn-danger shadow btn-xs sharp text-white bg-danger">
-                                                                                                        <span>Feedback</span>
-                                                                                                    </button>
-                                                                                                </div>
-                                                                                                break;
-                                                                                            }
                                                                                         case "Cancelled":
                                                                                             {
-                                                                                                <div class="report-club">
+                                                                                                <div class="add-club">
                                                                                                     <button data-toggle="modal"
                                                                                 data-target="#feedback"
-                                                                                class="button--primary btn-danger shadow btn-xs sharp text-white bg-danger">
-                                                                                                        <span>Report</span>
+                                                                                class="button--primary btn-info m-b-xs shadow btn-xs sharp me-1 text-white bg-success">
+                                                                                                        <span>Feedback</span>
                                                                                                     </button>
                                                                                                 </div>
                                                                                                 break;
@@ -288,45 +235,23 @@
                                                                         <input name="motelID"
                                                                                value="785146827"
                                                                                style="display: none">
-                                                                        <label for="rating"
-                                                                               class="col-md-3 col-form-label text-md-right">Rating</label>
-                                                                        <div class="form-group col-md-5 stars">
-                                                                            <input class="star star-5"
-                                                                                   id="star-5"
-                                                                                   type="radio"
-                                                                                   name="rating"
-                                                                                   value="5" />
-                                                                            <label class="star star-5"
-                                                                                   for="star-5"></label>
-                                                                            <input class="star star-4"
-                                                                                   id="star-4"
-                                                                                   type="radio"
-                                                                                   name="rating"
-                                                                                   value="4" />
-                                                                            <label class="star star-4"
-                                                                                   for="star-4"></label>
-                                                                            <input class="star star-3"
-                                                                                   id="star-3"
-                                                                                   type="radio"
-                                                                                   name="rating"
-                                                                                   value="3" />
-                                                                            <label class="star star-3"
-                                                                                   for="star-3"></label>
-                                                                            <input class="star star-2"
-                                                                                   id="star-2"
-                                                                                   type="radio"
-                                                                                   name="rating"
-                                                                                   value="2" />
-                                                                            <label class="star star-2"
-                                                                                   for="star-2"></label>
-                                                                            <input class="star star-1"
-                                                                                   id="star-1"
-                                                                                   type="radio"
-                                                                                   name="rating"
-                                                                                   value="1" />
-                                                                            <label class="star star-1"
-                                                                                   for="star-1"></label>
-                                                                        </div>
+                                                                            <label for="rating" class="col-md-3 col-form-label text-md-right">Rating</label>
+                                                                            @*<input id='chx' type='checkbox'>
+                                                                            <fieldset class='set'>*@
+                                                                            <div class="form-group col-md-5 stars" id="starRating">
+                                                                                @*<label for='chx' class='half'></label>*@
+                                                                                <input class="star star-5" id="star-5" type="radio" name="rating" value="5" />
+                                                                                <label class="star star-5" for="star-5"></label>
+                                                                                <input class="star star-4" id="star-4" type="radio" name="rating" value="4" />
+                                                                                <label class="star star-4" for="star-4"></label>
+                                                                                <input class="star star-3" id="star-3" type="radio" name="rating" value="3" />
+                                                                                <label class="star star-3" for="star-3"></label>
+                                                                                <input class="star star-2" id="star-2" type="radio" name="rating" value="2" />
+                                                                                <label class="star star-2" for="star-2"></label>
+                                                                                <input class="star star-1" id="star-1" type="radio" name="rating" value="1" />
+                                                                                <label class="star star-1" for="star-1"></label>
+                                                                            </div>
+                                                                            @*</fieldset>*@
                                                                     </div>
                                                                     <div class="row">
                                                                         <div class="col-md-2 text-md-right pb-1"><span>Description: </span></div>
@@ -372,7 +297,7 @@
 
         var editor = CKEDITOR.replace('roomTypeDesct');
         CKFinder.setupCKEditor(editor, 'ckfinder/');
-        data["roomTypeDesct"] = editor.getData();
+        //data["roomTypeDesct"] = editor.getData();
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
             referrerpolicy="no-referrer"></script>
@@ -391,11 +316,63 @@
         });
     </script>
     <script>
-        $(document).ready(function() {
-            $(".clickable-row").click(function() {
-                window.location = $(this).data("href");
-            });
+        document.addEventListener('DOMContentLoaded', function () {
+    var stars = document.querySelectorAll('.stars label.star');
+    var inputs = document.querySelectorAll('.stars input.star');
+
+    stars.forEach(function(star) {
+        star.addEventListener('mousemove', function(e) {
+            if (!this.hasAttribute('data-clicked')) {
+                var rect = star.getBoundingClientRect();
+                var percentage = (e.clientX - rect.left) / rect.width;
+                if (percentage < 0.5) {
+                    star.classList.add('half');
+                } else {
+                    star.classList.remove('half');
+                }
+            }
         });
+
+        star.addEventListener('mouseleave', function() {
+            if (!this.hasAttribute('data-clicked')) {
+                star.classList.remove('half');
+            }
+        });
+
+        star.addEventListener('click', function(e) {
+            var rect = star.getBoundingClientRect();
+            var percentage = (e.clientX - rect.left) / rect.width;
+            var input = document.getElementById(star.htmlFor); // Get the corresponding input element
+
+            // Remove 'data-clicked' attribute from all stars
+            stars.forEach(function(s) {
+                s.removeAttribute('data-clicked');
+                s.classList.remove('half');
+            });
+
+            // Set the clicked state
+            if (percentage < 0.5) {
+                if (input) {
+                    var prevInput = input.previousElementSibling;
+                    while (prevInput && prevInput.tagName !== 'INPUT') {
+                        prevInput = prevInput.previousElementSibling;
+                    }
+                    if (prevInput) {
+                        prevInput.checked = true;
+                        star.setAttribute('data-clicked', 'half');
+                        star.classList.add('half');
+                    }
+                }
+            } else {
+                if (input) {
+                    input.checked = true;
+                    star.setAttribute('data-clicked', 'full');
+                    star.classList.remove('half');
+                }
+            }
+        });
+    });
+});
     </script>
     <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
 </body>
