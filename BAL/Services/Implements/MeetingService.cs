@@ -88,7 +88,8 @@ namespace BAL.Services.Implements
                     {
                         meeting.SpotlightImage = picture;
                         meeting.MeetingPictures.Remove(picture);
-                    } else
+                    }
+                    else
                     if (picture.Type == "LocationMap")
                     {
                         meeting.LocationMapImage = picture;
@@ -106,7 +107,7 @@ namespace BAL.Services.Implements
             DateTime? registrationDeadline,
             DateTime? startDate,
             DateTime? endDate,
-            int? numberOfParticipants, 
+            int? numberOfParticipants,
             List<string>? roads = null,
             List<string>? districts = null,
             List<string>? cities = null,

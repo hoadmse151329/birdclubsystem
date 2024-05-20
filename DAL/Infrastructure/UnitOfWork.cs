@@ -31,6 +31,7 @@ namespace DAL.Infrastructure
         private IContestMediaRepository _contestMediaRepository;
         private IBirdRepository _birdRepository;
         private INotificationRepository _notificationRepository;
+        private IFeedbackRepository _feedbackRepository;
 		public UnitOfWork(BirdClubContext context)
 		{
 			_context = context;
@@ -59,6 +60,7 @@ namespace DAL.Infrastructure
         public IContestMediaRepository ContestMediaRepository => _contestMediaRepository ??= new ContestMediaRepository(_context);
         public IBirdRepository BirdRepository => _birdRepository ??= new BirdRepository(_context);
         public INotificationRepository NotificationRepository => _notificationRepository ??= new NotificationRepository(_context);
+        public IFeedbackRepository FeedbackRepository => _feedbackRepository ??= new FeedbackRepository(_context);
 
         public void Dispose()
         {

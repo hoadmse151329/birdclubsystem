@@ -14,6 +14,7 @@ namespace DAL.Repositories.Interfaces
         IEnumerable<Meeting> GetSortedMeetings(
             int? meetingId,
             string? meetingName,
+            DateTime? openRegistration,
             DateTime? registrationDeadline,
             DateTime? startDate,
             DateTime? endDate,

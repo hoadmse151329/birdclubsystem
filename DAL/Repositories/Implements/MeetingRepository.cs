@@ -34,6 +34,7 @@ namespace DAL.Repositories.Implements
         public IEnumerable<Meeting> GetSortedMeetings(
             int? meetingId = null,
             string? meetingName = null,
+            DateTime? openRegistration = null,
             DateTime? registrationDeadline = null,
             DateTime? startDate = null,
             DateTime? endDate = null,
@@ -69,6 +70,10 @@ namespace DAL.Repositories.Implements
                 meetings = meetings.AsNoTracking().Where(m => m.MeetingName.Contains(meetingName));
             }
 
+            if (openRegistration.HasValue)
+            {
+                meetings = meetings.AsNoTracking().Where(m => m.OpenRegistration == openRegistration.Value);
+            }
             if (registrationDeadline.HasValue)
             {
                 meetings = meetings.AsNoTracking().Where(m => m.RegistrationDeadline == registrationDeadline.Value);

@@ -84,6 +84,7 @@ namespace WebAPI.Controllers
             [FromBody] string? role,
             [FromQuery] int? meetingId,
             [FromQuery] string? meetingName,
+            [FromQuery] DateTime? openRegistration,
             [FromQuery] DateTime? registrationDeadline,
             [FromQuery] DateTime? startDate,
             [FromQuery] DateTime? endDate,
@@ -104,6 +105,7 @@ namespace WebAPI.Controllers
                 var result = await _meetingService.GetSortedMeetings(
                     meetingId: meetingId,
                     meetingName: meetingName,
+                    openRegistration: openRegistration,
                     registrationDeadline: registrationDeadline,
                     startDate: startDate,
                     endDate: endDate,

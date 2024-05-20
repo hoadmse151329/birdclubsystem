@@ -28,6 +28,7 @@ namespace DAL.Infrastructure
         IContestMediaRepository ContestMediaRepository { get; }
         IBirdRepository BirdRepository { get; }
         INotificationRepository NotificationRepository { get; }
+        IFeedbackRepository FeedbackRepository { get; }
         void Save();
     }
 }

@@ -9,6 +9,7 @@ namespace BAL.Services.Interfaces
 {
     public interface IFeedbackService
     {
-        Task<bool> Create(string eventId, FeedbackViewModel feedback);
+        Task<IEnumerable<FeedbackViewModel>> GetAllFeedbacks();
+        void Create(FeedbackViewModel feedback);
     }
 }

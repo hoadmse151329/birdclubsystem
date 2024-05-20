@@ -11,10 +11,10 @@ namespace BAL.Services.Interfaces
     {
         Task<MeetingViewModel?> GetById(int id);
         Task<IEnumerable<MeetingViewModel>> GetAllMeetings(string? role);
-        IEnumerable<MeetingViewModel> GetAllByRegistrationDeadline(DateTime registrationDeadline);
         Task<IEnumerable<MeetingViewModel>?> GetSortedMeetings(
             int? meetingId,
             string? meetingName,
+            DateTime? openRegistration,
             DateTime? registrationDeadline,
             DateTime? startDate,
             DateTime? endDate,

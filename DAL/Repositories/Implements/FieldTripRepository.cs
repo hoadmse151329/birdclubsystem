@@ -21,14 +21,14 @@ namespace DAL.Repositories.Implements
         {
             if (role == "Manager" || role == "Staff")
             {
-                return _context.FieldTrips.AsNoTracking()
+                return await _context.FieldTrips.AsNoTracking()
                 .Include(f => f.FieldtripPictures.Where(fm => fm.Type.Equals("Spotlight")))
-                .ToList();
+                .ToListAsync();
             }
-            return _context.FieldTrips.AsNoTracking()
+            return await _context.FieldTrips.AsNoTracking()
                 .Where(f => f.Status == "OpenRegistration")
                 .Include(f => f.FieldtripPictures.Where(fm => fm.Type.Equals("Spotlight")))
-                .ToList();
+                .ToListAsync();
         }
 
         public IEnumerable<FieldTrip> GetSortedFieldTrips(
@@ -143,8 +143,8 @@ namespace DAL.Repositories.Implements
 
         public async Task<FieldTrip?> GetFieldTripByIdWithoutInclude(int id)
         {
-            return _context.FieldTrips.AsNoTracking()
-                .SingleOrDefault(trip => trip.TripId == id);
+            return await _context.FieldTrips.AsNoTracking()
+                .SingleOrDefaultAsync(trip => trip.TripId == id);
         }
         private List<int> GetLocationIdListByLocationName(List<string>? locationNames)
         {

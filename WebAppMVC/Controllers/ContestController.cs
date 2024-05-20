@@ -507,6 +507,32 @@ namespace WebAppMVC.Controllers
                 MemberId = usrId
             };
 
+            string NotificationAPI_URL = "/api/Notification/CreateEvent";
+
+            var notificationResponse = await methcall.CallMethodReturnObject<GetNotificationPostResponse>(
+                    _httpClient: _httpClient,
+                    options: jsonOptions,
+                    methodName: "POST",
+                    url: NotificationAPI_URL,
+                    inputType: notif,
+                    accessToken: accToken,
+                    _logger: _logger);
+
+            if (notificationResponse == null)
+            {
+                ViewBag.Error =
+                    "Error while processing your request! (Create Notification).\n User Not Found!";
+                return RedirectToAction("ContestPost", new { id = conId });
+            }
+            if (!notificationResponse.Status)
+            {
+                _logger.LogInformation("Error while processing your request: " + notificationResponse.Status + " , Error Message: " + notificationResponse.ErrorMessage);
+                ViewBag.Error =
+                    "Error while processing your request! (Create Notification!).\n"
+                    + notificationResponse.ErrorMessage;
+                return RedirectToAction("ContestPost", new { id = conId });
+            }
+
             return RedirectToAction("ContestPost", new { id = conId });
         }
 
@@ -548,6 +574,46 @@ namespace WebAppMVC.Controllers
                     "Error while processing your request! (Remove Contest Participation Registration!).\n"
                     + participationNo.ErrorMessage;
                 RedirectToAction("ContestPost", new { id = contestId });
+            }
+
+            var contestPostResponse = await methcall.CallMethodReturnObject<GetContestPostResponse>(
+                                   _httpClient: _httpClient,
+                                   options: jsonOptions,
+                                   methodName: Constants.Constants.GET_METHOD,
+                                   url: ContestAPI_URL,
+                                   _logger: _logger);
+
+            CreateNotificationRequest notif = new CreateNotificationRequest()
+            {
+                Title = Constants.Constants.NOTIFICATION_TYPE_CONTEST_DEREGISTER,
+                Description = Constants.Constants.NOTIFICATION_DESCRIPTION_CONTEST_DEREGISTER + contestPostResponse.Data.ContestName,
+                MemberId = usrId
+            };
+
+            string NotificationAPI_URL = "/api/Notification/CreateEvent";
+
+            var notificationResponse = await methcall.CallMethodReturnObject<GetNotificationPostResponse>(
+                    _httpClient: _httpClient,
+                    options: jsonOptions,
+                    methodName: "POST",
+                    url: NotificationAPI_URL,
+                    inputType: notif,
+                    accessToken: accToken,
+                    _logger: _logger);
+
+            if (notificationResponse == null)
+            {
+                ViewBag.Error =
+                    "Error while processing your request! (Create Notification).\n User Not Found!";
+                return RedirectToAction("ContestPost", new { id = contestId });
+            }
+            if (!notificationResponse.Status)
+            {
+                _logger.LogInformation("Error while processing your request: " + notificationResponse.Status + " , Error Message: " + notificationResponse.ErrorMessage);
+                ViewBag.Error =
+                    "Error while processing your request! (Create Notification!).\n"
+                    + notificationResponse.ErrorMessage;
+                return RedirectToAction("ContestPost", new { id = contestId });
             }
 
             return RedirectToAction("ContestPost", new { id = contestId });
