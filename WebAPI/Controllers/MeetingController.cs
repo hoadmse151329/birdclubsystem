@@ -75,6 +75,7 @@ namespace WebAPI.Controllers
                 });
             }
         }
+
         [HttpPost("Search")]
         [ProducesResponseType(typeof(List<MeetingViewModel>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

@@ -54,7 +54,7 @@ namespace WebAppMVC.Controllers
         {
             MeetingAPI_URL += "/All";
 
-            MeetingIndexVM testmodel = new();
+            MeetingIndexVM meetingListVM = new();
 
             methcall.SetUserDefaultData(this);
 
@@ -98,25 +98,7 @@ namespace WebAppMVC.Controllers
                 ViewBag.NotificationRead = notificationRead.Data.ToList();
             }
             #endregion
-            
-            var listLocationRoadResponse = await methcall.CallMethodReturnObject<GetLocationAddressResponseByList>(
-                _httpClient: _httpClient,
-                options: jsonOptions,
-                methodName: Constants.Constants.GET_METHOD,
-                url: LocationAPI_URL_All_Road,
-                _logger: _logger);
-            var listLocationDistrictResponse = await methcall.CallMethodReturnObject<GetLocationAddressResponseByList>(
-                _httpClient: _httpClient,
-                options: jsonOptions,
-                methodName: Constants.Constants.GET_METHOD,
-                url: LocationAPI_URL_All_District,
-                _logger: _logger);
-            var listLocationCityResponse = await methcall.CallMethodReturnObject<GetLocationAddressResponseByList>(
-                _httpClient: _httpClient,
-                options: jsonOptions,
-                methodName: Constants.Constants.GET_METHOD,
-                url: LocationAPI_URL_All_City,
-                _logger: _logger);
+
             var listMeetResponse = await methcall.CallMethodReturnObject<GetMeetingResponseByList>(
                 _httpClient: _httpClient,
                 options: jsonOptions,
@@ -140,13 +122,13 @@ namespace WebAppMVC.Controllers
                     + listMeetResponse.ErrorMessage;
                 Redirect("~/Home/Index");
             }
-            testmodel.Meetings = listMeetResponse.Data;
+            meetingListVM.Meetings = listMeetResponse.Data;
 
-            testmodel.Roads = listMeetResponse.Data.Select(m => m.Street).Distinct().ToList();
-            testmodel.Districts = listMeetResponse.Data.Select(m => m.District).Distinct().ToList();
-            testmodel.Cities = listMeetResponse.Data.Select(m => m.City).Distinct().ToList();
+            meetingListVM.Roads = listMeetResponse.Data.Select(m => m.Street).Distinct().ToList();
+            meetingListVM.Districts = listMeetResponse.Data.Select(m => m.District).Distinct().ToList();
+            meetingListVM.Cities = listMeetResponse.Data.Select(m => m.City).Distinct().ToList();
 
-            return View(testmodel);
+            return View(meetingListVM);
         }
 
         [HttpGet("Index/Filter")]

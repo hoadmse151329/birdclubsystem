@@ -31,32 +31,90 @@ namespace BAL.Services.Implements
                 var trip = listtrip.SingleOrDefault(ft => ft.TripId == itemview.TripId);
                 if(trip != null)
                 {
-                    var media = await _unitOfWork.FieldTripMediaRepository.GetFieldTripMediasByTripId(trip.TripId);
-                    itemview.FieldtripPictures = (media.Count() > 0) ? _mapper.Map<IEnumerable<FieldtripMediaViewModel>>(media).ToList() : itemview.FieldtripPictures;
+                    var media = await _unitOfWork.FieldTripMediaRepository.GetFieldTripMediaByFieldTripIdAndType(trip.TripId, "Spotlight");
+                    itemview.SpotlightImage = (media != null) ? _mapper.Map<FieldtripMediaViewModel>(media) : itemview.SpotlightImage;
                     
                     var locationAddress = await _unitOfWork.LocationRepository.GetLocationNameById(trip.LocationId.Value);
                     itemview.Address = locationAddress;
 
                     locationName = itemview.Address.Split(",");
-                    itemview.AreaNumber = Int32.Parse(locationName[0]);
+                    itemview.AreaNumber = locationName[0];
                     itemview.Street = locationName[1];
                     itemview.District = locationName[2];
                     itemview.City = locationName[3];
                 }
-                if(itemview.FieldtripPictures.Count > 0)
+            }
+            return listtripview;
+        }
+
+        public async Task<IEnumerable<FieldTripViewModel>?> GetSortedFieldTrips(
+            int? tripId, 
+            string? tripName, 
+            DateTime? registrationDeadline, 
+            DateTime? startDate, 
+            DateTime? endDate, 
+            int? numberOfParticipants, 
+            List<string>? roads, 
+            List<string>? districts, 
+            List<string>? cities, 
+            List<string>? statuses, 
+            string? orderBy, 
+            bool isMemberOrGuest = false)
+        {
+            var listtrip = _unitOfWork.FieldTripRepository.GetSortedFieldTrips(
+                tripId,
+                tripName,
+                registrationDeadline,
+                startDate,
+                endDate,
+                numberOfParticipants,
+                roads,
+                districts,
+                cities,
+                statuses,
+                orderBy,
+                isMemberOrGuest
+                );
+            var listtripview = _mapper.Map<IEnumerable<FieldTripViewModel>>(_unitOfWork.FieldTripRepository.GetSortedFieldTrips(
+                tripId,
+                tripName,
+                registrationDeadline,
+                startDate,
+                endDate,
+                numberOfParticipants,
+                roads,
+                districts,
+                cities,
+                statuses,
+                orderBy,
+                isMemberOrGuest
+                ));
+            string locationName;
+            foreach (var itemview in listtripview)
+            {
+                foreach (var item in listtrip)
                 {
-                    foreach (var picture in itemview.FieldtripPictures.ToList())
+                    if (item.TripId == itemview.TripId)
                     {
-                        if (picture.Type == "Spotlight")
-                        {
-                            itemview.SpotlightImage = picture;
-                            itemview.FieldtripPictures.Remove(picture);
-                        }
+                        //int partAmount = await _unitOfWork.MeetingParticipantRepository.GetCountMeetingParticipantsByMeetId(meet.MeetingId);
+                        var media = await _unitOfWork.FieldTripMediaRepository.GetFieldTripMediaByFieldTripIdAndType(item.TripId, "SpotlightImage");
+                        itemview.SpotlightImage = (media != null) ? _mapper.Map<FieldtripMediaViewModel>(media) : itemview.SpotlightImage;
+
+                        locationName = await _unitOfWork.LocationRepository.GetLocationNameById(item.LocationId.Value);
+
+                        itemview.Address = locationName;
+
+                        string[] temp = locationName.Split(",");
+                        itemview.AreaNumber = temp[0];
+                        itemview.Street = temp[1];
+                        itemview.District = temp[2];
+                        itemview.City = temp[3];
                     }
                 }
             }
             return listtripview;
         }
+
         public async Task<FieldTripViewModel?> GetById(int id)
         {
             var trip = await _unitOfWork.FieldTripRepository.GetFieldTripById(id);
@@ -77,7 +135,7 @@ namespace BAL.Services.Implements
                 fieldTrip.NumberOfParticipants = fieldTrip.NumberOfParticipantsLimit - partAmount;
                 fieldTrip.Address = locationName;
 
-                fieldTrip.AreaNumber = Int32.Parse(locationSplit[0]);
+                fieldTrip.AreaNumber = locationSplit[0];
                 fieldTrip.Street = locationSplit[1];
                 fieldTrip.District = locationSplit[2];
                 fieldTrip.City = locationSplit[3];
@@ -212,7 +270,7 @@ namespace BAL.Services.Implements
                 fieldTrip.NumberOfParticipants = fieldTrip.NumberOfParticipantsLimit - partAmount;
                 fieldTrip.Address = locationName;
 
-                fieldTrip.AreaNumber = Int32.Parse(locationSplit[0]);
+                fieldTrip.AreaNumber = locationSplit[0];
                 fieldTrip.Street = locationSplit[1];
                 fieldTrip.District = locationSplit[2];
                 fieldTrip.City = locationSplit[3];
@@ -220,5 +278,6 @@ namespace BAL.Services.Implements
             }
             return null;
         }
+
     }
 }

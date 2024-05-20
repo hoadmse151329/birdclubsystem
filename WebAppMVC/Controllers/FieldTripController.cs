@@ -18,6 +18,7 @@ using WebAppMVC.Models.Meeting;
 using WebAppMVC.Models.Member;
 using WebAppMVC.Models.Notification;
 using WebAppMVC.Models.Transaction;
+using WebAppMVC.Models.ViewModels;
 using WebAppMVC.Models.VnPay;
 using WebAppMVC.Services.Interfaces;
 using static Org.BouncyCastle.Math.EC.ECCurve;
@@ -61,10 +62,7 @@ namespace WebAppMVC.Controllers
 		public async Task<IActionResult> Index()
 		{
 			FieldTripAPI_URL += "/All";
-            string LocationAPI_URL_All_Road = "/api/Location/AllAddressRoads";
-            string LocationAPI_URL_All_District = "/api/Location/AllAddressDistricts";
-            string LocationAPI_URL_All_City = "/api/Location/AllAddressCities";
-            dynamic testmodel = new ExpandoObject();
+            FieldTripIndexVM fieldtripListVM = new();
 
             methcall.SetUserDefaultData(this);
             string? role = HttpContext.Session.GetString(Constants.Constants.ROLE_NAME);
@@ -109,24 +107,92 @@ namespace WebAppMVC.Controllers
             }
             #endregion
 
-            var listLocationRoadResponse = await methcall.CallMethodReturnObject<GetLocationAddressResponseByList>(
+            var listTripResponse = await methcall.CallMethodReturnObject<GetFieldTripResponseByList>(
                 _httpClient: _httpClient,
                 options: jsonOptions,
-                methodName: Constants.Constants.GET_METHOD,
-                url: LocationAPI_URL_All_Road,
+                methodName: Constants.Constants.POST_METHOD,
+                url: FieldTripAPI_URL,
+                inputType: role,
                 _logger: _logger);
-            var listLocationDistrictResponse = await methcall.CallMethodReturnObject<GetLocationAddressResponseByList>(
-                _httpClient: _httpClient,
-                options: jsonOptions,
-                methodName: Constants.Constants.GET_METHOD,
-                url: LocationAPI_URL_All_District,
-                _logger: _logger);
-            var listLocationCityResponse = await methcall.CallMethodReturnObject<GetLocationAddressResponseByList>(
-                _httpClient: _httpClient,
-                options: jsonOptions,
-                methodName: Constants.Constants.GET_METHOD,
-                url: LocationAPI_URL_All_City,
-                _logger: _logger);
+
+			if (listTripResponse == null)
+            {
+                _logger.LogInformation(
+                    "Error while processing your request! (Getting List Field Trip!). List was Empty!: " + listTripResponse + " , Error Message: " + listTripResponse.ErrorMessage);
+                ViewBag.error =
+                    "Error while processing your request! (Getting List Field Trip!).\n List was Empty!";
+                Redirect("~/Home/Index");
+            }
+            else
+            if (!listTripResponse.Status)
+            {
+                ViewBag.error =
+                    "Error while processing your request! (Getting List Field Trip!).\n"
+                    + listTripResponse.ErrorMessage;
+                Redirect("~/Home/Index");
+            }
+            fieldtripListVM.FieldTrips = listTripResponse.Data;
+
+            fieldtripListVM.Roads = listTripResponse.Data.Select(f => f.Street).Distinct().ToList();
+            fieldtripListVM.Districts = listTripResponse.Data.Select(f => f.District).Distinct().ToList();
+            fieldtripListVM.Cities = listTripResponse.Data.Select(f => f.City).Distinct().ToList();
+
+            return View(fieldtripListVM);
+        }
+
+        [HttpGet("Index/Filter")]
+        public async Task<IActionResult> IndexFilter(
+            [FromQuery] List<string>? road,
+            [FromQuery] List<string>? district,
+            [FromQuery] List<string>? city
+            )
+        {
+            if ((road == null || road.Count == 0) && (district == null || district.Count == 0) && (city == null || city.Count == 0)) FieldTripAPI_URL += "/All";
+            else FieldTripAPI_URL += "/Search?";
+
+            FieldTripIndexVM fieldtripFilteredM = new();
+
+            if (road != null && road.Any())
+            {
+                foreach (var selectedRoad in road)
+                {
+                    if (selectedRoad != null)
+                    {
+                        FieldTripAPI_URL += $"road={Uri.EscapeDataString(selectedRoad.Trim())}&";
+                        fieldtripFilteredM.SelectedRoads.Add(selectedRoad);
+                    }
+                }
+            }
+            if (district != null && district.Any())
+            {
+                foreach (var selectedDistrict in district)
+                {
+                    if (selectedDistrict != null)
+                    {
+                        FieldTripAPI_URL += $"district={Uri.EscapeDataString(selectedDistrict.Trim())}&";
+                        fieldtripFilteredM.SelectedDistricts.Add(selectedDistrict);
+                    }
+                }
+            }
+            if (city != null && city.Any())
+            {
+                foreach (var selectedCity in city)
+                {
+                    if (selectedCity != null)
+                    {
+                        FieldTripAPI_URL += $"city={Uri.EscapeDataString(selectedCity.Trim())}&";
+                        fieldtripFilteredM.SelectedCities.Add(selectedCity);
+                    }
+                }
+            }
+            if (FieldTripAPI_URL.Contains("Search"))
+            {
+                FieldTripAPI_URL = FieldTripAPI_URL.Substring(0, FieldTripAPI_URL.Length - 1); // Remove the trailing '&'
+            }
+
+            methcall.SetUserDefaultData(this);
+
+            string? role = HttpContext.Session.GetString(Constants.Constants.ROLE_NAME);
 
             var listTripResponse = await methcall.CallMethodReturnObject<GetFieldTripResponseByList>(
                 _httpClient: _httpClient,
@@ -136,48 +202,30 @@ namespace WebAppMVC.Controllers
                 inputType: role,
                 _logger: _logger);
 
-			if (listTripResponse == null || listLocationRoadResponse == null || listLocationDistrictResponse == null || listLocationCityResponse == null)
+            if (listTripResponse == null)
             {
                 _logger.LogInformation(
-                    "Error while processing your request! (Getting List Field Trip!). List was Empty!: " + listTripResponse + " , Error Message: " + listTripResponse.ErrorMessage);
+                    "Error while processing your request! (Getting List Meeting!). List was Empty!: " + listTripResponse + " , Error Message: " + listTripResponse.ErrorMessage);
                 ViewBag.error =
-                    "Error while processing your request! (Getting List Field Trip!).\n List was Empty!";
+                    "Error while processing your request! (Getting List Meeting!).\n List was Empty!";
                 Redirect("~/Home/Index");
             }
-            else
-            if (!listTripResponse.Status || !listLocationRoadResponse.Status || !listLocationDistrictResponse.Status || !listLocationCityResponse.Status)
+            else if (!listTripResponse.Status)
             {
                 ViewBag.error =
-                    "Error while processing your request! (Getting List Field Trip!).\n"
-                    + listTripResponse.ErrorMessage + "\n" + listLocationRoadResponse.ErrorMessage;
+                    "Error while processing your request! (Getting List Meeting!).\n"
+                    + listTripResponse.ErrorMessage;
                 Redirect("~/Home/Index");
             }
+            fieldtripFilteredM.FieldTrips = listTripResponse.Data;
 
-            List<SelectListItem> roads = new();
-            foreach (var road in listLocationRoadResponse.Data)
-            {
-                roads.Add(new SelectListItem(text: road, value: road));
-            }
+            fieldtripFilteredM.Roads = listTripResponse.Data.Select(m => m.Street).Distinct().ToList();
+            fieldtripFilteredM.Districts = listTripResponse.Data.Select(m => m.District).Distinct().ToList();
+            fieldtripFilteredM.Cities = listTripResponse.Data.Select(m => m.City).Distinct().ToList();
 
-            List<SelectListItem> districts = new();
-            foreach (var district in listLocationDistrictResponse.Data)
-            {
-                districts.Add(new SelectListItem(text: district, value: district));
-            }
-
-            List<SelectListItem> cities = new();
-            foreach (var city in listLocationCityResponse.Data)
-            {
-                cities.Add(new SelectListItem(text: city, value: city));
-            }
-
-            testmodel.Roads = roads;
-            testmodel.Districts = districts;
-            testmodel.Cities = cities;
-
-            testmodel.FieldTrips = listTripResponse.Data;
-            return View(testmodel);
+            return PartialView("_MeetingListPartial", fieldtripFilteredM);
         }
+
         [HttpGet("Post/{id:int}")]
         public async Task<IActionResult> FieldTripPost(
             [FromRoute][Required]int id

@@ -13,5 +13,6 @@ namespace DAL.Repositories.Interfaces
         Task<MeetingMedia> GetMeetingMediaById(int pictureId);
         Task<MeetingMedia> GetMeetingMediaByIdTracking(int pictureId);
         Task<IEnumerable<MeetingMedia>> GetAllMeetingMediasByMeetingId(int meetingId);
+        Task<MeetingMedia> GetMeetingMediaByMeetingIdAndType(int meetingId, string mediaType);
     }
 }
