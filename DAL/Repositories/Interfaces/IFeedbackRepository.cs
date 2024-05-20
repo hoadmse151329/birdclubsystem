@@ -11,5 +11,6 @@ namespace DAL.Repositories.Interfaces
     public interface IFeedbackRepository : IRepositoryBase<Feedback>
     {
         Task<IEnumerable<Feedback>> GetAllFeedbacks();
+        Task<Feedback?> GetFeedbackById(int id);
     }
 }

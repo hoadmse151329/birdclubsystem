@@ -26,6 +26,17 @@ namespace BAL.Services.Implements
             return _mapper.Map<IEnumerable<FeedbackViewModel>>(await _unitOfWork.FeedbackRepository.GetAllFeedbacks());
         }
 
+        public async Task<FeedbackViewModel?> GetFeedbackById(int id)
+        {
+            var feed = await _unitOfWork.FeedbackRepository.GetFeedbackById(id);
+            if (feed != null)
+            {
+                var feedback = _mapper.Map<FeedbackViewModel>(feed);
+                return feedback;
+            }
+            return null;
+        }
+
         public void Create(FeedbackViewModel feedback)
         {
             var feed = _mapper.Map<Feedback>(feedback);

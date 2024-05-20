@@ -89,14 +89,14 @@ namespace WebAPI.Controllers
                 {
                     return NotFound(new
                     {
-                        status = false,
-                        errorMessage = "Contest Not Found!"
+                        Status = false,
+                        ErrorMessage = "Contest Not Found!"
                     });
                 }
 
                 return Ok(new
                 {
-                    status = true,
+                    Status = true,
                     Data = result
                 });
             }
@@ -134,7 +134,7 @@ namespace WebAPI.Controllers
                 return Ok(new
                 {
                     Status = true,
-                    Message = "Contest Create successfully!",
+                    SuccessMessage = "Contest Create successfully!",
                     Data = contest
                 });
             }
@@ -343,7 +343,7 @@ namespace WebAPI.Controllers
                 return Ok(new
                 {
                     Status = true,
-                    Message = "Get Contest successfully!",
+                    SuccessMessage = "Get Contest successfully!",
                     Data = cont
                 });
             }

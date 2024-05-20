@@ -192,7 +192,7 @@ namespace WebAPI.Controllers
                 return Ok(new
                 {
                     Status = true,
-                    Message = "Meeting Create successfully !",
+                    SuccessMessage = "Meeting Create successfully !",
                     Data = meet
                 });
             }
@@ -299,7 +299,7 @@ namespace WebAPI.Controllers
                     return Ok(new
                     {
                         Status = true,
-                        Message = "Meeting Media Create successfully!",
+                        SuccessMessage = "Meeting Media Create successfully!",
                         BoolData = true
                     });
                 else return StatusCode(StatusCodes.Status500InternalServerError, new
@@ -392,7 +392,7 @@ namespace WebAPI.Controllers
                 return Ok(new
                 {
                     Status = true,
-                    Message = "Add Member Participation successfully !",
+                    SuccessMessage = "Add Member Participation successfully !",
                     IntData = participateNo
                 });
             }

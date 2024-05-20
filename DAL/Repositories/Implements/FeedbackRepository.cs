@@ -22,5 +22,10 @@ namespace DAL.Repositories.Implements
         {
             return _context.Feedbacks.AsNoTracking().ToList();
         }
+
+        public async Task<Feedback?> GetFeedbackById(int id)
+        {
+            return _context.Feedbacks.AsNoTracking().SingleOrDefault(f => f.FeedbackId == id);
+        }
     }
 }

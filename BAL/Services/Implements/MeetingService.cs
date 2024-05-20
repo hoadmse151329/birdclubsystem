@@ -104,6 +104,7 @@ namespace BAL.Services.Implements
         public async Task<IEnumerable<MeetingViewModel>?> GetSortedMeetings(
             int? meetingId,
             string? meetingName,
+            DateTime? openRegistration,
             DateTime? registrationDeadline,
             DateTime? startDate,
             DateTime? endDate,
@@ -118,6 +119,7 @@ namespace BAL.Services.Implements
             var listmeet = _unitOfWork.MeetingRepository.GetSortedMeetings(
                 meetingId,
                 meetingName,
+                openRegistration,
                 registrationDeadline,
                 startDate,
                 endDate,
@@ -132,6 +134,7 @@ namespace BAL.Services.Implements
             var listmeetview = _mapper.Map<IEnumerable<MeetingViewModel>>(_unitOfWork.MeetingRepository.GetSortedMeetings(
                 meetingId,
                 meetingName,
+                openRegistration,
                 registrationDeadline,
                 startDate,
                 endDate,

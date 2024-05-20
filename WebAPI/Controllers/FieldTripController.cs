@@ -163,14 +163,14 @@ namespace WebAPI.Controllers
                 {
                     return NotFound(new
                     {
-                        status = false,
-                        errorMessage = "Field Trip Not Found!"
+                        Status = false,
+                        ErrorMessage = "Field Trip Not Found!"
                     });
                 }
 
                 return Ok(new
                 {
-                    status = true,
+                    Status = true,
                     Data = result
                 });
             }
@@ -206,14 +206,14 @@ namespace WebAPI.Controllers
                 {
                     return NotFound(new
                     {
-                        status = false,
-                        errorMessage = "Field Trip Not Found!"
+                        Status = false,
+                        ErrorMessage = "Field Trip Not Found!"
                     });
                 }
 
                 return Ok(new
                 {
-                    status = true,
+                    Status = true,
                     Data = result
                 });
             }
@@ -250,7 +250,7 @@ namespace WebAPI.Controllers
                 return Ok(new
                 {
                     Status = true,
-                    Message = "Field Trip Create successfully!",
+                    SuccessMessage = "Field Trip Create successfully!",
                     Data = trip
                 });
             }
@@ -336,13 +336,13 @@ namespace WebAPI.Controllers
                 return Ok(new
                 {
                     Status = true,
-                    Message = "Field Trip Day Create successfully!",
+                    SuccessMessage = "Field Trip Day Create successfully!",
                     BoolData = true
                 });
                 else return StatusCode(StatusCodes.Status500InternalServerError,new
                 {
                     Status = true,
-                    Message = "Field Trip Day Create Failed!",
+                    ErrorMessage = "Field Trip Day Create Failed!",
                     BoolData = false
                 });
             }
@@ -380,13 +380,13 @@ namespace WebAPI.Controllers
                     return Ok(new
                     {
                         Status = true,
-                        Message = "Field Trip Inclusion Create successfully!",
+                        SuccessMessage = "Field Trip Inclusion Create successfully!",
                         BoolData = true
                     });
                 else return StatusCode(StatusCodes.Status500InternalServerError, new
                 {
                     Status = true,
-                    Message = "Field Trip Inclusion Create Failed!",
+                    ErrorMessage = "Field Trip Inclusion Create Failed!",
                     BoolData = false
                 });
             }
@@ -425,13 +425,13 @@ namespace WebAPI.Controllers
                     return Ok(new
                     {
                         Status = true,
-                        Message = "Field Trip Additional Detail Create successfully!",
+                        SuccessMessage = "Field Trip Additional Detail Create successfully!",
                         BoolData = true
                     });
                 else return StatusCode(StatusCodes.Status500InternalServerError, new
                 {
                     Status = true,
-                    Message = "Field Trip Additional Detai Create Failed!",
+                    ErrorMessage = "Field Trip Additional Detai Create Failed!",
                     BoolData = false
                 });
             }
@@ -481,7 +481,7 @@ namespace WebAPI.Controllers
                 return Ok(new
                 {
                     Status = true,
-                    Message = "Add Member Participation successfully !",
+                    SuccessMessage = "Add Member Participation successfully !",
                     IntData = participantNo
                 });
             }
@@ -532,7 +532,7 @@ namespace WebAPI.Controllers
                 return Ok(new
                 {
                     Status = true,
-                    Message = "Get Field Trip successfully!",
+                    SuccessMessage = "Get Field Trip successfully!",
                     Data = trip
                 });
             }
@@ -910,14 +910,14 @@ namespace WebAPI.Controllers
                 {
                     return NotFound(new
                     {
-                        status = false,
-                        errorMessage = "Meeting Not Found!"
+                        Status = false,
+                        ErrorMessage = "Meeting Not Found!"
                     });
                 }
 
                 return Ok(new
                 {
-                    status = true,
+                    Status = true,
                     Data = result
                 });
             }

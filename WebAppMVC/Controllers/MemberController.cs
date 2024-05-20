@@ -171,20 +171,43 @@ namespace WebAppMVC.Controllers
 
             string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
 
-            string NotificationAPI_URL = "/api/Notification/Count";
-
+            #region NotificationBell
+            // show read and unread notifications when you click on the bell in the header bar
             if (usrId != null)
             {
+                string NotificationCountAPI_URL = "/api/Notification/Count";
+                string NotificationUnreadAPI_URL = "/api/Notification/Unread";
+                string NotificationReadAPI_URL = "/api/Notification/Read";
+
                 var notificationCount = await methcall.CallMethodReturnObject<GetNotificationCountResponse>(
                 _httpClient: _httpClient,
                 options: jsonOptions,
-                methodName: Constants.Constants.POST_METHOD,
-                url: NotificationAPI_URL,
+                methodName: "POST",
+                url: NotificationCountAPI_URL,
+                inputType: usrId,
+                _logger: _logger);
+
+                var notificationUnread = await methcall.CallMethodReturnObject<GetNotificationTitleResponse>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: "POST",
+                url: NotificationUnreadAPI_URL,
+                inputType: usrId,
+                _logger: _logger);
+
+                var notificationRead = await methcall.CallMethodReturnObject<GetNotificationTitleResponse>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: "POST",
+                url: NotificationReadAPI_URL,
                 inputType: usrId,
                 _logger: _logger);
 
                 ViewBag.NotificationCount = notificationCount.IntData;
+                ViewBag.NotificationUnread = notificationUnread.Data.ToList();
+                ViewBag.NotificationRead = notificationRead.Data.ToList();
             }
+            #endregion
 
             string MemberMeetingPartAPI_URL = "/api/Meeting/Participation/AllMeetings";
             string MemberFieldTripPartAPI_URL = "/api/FieldTrip/Participation/AllFieldTrips";
@@ -242,6 +265,20 @@ namespace WebAppMVC.Controllers
 
             registeredModel.RegisteredEvents = registeredEvents;
             return View(registeredModel);
+        }
+        [HttpPost("CreateFeedback")]
+        public async Task<IActionResult> CreateFeedback(CreateFeedbackRequest feedback)
+        {
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER));
+
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
+
+            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
+
+            string FeedbackAPI_URL = "/api/Feedback/Create";
+
+            return View();
         }
         [HttpPost("Upload")]
         //[Authorize(Roles = "Member")]
@@ -362,20 +399,43 @@ namespace WebAppMVC.Controllers
 
             string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
 
-            string NotificationAPI_URL = "/api/Notification/Count";
-
+            #region NotificationBell
+            // show read and unread notifications when you click on the bell in the header bar
             if (usrId != null)
             {
+                string NotificationCountAPI_URL = "/api/Notification/Count";
+                string NotificationUnreadAPI_URL = "/api/Notification/Unread";
+                string NotificationReadAPI_URL = "/api/Notification/Read";
+
                 var notificationCount = await methcall.CallMethodReturnObject<GetNotificationCountResponse>(
                 _httpClient: _httpClient,
                 options: jsonOptions,
-                methodName: Constants.Constants.POST_METHOD,
-                url: NotificationAPI_URL,
+                methodName: "POST",
+                url: NotificationCountAPI_URL,
+                inputType: usrId,
+                _logger: _logger);
+
+                var notificationUnread = await methcall.CallMethodReturnObject<GetNotificationTitleResponse>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: "POST",
+                url: NotificationUnreadAPI_URL,
+                inputType: usrId,
+                _logger: _logger);
+
+                var notificationRead = await methcall.CallMethodReturnObject<GetNotificationTitleResponse>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: "POST",
+                url: NotificationReadAPI_URL,
                 inputType: usrId,
                 _logger: _logger);
 
                 ViewBag.NotificationCount = notificationCount.IntData;
+                ViewBag.NotificationUnread = notificationUnread.Data.ToList();
+                ViewBag.NotificationRead = notificationRead.Data.ToList();
             }
+            #endregion
 
             dynamic birdModel = new ExpandoObject();
 
@@ -417,6 +477,44 @@ namespace WebAppMVC.Controllers
             string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
             string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
+
+            #region NotificationBell
+            // show read and unread notifications when you click on the bell in the header bar
+            if (usrId != null)
+            {
+                string NotificationCountAPI_URL = "/api/Notification/Count";
+                string NotificationUnreadAPI_URL = "/api/Notification/Unread";
+                string NotificationReadAPI_URL = "/api/Notification/Read";
+
+                var notificationCount = await methcall.CallMethodReturnObject<GetNotificationCountResponse>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: "POST",
+                url: NotificationCountAPI_URL,
+                inputType: usrId,
+                _logger: _logger);
+
+                var notificationUnread = await methcall.CallMethodReturnObject<GetNotificationTitleResponse>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: "POST",
+                url: NotificationUnreadAPI_URL,
+                inputType: usrId,
+                _logger: _logger);
+
+                var notificationRead = await methcall.CallMethodReturnObject<GetNotificationTitleResponse>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: "POST",
+                url: NotificationReadAPI_URL,
+                inputType: usrId,
+                _logger: _logger);
+
+                ViewBag.NotificationCount = notificationCount.IntData;
+                ViewBag.NotificationUnread = notificationUnread.Data.ToList();
+                ViewBag.NotificationRead = notificationRead.Data.ToList();
+            }
+            #endregion
 
             var memberBirdDetail = await methcall.CallMethodReturnObject<GetBirdResponse>(
                 _httpClient: _httpClient,
@@ -530,20 +628,43 @@ namespace WebAppMVC.Controllers
 
             string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
 
-            string NotificationAPI_URL = "/api/Notification/Count";
-
+            #region NotificationBell
+            // show read and unread notifications when you click on the bell in the header bar
             if (usrId != null)
             {
+                string NotificationCountAPI_URL = "/api/Notification/Count";
+                string NotificationUnreadAPI_URL = "/api/Notification/Unread";
+                string NotificationReadAPI_URL = "/api/Notification/Read";
+
                 var notificationCount = await methcall.CallMethodReturnObject<GetNotificationCountResponse>(
                 _httpClient: _httpClient,
                 options: jsonOptions,
-                methodName: Constants.Constants.POST_METHOD,
-                url: NotificationAPI_URL,
+                methodName: "POST",
+                url: NotificationCountAPI_URL,
+                inputType: usrId,
+                _logger: _logger);
+
+                var notificationUnread = await methcall.CallMethodReturnObject<GetNotificationTitleResponse>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: "POST",
+                url: NotificationUnreadAPI_URL,
+                inputType: usrId,
+                _logger: _logger);
+
+                var notificationRead = await methcall.CallMethodReturnObject<GetNotificationTitleResponse>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: "POST",
+                url: NotificationReadAPI_URL,
                 inputType: usrId,
                 _logger: _logger);
 
                 ViewBag.NotificationCount = notificationCount.IntData;
+                ViewBag.NotificationUnread = notificationUnread.Data.ToList();
+                ViewBag.NotificationRead = notificationRead.Data.ToList();
             }
+            #endregion
 
             dynamic transactionModel = new ExpandoObject();
 
@@ -588,20 +709,43 @@ namespace WebAppMVC.Controllers
 
             string? NotificationReadAllAPI_URL = "/api/Notification/Update";
 
-            string NotificationAPI_URL = "/api/Notification/Count";
-
+            #region NotificationBell
+            // show read and unread notifications when you click on the bell in the header bar
             if (usrId != null)
             {
+                string NotificationCountAPI_URL = "/api/Notification/Count";
+                string NotificationUnreadAPI_URL = "/api/Notification/Unread";
+                string NotificationReadAPI_URL = "/api/Notification/Read";
+
                 var notificationCount = await methcall.CallMethodReturnObject<GetNotificationCountResponse>(
                 _httpClient: _httpClient,
                 options: jsonOptions,
-                methodName: Constants.Constants.POST_METHOD,
-                url: NotificationAPI_URL,
+                methodName: "POST",
+                url: NotificationCountAPI_URL,
+                inputType: usrId,
+                _logger: _logger);
+
+                var notificationUnread = await methcall.CallMethodReturnObject<GetNotificationTitleResponse>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: "POST",
+                url: NotificationUnreadAPI_URL,
+                inputType: usrId,
+                _logger: _logger);
+
+                var notificationRead = await methcall.CallMethodReturnObject<GetNotificationTitleResponse>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: "POST",
+                url: NotificationReadAPI_URL,
                 inputType: usrId,
                 _logger: _logger);
 
                 ViewBag.NotificationCount = notificationCount.IntData;
+                ViewBag.NotificationUnread = notificationUnread.Data.ToList();
+                ViewBag.NotificationRead = notificationRead.Data.ToList();
             }
+            #endregion
 
             dynamic notificationModel = new ExpandoObject();
 
@@ -662,7 +806,6 @@ namespace WebAppMVC.Controllers
                 accessToken: accToken);
 
             notificationModel.MemberNotifications = memberNotification.Data;
-            //transactionModel.MemberDetail = memberDetails.Data;
             return View(notificationModel);
         }
     }

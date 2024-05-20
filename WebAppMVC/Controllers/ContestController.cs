@@ -192,22 +192,45 @@ namespace WebAppMVC.Controllers
             string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
             string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
 
-            string NotificationAPI_URL = "/api/Notification/Count";
-
-            dynamic contestPostAndBird = new ExpandoObject();
-
+            #region NotificationBell
+            // show read and unread notifications when you click on the bell in the header bar
             if (usrId != null)
             {
+                string NotificationCountAPI_URL = "/api/Notification/Count";
+                string NotificationUnreadAPI_URL = "/api/Notification/Unread";
+                string NotificationReadAPI_URL = "/api/Notification/Read";
+
                 var notificationCount = await methcall.CallMethodReturnObject<GetNotificationCountResponse>(
                 _httpClient: _httpClient,
                 options: jsonOptions,
-                methodName: Constants.Constants.POST_METHOD,
-                url: NotificationAPI_URL,
+                methodName: "POST",
+                url: NotificationCountAPI_URL,
+                inputType: usrId,
+                _logger: _logger);
+
+                var notificationUnread = await methcall.CallMethodReturnObject<GetNotificationTitleResponse>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: "POST",
+                url: NotificationUnreadAPI_URL,
+                inputType: usrId,
+                _logger: _logger);
+
+                var notificationRead = await methcall.CallMethodReturnObject<GetNotificationTitleResponse>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: "POST",
+                url: NotificationReadAPI_URL,
                 inputType: usrId,
                 _logger: _logger);
 
                 ViewBag.NotificationCount = notificationCount.IntData;
+                ViewBag.NotificationUnread = notificationUnread.Data.ToList();
+                ViewBag.NotificationRead = notificationRead.Data.ToList();
             }
+            #endregion
+
+            dynamic contestPostAndBird = new ExpandoObject();
 
             GetContestPostResponse? contestPostResponse = new();
 
