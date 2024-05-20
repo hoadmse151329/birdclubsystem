@@ -205,15 +205,15 @@ namespace WebAppMVC.Controllers
             if (listTripResponse == null)
             {
                 _logger.LogInformation(
-                    "Error while processing your request! (Getting List Meeting!). List was Empty!: " + listTripResponse + " , Error Message: " + listTripResponse.ErrorMessage);
+                    "Error while processing your request! (Getting List Fieldtrip!). List was Empty!: " + listTripResponse + " , Error Message: " + listTripResponse.ErrorMessage);
                 ViewBag.error =
-                    "Error while processing your request! (Getting List Meeting!).\n List was Empty!";
+                    "Error while processing your request! (Getting List Fieldtrip!).\n List was Empty!";
                 Redirect("~/Home/Index");
             }
             else if (!listTripResponse.Status)
             {
                 ViewBag.error =
-                    "Error while processing your request! (Getting List Meeting!).\n"
+                    "Error while processing your request! (Getting List Fieldtrip!).\n"
                     + listTripResponse.ErrorMessage;
                 Redirect("~/Home/Index");
             }
@@ -223,7 +223,7 @@ namespace WebAppMVC.Controllers
             fieldtripFilteredM.Districts = listTripResponse.Data.Select(m => m.District).Distinct().ToList();
             fieldtripFilteredM.Cities = listTripResponse.Data.Select(m => m.City).Distinct().ToList();
 
-            return PartialView("_MeetingListPartial", fieldtripFilteredM);
+            return PartialView("_FieldTripListPartial", fieldtripFilteredM);
         }
 
         [HttpGet("Post/{id:int}")]

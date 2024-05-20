@@ -92,8 +92,8 @@ namespace WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetMeetingsByAttributes(
             [FromBody] string? role,
-            [FromQuery] int? meetingId,
-            [FromQuery] string? meetingName,
+            [FromQuery] int? tripId,
+            [FromQuery] string? tripName,
             [FromQuery] DateTime? registrationDeadline,
             [FromQuery] DateTime? startDate,
             [FromQuery] DateTime? endDate,
@@ -111,9 +111,9 @@ namespace WebAPI.Controllers
                 {
                     isMemberOrGuest = true;
                 }
-                var result = await _fieldTripService.GetSortedMeetings(
-                    meetingId: meetingId,
-                    meetingName: meetingName,
+                var result = await _fieldTripService.GetSortedFieldTrips(
+                    tripId: tripId,
+                    tripName: tripName,
                     registrationDeadline: registrationDeadline,
                     startDate: startDate,
                     endDate: endDate,
@@ -129,7 +129,7 @@ namespace WebAPI.Controllers
                     return NotFound(new
                     {
                         Status = false,
-                        ErrorMessage = "List of Meetings Not Found!"
+                        ErrorMessage = "List of FieldTrips Not Found!"
                     });
                 }
 
