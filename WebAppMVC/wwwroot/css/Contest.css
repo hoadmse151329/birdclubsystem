@@ -787,7 +787,7 @@
 }
 
     .member-contest-post .overlap-wrapper {
-        background-color: #ffffff;
+        background-color: transparent;
         overflow: hidden;
         width: 1440px;
         height: 100%;

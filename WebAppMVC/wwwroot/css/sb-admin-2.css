@@ -2348,36 +2348,36 @@ fieldset:disabled a.btn {
 }
 
 .btn-primary {
-  color: #fff;
-  background-color: #4e73df;
-  border-color: #4e73df;
+  color: black;
+  background-color: palegreen;
+  border-color: black;
 }
 
 .btn-primary:hover {
-  color: #fff;
-  background-color: #2e59d9;
-  border-color: #2653d4;
+  color: black;
+  background-color: springgreen;
+  border-color: black;
 }
 
-.btn-primary:focus, .btn-primary.focus {
-  color: #fff;
-  background-color: #2e59d9;
-  border-color: #2653d4;
-  box-shadow: 0 0 0 0.2rem rgba(105, 136, 228, 0.5);
-}
+    .btn-primary:focus, .btn-primary.focus {
+        color: black;
+        background-color: springgreen;
+        border-color: black;
+        box-shadow: 0 0 0 0.2rem rgba(105, 136, 228, 0.5);
+    }
 
-.btn-primary.disabled, .btn-primary:disabled {
-  color: #fff;
-  background-color: #4e73df;
-  border-color: #4e73df;
-}
+    .btn-primary.disabled, .btn-primary:disabled {
+        color: black;
+        background-color: springgreen;
+        border-color: black;
+    }
 
-.btn-primary:not(:disabled):not(.disabled):active, .btn-primary:not(:disabled):not(.disabled).active,
-.show > .btn-primary.dropdown-toggle {
-  color: #fff;
-  background-color: #2653d4;
-  border-color: #244ec9;
-}
+    .btn-primary:not(:disabled):not(.disabled):active, .btn-primary:not(:disabled):not(.disabled).active,
+    .show > .btn-primary.dropdown-toggle {
+        color: black;
+        background-color: springgreen;
+        border-color: black;
+    }
 
 .btn-primary:not(:disabled):not(.disabled):active:focus, .btn-primary:not(:disabled):not(.disabled).active:focus,
 .show > .btn-primary.dropdown-toggle:focus {
@@ -11268,8 +11268,11 @@ body1.sidebar-toggled footer.sticky-footer {
   width: 100%;
 }
 .filter-group {
-    border: none;
     margin-bottom: 20px;
+    border: 0;
+    border-bottom: 2px dashed black;
+    margin: 1.25rem 0 0;
+    padding: 0 0 1.25rem;
 }
 
     .filter-group legend {
@@ -11291,8 +11294,6 @@ body1.sidebar-toggled footer.sticky-footer {
     font-size: 14px;
     padding: 0;
 }
-
-    .toggle-btn:hover {
-        text-decoration: underline;
-        color:palegreen;
-    }
+.extra-checkbox {
+    display: none;
+}

@@ -106,20 +106,18 @@
 
             // Toggle functionality for filter checkboxes
             $('.toggle-btn').on('click', function (event) {
-                event.preventDefault(); // Prevent the default behavior of the button
-
                 var fieldset = $(this).closest('.filter-group');
                 var checkBoxes = fieldset.find('.input-group');
 
                 var isExpanded = $(this).attr('aria-expanded') === 'true';
 
-                if (isExpanded) {
-                    checkBoxes.slice(3).hide();
-                    $(this).attr('aria-expanded', 'false').find('span').text('More');
-                } else {
-                    checkBoxes.show();
-                    $(this).attr('aria-expanded', 'true').find('span').text('Less');
-                }
+                //if (isExpanded) {
+                //    checkBoxes.slice(3).hide();
+                //    $(this).attr('aria-expanded', 'false').find('span').text('More');
+                //} else {
+                //    checkBoxes.show();
+                //    $(this).attr('aria-expanded', 'true').find('span').text('Less');
+                //}
             });
 
             // Initialize toggle button states
