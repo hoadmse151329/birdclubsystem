@@ -2377,23 +2377,6 @@ body .lb-cancel {
         color: #f62;
     }
 
-    .stars label.star.star-1 {
-        padding-left: 0;
-    }
-
-    .stars label.star {
-        float: right;
-        padding: 0 10px;
-        font-size: 25px;
-        color: #444;
-        transition: all 0.2s;
-    }
-
-        .stars label.star::before {
-            content: "\f005";
-            font-family: FontAwesome;
-        }
-
 #detailsModal .heading {
     font-size: 1.5rem;
 }
