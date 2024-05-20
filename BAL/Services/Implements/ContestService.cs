@@ -38,7 +38,7 @@ namespace BAL.Services.Implements
                 contest.NumberOfParticipants = contest.NumberOfParticipantsLimit - partAmount;
                 contest.Address = locationName;
 
-                contest.ContestPictures = (media != null) ? _mapper.Map<IEnumerable<ContestMediaViewModel>>(media).ToList() : null;
+                contest.ContestPictures = (media.Count() > 0) ? _mapper.Map<IEnumerable<ContestMediaViewModel>>(media).ToList() : contest.ContestPictures;
 
                 string[] temp = locationName.Split(",");
 
@@ -46,6 +46,20 @@ namespace BAL.Services.Implements
                 contest.Street = temp[1];
                 contest.District = temp[2];
                 contest.City = temp[3];
+                foreach (var picture in contest.ContestPictures.ToList())
+                {
+                    if (picture.Type == "Spotlight")
+                    {
+                        contest.SpotlightImage = picture;
+                        contest.ContestPictures.Remove(picture);
+                    }
+                    else
+                    if (picture.Type == "LocationMap")
+                    {
+                        contest.LocationMapImage = picture;
+                        contest.ContestPictures.Remove(picture);
+                    }
+                }
                 return contest;
             }
             return null;
@@ -61,8 +75,8 @@ namespace BAL.Services.Implements
                 {
                     if (item.ContestId == itemview.ContestId)
                     {
-                        var media = await _unitOfWork.ContestMediaRepository.GetContestMediasByContestId(item.ContestId);
-                        itemview.ContestPictures = (media != null) ? _mapper.Map<IEnumerable<ContestMediaViewModel>>(media).ToList() : null;
+                        var media = await _unitOfWork.ContestMediaRepository.GetContestMediaByContestIdAndType(item.ContestId, "Spotlight");
+                        itemview.SpotlightImage = (media != null) ? _mapper.Map<ContestMediaViewModel>(media) : itemview.SpotlightImage;
 
                         locationName = await _unitOfWork.LocationRepository.GetLocationNameById(item.LocationId.Value);
 
@@ -77,6 +91,67 @@ namespace BAL.Services.Implements
             
             return listcontestview;
         }
+
+        public async Task<IEnumerable<ContestViewModel>?> GetSortedContests(int? tripId, string? tripName, DateTime? registrationDeadline, DateTime? startDate, DateTime? endDate, int? numberOfParticipants, int? reqMinElo, int? reqMaxElo, List<string>? roads, List<string>? districts, List<string>? cities, List<string>? statuses, string? orderBy, bool isMemberOrGuest = false)
+        {
+            var listcontest = _unitOfWork.ContestRepository.GetSortedContests(
+                tripId,
+                tripName,
+                registrationDeadline,
+                startDate,
+                endDate,
+                numberOfParticipants,
+                reqMinElo,
+                reqMaxElo,
+                roads,
+                districts,
+                cities,
+                statuses,
+                orderBy,
+                isMemberOrGuest
+                );
+            var listcontestview = _mapper.Map<IEnumerable<ContestViewModel>>(_unitOfWork.ContestRepository.GetSortedContests(
+                tripId,
+                tripName,
+                registrationDeadline,
+                startDate,
+                endDate,
+                numberOfParticipants,
+                reqMinElo,
+                reqMaxElo,
+                roads,
+                districts,
+                cities,
+                statuses,
+                orderBy,
+                isMemberOrGuest
+                ));
+            string locationName;
+            foreach (var itemview in listcontestview)
+            {
+                foreach (var item in listcontest)
+                {
+                    if (item.ContestId == itemview.ContestId)
+                    {
+                        //int partAmount = await _unitOfWork.MeetingParticipantRepository.GetCountMeetingParticipantsByMeetId(meet.MeetingId);
+                        var media = await _unitOfWork.ContestMediaRepository.GetContestMediaByContestIdAndType(item.ContestId, "SpotlightImage");
+                        itemview.SpotlightImage = (media != null) ? _mapper.Map<ContestMediaViewModel>(media) : itemview.SpotlightImage;
+
+                        locationName = await _unitOfWork.LocationRepository.GetLocationNameById(item.LocationId.Value);
+
+                        itemview.Address = locationName;
+
+                        string[] temp = locationName.Split(",");
+                        itemview.AreaNumber = temp[0];
+                        itemview.Street = temp[1];
+                        itemview.District = temp[2];
+                        itemview.City = temp[3];
+                    }
+                }
+            }
+            return listcontestview;
+        }
+
         public void Create(ContestViewModel entity)
         {
             var loc = _unitOfWork.LocationRepository.GetLocationByName(entity.Address.Trim()).Result;

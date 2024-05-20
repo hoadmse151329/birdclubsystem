@@ -22,6 +22,7 @@ namespace BAL.ViewModels
             Status = "OnHold";
             MeetingPictures = new List<MeetingMediaViewModel>();
             NumberOfParticipants = 0;
+            NumberOfParticipantsLimit = 10;
         }
         public int? MeetingId { get; set; }
         [Required(ErrorMessage = "Meeting Name is required")]
@@ -53,7 +54,7 @@ namespace BAL.ViewModels
         public int? NumberOfParticipants { get; set; }
         [Required(ErrorMessage = "Maximum Participants is required")]
         [DisplayName("Maximum Participants")]
-        [Range(3,int.MaxValue,ErrorMessage = "Maximum Participants value must be at least three people")]
+        [Range(10,200,ErrorMessage = "Maximum Participants value must be at least {minimum} people and less than 200 people")]
         public int? NumberOfParticipantsLimit { get; set; }
         [DisplayName("Participant Number")]
         public int? ParticipationNo { get; set; }

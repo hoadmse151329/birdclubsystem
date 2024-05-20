@@ -144,6 +144,7 @@ namespace WebAppMVC.Controllers
 
         [HttpGet("Index/Filter")]
         public async Task<IActionResult> IndexFilter(
+            [FromQuery] string? eloRange,
             [FromQuery] List<string>? road,
             [FromQuery] List<string>? district,
             [FromQuery] List<string>? city
@@ -154,6 +155,14 @@ namespace WebAppMVC.Controllers
 
             ContestIndexVM contestFilteredVM = new();
 
+            if (eloRange != null && !string.IsNullOrEmpty(eloRange.Trim()))
+            {
+                string[] eloFilter = eloRange.Split("--");
+                string minElo = eloFilter[0];
+                string maxElo = eloFilter[1];
+                ContestAPI_URL += $"reqMinElo={Uri.EscapeDataString(minElo.Trim())}&reqMaxElo={Uri.EscapeDataString(maxElo.Trim())}";
+                contestFilteredVM.SelectedReqEloRange = methcall.GetReqEloRangeSelectableList(eloRange);
+            }
             if (road != null && road.Any())
             {
                 foreach (var selectedRoad in road)

@@ -12,5 +12,6 @@ namespace DAL.Repositories.Interfaces
     {
         Task<ContestMedia> GetContestMediaById(int contestId, int pictureId);
         Task<IEnumerable<ContestMedia>> GetContestMediasByContestId(int contestId);
+        Task<ContestMedia> GetContestMediaByContestIdAndType(int contestId, string mediaType);
     }
 }

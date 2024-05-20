@@ -25,6 +25,7 @@ namespace BAL.ViewModels
             FieldtripInclusions = new List<FieldtripInclusionViewModel>();
             FieldtripDaybyDays = new List<FieldtripDaybyDayViewModel>();
             NumberOfParticipants = 0;
+            NumberOfParticipantsLimit = 10;
         }
         public int? TripId { get; set; }
         [Required(ErrorMessage = "Fieldtrip Name is required")]
@@ -70,7 +71,7 @@ namespace BAL.ViewModels
         public int? NumberOfParticipants { get; set; }
         [Required(ErrorMessage = "Maximum Participants is required")]
         [DisplayName("Maximum Participants")]
-        [Range(3, int.MaxValue, ErrorMessage = "Maximum Participants must be at least three people")]
+        [Range(10, 200, ErrorMessage = "Maximum Participants must be at least {minimum} people and less than 200 people")]
         public int? NumberOfParticipantsLimit { get; set; }
         [Required(ErrorMessage = "Fee is required")]
         [DisplayName("Fee")]

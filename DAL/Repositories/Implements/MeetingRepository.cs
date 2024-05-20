@@ -87,20 +87,20 @@ namespace DAL.Repositories.Implements
             }
             if (roadLocationIds.Any())
             {
-                meetings = meetings.Where(m => roadLocationIds.Contains(m.LocationId.Value));
+                meetings = meetings.AsNoTracking().Where(m => roadLocationIds.Contains(m.LocationId.Value));
             }
             if (districtLocationIds.Any())
             {
-                meetings = meetings.Where(m => districtLocationIds.Contains(m.LocationId.Value));
+                meetings = meetings.AsNoTracking()  .Where(m => districtLocationIds.Contains(m.LocationId.Value));
             }
 
             if (cityLocationIds.Any())
             {
-                meetings = meetings.Where(m => cityLocationIds.Contains(m.LocationId.Value));
+                meetings = meetings.AsNoTracking().Where(m => cityLocationIds.Contains(m.LocationId.Value));
             }
             if (statuses != null && statuses.Any())
             {
-                meetings = meetings.Where(m => statuses.Contains(m.Status));
+                meetings = meetings.AsNoTracking().Where(m => statuses.Contains(m.Status));
             }
             meetings = orderBy switch
             {

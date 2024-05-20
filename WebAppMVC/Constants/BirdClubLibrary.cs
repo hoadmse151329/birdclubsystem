@@ -278,6 +278,59 @@ namespace WebAppMVC.Constants
             }
             return defaultBirdStatus;
         }
+        public List<SelectListItem> GetReqEloRangeSelectableList(string selectedReqEloRange)
+        {
+            List<SelectListItem> defaultReqEloRange = new();
+            switch (selectedReqEloRange)
+            {
+                case var value when value.Equals(Constants.REQUIRED_ELO_RANGE_DEFAULT):
+                    {
+                        defaultReqEloRange.Add(new SelectListItem { Text = Constants.REQUIRED_ELO_RANGE_DEFAULT_NAME, Value = Constants.REQUIRED_ELO_RANGE_DEFAULT, Selected = true });
+                        defaultReqEloRange.Add(new SelectListItem { Text = Constants.REQUIRED_ELO_RANGE_BELOW_1000_NAME, Value = Constants.REQUIRED_ELO_RANGE_BELOW_1000 });
+                        defaultReqEloRange.Add(new SelectListItem { Text = Constants.REQUIRED_ELO_RANGE_1000_TO_1500_NAME, Value = Constants.REQUIRED_ELO_RANGE_1000_TO_1500 });
+                        defaultReqEloRange.Add(new SelectListItem { Text = Constants.REQUIRED_ELO_RANGE_1500_TO_2000_NAME, Value = Constants.REQUIRED_ELO_RANGE_1500_TO_2000 });
+                        defaultReqEloRange.Add(new SelectListItem {Text = Constants.REQUIRED_ELO_RANGE_ABOVE_2000_NAME, Value = Constants.REQUIRED_ELO_RANGE_ABOVE_2000 });
+                        break;
+                    }
+                case var value when value.Equals(Constants.REQUIRED_ELO_RANGE_BELOW_1000):
+                    {
+                        defaultReqEloRange.Add(new SelectListItem { Text = Constants.REQUIRED_ELO_RANGE_DEFAULT_NAME, Value = Constants.REQUIRED_ELO_RANGE_DEFAULT });
+                        defaultReqEloRange.Add(new SelectListItem { Text = Constants.REQUIRED_ELO_RANGE_BELOW_1000_NAME, Value = Constants.REQUIRED_ELO_RANGE_BELOW_1000, Selected = true });
+                        defaultReqEloRange.Add(new SelectListItem { Text = Constants.REQUIRED_ELO_RANGE_1000_TO_1500_NAME, Value = Constants.REQUIRED_ELO_RANGE_1000_TO_1500 });
+                        defaultReqEloRange.Add(new SelectListItem { Text = Constants.REQUIRED_ELO_RANGE_1500_TO_2000_NAME, Value = Constants.REQUIRED_ELO_RANGE_1500_TO_2000 });
+                        defaultReqEloRange.Add(new SelectListItem { Text = Constants.REQUIRED_ELO_RANGE_ABOVE_2000_NAME, Value = Constants.REQUIRED_ELO_RANGE_ABOVE_2000 });
+                        break;
+                    }
+                case var value when value.Equals(Constants.REQUIRED_ELO_RANGE_1000_TO_1500):
+                    {
+                        defaultReqEloRange.Add(new SelectListItem { Text = Constants.REQUIRED_ELO_RANGE_DEFAULT_NAME, Value = Constants.REQUIRED_ELO_RANGE_DEFAULT });
+                        defaultReqEloRange.Add(new SelectListItem { Text = Constants.REQUIRED_ELO_RANGE_BELOW_1000_NAME, Value = Constants.REQUIRED_ELO_RANGE_BELOW_1000 });
+                        defaultReqEloRange.Add(new SelectListItem { Text = Constants.REQUIRED_ELO_RANGE_1000_TO_1500_NAME, Value = Constants.REQUIRED_ELO_RANGE_1000_TO_1500, Selected = true });
+                        defaultReqEloRange.Add(new SelectListItem { Text = Constants.REQUIRED_ELO_RANGE_1500_TO_2000_NAME, Value = Constants.REQUIRED_ELO_RANGE_1500_TO_2000 });
+                        defaultReqEloRange.Add(new SelectListItem { Text = Constants.REQUIRED_ELO_RANGE_ABOVE_2000_NAME, Value = Constants.REQUIRED_ELO_RANGE_ABOVE_2000 });
+                        break;
+                    }
+                case var value when value.Equals(Constants.REQUIRED_ELO_RANGE_1500_TO_2000):
+                    {
+                        defaultReqEloRange.Add(new SelectListItem { Text = Constants.REQUIRED_ELO_RANGE_DEFAULT_NAME, Value = Constants.REQUIRED_ELO_RANGE_DEFAULT });
+                        defaultReqEloRange.Add(new SelectListItem { Text = Constants.REQUIRED_ELO_RANGE_BELOW_1000_NAME, Value = Constants.REQUIRED_ELO_RANGE_BELOW_1000 });
+                        defaultReqEloRange.Add(new SelectListItem { Text = Constants.REQUIRED_ELO_RANGE_1000_TO_1500_NAME, Value = Constants.REQUIRED_ELO_RANGE_1000_TO_1500 });
+                        defaultReqEloRange.Add(new SelectListItem { Text = Constants.REQUIRED_ELO_RANGE_1500_TO_2000_NAME, Value = Constants.REQUIRED_ELO_RANGE_1500_TO_2000, Selected = true });
+                        defaultReqEloRange.Add(new SelectListItem { Text = Constants.REQUIRED_ELO_RANGE_ABOVE_2000_NAME, Value = Constants.REQUIRED_ELO_RANGE_ABOVE_2000 });
+                        break;
+                    }
+                case var value when value.Equals(Constants.REQUIRED_ELO_RANGE_ABOVE_2000):
+                    {
+                        defaultReqEloRange.Add(new SelectListItem { Text = Constants.REQUIRED_ELO_RANGE_DEFAULT_NAME, Value = Constants.REQUIRED_ELO_RANGE_DEFAULT });
+                        defaultReqEloRange.Add(new SelectListItem { Text = Constants.REQUIRED_ELO_RANGE_BELOW_1000_NAME, Value = Constants.REQUIRED_ELO_RANGE_BELOW_1000 });
+                        defaultReqEloRange.Add(new SelectListItem { Text = Constants.REQUIRED_ELO_RANGE_1000_TO_1500_NAME, Value = Constants.REQUIRED_ELO_RANGE_1000_TO_1500 });
+                        defaultReqEloRange.Add(new SelectListItem { Text = Constants.REQUIRED_ELO_RANGE_1500_TO_2000_NAME, Value = Constants.REQUIRED_ELO_RANGE_1500_TO_2000 });
+                        defaultReqEloRange.Add(new SelectListItem { Text = Constants.REQUIRED_ELO_RANGE_ABOVE_2000_NAME, Value = Constants.REQUIRED_ELO_RANGE_ABOVE_2000, Selected = true });
+                        break;
+                    }
+            }
+            return defaultReqEloRange;
+        }
 
         public T GetValidationTempData<T>(
             ControllerBase context,

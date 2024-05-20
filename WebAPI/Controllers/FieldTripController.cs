@@ -87,10 +87,10 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("Search")]
-        [ProducesResponseType(typeof(List<MeetingViewModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(List<FieldTripViewModel>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> GetMeetingsByAttributes(
+        public async Task<IActionResult> GetFieldTripsByAttributes(
             [FromBody] string? role,
             [FromQuery] int? tripId,
             [FromQuery] string? tripName,
