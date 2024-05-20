@@ -189,11 +189,11 @@ namespace WebAppMVC.Controllers
         {
             ManagerAPI_URL += "Meeting/" + id + "/Update";
 
-            if (updateMeeting.Status.Equals(Constants.Constants.EVENT_STATUS_NAME_CLOSED_REGISTRATION) && (updateMeeting.NumberOfParticipantsLimit - updateMeeting.NumberOfParticipants) < 10)
+            if (updateMeeting.Status.Equals(Constants.Constants.EVENT_STATUS_CLOSED_REGISTRATION) && (updateMeeting.NumberOfParticipantsLimit - updateMeeting.NumberOfParticipants) < 10)
             {
                 ModelState.AddModelError("updateMeeting.Status", "Error while processing your request (Updating Meeting).\n Not enough people to closed registration");
-                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_CONTEST_VALID, updateMeeting, jsonOptions);
-                return RedirectToAction("ManagerMeetingDetail", "Manager", new { id });
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_MEETING_VALID, updateMeeting, jsonOptions);
+                return RedirectToAction("ManagerMeetingDetail", new { id });
             }
             if (!ModelState.IsValid)
             {
@@ -498,11 +498,11 @@ namespace WebAppMVC.Controllers
             )
         {
             ManagerAPI_URL += "FieldTrip/" + id + "/Update";
-            if (updateTrip.Status.Equals(Constants.Constants.EVENT_STATUS_NAME_CLOSED_REGISTRATION) && (updateTrip.NumberOfParticipantsLimit - updateTrip.NumberOfParticipants) < 10)
+            if (updateTrip.Status.Equals(Constants.Constants.EVENT_STATUS_CLOSED_REGISTRATION) && (updateTrip.NumberOfParticipantsLimit - updateTrip.NumberOfParticipants) < 10)
             {
                 ModelState.AddModelError("updateTrip.Status", "Error while processing your request (Updating FieldTrip).\n Not enough people to closed registration");
-                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_CONTEST_VALID, updateTrip, jsonOptions);
-                return RedirectToAction("ManagerFieldTripDetail", "Manager", new { id });
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_FIELDTRIP_VALID, updateTrip, jsonOptions);
+                return RedirectToAction("ManagerFieldTripDetail", new { id });
             }
             if (!ModelState.IsValid)
             {
@@ -1237,11 +1237,11 @@ namespace WebAppMVC.Controllers
         {
             string ManagerContestDetailAPI_URL = ManagerAPI_URL + "Contest/AllParticipants/" + id;
             ManagerAPI_URL += "Contest/Update/" + id;
-            if(updateContest.Status.Equals(Constants.Constants.EVENT_STATUS_NAME_CLOSED_REGISTRATION) && (updateContest.NumberOfParticipantsLimit - updateContest.NumberOfParticipants) < 10)
+            if(updateContest.Status.Equals(Constants.Constants.EVENT_STATUS_CLOSED_REGISTRATION) && (updateContest.NumberOfParticipantsLimit - updateContest.NumberOfParticipants) < 10)
             {
                 ModelState.AddModelError("updateContest.Status", "Error while processing your request (Updating Contest).\n Not enough people to closed registration");
                 TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_CONTEST_VALID, updateContest, jsonOptions);
-                return RedirectToAction("ManagerContestDetail", "Manager", new { id });
+                return RedirectToAction("ManagerContestDetail", new { id });
             }
             if (!ModelState.IsValid)
             {

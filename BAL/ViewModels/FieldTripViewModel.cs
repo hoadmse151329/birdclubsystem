@@ -68,11 +68,11 @@ namespace BAL.ViewModels
         [DisplayName("Status")]
         public string? Status { get; set; }
         [DisplayName("Number Of Participants")]
-        public int? NumberOfParticipants { get; set; }
+        public int NumberOfParticipants { get; set; }
         [Required(ErrorMessage = "Maximum Participants is required")]
         [DisplayName("Maximum Participants")]
-        [Range(10, 200, ErrorMessage = "Maximum Participants must be at least {minimum} people and less than 200 people")]
-        public int? NumberOfParticipantsLimit { get; set; }
+        [Range(10, 200, ErrorMessage = "Maximum Participants must be at least 10 people and less than 200 people")]
+        public int NumberOfParticipantsLimit { get; set; }
         [Required(ErrorMessage = "Fee is required")]
         [DisplayName("Fee")]
         [Range(5000, int.MaxValue, ErrorMessage = "Fee must be at least 5000đ")]
