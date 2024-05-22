@@ -187,6 +187,7 @@ namespace WebAppMVC.Controllers
 			else
 			{
                 _logger.LogInformation("Member Login Successful: " + TempData[Constants.Constants.ROLE_NAME] + " , Id: " + TempData[Constants.Constants.USR_ID]);
+				TempData["NotificationMessage"] = "Logged in as Member!";
                 return base.Redirect(Constants.Constants.MEMBER_URL);
 			}
 		}
@@ -318,6 +319,9 @@ namespace WebAppMVC.Controllers
 
             if (!TryValidateModel(newmemRequest))
             {
+                string? role = HttpContext.Session.GetString(Constants.Constants.ROLE_NAME);
+                if (role == null) role = "Guest";
+                TempData[Constants.Constants.ROLE_NAME] = role;
                 ViewBag.Error =
                 "Error while processing your request! (Registering New Member!).\n Validation Failed!";
                 return View("Register");

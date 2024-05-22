@@ -44,6 +44,8 @@ namespace DAL.Models
         public string? Status { get; set; }
         [Column("numberOfParticipants")]
         public int? NumberOfParticipants { get; set; }
+        [Column("numberOfParticipantsMinReq")]
+        public int? NumberOfParticipantsMinReq { get; set; }
         [Column("numberOfParticipantsLimit")]
         public int? NumberOfParticipantsLimit { get; set; }
         [Column("fee")]

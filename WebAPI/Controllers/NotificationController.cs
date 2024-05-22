@@ -29,17 +29,17 @@ namespace WebAPI.Controllers
         [ProducesResponseType(typeof(List<NotificationViewModel>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> GetNotificationByUserId([FromBody] int id)
+        public async Task<IActionResult> GetNotificationByMemberId([FromBody] string id)
         {
             try
             {
-                var mem = await _userService.GetBoolById(id);
-                if (!mem) return NotFound(new
+                var mem = await _userService.GetByMemberId(id);
+                if (mem == null) return NotFound(new
                 {
                     Status = false,
                     ErrorMessage = "Member Not Found!"
                 });
-                var result = await _notificationService.GetAllNotificationsByUserId(id);
+                var result = await _notificationService.GetAllNotificationsByMemberId(id);
                 if (result == null)
                 {
                     return NotFound(new

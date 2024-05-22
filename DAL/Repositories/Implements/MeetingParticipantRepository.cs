@@ -55,7 +55,7 @@ namespace DAL.Repositories.Implements
         public async Task<IEnumerable<MeetingParticipant>> GetMeetingParticipantsByMeetId(int meetingId)
         {
             return _context.MeetingParticipants
-                .Where(m => m.MeetingId == meetingId).Include(m => m.MemberDetail).OrderBy(p => p.ParticipantNo)
+                .Where(m => m.MeetingId == meetingId).Include(m => m.MemberDetail).OrderBy(p => Convert.ToInt32(p.ParticipantNo))
                 /*.Select(x => new MeetingParticipant
                 {
                     MeetingId= x.MeetingId,

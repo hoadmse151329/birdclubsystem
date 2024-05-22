@@ -60,6 +60,8 @@ namespace DAL.Models
         public int? NumberOfParticipants { get; set; }
         [Column("clubId")]
         public int? ClubId { get; set; }
+        [Column("numberOfParticipantsMinReq")]
+        public int? NumberOfParticipantsMinReq { get; set; }
         [Column("numberOfParticipantsLimit")]
         public int? NumberOfParticipantsLimit { get; set; }
 
