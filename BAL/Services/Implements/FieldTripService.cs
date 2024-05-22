@@ -50,6 +50,7 @@ namespace BAL.Services.Implements
         public async Task<IEnumerable<FieldTripViewModel>?> GetSortedFieldTrips(
             int? tripId, 
             string? tripName, 
+            DateTime? openRegistration,
             DateTime? registrationDeadline, 
             DateTime? startDate, 
             DateTime? endDate, 
@@ -64,6 +65,7 @@ namespace BAL.Services.Implements
             var listtrip = _unitOfWork.FieldTripRepository.GetSortedFieldTrips(
                 tripId,
                 tripName,
+                openRegistration,
                 registrationDeadline,
                 startDate,
                 endDate,
@@ -78,6 +80,7 @@ namespace BAL.Services.Implements
             var listtripview = _mapper.Map<IEnumerable<FieldTripViewModel>>(_unitOfWork.FieldTripRepository.GetSortedFieldTrips(
                 tripId,
                 tripName,
+                openRegistration,
                 registrationDeadline,
                 startDate,
                 endDate,

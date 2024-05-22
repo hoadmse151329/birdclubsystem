@@ -15,6 +15,7 @@ namespace DAL.Repositories.Interfaces
         IEnumerable<FieldTrip> GetSortedFieldTrips(
             int? tripId,
             string? tripName,
+            DateTime? openRegistration, 
             DateTime? registrationDeadline,
             DateTime? startDate,
             DateTime? endDate,

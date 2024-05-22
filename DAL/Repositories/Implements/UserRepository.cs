@@ -21,7 +21,7 @@ namespace DAL.Repositories.Implements
         public async Task<User?> GetByEmail(string email)
         {
             if(_context.Members.AsNoTracking().SingleOrDefault(mem => mem.Email == email) != null)
-            return _context.Users.AsNoTrackingWithIdentityResolution().Include(usr => usr.MemberDetail).SingleOrDefault(usr => usr.MemberDetail.Email == email);
+                return _context.Users.AsNoTrackingWithIdentityResolution().Include(usr => usr.MemberDetail).SingleOrDefault(usr => usr.MemberDetail.Email == email);
             return null;
         }
 

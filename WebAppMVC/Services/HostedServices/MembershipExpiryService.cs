@@ -21,6 +21,10 @@ namespace WebAppMVC.Services.HostedServices
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly IConfiguration _config;
         private Timer _timer;
+        private int accStatusUpdateExpired = 0;
+        private int meetingStatusUpdatedToOpen = 0;
+        private int meetingStatusUpdatedToClosed = 0;
+        private DateTime today = DateTime.UtcNow;
         private readonly string MembershipAPI_URL = "/api/Member/All/Role/Member";
         private readonly string MembershipUpdateAPI_URL = "/api/Member/Update/Status";
         private readonly MediaTypeWithQualityHeaderValue contentType = new("application/json");
@@ -51,8 +55,6 @@ namespace WebAppMVC.Services.HostedServices
             using (var scope = _scopeFactory.CreateScope())
             {
                 var _systemLoginService = scope.ServiceProvider.GetRequiredService<ISystemLoginService>();
-                var today = DateTime.UtcNow;
-                int accStatusUpdateExpired = 0;
 
                 var client = _httpClientFactory.CreateClient();
 
