@@ -14,6 +14,7 @@ namespace DAL.Repositories.Interfaces
         IEnumerable<Contest> GetSortedContests(
             int? contestId,
             string? contestName,
+            DateTime? openRegistration,
             DateTime? registrationDeadline,
             DateTime? startDate,
             DateTime? endDate,

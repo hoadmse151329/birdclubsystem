@@ -87,14 +87,19 @@ namespace WebAppMVC.Controllers
 		}
 		public async Task<IActionResult> GoogleResponse()
 		{
-			var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-			if (!result.Succeeded)
+			var result = await HttpContext.AuthenticateAsync(GoogleDefaults.AuthenticationScheme);
+            if (result.Failure != null)
+            {
+                ViewBag.error = "Error while registering your new account (Failed to Login By Google)";
+                return RedirectToAction("Login");
+            }
+            if (!result.Succeeded)
 			{
                 ViewBag.error = "Error while registering your new account (Failed to Login By Google)";
                 return RedirectToAction("Login");
 			}
-			
-			/*var claim = result.Principal.Identities.FirstOrDefault().Claims.Select(claim => new
+
+            /*var claim = result.Principal.Identities.FirstOrDefault().Claims.Select(claim => new
 			{
 				claim.Issuer,
 				claim.OriginalIssuer,
@@ -102,7 +107,7 @@ namespace WebAppMVC.Controllers
 				claim.Value,
 			});*/
 
-			var code = result.Properties.Items.FirstOrDefault(t => t.Key.Equals(Constants.Constants.GOOGLE_ACCESS_TOKEN_KEY_NAME)).Value;
+            var code = result.Properties.Items.FirstOrDefault(t => t.Key.Equals(Constants.Constants.GOOGLE_ACCESS_TOKEN_KEY_NAME)).Value;
 			if(code == null)
 			{
                 ViewBag.error = "Error while registering your new account (Failed to Get Login Token)";

@@ -45,7 +45,8 @@ namespace WebAppMVC
                 options.ClientId = configuration.GetSection(Constants.Constants.GOOGLE_CLIENT_ID).Value;
 				options.ClientSecret = configuration.GetSection(Constants.Constants.GOOGLE_CLIENT_SECRET).Value;
                 options.CallbackPath = Constants.Constants.GOOGLE_REDIRECT_URI_PATH;
-                options.SaveTokens = true;
+                options.AccessDeniedPath = Constants.Constants.LOGIN_URL;
+                options.SaveTokens = false;
             });
 
             // Add HttpClient
