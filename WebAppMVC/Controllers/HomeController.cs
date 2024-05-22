@@ -63,6 +63,7 @@ namespace WebAppMVC.Controllers
 
             string? role = HttpContext.Session.GetString("ROLE_NAME");
             if (role == null) role = "Guest";
+            else TempData["NotificationMessage"] = "Logged in as Member!";
 
             string? usrname = HttpContext.Session.GetString("USER_NAME");
 

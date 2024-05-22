@@ -48,6 +48,8 @@ namespace DAL.Models
         public string? Note { get; set; }
         [Column("numberOfParticipantsLimit")]
         public int? NumberOfParticipantsLimit { get; set; }
+        [Column("numberOfParticipantsMinReq")]
+        public int? NumberOfParticipantsMinReq { get; set; }
 
         [InverseProperty(nameof(MeetingMedia.MeetingDetail))]
         public virtual ICollection<MeetingMedia> MeetingPictures { get; set; }

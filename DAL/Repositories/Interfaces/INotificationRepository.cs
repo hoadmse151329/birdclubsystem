@@ -10,7 +10,7 @@ namespace DAL.Repositories.Interfaces
 {
     public interface INotificationRepository : IRepositoryBase<Notification>
     {
-        Task<IEnumerable<Notification>> GetAllNotificationsByUserId(int id);
+        Task<IEnumerable<Notification>> GetAllNotificationsByMemberId(string id);
         Task<IEnumerable<Notification>> UpdateAllNotificationStatus(List<Notification> notif);
         Task<int> GetCountUnreadNotificationsByMemberId(string id);
         Task<bool> GetBoolNotificationId(string id);

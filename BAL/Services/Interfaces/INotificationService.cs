@@ -9,7 +9,7 @@ namespace BAL.Services.Interfaces
 {
     public interface INotificationService
     {
-        Task<IEnumerable<NotificationViewModel>> GetAllNotificationsByUserId(int id);
+        Task<IEnumerable<NotificationViewModel>> GetAllNotificationsByMemberId(string id);
         void Create(NotificationViewModel notifModel);
         Task<bool> UpdateAllNotificationStatus(List<NotificationViewModel> listNotif);
         Task<int> GetCountUnreadNotificationsByMemberId(string id);

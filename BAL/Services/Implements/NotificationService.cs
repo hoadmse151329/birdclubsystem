@@ -21,10 +21,10 @@ namespace BAL.Services.Implements
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<NotificationViewModel>> GetAllNotificationsByUserId(int id)
+        public async Task<IEnumerable<NotificationViewModel>> GetAllNotificationsByMemberId(string id)
         {
             return _mapper.Map<IEnumerable<NotificationViewModel>>(await
-                _unitOfWork.NotificationRepository.GetAllNotificationsByUserId(id));
+                _unitOfWork.NotificationRepository.GetAllNotificationsByMemberId(id));
         }
 
         public void Create(NotificationViewModel notifModel)
