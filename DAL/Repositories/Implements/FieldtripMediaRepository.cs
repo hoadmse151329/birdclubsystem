@@ -32,5 +32,9 @@ namespace DAL.Repositories.Implements
         {
             return _context.FieldtripMedia.AsNoTracking().Where(f => f.TripId.Equals(tripId)).ToList();
         }
+        public async Task<FieldtripMedia> GetFieldTripMediaByFieldTripIdAndType(int tripId, string mediaType)
+        {
+            return _context.FieldtripMedia.AsNoTracking().SingleOrDefault(m => m.TripId.Equals(tripId) && m.Type.Equals(mediaType));
+        }
     }
 }

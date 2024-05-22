@@ -80,6 +80,17 @@ namespace WebAppMVC.Constants
         public readonly static string BIRD_STATUS_INACTIVE = "Inactive";
         public readonly static string BIRD_STATUS_UNAVAILABLE = "Unavailable";
 
+        public readonly static string REQUIRED_ELO_RANGE_DEFAULT_NAME = "Elo Range";
+        public readonly static string REQUIRED_ELO_RANGE_DEFAULT = "500--3000";
+        public readonly static string REQUIRED_ELO_RANGE_BELOW_1000_NAME = "Below 1000 Elo";
+        public readonly static string REQUIRED_ELO_RANGE_BELOW_1000 = "500--1000";
+        public readonly static string REQUIRED_ELO_RANGE_1000_TO_1500_NAME = "1000--1500 Elo";
+        public readonly static string REQUIRED_ELO_RANGE_1000_TO_1500 = "1000--1500";
+        public readonly static string REQUIRED_ELO_RANGE_1500_TO_2000_NAME = "1500--2000 Elo";
+        public readonly static string REQUIRED_ELO_RANGE_1500_TO_2000 = "1500--2000";
+        public readonly static string REQUIRED_ELO_RANGE_ABOVE_2000_NAME = "Above 2000 Elo";
+        public readonly static string REQUIRED_ELO_RANGE_ABOVE_2000 = "2000--3000";
+
         public readonly static string EVENT_PARTICIPANT_STATUS_NOT_CHECKED_IN = "Not Checked-In";
         public readonly static string EVENT_PARTICIPANT_STATUS_CHECKED_IN = "Checked-In";
 

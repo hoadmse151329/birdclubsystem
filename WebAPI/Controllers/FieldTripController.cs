@@ -85,6 +85,71 @@ namespace WebAPI.Controllers
                 });
             }
         }
+
+        [HttpPost("Search")]
+        [ProducesResponseType(typeof(List<FieldTripViewModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetFieldTripsByAttributes(
+            [FromBody] string? role,
+            [FromQuery] int? tripId,
+            [FromQuery] string? tripName,
+            [FromQuery] DateTime? registrationDeadline,
+            [FromQuery] DateTime? startDate,
+            [FromQuery] DateTime? endDate,
+            [FromQuery] int? numberOfParticipants,
+            [FromQuery] List<string>? road,
+            [FromQuery] List<string>? district,
+            [FromQuery] List<string>? city,
+            [FromQuery] List<string>? statuses,
+            [FromQuery] string? orderBy)
+        {
+            try
+            {
+                bool isMemberOrGuest = false;
+                if (!string.IsNullOrEmpty(role) && (role.Equals("Member") || role.Equals("Guest")))
+                {
+                    isMemberOrGuest = true;
+                }
+                var result = await _fieldTripService.GetSortedFieldTrips(
+                    tripId: tripId,
+                    tripName: tripName,
+                    registrationDeadline: registrationDeadline,
+                    startDate: startDate,
+                    endDate: endDate,
+                    numberOfParticipants: numberOfParticipants,
+                    roads: road,
+                    districts: district,
+                    cities: city,
+                    statuses: statuses,
+                    orderBy: orderBy,
+                    isMemberOrGuest);
+                if (result == null)
+                {
+                    return NotFound(new
+                    {
+                        Status = false,
+                        ErrorMessage = "List of FieldTrips Not Found!"
+                    });
+                }
+
+                return Ok(new
+                {
+                    Status = true,
+                    Data = result
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new
+                {
+                    Status = false,
+                    ErrorMessage = ex.Message,
+                    InnerExceptionMessage = ex.InnerException?.Message
+                });
+            }
+        }
+
         [HttpGet("{id:int}")]
         [ProducesResponseType(typeof(FieldTripViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

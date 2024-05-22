@@ -12,6 +12,20 @@ namespace BAL.Services.Interfaces
         Task<FieldTripViewModel?> GetById(int id);
         Task<FieldTripViewModel?> GetByIdWithoutInclude(int id);
         Task<IEnumerable<FieldTripViewModel>> GetAllFieldTrips(string? role);
+        Task<IEnumerable<FieldTripViewModel>?> GetSortedFieldTrips(
+            int? tripId,
+            string? tripName,
+            DateTime? registrationDeadline,
+            DateTime? startDate,
+            DateTime? endDate,
+            int? numberOfParticipants,
+            List<string>? roads,
+            List<string>? districts,
+            List<string>? cities,
+            List<string>? statuses,
+            string? orderBy,
+            bool isMemberOrGuest = false
+            );
         void Create(FieldTripViewModel entity);
         void Update(FieldTripViewModel entity);
         bool UpdateGettingThere(FieldtripGettingThereViewModel entity);

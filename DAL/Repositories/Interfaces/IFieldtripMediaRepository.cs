@@ -13,5 +13,6 @@ namespace DAL.Repositories.Interfaces
         Task<FieldtripMedia> GetFieldTripMediaById(int tripId, int pictureId);
         Task<FieldtripMedia> GetFieldTripMediaByIdTracking(int tripId, int pictureId);
         Task<IEnumerable<FieldtripMedia>> GetFieldTripMediasByTripId(int tripId);
+        Task<FieldtripMedia> GetFieldTripMediaByFieldTripIdAndType(int tripId, string mediaType);
     }
 }

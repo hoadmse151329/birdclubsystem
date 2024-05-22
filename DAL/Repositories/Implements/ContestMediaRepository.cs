@@ -27,5 +27,9 @@ namespace DAL.Repositories.Implements
         {
             return _context.ContestMedia.AsNoTracking().Where(c => c.ContestId.Equals(contestId)).ToList();
         }
+        public async Task<ContestMedia> GetContestMediaByContestIdAndType(int contestId, string mediaType)
+        {
+            return _context.ContestMedia.AsNoTracking().SingleOrDefault(m => m.ContestId.Equals(contestId) && m.Type.Equals(mediaType));
+        }
     }
 }

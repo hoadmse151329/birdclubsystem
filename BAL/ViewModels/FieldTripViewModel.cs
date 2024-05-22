@@ -25,6 +25,7 @@ namespace BAL.ViewModels
             FieldtripInclusions = new List<FieldtripInclusionViewModel>();
             FieldtripDaybyDays = new List<FieldtripDaybyDayViewModel>();
             NumberOfParticipants = 0;
+            NumberOfParticipantsLimit = 10;
         }
         public int? TripId { get; set; }
         [Required(ErrorMessage = "Fieldtrip Name is required")]
@@ -59,7 +60,7 @@ namespace BAL.ViewModels
         [DisplayName("Address")]
         [RegularExpression(@"^[a-zA-Z0-9\/?\s?]+,[a-zA-Z0-9\s?]+,[a-zA-Z0-9\s?]+,[a-zA-Z\s,?]{4,}$", ErrorMessage = "Address is Invalid, it must be writen in this format: Area Number,Street,District,City")]
         public string? Address { get; set; }
-        public int? AreaNumber { get; set; }
+        public string? AreaNumber { get; set; }
         public string? Street {  get; set; }
         public string? District { get; set; }
         public string? City { get; set; }
@@ -67,11 +68,11 @@ namespace BAL.ViewModels
         [DisplayName("Status")]
         public string? Status { get; set; }
         [DisplayName("Number Of Participants")]
-        public int? NumberOfParticipants { get; set; }
+        public int NumberOfParticipants { get; set; }
         [Required(ErrorMessage = "Maximum Participants is required")]
         [DisplayName("Maximum Participants")]
-        [Range(3, int.MaxValue, ErrorMessage = "Maximum Participants must be at least three people")]
-        public int? NumberOfParticipantsLimit { get; set; }
+        [Range(10, 200, ErrorMessage = "Maximum Participants must be at least 10 people and less than 200 people")]
+        public int NumberOfParticipantsLimit { get; set; }
         [Required(ErrorMessage = "Fee is required")]
         [DisplayName("Fee")]
         [Range(5000, int.MaxValue, ErrorMessage = "Fee must be at least 5000đ")]

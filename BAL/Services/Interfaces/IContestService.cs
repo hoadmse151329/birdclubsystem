@@ -11,6 +11,22 @@ namespace BAL.Services.Interfaces
     {
         Task<ContestViewModel?> GetById(int id);
         Task<IEnumerable<ContestViewModel>> GetAllContests(string? role);
+        Task<IEnumerable<ContestViewModel>?> GetSortedContests(
+            int? tripId,
+            string? tripName,
+            DateTime? registrationDeadline,
+            DateTime? startDate,
+            DateTime? endDate,
+            int? numberOfParticipants,
+            int? reqMinElo,
+            int? reqMaxElo,
+            List<string>? roads,
+            List<string>? districts,
+            List<string>? cities,
+            List<string>? statuses,
+            string? orderBy,
+            bool isMemberOrGuest = false
+            );
         void Create(ContestViewModel entity);
         void Update(ContestViewModel entity);
         Task<bool> GetBoolContestId(int id);

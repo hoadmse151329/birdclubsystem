@@ -1,0 +1,237 @@
+﻿@model WebAppMVC.Models.ViewModels.ContestIndexVM
+@{
+    ViewData["Title"] = "Contest Page";
+    List<BAL.ViewModels.ContestViewModel> contestList = Model.Contests;
+    List<string> roadNameList = Model.Roads;
+    List<string> districtNameList = Model.Districts;
+    List<string> cityNameList = Model.Cities;
+    List<string> selectedRoadNameList = Model.SelectedRoads;
+    List<string> selectedDistrictList = Model.SelectedDistricts;
+    List<string> selectedCityNameList = Model.SelectedCities;
+    List<SelectListItem> defaultReqEloRange = Model.SelectedReqEloRange;
+    string eloRange = defaultReqEloRange.FirstOrDefault().Value;
+}
+@{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+            referrerpolicy="no-referrer"></script>
+}
+<div class="row contain">
+    <div class="content__filter col-3">
+        <div class="content__filter-tabs-left">
+            <div class="tabs-left-title">
+                <h3 class="heading">Filter</h3>
+            </div>
+            <div class="tabs-left-filter" style="background-color:white">
+                <div class="input-group mb-3">
+                    <select class="custom-select" asp-for="@eloRange" asp-items="@defaultReqEloRange" id="inputGroupSelect02">
+                    </select>
+                </div>
+                <fieldset class="filter-group">
+                    <legend>Road</legend>
+                    <div class="checkboxes">
+                        @foreach (var data in roadNameList)
+                        {
+                            <div class="input-group">
+                                <div class="form-check">
+                                    <input class="form-check-input road-checkbox" type="checkbox" name="road" id="road_@data.Trim()" value="@data.Trim()" @(selectedRoadNameList.Contains(data.Trim()) ? "checked" : "")>
+                                    <label class="form-check-label" for="road_@data.Trim()">@data.Trim()</label>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    @if (roadNameList.Count() > 3)
+                    {
+                        <button class="toggle-btn btn-primary" aria-expanded="false" aria-label="Toggle More"><span>More</span></button>
+                    }
+                </fieldset>
+                <fieldset class="filter-group">
+                    <legend>District</legend>
+                    <div class="checkboxes">
+                        @foreach (var data in districtNameList)
+                        {
+                            <div class="input-group">
+                                <div class="form-check">
+                                    <input class="form-check-input district-checkbox" type="checkbox" name="district" id="district_@data.Trim()" value="@data.Trim()" @(selectedDistrictList.Contains(data.Trim()) ? "checked" : "")>
+                                    <label class="form-check-label" for="district_@data.Trim()">@data.Trim()</label>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    @if (districtNameList.Count() > 3)
+                    {
+                        <button class="toggle-btn btn-primary" aria-expanded="false" aria-label="Toggle More"><span>More</span></button>
+                    }
+                </fieldset>
+                <fieldset class="filter-group">
+                    <legend>City</legend>
+                    <div class="checkboxes">
+                        @foreach (var data in cityNameList)
+                        {
+                            <div class="input-group">
+                                <div class="form-check">
+                                    <input class="form-check-input city-checkbox" type="checkbox" name="city" id="city_@data.Trim()" value="@data.Trim()" @(selectedCityNameList.Contains(data.Trim()) ? "checked" : "")>
+                                    <label class="form-check-label" for="city_@data.Trim()">@data.Trim()</label>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    @if (cityNameList.Count() > 3)
+                    {
+                        <button class="toggle-btn btn-primary" aria-expanded="false" aria-label="Toggle More"><span>More</span></button>
+                    }
+                </fieldset>
+            </div>
+            <div class="col-bg">
+                <img class="bg-1" src="~/images/chao-mao.png"></img>
+                <img class="bg-2" src="~/images/chao-mao-2.png"></img>
+            </div>
+        </div>
+    </div>
+    <div class="col-9">
+        <div id="meeting-list" class="content__list row">
+            <!-- Render the initial meeting list -->
+            @foreach (var data in contestList)
+            {
+                <div class="col-4 p-0">
+                    <div class="club-item">
+
+                        <a href="#" class="club-image">
+                            @{
+                                if (data.SpotlightImage != null)
+                                {
+                                    <img class="img-fluid" src="@data.SpotlightImage.Image" alt="nt1">
+                                }
+                                else
+                                {
+                                    <img class="img-fluid" src="~/images/contest.png" alt="nt1">
+                                }
+                            }
+                        </a>
+                        <div class="club-title">
+                            <a href="@Url.Action("ContestPost", "Contest",new {id = data.ContestId})" class="text-decoration-none truncate">@data.ContestName</a>
+                        </div>
+
+                        <p class="club-price">
+                            <i class="fas fa-calendar-alt"></i>
+                            From @data.StartDate.ToString("MM-dd-yyyy")
+                            to @data.EndDate.ToString("MM-dd-yyyy")
+                        </p>
+                        <div class="club-address" data-toggle="tooltip" data-placement="auto"
+                             title="@data.City">
+                            <p class="address">
+                                <i class="fas fa-map-marker-alt" style="color:white"></i>
+                                <span class="district text-white truncate" id="address">Address @data.AreaNumber,@data.Street,@data.District,@data.City</span>
+                            </p>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <p class="address truncate text-white"><i class="fas fa-comment-alt"></i>@data.Description</p>
+                            <form asp-action="ContestPost" asp-controller="Contest" method="get" asp-route-id="@data.ContestId">
+                                <button class="button--primary text-black text-wrapper-16" type="submit">See Now</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="pagination mb-3">
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('.form-check-input').change(function () {
+            applyFilters();
+        });
+
+        function applyFilters() {
+            var selectedRoads = [];
+            var selectedDistricts = [];
+            var selectedCities = [];
+
+            // Collect selected checkboxes
+            $('input[name="road"]:checked').each(function () {
+                selectedRoads.push($(this).val());
+            });
+
+            $('input[name="district"]:checked').each(function () {
+                selectedDistricts.push($(this).val());
+            });
+
+            $('input[name="city"]:checked').each(function () {
+                selectedCities.push($(this).val());
+            });
+
+            var queryString = customParam({
+                road: selectedRoads,
+                district: selectedDistricts,
+                city: selectedCities
+            });
+            console.log(queryString);
+
+            // Make AJAX GET request to filter meetings
+            $.ajax({
+                url: '@Url.Action("IndexFilter", "Contest")' + '?' + queryString,
+                method: 'GET',
+                success: function (response) {
+                    renderMeetings(response);
+                }
+            });
+        }
+
+        function renderMeetings(meetingsHtml) {
+            var meetingList = $('#full-filter');
+            meetingList.html(meetingsHtml);
+        }
+
+        function customParam(object) {
+            var serializedParams = [];
+
+            function serialize(params, prefix) {
+                for (var key in params) {
+                    if (Object.prototype.hasOwnProperty.call(params, key)) {
+                        var paramKey = prefix ? prefix + "[" + key + "]" : key;
+                        var paramValue = params[key];
+
+                        if (typeof paramValue === "object") {
+                            serialize(paramValue, paramKey);
+                        } else {
+                            serializedParams.push(
+                                encodeURIComponent(paramKey) + "=" + encodeURIComponent(paramValue)
+                            );
+                        }
+                    }
+                }
+            }
+
+            serialize(object);
+
+            return serializedParams.join("&");
+        }
+
+        // Toggle functionality for filter checkboxes
+        $('.toggle-btn').on('click', function (event) {
+            var fieldset = $(this).closest('.filter-group');
+            var checkBoxes = fieldset.find('.input-group');
+
+            var isExpanded = $(this).attr('aria-expanded') === 'true';
+
+            if (isExpanded) {
+                checkBoxes.slice(3).hide();
+                $(this).attr('aria-expanded', 'false').find('span').text('More');
+            } else {
+                checkBoxes.show();
+                $(this).attr('aria-expanded', 'true').find('span').text('Less');
+            }
+        });
+
+        // Initialize toggle button states
+        $('.filter-group').each(function () {
+            var checkBoxes = $(this).find('.input-group');
+            if (checkBoxes.length <= 3) {
+                $(this).find('.toggle-btn').attr('aria-expanded', 'true').find('span').text('Less');
+            } else {
+                checkBoxes.slice(3).hide();
+            }
+        });
+    });
+</script>

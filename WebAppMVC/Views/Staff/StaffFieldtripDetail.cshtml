@@ -113,10 +113,18 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-5 text-md-right">
+                                            <label for="customer-name">Open Registration Date:</label>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <span>@detailsTrip.OpenRegistration.ToString("dd-MM-yyyy HH:mm")</span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-5 text-md-right">
                                             <label for="customer-name">Registration Deadlines:</label>
                                         </div>
                                         <div class="col-md-7">
-                                            <span>@detailsTrip.RegistrationDeadline.ToString("MM/dd/yyyy")</span>
+                                            <span>@detailsTrip.RegistrationDeadline.ToString("dd-MM-yyyy HH:mm")</span>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -124,7 +132,7 @@
                                             <label for="customer-name">Start Date:</label>
                                         </div>
                                         <div class="col-md-7">
-                                            <span>@detailsTrip.StartDate.ToString("MM/dd/yyyy")</span>
+                                            <span>@detailsTrip.StartDate.ToString("dd-MM-yyyy HH:mm")</span>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -132,7 +140,7 @@
                                             <label for="customer-name">End Date:</label>
                                         </div>
                                         <div class="col-md-7">
-                                            <span>@detailsTrip.EndDate.ToString("MM/dd/yyyy")</span>
+                                            <span>@detailsTrip.EndDate.ToString("dd-MM-yyyy HH:mm")</span>
                                         </div>
                                     </div>
                                     <div class="row mb-sm-2">
@@ -787,14 +795,14 @@
                                 </div>
                                 <input asp-for="@updateTrip.TripName" type="text"
                                value="@updateTrip.TripName" required hidden>
-                                <input asp-for="@updateTrip.OpenRegistration" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
-                               value="@updateTrip.OpenRegistration.ToString("yyyy-MM-ddTHH:mm")" required hidden>
-                                <input asp-for="@updateTrip.RegistrationDeadline" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
-                               value="@updateTrip.RegistrationDeadline.ToString("yyyy-MM-ddTHH:mm")" required hidden>
-                                <input asp-for="@updateTrip.StartDate" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
-                               value="@updateTrip.StartDate.ToString("yyyy-MM-ddTHH:mm")" required hidden>
-                                <input asp-for="@updateTrip.EndDate" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}"
-                               value="@updateTrip.EndDate.ToString("yyyy-MM-ddTHH:mm")" required hidden>
+                                <input asp-for="@updateTrip.OpenRegistration" type="datetime-local" asp-format="{0:yyyy-MM-ddTHH:mm}"
+                                        value="@updateTrip.OpenRegistration.ToString("yyyy-MM-ddTHH:mm")" required hidden />
+                                <input asp-for="@updateTrip.RegistrationDeadline" type="datetime-local" asp-format="{0:yyyy-MM-ddTHH:mm}"
+                                       value="@updateTrip.RegistrationDeadline.ToString("yyyy-MM-ddTHH:mm")" required hidden />
+                                <input asp-for="@updateTrip.StartDate" type="datetime-local" asp-format="{0:yyyy-MM-ddTHH:mm}"
+                                       value="@updateTrip.StartDate.ToString("yyyy-MM-ddTHH:mm")" required hidden />
+                                <input asp-for="@updateTrip.EndDate" type="datetime-local" asp-format="{0:yyyy-MM-ddTHH:mm}"
+                                       value="@updateTrip.EndDate.ToString("yyyy-MM-ddTHH:mm")" required hidden />
                                 <input asp-for="@updateTrip.NumberOfParticipantsLimit" type="number"
                                value="@updateTrip.NumberOfParticipantsLimit" required hidden>
                                 <input asp-for="@updateTrip.Host" type="text"

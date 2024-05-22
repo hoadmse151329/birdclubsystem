@@ -146,7 +146,7 @@
                     <h4 class="modal-title">Add new Bird</h4>
                 </div>
                 <div class="modal-body">
-                    <form asp-action="MemberCreateBird" asp-controller="Member" method="post" id="form">
+                    <form asp-action="MemberCreateBird" asp-controller="Member" method="post" id="form" enctype="multipart/form-data">
                         <div class="row p-4">
                             <div class="col-12">
                                 <div class="row form-group">
@@ -155,14 +155,11 @@
                                     <span asp-validation-for="@createBird.BirdName" id="error_message"
                                           class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                 </div>
-                                <div class="row form-group">
-                                    <div class="profile-pic">
-                                        <img class="profile-pic" style=" width: 165px; height: 165px; border-radius: 30px; border: 3px solid black;" src="@createBird.ProfilePic" />
-                                        <div class="upload">
-                                            <button class="btn btn-warning" data-toggle="modal" data-target="#uploadImg">Details</button>
-                                            <i class='bx bxs-camera-plus'></i>
-                                        </div>
-                                    </div>
+                                <div class="form-group row">
+                                    <label asp-for="@createBird.ProfilePic" class="col-sm-4 col-form-label">Choose Bird Image</label>
+                                    <img class="profile-pic" style="width:300px; height:300px" src="@createBird.ProfilePic" />
+                                    <input asp-for="@createBird.BirdMainImage" type="file" class="file-upload" accept=".jpg, .png, .jpeg">
+                                    <input asp-for="@createBird.ProfilePic" type="text" value="@createBird.ProfilePic" class="form-control" required hidden>
                                 </div>
                                 <div class="row form-group">
                                     <label asp-for="@createBird.AddDate" class="col-md-3 col-form-label mt-3 text-md-right"></label>
@@ -211,28 +208,7 @@
             </div>
         </div>
     </div>
-    <div id="uploadImg" class="modal fade" role="dialog">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
-            <div class="modal-content modal-addRoom">
-                <div class="modal-header">
-                    <h4 class="modal-title">Change Profile Picture</h4>
-                </div>
-                <form asp-action="UploadImage" asp-controller="Manager" enctype="multipart/form-data">
-                    <div class="modal-body">
-                        <label class="custom-control-label d-flex">
-                            <label asp-for="@createBird.ProfilePic" class="col-md-3 col-form-label mt-2 text-md-right">Choose Picture</label>
-                            <input asp-for="@createBird.BirdMainImage" type="file" class="file-upload" accept=".jpg, .jpeg, .png" value="@createBird.BirdMainImage">
-                            <input asp-for="@createBird.ProfilePic" type="text" value="@createBird.ProfilePic" class="form-control" required hidden>
-                        </label>
-                    </div>
-                    <div class="modal-footer justify-content-center">
-                        <button class="btn btn-success" type="submit" id="confirm">Save</button>
-                        <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
             referrerpolicy="no-referrer"></script>
     <!-- Jquery Waypoint -->

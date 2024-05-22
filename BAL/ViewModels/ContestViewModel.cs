@@ -21,6 +21,8 @@ namespace BAL.ViewModels
             StartDate = DateTime.Now.AddDays(21);
             EndDate = DateTime.Now.AddDays(23);
             NumberOfParticipants = 0;
+            NumberOfParticipantsLimit = 10;
+            ContestPictures = new List<ContestMediaViewModel>();
         }
         public int? ContestId { get; set; }
         [Required(ErrorMessage = "Contest Name is required")]
@@ -84,11 +86,11 @@ namespace BAL.ViewModels
         [DisplayName("Review")]
         public string? Review { get; set; }
         [DisplayName("Number Of Participants")]
-        public int? NumberOfParticipants { get; set; }
+        public int NumberOfParticipants { get; set; }
         [Required(ErrorMessage = "Maximum Participants is required")]
         [DisplayName("Maximum Participants")]
-        [Range(3, int.MaxValue, ErrorMessage = "Maximum Participants must be at least three people")]
-        public int? NumberOfParticipantsLimit { get; set; }
+        [Range(10, 200, ErrorMessage = "Maximum Participants must be at least 10 people and less than 200 people")]
+        public int NumberOfParticipantsLimit { get; set; }
         [DisplayName("Participant Number")]
         public int? ParticipationNo { get; set; }
         /*[DisplayName("Club ID")]

@@ -46,8 +46,6 @@ namespace DAL.Repositories.Implements
             bool isMemberOrGuest = false
             )
         {
-
-
             var roadLocationIds = roads != null && roads.Any() ? GetLocationIdListByLocationName(roads).ToList() : new List<int>();
             var districtLocationIds = districts != null && districts.Any() ? GetLocationIdListByLocationName(districts).ToList() : new List<int>();
             var cityLocationIds = cities != null && cities.Any() ? GetLocationIdListByLocationName(cities).ToList() : new List<int>();
@@ -89,20 +87,20 @@ namespace DAL.Repositories.Implements
             }
             if (roadLocationIds.Any())
             {
-                meetings = meetings.Where(m => roadLocationIds.Contains(m.LocationId.Value));
+                meetings = meetings.AsNoTracking().Where(m => roadLocationIds.Contains(m.LocationId.Value));
             }
             if (districtLocationIds.Any())
             {
-                meetings = meetings.Where(m => districtLocationIds.Contains(m.LocationId.Value));
+                meetings = meetings.AsNoTracking()  .Where(m => districtLocationIds.Contains(m.LocationId.Value));
             }
 
             if (cityLocationIds.Any())
             {
-                meetings = meetings.Where(m => cityLocationIds.Contains(m.LocationId.Value));
+                meetings = meetings.AsNoTracking().Where(m => cityLocationIds.Contains(m.LocationId.Value));
             }
             if (statuses != null && statuses.Any())
             {
-                meetings = meetings.Where(m => statuses.Contains(m.Status));
+                meetings = meetings.AsNoTracking().Where(m => statuses.Contains(m.Status));
             }
             meetings = orderBy switch
             {

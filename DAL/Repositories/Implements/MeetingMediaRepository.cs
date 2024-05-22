@@ -32,5 +32,10 @@ namespace DAL.Repositories.Implements
         {
             return _context.MeetingMedia.AsNoTracking().Where(m => m.MeetingId.Equals(meetingId)).ToList();
         }
+
+        public async Task<MeetingMedia> GetMeetingMediaByMeetingIdAndType(int meetingId, string mediaType)
+        {
+            return _context.MeetingMedia.AsNoTracking().SingleOrDefault(m => m.MeetingId.Equals(meetingId) && m.Type.Equals(mediaType));
+        }
     }
 }
