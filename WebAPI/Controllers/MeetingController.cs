@@ -84,6 +84,7 @@ namespace WebAPI.Controllers
             [FromBody] string? role,
             [FromQuery] int? meetingId,
             [FromQuery] string? meetingName,
+            [FromQuery] DateTime? openRegistration,
             [FromQuery] DateTime? registrationDeadline,
             [FromQuery] DateTime? startDate,
             [FromQuery] DateTime? endDate,
@@ -104,6 +105,7 @@ namespace WebAPI.Controllers
                 var result = await _meetingService.GetSortedMeetings(
                     meetingId: meetingId,
                     meetingName: meetingName,
+                    openRegistration: openRegistration,
                     registrationDeadline: registrationDeadline,
                     startDate: startDate,
                     endDate: endDate,
@@ -190,7 +192,7 @@ namespace WebAPI.Controllers
                 return Ok(new
                 {
                     Status = true,
-                    Message = "Meeting Create successfully !",
+                    SuccessMessage = "Meeting Create successfully !",
                     Data = meet
                 });
             }
@@ -297,7 +299,7 @@ namespace WebAPI.Controllers
                     return Ok(new
                     {
                         Status = true,
-                        Message = "Meeting Media Create successfully!",
+                        SuccessMessage = "Meeting Media Create successfully!",
                         BoolData = true
                     });
                 else return StatusCode(StatusCodes.Status500InternalServerError, new
@@ -390,7 +392,7 @@ namespace WebAPI.Controllers
                 return Ok(new
                 {
                     Status = true,
-                    Message = "Add Member Participation successfully !",
+                    SuccessMessage = "Add Member Participation successfully !",
                     IntData = participateNo
                 });
             }

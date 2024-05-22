@@ -88,7 +88,8 @@ namespace BAL.Services.Implements
                     {
                         meeting.SpotlightImage = picture;
                         meeting.MeetingPictures.Remove(picture);
-                    } else
+                    }
+                    else
                     if (picture.Type == "LocationMap")
                     {
                         meeting.LocationMapImage = picture;
@@ -103,10 +104,11 @@ namespace BAL.Services.Implements
         public async Task<IEnumerable<MeetingViewModel>?> GetSortedMeetings(
             int? meetingId,
             string? meetingName,
+            DateTime? openRegistration,
             DateTime? registrationDeadline,
             DateTime? startDate,
             DateTime? endDate,
-            int? numberOfParticipants, 
+            int? numberOfParticipants,
             List<string>? roads = null,
             List<string>? districts = null,
             List<string>? cities = null,
@@ -117,6 +119,7 @@ namespace BAL.Services.Implements
             var listmeet = _unitOfWork.MeetingRepository.GetSortedMeetings(
                 meetingId,
                 meetingName,
+                openRegistration,
                 registrationDeadline,
                 startDate,
                 endDate,
@@ -131,6 +134,7 @@ namespace BAL.Services.Implements
             var listmeetview = _mapper.Map<IEnumerable<MeetingViewModel>>(_unitOfWork.MeetingRepository.GetSortedMeetings(
                 meetingId,
                 meetingName,
+                openRegistration,
                 registrationDeadline,
                 startDate,
                 endDate,

@@ -96,7 +96,7 @@ namespace WebAPI.Controllers
                 return Ok(new
                 {
                     Status = true,
-                    Message = "Notification Create successfully !",
+                    SuccessMessage = "Notification Create successfully !",
                     Data = result
                 });
             }
@@ -130,14 +130,11 @@ namespace WebAPI.Controllers
             try
             {
                 var usr = await _userService.GetByMemberId(notif.MemberId);
-                if (usr == null)
+                if (usr == null) return NotFound(new
                 {
-                    return NotFound(new
-                    {
-                        Status = false,
-                        ErrorMessage = "User does not exist!"
-                    });
-                }
+                    Status = false,
+                    ErrorMessage = "User does not exist!"
+                });
                 NotificationViewModel notification = new NotificationViewModel()
                 {
                     NotificationId = Guid.NewGuid().ToString(),
@@ -161,7 +158,7 @@ namespace WebAPI.Controllers
                 return Ok(new
                 {
                     Status = true,
-                    Message = "Notification Create successfully !",
+                    SuccessMessage = "Notification Create successfully !",
                     Data = result
                 });
             }
