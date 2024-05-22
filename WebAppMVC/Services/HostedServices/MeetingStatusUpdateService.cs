@@ -17,7 +17,7 @@ namespace WebAppMVC.Services.HostedServices
         private readonly IConfiguration _config;
         private Timer _timer;
         private string MeetingSearchAPI_URL = "/api/Meeting/Search?status=OnHold&status=OpenRegistration";
-        private string MembershipUpdateAPI_URL = "/api/Meeting/";
+        private string MeetingStatusUpdateAPI_URL = "/api/Meeting/";
         private readonly MediaTypeWithQualityHeaderValue contentType = new("application/json");
         private int meetingStatusUpdated = 0;
         private int meetingStatusUpdatedToOpen = 0;
@@ -65,7 +65,7 @@ namespace WebAppMVC.Services.HostedServices
                     return;
                 }
 
-                var listMeetingStatus = await methcall.CallMethodReturnObject<GetListMeetingStatus>(
+                var listMeetingStatus = await methcall.CallMethodReturnObject<GetMeetingResponseByList>(
                                     _httpClient: client,
                                     options: jsonOptions,
                                     methodName: Constants.Constants.POST_METHOD,
@@ -89,7 +89,7 @@ namespace WebAppMVC.Services.HostedServices
                                         _httpClient: client,
                                         options: jsonOptions,
                                         methodName: Constants.Constants.PUT_METHOD,
-                                        url: MembershipUpdateAPI_URL + meetingToUpdate.MeetingId + "/Update",
+                                        url: MeetingStatusUpdateAPI_URL + meetingToUpdate.MeetingId + "/Update",
                                         inputType: meetingToUpdate,
                                         _logger: _logger,
                                         accessToken: accToken);
@@ -112,7 +112,7 @@ namespace WebAppMVC.Services.HostedServices
                                         _httpClient: client,
                                         options: jsonOptions,
                                         methodName: Constants.Constants.PUT_METHOD,
-                                        url: MembershipUpdateAPI_URL + meetingToUpdate.MeetingId + "/Update",
+                                        url: MeetingStatusUpdateAPI_URL + meetingToUpdate.MeetingId + "/Update",
                                         inputType: meetingToUpdate,
                                         _logger: _logger,
                                         accessToken: accToken);

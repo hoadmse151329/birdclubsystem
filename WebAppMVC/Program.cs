@@ -79,6 +79,8 @@ namespace WebAppMVC
             // Add Hosted services
             services.AddHostedService<MembershipExpiryService>();
             services.AddHostedService<MeetingStatusUpdateService>();
+            services.AddHostedService<ContestStatusUpdateService>();
+            services.AddHostedService<FieldTripStatusUpdateService>();
         }
         private static void ConfigureMiddleware(WebApplication app)
         {
