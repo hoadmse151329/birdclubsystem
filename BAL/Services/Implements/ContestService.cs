@@ -92,11 +92,27 @@ namespace BAL.Services.Implements
             return listcontestview;
         }
 
-        public async Task<IEnumerable<ContestViewModel>?> GetSortedContests(int? tripId, string? tripName, DateTime? registrationDeadline, DateTime? startDate, DateTime? endDate, int? numberOfParticipants, int? reqMinElo, int? reqMaxElo, List<string>? roads, List<string>? districts, List<string>? cities, List<string>? statuses, string? orderBy, bool isMemberOrGuest = false)
+        public async Task<IEnumerable<ContestViewModel>?> GetSortedContests(
+            int? tripId, 
+            string? tripName,
+            DateTime? openRegistration,
+            DateTime? registrationDeadline, 
+            DateTime? startDate, 
+            DateTime? endDate, 
+            int? numberOfParticipants, 
+            int? reqMinElo, 
+            int? reqMaxElo, 
+            List<string>? roads, 
+            List<string>? districts, 
+            List<string>? cities, 
+            List<string>? statuses, 
+            string? orderBy, 
+            bool isMemberOrGuest = false)
         {
             var listcontest = _unitOfWork.ContestRepository.GetSortedContests(
                 tripId,
                 tripName,
+                openRegistration,
                 registrationDeadline,
                 startDate,
                 endDate,
@@ -113,6 +129,7 @@ namespace BAL.Services.Implements
             var listcontestview = _mapper.Map<IEnumerable<ContestViewModel>>(_unitOfWork.ContestRepository.GetSortedContests(
                 tripId,
                 tripName,
+                openRegistration,
                 registrationDeadline,
                 startDate,
                 endDate,

@@ -85,6 +85,7 @@ namespace WebAPI.Controllers
             [FromBody] string? role,
             [FromQuery] int? tripId,
             [FromQuery] string? tripName,
+            [FromQuery] DateTime? openRegistration,
             [FromQuery] DateTime? registrationDeadline,
             [FromQuery] DateTime? startDate,
             [FromQuery] DateTime? endDate,
@@ -94,7 +95,7 @@ namespace WebAPI.Controllers
             [FromQuery] List<string>? road,
             [FromQuery] List<string>? district,
             [FromQuery] List<string>? city,
-            [FromQuery] List<string>? statuses,
+            [FromQuery] List<string>? status,
             [FromQuery] string? orderBy)
         {
             try
@@ -107,6 +108,7 @@ namespace WebAPI.Controllers
                 var result = await _contestService.GetSortedContests(
                     tripId: tripId,
                     tripName: tripName,
+                    openRegistration: openRegistration,
                     registrationDeadline: registrationDeadline,
                     startDate: startDate,
                     endDate: endDate,
@@ -116,7 +118,7 @@ namespace WebAPI.Controllers
                     roads: road,
                     districts: district,
                     cities: city,
-                    statuses: statuses,
+                    statuses: status,
                     orderBy: orderBy,
                     isMemberOrGuest);
                 if (result == null)

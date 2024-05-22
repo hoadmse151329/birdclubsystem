@@ -15,6 +15,7 @@ namespace BAL.Services.Interfaces
         Task<IEnumerable<FieldTripViewModel>?> GetSortedFieldTrips(
             int? tripId,
             string? tripName,
+            DateTime? openRegistration,
             DateTime? registrationDeadline,
             DateTime? startDate,
             DateTime? endDate,

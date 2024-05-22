@@ -14,6 +14,7 @@ namespace BAL.Services.Interfaces
         Task<IEnumerable<ContestViewModel>?> GetSortedContests(
             int? tripId,
             string? tripName,
+            DateTime? openRegistration,
             DateTime? registrationDeadline,
             DateTime? startDate,
             DateTime? endDate,

@@ -87,14 +87,19 @@ namespace WebAppMVC.Controllers
 		}
 		public async Task<IActionResult> GoogleResponse()
 		{
-			var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-			if (!result.Succeeded)
+			var result = await HttpContext.AuthenticateAsync(GoogleDefaults.AuthenticationScheme);
+            if (result.Failure != null)
+            {
+                ViewBag.error = "Error while registering your new account (Failed to Login By Google)";
+                return RedirectToAction("Login");
+            }
+            if (!result.Succeeded)
 			{
                 ViewBag.error = "Error while registering your new account (Failed to Login By Google)";
                 return RedirectToAction("Login");
 			}
-			
-			/*var claim = result.Principal.Identities.FirstOrDefault().Claims.Select(claim => new
+
+            /*var claim = result.Principal.Identities.FirstOrDefault().Claims.Select(claim => new
 			{
 				claim.Issuer,
 				claim.OriginalIssuer,
@@ -102,7 +107,7 @@ namespace WebAppMVC.Controllers
 				claim.Value,
 			});*/
 
-			var code = result.Properties.Items.FirstOrDefault(t => t.Key.Equals(Constants.Constants.GOOGLE_ACCESS_TOKEN_KEY_NAME)).Value;
+            var code = result.Properties.Items.FirstOrDefault(t => t.Key.Equals(Constants.Constants.GOOGLE_ACCESS_TOKEN_KEY_NAME)).Value;
 			if(code == null)
 			{
                 ViewBag.error = "Error while registering your new account (Failed to Get Login Token)";
@@ -111,6 +116,64 @@ namespace WebAppMVC.Controllers
 			var userInfo = await GoogleUtils.GetUserInfo(code);
 			methcall.SetCookie(Response, Constants.Constants.GOOGLE_ACC_COOKIE, userInfo, cookieOptions, jsonOptions, 20);
 
+            AuthenAPI_URL += "/LoginByThirdParty";
+
+            var authenResponse = await methcall.CallMethodReturnObject<GetAuthenResponse>(
+                _httpClient: client,
+                options: jsonOptions,
+                methodName: Constants.Constants.POST_METHOD,
+                url: AuthenAPI_URL,
+                inputType: userInfo.Email,
+                _logger: _logger);
+
+            if (authenResponse == null)
+            {
+                string? role = HttpContext.Session.GetString(Constants.Constants.ROLE_NAME);
+
+                if (role == null) role = Constants.Constants.GUEST;
+
+                TempData[Constants.Constants.ROLE_NAME] = role;
+                /*_logger.LogInformation("Username or Password is invalid.");
+                ViewBag.error = "Username or Password is invalid.";*/
+                return RedirectToAction("Register");
+            }
+            var responseAuth = authenResponse.Data;
+
+            if (authenResponse.Status)
+            {
+                HttpContext.Session.SetString(Constants.Constants.ACC_TOKEN, responseAuth.AccessToken);
+                HttpContext.Session.SetString(Constants.Constants.ROLE_NAME, responseAuth.RoleName);
+                HttpContext.Session.SetString(Constants.Constants.USR_ID, responseAuth.UserId);
+                HttpContext.Session.SetString(Constants.Constants.USR_NAME, responseAuth.UserName);
+                HttpContext.Session.SetString(Constants.Constants.USR_IMAGE, responseAuth.ImagePath);
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", responseAuth.AccessToken);
+
+                TempData[Constants.Constants.ACC_TOKEN] = responseAuth.AccessToken;
+                TempData[Constants.Constants.ROLE_NAME] = responseAuth.RoleName;
+                TempData[Constants.Constants.USR_ID] = responseAuth.UserId;
+                TempData[Constants.Constants.USR_NAME] = responseAuth.UserName;
+                TempData[Constants.Constants.USR_IMAGE] = responseAuth.ImagePath;
+            }
+            if (responseAuth!.RoleName == Constants.Constants.ADMIN)
+            {
+                _logger.LogInformation("Admin Login Successful: " + TempData[Constants.Constants.ROLE_NAME] + " , Id: " + TempData[Constants.Constants.USR_ID]);
+                return base.Redirect(Constants.Constants.ADMIN_URL);
+            }
+            else if (responseAuth!.RoleName == Constants.Constants.MANAGER)
+            {
+                _logger.LogInformation("Manager Login Successful: " + TempData[Constants.Constants.ROLE_NAME] + " , Id: " + TempData[Constants.Constants.USR_ID]);
+                return base.Redirect(Constants.Constants.MANAGER_URL);
+            }
+            else if (responseAuth!.RoleName == Constants.Constants.STAFF)
+            {
+                _logger.LogInformation("Staff Login Successful: " + TempData[Constants.Constants.ROLE_NAME] + " , Id: " + TempData[Constants.Constants.USR_ID]);
+                return base.Redirect(Constants.Constants.STAFF_URL);
+            }
+            else if(responseAuth!.RoleName == Constants.Constants.MEMBER)
+            {
+                _logger.LogInformation("Member Login Successful: " + TempData[Constants.Constants.ROLE_NAME] + " , Id: " + TempData[Constants.Constants.USR_ID]);
+                return base.Redirect(Constants.Constants.MEMBER_URL);
+            }
             return RedirectToAction("Register");
 		}
 		[HttpGet("Logout")]

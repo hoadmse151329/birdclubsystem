@@ -17,7 +17,7 @@ namespace WebAPI.Controllers
         private readonly IUserService _userService;
         private readonly IConfiguration _config;
         //private readonly OtpGenerator otpver = new OtpGenerator(6);
-        private readonly OtpGenerator otpname = new OtpGenerator(10);
+        //private readonly OtpGenerator otpname = new OtpGenerator(10);
 
         public UserController(IUserService userService,IConfiguration config)
         {
@@ -165,7 +165,7 @@ namespace WebAPI.Controllers
         /// </remarks>
         /// <returns>Return result of action and error message</returns>
         [HttpPost("LoginByThirdParty")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(AuthenResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetUserLoginByThirdParty(
@@ -177,15 +177,42 @@ namespace WebAPI.Controllers
                 if (result == null)
                 {
                     // Handle the case where user is not found
-                    return NotFound(new { ErrorMessage = "User not found." });
+                    return NotFound(new 
+                    { 
+                        Status = false,
+                        ErrorMessage = "User not found." 
+                    });
                 }
-
                 var loguser = new AuthenRequest()
                 {
                     Username = result.UserName,
-                    Password = null // No need to specify password
+                    Password = result.Password // No need to specify password
                 };
-                var login = _userService.AuthenticateUser(loguser);
+                var login = await _userService.AuthenticateUser(loguser);
+                if (login == null)
+                {
+                    return NotFound(new
+                    {
+                        Status = false,
+                        ErrorMessage = "User Not Found!"
+                    });
+                }
+                if (login.Status == "Inactive")
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = "User Account is Currently InActivated!"
+                    });
+                }
+                if (login.Status == "Expired")
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = "User Account is Currently Expired!"
+                    });
+                }
                 return Ok(new
                 {
                     Status = true,

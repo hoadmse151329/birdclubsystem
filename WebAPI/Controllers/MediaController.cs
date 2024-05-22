@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
 {
-    [Route("api/[controller]")]
+    /*[Route("api/[controller]")]
     [ApiController]
     public class MediaController : ControllerBase
     {
@@ -43,7 +43,7 @@ namespace WebAPI.Controllers
             return Ok(response);
         }
 
-        /*[HttpPost("uploadImage")]
+        *//*[HttpPost("uploadImage")]
         public async Task<IActionResult> UploadImage([FromForm] UpdateMemberAvatar imagePath)
         {
             try
@@ -52,7 +52,7 @@ namespace WebAPI.Controllers
                 var fileUrl = "";
                 BlobContainerClient container = 
             }
-        }*/
+        }*//*
 
         [HttpGet("BlobList")]
         public async Task<IActionResult> GetBlobList()
@@ -60,5 +60,5 @@ namespace WebAPI.Controllers
             var response = await _mediaService.GetUploadedBlob();
             return Ok(response);
         }
-    }
+    }*/
 }

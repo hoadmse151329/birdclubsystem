@@ -821,35 +821,78 @@ body .lb-cancel {
   flex-direction: row-reverse;
   justify-content: flex-end;
   padding: 0; }
-
+/*#chx {
+    display: none;
+}
+.half {
+    float: right;
+    font-size: 1.5rem;
+    vertical-align: middle;
+}
+    .half::before {
+        content: '\0000bd';
+    }
+#chx:checked + .set .star:checked + .star::before {
+    content: "\f123";
+    color: #fd4;
+    transition: all 0.25s;
+}*/
 .stars input.star {
-  display: none; }
+    display: none;
+}
 
-.stars input.star:checked ~ label.star::before {
-  content: "\f005";
-  color: #fd4;
-  transition: all 0.25s; }
-
+    .stars input.star:checked ~ label.star::before {
+        content: "\f005";
+        color: #fd4;
+        transition: all 0.25s;
+    }
+.stars input.star:checked ~ label.star.half::before {
+    content: "\f123";
+    color: #fd4;
+    transition: all 0.25s;
+}
 .stars input.star-5:checked ~ label.star::before {
-  color: #fe7;
-  text-shadow: 0 0 10px #8a4c0a; }
+    color: #fe7;
+    text-shadow: 0 0 10px #8a4c0a;
+}
 
 .stars input.star-1:checked ~ label.star::before {
-  color: #f62; }
+    color: #f62;
+}
+    .stars input.star-5:checked ~ label.star.half::before {
+        color: #fe7;
+        text-shadow: 0 0 10px #8a4c0a;
+    }
 
+    .stars input.star-1:checked ~ label.star.half::before {
+        color: #f62;
+    }
 .stars label.star.star-1 {
-  padding-left: 0; }
+    padding-left: 0;
+}
 
 .stars label.star {
-  float: right;
-  padding: 0 10px;
-  font-size: 25px;
-  color: #444;
-  transition: all 0.2s; }
+    float: right;
+    padding: 0 10px;
+    font-size: 25px;
+    color: #444;
+    transition: all 0.2s;
+}
+    .stars label.star.half {
+        float: right;
+        font-size: 25px;
+        color: #fd4;
+        transition: all 0.2s;
+    }
+    .stars label.star::before {
+        content: "\f005";
+        font-family: FontAwesome;
+    }
+    .stars label.star.half::before {
+        content: "\f123";
+        font-family: FontAwesome;
+    }
 
-.stars label.star::before {
-  content: "\f005";
-  font-family: FontAwesome; }
 .tabs-left-title .heading {
     color: black;
 }
@@ -1524,43 +1567,7 @@ body .lb-cancel {
         vertical-align: middle;
     }
 
-        .content .box-rate .stars {
-            width: 185px;
-            display: inline-block;
-        }
-
-            .content .box-rate .stars input.star {
-                display: none;
-            }
-
-                .content .box-rate .stars input.star:checked ~ label.star::before {
-                    content: "\f005";
-                    color: #fd4;
-                    transition: all 0.25s;
-                }
-
-        .content .box-rate input.star-5:checked ~ label.star::before {
-            color: #fe7;
-            text-shadow: 0 0 10px #8a4c0a;
-        }
-
-        .content .box-rate input.star-1:checked ~ label.star::before {
-            color: #f62;
-        }
-
-        .content .box-rate label.star {
-            float: right;
-            padding: 0 10px;
-            font-size: 16px;
-            color: #444;
-            transition: all 0.2s;
-        }
-
-            .content .box-rate label.star::before {
-                content: "\f005";
-                font-family: FontAwesome;
-            }
-
+        
     .content .rating-carousel {
         margin-right: 10px;
     }
@@ -2349,50 +2356,6 @@ body .lb-cancel {
 .main-content td:nth-child(7) {
     text-align: center;
 }
-
-.stars {
-    width: 185px;
-    display: flex;
-    flex-direction: row-reverse;
-    justify-content: flex-end;
-    padding: 0;
-}
-
-    .stars input.star {
-        display: none;
-    }
-
-        .stars input.star:checked ~ label.star::before {
-            content: "\f005";
-            color: #fd4;
-            transition: all 0.25s;
-        }
-
-    .stars input.star-5:checked ~ label.star::before {
-        color: #fe7;
-        text-shadow: 0 0 10px #8a4c0a;
-    }
-
-    .stars input.star-1:checked ~ label.star::before {
-        color: #f62;
-    }
-
-    .stars label.star.star-1 {
-        padding-left: 0;
-    }
-
-    .stars label.star {
-        float: right;
-        padding: 0 10px;
-        font-size: 25px;
-        color: #444;
-        transition: all 0.2s;
-    }
-
-        .stars label.star::before {
-            content: "\f005";
-            font-family: FontAwesome;
-        }
 
 #detailsModal .heading {
     font-size: 1.5rem;

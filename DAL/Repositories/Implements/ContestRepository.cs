@@ -31,19 +31,20 @@ namespace DAL.Repositories.Implements
         }
 
         public IEnumerable<Contest> GetSortedContests(
-            int? contestId, 
-            string? contestName,
-            DateTime? registrationDeadline, 
-            DateTime? startDate, 
-            DateTime? endDate, 
-            int? numberOfParticipants, 
-            int? reqMinElo, 
-            int? reqMaxElo, 
-            List<string>? roads, 
-            List<string>? districts, 
-            List<string>? cities, 
-            List<string>? statuses, 
-            string? orderBy, 
+            int? contestId = null, 
+            string? contestName = null,
+            DateTime? openRegistration = null, 
+            DateTime? registrationDeadline = null, 
+            DateTime? startDate = null, 
+            DateTime? endDate = null, 
+            int? numberOfParticipants = null, 
+            int? reqMinElo = null, 
+            int? reqMaxElo = null, 
+            List<string>? roads = null, 
+            List<string>? districts = null, 
+            List<string>? cities = null, 
+            List<string>? statuses = null, 
+            string? orderBy = null, 
             bool isMemberOrGuest = false)
         {
             var roadLocationIds = roads != null && roads.Any() ? GetLocationIdListByLocationName(roads).ToList() : new List<int>();
@@ -61,29 +62,34 @@ namespace DAL.Repositories.Implements
 
             if (contestId.HasValue)
             {
-                contests = contests.AsNoTracking().Where(m => m.ContestId.Equals(contestId.Value));
+                contests = contests.AsNoTracking().Where(c => c.ContestId.Equals(contestId.Value));
             }
 
             if (!string.IsNullOrEmpty(contestName))
             {
-                contests = contests.AsNoTracking().Where(m => m.ContestName.Contains(contestName));
+                contests = contests.AsNoTracking().Where(c => c.ContestName.Contains(contestName));
+            }
+
+            if (openRegistration.HasValue)
+            {
+                contests = contests.AsNoTracking().Where(c => c.OpenRegistration == openRegistration.Value);
             }
 
             if (registrationDeadline.HasValue)
             {
-                contests = contests.AsNoTracking().Where(m => m.RegistrationDeadline == registrationDeadline.Value);
+                contests = contests.AsNoTracking().Where(c => c.RegistrationDeadline == registrationDeadline.Value);
             }
             if (startDate.HasValue)
             {
-                contests = contests.AsNoTracking().Where(m => m.StartDate == startDate.Value);
+                contests = contests.AsNoTracking().Where(c => c.StartDate == startDate.Value);
             }
             if (endDate.HasValue)
             {
-                contests = contests.AsNoTracking().Where(m => m.EndDate == endDate.Value);
+                contests = contests.AsNoTracking().Where(c => c.EndDate == endDate.Value);
             }
             if (numberOfParticipants.HasValue)
             {
-                contests = contests.AsNoTracking().Where(m => m.NumberOfParticipants == numberOfParticipants.Value);
+                contests = contests.AsNoTracking().Where(c => c.NumberOfParticipants == numberOfParticipants.Value);
             }
             if(reqMinElo.HasValue && reqMaxElo.HasValue)
             {
@@ -91,40 +97,40 @@ namespace DAL.Repositories.Implements
             }
             if (roadLocationIds.Any())
             {
-                contests = contests.AsNoTracking().Where(m => roadLocationIds.Contains(m.LocationId.Value));
+                contests = contests.AsNoTracking().Where(c => roadLocationIds.Contains(c.LocationId.Value));
             }
             if (districtLocationIds.Any())
             {
-                contests = contests.AsNoTracking().Where(m => districtLocationIds.Contains(m.LocationId.Value));
+                contests = contests.AsNoTracking().Where(c => districtLocationIds.Contains(c.LocationId.Value));
             }
 
             if (cityLocationIds.Any())
             {
-                contests = contests.AsNoTracking().Where(m => cityLocationIds.Contains(m.LocationId.Value));
+                contests = contests.AsNoTracking().Where(c => cityLocationIds.Contains(c.LocationId.Value));
             }
             if (statuses != null && statuses.Any())
             {
-                contests = contests.AsNoTracking().Where(m => statuses.Contains(m.Status));
+                contests = contests.AsNoTracking().Where(c => statuses.Contains(c.Status));
             }
             contests = orderBy switch
             {
-                "contestname_asc" => contests.OrderBy(m => m.ContestName),
-                "contestname_desc" => contests.OrderByDescending(m => m.ContestName),
-                "openregistration_asc" => contests.OrderBy(m => m.OpenRegistration),
-                "openregistration_desc" => contests.OrderByDescending(m => m.OpenRegistration),
-                "registrationdeadline_asc" => contests.OrderBy(m => m.RegistrationDeadline),
-                "registrationdeadline_desc" => contests.OrderByDescending(m => m.RegistrationDeadline),
-                "startdate_asc" => contests.OrderBy(m => m.StartDate),
-                "startdate_desc" => contests.OrderByDescending(m => m.StartDate),
-                "enddate_asc" => contests.OrderBy(m => m.EndDate),
-                "enddate_desc" => contests.OrderByDescending(m => m.EndDate),
-                "reqminelo_asc" => contests.OrderBy(m => m.ReqMinELO),
-                "reqminelo_desc" => contests.OrderByDescending(m => m.ReqMinELO),
-                "reqmaxelo_asc" => contests.OrderBy(m => m.ReqMaxELO),
-                "reqmaxelo_desc" => contests.OrderByDescending(m => m.ReqMaxELO),
-                "status_asc" => contests.OrderBy(m => statusListDefault.IndexOf(m.Status)),
-                "status_desc" => contests.OrderByDescending(m => statusListDefault.IndexOf(m.Status)),
-                _ => contests.OrderBy(m => m.ContestId)
+                "contestname_asc" => contests.OrderBy(c => c.ContestName),
+                "contestname_desc" => contests.OrderByDescending(c => c.ContestName),
+                "openregistration_asc" => contests.OrderBy(c => c.OpenRegistration),
+                "openregistration_desc" => contests.OrderByDescending(c => c.OpenRegistration),
+                "registrationdeadline_asc" => contests.OrderBy(c => c.RegistrationDeadline),
+                "registrationdeadline_desc" => contests.OrderByDescending(c => c.RegistrationDeadline),
+                "startdate_asc" => contests.OrderBy(c => c.StartDate),
+                "startdate_desc" => contests.OrderByDescending(c => c.StartDate),
+                "enddate_asc" => contests.OrderBy(c => c.EndDate),
+                "enddate_desc" => contests.OrderByDescending(c => c.EndDate),
+                "reqminelo_asc" => contests.OrderBy(c => c.ReqMinELO),
+                "reqminelo_desc" => contests.OrderByDescending(c => c.ReqMinELO),
+                "reqmaxelo_asc" => contests.OrderBy(c => c.ReqMaxELO),
+                "reqmaxelo_desc" => contests.OrderByDescending(c => c.ReqMaxELO),
+                "status_asc" => contests.OrderBy(c => statusListDefault.IndexOf(c.Status)),
+                "status_desc" => contests.OrderByDescending(c => statusListDefault.IndexOf(c.Status)),
+                _ => contests.OrderBy(c => c.ContestId)
             };
 
             return contests.ToList();
