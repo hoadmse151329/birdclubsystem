@@ -109,10 +109,11 @@
                                                                 <td>@events[i].CheckInStatus</td>
                                                                 <td>
                                                                     <div class="d-flex">
-                                                                        <div class="add-club">
-                                                                            <button class="button--primary bg-primary text-white clickable-row"
-                                                                           href="@Url.Action(events[i].EventType + "Post", events[i].EventType,new {id = events[i].EventId})">Details</button>
-                                                                        </div>
+                                                                        <form asp-action="Post" asp-controller="@events[i].EventType" method="get" asp-route-id="@events[i].EventId">
+                                                                            <div class="add-club">
+                                                                                <button class="button--primary bg-primary text-white clickable-row" type="submit">Details</button>
+                                                                            </div>
+                                                                        </form>
                                                                         @switch (events[i].EventType)
                                                                         {
                                                                             case "Meeting":
