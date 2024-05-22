@@ -17,9 +17,9 @@ namespace DAL.Repositories.Implements
         {
             _context = context;
         }
-        public async Task<IEnumerable<Notification>> GetAllNotificationsByUserId(int id)
+        public async Task<IEnumerable<Notification>> GetAllNotificationsByMemberId(string id)
         {
-            return _context.Notifications.AsNoTracking().Where(n => n.UserId == id).ToList();
+            return _context.Notifications.AsNoTracking().Where(n => n.UserDetail.MemberId == id).ToList();
         }
 
         public async Task<IEnumerable<Notification>> UpdateAllNotificationStatus(List<Notification> notif)

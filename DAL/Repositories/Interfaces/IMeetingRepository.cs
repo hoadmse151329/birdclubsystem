@@ -30,5 +30,6 @@ namespace DAL.Repositories.Interfaces
         Task<IEnumerable<Meeting>> GetAllMeetings(string? role);
         public Task<Meeting?> GetMeetingById(int id);
         Task<bool> GetBoolMeetingId(int id);
+        Task<int> CountMeeting();
     }
 }
