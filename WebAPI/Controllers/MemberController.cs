@@ -260,11 +260,12 @@ namespace WebAPI.Controllers
 				}
                 _memberService.Update(member);
 				result = await _memberService.GetById(member.MemberId);
-				return Ok(new
-				{
-					Status = true,
-					Data = result
-				});
+                return Ok(new
+                {
+                    Status = true,
+                    SuccessMessage = "Successfully update Profile!",
+                    Data = result
+                });
 			}
 			catch (Exception ex)
 			{

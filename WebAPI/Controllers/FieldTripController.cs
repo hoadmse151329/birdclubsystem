@@ -483,7 +483,7 @@ namespace WebAPI.Controllers
                 return Ok(new
                 {
                     Status = true,
-                    SuccessMessage = "Add Member Participation successfully !",
+                    SuccessMessage = "Successfully registered in a field trip!",
                     IntData = participantNo
                 });
             }
@@ -583,6 +583,7 @@ namespace WebAPI.Controllers
                 return Ok(new
                 {
                     Status = true,
+                    SuccessMessage = "Successfully updated Field Trip!",
                     Data = result
                 });
             }
@@ -634,6 +635,7 @@ namespace WebAPI.Controllers
                     return Ok(new
                     {
                         Status = true,
+                        SuccessMessage = "Successfully updated Field Trip Getting There details!",
                         Data = result
                     });
                 }
@@ -698,6 +700,7 @@ namespace WebAPI.Controllers
                     return Ok(new
                     {
                         Status = true,
+                        SuccessMessage = "Successfully updated Field Trip Day By Day details!",
                         Data = result
                     });
                 }
@@ -753,7 +756,7 @@ namespace WebAPI.Controllers
                     return NotFound(new
                     {
                         Status = false,
-                        ErrorMessage = "Field trip Inclusion does not exist!"
+                        ErrorMessage = "Field Trip Inclusion does not exist!"
                     });
                 }
                 var check = await _inclusionService.Update(tripId, tripInc);
@@ -762,13 +765,14 @@ namespace WebAPI.Controllers
                     return Ok(new
                     {
                         Status = true,
+                        SuccessMessage = "Successfully updated Field Trip Inclusion details",
                         Data = check
                     });
                 }
                 return NotFound(new
                 {
                     Status = false,
-                    ErrorMessage = "Field trip does not exist or internal server error"
+                    ErrorMessage = "Field Trip does not exist or internal server error"
                 });
             }
             catch (Exception ex)
@@ -826,6 +830,7 @@ namespace WebAPI.Controllers
                     return Ok(new
                     {
                         Status = true,
+                        SuccessMessage = "Successfully updated Field Trip Additional details!",
                         Data = check
                     });
                 }
@@ -876,7 +881,7 @@ namespace WebAPI.Controllers
                 {
                     Status = true,
                     Data = result,
-                    SuccessMessage = "Remove Field Trip Participation successfully!"
+                    SuccessMessage = "Successfully deregistered!"
                 });
             }
             catch (Exception ex)

@@ -255,6 +255,7 @@ namespace WebAPI.Controllers
                 return Ok(new
                 {
                     Status = true,
+                    SuccessMessage = "Successfully updated Contest!",
                     Data = result
                 });
             }
@@ -303,6 +304,7 @@ namespace WebAPI.Controllers
                 return Ok(new
                 {
                     Status = true,
+                    SuccessMessage = "Successfully cancelled Contest",
                     Data = result
                 });
             }
@@ -360,7 +362,7 @@ namespace WebAPI.Controllers
                 return Ok(new
                 {
                     Status = true,
-                    SuccessMessage = "Add Member Participation successfully!",
+                    SuccessMessage = "Successfully registered in a contest!",
                     Data = participateNo
                 });
             }
@@ -465,8 +467,8 @@ namespace WebAPI.Controllers
                 return Ok(new
                 {
                     Status = true,
+                    SuccessMessage = "Successfully deregistered!",
                     Data = result,
-                    SuccessMessage = "Remove Contest Participation Successfully!"
                 });
             }
             catch (Exception ex)

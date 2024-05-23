@@ -15,6 +15,7 @@ namespace DAL.Repositories.Interfaces
         Task<Member?> GetByIdTracking(string id);
         Task<string?> GetMemberNameById(string id);
         Task<Member?> GetByEmail(string email);
+        Task<IEnumerable<Member>> GetAllMemberOnly();
         Task<IEnumerable<Member>> UpdateAllMemberStatus(List<Member> members);
 
     }

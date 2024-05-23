@@ -183,6 +183,7 @@ namespace WebAPI.Controllers
                 return Ok(new
                 {
                     Status = true,
+                    SuccessMessage = "Successfully update Member Status!",
                     BoolData = result
                 });
             }
@@ -236,6 +237,7 @@ namespace WebAPI.Controllers
                 return Ok(new
                 {
                     Status = true,
+                    SuccessMessage = "Successfully update Contest Score!",
                     BoolData = result
                 });
             }
@@ -300,6 +302,7 @@ namespace WebAPI.Controllers
                 return Ok(new
                 {
                     Status = true,
+                    SuccessMessage = "Successfully update Profile!",
                     Data = result
                 });
             }

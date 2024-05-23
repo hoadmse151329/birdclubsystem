@@ -148,17 +148,20 @@ namespace WebAppMVC.Controllers
             if (memberDetailupdate == null)
             {
                 ViewBag.error =
-                    "Error while processing your request! (Getting Member Profile!).\n Member Details Not Found!";
+                    "Error while processing your request! (Updating Member Profile!).\n Member Details Not Found!";
+                TempData["Error"] = "Error while updating profile.";
                 return RedirectToAction("MemberProfile");
             }
             else
             if (!memberDetailupdate.Status)
             {
                 ViewBag.error =
-                    "Error while processing your request! (Getting Member Profile!).\n Member Details Not Found!"
+                    "Error while processing your request! (Updating Member Profile!).\n Member Details Not Found!"
                 + memberDetailupdate.ErrorMessage;
+                TempData["Error"] = "Error while updating profile.";
                 return RedirectToAction("MemberProfile");
             }
+            TempData["Success"] = "Successfully updated profile!";
             return RedirectToAction("MemberProfile");
         }
         [HttpGet("HistoryEvent")]

@@ -56,9 +56,8 @@ namespace WebAppMVC.Constants
             if (!response.IsSuccessStatusCode)
             {
                 _logger.LogError("Error while processing your request!: " + response.StatusCode + "\t\nApi Url: " + url + "\t\nError Message: " + jsonResponse);
-                //var error = JsonSerializer.Deserialize<T>(jsonResponse, options);
-
-                return null;
+                var error = JsonSerializer.Deserialize<T>(jsonResponse, options);
+                return error;
             };
             var result = JsonSerializer.Deserialize<T>(jsonResponse, options);
             _logger.LogInformation("Processing your request Successfully!: " + response.StatusCode + "\t\nApi Url: " + url + "\t\nSuccess Message: " + jsonResponse);

@@ -16,6 +16,7 @@ namespace BAL.ViewModels.Manager
         [Required(ErrorMessage = "Full Name is required")]
         [RegularExpression(@"^[a-zA-Z\s]+$", ErrorMessage = "Fullname is invalid")]
         public string FullName { get; set; }
+        public string? Role { get; set; }
         public string? Status { get; set; }
     }
 }

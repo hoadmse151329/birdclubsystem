@@ -22,7 +22,7 @@ namespace BAL.Services.Interfaces
 		/*void Update(UserViewModel entity);*/
 		void Update(MemberViewModel entity);
         void UpdateMemberStatus(GetMembershipExpire entity);
-        void UpdateMembership(string id, DateTime membershipDatetime);
+		void UpdateMembership(string id, DateTime membershipDatetime);
         Task<bool> UpdateAllMemberStatus (List<GetMemberStatus> listMem);
 		Task<MemberViewModel?> GetByEmailModel(string email);
 	}

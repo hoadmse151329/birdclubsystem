@@ -156,6 +156,7 @@ namespace WebAPI.Controllers
                 return Ok(new
                 {
                     Status = true,
+                    SuccessMessage = "Successfully update Check-In Status!",
                     Data = result
                 });
             }
@@ -204,6 +205,7 @@ namespace WebAPI.Controllers
                 return Ok(new
                 {
                     Status = true,
+                    SuccessMessage = "Successfully update Check-In Status!",
                     Data = result,
                 });
             }
@@ -257,6 +259,7 @@ namespace WebAPI.Controllers
                 return Ok(new
                 {
                     Status = true,
+                    SuccessMessage = "Successfully update Check-In Status!",
                     Data = result
                 });
             }
@@ -310,6 +313,7 @@ namespace WebAPI.Controllers
                 return Ok(new
                 {
                     Status = true,
+                    SuccessMessage = "Successfully update Contest Scores!",
                     Data = result
                 });
             }

@@ -612,7 +612,7 @@ namespace WebAppMVC.Controllers
                     + notificationResponse.ErrorMessage;
                 return RedirectToAction("ContestPost", new { id = conId });
             }
-
+            TempData["Success"] = participationNo.SuccessMessage;
             return RedirectToAction("ContestPost", new { id = conId });
         }
 
@@ -695,7 +695,7 @@ namespace WebAppMVC.Controllers
                     + notificationResponse.ErrorMessage;
                 return RedirectToAction("ContestPost", new { id = contestId });
             }
-
+            TempData["Success"] = participationNo.SuccessMessage;
             return RedirectToAction("ContestPost", new { id = contestId });
         }
         public IActionResult LeaderBoard()

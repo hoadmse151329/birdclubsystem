@@ -271,6 +271,7 @@ namespace WebAPI.Controllers
                 return Ok(new
                 {
                     Status = true,
+                    SuccessMessage = "Successfully Cancelled Meeting!",
                     Data = result
                 });
             }
@@ -392,7 +393,7 @@ namespace WebAPI.Controllers
                 return Ok(new
                 {
                     Status = true,
-                    SuccessMessage = "Add Member Participation successfully !",
+                    SuccessMessage = "Successfully registered in a meeting!",
                     IntData = participateNo
                 });
             }
@@ -470,7 +471,7 @@ namespace WebAPI.Controllers
                 {
                     Status = true,
                     BoolData = result,
-                    SuccessMessage = "Remove Meeting Participation successfully !",
+                    SuccessMessage = "Successfully deregistered!",
                 });
             }
             catch (Exception ex)

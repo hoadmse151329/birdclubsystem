@@ -59,6 +59,28 @@
                             }
                         </div>
                     </div>
+                    @if (TempData["Success"] != null)
+                    {
+                        <div class="alert alert-success alert-dismissible fade show" id="notif">
+                            <i class='bx bx-message-alt-x p-1'></i>
+                            <strong class="mr-1">@TempData["Success"]</strong>
+                            <button type="button" class="close h-100" data-dismiss="alert" aria-label="Close">
+                                <span><i class='bx bx-x'></i></span>
+                            </button>
+                        </div>
+                        TempData["Success"] = null;
+                    }
+                    else if (TempData["Error"] != null)
+                    {
+                        <div class="alert alert-danger alert-dismissible fade show" id="notif">
+                            <i class='bx bx-message-alt-x p-1'></i>
+                            <strong class="mr-1">@TempData["Error"]</strong>
+                            <button type="button" class="close h-100" data-dismiss="alert" aria-label="Close">
+                                <span><i class='bx bx-x'></i></span>
+                            </button>
+                        </div>
+                        TempData["Error"] = null;
+                    }
                     <div class="info">
                         <div class="overlap-3">
                             <div id="map-container"></div>
@@ -120,5 +142,12 @@
     <!-- BS4 JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.5/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            setTimeout(function () {
+                $('#notif').css('display', 'none');
+            }, 3000);
+        })
+    </script>
 </body>
 </html>

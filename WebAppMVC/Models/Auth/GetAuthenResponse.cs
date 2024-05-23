@@ -7,6 +7,5 @@ namespace WebAppMVC.Models.Auth
         public GetAuthenResponse(bool status, string? errorMessage, string? successMessage) : base(status, errorMessage, successMessage)
         {
         }
-
 	}
 }

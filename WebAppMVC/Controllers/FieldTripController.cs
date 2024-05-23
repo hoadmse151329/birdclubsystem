@@ -531,7 +531,7 @@ namespace WebAppMVC.Controllers
                     + notificationResponse.ErrorMessage;
                 return RedirectToAction("FieldTripPost", new { id = tripId });
             }
-
+            TempData["Success"] = participationNo.SuccessMessage;
             return RedirectToAction("FieldTripPost", new { id = tripId });
         }
         [HttpPost("{tripId:int}/DeRegister")]
@@ -627,7 +627,7 @@ namespace WebAppMVC.Controllers
                     + notificationResponse.ErrorMessage;
                 return RedirectToAction("FieldTripPost", new { id = tripId });
             }
-
+            TempData["Success"] = participationNo.SuccessMessage;
             return RedirectToAction("FieldTripPost", new { id = tripId });
         }
     }
