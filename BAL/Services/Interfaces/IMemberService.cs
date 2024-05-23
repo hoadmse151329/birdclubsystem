@@ -11,8 +11,18 @@ namespace BAL.Services.Interfaces
 {
     public interface IMemberService
     {
-        Task<IEnumerable<GetMemberStatus?>> GetAllMemberStatus();
         Task<IEnumerable<GetMembershipExpire?>> GetAllMemberStatusWithExpireByRole(string role);
+        Task<IEnumerable<GetMemberStatus>?> GetSortedMembers(
+            string? memberId = null,
+            string? memberUserName = null,
+            string? memberFullName = null,
+            DateTime? expiryDateTime = null,
+            List<string>? roles = null,
+            List<string>? statuses = null,
+            string? orderBy = null,
+            bool isManager = false,
+            bool isAdmin = false
+            );
         Task<MemberViewModel?> GetById(string id);
 		Task<bool> GetBoolById(string id);
 		bool GetByEmail(string email);
@@ -22,7 +32,6 @@ namespace BAL.Services.Interfaces
 		/*void Update(UserViewModel entity);*/
 		void Update(MemberViewModel entity);
         void UpdateMemberStatus(GetMembershipExpire entity);
-        void UpdateMembership(string id, DateTime membershipDatetime);
         Task<bool> UpdateAllMemberStatus (List<GetMemberStatus> listMem);
 		Task<MemberViewModel?> GetByEmailModel(string email);
 	}

@@ -21,7 +21,78 @@ namespace DAL.Repositories.Implements
 
         public async Task<IEnumerable<Member>> GetAllByRole(string role)
         {
-            return _context.Members.AsNoTracking().Where(x => x.Role == role).ToList();
+            return _context.Members.AsNoTracking().Where(x => x.Role == role).OrderBy(m => m.Status).ToList();
+        }
+
+        public async Task<IEnumerable<Member>> GetSortedMembers(
+            string? memberId = null, 
+            string? memberUserName = null, 
+            string? memberFullName = null, 
+            DateTime? expiryDateTime = null,
+            List<string>? roles = null, 
+            List<string>? statuses = null, 
+            string? orderBy = null, 
+            bool isManager = false,
+            bool isAdmin = false)
+        {
+            /*var roadLocationIds = roles != null && roles.Any() ? GetLocationIdListByLocationName(roads).ToList() : new List<int>();
+            var districtLocationIds = statuses != null && statuses.Any() ? GetLocationIdListByLocationName(districts).ToList() : new List<int>();*/
+
+            var members = _context.Members.AsNoTracking().AsQueryable();
+
+            List<string> statusListDefault = new List<string> { "Inactive", "Active", "Expired", "Denied", "Suspended" };
+            List<string> roleListDefault = new List<string> { "Member", "Manager", "Staff" };
+
+            if (isManager)
+            {
+                roles = new List<string>() { "Member" };
+            }
+
+            if (isAdmin)
+            {
+                roles = new List<string>() { "Manager", "Staff" };
+            }
+
+            if (!string.IsNullOrEmpty(memberId))
+            {
+                members = members.AsNoTracking().Where(m => m.MemberId.Equals(memberId));
+            }
+
+            if (!string.IsNullOrEmpty(memberUserName))
+            {
+                members = members.AsNoTracking().Where(m => m.UserName.Contains(memberUserName));
+            }
+
+            if (expiryDateTime.HasValue)
+            {
+                members = members.AsNoTracking().Where(m => m.ExpiryDate == expiryDateTime.Value);
+            }
+            if (statuses != null && statuses.Any())
+            {
+                members = members.AsNoTracking().Where(m => statuses.Contains(m.Status));
+            }
+            if (roles != null && roles.Any())
+            {
+                members = members.AsNoTracking().Where(m => roles.Contains(m.Role));
+            }
+            members = orderBy switch
+            {
+                "memberid_asc" => members.OrderBy(m => m.MemberId),
+                "memberid_desc" => members.OrderByDescending(m => m.MemberId),
+                "memberusername_asc" => members.OrderBy(m => m.UserName),
+                "memberusername_desc" => members.OrderByDescending(m => m.UserName),
+                "memberfullname_asc" => members.OrderBy(m => m.FullName),
+                "memberfullname_desc" => members.OrderByDescending(m => m.FullName),
+                "expirydate_asc" => members.OrderBy(m => m.ExpiryDate),
+                "expirydate_desc" => members.OrderByDescending(m => m.ExpiryDate),
+                "role_asc" => members.OrderBy(m => roleListDefault.IndexOf(m.Role)),
+                "role_desc" => members.OrderByDescending(m => roleListDefault.IndexOf(m.Role)),
+                "status_asc" => members.OrderBy(m => statusListDefault.IndexOf(m.Status)),
+                "status_desc" => members.OrderByDescending(m => statusListDefault.IndexOf(m.Status)),
+                _ => members.OrderBy(m => m.MemberId)
+            };
+
+            return members.ToList();
         }
 
         public async Task<Member?> GetByEmail(string email)
@@ -65,7 +136,7 @@ namespace DAL.Repositories.Implements
                                 mem.ExpiryDate = DateTime.UtcNow.AddMonths(1);
                             }
                         }
-                        else if(mem.ExpiryDate != null && mem.Status != "Active")
+                        else if(mem.ExpiryDate != null && mem.Status == "Expired")
                         {
                             mem.ExpiryDate = null;
                         }

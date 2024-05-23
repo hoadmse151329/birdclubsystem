@@ -135,6 +135,7 @@ namespace WebAppMVC.Constants
         public readonly static string GUEST = "Guest";
 		public readonly static string STAFF = "Staff";
 		public readonly static string MANAGER = "Manager";
+
 		public readonly static string GET_METHOD = "GET";
         public readonly static string POST_METHOD = "POST";
 		public readonly static string PUT_METHOD = "PUT";

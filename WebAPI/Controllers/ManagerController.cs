@@ -124,11 +124,13 @@ namespace WebAPI.Controllers
         [ProducesResponseType(typeof(IEnumerable<GetMemberStatus>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> GetAllMemberStatus()
+        public async Task<IActionResult> GetAllMemberStatus(
+            [FromQuery] string? memberusername
+            )
         {
             try
             {
-                var result = await _memberService.GetAllMemberStatus();
+                var result = await _memberService.GetSortedMembers(memberUserName: memberusername, isManager: true);
                 if (result == null)
                 {
                     return NotFound(new

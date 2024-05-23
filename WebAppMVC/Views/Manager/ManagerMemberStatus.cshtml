@@ -1,17 +1,11 @@
-﻿@model List<BAL.ViewModels.Manager.GetMemberStatus>
+﻿@model WebAppMVC.Models.ViewModels.ManagerMemberStatusIndexVM
 @{
     Layout = null;
     ViewData["Title"] = "Manager Member Status Page";
     string? search = string.Empty;
-    var listRequest = Model;
-    List<SelectListItem> defaultStatus = new()
-    {
-        new SelectListItem {Text = "Inactive", Value = "Inactive"},
-        new SelectListItem {Text = "Active", Value = "Active"},
-        new SelectListItem {Text = "Denied", Value = "Denied"},
-        new SelectListItem {Text = "Expired", Value = "Expired"},
-        new SelectListItem {Text = "Suspended", Value = "Suspended"}
-    };
+
+    var memberStatuses = Model.MemberStatuses;
+
     Layout = "~/Views/Shared/_MLayout.cshtml";
 }
 <html lang="en">
@@ -65,10 +59,10 @@
                                             }
                                         </div>
                                         <div class="col-sm-6 d-flex justify-content-end">
-                                            <form asp-action="ManagerMemberStatusSearch" asp-controller="Manager" method="get" asp-route-search="@search">                   
-                                                <div>
+                                                <form asp-action="ManagerMemberStatus" asp-controller="Manager" method="get" asp-route-search="@search">
+                                                    <div>
                                                     <label>
-                                                        <input asp-for="@search" class="form-control" type="text" name="search" placeholder="Search..." value="@search">
+                                                        <input asp-for="@search" class="form-control" type="text" name="search" placeholder="Search Username..." value="@search">
                                                         <i class='bx bx-search-alt'></i>
                                                     </label>
                                                 </div>
@@ -104,40 +98,50 @@
                                                     <th class="sorting" tabindex="0"
                                                         aria-controls="history-table" rowspan="1"
                                                         colspan="1"
+                                                            aria-label="Expiration Date: activate to sort column ascending">
+                                                            Expiration Date
+                                                    </th>
+                                                    <th class="sorting" tabindex="0"
+                                                        aria-controls="history-table" rowspan="1"
+                                                        colspan="1"
                                                         aria-label="Status: activate to sort column ascending">
                                                         Status
                                                     </th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @for (int i = 0; i < listRequest.Count(); i++)
+                                                @for (int i = 0; i < memberStatuses.Count(); i++)
                                                 {
                                                     <tr class="@("clicks-row "+ (i%2 == 0 ? "even" : "odd")) " data-href="#"
                                                         data-bs-toggle="tooltip" data-bs-placement="right"
                                                         title="More Details">
                                                         <td class="sorting_1">
-                                                                <input type="hidden" asp-for="@listRequest[i].MemberId" name="listRequest[@i].MemberId" value="@listRequest[i].MemberId" class="form-control" />
-                                                            @listRequest[i].MemberId
+                                                                <input type="hidden" asp-for="@memberStatuses[i].MemberId" name="listRequest[@i].MemberId" value="@memberStatuses[i].MemberId" class="form-control" />
+                                                            @memberStatuses[i].MemberId
                                                         </td>
                                                         <td>
-                                                                <input type="hidden" asp-for="@listRequest[i].UserName" name="listRequest[@i].UserName" value="@listRequest[i].UserName" class="form-control" />
-                                                            @listRequest[i].UserName
+                                                                <input type="hidden" asp-for="@memberStatuses[i].UserName" name="listRequest[@i].UserName" value="@memberStatuses[i].UserName" class="form-control" />
+                                                            @memberStatuses[i].UserName
                                                         </td>
                                                         <td>
-                                                                <input type="hidden" asp-for="@listRequest[i].FullName" name="listRequest[@i].FullName" value="@listRequest[i].FullName" class="form-control" />
-                                                            @listRequest[i].FullName
+                                                                <input type="hidden" asp-for="@memberStatuses[i].FullName" name="listRequest[@i].FullName" value="@memberStatuses[i].FullName" class="form-control" />
+                                                            @memberStatuses[i].FullName
                                                         </td>
                                                         <td>
-                                                            @{
+                                                                <input type="hidden" asp-for="@memberStatuses[i].ExpiryDate" name="listRequest[@i].ExpiryDate" value="@memberStatuses[i].ExpiryDate" class="form-control" />
+                                                                @memberStatuses[i].ExpiryDate.Value.ToString("dd-MM-yyyy HH:mm")
+                                                        </td>
+                                                        <td>
+                                                            @* @{
                                                                 foreach (var status in defaultStatus)
                                                                 {
-                                                                    if (status.Text.Equals(listRequest[i].Status))
+                                                                    if (status.Text.Equals(memberStatuses[i].Status))
                                                                     {
                                                                         status.Selected = true;
                                                                     }
                                                                 }
-                                                            }
-                                                            <select class="form-control" asp-for="@listRequest[i].Status" asp-items="@defaultStatus" class="custom-select" name="listRequest[@i].Status">
+                                                            } *@
+                                                                <select class="form-control" asp-for="@memberStatuses[i].Status" asp-items="@memberStatuses[i].DefaultMemberStatusSelectList" class="custom-select" name="listRequest[@i].Status">
                                                             </select>
                                                         </td>
                                                     </tr>

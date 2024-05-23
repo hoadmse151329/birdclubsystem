@@ -36,9 +36,28 @@ namespace BAL.Services.Implements
             return _mapper.Map<IEnumerable<GetMembershipExpire>>(await _unitOfWork.MemberRepository.GetAllByRole(role));
         }
 
-        public async Task<IEnumerable<GetMemberStatus?>> GetAllMemberStatus()
+        public async Task<IEnumerable<GetMemberStatus>?> GetSortedMembers(
+			string? memberId = null, 
+			string? memberUserName = null, 
+			string? memberFullName = null, 
+			DateTime? expiryDateTime = null, 
+			List<string>? roles = null, 
+			List<string>? statuses = null, 
+			string? orderBy = null, 
+			bool isManager = false, 
+			bool isAdmin = false)
         {
-			return _mapper.Map<IEnumerable<GetMemberStatus>>(_unitOfWork.MemberRepository.GetAll());
+            return _mapper.Map<IEnumerable<GetMemberStatus>>(await _unitOfWork.MemberRepository.GetSortedMembers(
+                memberId,
+                memberUserName,
+                memberFullName,
+                expiryDateTime,
+                roles,
+                statuses,
+                orderBy,
+                isManager,
+                isAdmin
+                ));
         }
 
         public async Task<bool> GetBoolById(string id)
@@ -135,18 +154,6 @@ namespace BAL.Services.Implements
 				return true;
 			}
 			return false;
-        }
-
-        public void UpdateMembership(string memberId, DateTime membershipDatetime)
-        {
-            var usr = _unitOfWork.MemberRepository.GetByIdTracking(memberId).Result;
-            if (usr == null)
-            {
-                throw new Exception("User not Found!");
-            }
-			usr.ExpiryDate = membershipDatetime;
-			_unitOfWork.MemberRepository.Update(usr);
-			_unitOfWork.Save();
         }
     }
 }

@@ -26,6 +26,7 @@ using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using Azure.Storage.Blobs.Specialized;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc;
+using WebAppMVC.Models.ViewModels;
 // thêm crud của meeting, fieldtrip, contest.
 namespace WebAppMVC.Controllers
 {
@@ -1621,26 +1622,20 @@ namespace WebAppMVC.Controllers
             return View();
         }
         [HttpGet("MemberStatus")]
-        public async Task<IActionResult> ManagerMemberStatus([FromQuery] string search)
+        public async Task<IActionResult> ManagerMemberStatus([FromQuery] string? search)
         {
-            _logger.LogInformation(search);
-
-            /*if (search != null || !string.IsNullOrEmpty(search))
-            {
-                search = search.Trim();
-                ManagerAPI_URL += "Manager/Search?meetingName=" + search;
-            }
-            else */
             ManagerAPI_URL += "Manager/MemberStatus";
+            if (!string.IsNullOrEmpty(search))
+            {
+                ManagerAPI_URL += "?memberusername=" + search;
+            }
 
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
 
             string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
-            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
-
-            dynamic listMemberStatusModel = new ExpandoObject();
+            ManagerMemberStatusIndexVM managerMemberStatusListVM = new();
 
             var listMemberStatusResponse = await methcall.CallMethodReturnObject<GetListMemberStatus>(
                 _httpClient: _httpClient,
@@ -1666,7 +1661,12 @@ namespace WebAppMVC.Controllers
                     + listMemberStatusResponse.ErrorMessage;
                 return View("ManagerIndex");
             }
-            return View(listMemberStatusResponse.Data);
+            managerMemberStatusListVM.MemberStatuses = listMemberStatusResponse.Data;
+            foreach(var status in managerMemberStatusListVM.MemberStatuses)
+            {
+                status.DefaultMemberStatusSelectList = methcall.GetMemberStatusSelectableList(status.Status);
+            }
+            return View(managerMemberStatusListVM);
         }
         [HttpPost("MemberStatus/Update")]
         public async Task<IActionResult> ManagerUpdateMemberStatus(List<GetMemberStatus> listRequest)
