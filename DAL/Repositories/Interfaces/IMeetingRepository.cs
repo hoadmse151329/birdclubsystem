@@ -14,6 +14,7 @@ namespace DAL.Repositories.Interfaces
         IEnumerable<Meeting> GetSortedMeetings(
             int? meetingId,
             string? meetingName,
+            DateTime? openRegistration,
             DateTime? registrationDeadline,
             DateTime? startDate,
             DateTime? endDate,
@@ -29,5 +30,6 @@ namespace DAL.Repositories.Interfaces
         Task<IEnumerable<Meeting>> GetAllMeetings(string? role);
         public Task<Meeting?> GetMeetingById(int id);
         Task<bool> GetBoolMeetingId(int id);
+        Task<int> CountMeeting();
     }
 }

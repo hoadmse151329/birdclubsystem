@@ -25,7 +25,7 @@ namespace BAL.ViewModels
             FieldtripInclusions = new List<FieldtripInclusionViewModel>();
             FieldtripDaybyDays = new List<FieldtripDaybyDayViewModel>();
             NumberOfParticipants = 0;
-            NumberOfParticipantsLimit = 10;
+            NumberOfParticipantsLimit = 200;
         }
         public int? TripId { get; set; }
         [Required(ErrorMessage = "Fieldtrip Name is required")]

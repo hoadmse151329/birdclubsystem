@@ -29,17 +29,17 @@ namespace WebAPI.Controllers
         [ProducesResponseType(typeof(List<NotificationViewModel>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> GetNotificationByUserId([FromBody] int id)
+        public async Task<IActionResult> GetNotificationByMemberId([FromBody] string id)
         {
             try
             {
-                var mem = await _userService.GetBoolById(id);
-                if (!mem) return NotFound(new
+                var mem = await _userService.GetByMemberId(id);
+                if (mem == null) return NotFound(new
                 {
                     Status = false,
                     ErrorMessage = "Member Not Found!"
                 });
-                var result = await _notificationService.GetAllNotificationsByUserId(id);
+                var result = await _notificationService.GetAllNotificationsByMemberId(id);
                 if (result == null)
                 {
                     return NotFound(new
@@ -96,7 +96,7 @@ namespace WebAPI.Controllers
                 return Ok(new
                 {
                     Status = true,
-                    Message = "Notification Create successfully !",
+                    SuccessMessage = "Notification Create successfully !",
                     Data = result
                 });
             }
@@ -130,14 +130,11 @@ namespace WebAPI.Controllers
             try
             {
                 var usr = await _userService.GetByMemberId(notif.MemberId);
-                if (usr == null)
+                if (usr == null) return NotFound(new
                 {
-                    return NotFound(new
-                    {
-                        Status = false,
-                        ErrorMessage = "User does not exist!"
-                    });
-                }
+                    Status = false,
+                    ErrorMessage = "User does not exist!"
+                });
                 NotificationViewModel notification = new NotificationViewModel()
                 {
                     NotificationId = Guid.NewGuid().ToString(),
@@ -161,7 +158,7 @@ namespace WebAPI.Controllers
                 return Ok(new
                 {
                     Status = true,
-                    Message = "Notification Create successfully !",
+                    SuccessMessage = "Notification Create successfully !",
                     Data = result
                 });
             }

@@ -21,28 +21,29 @@ namespace DAL.Repositories.Implements
         {
             if (role == "Manager" || role == "Staff")
             {
-                return _context.FieldTrips.AsNoTracking()
+                return await _context.FieldTrips.AsNoTracking()
                 .Include(f => f.FieldtripPictures.Where(fm => fm.Type.Equals("Spotlight")))
-                .ToList();
+                .ToListAsync();
             }
-            return _context.FieldTrips.AsNoTracking()
+            return await _context.FieldTrips.AsNoTracking()
                 .Where(f => f.Status == "OpenRegistration")
                 .Include(f => f.FieldtripPictures.Where(fm => fm.Type.Equals("Spotlight")))
-                .ToList();
+                .ToListAsync();
         }
 
         public IEnumerable<FieldTrip> GetSortedFieldTrips(
-            int? tripId, 
-            string? tripName, 
-            DateTime? registrationDeadline, 
-            DateTime? startDate, 
-            DateTime? endDate, 
-            int? numberOfParticipants, 
-            List<string>? roads, 
-            List<string>? districts, 
-            List<string>? cities, 
-            List<string>? statuses, 
-            string? orderBy, 
+            int? tripId = null, 
+            string? tripName = null, 
+            DateTime? openRegistration = null, 
+            DateTime? registrationDeadline = null, 
+            DateTime? startDate = null, 
+            DateTime? endDate = null, 
+            int? numberOfParticipants = null, 
+            List<string>? roads = null, 
+            List<string>? districts = null, 
+            List<string>? cities = null, 
+            List<string>? statuses = null, 
+            string? orderBy = null, 
             bool isMemberOrGuest = false)
         {
             var roadLocationIds = roads != null && roads.Any() ? GetLocationIdListByLocationName(roads).ToList() : new List<int>();
@@ -60,62 +61,67 @@ namespace DAL.Repositories.Implements
 
             if (tripId.HasValue)
             {
-                fieldtrips = fieldtrips.AsNoTracking().Where(m => m.TripId.Equals(tripId.Value));
+                fieldtrips = fieldtrips.AsNoTracking().Where(f => f.TripId.Equals(tripId.Value));
             }
 
             if (!string.IsNullOrEmpty(tripName))
             {
-                fieldtrips = fieldtrips.AsNoTracking().Where(m => m.TripName.Contains(tripName));
+                fieldtrips = fieldtrips.AsNoTracking().Where(f => f.TripName.Contains(tripName));
+            }
+
+            if (openRegistration.HasValue)
+            {
+                fieldtrips = fieldtrips.AsNoTracking().Where(f => f.OpenRegistration == openRegistration.Value);
             }
 
             if (registrationDeadline.HasValue)
             {
-                fieldtrips = fieldtrips.AsNoTracking().Where(m => m.RegistrationDeadline == registrationDeadline.Value);
+                fieldtrips = fieldtrips.AsNoTracking().Where(f => f.RegistrationDeadline == registrationDeadline.Value);
             }
             if (startDate.HasValue)
             {
-                fieldtrips = fieldtrips.AsNoTracking().Where(m => m.StartDate == startDate.Value);
+                fieldtrips = fieldtrips.AsNoTracking().Where(f => f.StartDate == startDate.Value);
             }
             if (endDate.HasValue)
             {
-                fieldtrips = fieldtrips.AsNoTracking().Where(m => m.EndDate == endDate.Value);
+                fieldtrips = fieldtrips.AsNoTracking().Where(f => f.EndDate == endDate.Value);
             }
             if (numberOfParticipants.HasValue)
             {
-                fieldtrips = fieldtrips.AsNoTracking().Where(m => m.NumberOfParticipants == numberOfParticipants.Value);
+                fieldtrips = fieldtrips.AsNoTracking().Where(f => f.NumberOfParticipants == numberOfParticipants.Value);
             }
             if (roadLocationIds.Any())
             {
-                fieldtrips = fieldtrips.AsNoTracking().Where(m => roadLocationIds.Contains(m.LocationId.Value));
+                fieldtrips = fieldtrips.AsNoTracking().Where(f => roadLocationIds.Contains(f.LocationId.Value));
             }
             if (districtLocationIds.Any())
             {
-                fieldtrips = fieldtrips.AsNoTracking().Where(m => districtLocationIds.Contains(m.LocationId.Value));
+                fieldtrips = fieldtrips.AsNoTracking().Where(f => districtLocationIds.Contains(f.LocationId.Value));
             }
 
             if (cityLocationIds.Any())
             {
-                fieldtrips = fieldtrips.AsNoTracking().Where(m => cityLocationIds.Contains(m.LocationId.Value));
+                fieldtrips = fieldtrips.AsNoTracking().Where(f => cityLocationIds.Contains(f.LocationId.Value));
             }
             if (statuses != null && statuses.Any())
             {
-                fieldtrips = fieldtrips.AsNoTracking().Where(m => statuses.Contains(m.Status));
+                fieldtrips = fieldtrips.AsNoTracking().Where(f => statuses.Contains(f.Status));
             }
             fieldtrips = orderBy switch
             {
-                "fieldtripname_asc" => fieldtrips.OrderBy(m => m.TripName),
-                "fieldtripname_desc" => fieldtrips.OrderByDescending(m => m.TripName),
-                "openregistration_asc" => fieldtrips.OrderBy(m => m.OpenRegistration),
-                "openregistration_desc" => fieldtrips.OrderByDescending(m => m.OpenRegistration),
-                "registrationdeadline_asc" => fieldtrips.OrderBy(m => m.RegistrationDeadline),
-                "registrationdeadline_desc" => fieldtrips.OrderByDescending(m => m.RegistrationDeadline),
-                "startdate_asc" => fieldtrips.OrderBy(m => m.StartDate),
-                "startdate_desc" => fieldtrips.OrderByDescending(m => m.StartDate),
-                "enddate_asc" => fieldtrips.OrderBy(m => m.EndDate),
-                "enddate_desc" => fieldtrips.OrderByDescending(m => m.EndDate),
-                "status_asc" => fieldtrips.OrderBy(m => statusListDefault.IndexOf(m.Status)),
-                "status_desc" => fieldtrips.OrderByDescending(m => statusListDefault.IndexOf(m.Status)),
-                _ => fieldtrips.OrderBy(m => m.TripId)
+                "fieldtripname_asc" => fieldtrips.OrderBy(f => f.TripName),
+                "fieldtripname_desc" => fieldtrips.OrderByDescending(f => f.TripName),
+                "openregistration_asc" => fieldtrips.OrderBy(f => f.OpenRegistration),
+                "openregistration_desc" => fieldtrips.OrderByDescending(f => f.OpenRegistration),
+                "registrationdeadline_asc" => fieldtrips.OrderBy(f => f.RegistrationDeadline),
+                "registrationdeadline_desc" => fieldtrips.OrderByDescending(f => f.RegistrationDeadline),
+                "startdate_asc" => fieldtrips.OrderBy(f => f.StartDate),
+                "startdate_desc" => fieldtrips.OrderByDescending(f => f.StartDate),
+                "enddate_asc" => fieldtrips.OrderBy(f => f.EndDate),
+                "enddate_desc" => fieldtrips.OrderByDescending(f => f.EndDate),
+                "status_asc" => fieldtrips.OrderBy(f => statusListDefault.IndexOf(f.Status)),
+                "status_desc" => fieldtrips.OrderByDescending(f => statusListDefault.IndexOf(f.Status)),
+                _ => fieldtrips.OrderBy(f => f.TripId)
             };
 
             return fieldtrips.ToList();
@@ -143,8 +149,8 @@ namespace DAL.Repositories.Implements
 
         public async Task<FieldTrip?> GetFieldTripByIdWithoutInclude(int id)
         {
-            return _context.FieldTrips.AsNoTracking()
-                .SingleOrDefault(trip => trip.TripId == id);
+            return await _context.FieldTrips.AsNoTracking()
+                .SingleOrDefaultAsync(trip => trip.TripId == id);
         }
         private List<int> GetLocationIdListByLocationName(List<string>? locationNames)
         {

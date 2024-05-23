@@ -38,14 +38,13 @@ namespace WebAppMVC
             .AddCookie()
             .AddGoogle(options =>
             {
-                //IConfigurationSection googleAuthNSection = configuration.GetSection("Authentication:Google");
-                //options.ClientId = googleAuthNSection["ClientId"];
-                //options.ClientSecret = googleAuthNSection["ClientSecret"];
-
                 options.ClientId = configuration.GetSection(Constants.Constants.GOOGLE_CLIENT_ID).Value;
 				options.ClientSecret = configuration.GetSection(Constants.Constants.GOOGLE_CLIENT_SECRET).Value;
                 options.CallbackPath = Constants.Constants.GOOGLE_REDIRECT_URI_PATH;
+                options.AccessDeniedPath = Constants.Constants.LOGIN_URL;
                 options.SaveTokens = true;
+                options.Scope.Add("profile");
+                options.Scope.Add("email");
             });
 
             // Add HttpClient
@@ -61,10 +60,16 @@ namespace WebAppMVC
             services.AddSession(options =>
             {
                 options.Cookie.IsEssential = true;
-                options.Cookie.SameSite = SameSiteMode.None;
+                options.Cookie.SameSite = SameSiteMode.Strict;
                 options.Cookie.HttpOnly = true;
                 options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-                options.IdleTimeout = TimeSpan.FromMinutes(30); // Adjust the timeout as needed
+                options.IdleTimeout = TimeSpan.FromMinutes(25); // Adjust the timeout as needed
+            });
+            // Add logging services for debugs
+            services.AddLogging(loggingBuilder =>
+            {
+                loggingBuilder.AddConsole();
+                loggingBuilder.AddDebug();
             });
 
             // Add scoped services
@@ -73,6 +78,9 @@ namespace WebAppMVC
 
             // Add Hosted services
             services.AddHostedService<MembershipExpiryService>();
+            services.AddHostedService<MeetingStatusUpdateService>();
+            services.AddHostedService<ContestStatusUpdateService>();
+            services.AddHostedService<FieldTripStatusUpdateService>();
         }
         private static void ConfigureMiddleware(WebApplication app)
         {
@@ -83,7 +91,10 @@ namespace WebAppMVC
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts(); // HSTS middleware
             }
-
+            else
+            {
+                app.UseDeveloperExceptionPage();
+            }
             // Enable HTTPS redirection and static files
             app.UseHttpsRedirection();
             app.UseStaticFiles();

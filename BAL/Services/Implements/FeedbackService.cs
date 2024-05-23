@@ -2,6 +2,7 @@
 using BAL.Services.Interfaces;
 using BAL.ViewModels;
 using DAL.Infrastructure;
+using DAL.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,9 +21,27 @@ namespace BAL.Services.Implements
             _mapper = mapper;
         }
 
-        public async Task<bool> Create(string eventId, FeedbackViewModel feedback)
+        public async Task<IEnumerable<FeedbackViewModel>> GetAllFeedbacks()
         {
-            return false;
+            return _mapper.Map<IEnumerable<FeedbackViewModel>>(await _unitOfWork.FeedbackRepository.GetAllFeedbacks());
+        }
+
+        public async Task<FeedbackViewModel?> GetFeedbackById(int id)
+        {
+            var feed = await _unitOfWork.FeedbackRepository.GetFeedbackById(id);
+            if (feed != null)
+            {
+                var feedback = _mapper.Map<FeedbackViewModel>(feed);
+                return feedback;
+            }
+            return null;
+        }
+
+        public void Create(FeedbackViewModel feedback)
+        {
+            var feed = _mapper.Map<Feedback>(feedback);
+            _unitOfWork.FeedbackRepository.Create(feed);
+            _unitOfWork.Save();
         }
     }
 }

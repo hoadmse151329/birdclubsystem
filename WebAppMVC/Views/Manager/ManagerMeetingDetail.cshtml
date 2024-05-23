@@ -540,6 +540,12 @@
                                 <div class="row justify-content-center">
                                     <div class="col-12 col-md-6">
                                         <div class="form-group row">
+                                            <label asp-for="@createMedia.Image" class="col-sm-4 col-form-label">Upload Meeting Additional Image</label>
+                                            <img class="profile-pic" style="width:300px; height:300px" src="@createMedia.Image" />
+                                            <input asp-for="@createMedia.ImageUpload" type="file" class="file-upload" accept=".jpg, .png, .jpeg">
+                                            <input asp-for="@createMedia.Image" type="text" value="@createMedia.Image" class="form-control" required hidden>
+                                        </div>
+                                        <div class="form-group row">
                                             <label asp-for="@createMedia.Description" class="col-sm-4 col-form-label"></label>
                                             <div class="col-sm-8">
                                                 <textarea asp-for="@createMedia.Description" type="text" placeholder="Enter Media Description..."
@@ -555,8 +561,6 @@
                                                        value="Additional" class="form-control" readonly>
                                             </div>
                                         </div>
-                                        <input asp-for="@createMedia.Image" type="text" class="form-control"
-                                               value="https://edwinbirdclubstorage.blob.core.windows.net/images/meeting/meeting_image_1.png" hidden />
                                     </div>
                                 </div>
                             </div>
@@ -626,6 +630,12 @@
                                 <div class="row justify-content-center">
                                     <div class="col-12 col-md-6">
                                         <div class="form-group row">
+                                            <label asp-for="@createMedia.Image" class="col-sm-4 col-form-label">Upload Meeting Location Map Image</label>
+                                            <img class="profile-pic" style="width:300px; height:300px" src="@createMedia.Image" />
+                                            <input asp-for="@createMedia.ImageUpload" type="file" class="file-upload" accept=".jpg, .png, .jpeg">
+                                            <input asp-for="@createMedia.Image" type="text" value="@createMedia.Image" class="form-control" required hidden>
+                                        </div>
+                                        <div class="form-group row">
                                             <label asp-for="@createMedia.Description" class="col-sm-4 col-form-label"></label>
                                             <div class="col-sm-8">
                                                 <textarea asp-for="@createMedia.Description" type="text" placeholder="Enter Media Description..."
@@ -641,8 +651,6 @@
                                                        value="LocationMap" class="form-control" readonly>
                                             </div>
                                         </div>
-                                        <input asp-for="@createMedia.Image" type="text" class="form-control"
-                                               value="https://edwinbirdclubstorage.blob.core.windows.net/images/meeting/meeting_image_1.png" hidden />
                                     </div>
                                 </div>
                             </div>

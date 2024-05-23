@@ -190,6 +190,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="~/js/loading.js" defer></script> 
     <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
     <script src="~/js/user-script.js"></script>
@@ -251,6 +252,16 @@
                 pagingType: "full_numbers",
             });
         });
+    </script>
+    <script>
+        function showNotification(message) {
+            var notification = $('#notification');
+            notification.text(message).fadeIn();
+
+            setTimeout(function () {
+                notification.fadeOut();
+            }, 3000); // 3 seconds duration
+        }
     </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>

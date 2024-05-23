@@ -84,6 +84,7 @@ namespace WebAPI.Controllers
             [FromBody] string? role,
             [FromQuery] int? meetingId,
             [FromQuery] string? meetingName,
+            [FromQuery] DateTime? openRegistration,
             [FromQuery] DateTime? registrationDeadline,
             [FromQuery] DateTime? startDate,
             [FromQuery] DateTime? endDate,
@@ -91,7 +92,7 @@ namespace WebAPI.Controllers
             [FromQuery] List<string>? road,
             [FromQuery] List<string>? district,
             [FromQuery] List<string>? city,
-            [FromQuery] List<string>? statuses,
+            [FromQuery] List<string>? status,
             [FromQuery] string? orderBy)
         {
             try
@@ -104,6 +105,7 @@ namespace WebAPI.Controllers
                 var result = await _meetingService.GetSortedMeetings(
                     meetingId: meetingId,
                     meetingName: meetingName,
+                    openRegistration: openRegistration,
                     registrationDeadline: registrationDeadline,
                     startDate: startDate,
                     endDate: endDate,
@@ -111,7 +113,7 @@ namespace WebAPI.Controllers
                     roads: road,
                     districts: district,
                     cities: city,
-                    statuses: statuses,
+                    statuses: status,
                     orderBy: orderBy,
                     isMemberOrGuest);
                 if (result == null)
@@ -190,7 +192,7 @@ namespace WebAPI.Controllers
                 return Ok(new
                 {
                     Status = true,
-                    Message = "Meeting Create successfully !",
+                    SuccessMessage = "Meeting Create successfully !",
                     Data = meet
                 });
             }
@@ -297,7 +299,7 @@ namespace WebAPI.Controllers
                     return Ok(new
                     {
                         Status = true,
-                        Message = "Meeting Media Create successfully!",
+                        SuccessMessage = "Meeting Media Create successfully!",
                         BoolData = true
                     });
                 else return StatusCode(StatusCodes.Status500InternalServerError, new
@@ -390,7 +392,7 @@ namespace WebAPI.Controllers
                 return Ok(new
                 {
                     Status = true,
-                    Message = "Add Member Participation successfully !",
+                    SuccessMessage = "Add Member Participation successfully !",
                     IntData = participateNo
                 });
             }
