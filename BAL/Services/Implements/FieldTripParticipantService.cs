@@ -32,7 +32,7 @@ namespace BAL.Services.Implements
             {
                 TripId = tripId,
                 MemberId = memId,
-                ParticipantNo = partNo.ToString()
+                ParticipantNo = partNo
             };
             _unitOfWork.FieldTripParticipantRepository.Create(fieldTripParticipant);
             _unitOfWork.Save();

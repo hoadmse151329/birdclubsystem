@@ -21,8 +21,7 @@ namespace DAL.Models
         [StringLength(50)]
         public string MemberId { get; set; } = null!;
         [Column("participantNo")]
-        [StringLength(50)]
-        public string ParticipantNo { get; set; } = null!;
+        public int ParticipantNo { get; set; }
         [Column("checkInStatus")]
         [StringLength(50)]
         public string CheckInStatus { get; set; } = null!;

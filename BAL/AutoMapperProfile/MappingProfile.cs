@@ -55,7 +55,7 @@ namespace BAL.AutoMapperProfile
                     dest.Fee = 0;
                     dest.RegistrationDeadline = src.MeetingDetail.RegistrationDeadline;
                     dest.Status = src.MeetingDetail.Status;
-                    dest.ParticipationNo = Int32.Parse(src.ParticipantNo);
+                    dest.ParticipationNo = src.ParticipantNo;
                     dest.CheckInStatus = src.CheckInStatus;
                 })
                 .ReverseMap();
@@ -84,7 +84,7 @@ namespace BAL.AutoMapperProfile
                     dest.RegistrationDeadline = src.Trip.RegistrationDeadline;
                     dest.Status = src.Trip.Status;
                     dest.Fee = src.Trip.Fee;
-                    dest.ParticipationNo = Int32.Parse(src.ParticipantNo);
+                    dest.ParticipationNo = src.ParticipantNo;
                     dest.CheckInStatus = src.CheckInStatus;
                 })
                 .ReverseMap();
@@ -102,7 +102,7 @@ namespace BAL.AutoMapperProfile
                     dest.RegistrationDeadline = src.ContestDetail.RegistrationDeadline;
                     dest.Status = src.ContestDetail.Status;
                     dest.Fee = src.ContestDetail.Fee;
-                    dest.ParticipationNo = Int32.Parse(src.ParticipantNo);
+                    dest.ParticipationNo = src.ParticipantNo;
                     dest.CheckInStatus = src.CheckInStatus;
                 })
                 .ReverseMap();

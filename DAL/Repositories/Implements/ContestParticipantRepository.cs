@@ -30,7 +30,12 @@ namespace DAL.Repositories.Implements
 
         public async Task<IEnumerable<ContestParticipant>> GetContestParticipantsByContestId(int contestId)
         {
-            return _context.ContestParticipants.Where(con => con.ContestId == contestId).Include(m => m.MemberDetail).Include(b => b.BirdDetails).OrderBy(p => p.ParticipantNo).ToList();
+            return _context.ContestParticipants
+                .AsNoTracking()
+                .Where(con => con.ContestId == contestId)
+                .Include(m => m.MemberDetail)
+                .Include(b => b.BirdDetails)
+                .OrderBy(p => p.ParticipantNo).ToList();
         }
 
         public async Task<IEnumerable<ContestParticipant>> GetContestParticipantsByBirdId(int birdId)
@@ -78,7 +83,7 @@ namespace DAL.Repositories.Implements
 		{
             var cp = _context.ContestParticipants.FirstOrDefault(cp => cp.ContestId == contestId && cp.MemberId == memberId);
             if (cp == null) return 0;
-            return Int32.Parse(cp.ParticipantNo);
+            return cp.ParticipantNo.Value;
 		}
 
 		public async Task<ContestParticipant> GetContestParticipantById(int contestId, string memberId, int? birdId = null)

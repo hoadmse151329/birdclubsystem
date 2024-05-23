@@ -34,7 +34,7 @@ namespace BAL.Services.Implements
                 ContestId = contestId,
                 BirdId = birdId,
                 MemberId = memberId,
-                ParticipantNo = partNo.ToString(),
+                ParticipantNo = partNo,
                 Elo = elo
             };
             _unitOfWork.ContestParticipantRepository.Create(contestParticipant);

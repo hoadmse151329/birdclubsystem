@@ -55,14 +55,10 @@ namespace DAL.Repositories.Implements
         public async Task<IEnumerable<MeetingParticipant>> GetMeetingParticipantsByMeetId(int meetingId)
         {
             return _context.MeetingParticipants
-                .Where(m => m.MeetingId == meetingId).Include(m => m.MemberDetail).OrderBy(p => Convert.ToInt32(p.ParticipantNo))
-                /*.Select(x => new MeetingParticipant
-                {
-                    MeetingId= x.MeetingId,
-                    MemberId= x.MemberId,
-                    ParticipantNo = x.ParticipantNo,
-                    Member = x.Member
-                })*/
+                .AsNoTracking()
+                .Where(m => m.MeetingId == meetingId)
+                .Include(m => m.MemberDetail)
+                .OrderBy(p => p.ParticipantNo)
                 .ToList();
         }
 
@@ -79,7 +75,7 @@ namespace DAL.Repositories.Implements
         public async Task<int> GetParticipationNoMeetingParticipantById(int meetingId, string memberId)
         {
             var mempart = _context.MeetingParticipants.AsNoTracking().SingleOrDefault(m => m.MeetingId.Equals(meetingId) && m.MemberId.Equals(memberId));
-            if (mempart != null) return Int32.Parse(mempart.ParticipantNo);
+            if (mempart != null) return mempart.ParticipantNo;
             return 0;
         }
 

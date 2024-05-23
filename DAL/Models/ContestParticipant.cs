@@ -28,8 +28,7 @@ namespace DAL.Models
         [Column("score")]
         public int Score { get; set; }
         [Column("participantNo")]
-        [StringLength(50)]
-        public string ParticipantNo { get; set; } = null!;
+        public int? ParticipantNo { get; set; }
         [Column("checkInStatus")]
         [StringLength(50)]
         public string CheckInStatus { get; set; } = null!;

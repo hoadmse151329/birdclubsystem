@@ -34,7 +34,7 @@ namespace BAL.Services.Implements
             {
                 MeetingId= metId,
                 MemberId= memId,
-                ParticipantNo = partNo.ToString(),
+                ParticipantNo = partNo,
             };
             _unitOfWork.MeetingParticipantRepository.Create(meetingParticipant);
             _unitOfWork.Save();
