@@ -34,19 +34,19 @@ a{
 }
 .navbar .nav-name-text {
     text-align: center;
-    color:darkgreen;
+    color: darkgreen;
     font-size: 30px;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-family: 'Font Awesome 5 Free', Arial, sans-serif;
     font-weight: 700;
     word-wrap: break-word;
     word-spacing: 1px;
 }
-.nav-item-text .nav-link{
+.nav-item-text .nav-link {
     text-decoration: none;
     text-align: center;
-    color:black;
+    color: black;
     font-size: 22px;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-family: "Font Awesome 5 Free", Arial, sans-serif;
     font-weight: 700;
     white-space: nowrap;
 }
@@ -58,7 +58,7 @@ a{
     border-color: rgba(255,255,255,.1);
 }
 .bottom-text {
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-family: "Font Awesome 5 Free", Arial, sans-serif;
     font-size: 18px;
     font-weight: 700;
 }
@@ -96,7 +96,7 @@ a{
     text-align: center;
     color: black;
     font-size: 22px;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-family: "Font Awesome 5 Free", Arial, sans-serif;
     font-weight: 700;
     white-space: nowrap;
 }

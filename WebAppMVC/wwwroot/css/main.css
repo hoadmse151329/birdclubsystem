@@ -313,12 +313,8 @@ body .lb-cancel {
 
 .infor #carouselBanner .carousel-control-prev i,
 .infor #carouselBanner .carousel-control-next i {
-  color: #000;
+  color: white;
   font-size: 40px; }
-.infor .infor__content img {
-  width: 45px;
-  height: 45px;
-  border-radius: 50%; }
 .infor .infor__content .content {
     background-color: white;
     border-radius: 1rem;
@@ -326,10 +322,6 @@ body .lb-cancel {
     border-style: solid;
     border-image: initial;
 }
-  .infor .infor__content .content h4 {
-    font-size: 18px; 
-    text-align:center;
-  }
 
 .club {
   padding-top: 0; }
@@ -598,7 +590,7 @@ body .lb-cancel {
         background-repeat: no-repeat;
         background-position: 50% 50%;
         background-size: cover;
-        height: 525px;
+        height: 60vw;
         border-radius: 10px;
         border: 1px solid #edebeb75;
     }
@@ -942,8 +934,8 @@ body .lb-cancel {
 
 
 .owl-carousel .owl-nav button.owl-prev, .owl-carousel .owl-nav button.owl-next {
-    color: #b6d6f6;
-    background-color: #fff;
+    color: white;
+    background-color: white;
     width: 44px;
     height: 44px;
     line-height: 40px;
@@ -957,9 +949,9 @@ body .lb-cancel {
 }
 
     .owl-carousel .owl-nav button.owl-prev:hover, .owl-carousel .owl-nav button.owl-next:hover {
-        background-color: #fff;
+        background-color: white;
         box-shadow: 0 2px 8px 2px #b0b0b0;
-        color: #b6d6f6;
+        color: white;
     }
 
     .owl-carousel .owl-nav button.owl-prev:focus, .owl-carousel .owl-nav button.owl-next:focus {
@@ -1291,24 +1283,19 @@ body .lb-cancel {
 }
 
 
-.infor #carouselBanner .carousel-control-prev i,
-.infor #carouselBanner .carousel-control-next i {
-    color: #000;
-    font-size: 40px;
-}
 
 .infor .infor__content img {
-    width: 125px;
-    height: 125px;
+    width: 12vw;
+    height: 12vw;
     border-radius: 50%;
 }
 
 .infor .infor__content .content {
-    margin: 0 10px;
+    margin: 0 1vw;
 }
 
     .infor .infor__content .content h4 {
-        font-size: 18px;
+        font-size: 2.5vw;
     }
 
 
@@ -1394,8 +1381,8 @@ body .lb-cancel {
     }
 
 .about-us .intro-desc img {
-    width: 190px;
-    height: auto;
+    width: 19vw;
+    height: 30vw;
 }
 
 .about-us .intro-img {
@@ -1516,18 +1503,19 @@ body .lb-cancel {
     #teamMember .team-carousel .owl-nav button.owl-prev span,
     #teamMember .team-carousel .owl-nav button.owl-next span {
         transition: all 0.5s;
+        color: white;
     }
 
     #teamMember .team-carousel .owl-nav button.owl-prev:hover,
     #teamMember .team-carousel .owl-nav button.owl-next:hover {
         border: none;
         box-shadow: none;
-        color: #ffadd9;
+        color: palegreen;
     }
 
         #teamMember .team-carousel .owl-nav button.owl-prev:hover span,
         #teamMember .team-carousel .owl-nav button.owl-next:hover span {
-            color: #ffadd9;
+            color: lightgreen;
         }
 
 .content {
@@ -1846,17 +1834,6 @@ body .lb-cancel {
     row-gap: 50px;
     margin-top: 10px;
 }
-
-    .col-bg .bg-1,
-    .col-bg .bg-2 {
-        width: 100%;
-        background-repeat: no-repeat;
-        background-position: 50% 50%;
-        background-size: cover;
-        height: 525px;
-        border-radius: 10px;
-        border: 1px solid #edebeb75;
-    }
 
 .booking .heading {
     margin-bottom: 20px;
