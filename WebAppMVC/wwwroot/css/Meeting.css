@@ -857,10 +857,10 @@
     }
 
     .member-meeting-post .group {
-        background-color:white;
+        background-color: white;
         position: relative;
-        width: 768px;
-        height: 1254px;
+        width: 54.1vw;
+        height: 90vw;
         border-radius: 30px;
         border: 5px solid black;
         box-shadow: 1px 1px 5px #b0b0b0;
@@ -870,8 +870,8 @@
 
     .member-meeting-post .overlap-2 {
         position: relative;
-        width: 768px;
-        height: 1254px;
+        width: 54.1vw;
+        height: 90vw;
     }
 
     .member-meeting-post .img {
@@ -1009,10 +1009,10 @@
 
     .member-meeting-post .div-wrapper {
         position: relative;
-        width: 756px;
-        height: 100px;
+        width: 53vw;
+        height: 12vw;
         background-color: #99ffad;
-        border-radius: 25px 25px 0px 0px;
+        border-radius: 2.5vw 2.5vw 0vw 0vw;
     }
 
     .member-meeting-post .text-wrapper-3 {
@@ -1030,10 +1030,10 @@
 
     .member-meeting-post .soi-noi-hoi-thi-chim {
         position: absolute;
-        width: 763px;
-        height: 317px;
-        top: 99px;
-        left: -3px;
+        width: 53.2vw;
+        height: 31vw;
+        top: 12vw;
+        left: -0.2vw;
     }
 
     .member-meeting-post .info {
@@ -1080,10 +1080,10 @@
 
     .member-meeting-post .tittle {
         position: absolute;
-        width: 532px;
-        height: 100px;
-        top: 1px;
-        left: 1px;
+        width: 53.1vw;
+        height: 12vw;
+        top: 0.01vw;
+        left: 0.01vw;
     }
 
     .member-meeting-post .overlap-group-2 {

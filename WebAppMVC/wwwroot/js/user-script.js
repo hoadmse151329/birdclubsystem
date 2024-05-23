@@ -195,10 +195,10 @@ $(function () {
 
     $(".pagination").append(
         $("<li>").addClass("page-item previous-page").append(
-            $("<a>").addClass("page-link btn").attr({ href: "javascript: void(0)" }).append($("<i>").addClass("fa fa-angle-left"))
+            $("<a>").addClass("page-link btn").attr({ href: "javascript: void(0)" }).append($("<i>").addClass("fa fa-circle-left"))
         ),
         $("<li>").addClass("page-item next-page").append(
-            $("<a>").addClass("page-link btn").attr({ href: "javascript: void(0)" }).append($("<i>").addClass("fa fa-angle-right"))
+            $("<a>").addClass("page-link btn").attr({ href: "javascript: void(0)" }).append($("<i>").addClass("fa fa-circle-right"))
         )
     );
 

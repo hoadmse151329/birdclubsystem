@@ -19,8 +19,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
     <link rel='stylesheet' href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css'>
-        <!-- Other-->
-        <link rel="stylesheet" href="https://unpkg.com/filepond-plugin-file-poster/dist/filepond-plugin-file-poster.css" >
+    <!-- Other-->
+    <link rel="stylesheet" href="https://unpkg.com/filepond-plugin-file-poster/dist/filepond-plugin-file-poster.css">
 </head>
 <body>
     <hr>
@@ -70,117 +70,275 @@
                     </li>
                 </ul>
             </div>
-            <div class="row">
-                <div class="col-7 customer-booking">
-                    <div class="row">
-                        <div class="card profile col-12 mb-4">
-                            <div class="card-header">
-                                <h4>Meeting Information</h4>
-                                <div class="edit-info">
-                                    <i class='bx bxs-edit-alt' data-toggle="modal" data-target="#editbird"></i>
-                                </div>
-                            </div>
+            <div class="main-content col-10">
+                <div id="accordion">
+                    <div class="card mb-2">
+                        <div class="card-header card-setting" id="headingOne">
+                            <h5 class="mb-0">
+                                <button class="btn btn-link" data-toggle="collapse" data-target="#profile"
+                                        aria-expanded="true" aria-controls="profile">
+                                    Bird Profile <i class='bx bx-chevron-right'></i>
+                                </button>
+                            </h5>
+                        </div>
+                        <div class="collapse show" id="profile" aria-labelledby="profile" data-parent="#accordion">
                             <div class="card-body">
-                                <div class="row">
-                                    <div class="col-sm-5 text-sm-right">
-                                        <span>Status:</span>
-                                    </div>
-                                    <div class="col-sm-7">
-                                        @{
-                                            switch (detailsBird.Status)
-                                            {
-                                                case "Active":
-                                                    {
-                                                        <span class="stt1" style="float: left;">Status:<h6>@detailsBird.Status</h6></span>
-                                                        break;
-                                                    }
-                                                case "Injured":
-                                                    {
-                                                        <span class="stt3" style="float: left;">Status:<h6>@detailsBird.Status</h6></span>
-                                                        break;
-                                                    }
-                                                case "Inactive":
-                                                    {
-                                                        <span class="stt2" style="float: left;">Status:<h6>@detailsBird.Status</h6></span>
-                                                        break;
-                                                    }
-                                            }
-                                        }
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-5 text-md-right">
-                                        <label for="meeting-name">Bird Name:</label>
-                                    </div>
-                                    <div class="col-md-7">
-                                        <span>@detailsBird.BirdName</span>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-5 text-md-right">
-                                        <label for="customer-name">Added Date:</label>
-                                    </div>
-                                    <div class="col-md-7">
-                                        <span>@detailsBird.AddDate.ToString("dd-MM-yyyy HH:mm")</span>
-                                    </div>
-                                </div>
-                                <div class="row mb-sm-2">
-                                    <div class="col-sm-5 text-sm-right">
-                                        <span>ELO:</span>
-                                    </div>
-                                    <div class="col-sm-7 text-sm-left">
-                                        <span>@detailsBird.Elo</span>
-                                    </div>
-                                </div>
-                                <div class="row mb-sm-2">
-                                    <div class="col-sm-5 text-sm-right">
-                                        <span>Age:</span>
-                                    </div>
-                                    <div class="col-sm-7 text-sm-left">
-                                        <span>@detailsBird.Age</span>
-                                    </div>
-                                </div>
-                                <div class="row mb-sm-2">
-                                    <div class="col-sm-5 text-sm-right">
-                                        <span>Color:</span>
-                                    </div>
-                                    <div class="col-sm-7 text-sm-left">
-                                        <span>@detailsBird.Color</span>
-                                    </div>
-                                </div>
-                                <div class="row mb-sm-2">
-                                    <div class="col-sm-5 text-sm-right">
-                                        <span>Description:</span>
-                                    </div>
-                                    <div class="col-sm-7 text-sm-left">
-                                        <span>@detailsBird.Description</span>
-                                    </div>
-                                </div>
-                                <div class="row mb-sm-2">
-                                    <div class="col-sm-5 text-sm-right">
-                                        <span>Origin:</span>
-                                    </div>
-                                    <div class="col-sm-7 text-sm-left">
-                                        <span>@detailsBird.Origin</span>
-                                    </div>
-                                </div>
-                                <div class="row mb-sm-2">
-                                    <div class="col-sm-5 text-sm-right">
-                                        <span>Profile pic:</span>
-                                    </div>
-                                    <div class="col-sm-7 text-sm-left">
-                                        <img class="img-fluid" src="@detailsBird.ProfilePic" alt="n1">
+                                <div class="user-profile">
+                                    <div class="row1">
+                                        <div class="customer-booking">
+                                            <div class="row1">
+                                                <div class="card profile col-12 mb-4">
+                                                    <div class="card-header">
+                                                        <h4>Meeting Information</h4>
+                                                        <div class="edit-info">
+                                                            <i class='bx bxs-edit-alt' data-toggle="modal" data-target="#editbird"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <div class="row">
+                                                            <div class="col-sm-5 text-sm-right">
+                                                                <span>Status:</span>
+                                                            </div>
+                                                            <div class="col-sm-7">
+                                                                @{
+                                                                    switch (detailsBird.Status)
+                                                                    {
+                                                                        case "Active":
+                                                                            {
+                                                                                <span class="stt1" style="float: left;">Status:<h6>@detailsBird.Status</h6></span>
+                                                                                break;
+                                                                            }
+                                                                        case "Injured":
+                                                                            {
+                                                                                <span class="stt3" style="float: left;">Status:<h6>@detailsBird.Status</h6></span>
+                                                                                break;
+                                                                            }
+                                                                        case "Inactive":
+                                                                            {
+                                                                                <span class="stt2" style="float: left;">Status:<h6>@detailsBird.Status</h6></span>
+                                                                                break;
+                                                                            }
+                                                                    }
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-5 text-md-right">
+                                                                <label for="meeting-name">Bird Name:</label>
+                                                            </div>
+                                                            <div class="col-md-7">
+                                                                <span>@detailsBird.BirdName</span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-5 text-md-right">
+                                                                <label for="customer-name">Added Date:</label>
+                                                            </div>
+                                                            <div class="col-md-7">
+                                                                <span>@detailsBird.AddDate.ToString("dd-MM-yyyy HH:mm")</span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row mb-sm-2">
+                                                            <div class="col-sm-5 text-sm-right">
+                                                                <span>ELO:</span>
+                                                            </div>
+                                                            <div class="col-sm-7 text-sm-left">
+                                                                <span>@detailsBird.Elo</span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row mb-sm-2">
+                                                            <div class="col-sm-5 text-sm-right">
+                                                                <span>Age:</span>
+                                                            </div>
+                                                            <div class="col-sm-7 text-sm-left">
+                                                                <span>@detailsBird.Age</span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row mb-sm-2">
+                                                            <div class="col-sm-5 text-sm-right">
+                                                                <span>Color:</span>
+                                                            </div>
+                                                            <div class="col-sm-7 text-sm-left">
+                                                                <span>@detailsBird.Color</span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row mb-sm-2">
+                                                            <div class="col-sm-5 text-sm-right">
+                                                                <span>Description:</span>
+                                                            </div>
+                                                            <div class="col-sm-7 text-sm-left">
+                                                                <span>@detailsBird.Description</span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row mb-sm-2">
+                                                            <div class="col-sm-5 text-sm-right">
+                                                                <span>Origin:</span>
+                                                            </div>
+                                                            <div class="col-sm-7 text-sm-left">
+                                                                <span>@detailsBird.Origin</span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row mb-sm-2">
+                                                            <div class="col-sm-5 text-sm-right">
+                                                                <span>Profile pic:</span>
+                                                            </div>
+                                                            <div class="col-sm-7 text-sm-left">
+                                                                <img class="img-fluid" src="@detailsBird.ProfilePic" alt="n1">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="card profile col-12 mb-4">
+                                                    <div class="card-header">
+                                                        <h4>Medias</h4>
+                                                        <div class="edit-info">
+                                                            <i class='bx bxs-edit-alt' data-toggle="modal" data-target="#editbird"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="card profile col-12 mb-4">
-                            <div class="card-header">
-                                <h4>Medias</h4>
-                                <div class="edit-info">
-                                    <i class='bx bxs-edit-alt' data-toggle="modal" data-target="#editbird"></i>
+                </div>
+                <div class="card mb-2">
+                    <div class="card-header card-setting" id="headingTwo">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo"
+                                    aria-expanded="false" aria-controls="collapseTwo">
+                                Bird Contest History <i class='bx bx-chevron-right'></i>
+                            </button>
+                        </h5>
+                    </div>
+                    <div class="collapse" id="collapseTwo" aria-labelledby="headingTwo" data-parent="#accordion">
+                        <div class="card-body">
+                            <div class="card-group d-block">
+                                <div class="collapse show" id="profile" aria-labelledby="profile" data-parent="#accordion">
+                                    <div class="card-body">
+                                        <div class="user-profile">
+                                            <div class="row">
+                                                <div class="col-lg-8">
+                                                    <div class="profile-content">
+                                                        <div class="contact-infor">
+                                                            <div class="info-content">
+                                                                <div class="card-header">
+                                                                    <h4>Meeting Information</h4>
+                                                                </div>
+                                                                <div class="card-body">
+                                                                    <div class="row">
+                                                                        <div class="col-sm-5 text-sm-right">
+                                                                            <span>Status:</span>
+                                                                        </div>
+                                                                        <div class="col-sm-7">
+                                                                            @{
+                                                                                switch (detailsBird.Status)
+                                                                                {
+                                                                                    case "Active":
+                                                                                        {
+                                                                                            <span class="stt1" style="float: left;">Status:<h6>@detailsBird.Status</h6></span>
+                                                                                            break;
+                                                                                        }
+                                                                                    case "Injured":
+                                                                                        {
+                                                                                            <span class="stt3" style="float: left;">Status:<h6>@detailsBird.Status</h6></span>
+                                                                                            break;
+                                                                                        }
+                                                                                    case "Inactive":
+                                                                                        {
+                                                                                            <span class="stt2" style="float: left;">Status:<h6>@detailsBird.Status</h6></span>
+                                                                                            break;
+                                                                                        }
+                                                                                }
+                                                                            }
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <div class="col-md-5 text-md-right">
+                                                                            <label for="meeting-name">Bird Name:</label>
+                                                                        </div>
+                                                                        <div class="col-md-7">
+                                                                            <span>@detailsBird.BirdName</span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <div class="col-md-5 text-md-right">
+                                                                            <label for="customer-name">Added Date:</label>
+                                                                        </div>
+                                                                        <div class="col-md-7">
+                                                                            <span>@detailsBird.AddDate.ToString("dd-MM-yyyy HH:mm")</span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row mb-sm-2">
+                                                                        <div class="col-sm-5 text-sm-right">
+                                                                            <span>ELO:</span>
+                                                                        </div>
+                                                                        <div class="col-sm-7 text-sm-left">
+                                                                            <span>@detailsBird.Elo</span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row mb-sm-2">
+                                                                        <div class="col-sm-5 text-sm-right">
+                                                                            <span>Age:</span>
+                                                                        </div>
+                                                                        <div class="col-sm-7 text-sm-left">
+                                                                            <span>@detailsBird.Age</span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row mb-sm-2">
+                                                                        <div class="col-sm-5 text-sm-right">
+                                                                            <span>Color:</span>
+                                                                        </div>
+                                                                        <div class="col-sm-7 text-sm-left">
+                                                                            <span>@detailsBird.Color</span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row mb-sm-2">
+                                                                        <div class="col-sm-5 text-sm-right">
+                                                                            <span>Description:</span>
+                                                                        </div>
+                                                                        <div class="col-sm-7 text-sm-left">
+                                                                            <span>@detailsBird.Description</span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row mb-sm-2">
+                                                                        <div class="col-sm-5 text-sm-right">
+                                                                            <span>Origin:</span>
+                                                                        </div>
+                                                                        <div class="col-sm-7 text-sm-left">
+                                                                            <span>@detailsBird.Origin</span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row mb-sm-2">
+                                                                        <div class="col-sm-5 text-sm-right">
+                                                                            <span>Profile pic:</span>
+                                                                        </div>
+                                                                        <div class="col-sm-7 text-sm-left">
+                                                                            <img class="img-fluid" src="@detailsBird.ProfilePic" alt="n1">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="card profile col-12 mb-4">
+                                                                <div class="card-header">
+                                                                    <h4>Medias</h4>
+                                                                    <div class="edit-info">
+                                                                        <i class='bx bxs-edit-alt' data-toggle="modal" data-target="#editbird"></i>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -189,7 +347,7 @@
             </div>
         </div>
     </div>
-
+    </div>
     <!-- edit Bird -->
     <div id="editbird" class="modal fade" role="dialog">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
@@ -276,13 +434,13 @@
             </div>
         </div>
     </div>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
-        referrerpolicy="no-referrer"></script>
-        <!-- Jquery Waypoint -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>
-        <!-- BS4 JS -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.5/umd/popper.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+            referrerpolicy="no-referrer"></script>
+    <!-- Jquery Waypoint -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>
+    <!-- BS4 JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.5/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
 </body>
 </html>
