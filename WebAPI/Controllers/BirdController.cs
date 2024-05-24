@@ -127,8 +127,8 @@ namespace WebAPI.Controllers
                 {
                     return StatusCode(StatusCodes.Status500InternalServerError, new
                     {
-                        Status = true,
-                        Message = "Bird create failed, bird name already existed",
+                        Status = false,
+                        ErrorMessage = "Bird create failed, bird name already existed",
                         BoolData = false
                     });
                 }
@@ -138,14 +138,14 @@ namespace WebAPI.Controllers
                     return Ok(new
                     {
                         Status = true,
-                        Message = "Bird Create successfully!",
+                        SuccessMessage = "Bird Create successfully!",
                         Data = birdResult
                     });
                 }
                 else return StatusCode(StatusCodes.Status500InternalServerError, new
                 {
                     Status = false,
-                    Message = "Bird Create Failed!",
+                    ErrorMessage = "Bird Create Failed!",
                     BoolData = false
                 });
             }
@@ -198,6 +198,7 @@ namespace WebAPI.Controllers
                     return Ok(new
                     {
                         Status = true,
+                        SuccessMessage = "Update Bird successfully!",
                         Data = bird
                     });
                 }

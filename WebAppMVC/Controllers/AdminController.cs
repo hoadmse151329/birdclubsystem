@@ -161,7 +161,7 @@ namespace WebAppMVC.Controllers
                 _logger: _logger,
                 inputType: usrId,
                 accessToken: accToken);
-            if (memberDetails == null)
+            if (memberDetails == null || memberDetails.Data == null)
             {
                 ViewBag.Error =
                     "Error while processing your request! (Getting Admin Profile!).\n Admin Details Not Found!";
@@ -175,6 +175,7 @@ namespace WebAppMVC.Controllers
                 + memberDetails.ErrorMessage;
                 return RedirectToAction("AdminIndex");
             }
+            memberDetails.Data.DefaultUserGenderSelectList = methcall.GetUserGenderSelectableList(memberDetails.Data.Gender);
             return View(memberDetails.Data);
         }
         [HttpPost("Upload")]

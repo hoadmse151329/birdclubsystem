@@ -106,7 +106,7 @@ namespace WebAPI.Controllers
                     return NotFound(new
                     {
 						Status = false,
-						ErrorMessage = "User Not Found!"
+						ErrorMessage = "Username or Password is invalid!"
                     });
                 }
 				if (result.Status == "Inactive")
@@ -114,20 +114,23 @@ namespace WebAPI.Controllers
 					return BadRequest(new
 					{
 						Status = false,
-						ErrorMessage = "User Account is Currently InActivated!"
-					});
+						ErrorMessage = "User Account is Currently InActivated!",
+                        Data = result
+                    });
 				}
                 if (result.Status == "Expired")
                 {
                     return BadRequest(new
                     {
                         Status = false,
-                        ErrorMessage = "User Account is Currently Expired!"
+                        ErrorMessage = "User Account is Currently Expired!",
+                        Data = result
                     });
                 }
                 return Ok(new
                 {
                     Status = true,
+                    SuccessMessage = "Login successfully!",
                     Data = result
                 });
             }

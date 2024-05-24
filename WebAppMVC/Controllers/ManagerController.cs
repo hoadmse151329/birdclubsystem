@@ -228,6 +228,7 @@ namespace WebAppMVC.Controllers
                     + meetPostResponse.ErrorMessage;
                 return RedirectToAction("ManagerMeetingDetail", new { id });
             }
+            TempData["Success"] = meetPostResponse.SuccessMessage;
             return RedirectToAction("ManagerMeetingDetail", new { id });
         }
         [HttpPost("Meeting/Create")]
@@ -272,6 +273,7 @@ namespace WebAppMVC.Controllers
                     + meetPostResponse.ErrorMessage;
                 return RedirectToAction("ManagerMeeting");
             }
+            TempData["Success"] = meetPostResponse.SuccessMessage;
             return RedirectToAction("ManagerMeeting");
         }
 
@@ -341,6 +343,7 @@ namespace WebAppMVC.Controllers
                     + meetMediaResponse.ErrorMessage;
                 return RedirectToAction("ManagerMeetingDetail", new { id = meetingId });
             }
+            TempData["Success"] = meetMediaResponse.SuccessMessage;
             return RedirectToAction("ManagerMeetingDetail", new {id = meetingId});
         }
 
@@ -378,6 +381,7 @@ namespace WebAppMVC.Controllers
                     + meetPostResponse.ErrorMessage;
                 return RedirectToAction("ManagerMeeting");
             }
+            TempData["Success"] = meetPostResponse.SuccessMessage; 
             return RedirectToAction("ManagerMeeting");
         }
         [HttpGet("FieldTrip")]
@@ -558,6 +562,7 @@ namespace WebAppMVC.Controllers
                     + fieldtripPostResponse.ErrorMessage;
                 return RedirectToAction("ManagerFieldTripDetail", new { id });
             }
+            TempData["Success"] = fieldtripPostResponse.SuccessMessage;
             return RedirectToAction("ManagerFieldTripDetail", new { id });
         }
         [HttpPost("FieldTrip/{id:int}/GettingThere/{getId:int}/Update")]
@@ -603,6 +608,7 @@ namespace WebAppMVC.Controllers
                     + ftGettingThereResponse.ErrorMessage;
                 return RedirectToAction("ManagerFieldTripDetail", new { id });
             }
+            TempData["Success"] = ftGettingThereResponse.SuccessMessage;
             return RedirectToAction("ManagerFieldTripDetail", new { id });
         }
         [HttpPost("FieldTrip/{id:int}/DayByDay/{dayId:int}/Update")]
@@ -648,6 +654,7 @@ namespace WebAppMVC.Controllers
                     + ftDayByDayResponse.ErrorMessage;
                 return RedirectToAction("ManagerFieldTripDetail", new { id });
             }
+            TempData["Success"] = ftDayByDayResponse.SuccessMessage;
             return RedirectToAction("ManagerFieldTripDetail", new { id });
         }
         [HttpPost("FieldTrip/{id:int}/Inclusion/{incId:int}/Update")]
@@ -694,6 +701,7 @@ namespace WebAppMVC.Controllers
                     + ftInclusionResponse.ErrorMessage;
                 return RedirectToAction("ManagerFieldTripDetail", new { id });
             }
+            TempData["Success"] = ftInclusionResponse.SuccessMessage;
             return RedirectToAction("ManagerFieldTripDetail", new { id });
         }
         [HttpPost("FieldTrip/{id:int}/TourFeature/{addDeId:int}/Update")]
@@ -1698,6 +1706,7 @@ namespace WebAppMVC.Controllers
                     + listMemberStatusResponse.ErrorMessage;
                 return View("ManagerIndex");
             }
+            TempData["Success"] = listMemberStatusResponse.SuccessMessage;
             return RedirectToAction("ManagerMemberStatus");
         }
         [HttpGet("Statistical")]
