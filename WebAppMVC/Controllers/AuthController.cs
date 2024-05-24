@@ -258,7 +258,7 @@ namespace WebAppMVC.Controllers
 			else
 			{
                 _logger.LogInformation("Member Login Successful: " + TempData[Constants.Constants.ROLE_NAME] + " , Id: " + TempData[Constants.Constants.USR_ID]);
-				TempData["NotificationMessage"] = "Logged in as Member!";
+				TempData["Success"] = authenResponse.SuccessMessage;
                 return base.Redirect(Constants.Constants.MEMBER_URL);
 			}
 		}

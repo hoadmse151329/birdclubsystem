@@ -67,7 +67,20 @@ namespace WebAppMVC.Controllers
         {
             if(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
-            return View();
+
+            ManagerAPI_URL += "Manager/Index";
+
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
+
+            var dashboardResponse = await methcall.CallMethodReturnObject<GetManagerDashboardResponse>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: Constants.Constants.GET_METHOD,
+                url: ManagerAPI_URL,
+                accessToken: accToken,
+                _logger: _logger);
+
+            return View(dashboardResponse.Data);
         }
         [HttpGet("Meeting")]
         public async Task<IActionResult> ManagerMeeting([FromQuery] string search)
@@ -754,6 +767,7 @@ namespace WebAppMVC.Controllers
                     + ftTourFeaturesResponse.ErrorMessage;
                 return RedirectToAction("ManagerFieldTripDetail", new { id });
             }
+            TempData["Success"] = ftTourFeaturesResponse.SuccessMessage;
             return RedirectToAction("ManagerFieldTripDetail", new { id });
         }
         [HttpPost("FieldTrip/{id:int}/Important/{addDeId:int}/Update")]
@@ -800,6 +814,7 @@ namespace WebAppMVC.Controllers
                     + ftImportantResponse.ErrorMessage;
                 return RedirectToAction("ManagerFieldTripDetail", new { id });
             }
+            TempData["Success"] = ftImportantResponse.SuccessMessage;
             return RedirectToAction("ManagerFieldTripDetail", new { id });
         }
         [HttpPost("FieldTrip/{id:int}/ActAndTras/{addDeId:int}/Update")]
@@ -846,6 +861,7 @@ namespace WebAppMVC.Controllers
                     + ftActAndTrasResponse.ErrorMessage;
                 return RedirectToAction("ManagerFieldTripDetail", new { id });
             }
+            TempData["Success"] = ftActAndTrasResponse.SuccessMessage;
             return RedirectToAction("ManagerFieldTripDetail", new { id });
         }
         [HttpPost("FieldTrip/Create")]
@@ -888,6 +904,7 @@ namespace WebAppMVC.Controllers
                     + fieldtripPostResponse.ErrorMessage;
                 return RedirectToAction("ManagerFieldTrip");
             }
+            TempData["Success"] = fieldtripPostResponse.SuccessMessage;
             return RedirectToAction("ManagerFieldTrip");
         }
 
@@ -934,6 +951,7 @@ namespace WebAppMVC.Controllers
                     + ftDayByDayResponse.ErrorMessage;
                 return RedirectToAction("ManagerFieldTripDetail", new { id = tripId });
             }
+            TempData["Success"] = ftDayByDayResponse.SuccessMessage;
             return RedirectToAction("ManagerFieldTripDetail", new { id = tripId });
         }
 
@@ -980,6 +998,7 @@ namespace WebAppMVC.Controllers
                     + ftInclusionResponse.ErrorMessage;
                 return RedirectToAction("ManagerFieldTripDetail", new { id = tripId });
             }
+            TempData["Success"] = ftInclusionResponse.SuccessMessage;
             return RedirectToAction("ManagerFieldTripDetail", new { id = tripId });
         }
 
@@ -1026,6 +1045,7 @@ namespace WebAppMVC.Controllers
                     + ftDayByDayResponse.ErrorMessage;
                 return RedirectToAction("ManagerFieldTripDetail", new { id = tripId });
             }
+            TempData["Success"] = ftDayByDayResponse.SuccessMessage;
             return RedirectToAction("ManagerFieldTripDetail", new { id = tripId });
         }
 
@@ -1072,6 +1092,7 @@ namespace WebAppMVC.Controllers
                     + ftImportantResponse.ErrorMessage;
                 return RedirectToAction("ManagerFieldTripDetail", new { id = tripId });
             }
+            TempData["Success"] = ftImportantResponse.SuccessMessage;
             return RedirectToAction("ManagerFieldTripDetail", new { id = tripId });
         }
 
@@ -1116,6 +1137,7 @@ namespace WebAppMVC.Controllers
                     + ftActAndTrasResponse.ErrorMessage;
                 return RedirectToAction("ManagerFieldTripDetail", new { id = tripId });
             }
+            TempData["Success"] = ftActAndTrasResponse.SuccessMessage;
             return RedirectToAction("ManagerFieldTripDetail", new { id = tripId });
         }
 
@@ -1153,6 +1175,7 @@ namespace WebAppMVC.Controllers
                     + fieldtripPostResponse.ErrorMessage;
                 return RedirectToAction("ManagerFieldTrip");
             }
+            TempData["Success"] = fieldtripPostResponse.SuccessMessage;
             return RedirectToAction("ManagerFieldTrip");
         }
         [HttpGet("Contest")]
@@ -1277,6 +1300,7 @@ namespace WebAppMVC.Controllers
             {
                 ModelState.AddModelError("updateContest.Status", "Error while processing your request (Updating Contest). Not enough people to closed registration");
                 TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_CONTEST_VALID, updateContest, jsonOptions);
+                TempData["Error"] = "Not enough people to close registration";
                 return RedirectToAction("ManagerContestDetail", new { id });
             }
             if (!ModelState.IsValid)
@@ -1367,7 +1391,7 @@ namespace WebAppMVC.Controllers
                     return RedirectToAction("ManagerContestDetail", "Manager", new { id });
                 }
             }
-
+            TempData["Success"] = contestPostResponse.SuccessMessage;
             return RedirectToAction("ManagerContestDetail", "Manager", new { id });
         }
         [HttpPost("Contest/Create")]
@@ -1410,6 +1434,7 @@ namespace WebAppMVC.Controllers
                     + contestPostResponse.ErrorMessage;
                 return RedirectToAction("ManagerContest");
             }
+            TempData["Success"] = contestPostResponse.SuccessMessage;
             return RedirectToAction("ManagerContest");
         }
 
@@ -1447,6 +1472,7 @@ namespace WebAppMVC.Controllers
                     + contestPostResponse.ErrorMessage;
                 return RedirectToAction("ManagerContest");
             }
+            TempData["Success"] = contestPostResponse.SuccessMessage;
             return RedirectToAction("ManagerContest");
         }
         [HttpGet("Profile")]
@@ -1541,6 +1567,7 @@ namespace WebAppMVC.Controllers
                         "Error while processing your request! (Getting Manager Profile!).\n Manager Details Not Found!"
                     + getMemberAvatar.ErrorMessage;
                 }
+                TempData["Success"] = "Successfully changed profile pic!";
                 return RedirectToAction("ManagerProfile");
             }
             return RedirectToAction("ManagerProfile");
@@ -1582,6 +1609,7 @@ namespace WebAppMVC.Controllers
                 + memberDetailupdate.ErrorMessage;
                 return RedirectToAction("ManagerProfile");
             }
+            TempData["Success"] = memberDetailupdate.SuccessMessage;
             return RedirectToAction("ManagerProfile");
         }
         [HttpPost("ChangePassword")]
@@ -1621,6 +1649,7 @@ namespace WebAppMVC.Controllers
                 + memberDetailupdate.ErrorMessage;
                 return RedirectToAction("ManagerProfile");
             }
+            TempData["Success"] = memberDetailupdate.SuccessMessage;
             return RedirectToAction("ManagerProfile");
         }
         [HttpGet("Feedback")]

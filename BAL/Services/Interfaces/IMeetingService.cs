@@ -30,5 +30,6 @@ namespace BAL.Services.Interfaces
         void Create(MeetingViewModel entity);
         void Update(MeetingViewModel entity);
         Task<bool> GetBoolMeetingId(int id);
+        Task<int> CountMeeting();
     }
 }

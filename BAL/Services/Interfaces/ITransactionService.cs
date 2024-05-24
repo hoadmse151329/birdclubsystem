@@ -16,5 +16,7 @@ namespace BAL.Services.Interfaces
         void Create(TransactionViewModel transaction);
 		void Update(TransactionViewModel transaction);
 		Task<bool> UpdateUserId(int id, int userId);
+		Task<int> CalculateTotalValue();
+		Task<int> CalculateTotalRefund();
 	}
 }

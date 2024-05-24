@@ -43,5 +43,10 @@ namespace BAL.Services.Implements
             _unitOfWork.FeedbackRepository.Create(feed);
             _unitOfWork.Save();
         }
+
+        public async Task<int> CountFeedback()
+        {
+            return await _unitOfWork.FeedbackRepository.CountFeedback();
+        }
     }
 }

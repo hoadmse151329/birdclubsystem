@@ -75,5 +75,15 @@ namespace BAL.Services.Implements
 			}
             return false;
 		}
+
+        public async Task<int> CalculateTotalValue()
+        {
+            return await _unitOfWork.TransactionRepository.CalculateTotalValue();
+        }
+
+        public async Task<int> CalculateTotalRefund()
+        {
+            return await _unitOfWork.TransactionRepository.CalculateTotalRefund();
+        }
 	}
 }

@@ -215,5 +215,10 @@ namespace BAL.Services.Implements
             if (!con) return false;
             return true;
         }
+
+        public async Task<int> CountContest()
+        {
+            return await _unitOfWork.ContestRepository.CountContest();
+        }
     }
 }

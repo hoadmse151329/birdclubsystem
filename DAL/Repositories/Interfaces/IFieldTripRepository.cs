@@ -30,5 +30,6 @@ namespace DAL.Repositories.Interfaces
         Task<FieldTrip?> GetFieldTripById(int id);
         Task<FieldTrip?> GetFieldTripByIdWithoutInclude(int id);
         Task<bool> GetBoolFieldTripId(int id);
+        Task<int> CountFieldTrip();
     }
 }

@@ -118,6 +118,9 @@ namespace WebAPI
             builder.Services.AddScoped<IMediaService, MediaService>();
             builder.Services.AddScoped<IBirdService, BirdService>();
             builder.Services.AddScoped<INotificationService, NotificationService>();
+            builder.Services.AddScoped<IFeedbackService, FeedbackService>();
+            builder.Services.AddScoped<IBlogService, BlogService>();
+            builder.Services.AddScoped<INewsService, NewsService>();
 
             builder.Services.AddAutoMapper(typeof(MappingProfile));
             var app = builder.Build();
