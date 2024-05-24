@@ -57,9 +57,8 @@ namespace WebAppMVC.Constants
             if (!response.IsSuccessStatusCode)
             {
                 _logger.LogError("Error while processing your request!: " + response.StatusCode + "\t\nApi Url: " + url + "\t\nError Message: " + jsonResponse);
-                //var error = JsonSerializer.Deserialize<T>(jsonResponse, options);
-
-                return null;
+                var error = JsonSerializer.Deserialize<T>(jsonResponse, options);
+                return error;
             };
             var result = JsonSerializer.Deserialize<T>(jsonResponse, options);
             _logger.LogInformation("Processing your request Successfully!: " + response.StatusCode + "\t\nApi Url: " + url + "\t\nSuccess Message: " + jsonResponse);
@@ -277,6 +276,55 @@ namespace WebAppMVC.Constants
                     }
             }
             return defaultMemberStatus;
+        }
+        public List<SelectListItem> GetEmployeeRoleSelectableList(string employeeRole)
+        {
+            List<SelectListItem> defaultEmployeeStatus = new();
+            switch (employeeRole)
+            {
+                case var value when value.Equals(Constants.MANAGER):
+                    {
+                        defaultEmployeeStatus.Add(new SelectListItem { Text = Constants.MANAGER, Value = Constants.MANAGER, Selected = true });
+                        defaultEmployeeStatus.Add(new SelectListItem { Text = Constants.STAFF, Value = Constants.STAFF });
+                        break;
+                    }
+                case var value when value.Equals(Constants.STAFF):
+                    {
+                        defaultEmployeeStatus.Add(new SelectListItem { Text = Constants.MANAGER, Value = Constants.MANAGER });
+                        defaultEmployeeStatus.Add(new SelectListItem { Text = Constants.STAFF, Value = Constants.STAFF, Selected = true });
+                        break;
+                    }
+            }
+            return defaultEmployeeStatus;
+        }
+        public List<SelectListItem> GetUserGenderSelectableList(string userGender)
+        {
+            List<SelectListItem> defaultUserGenders = new();
+            switch (userGender)
+            {
+                case var value when value.Equals(Constants.MALE):
+                    {
+                        defaultUserGenders.Add(new SelectListItem { Text = Constants.MALE, Value = Constants.MALE, Selected = true });
+                        defaultUserGenders.Add(new SelectListItem { Text = Constants.FEMALE, Value = Constants.FEMALE });
+                        defaultUserGenders.Add(new SelectListItem { Text = Constants.OTHER, Value = Constants.OTHER });
+                        break;
+                    }
+                case var value when value.Equals(Constants.FEMALE):
+                    {
+                        defaultUserGenders.Add(new SelectListItem { Text = Constants.MALE, Value = Constants.MALE });
+                        defaultUserGenders.Add(new SelectListItem { Text = Constants.FEMALE, Value = Constants.FEMALE, Selected = true });
+                        defaultUserGenders.Add(new SelectListItem { Text = Constants.OTHER, Value = Constants.OTHER });
+                        break;
+                    }
+                case var value when value.Equals(Constants.OTHER):
+                    {
+                        defaultUserGenders.Add(new SelectListItem { Text = Constants.MALE, Value = Constants.MALE });
+                        defaultUserGenders.Add(new SelectListItem { Text = Constants.FEMALE, Value = Constants.FEMALE });
+                        defaultUserGenders.Add(new SelectListItem { Text = Constants.OTHER, Value = Constants.OTHER, Selected = true });
+                        break;
+                    }
+            }
+            return defaultUserGenders;
         }
         public List<SelectListItem> GetBirdStatusSelectableList(string birdStatus)
         {

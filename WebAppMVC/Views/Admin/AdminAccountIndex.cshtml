@@ -1,12 +1,12 @@
-﻿@model WebAppMVC.Models.ViewModels.ManagerMemberStatusIndexVM
+﻿@model WebAppMVC.Models.ViewModels.AdminAccountIndexVM
 @{
     Layout = null;
-    ViewData["Title"] = "Manager Member Status Page";
+    ViewData["Title"] = "Admin Member Status Page";
     string? search = string.Empty;
 
-    var memberStatuses = Model.MemberStatuses;
+    var memberStatuses = Model.EmployeeStatuses;
 
-    Layout = "~/Views/Shared/_MLayout.cshtml";
+    Layout = "~/Views/Shared/_ALayout.cshtml";
 }
 <html lang="en">
 <head>
@@ -59,7 +59,7 @@
                                             }
                                         </div>
                                         <div class="col-sm-6 d-flex justify-content-end">
-                                                <form asp-action="ManagerMemberStatus" asp-controller="Manager" method="get" asp-route-search="@search">
+                                                <form asp-action="AdminAccountIndex" asp-controller="Admin" method="get" asp-route-search="@search">
                                                     <div>
                                                     <label>
                                                         <input asp-for="@search" class="form-control" type="text" name="search" placeholder="Search Username..." value="@search">
@@ -71,7 +71,7 @@
                                     </div>
                                 </div>
                                 <div id="history-table_wrapper" class="dataTables_wrapper no-footer">
-                                    <form asp-action="ManagerUpdateMemberStatus" asp-controller="Manager" method="post">
+                                        <form asp-action="AdminUpdateAccountIndex" asp-controller="Admin" method="post">
                                         <table id="history-table"
                                                 class="table table-striped table-bordered dataTable no-footer"
                                                 aria-describedby="history-table_info">
@@ -81,25 +81,25 @@
                                                         aria-controls="history-table" rowspan="1"
                                                         colspan="1" aria-sort="ascending"
                                                         aria-label="Member ID: activate to sort column descending">
-                                                        Member Id
+                                                        Employee Id
                                                     </th>
                                                     <th class="sorting" tabindex="0"
                                                         aria-controls="history-table" rowspan="1"
                                                         colspan="1"
                                                         aria-label="Member User Name: activate to sort column ascending">
-                                                        Member User name
+                                                        Employee User name
                                                     </th>
                                                     <th class="sorting" tabindex="0"
                                                         aria-controls="history-table" rowspan="1"
                                                         colspan="1"
                                                         aria-label="Member Full Name: activate to sort column ascending">
-                                                        Member Full name
+                                                        Employee Full name
                                                     </th>
                                                     <th class="sorting" tabindex="0"
                                                         aria-controls="history-table" rowspan="1"
                                                         colspan="1"
-                                                            aria-label="Expiration Date: activate to sort column ascending">
-                                                            Expiration Date
+                                                        aria-label="Member Full Name: activate to sort column ascending">
+                                                        Employee Role
                                                     </th>
                                                     <th class="sorting" tabindex="0"
                                                         aria-controls="history-table" rowspan="1"
@@ -128,17 +128,8 @@
                                                             @memberStatuses[i].FullName
                                                         </td>
                                                         <td>
-                                                                <input type="hidden" asp-for="@memberStatuses[i].ExpiryDate" name="listRequest[@i].ExpiryDate" value="@memberStatuses[i].ExpiryDate" class="form-control" />
-                                                                @{
-                                                                    if (memberStatuses[i].ExpiryDate.HasValue)
-                                                                    {
-                                                                        memberStatuses[i].ExpiryDate.Value.ToString("dd-MM-yyyy HH:mm");
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        ;
-                                                                    }
-                                                                }
+                                                                <select class="form-control" asp-for="@memberStatuses[i].Role" asp-items="@memberStatuses[i].DefaultEmployeeRoleSelectList" class="custom-select" name="listRequest[@i].Role">
+                                                                </select>
                                                         </td>
                                                         <td>
                                                             @* @{
@@ -150,7 +141,7 @@
                                                                     }
                                                                 }
                                                             } *@
-                                                                <select class="form-control" asp-for="@memberStatuses[i].Status" asp-items="@memberStatuses[i].DefaultMemberStatusSelectList" class="custom-select" name="listRequest[@i].Status">
+                                                                <select class="form-control" asp-for="@memberStatuses[i].Status" asp-items="@memberStatuses[i].DefaultEmployeeStatusSelectList" class="custom-select" name="listRequest[@i].Status">
                                                             </select>
                                                         </td>
                                                     </tr>

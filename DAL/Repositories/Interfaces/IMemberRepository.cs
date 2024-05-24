@@ -27,6 +27,7 @@ namespace DAL.Repositories.Interfaces
         Task<string?> GetMemberNameById(string id);
         Task<Member?> GetByEmail(string email);
         Task<IEnumerable<Member>> UpdateAllMemberStatus(List<Member> members);
+        Task<IEnumerable<Member>> UpdateAllMemberStatusAndRole(List<Member> members);
 
     }
 }

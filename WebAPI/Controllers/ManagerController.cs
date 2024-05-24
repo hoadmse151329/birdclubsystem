@@ -1,17 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.IO;
-using System.Threading.Tasks;
-using DAL.Models; // Replace with the actual namespace of your models
-using DAL.Repositories;
-using DAL.Repositories.Implements;
+﻿using Microsoft.AspNetCore.Mvc;
 using BAL.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using BAL.Services.Interfaces;
 using System.ComponentModel.DataAnnotations;
 using BAL.ViewModels.Manager;
-using BAL.Services.Implements;
 
 namespace WebAPI.Controllers
 {

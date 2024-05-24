@@ -6,13 +6,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BAL.ViewModels.Manager;
+using BAL.ViewModels.Admin;
 
 namespace BAL.Services.Interfaces
 {
     public interface IMemberService
     {
-        Task<IEnumerable<GetMembershipExpire?>> GetAllMemberStatusWithExpireByRole(string role);
+        /*Task<IEnumerable<GetMembershipExpire?>> GetAllMemberStatusWithExpireByRole(string role);*/
         Task<IEnumerable<GetMemberStatus>?> GetSortedMembers(
+            string? memberId = null,
+            string? memberUserName = null,
+            string? memberFullName = null,
+            DateTime? expiryDateTime = null,
+            List<string>? roles = null,
+            List<string>? statuses = null,
+            string? orderBy = null,
+            bool isManager = false,
+            bool isAdmin = false
+            );
+        Task<IEnumerable<GetEmployeeStatus>?> GetSortedEmployees(
             string? memberId = null,
             string? memberUserName = null,
             string? memberFullName = null,
@@ -33,6 +45,7 @@ namespace BAL.Services.Interfaces
 		void Update(MemberViewModel entity);
         void UpdateMemberStatus(GetMembershipExpire entity);
         Task<bool> UpdateAllMemberStatus (List<GetMemberStatus> listMem);
-		Task<MemberViewModel?> GetByEmailModel(string email);
+        Task<bool> UpdateAllEmployeeStatus(List<GetEmployeeStatus> listMem);
+        Task<MemberViewModel?> GetByEmailModel(string email);
 	}
 }

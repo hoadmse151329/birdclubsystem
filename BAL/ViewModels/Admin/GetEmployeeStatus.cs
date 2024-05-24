@@ -6,18 +6,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BAL.ViewModels.Manager
+namespace BAL.ViewModels.Admin
 {
-    public class GetMemberStatus
+    public class GetEmployeeStatus
     {
-        public GetMemberStatus()
+        public GetEmployeeStatus()
         {
-            DefaultMemberStatusSelectList = new List<SelectListItem>() {
+            DefaultEmployeeStatusSelectList = new List<SelectListItem>() {
                 new SelectListItem { Text = "Active", Value = "Active", Selected = true },
                 new SelectListItem { Text = "Inactive", Value = "Inactive" },
                 new SelectListItem { Text = "Expired", Value = "Expired" },
                 new SelectListItem { Text = "Denied", Value = "Denied" },
                 new SelectListItem { Text = "Suspended", Value = "Suspended" }
+            };
+            DefaultEmployeeRoleSelectList = new List<SelectListItem>() {
+                new SelectListItem { Text = "Manager", Value = "Manager", Selected = true },
+                new SelectListItem { Text = "Staff", Value = "Staff" }
             };
         }
         public string? MemberId { get; set; }
@@ -28,8 +32,9 @@ namespace BAL.ViewModels.Manager
         [RegularExpression(@"^[a-zA-Z\s]+$", ErrorMessage = "Fullname is invalid")]
         public string FullName { get; set; }
         [DataType(DataType.DateTime)]
-        public DateTime? ExpiryDate { get; set; }
+        public string? Role { get; set; }
         public string? Status { get; set; }
-        public List<SelectListItem> DefaultMemberStatusSelectList { get; set; }
+        public List<SelectListItem> DefaultEmployeeStatusSelectList { get; set; }
+        public List<SelectListItem> DefaultEmployeeRoleSelectList { get; set; }
     }
 }

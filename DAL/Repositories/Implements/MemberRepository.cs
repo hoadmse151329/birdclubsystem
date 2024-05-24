@@ -142,7 +142,43 @@ namespace DAL.Repositories.Implements
                         }
                         _context.Update(mem);
                     }
+                }
+            }
+            return members;
+        }
 
+        public async Task<IEnumerable<Member>> UpdateAllMemberStatusAndRole(List<Member> members)
+        {
+            foreach (var memberViewModel in members)
+            {
+                var mem = await _context.Members.SingleOrDefaultAsync(mem => mem.MemberId == memberViewModel.MemberId);
+                if (mem != null)
+                {
+                    if (mem.Status != memberViewModel.Status)
+                    {
+                        mem.Status = memberViewModel.Status;
+                        if (mem.ExpiryDate == null && mem.Status == "Active")
+                        {
+                            if (DateTime.Now.Day >= DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month))
+                            {
+                                mem.ExpiryDate = DateTime.UtcNow.AddDays(30);
+                            }
+                            else
+                            {
+                                mem.ExpiryDate = DateTime.UtcNow.AddMonths(1);
+                            }
+                        }
+                        else if (mem.ExpiryDate != null && mem.Status == "Expired")
+                        {
+                            mem.ExpiryDate = null;
+                        }
+                        _context.Update(mem);
+                    }
+                    if (mem.Role != memberViewModel.Role)
+                    {
+                        mem.Role = memberViewModel.Role;
+                        _context.Update(mem);
+                    }
                 }
             }
             return members;
