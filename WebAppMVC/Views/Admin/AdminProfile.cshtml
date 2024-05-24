@@ -5,19 +5,7 @@
     IFormFile? formFile = null;
     BAL.ViewModels.Member.UpdateMemberPassword memberPassword = new();
     Layout = null;
-    List<SelectListItem> genders = new()
-    {
-        new SelectListItem {Text = "Male",Value = "Male"},
-        new SelectListItem {Text = "Female",Value = "Female"},
-        new SelectListItem {Text = "Other",Value = "Other"}
-    };
-    foreach (var gender in genders)
-    {
-        if (Model.Gender.Equals(gender.Text))
-        {
-            gender.Selected = true;
-        }
-    }
+    List<SelectListItem> genders = Model.DefaultUserGenderSelectList;
 }
 <html lang="en">
 

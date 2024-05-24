@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿
 
 namespace WebAppMVC.Models.ViewModels
 {
@@ -8,9 +8,12 @@ namespace WebAppMVC.Models.ViewModels
         {
             EmployeeStatuses = new List<BAL.ViewModels.Admin.GetEmployeeStatus>();
             SelectedEmployeeStatuses = new List<string>();
+            createEmployee = new BAL.ViewModels.Member.CreateNewMember();
         }
         public List<BAL.ViewModels.Admin.GetEmployeeStatus> EmployeeStatuses { get; set; }
 
         public List<string> SelectedEmployeeStatuses { get; set; }
+
+        public BAL.ViewModels.Member.CreateNewMember createEmployee { get; set; }
     }
 }

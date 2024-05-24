@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -12,6 +13,12 @@ namespace BAL.ViewModels
 		public MemberViewModel()
 		{
 			Birds = new List<BirdViewModel>();
+			DefaultUserGenderSelectList = new List<SelectListItem>() {
+				new SelectListItem() { Text = "Gender", Value = ""},
+				new SelectListItem { Text = "Male", Value = "Male" },
+				new SelectListItem { Text = "Female", Value = "Female" },
+				new SelectListItem { Text = "Other", Value = "Other" },
+			};
 		}
 		public int UserId { get; set; }
         public string? MemberId { get; set; }
@@ -46,5 +53,6 @@ namespace BAL.ViewModels
         public string? Status { get; set; }
 
 		public List<BirdViewModel> Birds { get; set; }
-    }
+		public List<SelectListItem> DefaultUserGenderSelectList { get; set; }
+	}
 }
