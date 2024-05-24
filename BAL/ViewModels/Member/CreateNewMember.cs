@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -10,6 +11,15 @@ namespace BAL.ViewModels.Member
 {
 	public class CreateNewMember
 	{
+		public CreateNewMember()
+		{
+            DefaultUserGenderSelectList = new List<SelectListItem>() {
+				new SelectListItem() { Text = "Gender", Value = ""},
+                new SelectListItem { Text = "Male", Value = "Male" },
+                new SelectListItem { Text = "Female", Value = "Female" },
+                new SelectListItem { Text = "Other", Value = "Other" },
+            };
+        }
         [Required(AllowEmptyStrings = false, ErrorMessage = "Account Username is required")]
         [StringLength(20, ErrorMessage = "Username must have more than or equal 6 characters and less than or equal 20 characters", MinimumLength = 6)]
         [RegularExpression(@"^[a-zA-Z0-9_]+$", ErrorMessage = "Username is invalid")]
@@ -47,5 +57,6 @@ namespace BAL.ViewModels.Member
 		[Required(ErrorMessage = "Payment Amount is Required")]
 		public decimal PayAmount { get; set; }
 		public string? ImagePath { get; set; }
-	}
+        public List<SelectListItem> DefaultUserGenderSelectList { get; set; }
+    }
 }

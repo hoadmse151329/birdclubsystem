@@ -20,6 +20,7 @@ namespace WebAppMVC.Constants
         {
 
         }
+        #region CallHttpRequestAndGetHttpResponse
         public async Task<T?> CallMethodReturnObject<T>(
             HttpClient _httpClient,
             JsonSerializerOptions options,
@@ -63,8 +64,9 @@ namespace WebAppMVC.Constants
             _logger.LogInformation("Processing your request Successfully!: " + response.StatusCode + "\t\nApi Url: " + url + "\t\nSuccess Message: " + jsonResponse);
             return result;
         }
+        #endregion
 
-		public void SetCookie(HttpResponse response, string key, object inputType, CookieOptions cookieOptions, JsonSerializerOptions jsonOptions, int? expireTime = null)
+        public void SetCookie(HttpResponse response, string key, object inputType, CookieOptions cookieOptions, JsonSerializerOptions jsonOptions, int? expireTime = null)
 		{
 			string json = JsonSerializer.Serialize(inputType,jsonOptions);
             if(expireTime.HasValue)
@@ -237,7 +239,93 @@ namespace WebAppMVC.Constants
             }
             return defaultEventStatus;
         }
-
+        public List<SelectListItem> GetMemberStatusSelectableList(string memberStatus)
+        {
+            List<SelectListItem> defaultMemberStatus = new();
+            switch (memberStatus)
+            {
+                case var value when value.Equals(Constants.MEMBER_STATUS_ACTIVE):
+                    {
+                        defaultMemberStatus.Add(new SelectListItem { Text = Constants.MEMBER_STATUS_ACTIVE, Value = Constants.MEMBER_STATUS_ACTIVE, Selected = true });
+                        defaultMemberStatus.Add(new SelectListItem { Text = Constants.MEMBER_STATUS_SUSPENDED, Value = Constants.MEMBER_STATUS_SUSPENDED });
+                        break;
+                    }
+                case var value when value.Equals(Constants.MEMBER_STATUS_INACTIVE):
+                    {
+                        defaultMemberStatus.Add(new SelectListItem { Text = Constants.MEMBER_STATUS_ACTIVE, Value = Constants.MEMBER_STATUS_ACTIVE });
+                        defaultMemberStatus.Add(new SelectListItem { Text = Constants.MEMBER_STATUS_INACTIVE, Value = Constants.MEMBER_STATUS_INACTIVE, Selected = true });
+                        defaultMemberStatus.Add(new SelectListItem { Text = Constants.MEMBER_STATUS_DENIED, Value = Constants.MEMBER_STATUS_DENIED });
+                        break;
+                    }
+                case var value when value.Equals(Constants.MEMBER_STATUS_EXPIRED):
+                    {
+                        defaultMemberStatus.Add(new SelectListItem { Text = Constants.MEMBER_STATUS_ACTIVE, Value = Constants.MEMBER_STATUS_ACTIVE });
+                        defaultMemberStatus.Add(new SelectListItem { Text = Constants.MEMBER_STATUS_EXPIRED, Value = Constants.MEMBER_STATUS_EXPIRED, Selected = true });
+                        break;
+                    }
+                case var value when value.Equals(Constants.MEMBER_STATUS_DENIED):
+                    {
+                        defaultMemberStatus.Add(new SelectListItem { Text = Constants.MEMBER_STATUS_DENIED, Value = Constants.MEMBER_STATUS_DENIED, Selected = true });
+                        break;
+                    }
+                case var value when value.Equals(Constants.MEMBER_STATUS_SUSPENDED):
+                    {
+                        defaultMemberStatus.Add(new SelectListItem { Text = Constants.MEMBER_STATUS_ACTIVE, Value = Constants.MEMBER_STATUS_ACTIVE });
+                        defaultMemberStatus.Add(new SelectListItem { Text = Constants.MEMBER_STATUS_SUSPENDED, Value = Constants.MEMBER_STATUS_SUSPENDED, Selected = true });
+                        break;
+                    }
+            }
+            return defaultMemberStatus;
+        }
+        public List<SelectListItem> GetEmployeeRoleSelectableList(string employeeRole)
+        {
+            List<SelectListItem> defaultEmployeeStatus = new();
+            switch (employeeRole)
+            {
+                case var value when value.Equals(Constants.MANAGER):
+                    {
+                        defaultEmployeeStatus.Add(new SelectListItem { Text = Constants.MANAGER, Value = Constants.MANAGER, Selected = true });
+                        defaultEmployeeStatus.Add(new SelectListItem { Text = Constants.STAFF, Value = Constants.STAFF });
+                        break;
+                    }
+                case var value when value.Equals(Constants.STAFF):
+                    {
+                        defaultEmployeeStatus.Add(new SelectListItem { Text = Constants.MANAGER, Value = Constants.MANAGER });
+                        defaultEmployeeStatus.Add(new SelectListItem { Text = Constants.STAFF, Value = Constants.STAFF, Selected = true });
+                        break;
+                    }
+            }
+            return defaultEmployeeStatus;
+        }
+        public List<SelectListItem> GetUserGenderSelectableList(string userGender)
+        {
+            List<SelectListItem> defaultUserGenders = new();
+            switch (userGender)
+            {
+                case var value when value.Equals(Constants.MALE):
+                    {
+                        defaultUserGenders.Add(new SelectListItem { Text = Constants.MALE, Value = Constants.MALE, Selected = true });
+                        defaultUserGenders.Add(new SelectListItem { Text = Constants.FEMALE, Value = Constants.FEMALE });
+                        defaultUserGenders.Add(new SelectListItem { Text = Constants.OTHER, Value = Constants.OTHER });
+                        break;
+                    }
+                case var value when value.Equals(Constants.FEMALE):
+                    {
+                        defaultUserGenders.Add(new SelectListItem { Text = Constants.MALE, Value = Constants.MALE });
+                        defaultUserGenders.Add(new SelectListItem { Text = Constants.FEMALE, Value = Constants.FEMALE, Selected = true });
+                        defaultUserGenders.Add(new SelectListItem { Text = Constants.OTHER, Value = Constants.OTHER });
+                        break;
+                    }
+                case var value when value.Equals(Constants.OTHER):
+                    {
+                        defaultUserGenders.Add(new SelectListItem { Text = Constants.MALE, Value = Constants.MALE });
+                        defaultUserGenders.Add(new SelectListItem { Text = Constants.FEMALE, Value = Constants.FEMALE });
+                        defaultUserGenders.Add(new SelectListItem { Text = Constants.OTHER, Value = Constants.OTHER, Selected = true });
+                        break;
+                    }
+            }
+            return defaultUserGenders;
+        }
         public List<SelectListItem> GetBirdStatusSelectableList(string birdStatus)
         {
             List<SelectListItem> defaultBirdStatus = new();
@@ -278,10 +366,10 @@ namespace WebAppMVC.Constants
             }
             return defaultBirdStatus;
         }
-        public List<SelectListItem> GetReqEloRangeSelectableList(string selectedReqEloRange)
+        public List<SelectListItem> GetReqEloRangeSelectableList(string reqEloRange)
         {
             List<SelectListItem> defaultReqEloRange = new();
-            switch (selectedReqEloRange)
+            switch (reqEloRange)
             {
                 case var value when value.Equals(Constants.REQUIRED_ELO_RANGE_DEFAULT):
                     {

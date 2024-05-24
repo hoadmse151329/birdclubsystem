@@ -2,12 +2,7 @@
 @{
 	ViewData["Title"] = "New Member Registration Page";
 	Layout = "~/Views/Shared/_Layout.cshtml";
-	List<SelectListItem> genders = new()
-	{
-		new SelectListItem {Text = "Male",Value = "Male"},
-		new SelectListItem {Text = "Female",Value = "Female"},
-		new SelectListItem {Text = "Other",Value = "Other"}
-	};
+	List<SelectListItem> genders = Model.DefaultUserGenderSelectList;
 }
 <!-- saved from url=(0035)https://themewagon.github.io/furni/ -->
 <html lang="en">
@@ -56,7 +51,7 @@
 								<div class="form-group">
 
 									<select class="form-control form-data custom-select" asp-for="Gender" asp-items="@genders"  name="gender">
-										<option value="">Gender</option>
+										@* <option value="">Gender</option> *@
 									</select>
 
 									<span asp-validation-for="Gender" class="text-danger"></span>
