@@ -53,12 +53,12 @@
                         <li class="nav-item nav-item-text">
                             <div class="notification-dropdown dropdown">
                                 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
-                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <i class="fa fa-bell"></i><span class="notification">@ViewBag.NotificationCount</span>
                                     <span type="hidden" name="notificationId" value="${o.notificationId}"></span>
                                 </button>
                                 <div class="dropdown-menu notification-table animate__animated animate__fadeInDown"
-                                     aria-labelledby="dropdownMenuButton">
+                                 aria-labelledby="dropdownMenuButton">
                                     <div class="dropdown-header">
                                         <span class="triangle"></span>
                                         <span class="heading">Notification</span>
@@ -92,7 +92,7 @@
                         <li class="nav-item nav-item-text">
                             <div class="user-dropdown dropdown">
                                 <button class="btn-user-dropdown text-white btn dropdown-toggle" type="button"
-                                        id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <span>Hello, @TempData["USER_NAME"]</span>
                                     <span><img id="profile-pic" class="img-fluid" src=@TempData["IMAGE_PATH"] alt="fullname"></span>
                                 </button>
@@ -137,22 +137,46 @@
                                 <a class="nav-link" href="#">News</a>
                             </li>
                             <li class="nav-item nav-item-text">
-                                <a class="nav-link" href="@Url.Action("Index","Meeting")">Meetings</a>
+                                <div class="user-dropdown dropdown">
+                                    <a class="nav-link" href=""
+                                            id="dropdownButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <span>Events</span>
+                                    </a>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownButton" style="background-color:palegreen">
+                                        <li><a class="dropdown-item1" href="@Url.Action("Index","Meeting")">Meetings</a></li>
+                                        <li><div class="dropdown-divider"></div></li>
+                                        <li><a class="dropdown-item1" href="@Url.Action("Index", "FieldTrip")">Field trips</a></li>
+                                        <li><div class="dropdown-divider"></div></li>
+                                        <li class="dropdown-submenu">
+                                        <a class="dropdown-item1 dropdown-toggle test" href=""
+                                                id="dropdownMenuButton">
+                                            <span>More About Contests</span>
+                                        </a>
+                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="background-color:palegreen">
+                                            <li><a class="dropdown-item1" href="@Url.Action("Index", "Contest")">Contests</a></li>
+                                            <li><div class="dropdown-divider"></div></li>
+                                            <li><a class="dropdown-item1" href="@Url.Action("LeaderBoard", "Contest")">LeaderBoard</a></li>
+                                        </ul>
+                                    </ul>
+                                </div>
+                            </li>
+                            @*<li class="nav-item nav-item-text">
+                            <a class="nav-link" href="@Url.Action("Index","Meeting")">Meetings</a>
                             </li>
                             <li class="nav-item nav-item-text">
-                                <a class="nav-link" href="@Url.Action("Index", "FieldTrip")">Field trips</a>
+                            <a class="nav-link" href="@Url.Action("Index", "FieldTrip")">Field trips</a>
                             </li>
                             <li class="nav-item nav-item-text">
-                                <a class="nav-link nav-item-text" href="@Url.Action("Index", "Contest")">Contests</a>
-                                @*<button class=""
-                                <a class="nav-link p-0 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                </a>
-                                <ul class="nav-item nav-item-text dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                <li>
-                                <a class="dropdown-item" href="@Url.Action("LeaderBoard", "Contest")">LeaderBoard</a>
-                                </li>
-                                </ul>*@
+                            <a class="nav-link nav-item-text" href="@Url.Action("Index", "Contest")">Contests</a>
+                            <button class=""
+                            <a class="nav-link p-0 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            </a>
+                            <ul class="nav-item nav-item-text dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <li>
+                            <a class="dropdown-item" href="@Url.Action("LeaderBoard", "Contest")">LeaderBoard</a>
                             </li>
+                            </ul>
+                            </li>*@
                             <li class="nav-item nav-item-text">
                                 <a class="nav-link" href="#">Gallery</a>
                             </li>
@@ -191,7 +215,7 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="~/js/loading.js" defer></script> 
+    <script src="~/js/loading.js" defer></script>
     <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
     <script src="~/js/user-script.js"></script>
     @*    <script>
@@ -226,7 +250,7 @@
             const b = randomizeColor();
             return `rgb(${r}, ${g}, ${b})`;
         }
-        $(document).ready(function () {
+        $(document).ready(function() {
             setInterval(() => {
                 const topColor = generateRandomRGB();
                 const rightColor = generateRandomRGB();
@@ -247,7 +271,7 @@
     </script>
 
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             $("#notification-table").DataTable({
                 pagingType: "full_numbers",
             });
@@ -258,11 +282,20 @@
             var notification = $('#notification');
             notification.text(message).fadeIn();
 
-            setTimeout(function () {
+            setTimeout(function() {
                 notification.fadeOut();
             }, 3000); // 3 seconds duration
         }
     </script>
+    <script>
+$(document).ready(function(){
+  $('.dropdown-submenu a.test').on("click", function(e){
+    $(this).next('ul').toggle();
+    e.stopPropagation();
+    e.preventDefault();
+  });
+});
+</script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
