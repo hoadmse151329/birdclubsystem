@@ -412,7 +412,7 @@ namespace WebAppMVC.Controllers
                     + notificationResponse.ErrorMessage;
                 return RedirectToAction("MeetingPost", new { id = meetingId });
             }
-
+            TempData["Success"] = participationNo.SuccessMessage;
             return RedirectToAction("MeetingPost", new { id = meetingId });
         }
         [HttpPost("{meetingId:int}/DeRegister")]
@@ -510,7 +510,7 @@ namespace WebAppMVC.Controllers
                     + notificationResponse.ErrorMessage;
                 return RedirectToAction("MeetingPost", new { id = meetingId });
             }
-
+            TempData["Success"] = participationNo.SuccessMessage;
             return RedirectToAction("MemberHistoryEvent","Member");
         }
     }

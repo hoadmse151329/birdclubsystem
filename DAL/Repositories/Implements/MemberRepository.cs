@@ -115,6 +115,11 @@ namespace DAL.Repositories.Implements
             return (await _context.Members.AsNoTrackingWithIdentityResolution().SingleOrDefaultAsync(mem => mem.MemberId == id)).FullName;
         }
 
+        public async Task<IEnumerable<Member>> GetAllMemberOnly()
+        {
+            return _context.Members.Where(mem => mem.Role == "Member").OrderBy(mem => mem.MemberId).ToList();
+        }
+
         public async Task<IEnumerable<Member>> UpdateAllMemberStatus(List<Member> members)
         {
             foreach(var memberViewModel in members)

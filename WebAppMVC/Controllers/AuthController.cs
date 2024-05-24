@@ -207,14 +207,22 @@ namespace WebAppMVC.Controllers
             if (authenResponse == null)
 			{
                 string? role = HttpContext.Session.GetString(Constants.Constants.ROLE_NAME);
-
                 if (role == null) role = Constants.Constants.GUEST;
-
                 TempData[Constants.Constants.ROLE_NAME] = role;
-                _logger.LogInformation("Username or Password is invalid.");
-                ViewBag.error = "Username or Password is invalid.";
-				return View("Login");
+                _logger.LogInformation("Username or Password is invalid!");
+                ViewBag.error = "Username or Password is invalid!";
+                return View("Login");
 			}
+			if (!authenResponse.Status)
+			{
+                string? role = HttpContext.Session.GetString(Constants.Constants.ROLE_NAME);
+                if (role == null) role = Constants.Constants.GUEST;
+                TempData[Constants.Constants.ROLE_NAME] = role;
+                _logger.LogInformation(authenResponse.ErrorMessage);
+				ViewBag.error = authenResponse.ErrorMessage;
+				return View("Login");
+            }
+
 			var responseAuth = authenResponse.Data;
 
 			if (authenResponse.Status)
@@ -300,8 +308,10 @@ namespace WebAppMVC.Controllers
 
 				ViewBag.error = "Error while registering your new account: Your Registration Transaction not found! " +
 					"\nPlease contact the birdclub manager for assistance with resolving this issue!";
+				TempData["Error"] = "Error while registering your new account: Your Registration Transaction not found! " +
+                    "\nPlease contact the birdclub manager for assistance with resolving this issue!";
 
-				return View("Register");
+                return View("Register");
 			}
 			methcall.RemoveCookie(Response, Constants.Constants.NEW_MEMBER_REGISTRATION_TRANSACTION_COOKIE, cookieOptions, jsonOptions);
 
@@ -337,7 +347,7 @@ namespace WebAppMVC.Controllers
 				HttpContext.Session.Remove(Constants.Constants.USR_NAME);
 				HttpContext.Session.Remove(Constants.Constants.ROLE_NAME);
 			}
-            ViewBag.Success = "Account Create Successfully, Please contact the manager for your account approval!";
+            TempData["Success"] = ViewBag.Success = "Account Create Successfully, Please contact the manager for your account approval!";
 
 			NotificationViewModel notif = new NotificationViewModel()
 			{

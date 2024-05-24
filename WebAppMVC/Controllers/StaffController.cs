@@ -288,6 +288,7 @@ namespace WebAppMVC.Controllers
                     + meetPartStatusResponse.ErrorMessage;
                 return View("StaffIndex");
             }
+            TempData["Success"] = meetPartStatusResponse.SuccessMessage;
             return RedirectToAction("StaffMeetingDetail", "Staff", new { id });
         }
         [HttpGet("FieldTrip")]
@@ -472,6 +473,7 @@ namespace WebAppMVC.Controllers
                     + tripPartStatusResponse.ErrorMessage;
                 return View("StaffIndex");
             }
+            TempData["Success"] = tripPartStatusResponse.SuccessMessage;
             return RedirectToAction("StaffFieldTripDetail", "Staff", new { id });
         }
 
