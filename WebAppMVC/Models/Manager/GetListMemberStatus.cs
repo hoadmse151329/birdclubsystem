@@ -2,7 +2,7 @@
 
 namespace WebAppMVC.Models.Manager
 {
-    public class GetListMemberStatus : DefaultResponseViewModel<IEnumerable<GetMemberStatus>>
+    public class GetListMemberStatus : DefaultResponseViewModel<List<GetMemberStatus>>
     {
         public GetListMemberStatus(bool status, string? errorMessage, string? successMessage) : base(status, errorMessage, successMessage)
         {

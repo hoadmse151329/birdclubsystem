@@ -87,7 +87,7 @@ namespace WebAPI.Controllers
         {
             try
             {
-                var result = await _memberService.GetAllMemberStatusWithExpireByRole("Member");
+                var result = await _memberService.GetSortedMembers(roles: new List<string> { "Member" }, isManager: true);
                 if (result == null)
                 {
                     return NotFound(new
@@ -133,7 +133,7 @@ namespace WebAPI.Controllers
         [ProducesResponseType(typeof(MemberViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> UpdateMemberDetails(
+        public async Task<IActionResult> UpdateMemberStatus(
             [Required][FromBody] GetMembershipExpire member
             )
         {
@@ -145,7 +145,7 @@ namespace WebAPI.Controllers
                     return NotFound(new
                     {
                         Status = false,
-                        ErrorMessage = "Member Details Not Found!"
+                        ErrorMessage = "Member details not found"
                     });
                 }
                 if (member.Status == null)
@@ -154,10 +154,18 @@ namespace WebAPI.Controllers
                 }
                 _memberService.UpdateMemberStatus(member);
                 result = await _memberService.GetById(member.MemberId);
-                return Ok(new
+                if (result.Status.Equals(member.Status))
                 {
-                    Status = true,
-                    Data = result
+                    return Ok(new
+                    {
+                        Status = true,
+                        Data = result
+                    });
+                }
+                return BadRequest(new
+                {
+                    Status = false,
+                    ErrorMessage = "Member status not updated"
                 });
             }
             catch (Exception ex)

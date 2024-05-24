@@ -1,5 +1,4 @@
 ﻿using BAL.ViewModels;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Dynamic;
 using System.Net.Http.Headers;
@@ -12,20 +11,15 @@ using WebAppMVC.Models.Contest;
 using System.Text.Encodings.Web;
 using static Org.BouncyCastle.Math.EC.ECCurve;
 using WebAppMVC.Models.Member;
-using Azure;
-using Microsoft.DotNet.MSIdentity.Shared;
-using System.Security.Policy;
 using BAL.ViewModels.Member;
 using WebAppMVC.Models.Manager;
 using BAL.ViewModels.Manager;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using Azure.Storage.Blobs.Specialized;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc;
+using WebAppMVC.Models.ViewModels;
 // thêm crud của meeting, fieldtrip, contest.
 namespace WebAppMVC.Controllers
 {
@@ -1658,26 +1652,20 @@ namespace WebAppMVC.Controllers
             return View();
         }
         [HttpGet("MemberStatus")]
-        public async Task<IActionResult> ManagerMemberStatus([FromQuery] string search)
+        public async Task<IActionResult> ManagerMemberStatus([FromQuery] string? search)
         {
-            _logger.LogInformation(search);
-
-            /*if (search != null || !string.IsNullOrEmpty(search))
-            {
-                search = search.Trim();
-                ManagerAPI_URL += "Manager/Search?meetingName=" + search;
-            }
-            else */
             ManagerAPI_URL += "Manager/MemberStatus";
+            if (!string.IsNullOrEmpty(search))
+            {
+                ManagerAPI_URL += "?memberusername=" + search;
+            }
 
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
 
             string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
-            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
-
-            dynamic listMemberStatusModel = new ExpandoObject();
+            ManagerMemberStatusIndexVM managerMemberStatusListVM = new();
 
             var listMemberStatusResponse = await methcall.CallMethodReturnObject<GetListMemberStatus>(
                 _httpClient: _httpClient,
@@ -1703,7 +1691,12 @@ namespace WebAppMVC.Controllers
                     + listMemberStatusResponse.ErrorMessage;
                 return View("ManagerIndex");
             }
-            return View(listMemberStatusResponse.Data);
+            managerMemberStatusListVM.MemberStatuses = listMemberStatusResponse.Data;
+            foreach(var status in managerMemberStatusListVM.MemberStatuses)
+            {
+                status.DefaultMemberStatusSelectList = methcall.GetMemberStatusSelectableList(status.Status);
+            }
+            return View(managerMemberStatusListVM);
         }
         [HttpPost("MemberStatus/Update")]
         public async Task<IActionResult> ManagerUpdateMemberStatus(List<GetMemberStatus> listRequest)

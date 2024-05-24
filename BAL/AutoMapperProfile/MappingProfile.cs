@@ -1,13 +1,9 @@
 ﻿using AutoMapper;
 using BAL.ViewModels;
+using BAL.ViewModels.Admin;
 using BAL.ViewModels.Event;
 using BAL.ViewModels.Manager;
 using DAL.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BAL.AutoMapperProfile
 {
@@ -40,6 +36,7 @@ namespace BAL.AutoMapperProfile
                 })
                 ;
             CreateMap<Member, GetMemberStatus>().ReverseMap();
+            CreateMap<Member, GetEmployeeStatus>().ReverseMap();
             CreateMap<Member, GetMembershipExpire>().ReverseMap();
             CreateMap<MeetingParticipant, GetEventParticipation>()
                 .AfterMap((src, dest) =>

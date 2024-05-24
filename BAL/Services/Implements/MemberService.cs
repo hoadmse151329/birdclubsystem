@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BAL.Services.Interfaces;
 using BAL.ViewModels;
+using BAL.ViewModels.Admin;
 using BAL.ViewModels.Manager;
 using DAL.Infrastructure;
 using DAL.Models;
@@ -31,14 +32,33 @@ namespace BAL.Services.Implements
 			_unitOfWork.Save();
 		}
 
-        public async Task<IEnumerable<GetMembershipExpire?>> GetAllMemberStatusWithExpireByRole(string role)
+        /*public async Task<IEnumerable<GetMembershipExpire?>> GetAllMemberStatusWithExpireByRole(string role)
         {
             return _mapper.Map<IEnumerable<GetMembershipExpire>>(await _unitOfWork.MemberRepository.GetAllByRole(role));
-        }
+        }*/
 
-        public async Task<IEnumerable<GetMemberStatus?>> GetAllMemberStatus()
+        public async Task<IEnumerable<GetMemberStatus>?> GetSortedMembers(
+			string? memberId = null, 
+			string? memberUserName = null, 
+			string? memberFullName = null, 
+			DateTime? expiryDateTime = null, 
+			List<string>? roles = null, 
+			List<string>? statuses = null, 
+			string? orderBy = null, 
+			bool isManager = false, 
+			bool isAdmin = false)
         {
-			return _mapper.Map<IEnumerable<GetMemberStatus>>(_unitOfWork.MemberRepository.GetAll());
+            return _mapper.Map<IEnumerable<GetMemberStatus>>(await _unitOfWork.MemberRepository.GetSortedMembers(
+                memberId,
+                memberUserName,
+                memberFullName,
+                expiryDateTime,
+                roles,
+                statuses,
+                orderBy,
+                isManager,
+                isAdmin
+                ));
         }
 
         public async Task<bool> GetBoolById(string id)
@@ -137,16 +157,30 @@ namespace BAL.Services.Implements
 			return false;
         }
 
-        public void UpdateMembership(string memberId, DateTime membershipDatetime)
+        public async Task<bool> UpdateAllEmployeeStatus(List<GetEmployeeStatus> listMem)
         {
-            var usr = _unitOfWork.MemberRepository.GetByIdTracking(memberId).Result;
-            if (usr == null)
+            var mems = await _unitOfWork.MemberRepository.UpdateAllMemberStatusAndRole(_mapper.Map<List<Member>>(listMem));
+            if (mems != null)
             {
-                throw new Exception("User not Found!");
+                _unitOfWork.Save();
+                return true;
             }
-			usr.ExpiryDate = membershipDatetime;
-			_unitOfWork.MemberRepository.Update(usr);
-			_unitOfWork.Save();
+            return false;
+        }
+
+        public async Task<IEnumerable<GetEmployeeStatus>?> GetSortedEmployees(string? memberId = null, string? memberUserName = null, string? memberFullName = null, DateTime? expiryDateTime = null, List<string>? roles = null, List<string>? statuses = null, string? orderBy = null, bool isManager = false, bool isAdmin = false)
+        {
+            return _mapper.Map<IEnumerable<GetEmployeeStatus>>(await _unitOfWork.MemberRepository.GetSortedMembers(
+                memberId,
+                memberUserName,
+                memberFullName,
+                expiryDateTime,
+                roles,
+                statuses,
+                orderBy,
+                isManager,
+                isAdmin
+                ));
         }
     }
 }

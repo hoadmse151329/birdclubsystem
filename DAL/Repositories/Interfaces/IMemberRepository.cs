@@ -11,12 +11,24 @@ namespace DAL.Repositories.Interfaces
     public interface IMemberRepository : IRepositoryBase<Member>
     {
         Task<IEnumerable<Member>> GetAllByRole(string role);
+        Task<IEnumerable<Member>> GetSortedMembers(
+            string? memberId,
+            string? memberUserName,
+            string? memberFullName,
+            DateTime? expiryDateTime,
+            List<string>? roles,
+            List<string>? statuses,
+            string? orderBy,
+            bool isManager = false,
+            bool isAdmin = false
+            );
         Task<Member?> GetByIdNoTracking(string id);
         Task<Member?> GetByIdTracking(string id);
         Task<string?> GetMemberNameById(string id);
         Task<Member?> GetByEmail(string email);
         Task<IEnumerable<Member>> GetAllMemberOnly();
         Task<IEnumerable<Member>> UpdateAllMemberStatus(List<Member> members);
+        Task<IEnumerable<Member>> UpdateAllMemberStatusAndRole(List<Member> members);
 
     }
 }

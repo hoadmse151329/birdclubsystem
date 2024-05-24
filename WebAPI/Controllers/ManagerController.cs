@@ -1,11 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.IO;
-using System.Threading.Tasks;
-using DAL.Models; // Replace with the actual namespace of your models
-using DAL.Repositories;
-using DAL.Repositories.Implements;
+﻿using Microsoft.AspNetCore.Mvc;
 using BAL.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using BAL.Services.Interfaces;
@@ -195,11 +188,13 @@ namespace WebAPI.Controllers
         [ProducesResponseType(typeof(IEnumerable<GetMemberStatus>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> GetAllMemberStatus()
+        public async Task<IActionResult> GetAllMemberStatus(
+            [FromQuery] string? memberusername
+            )
         {
             try
             {
-                var result = await _memberService.GetAllMemberStatus();
+                var result = await _memberService.GetSortedMembers(memberUserName: memberusername, isManager: true);
                 if (result == null)
                 {
                     return NotFound(new
