@@ -2,6 +2,10 @@
 @{
     ViewData["Title"] = "Member History Event Page";
     List<BAL.ViewModels.Event.GetEventParticipation> events = Model.RegisteredEvents;
+    BAL.ViewModels.Event.CreateFeedbackRequest createFeedback = new BAL.ViewModels.Event.CreateFeedbackRequest();
+    string eventIdTemp = "";
+    string tmp = "";
+    string eventTypeTemp = "";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <html lang="en">
@@ -119,7 +123,7 @@
                                                         @for (int i = 0; i < events.Count(); i++)
                                                         {
                                                             <tr>
-                                                                <td>@events[i].EventId</td>
+                                                                <td>@events[i].EventIdFull</td>
                                                                 <td title="More Details"><a class="title" href="@Url.Action(events[i].EventType + "Post", events[i].EventType,new {id = events[i].EventId})">@events[i].EventName</a></td>
                                                                 <td>@events[i].EventType</td>
                                                                 <td>@events[i].RegistrationDeadline</td>
@@ -156,10 +160,12 @@
                                                                                         case "Ended":
                                                                                         case "Cancelled":
                                                                                             {
+                                                                                                eventIdTemp = events[i].EventIdFull;
+                                                                                                eventTypeTemp = events[i].EventType;
                                                                                                 <div class="add-club">
                                                                                                     <button data-toggle="modal"
-                                                                                data-target="#feedback"
-                                                                                class="button--primary btn-info m-b-xs shadow btn-xs sharp me-1 text-white bg-success">
+                                                                                                            data-target="#feedback"
+                                                                                                            class="button--primary btn-info m-b-xs shadow btn-xs sharp me-1 text-white bg-success">
                                                                                                         <span>Feedback</span>
                                                                                                     </button>
                                                                                                 </div>
@@ -186,10 +192,12 @@
                                                                                         case "Ended":
                                                                                         case "Cancelled":
                                                                                             {
+                                                                                                eventIdTemp = events[i].EventIdFull;
+                                                                                                eventTypeTemp = events[i].EventType;
                                                                                                 <div class="add-club">
                                                                                                     <button data-toggle="modal"
-                                                                                data-target="#feedback"
-                                                                                class="button--primary btn-info m-b-xs shadow btn-xs sharp me-1 text-white bg-success">
+                                                                                                            data-target="#feedback"
+                                                                                                            class="button--primary btn-info m-b-xs shadow btn-xs sharp me-1 text-white bg-success">
                                                                                                         <span>Feedback</span>
                                                                                                     </button>
                                                                                                 </div>
@@ -216,10 +224,12 @@
                                                                                         case "Ended":
                                                                                         case "Cancelled":
                                                                                             {
+                                                                                                eventIdTemp = events[i].EventIdFull;
+                                                                                                eventTypeTemp = events[i].EventType;
                                                                                                 <div class="add-club">
                                                                                                     <button data-toggle="modal"
-                                                                                data-target="#feedback"
-                                                                                class="button--primary btn-info m-b-xs shadow btn-xs sharp me-1 text-white bg-success">
+                                                                                                            data-target="#feedback"
+                                                                                                            class="button--primary btn-info m-b-xs shadow btn-xs sharp me-1 text-white bg-success">
                                                                                                         <span>Feedback</span>
                                                                                                     </button>
                                                                                                 </div>
@@ -244,62 +254,56 @@
                                                                 Feedback Event
                                                             </h4>
                                                         </div>
-
                                                         <div class="modal-body">
-                                                            <div class="row p-4">
-                                                                <div class="col-12">
-                                                                    <div class="row form-group">
-                                                                        <input name="bookingID"
-                                                                               value="booking03"
-                                                                               style="display: none">
-                                                                        <input name="userID"
-                                                                               value="hai03"
-                                                                               style="display: none">
-                                                                        <input name="motelID"
-                                                                               value="785146827"
-                                                                               style="display: none">
-                                                                            <label for="rating" class="col-md-3 col-form-label text-md-right">Rating</label>
-                                                                            @*<input id='chx' type='checkbox'>
-                                                                            <fieldset class='set'>*@
+                                                            <form asp-action="CreateFeedback" asp-controller="Member" method="post" id="form">
+                                                                <div class="row p-4">
+                                                                    <div class="col-12">
+                                                                        <div class="row form-group">
+                                                                            <label asp-for="@createFeedback.Title" class="col-sm-4 col-form-label"></label>
+                                                                            <input asp-for="@createFeedback.Title" type="text" value="Feedback" required>
+                                                                        </div>
+                                                                        <div class="row form-group">
+                                                                            <input asp-for="@createFeedback.EventId" type="text" value="@eventIdTemp" hidden>
+                                                                            <input asp-for="@createFeedback.Category" type="text" value="@eventTypeTemp" hidden>
+                                                                            <label asp-for="@createFeedback.Rating" class="col-md-3 col-form-label text-md-right">Rating</label>
                                                                             <div class="form-group col-md-5 stars" id="starRating">
                                                                                 @*<label for='chx' class='half'></label>*@
-                                                                                <input class="star star-5" id="star-5" type="radio" name="rating" value="5" data-default="5"/>
+                                                                                <input class="star star-5" id="star-5" type="radio" asp-for="@createFeedback.Rating" value="5" data-default="5" />
                                                                                 <label class="star star-5" for="star-5"></label>
-                                                                                <input class="star star-4" id="star-4" type="radio" name="rating" value="4" data-default="4"/>
+                                                                                <input class="star star-4" id="star-4" type="radio" asp-for="@createFeedback.Rating" value="4" data-default="4" />
                                                                                 <label class="star star-4" for="star-4"></label>
-                                                                                <input class="star star-3" id="star-3" type="radio" name="rating" value="3" data-default="3"/>
+                                                                                <input class="star star-3" id="star-3" type="radio" asp-for="@createFeedback.Rating" value="3" data-default="3" />
                                                                                 <label class="star star-3" for="star-3"></label>
-                                                                                <input class="star star-2" id="star-2" type="radio" name="rating" value="2" data-default="2"/>
+                                                                                <input class="star star-2" id="star-2" type="radio" asp-for="@createFeedback.Rating" value="2" data-default="2" />
                                                                                 <label class="star star-2" for="star-2"></label>
-                                                                                <input class="star star-1" id="star-1" type="radio" name="rating" value="1" data-default="1"/>
+                                                                                <input class="star star-1" id="star-1" type="radio" asp-for="@createFeedback.Rating" value="1" data-default="1" />
                                                                                 <label class="star star-1" for="star-1"></label>
                                                                             </div>
-                                                                            @*</fieldset>*@
-                                                                    </div>
-                                                                    <div class="row">
-                                                                        <div class="col-md-2 text-md-right pb-1"><span>Description: </span></div>
-                                                                        <div class="col-md-8">
-                                                                            <div class="form-group">
-                                                                                <textarea type="text" id="roomTypeDesct" name="desct" placeholder="description..." class="form-control" rows="3"></textarea>
+                                                                        </div>
+                                                                        <div class="row">
+                                                                            <label asp-for="@createFeedback.Details" class="col-md-2 text-md-right pb-1"><span>Description: </span></label>
+                                                                            <div class="col-md-8">
+                                                                                <div class="form-group">
+                                                                                    <textarea asp-for="@createFeedback.Details" type="text" name="feedbackDesct" placeholder="description..." class="form-control" rows="3"></textarea>
+                                                                                </div>
                                                                             </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                            </div>
-                                                            <div class="modal-footer justify-content-center">
-                                                                <button class=" button--primary bg-success text-white "
-                                                                        type="submit" name="action"
-                                                                        value="feedback">
-                                                                    Feedback
-                                                                </button>
-                                                                <button class="button--primary bg-danger text-white"
-                                                                        type="button"
-                                                                        data-dismiss="modal">
-                                                                    Cancel
-                                                                </button>
-                                                            </div>
+                                                                <div class="modal-footer justify-content-center">
+                                                                    <button class=" button--primary bg-success text-white "
+                                                                            type="submit" name="action"
+                                                                            value="feedback">
+                                                                        Feedback
+                                                                    </button>
+                                                                    <button class="button--primary bg-danger text-white"
+                                                                            type="button"
+                                                                            data-dismiss="modal">
+                                                                        Cancel
+                                                                    </button>
+                                                                </div>
+                                                            </form>
                                                         </div>
-
                                                     </div>
                                                 </div>
                                             </div>
@@ -318,9 +322,9 @@
     <script src="~/ckfinder/ckfinder.js"></script>
     <script>
 
-        var editor = CKEDITOR.replace('roomTypeDesct');
+        var editor = CKEDITOR.replace('feedbackDesct');
         CKFinder.setupCKEditor(editor, 'ckfinder/');
-        //data["roomTypeDesct"] = editor.getData();
+        data["feedbackDesct"] = editor.getData();
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
             referrerpolicy="no-referrer"></script>
@@ -332,72 +336,72 @@
     <!-- main js -->
     <script src="~/js/user-script.js"></script>
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             $("#history-table").DataTable({
                 pagingType: "full_numbers",
             });
         });
     </script>
     <script>
-document.addEventListener('DOMContentLoaded', function () {
-    var stars = document.querySelectorAll('.stars label.star');
+        document.addEventListener('DOMContentLoaded', function () {
+            var stars = document.querySelectorAll('.stars label.star');
 
-    stars.forEach(function(star) {
-        star.addEventListener('mousemove', function(e) {
-            if (!this.hasAttribute('data-clicked')) {
-                var rect = star.getBoundingClientRect();
-                var percentage = (e.clientX - rect.left) / rect.width;
-                if (percentage < 0.5) {
-                    star.classList.add('half');
-                } else {
-                    star.classList.remove('half');
-                }
-            }
-        });
+            stars.forEach(function (star) {
+                star.addEventListener('mousemove', function (e) {
+                    if (!this.hasAttribute('data-clicked')) {
+                        var rect = star.getBoundingClientRect();
+                        var percentage = (e.clientX - rect.left) / rect.width;
+                        if (percentage < 0.5) {
+                            star.classList.add('half');
+                        } else {
+                            star.classList.remove('half');
+                        }
+                    }
+                });
 
-        star.addEventListener('mouseleave', function() {
-            if (!this.hasAttribute('data-clicked')) {
-                star.classList.remove('half');
-            }
-        });
+                star.addEventListener('mouseleave', function () {
+                    if (!this.hasAttribute('data-clicked')) {
+                        star.classList.remove('half');
+                    }
+                });
 
-        star.addEventListener('click', function(e) {
-            var rect = star.getBoundingClientRect();
-            var percentage = (e.clientX - rect.left) / rect.width;
+                star.addEventListener('click', function (e) {
+                    var rect = star.getBoundingClientRect();
+                    var percentage = (e.clientX - rect.left) / rect.width;
 
-            // Reset all stars to their default values
-            stars.forEach(function(s) {
-                var input = document.querySelector(`input[id="${s.htmlFor}"]`);
-                if (input) {
-                    var defaultValue = parseFloat(input.getAttribute('data-default'));
-                    input.value = defaultValue;
-                }
-                s.removeAttribute('data-clicked');
-                s.classList.remove('half');
+                    // Reset all stars to their default values
+                    stars.forEach(function (s) {
+                        var input = document.querySelector(`input[id="${s.htmlFor}"]`);
+                        if (input) {
+                            var defaultValue = parseFloat(input.getAttribute('data-default'));
+                            input.value = defaultValue;
+                        }
+                        s.removeAttribute('data-clicked');
+                        s.classList.remove('half');
+                    });
+
+                    // Set the value of the clicked star
+                    var input = document.querySelector(`input[id="${star.htmlFor}"]`);
+                    if (input) {
+                        var defaultValue = parseFloat(input.getAttribute('data-default'));
+                        if (percentage < 0.5) {
+                            input.value = defaultValue - 0.5;
+                        } else {
+                            input.value = defaultValue;
+                        }
+                    }
+
+                    // Set the clicked state
+                    if (percentage < 0.5) {
+                        star.setAttribute('data-clicked', 'half');
+                        star.classList.add('half');
+                    } else {
+                        star.setAttribute('data-clicked', 'full');
+                        star.classList.remove('half');
+                    }
+                });
             });
-
-            // Set the value of the clicked star
-            var input = document.querySelector(`input[id="${star.htmlFor}"]`);
-            if (input) {
-                var defaultValue = parseFloat(input.getAttribute('data-default'));
-                if (percentage < 0.5) {
-                    input.value = defaultValue - 0.5;
-                } else {
-                    input.value = defaultValue;
-                }
-            }
-
-            // Set the clicked state
-            if (percentage < 0.5) {
-                star.setAttribute('data-clicked', 'half');
-                star.classList.add('half');
-            } else {
-                star.setAttribute('data-clicked', 'full');
-                star.classList.remove('half');
-            }
         });
-    });
-});
     </script>
     <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
     <script>

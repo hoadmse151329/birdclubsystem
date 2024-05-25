@@ -22,6 +22,7 @@ using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using WebAppMVC.Models.Notification;
 using System.ComponentModel.DataAnnotations;
+using WebAppMVC.Models.Feedback;
 
 namespace WebAppMVC.Controllers
 {
@@ -270,7 +271,7 @@ namespace WebAppMVC.Controllers
             return View(registeredModel);
         }
         [HttpPost("CreateFeedback")]
-        public async Task<IActionResult> CreateFeedback(CreateFeedbackRequest feedback)
+        public async Task<IActionResult> CreateFeedback(CreateFeedbackRequest createFeedback)
         {
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER) != null)
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER));
@@ -279,9 +280,37 @@ namespace WebAppMVC.Controllers
 
             string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
 
+            createFeedback.MemberId = usrId;
+
             string FeedbackAPI_URL = "/api/Feedback/Create";
 
-            return View();
+            var feedbackResponse = await methcall.CallMethodReturnObject<GetFeedbackPostResponse>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: Constants.Constants.POST_METHOD,
+                url: FeedbackAPI_URL,
+                inputType: createFeedback,
+                accessToken: accToken,
+                _logger: _logger);
+
+            if (feedbackResponse == null)
+            {
+                ViewBag.Error =
+                    "Error while processing your request! (Create Feedback!).\n Not Found!";
+                TempData["Error"] = feedbackResponse.ErrorMessage;
+                return RedirectToAction("MemberHistoryEvent");
+            }
+            if (!feedbackResponse.Status)
+            {
+                _logger.LogInformation("Error while processing your request: " + feedbackResponse.Status + " , Error Message: " + feedbackResponse.ErrorMessage);
+                ViewBag.Error =
+                    "Error while processing your request! (Create Feedback!).\n"
+                    + feedbackResponse.ErrorMessage;
+                TempData["Error"] = feedbackResponse.ErrorMessage;
+                return RedirectToAction("MemberHistoryEvent");
+            }
+            TempData["Success"] = feedbackResponse.SuccessMessage;
+            return RedirectToAction("MemberHistoryEvent");
         }
         [HttpPost("Upload")]
         //[Authorize(Roles = "Member")]
