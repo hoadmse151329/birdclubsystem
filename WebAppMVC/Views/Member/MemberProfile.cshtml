@@ -1,9 +1,10 @@
-﻿@model BAL.ViewModels.MemberViewModel
+﻿@model WebAppMVC.Models.ViewModels.MemberProfileVM
 @{
     ViewData["Title"] = "Member Profile Page";
     IFormFile? formFile = null;
-    BAL.ViewModels.Member.UpdateMemberPassword memberPassword = new();
-    List<SelectListItem> genders = Model.DefaultUserGenderSelectList;
+    BAL.ViewModels.Member.UpdateMemberPassword memberPassword = Model.managerPassword;
+    BAL.ViewModels.MemberViewModel memberDetail = Model.managerDetail;
+    List<SelectListItem> genders = memberDetail.DefaultUserGenderSelectList;
 }
 <html lang="en">
 <head>
@@ -101,59 +102,59 @@
                                                     <div class="info-content">
                                                         <form id="form-4" asp-action="MemberUpdate" asp-controller="Member" class="form-check">
                                                             <div class="row userName-content">
-                                                                <label class="contact-title col-md-5 col-sm-4 mt-3">Account</label>
-                                                                <input asp-for="UserName" id="userName" type="text" name="username"
+                                                                <label class="contact-title col-md-5 col-sm-4 mt-3"></label>
+                                                                <input asp-for="@memberDetail.UserName" id="userName" type="text"
                                                                     class="form-control col-md-5 col-sm-8 mt-2" readonly
-                                                                    value="@Model.UserName">
-                                                                <span asp-validation-for="UserName" id="error_message"
+                                                                       value="@memberDetail.UserName">
+                                                                <span asp-validation-for="@memberDetail.UserName" id="error_message"
                                                                     class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
                                                             </div>
                                                             <div class="row fullName-content">
-                                                                <label class="contact-title col-md-5 col-sm-4 mt-3">FullName</label>
-                                                                <input asp-for="FullName" id="fullName" type="text" name="fullname" value="@Model.FullName"
+                                                                <label class="contact-title col-md-5 col-sm-4 mt-3"></label>
+                                                                <input asp-for="@memberDetail.FullName" id="fullName" type="text" value="@memberDetail.FullName"
                                                                     class="form-control col-md-5 col-sm-8 mt-2">
-                                                                <span asp-validation-for="FullName" id="error_message"
+                                                                <span asp-validation-for="@memberDetail.FullName" id="error_message"
                                                                     class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
                                                             </div>
                                                             <div class="row fullName-content">
-                                                                <label class="contact-title col-md-5 col-sm-4 mt-3">Description</label>
-                                                                <input asp-for="Description" id="description" type="text" name="description" value="@Model.Description"
+                                                                <label class="contact-title col-md-5 col-sm-4 mt-3"></label>
+                                                                <input asp-for="@memberDetail.Description" id="description" type="text" value="@memberDetail.Description"
                                                                        class="form-control col-md-5 col-sm-8 mt-2">
-                                                                <span asp-validation-for="Description" id="error_message"
+                                                                <span asp-validation-for="@memberDetail.Description" id="error_message"
                                                                       class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
                                                             </div>
                                                             <div class="row phone-content">
-                                                                <label class="contact-title col-md-5 col-sm-4 mt-3">PhoneNumber</label>
-                                                                <input asp-for="Phone" id="phone" type="tel" name="phone" value="@Model.Phone"
+                                                                <label class="contact-title col-md-5 col-sm-4 mt-3"></label>
+                                                                <input asp-for="@memberDetail.Phone" id="phone" type="tel" value="@memberDetail.Phone"
                                                                     class="form-control col-md-5 col-sm-8 mt-2">
-                                                                <span asp-validation-for="Phone" id="error_message"
+                                                                <span asp-validation-for="@memberDetail.Phone" id="error_message"
                                                                     class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
                                                             </div>
                                                             <div class="row address-content">
-                                                                <label class="contact-title col-md-5 col-sm-4 mt-3">Address</label>
-                                                                <input asp-for="Address" type="text" name="address" value="@Model.Address"
+                                                                <label class="contact-title col-md-5 col-sm-4 mt-3"></label>
+                                                                <input asp-for="@memberDetail.Address" type="text" value="@memberDetail.Address"
                                                                     class="form-control col-md-5 col-sm-8 mt-2">
-                                                                <span asp-validation-for="Address" id="error_message"
+                                                                <span asp-validation-for="@memberDetail.Address" id="error_message"
                                                                     class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
                                                             </div>
                                                             <div class="row email-content">
                                                                 <label
-                                                                    class="contact-title col-md-5 col-sm-4 mt-3">Email</label>
-                                                                <input asp-for="Email" id="email" type="email" name="email" value="@Model.Email"
+                                                                    class="contact-title col-md-5 col-sm-4 mt-3"></label>
+                                                                <input asp-for="@memberDetail.Email" id="email" type="email" value="@memberDetail.Email"
                                                                     class="form-control col-md-5 col-sm-8 mt-2">
-                                                                <span asp-validation-for="Email" id="error_message"
+                                                                <span asp-validation-for="@memberDetail.Email" id="error_message"
                                                                     class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
                                                             </div>
 
                                                             <div class="row gender-content">
-                                                                <label class="contact-title col-md-5 col-sm-4 mt-3">Gender</label>
-                                                                <select class="form-control col-md-5 col-sm-8 mt-2" asp-for="@Model.Gender" asp-items="@genders" class="custom-select" name="gender" id="road">
+                                                                <label class="contact-title col-md-5 col-sm-4 mt-3"></label>
+                                                                <select class="form-control col-md-5 col-sm-8 mt-2" asp-for="@memberDetail.Gender" asp-items="@genders" class="custom-select" id="road">
                                                                 </select>
                                                             </div>
 
@@ -184,7 +185,7 @@
                                                                 </div>
                                                                 TempData["Error"] = null;
                                                             }
-                                                            <input asp-for="ImagePath" type="text" name="ImagePath" value="@Model.ImagePath" hidden />
+                                                            <input asp-for="@memberDetail.ImagePath" type="text" name="ImagePath" value="@memberDetail.ImagePath" hidden />
                                                         </form>
                                                     </div>
                                                 </div>
@@ -194,7 +195,7 @@
                                             <form asp-action="UploadImage" asp-controller="Member" enctype="multipart/form-data">
                                                 <div class="avatar-wrapper form-group">
                                                     @*src="~/images/avatar.jpg"*@
-                                                    <img class="profile-pic" src="@Model.ImagePath" />
+                                                    <img class="profile-pic" src="@memberDetail.ImagePath" />
                                                     <div class="upload-button">
                                                         <i class="fa fa-camera" aria-hidden="true"></i>
                                                     </div>

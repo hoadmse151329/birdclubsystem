@@ -22,6 +22,7 @@ using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using WebAppMVC.Models.Notification;
 using System.ComponentModel.DataAnnotations;
+using WebAppMVC.Models.ViewModels;
 
 namespace WebAppMVC.Controllers
 {
@@ -61,7 +62,20 @@ namespace WebAppMVC.Controllers
 
             string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
             string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
+            string? imagePath = HttpContext.Session.GetString(Constants.Constants.USR_IMAGE);
 
+            var memberInvalids = new MemberProfileVM();
+            var memberInvalidDetails = methcall.GetValidationTempData<MemberViewModel>(this, TempData, Constants.Constants.UPDATE_MEMBER_DETAILS_VALID, "memberDetail", jsonOptions);
+            if (memberInvalidDetails != null)
+            {
+                memberInvalidDetails.ImagePath = imagePath;
+                memberInvalidDetails.DefaultUserGenderSelectList = methcall.GetUserGenderSelectableList(memberInvalidDetails.Gender);
+                memberInvalids.managerDetail = memberInvalidDetails;
+                return View(memberInvalids);
+            }
+
+            #region NotificationBell
+            // show read and unread notifications when you click on the bell in the header bar
             if (usrId != null)
             {
                 string NotificationCountAPI_URL = "/api/Notification/Count";
@@ -96,6 +110,7 @@ namespace WebAppMVC.Controllers
                 ViewBag.NotificationUnread = notificationUnread.Data.ToList();
                 ViewBag.NotificationRead = notificationRead.Data.ToList();
             }
+            #endregion
 
             var memberDetails = await methcall.CallMethodReturnObject<GetMemberProfileResponse>(
                 _httpClient: _httpClient,
@@ -120,12 +135,16 @@ namespace WebAppMVC.Controllers
                 + memberDetails.ErrorMessage;
                 return Redirect("~/Home/Index");
             }
-            //memberDetails.Data = methcall.GetValidationTempData<MemberViewModel>(this, TempData, Constants.Constants.UPDATE_MEMBER_DETAILS_VALID, "memberDetail", jsonOptions);
+            var memberInvalidPasswordUpdate = methcall.GetValidationTempData<UpdateMemberPassword>(this, TempData, Constants.Constants.UPDATE_MEMBER_PASSWORD_VALID, "memberPassword", jsonOptions);
+            if (memberInvalidPasswordUpdate != null)
+            {
+                memberInvalids.managerPassword = memberInvalidPasswordUpdate;
+            }
             memberDetails.Data.DefaultUserGenderSelectList = methcall.GetUserGenderSelectableList(memberDetails.Data.Gender);
-            return View(memberDetails.Data);
+            memberInvalids.managerDetail = memberDetails.Data;
+            return View(memberInvalids);
         }
-        [HttpPost("Update")]
-        //[Authorize(Roles = "Member")]
+        [HttpPost("Profile")]
         public async Task<IActionResult> MemberUpdate(MemberViewModel memberDetail)
         {
             MemberInfoAPI_URL += "Update";
@@ -169,6 +188,54 @@ namespace WebAppMVC.Controllers
                 return RedirectToAction("MemberProfile");
             }
             TempData["Success"] = "Successfully updated profile!";
+            return RedirectToAction("MemberProfile");
+        }
+        [HttpPost("ChangePassword")]
+        //[Authorize(Roles = "Member")]
+        public async Task<IActionResult> ChangePassword(UpdateMemberPassword memberPassword)
+        {
+            string MemberChangePasswordAPI_URL = "/api/User/ChangePassword";
+
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER));
+
+            if (!ModelState.IsValid)
+            {
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_MEMBER_PASSWORD_VALID, memberPassword, jsonOptions);
+                return RedirectToAction("MemberProfile");
+            }
+
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
+
+            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
+
+            memberPassword.userId = usrId;
+
+            var memberDetailupdate = await methcall.CallMethodReturnObject<GetMemberPasswordChangeResponse>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: Constants.Constants.PUT_METHOD,
+                url: MemberChangePasswordAPI_URL,
+                _logger: _logger,
+                inputType: memberPassword,
+                accessToken: accToken);
+            if (memberDetailupdate == null)
+            {
+                ViewBag.error =
+                    "Error while processing your request! (Getting Member Profile!).\n Member Details Not Found!";
+                TempData["Error"] = "Error while updating password.";
+                return RedirectToAction("MemberProfile");
+            }
+            else
+            if (!memberDetailupdate.Status)
+            {
+                ViewBag.error =
+                    "Error while processing your request! (Getting Member Profile!).\n Member Details Not Found!"
+                + memberDetailupdate.ErrorMessage;
+                TempData["Error"] = "Error while updating password.";
+                return RedirectToAction("MemberProfile");
+            }
+            TempData["Success"] = "Successfully updated password!";
             return RedirectToAction("MemberProfile");
         }
         [HttpGet("HistoryEvent")]
@@ -347,45 +414,6 @@ namespace WebAppMVC.Controllers
                         "Error while processing your request! (Getting Member Profile!).\n Member Details Not Found!"
                     + getMemberAvatar.ErrorMessage;
                 }
-                return RedirectToAction("MemberProfile");
-            }
-            return RedirectToAction("MemberProfile");
-        }
-        [HttpPost("ChangePassword")]
-        //[Authorize(Roles = "Member")]
-        public async Task<IActionResult> ChangePassword(UpdateMemberPassword memberPassword)
-        {
-            string MemberChangePasswordAPI_URL = "/api/User/ChangePassword";
-
-            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER) != null)
-                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER));
-
-            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
-
-            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
-
-            memberPassword.userId = usrId;
-
-            var memberDetailupdate = await methcall.CallMethodReturnObject<GetMemberPasswordChangeResponse>(
-                _httpClient: _httpClient,
-                options: jsonOptions,
-                methodName: Constants.Constants.PUT_METHOD,
-                url: MemberChangePasswordAPI_URL,
-                _logger: _logger,
-                inputType: memberPassword,
-                accessToken: accToken);
-            if (memberDetailupdate == null)
-            {
-                ViewBag.error =
-                    "Error while processing your request! (Getting Member Profile!).\n Member Details Not Found!";
-                return RedirectToAction("MemberProfile");
-            }
-            else
-            if (!memberDetailupdate.Status)
-            {
-                ViewBag.error =
-                    "Error while processing your request! (Getting Member Profile!).\n Member Details Not Found!"
-                + memberDetailupdate.ErrorMessage;
                 return RedirectToAction("MemberProfile");
             }
             return RedirectToAction("MemberProfile");
