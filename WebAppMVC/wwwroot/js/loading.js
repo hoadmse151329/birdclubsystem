@@ -8,7 +8,7 @@
         $('#loading-screen').fadeIn(); // Show loading screen
         setTimeout(function () {
             window.location.href = $(this).attr('href'); // Navigate to the clicked link after a delay
-        }.bind(this), 1000); // Adjust the delay time as needed (in milliseconds)
+        }.bind(this), 3000); // Adjust the delay time as needed (in milliseconds)
     });
 
     // Hide loading screen when the page finishes loading
