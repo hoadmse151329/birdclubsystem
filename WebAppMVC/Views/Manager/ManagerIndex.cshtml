@@ -1,15 +1,17 @@
 ﻿@{
-    Layout = null;
-    ViewData["Title"] = "Manager Index Page";
     Layout = "~/Views/Shared/_MLayout.cshtml";
+    ViewData["Title"] = "Manager Index Page";
 }
-<html lang="en">
 
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>Bird Club System</title>
+    <link rel="stylesheet" href="~/Content/leaderboard.css">
+    <!-- Include any other stylesheets or scripts here -->
 </head>
 <body>
     <div class="main-content">
@@ -56,11 +58,13 @@
                     <i class='bx bx-money'></i>
                 </div>
                 <div>
-                    <div class="number"><span class="price-format" data-price="150000000" "></span></div>
+                    <div class="number"><span class="price-format" data-price="150000000"></span></div>
                     <div class="cardName">Total Income</div>
                 </div>
             </div>
         </div>
+
+        <!-- Charts Section -->
         <section class="chartBox">
             <div class="row">
                 <div class="col-lg-12">
@@ -76,6 +80,7 @@
                 </div>
             </div>
         </section>
+        
         <section class="chartBox">
             <div class="row">
                 <div class="col-lg-12">
@@ -91,8 +96,9 @@
                 </div>
             </div>
         </section>
-        <div class="details">
 
+        <!-- Details Section -->
+        <div class="details">
             <!-- New Info -->
             <div class="cardInfo">
                 <div class="card border-0 d-flex">
@@ -114,37 +120,36 @@
                                 <tr>
                                     <td>Ho Tran Khanh Duy</td>
                                     <td>1,200,000</td>
-                                    <td>meeting</td>
+                                    <td>Meeting</td>
                                     <td><div class="demise">Processing</div></td>
                                 </tr>
                                 <tr>
                                     <td>Ho Tran Khanh Duy</td>
                                     <td>1,200,000</td>
-                                    <td>meeting</td>
+                                    <td>Meeting</td>
                                     <td><div class="demise">Processing</div></td>
                                 </tr>
                                 <tr>
                                     <td>Ho Tran Khanh Duy</td>
                                     <td>1,200,000</td>
-                                    <td>meeting</td>
+                                    <td>Meeting</td>
                                     <td><div class="demise">Processing</div></td>
                                 </tr>
                                 <tr>
                                     <td>Ho Tran Khanh Duy</td>
                                     <td>1,200,000</td>
-                                    <td>meeting</td>
+                                    <td>Meeting</td>
                                     <td><div class="demise">Processing</div></td>
                                 </tr>
                                 <tr>
                                     <td>Ho Tran Khanh Duy</td>
                                     <td>1,200,000</td>
-                                    <td>meeting</td>
+                                    <td>Meeting</td>
                                     <td><div class="demise">Processing</div></td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
-
                 </div>
             </div>
 
@@ -168,8 +173,8 @@
                                     <td><div class="imgBx"><img src="@Url.Content("~/images/avatar.jpg")" alt=""></div></td>
                                     <td>Ho Tran Khanh Duy</td>
                                     <td>
-                                        <i class='bx bx-star yellow'></i>
-                                        <i class='bx bx-star yellow'></i>
+                                        <i class='bx bxs-star yellow'></i>
+                                        <i class='bx bxs-star yellow'></i>
                                         <i class='bx bxs-star yellow'></i>
                                         <i class='bx bxs-star yellow'></i>
                                         <i class='bx bxs-star-half yellow'></i>
@@ -179,8 +184,8 @@
                                     <td><div class="imgBx"><img src="@Url.Content("~/images/avatar.jpg")" alt=""></div></td>
                                     <td>Ho Tran Khanh Duy</td>
                                     <td>
-                                        <i class='bx bx-star yellow'></i>
-                                        <i class='bx bx-star yellow'></i>
+                                        <i class='bx bxs-star yellow'></i>
+                                        <i class='bx bxs-star yellow'></i>
                                         <i class='bx bxs-star yellow'></i>
                                         <i class='bx bxs-star-half yellow'></i>
                                         <i class='bx bxs-star'></i>
@@ -190,17 +195,6 @@
                                     <td><div class="imgBx"><img src="@Url.Content("~/images/avatar.jpg")" alt=""></div></td>
                                     <td>Ho Tran Khanh Duy</td>
                                     <td>
-                                        <i class='bx bx-star yellow'></i>
-                                        <i class='bx bxs-star yellow'></i>
-                                        <i class='bx bxs-star yellow'></i>
-                                        <i class='bx bxs-star yellow'></i>
-                                        <i class='bx bxs-star yellow'></i>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><div class="imgBx"><img src="@Url.Content("~/images/avatar.jpg")" alt=""></div></td>
-                                    <td>Ho Tran Khanh Duy</td>
-                                    <td>
                                         <i class='bx bxs-star yellow'></i>
                                         <i class='bx bxs-star yellow'></i>
                                         <i class='bx bxs-star yellow'></i>
@@ -212,7 +206,18 @@
                                     <td><div class="imgBx"><img src="@Url.Content("~/images/avatar.jpg")" alt=""></div></td>
                                     <td>Ho Tran Khanh Duy</td>
                                     <td>
-                                        <i class='bx bx-star'></i>
+                                        <i class='bx bxs-star yellow'></i>
+                                        <i class='bx bxs-star yellow'></i>
+                                        <i class='bx bxs-star yellow'></i>
+                                        <i class='bx bxs-star yellow'></i>
+                                        <i class='bx bxs-star yellow'></i>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><div class="imgBx"><img src="@Url.Content("~/images/avatar.jpg")" alt=""></div></td>
+                                    <td>Ho Tran Khanh Duy</td>
+                                    <td>
+                                        <i class='bx bxs-star'></i>
                                         <i class='bx bxs-star yellow'></i>
                                         <i class='bx bxs-star yellow'></i>
                                         <i class='bx bxs-star yellow'></i>
@@ -231,10 +236,5 @@
             </div>
         </div>
     </div>
-
-
-    <!-- jQuery first, then Popper.js, then Bootstrap JS. -->
-    <script src="~/js/chart.js"></script>
 </body>
-
 </html>
