@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BAL.Services.Interfaces;
 using BAL.ViewModels;
+using BAL.ViewModels.Admin;
 using BAL.ViewModels.Authenticates;
 using BAL.ViewModels.Member;
 using DAL.Infrastructure;
@@ -115,7 +116,26 @@ namespace BAL.Services.Implements
             _unitOfWork.Save();
         }
 
-		public async Task<bool> GetBoolById(int id)
+        public void Create(UserViewModel entity, CreateNewEmployee newmem = null)
+        {
+            var usr = _mapper.Map<User>(entity);
+            usr.MemberDetail = new Member();
+            usr.MemberDetail.MemberId = Guid.NewGuid().ToString();
+            usr.MemberDetail.Status = "Inactive";
+            usr.MemberDetail.Role = newmem.Role;
+            usr.MemberDetail.Email = entity.Email;
+            if (newmem != null)
+            {
+                usr.MemberDetail.FullName = newmem.FullName;
+                usr.MemberDetail.UserName = newmem.UserName;
+                usr.MemberDetail.Gender = newmem.Gender;
+                usr.MemberDetail.Phone = newmem.Phone;
+            }
+            _unitOfWork.UserRepository.Create(usr);
+            _unitOfWork.Save();
+        }
+
+        public async Task<bool> GetBoolById(int id)
 		{
             var user = await _unitOfWork.UserRepository.GetByIdNoTracking(id);
             if(user != null)

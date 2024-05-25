@@ -12,6 +12,11 @@ using WebAppMVC.Models.Member;
 using WebAppMVC.Models.ViewModels;
 using WebAppMVC.Models.Admin;
 using BAL.ViewModels.Admin;
+using BAL.ViewModels.Authenticates;
+using WebAppMVC.Models.Auth;
+using WebAppMVC.Models.Notification;
+using WebAppMVC.Models.Transaction;
+using System.ComponentModel.DataAnnotations;
 
 namespace WebAppMVC.Controllers
 {
@@ -96,7 +101,11 @@ namespace WebAppMVC.Controllers
                 return View("AdminIndex");
             }
             managerMemberStatusListVM.EmployeeStatuses = listMemberStatusResponse.Data;
-
+            managerMemberStatusListVM.createEmployee = methcall.GetValidationTempData<CreateNewEmployee>(this, TempData, Constants.Constants.CREATE_EMPLOYEE_DETAILS_VALID, "createEmployee", jsonOptions);
+            if(managerMemberStatusListVM.createEmployee == null)
+            {
+                managerMemberStatusListVM.createEmployee = new CreateNewEmployee();
+            }
             foreach (var employee in managerMemberStatusListVM.EmployeeStatuses)
             {
                 employee.DefaultEmployeeStatusSelectList = methcall.GetMemberStatusSelectableList(employee.Status);
@@ -315,6 +324,51 @@ namespace WebAppMVC.Controllers
                 return RedirectToAction("AdminProfile");
             }
             return RedirectToAction("AdminProfile");
+        }
+        [HttpPost("Account/Create")]
+        //[Authorize(Roles = "TempMember")]
+        public async Task<IActionResult> AdminCreateEmployee(
+            [Required] CreateNewEmployee createEmployee)
+        {
+            AdminAPI_URL += "Admin/User/Create";
+
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.ADMIN) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.ADMIN));
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
+
+            if (!ModelState.IsValid)
+            {
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.CREATE_EMPLOYEE_DETAILS_VALID, createEmployee, jsonOptions);
+                return RedirectToAction("AdminAccountIndex");
+            }
+            var authenResponse = await methcall.CallMethodReturnObject<GetAuthenResponse>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: Constants.Constants.POST_METHOD,
+                url: AdminAPI_URL,
+                inputType: createEmployee,
+                accessToken: accToken,
+                _logger: _logger);
+
+            if (authenResponse == null)
+            {
+                _logger.LogError("Error while registering employee new account");
+
+                ViewBag.error = "Error while registering employee new account !";
+
+                return RedirectToAction("AdminAccountIndex");
+            }
+            if (authenResponse.Status)
+            {
+                _logger.LogError("Error while registering employee new account");
+
+                ViewBag.error = "Error while registering employee new account !";
+
+                return RedirectToAction("AdminAccountIndex");
+            }
+            TempData["Success"] = ViewBag.Success = "Account Create Successfully!";
+
+            return RedirectToAction("AdminAccountIndex");
         }
     }
 }

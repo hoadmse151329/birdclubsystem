@@ -120,6 +120,8 @@ namespace WebAppMVC.Controllers
                 + memberDetails.ErrorMessage;
                 return Redirect("~/Home/Index");
             }
+            //memberDetails.Data = methcall.GetValidationTempData<MemberViewModel>(this, TempData, Constants.Constants.UPDATE_MEMBER_DETAILS_VALID, "memberDetail", jsonOptions);
+            memberDetails.Data.DefaultUserGenderSelectList = methcall.GetUserGenderSelectableList(memberDetails.Data.Gender);
             return View(memberDetails.Data);
         }
         [HttpPost("Update")]
@@ -127,6 +129,11 @@ namespace WebAppMVC.Controllers
         public async Task<IActionResult> MemberUpdate(MemberViewModel memberDetail)
         {
             MemberInfoAPI_URL += "Update";
+            if (!ModelState.IsValid)
+            {
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_MEMBER_DETAILS_VALID, memberDetail, jsonOptions);
+                return RedirectToAction("MemberProfile");
+            }
 
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER) != null)
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER));

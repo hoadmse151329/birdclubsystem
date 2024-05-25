@@ -8,6 +8,7 @@ using BAL.ViewModels.Authenticates;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Authorization;
 using BAL.ViewModels.Member;
+using BAL.ViewModels.Admin;
 
 namespace WebAPI.Controllers
 {

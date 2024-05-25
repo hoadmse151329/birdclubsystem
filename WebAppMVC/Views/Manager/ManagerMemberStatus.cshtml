@@ -138,29 +138,20 @@
                                                         data-bs-toggle="tooltip" data-bs-placement="right"
                                                         title="More Details">
                                                         <td class="sorting_1">
-                                                                <input type="hidden" asp-for="@memberStatuses[i].MemberId" name="listRequest[@i].MemberId" value="@memberStatuses[i].MemberId" class="form-control" />
+                                                            <input type="hidden" asp-for="@memberStatuses[i].MemberId" name="listRequest[@i].MemberId" value="@memberStatuses[i].MemberId" class="form-control" />
                                                             @memberStatuses[i].MemberId
                                                         </td>
                                                         <td>
-                                                                <input type="hidden" asp-for="@memberStatuses[i].UserName" name="listRequest[@i].UserName" value="@memberStatuses[i].UserName" class="form-control" />
+                                                            <input type="hidden" asp-for="@memberStatuses[i].UserName" name="listRequest[@i].UserName" value="@memberStatuses[i].UserName" class="form-control" />
                                                             @memberStatuses[i].UserName
                                                         </td>
                                                         <td>
-                                                                <input type="hidden" asp-for="@memberStatuses[i].FullName" name="listRequest[@i].FullName" value="@memberStatuses[i].FullName" class="form-control" />
+                                                            <input type="hidden" asp-for="@memberStatuses[i].FullName" name="listRequest[@i].FullName" value="@memberStatuses[i].FullName" class="form-control" />
                                                             @memberStatuses[i].FullName
                                                         </td>
                                                         <td>
-                                                                <input type="hidden" asp-for="@memberStatuses[i].ExpiryDate" name="listRequest[@i].ExpiryDate" value="@memberStatuses[i].ExpiryDate" class="form-control" />
-                                                                @{
-                                                                    if (memberStatuses[i].ExpiryDate.HasValue)
-                                                                    {
-                                                                        memberStatuses[i].ExpiryDate.Value.ToString("dd-MM-yyyy HH:mm");
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        ;
-                                                                    }
-                                                                }
+                                                            <input type="hidden" asp-for="@memberStatuses[i].ExpiryDate" name="listRequest[@i].ExpiryDate" value="@memberStatuses[i].ExpiryDate" class="form-control" />
+                                                            @memberStatuses[i].ExpiryDate.Value.ToString("dd-MM-yyyy HH:mm")
                                                         </td>
                                                         <td>
                                                             @* @{

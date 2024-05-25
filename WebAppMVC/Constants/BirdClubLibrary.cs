@@ -11,6 +11,7 @@ using BAL.ViewModels;
 using Org.BouncyCastle.Ocsp;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using WebAppMVC.Models;
+using WebAppMVC.Models.Error;
 
 namespace WebAppMVC.Constants
 {
@@ -27,8 +28,8 @@ namespace WebAppMVC.Constants
             string methodName,
             string url,
             ILogger _logger,
-            object inputType = null,
-            string accessToken = null) where T : class
+            object? inputType = null,
+            string? accessToken = null) where T : class
         {
             HttpResponseMessage response = new HttpResponseMessage();
             if(accessToken != null)
@@ -57,8 +58,17 @@ namespace WebAppMVC.Constants
             if (!response.IsSuccessStatusCode)
             {
                 _logger.LogError("Error while processing your request!: " + response.StatusCode + "\t\nApi Url: " + url + "\t\nError Message: " + jsonResponse);
-                var error = JsonSerializer.Deserialize<T>(jsonResponse, options);
-                return error;
+                if (!string.IsNullOrEmpty(jsonResponse) || !string.IsNullOrWhiteSpace(jsonResponse))
+                {
+                    if (jsonResponse.Contains("Data"))
+                    {
+                        var errorT = JsonSerializer.Deserialize<T>(jsonResponse, options);
+                        return errorT;
+                    }
+                    var error = JsonSerializer.Deserialize<GetErrorVM>(jsonResponse, options);
+                    return null;
+                }
+                return null;
             };
             var result = JsonSerializer.Deserialize<T>(jsonResponse, options);
             _logger.LogInformation("Processing your request Successfully!: " + response.StatusCode + "\t\nApi Url: " + url + "\t\nSuccess Message: " + jsonResponse);

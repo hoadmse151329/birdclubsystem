@@ -4,7 +4,7 @@
     ViewData["Title"] = "Admin Member Status Page";
     string? search = string.Empty;
 
-    BAL.ViewModels.Member.CreateNewMember createEmployee = Model.createEmployee;
+    BAL.ViewModels.Admin.CreateNewEmployee createEmployee = Model.createEmployee;
 
     var memberStatuses = Model.EmployeeStatuses;
     
@@ -179,19 +179,19 @@
                                     <input asp-for="@createEmployee.UserName" value="@createEmployee.UserName" type="text" placeholder="User Name" required class="form-control col-md-7">
                                     <span asp-validation-for="@createEmployee.UserName" id="error_message"
                                           class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                </div>
-                                <div class="row form-group">
+
                                     <label asp-for="@createEmployee.FullName" class="col-md-3 col-form-label text-md-right"></label>
                                     <input asp-for="@createEmployee.FullName" value="@createEmployee.FullName" type="text" placeholder="User Name" required class="form-control col-md-7">
                                     <span asp-validation-for="@createEmployee.FullName" id="error_message"
                                           class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                </div>
-                                <div class="row form-group">
-                                    <label asp-for="@createEmployee.Gender" class="col-md-3 col-form-label mt-3 text-md-right"></label>
-                                    <select class="form-control form-data custom-select" asp-for="@createEmployee.Gender" asp-items="@createEmployee.DefaultUserGenderSelectList">
-                                        
-                                    </select>
 
+                                    <label asp-for="@createEmployee.Role" class="col-md-3 col-form-label mt-3 text-md-right"></label>
+                                    <select class="form-control col-md-7 custom-select" asp-for="@createEmployee.Role" asp-items="@createEmployee.DefaultRoleSelectList"></select>
+                                    <span asp-validation-for="@createEmployee.Role" id="error_message"
+                                          class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+
+                                    <label asp-for="@createEmployee.Gender" class="col-md-3 col-form-label mt-3 text-md-right"></label>
+                                    <select class="form-control col-md-7 custom-select" asp-for="@createEmployee.Gender" asp-items="@createEmployee.DefaultUserGenderSelectList"></select>
                                     <span asp-validation-for="@createEmployee.Gender" id="error_message"
                                           class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
@@ -204,10 +204,12 @@
                                     <input asp-for="@createEmployee.Phone" value="@createEmployee.Phone" type="tel" placeholder="Phone number" class="form-control col-md-7 mt-3" required>
                                     <span asp-validation-for="@createEmployee.Phone" id="error_message"
                                           class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+
                                     <label asp-for="@createEmployee.Password" class="col-md-3 col-form-label mt-3 text-md-right"></label>
                                     <input asp-for="@createEmployee.Password" value="@createEmployee.Password" type="password" placeholder="Password" class="form-control col-md-7 mt-3" required>
                                     <span asp-validation-for="@createEmployee.Password" id="error_message"
                                           class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+
                                     <label asp-for="@createEmployee.ConfirmPassword" class="col-md-3 col-form-label mt-3 text-md-right"></label>
                                     <input asp-for="@createEmployee.ConfirmPassword" value="@createEmployee.ConfirmPassword" type="password" placeholder="Confirm Password" class="form-control col-md-7 mt-3" required>
                                     <span asp-validation-for="@createEmployee.ConfirmPassword" id="error_message"

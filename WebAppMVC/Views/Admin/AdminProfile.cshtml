@@ -4,7 +4,6 @@
     Layout = "~/Views/Shared/_ALayout.cshtml";
     IFormFile? formFile = null;
     BAL.ViewModels.Member.UpdateMemberPassword memberPassword = new();
-    Layout = null;
     List<SelectListItem> genders = Model.DefaultUserGenderSelectList;
 }
 <html lang="en">
@@ -51,7 +50,7 @@
                                                 <h4>Personal Information</h4>
                                             </div>
                                             <div class="info-content">
-                                                <form asp-action="ManagerProfileUpdate" asp-controller="Manager" class="form-check">
+                                                <form asp-action="AdminProfileUpdate" asp-controller="Admin" class="form-check">
                                                     <div class="row username-content">
                                                         <label class="contact-title col-md-5 col-sm-4 mt-3">Username: </label>
 
@@ -167,7 +166,7 @@
                 <div class="modal-header">
                     <h4 class="modal-title">Change Profile Picture</h4>
                 </div>
-                <form asp-action="UploadImage" asp-controller="Manager" enctype="multipart/form-data">
+                <form asp-action="UploadImage" asp-controller="Admin" enctype="multipart/form-data">
                     <div class="modal-body">
                         <label class="custom-control-label d-flex">
                             <input asp-for="@formFile" type="file" class="custom-file" accept=".jpg, .jpeg, .png" name="photo" onchange="loadFile(event)">
