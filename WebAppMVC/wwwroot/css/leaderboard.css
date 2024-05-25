@@ -1,40 +1,53 @@
-﻿body {
-    font-family: Arial, sans-serif;
+body {
+    font-family: 'Roboto', sans-serif;
     background-color: #f4f4f9;
     margin: 0;
     padding: 0;
 }
 
 .leaderboard-container {
-    max-width: 600px;
+    max-width: 800px;
     margin: 50px auto;
     padding: 20px;
-    background-color: #fff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
+    background-color: #ffffff;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
 }
 
 h1 {
     text-align: center;
-    color: #333;
+    color: #333333;
+    margin-bottom: 20px;
+    font-size: 2.5em;
+    text-transform: uppercase;
+    letter-spacing: 2px;
 }
 
 .leaderboard {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
+    font-size: 1.2em;
 }
+
+    .leaderboard thead {
+        background-color: #4CAF50;
+        color: #ffffff;
+    }
 
     .leaderboard th,
     .leaderboard td {
-        padding: 10px;
+        padding: 15px;
         text-align: left;
-        border-bottom: 1px solid #ddd;
+        border-bottom: 1px solid #dddddd;
     }
 
     .leaderboard th {
         background-color: #4CAF50;
         color: white;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-weight: bold;
     }
 
     .leaderboard tr:nth-child(even) {
@@ -42,5 +55,68 @@ h1 {
     }
 
     .leaderboard tr:hover {
-        background-color: #ddd;
+        background-color: #d1d1d1;
+        transform: scale(1.02);
+        transition: all 0.2s ease-in-out;
     }
+
+    .leaderboard td {
+        position: relative;
+    }
+
+        .leaderboard td::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 10px;
+            height: 10px;
+            background-color: #4CAF50;
+            border-radius: 50%;
+            transform: translateY(-50%);
+            display: none;
+        }
+
+    .leaderboard tr:hover td::before {
+        display: block;
+    }
+
+@media (max-width: 600px) {
+    .leaderboard-container {
+        padding: 10px;
+    }
+
+    .leaderboard thead {
+        display: none;
+    }
+
+    .leaderboard tr {
+        display: block;
+        margin-bottom: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+    }
+
+    .leaderboard td {
+        display: block;
+        text-align: right;
+        padding: 10px;
+        position: relative;
+        border: none;
+        border-bottom: 1px solid #ddd;
+    }
+
+        .leaderboard td::before {
+            content: attr(data-label);
+            position: absolute;
+            left: 10px;
+            width: 50%;
+            padding-right: 10px;
+            text-align: left;
+            font-weight: bold;
+        }
+
+        .leaderboard td:last-child {
+            border-bottom: none;
+        }
+}

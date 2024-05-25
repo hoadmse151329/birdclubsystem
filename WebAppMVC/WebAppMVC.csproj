@@ -43,4 +43,11 @@
     <Folder Include="wwwroot\ckfinder\images\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="wwwroot\fonts\fontawesome-free-5.15.4-web\css\all.min.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>
