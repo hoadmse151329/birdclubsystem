@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using AutoMapper.Configuration.Annotations;
+using BAL.ViewModels.Member;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -19,7 +21,7 @@ namespace BAL.ViewModels
 				new SelectListItem { Text = "Female", Value = "Female" },
 				new SelectListItem { Text = "Other", Value = "Other" },
 			};
-		}
+        }
 		public int UserId { get; set; }
         public string? MemberId { get; set; }
 		[Required(ErrorMessage = "Account Username is required")]
@@ -54,5 +56,5 @@ namespace BAL.ViewModels
 
 		public List<BirdViewModel> Birds { get; set; }
 		public List<SelectListItem> DefaultUserGenderSelectList { get; set; }
-	}
+    }
 }

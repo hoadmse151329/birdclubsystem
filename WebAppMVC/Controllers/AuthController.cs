@@ -62,7 +62,8 @@ namespace WebAppMVC.Controllers
 			{
 				return View(googleLoginDetails);
 			}
-            return View();
+			CreateNewMember newMem = new();
+            return View(newMem);
 		}
 		[HttpGet("Login")]
 		public IActionResult Login()

@@ -19,6 +19,7 @@ namespace BAL.ViewModels.Manager
                 new SelectListItem { Text = "Denied", Value = "Denied" },
                 new SelectListItem { Text = "Suspended", Value = "Suspended" }
             };
+            ExpiryDate = ExpiryDate.HasValue ? ExpiryDate.Value : DateTime.MinValue;
         }
         public string? MemberId { get; set; }
         [Required(ErrorMessage = "Account Username is required")]

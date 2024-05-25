@@ -25,6 +25,7 @@ using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using DAL.Models;
 using Microsoft.AspNetCore.Http.Json;
+using WebAppMVC.Models.ViewModels;
 
 namespace WebAppMVC.Controllers
 {
@@ -733,8 +734,19 @@ namespace WebAppMVC.Controllers
             string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
             string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
+            string? imagePath = HttpContext.Session.GetString(Constants.Constants.USR_IMAGE);
 
-            var memberDetails = await methcall.CallMethodReturnObject<GetMemberProfileResponse>(
+            var staffInvalids = new MemberProfileVM();
+            var staffInvalidDetails = methcall.GetValidationTempData<MemberViewModel>(this, TempData, Constants.Constants.UPDATE_STAFF_DETAILS_VALID, "staffDetail", jsonOptions);
+            if (staffInvalidDetails != null)
+            {
+                staffInvalidDetails.ImagePath = imagePath;
+                staffInvalidDetails.DefaultUserGenderSelectList = methcall.GetUserGenderSelectableList(staffInvalidDetails.Gender);
+                staffInvalids.managerDetail = staffInvalidDetails;
+                return View(staffInvalids);
+            }
+
+            var staffDetails = await methcall.CallMethodReturnObject<GetMemberProfileResponse>(
                 _httpClient: _httpClient,
                 options: jsonOptions,
                 methodName: Constants.Constants.POST_METHOD,
@@ -742,23 +754,118 @@ namespace WebAppMVC.Controllers
                 _logger: _logger,
                 inputType: usrId,
                 accessToken: accToken);
-            if (memberDetails == null)
+            if (staffDetails == null)
             {
                 ViewBag.Error =
                     "Error while processing your request! (Getting Staff Profile!).\n Staff Details Not Found!";
                 return RedirectToAction("Index");
             }
             else
-            if (!memberDetails.Status)
+            if (!staffDetails.Status)
             {
                 ViewBag.Error =
                     "Error while processing your request! (Getting Staff Profile!).\n Staff Details Not Found!"
-                + memberDetails.ErrorMessage;
+                + staffDetails.ErrorMessage;
                 return RedirectToAction("Index");
             }
-            return View(memberDetails.Data);
+            var staffInvalidPasswordUpdate = methcall.GetValidationTempData<UpdateMemberPassword>(this, TempData, Constants.Constants.UPDATE_STAFF_PASSWORD_VALID, "staffPassword", jsonOptions);
+            if (staffInvalidPasswordUpdate != null)
+            {
+                staffInvalids.managerPassword = staffInvalidPasswordUpdate;
+            }
+            staffDetails.Data.DefaultUserGenderSelectList = methcall.GetUserGenderSelectableList(staffDetails.Data.Gender);
+            staffInvalids.managerDetail = staffDetails.Data;
+            return View(staffDetails.Data);
         }
+        [HttpPost("Profile")]
+        //[Authorize(Roles = "Member")]
+        public async Task<IActionResult> StaffProfileUpdate(MemberViewModel staffDetail)
+        {
+            StaffAPI_URL += "Staff/Profile/Update";
 
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
+
+            if (!ModelState.IsValid)
+            {
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_STAFF_DETAILS_VALID, staffDetail, jsonOptions);
+                return RedirectToAction("StaffProfile");
+            }
+
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
+
+            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
+
+            staffDetail.MemberId = usrId;
+
+            var staffDetailupdate = await methcall.CallMethodReturnObject<GetMemberProfileResponse>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: Constants.Constants.PUT_METHOD,
+                url: StaffAPI_URL,
+                _logger: _logger,
+                inputType: staffDetail,
+                accessToken: accToken);
+            if (staffDetailupdate == null)
+            {
+                ViewBag.Error =
+                    "Error while processing your request! (Getting Member Profile!).\n Member Details Not Found!";
+                return RedirectToAction("StaffProfile");
+            }
+            else
+            if (!staffDetailupdate.Status)
+            {
+                ViewBag.Error =
+                    "Error while processing your request! (Getting Member Profile!).\n Member Details Not Found!"
+                + staffDetailupdate.ErrorMessage;
+                return RedirectToAction("StaffProfile");
+            }
+            return RedirectToAction("StaffProfile");
+        }
+        [HttpPost("ChangePassword")]
+        public async Task<IActionResult> ChangePassword(UpdateMemberPassword staffPassword)
+        {
+            string MemberChangePasswordAPI_URL = "/api/User/ChangePassword";
+
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.STAFF) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.STAFF));
+
+            if (!ModelState.IsValid)
+            {
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_STAFF_PASSWORD_VALID, staffPassword, jsonOptions);
+                return RedirectToAction("StaffProfile");
+            }
+
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
+
+            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
+
+            staffPassword.userId = usrId;
+
+            var memberDetailupdate = await methcall.CallMethodReturnObject<GetMemberPasswordChangeResponse>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: Constants.Constants.PUT_METHOD,
+                url: MemberChangePasswordAPI_URL,
+                _logger: _logger,
+                inputType: staffPassword,
+                accessToken: accToken);
+            if (memberDetailupdate == null)
+            {
+                ViewBag.error =
+                    "Error while processing your request! (Getting Staff Profile!).\n Staff Details Not Found!";
+                return RedirectToAction("StaffProfile");
+            }
+            else
+            if (!memberDetailupdate.Status)
+            {
+                ViewBag.error =
+                    "Error while processing your request! (Getting Staff Profile!).\n Staff Details Not Found!"
+                + memberDetailupdate.ErrorMessage;
+                return RedirectToAction("StaffProfile");
+            }
+            return RedirectToAction("StaffProfile");
+        }
         [HttpPost("Upload")]
         public async Task<IActionResult> UploadImage(IFormFile photo)
         {
