@@ -31,5 +31,6 @@ namespace BAL.Services.Interfaces
         void Create(ContestViewModel entity);
         void Update(ContestViewModel entity);
         Task<bool> GetBoolContestId(int id);
+        Task<int> CountContest();
     }
 }

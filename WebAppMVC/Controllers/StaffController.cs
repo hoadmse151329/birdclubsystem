@@ -217,6 +217,7 @@ namespace WebAppMVC.Controllers
             {
                 ModelState.AddModelError("updateMeeting.Status", "Error while processing your request (Updating Meeting).\n Not enough people to closed registration");
                 TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_CONTEST_VALID, updateMeeting, jsonOptions);
+                TempData["Error"] = "Not enough participants to close registration!";
                 return RedirectToAction("StaffMeetingDetail", new { id });
             }
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.STAFF) != null)
@@ -407,6 +408,7 @@ namespace WebAppMVC.Controllers
             {
                 ModelState.AddModelError("updateTrip.Status", "Error while processing your request (Updating FieldTrip).\n Not enough people to closed registration");
                 TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_FIELDTRIP_VALID, updateTrip, jsonOptions);
+                TempData["Error"] = "Not enough participants to close registration!";
                 return RedirectToAction("StaffFieldTripDetail", new { id });
             }
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.STAFF) != null)
@@ -594,6 +596,7 @@ namespace WebAppMVC.Controllers
             {
                 ModelState.AddModelError("updateContest.Status", "Error while processing your request (Updating Contest).\n Not enough people to closed registration");
                 TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_CONTEST_VALID, updateContest, jsonOptions);
+                TempData["Error"] = "Not enough participants to close registration!";
                 return RedirectToAction("StaffContestDetail", new { id });
             }
 
@@ -676,6 +679,7 @@ namespace WebAppMVC.Controllers
                     + contestPartStatusResponse.ErrorMessage;
                 return RedirectToAction("StaffContestDetail", "Staff", new { id });
             }
+            TempData["Success"] = contestPartStatusResponse.SuccessMessage;
             return RedirectToAction("StaffContestDetail", "Staff", new { id });
         }
         [HttpPost("Contest/{id:int}/Participant/All/Score/Update")]

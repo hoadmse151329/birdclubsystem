@@ -1,6 +1,7 @@
 ﻿using DAL.Infrastructure;
 using DAL.Models;
 using DAL.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,9 +13,24 @@ namespace DAL.Repositories.Implements
     public class BlogRepository : RepositoryBase<Blog>, IBlogRepository
     {
         private readonly BirdClubContext _context;
-        public BlogRepository(BirdClubContext context) : base(context) 
+        public BlogRepository(BirdClubContext context) : base(context)
         {
             _context = context;
+        }
+
+        public async Task<IEnumerable<Blog>> GetAllBlogs()
+        {
+            return _context.Blogs.AsNoTracking().ToList();
+        }
+
+        public async Task<IEnumerable<Blog>> GetAllBlogsByUserId(int usrId)
+        {
+            return _context.Blogs.AsNoTracking().Where(b => b.UserId == usrId).ToList();
+        }
+
+        public async Task<int> CountBlog()
+        {
+            return _context.Blogs.AsNoTracking().Count();
         }
     }
 }

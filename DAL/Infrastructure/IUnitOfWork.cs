@@ -29,6 +29,8 @@ namespace DAL.Infrastructure
         IBirdRepository BirdRepository { get; }
         INotificationRepository NotificationRepository { get; }
         IFeedbackRepository FeedbackRepository { get; }
+        IBlogRepository BlogRepository { get; }
+        INewsRepository NewsRepository { get; }
         void Save();
     }
 }

@@ -10,5 +10,8 @@ namespace DAL.Repositories.Interfaces
 {
     public interface IBlogRepository : IRepositoryBase<Blog>
     {
+        Task<IEnumerable<Blog>> GetAllBlogs();
+        Task<IEnumerable<Blog>> GetAllBlogsByUserId(int usrId);
+        Task<int> CountBlog();
     }
 }

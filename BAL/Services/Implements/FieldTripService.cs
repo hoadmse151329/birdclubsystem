@@ -282,5 +282,9 @@ namespace BAL.Services.Implements
             return null;
         }
 
+        public async Task<int> CountFieldTrip()
+        {
+            return await _unitOfWork.FieldTripRepository.CountFieldTrip();
+        }
     }
 }

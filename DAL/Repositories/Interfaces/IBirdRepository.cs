@@ -18,5 +18,6 @@ namespace DAL.Repositories.Interfaces
         Task<Bird> GetBirdByIdTracking(int birdId);
         Task<Bird> GetBirdByName(string birdName);
         Task<Bird> GetBirdByNameTracking(string birdName);
+        Task<IEnumerable<Bird>> GetBirdsOrderByElo();
     }
 }

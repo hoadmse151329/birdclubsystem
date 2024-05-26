@@ -10,5 +10,6 @@ namespace DAL.Repositories.Interfaces
 {
     public interface INewsRepository : IRepositoryBase<News>
     {
+        Task<int> CountNews();
     }
 }

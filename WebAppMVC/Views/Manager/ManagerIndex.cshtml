@@ -1,4 +1,5 @@
-﻿@{
+﻿@model BAL.ViewModels.Event.GetDashboardResponse;
+@{
     Layout = null;
     ViewData["Title"] = "Manager Index Page";
     Layout = "~/Views/Shared/_MLayout.cshtml";
@@ -20,7 +21,7 @@
                     <i class='bx bx-home-heart'></i>
                 </div>
                 <div>
-                    <div class="number">100</div>
+                    <div class="number">@Model.TotalEvents</div>
                     <div class="cardName">Total Events</div>
                 </div>
             </div>
@@ -29,8 +30,8 @@
                     <i class='bx bx-conversation'></i>
                 </div>
                 <div>
-                    <div class="number">100</div>
-                    <div class="cardName">Feedback</div>
+                    <div class="number">@Model.TotalFeedbacks</div>
+                    <div class="cardName">Total Feedbacks</div>
                 </div>
             </div>
             <div class="card blog">
@@ -38,8 +39,8 @@
                     <i class='bx bx-group'></i>
                 </div>
                 <div>
-                    <div class="number">50</div>
-                    <div class="cardName">Blog</div>
+                    <div class="number">@Model.TotalBlogs</div>
+                    <div class="cardName">Total Blogs</div>
                 </div>
             </div>
             <div class="card news">
@@ -47,8 +48,8 @@
                     <i class='bx bx-pencil'></i>
                 </div>
                 <div>
-                    <div class="number">100</div>
-                    <div class="cardName">News</div>
+                    <div class="number">@Model.TotalNews</div>
+                    <div class="cardName">Total News</div>
                 </div>
             </div>
             <div class="card turnover">
@@ -56,7 +57,7 @@
                     <i class='bx bx-money'></i>
                 </div>
                 <div>
-                    <div class="number"><span class="price-format" data-price="150000000" "></span></div>
+                    <div class="number"><span class="price-format" data-price="@Model.TotalIncome" "></span></div>
                     <div class="cardName">Total Income</div>
                 </div>
             </div>

@@ -73,5 +73,11 @@ namespace BAL.Services.Implements
         {
             return _mapper.Map<BirdViewModel>(await _unitOfWork.BirdRepository.GetBirdByName(birdName));
         }
+
+        public async Task<IEnumerable<BirdViewModel>> GetBirdsOrderByElo()
+        {
+            return _mapper.Map<IEnumerable<BirdViewModel>>(await
+                _unitOfWork.BirdRepository.GetBirdsOrderByElo());
+        }
     }
 }

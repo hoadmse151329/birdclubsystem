@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Authorization;
 using BAL.Services.Interfaces;
 using System.ComponentModel.DataAnnotations;
 using BAL.ViewModels.Manager;
+using BAL.Services.Implements;
+using BAL.ViewModels.Event;
 
 namespace WebAPI.Controllers
 {
@@ -15,13 +17,35 @@ namespace WebAPI.Controllers
         private const string SUCCESS = "~/Manager/ManagerProfile";*/
         private readonly IMemberService _memberService;
         private readonly IConfiguration _config;
+        private readonly IMeetingService _meetingService;
+        private readonly IFieldTripService _fieldTripService;
         private readonly IContestService _contestService;
+        private readonly IFeedbackService _feedbackService;
+        private readonly IBlogService _blogService;
+        private readonly INewsService _newsService;
+        private readonly ITransactionService _transactionService;
         private readonly IContestParticipantService _contestParticipantService;
 
-        public ManagerController(IMemberService memberService, IContestService contestService, IContestParticipantService contestParticipantService, IConfiguration config)
+        public ManagerController(
+            IMemberService memberService,
+            IMeetingService meetingService,
+            IFieldTripService fieldTripService,
+            IContestService contestService,
+            IFeedbackService feedbackService,
+            IBlogService blogService,
+            INewsService newsService,
+            ITransactionService transactionService,
+            IContestParticipantService contestParticipantService,
+            IConfiguration config)
         {
             _memberService = memberService;
+            _meetingService = meetingService;
+            _fieldTripService = fieldTripService;
             _contestService = contestService;
+            _feedbackService = feedbackService;
+            _blogService = blogService;
+            _newsService = newsService;
+            _transactionService = transactionService;
             _contestParticipantService = contestParticipantService;
             _config = config;
         }
@@ -61,6 +85,54 @@ namespace WebAPI.Controllers
             return BadRequest(new { Message = "Image upload failed", RedirectUrl = ERROR });
         }*/
         #endregion
+
+        [HttpGet("Index")]
+        [Authorize(Roles = "Manager")]
+        [ProducesResponseType(typeof(GetDashboardResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetManagerDashboard()
+        {
+            try
+            {
+                int eventCount = await _meetingService.CountMeeting() + await _fieldTripService.CountFieldTrip() + await _contestService.CountContest();
+                int feedbackCount = await _feedbackService.CountFeedback();
+                int blogCount = await _blogService.CountBlog();
+                int newsCount = await _newsService.CountNews();
+                int totalValue = await _transactionService.CalculateTotalValue();
+                GetDashboardResponse result = new GetDashboardResponse()
+                {
+                    TotalEvents = eventCount,
+                    TotalFeedbacks = feedbackCount,
+                    TotalBlogs = blogCount,
+                    TotalNews = newsCount,
+                    TotalIncome = totalValue,
+                };
+                return Ok(new
+                {
+                    Status = true,
+                    Data = result
+                });
+            }
+            catch (Exception ex)
+            {
+                if (ex.InnerException != null)
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = ex.Message,
+                        InnerExceptionMessage = ex.InnerException.Message
+                    });
+                }
+                // Log the exception if needed
+                return BadRequest(new
+                {
+                    Status = false,
+                    ErrorMessage = ex.Message
+                });
+            }
+        }
         /// <summary>
         /// Get member informations by Member ID
         /// </summary>

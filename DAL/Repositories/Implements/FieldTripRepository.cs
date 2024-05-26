@@ -162,5 +162,9 @@ namespace DAL.Repositories.Implements
             }
             return nameLocationList.Select(l => l.LocationId).ToList();
         }
+        public async Task<int> CountFieldTrip()
+        {
+            return _context.FieldTrips.AsNoTracking().Count();
+        }
     }
 }
