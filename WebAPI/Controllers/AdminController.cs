@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using BAL.ViewModels.Admin;
+using BAL.Services.Implements;
+using BAL.ViewModels.Authenticates;
 
 namespace WebAPI.Controllers
 {
@@ -11,13 +13,20 @@ namespace WebAPI.Controllers
     [Route("api/[controller]")]
     public class AdminController : ControllerBase
     {
+        private readonly IUserService _userService;
         private readonly IMemberService _memberService;
         private readonly IConfiguration _config;
         private readonly IContestService _contestService;
         private readonly IContestParticipantService _contestParticipantService;
 
-        public AdminController(IMemberService memberService, IContestService contestService, IContestParticipantService contestParticipantService, IConfiguration config)
+        public AdminController(
+            IUserService userService,
+            IMemberService memberService, 
+            IContestService contestService, 
+            IContestParticipantService contestParticipantService, 
+            IConfiguration config)
         {
+            _userService = userService;
             _memberService = memberService;
             _contestService = contestService;
             _contestParticipantService = contestParticipantService;
@@ -198,6 +207,117 @@ namespace WebAPI.Controllers
                 {
                     Status = true,
                     BoolData = result
+                });
+            }
+            catch (Exception ex)
+            {
+                if (ex.InnerException != null)
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = ex.Message,
+                        InnerExceptionMessage = ex.InnerException.Message
+                    });
+                }
+                // Log the exception if needed
+                return BadRequest(new
+                {
+                    Status = false,
+                    ErrorMessage = ex.Message
+                });
+            }
+        }
+        // POST api/<UserController>
+        // POST api/<UserController>/Register
+        /// <summary>
+        /// Register New User Account
+        /// aliases: api/User/ or api/User/Register
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     POST 
+        ///     {
+        ///         "id": 1,
+        ///         "username": "ExampleMan123",
+        ///         "password": "example123",
+        ///         "confirmPassword": "example123",
+        ///         "fullName": "Mr. ExampleMan",
+        ///         "email": "example123@gmail.com",
+        ///         "phone": "0123456789",
+        ///         "address": "123, Brooklyn, New York City, USA"
+        ///     } 
+        ///     
+        /// </remarks>
+        /// <returns>Return result of action and error message</returns>
+        //[HttpPost]
+        [HttpPost("User/Create")]
+        [Authorize(Roles = "Admin")]
+        [ProducesResponseType(typeof(UserViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> CreateUserByAdmin(
+            [FromBody][Required] CreateNewEmployee newmem)
+        {
+            try
+            {
+                if (newmem.Password == null || newmem.Password == string.Empty)
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = "Password is Empty !"
+                    });
+                }
+                var result = await _userService.GetByEmailModel(newmem.Email);
+                if (result != null)
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = "Email has already registered !"
+                    });
+                }
+                if (!newmem.Password.Equals(newmem.ConfirmPassword))
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = "Password and Confirm Password are not the same !"
+                    });
+                }
+                UserViewModel value = new UserViewModel()
+                {
+                    UserName = newmem.UserName,
+                    Email = newmem.Email,
+                    Password = newmem.Password,
+                    Role = newmem.Role,
+                    ImagePath = "https://edwinbirdclubstorage.blob.core.windows.net/images/avatar/avatar2.png"
+                };
+                _userService.Create(value, newmem);
+                var loguser = new AuthenRequest()
+                {
+                    Username = newmem.UserName,
+                    Password = newmem.Password,
+                    ImagePath = value.ImagePath
+                };
+                var resultaft = await _userService.AuthenticateUser(loguser);
+
+                if (resultaft == null)
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, new
+                    {
+                        Status = false,
+                        ErrorMessage = "Error while Registering your Account !"
+
+                    });
+                }
+                return Ok(new
+                {
+                    Status = true,
+                    SuccessMessage = "Account Create successfully !",
+                    Data = resultaft
                 });
             }
             catch (Exception ex)

@@ -1478,10 +1478,22 @@ namespace WebAppMVC.Controllers
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
 
             string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
+            string? imagePath = HttpContext.Session.GetString(Constants.Constants.USR_IMAGE);
 
             string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
 
-            var memberDetails = await methcall.CallMethodReturnObject<GetMemberProfileResponse>(
+            var managerInvalids = new ManagerProfileVM();
+
+            var managerInvalidDetails = methcall.GetValidationTempData<MemberViewModel>(this, TempData, Constants.Constants.UPDATE_MANAGER_DETAILS_VALID, "managerDetail", jsonOptions);
+            if (managerInvalidDetails != null)
+            {
+                managerInvalidDetails.ImagePath = imagePath;
+                managerInvalidDetails.DefaultUserGenderSelectList = methcall.GetUserGenderSelectableList(managerInvalidDetails.Gender);
+                managerInvalids.managerDetail = managerInvalidDetails;
+                return View(managerInvalids);
+            }
+
+            var managerDetails = await methcall.CallMethodReturnObject<GetMemberProfileResponse>(
                 _httpClient: _httpClient,
                 options: jsonOptions,
                 methodName: Constants.Constants.POST_METHOD,
@@ -1489,21 +1501,118 @@ namespace WebAppMVC.Controllers
                 _logger: _logger,
                 inputType: usrId,
                 accessToken: accToken);
-            if (memberDetails == null)
+            if (managerDetails == null)
             {
                 ViewBag.Error =
                     "Error while processing your request! (Getting Manager Profile!).\n Manager Details Not Found!";
                 return RedirectToAction("Index");
             }
             else
-            if (!memberDetails.Status)
+            if (!managerDetails.Status)
             {
                 ViewBag.Error =
                     "Error while processing your request! (Getting Manager Profile!).\n Manager Details Not Found!"
-                + memberDetails.ErrorMessage;
+                + managerDetails.ErrorMessage;
                 return RedirectToAction("Index");
             }
-            return View(memberDetails.Data);
+            var managerInvalidPasswordUpdate = methcall.GetValidationTempData<UpdateMemberPassword>(this, TempData, Constants.Constants.UPDATE_MANAGER_PASSWORD_VALID, "managerPassword", jsonOptions);
+            if (managerInvalidPasswordUpdate != null)
+            {
+                managerInvalids.managerPassword = managerInvalidPasswordUpdate;
+            }
+            managerDetails.Data.DefaultUserGenderSelectList = methcall.GetUserGenderSelectableList(managerDetails.Data.Gender);
+            managerInvalids.managerDetail = managerDetails.Data;
+            return View(managerInvalids);
+        }
+        [HttpPost("Profile")]
+        //[Authorize(Roles = "Member")]
+        public async Task<IActionResult> ManagerProfileUpdate(MemberViewModel managerDetail)
+        {
+            ManagerAPI_URL += "Manager/Profile/Update";
+
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
+
+            if (!ModelState.IsValid)
+            {
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_MANAGER_DETAILS_VALID, managerDetail, jsonOptions);
+                return RedirectToAction("ManagerProfile");
+            }
+
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
+
+            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
+
+            managerDetail.MemberId = usrId;
+
+            var managerDetailupdate = await methcall.CallMethodReturnObject<GetMemberProfileResponse>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: Constants.Constants.PUT_METHOD,
+                url: ManagerAPI_URL,
+                _logger: _logger,
+                inputType: managerDetail,
+                accessToken: accToken);
+            if (managerDetailupdate == null)
+            {
+                ViewBag.Error =
+                    "Error while processing your request! (Getting Member Profile!).\n Member Details Not Found!";
+                return RedirectToAction("ManagerProfile");
+            }
+            else
+            if (!managerDetailupdate.Status)
+            {
+                ViewBag.Error =
+                    "Error while processing your request! (Getting Member Profile!).\n Member Details Not Found!"
+                + managerDetailupdate.ErrorMessage;
+                return RedirectToAction("ManagerProfile");
+            }
+            TempData["Success"] = memberDetailupdate.SuccessMessage;
+            return RedirectToAction("ManagerProfile");
+        }
+        [HttpPost("ChangePassword")]
+        //[Authorize(Roles = "Member")]
+        public async Task<IActionResult> ChangePassword(UpdateMemberPassword managerPassword)
+        {
+            string ManagerChangePasswordAPI_URL = "/api/User/ChangePassword";
+
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
+
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
+            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
+
+            if (!ModelState.IsValid)
+            {
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_MANAGER_PASSWORD_VALID, managerPassword, jsonOptions);
+                return RedirectToAction("ManagerProfile");
+            }
+
+            managerPassword.userId = usrId;
+
+            var managerDetailupdate = await methcall.CallMethodReturnObject<GetMemberPasswordChangeResponse>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: Constants.Constants.PUT_METHOD,
+                url: ManagerChangePasswordAPI_URL,
+                _logger: _logger,
+                inputType: managerPassword,
+                accessToken: accToken);
+            if (managerDetailupdate == null)
+            {
+                ViewBag.error =
+                    "Error while processing your request! (Getting Manager Profile!).\n Manager Details Not Found!";
+                return RedirectToAction("ManagerProfile");
+            }
+            else
+            if (!managerDetailupdate.Status)
+            {
+                ViewBag.error =
+                    "Error while processing your request! (Getting Member Profile!).\n Member Details Not Found!"
+                + managerDetailupdate.ErrorMessage;
+                return RedirectToAction("ManagerProfile");
+            }
+            return RedirectToAction("ManagerProfile");
         }
         [HttpPost("Upload")]
         public async Task<IActionResult> UploadImage(IFormFile photo)
@@ -1561,89 +1670,9 @@ namespace WebAppMVC.Controllers
                         "Error while processing your request! (Getting Manager Profile!).\n Manager Details Not Found!"
                     + getMemberAvatar.ErrorMessage;
                 }
-                TempData["Success"] = "Successfully changed profile pic!";
                 return RedirectToAction("ManagerProfile");
             }
-            return RedirectToAction("ManagerProfile");
-        }
-        [HttpPost("Profile")]
-        //[Authorize(Roles = "Member")]
-        public async Task<IActionResult> ManagerProfileUpdate(MemberViewModel memberDetail)
-        {
-            ManagerAPI_URL += "Manager/Profile/Update";
-
-            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
-                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
-
-            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
-
-            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
-
-            memberDetail.MemberId = usrId;
-
-            var memberDetailupdate = await methcall.CallMethodReturnObject<GetMemberProfileResponse>(
-                _httpClient: _httpClient,
-                options: jsonOptions,
-                methodName: Constants.Constants.PUT_METHOD,
-                url: ManagerAPI_URL,
-                _logger: _logger,
-                inputType: memberDetail,
-                accessToken: accToken);
-            if (memberDetailupdate == null)
-            {
-                ViewBag.Error =
-                    "Error while processing your request! (Getting Member Profile!).\n Member Details Not Found!";
-                return RedirectToAction("ManagerProfile");
-            }
-            else
-            if (!memberDetailupdate.Status)
-            {
-                ViewBag.Error =
-                    "Error while processing your request! (Getting Member Profile!).\n Member Details Not Found!"
-                + memberDetailupdate.ErrorMessage;
-                return RedirectToAction("ManagerProfile");
-            }
-            TempData["Success"] = memberDetailupdate.SuccessMessage;
-            return RedirectToAction("ManagerProfile");
-        }
-        [HttpPost("ChangePassword")]
-        //[Authorize(Roles = "Member")]
-        public async Task<IActionResult> ChangePassword(UpdateMemberPassword memberPassword)
-        {
-            string ManagerChangePasswordAPI_URL = "/api/User/ChangePassword";
-
-            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
-                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
-
-            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
-
-            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
-
-            memberPassword.userId = usrId;
-
-            var memberDetailupdate = await methcall.CallMethodReturnObject<GetMemberPasswordChangeResponse>(
-                _httpClient: _httpClient,
-                options: jsonOptions,
-                methodName: Constants.Constants.PUT_METHOD,
-                url: ManagerChangePasswordAPI_URL,
-                _logger: _logger,
-                inputType: memberPassword,
-                accessToken: accToken);
-            if (memberDetailupdate == null)
-            {
-                ViewBag.error =
-                    "Error while processing your request! (Getting Manager Profile!).\n Manager Details Not Found!";
-                return RedirectToAction("ManagerProfile");
-            }
-            else
-            if (!memberDetailupdate.Status)
-            {
-                ViewBag.error =
-                    "Error while processing your request! (Getting Member Profile!).\n Member Details Not Found!"
-                + memberDetailupdate.ErrorMessage;
-                return RedirectToAction("ManagerProfile");
-            }
-            TempData["Success"] = memberDetailupdate.SuccessMessage;
+            TempData["Success"] = "Successfully changed profile pic!";
             return RedirectToAction("ManagerProfile");
         }
         [HttpGet("Feedback")]

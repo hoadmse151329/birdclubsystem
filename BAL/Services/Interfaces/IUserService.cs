@@ -1,4 +1,5 @@
 ﻿using BAL.ViewModels;
+using BAL.ViewModels.Admin;
 using BAL.ViewModels.Authenticates;
 using BAL.ViewModels.Member;
 using System;
@@ -22,6 +23,7 @@ namespace BAL.Services.Interfaces
         Task<UserViewModel?> GetByLogin(string username, string password);
         /* void Create(UserViewModel entity);*/
         void Create(UserViewModel entity, CreateNewMember newmem = null);
+        void Create(UserViewModel entity, CreateNewEmployee newmem = null);
         /*void Update(UserViewModel entity);*/
         void Update(UserViewModel entity);
         void UpdatePassword(UserViewModel entity);
