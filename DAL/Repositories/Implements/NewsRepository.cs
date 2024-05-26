@@ -22,5 +22,10 @@ namespace DAL.Repositories.Implements
         {
             return _context.News.AsNoTracking().Count();
         }
+
+        public async Task<IEnumerable<News>> GetAllNews()
+        {
+            return _context.News.AsNoTracking().ToList();
+        }
     }
 }
