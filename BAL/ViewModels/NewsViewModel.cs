@@ -15,7 +15,6 @@ namespace BAL.ViewModels
         public DateTime? UploadDate { get; set; }
         public string? Status { get; set; }
         public string? Picture { get; set; }
-        public string? Filepdf { get; set; }
         public int? UserId { get; set; }
     }
 }

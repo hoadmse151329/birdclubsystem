@@ -740,7 +740,7 @@ namespace WebAppMVC.Controllers
             string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
             string? imagePath = HttpContext.Session.GetString(Constants.Constants.USR_IMAGE);
 
-            var staffInvalids = new MemberProfileVM();
+            var staffInvalids = new StaffProfileVM();
             var staffInvalidDetails = methcall.GetValidationTempData<MemberViewModel>(this, TempData, Constants.Constants.UPDATE_STAFF_DETAILS_VALID, "staffDetail", jsonOptions);
             if (staffInvalidDetails != null)
             {
@@ -779,7 +779,7 @@ namespace WebAppMVC.Controllers
             }
             staffDetails.Data.DefaultUserGenderSelectList = methcall.GetUserGenderSelectableList(staffDetails.Data.Gender);
             staffInvalids.managerDetail = staffDetails.Data;
-            return View(staffDetails.Data);
+            return View(staffInvalids);
         }
         [HttpPost("Profile")]
         //[Authorize(Roles = "Member")]
@@ -824,6 +824,7 @@ namespace WebAppMVC.Controllers
                 + staffDetailupdate.ErrorMessage;
                 return RedirectToAction("StaffProfile");
             }
+            TempData["Success"] = "Successfully updated profile!";
             return RedirectToAction("StaffProfile");
         }
         [HttpPost("ChangePassword")]
@@ -868,6 +869,7 @@ namespace WebAppMVC.Controllers
                 + memberDetailupdate.ErrorMessage;
                 return RedirectToAction("StaffProfile");
             }
+            TempData["Success"] = "Successfully updated password!";
             return RedirectToAction("StaffProfile");
         }
         [HttpPost("Upload")]
