@@ -11,9 +11,9 @@ namespace DAL.Repositories.Interfaces
     public interface INewsRepository : IRepositoryBase<News>
     {
         Task<IEnumerable<News>> GetAllNews();
+        Task<News?> GetNewsByIdNoTracking(int newsId);
         Task<int> CountNews();
-        IEnumerable<News> GetSortedNews(
-            int? newsId,
+        Task <IEnumerable<News>?> GetSortedNews(
             string? title,
             string? category,
             DateTime? uploadDate,

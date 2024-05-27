@@ -28,8 +28,12 @@ namespace DAL.Repositories.Implements
             return _context.News.AsNoTracking().ToList();
         }
 
-        public IEnumerable<News> GetSortedNews(
-            int? newsId, 
+        public async Task<News?> GetNewsByIdNoTracking(int newsId)
+        {
+            return await _context.News.AsNoTracking().FirstOrDefaultAsync(n => n.NewsId.Equals(newsId));
+        }
+
+        public async Task<IEnumerable<News>?> GetSortedNews(
             string? title, 
             string? category, 
             DateTime? uploadDate, 
@@ -41,54 +45,58 @@ namespace DAL.Repositories.Implements
         {
 
             var newsfeeds = _context.News.AsNoTracking().AsQueryable();
-
-            List<string> statusListDefault = new List<string> { "Draft", "Published" };
+            /*  Draft: The post has been created but not yet published.
+                Archived: The post is no longer visible to the public but is kept for record-keeping.
+                Hidden: The post is temporarily hidden from the public view.
+                Reported: The post has been flagged by users for review.
+                Active: The post is currently visible and engaging with users.
+                Disabled: The post is restricted due to a violation of platform policies.
+             */
+            List<string> statusListDefault = new List<string> { "Draft", "Active", "Hidden", "Archived", "Reported", "Disabled" };
+            //List<string> categoryListDefault = new List<string> { "Announcement", "Meeting", "Fieldtrip", "Contest", "Others" };
 
             if (isMemberOrGuest)
             {
-                statuses = new List<string>() { "Published" };
+                statuses = new List<string>() { "Active" };
             }
 
-            if (newsId.HasValue)
+            if (userId.HasValue && userId.Value > 0)
             {
-                newsfeeds = newsfeeds.AsNoTracking().Where(m => m.NewsId.Equals(newsId.Value));
-            }
-
-            if (userId.HasValue)
-            {
-                newsfeeds = newsfeeds.AsNoTracking().Where(m => m.UserId.Equals(userId.Value));
+                newsfeeds = newsfeeds.Where(m => m.UserId.Equals(userId.Value));
             }
 
             if (!string.IsNullOrEmpty(title))
             {
-                newsfeeds = newsfeeds.AsNoTracking().Where(m => m.Title.Contains(title));
+                newsfeeds = newsfeeds.Where(m => m.Title.Contains(title));
             }
 
             if (!string.IsNullOrEmpty(category))
             {
-                newsfeeds = newsfeeds.AsNoTracking().Where(m => m.Category.Contains(category));
+                newsfeeds = newsfeeds.Where(m => m.Category.Equals(category));
             }
 
             if (uploadDate.HasValue)
             {
-                newsfeeds = newsfeeds.AsNoTracking().Where(m => m.UploadDate == uploadDate.Value);
+                newsfeeds = newsfeeds.Where(m => m.UploadDate.Date.Equals(uploadDate.Value.Date));
             }
             if (statuses != null && statuses.Any())
             {
-                newsfeeds = newsfeeds.AsNoTracking().Where(m => statuses.Contains(m.Status));
+                newsfeeds = newsfeeds.Where(m => statuses.Contains(m.Status));
             }
             newsfeeds = orderBy switch
             {
                 "newstitle_asc" => newsfeeds.OrderBy(m => m.Title),
                 "newstitle_desc" => newsfeeds.OrderByDescending(m => m.Title),
-                "uploaddate_asc" => newsfeeds.OrderBy(m => m.UploadDate),
-                "uploaddate_desc" => newsfeeds.OrderByDescending(m => m.UploadDate),
+                "category_asc" => newsfeeds.OrderBy(m => m.Category),
+                "category_desc" => newsfeeds.OrderByDescending(m => m.Category),
+                "uploaddate_asc" => newsfeeds.OrderBy(m => m.UploadDate.Date),
+                "uploaddate_desc" => newsfeeds.OrderByDescending(m => m.UploadDate.Date),
                 "status_asc" => newsfeeds.OrderBy(m => statusListDefault.IndexOf(m.Status)),
                 "status_desc" => newsfeeds.OrderByDescending(m => statusListDefault.IndexOf(m.Status)),
                 _ => newsfeeds.OrderBy(m => m.NewsId)
             };
 
-            return newsfeeds.ToList();
+            return await newsfeeds.AsNoTracking().ToListAsync();
         }
     }
 }

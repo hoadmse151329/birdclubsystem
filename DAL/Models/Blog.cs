@@ -9,6 +9,10 @@ namespace DAL.Models
     [Table("Blog")]
     public partial class Blog
     {
+        public Blog()
+        {
+            Vote = 0;
+        }
         [Key]
         [Column("blogId")]
         public int BlogId { get; set; }

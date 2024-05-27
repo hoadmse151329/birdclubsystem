@@ -71,20 +71,20 @@ namespace DAL.Repositories.Implements
 
             if (openRegistration.HasValue)
             {
-                fieldtrips = fieldtrips.AsNoTracking().Where(f => f.OpenRegistration == openRegistration.Value);
+                fieldtrips = fieldtrips.AsNoTracking().Where(f => f.OpenRegistration.Value.Date.Equals(openRegistration.Value.Date));
             }
 
             if (registrationDeadline.HasValue)
             {
-                fieldtrips = fieldtrips.AsNoTracking().Where(f => f.RegistrationDeadline == registrationDeadline.Value);
+                fieldtrips = fieldtrips.AsNoTracking().Where(f => f.RegistrationDeadline.Value.Date.Equals(registrationDeadline.Value.Date));
             }
             if (startDate.HasValue)
             {
-                fieldtrips = fieldtrips.AsNoTracking().Where(f => f.StartDate == startDate.Value);
+                fieldtrips = fieldtrips.AsNoTracking().Where(f => f.StartDate.Value.Date.Equals(startDate.Value.Date));
             }
             if (endDate.HasValue)
             {
-                fieldtrips = fieldtrips.AsNoTracking().Where(f => f.EndDate == endDate.Value);
+                fieldtrips = fieldtrips.AsNoTracking().Where(f => f.EndDate.Value.Date.Equals(endDate.Value.Date));
             }
             if (numberOfParticipants.HasValue)
             {

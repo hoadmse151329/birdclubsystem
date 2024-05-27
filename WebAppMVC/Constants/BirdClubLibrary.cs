@@ -60,7 +60,7 @@ namespace WebAppMVC.Constants
                 _logger.LogError("Error while processing your request!: " + response.StatusCode + "\t\nApi Url: " + url + "\t\nError Message: " + jsonResponse);
                 if (!string.IsNullOrEmpty(jsonResponse) || !string.IsNullOrWhiteSpace(jsonResponse))
                 {
-                    if (jsonResponse.Contains("Data"))
+                    if (jsonResponse.Contains("data"))
                     {
                         var errorT = JsonSerializer.Deserialize<T>(jsonResponse, options);
                         return errorT;
