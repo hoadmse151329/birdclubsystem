@@ -1567,7 +1567,7 @@ namespace WebAppMVC.Controllers
                 + managerDetailupdate.ErrorMessage;
                 return RedirectToAction("ManagerProfile");
             }
-            TempData["Success"] = memberDetailupdate.SuccessMessage;
+            TempData["Success"] = "Successfully updated profile!";
             return RedirectToAction("ManagerProfile");
         }
         [HttpPost("ChangePassword")]
@@ -1612,6 +1612,7 @@ namespace WebAppMVC.Controllers
                 + managerDetailupdate.ErrorMessage;
                 return RedirectToAction("ManagerProfile");
             }
+            TempData["Success"] = "Successfully updated password!";
             return RedirectToAction("ManagerProfile");
         }
         [HttpPost("Upload")]

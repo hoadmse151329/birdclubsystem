@@ -9,8 +9,8 @@ using BAL.ViewModels.Event;
 
 namespace WebAPI.Controllers
 {
-    [ApiController]
     [Route("api/[controller]")]
+    [ApiController]
     public class ManagerController : ControllerBase
     {
         /*private const string ERROR = "~/Home/Error";
