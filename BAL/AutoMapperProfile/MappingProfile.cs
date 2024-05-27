@@ -189,6 +189,8 @@ namespace BAL.AutoMapperProfile
             CreateMap<Bird, BirdViewModel>() .ReverseMap();
             CreateMap<Notification, NotificationViewModel>() .ReverseMap();
             CreateMap<Feedback, FeedbackViewModel>() .ReverseMap();
+            CreateMap<Blog,BlogViewModel>() .ReverseMap();
+            CreateMap<News,NewsViewModel>() .ReverseMap();
         }
     }
 }

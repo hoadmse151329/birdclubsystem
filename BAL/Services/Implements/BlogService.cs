@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BAL.Services.Interfaces;
+using BAL.ViewModels;
 using DAL.Infrastructure;
 using System;
 using System.Collections.Generic;
@@ -22,6 +23,16 @@ namespace BAL.Services.Implements
         public async Task<int> CountBlog()
         {
             return await _unitOfWork.BlogRepository.CountBlog();
+        }
+
+        public async Task<IEnumerable<BlogViewModel>> GetAllBlogs()
+        {
+            return _mapper.Map<IEnumerable<BlogViewModel>>(await _unitOfWork.BlogRepository.GetAllBlogs());
+        }
+
+        public async Task<IEnumerable<BlogViewModel>> GetAllBlogsByUserId(int usrId)
+        {
+            return _mapper.Map<IEnumerable<BlogViewModel>>(await _unitOfWork.BlogRepository.GetAllBlogsByUserId(usrId));
         }
     }
 }
