@@ -436,7 +436,7 @@ body .lb-cancel {
         }
 
     .breadcrumb .breadcrumb-item + .breadcrumb-item::before {
-        font-family: "Font Awesome 5 Free";
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         content: "\f105";
         color: #2c3e50;
         font-weight: 900;
@@ -1280,7 +1280,7 @@ body .lb-cancel {
 
 html,
 body {
-    font-family: "Roboto", sans-serif;
+    font-family: "Font Awesome 5 Free", Arial, sans-serif;
     font-size: 16px;
     line-height: 1.5;
     color: #2c3e50;
@@ -1783,6 +1783,7 @@ body .lb-cancel {
 .about-us .intro-desc,
 .about-us .intro-img {
     margin-top: 20px;
+    font-family: "Font Awesome 5 Free", Arial, sans-serif;
 }
 
 .about-us p.card-text {
@@ -2435,13 +2436,6 @@ body .lb-cancel {
 }
 
 
-    .breadcrumb .breadcrumb-item + .breadcrumb-item::before {
-        font-family: "Font Awesome 5 Free";
-        content: "\f105";
-        color: #2c3e50;
-        font-weight: 900;
-        font-size: 17px;
-    }
 /*
 .alert {
   background: #d9ff9e;
