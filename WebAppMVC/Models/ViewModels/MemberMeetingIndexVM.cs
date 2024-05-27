@@ -1,8 +1,8 @@
 ﻿namespace WebAppMVC.Models.ViewModels
 {
-    public class MeetingIndexVM
+    public class MemberMeetingIndexVM
     {
-        public MeetingIndexVM()
+        public MemberMeetingIndexVM()
         {
             Meetings = new List<BAL.ViewModels.MeetingViewModel>();
             Roads = new List<string>();
