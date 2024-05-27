@@ -36,7 +36,7 @@
     font-style: normal !important;
 }
 .txt--small {
-    font-family: "Inter-Bold", Helvetica;
+    font-family: "Font Awesome 5 Free", Arial, sans-serif;
     font-weight: 500;
     font-size: 20px;
     letter-spacing: 1.2px;
@@ -82,23 +82,23 @@
     margin: 0.3125rem 0 0.3125rem;
     position: relative;
 }
-tour__content__block--consider .row {
+tour__content__block--consider .row1 {
     margin-top: 1.25rem;
     display: flex;
     flex-wrap: wrap;
     position: relative;
 }
 
-.tour__content__block--consider .row div.item .svg-box {
+.tour__content__block--consider .row2 div.item .svg-box {
     width: 2.25rem;
     height: 2.25rem;
     position: absolute;
     top: 0;
 }
-.tour__content__block--consider .row div.item .svg-box {
+.tour__content__block--consider .row2 div.item .svg-box {
     left: 0.625rem;
 }
-    .tour__content__block--consider .row div.item .svg-box span {
+    .tour__content__block--consider .row2 div.item .svg-box span {
         width: 2.25rem;
         position: absolute;
         left: 0;
@@ -144,7 +144,7 @@ tour__content__block--consider .row {
         padding: 0.875rem 0.9375rem 0.875rem 3.75rem;
         position: relative;
     }
-        .tour__content__block--consider .row div.item .svg-box img {
+        .tour__content__block--consider .row2 div.item .svg-box img {
             max-width: none;
             width: 2.25rem;
             height: 2.25rem;
@@ -153,34 +153,34 @@ tour__content__block--consider .row {
             top: 0;
             left: 0;
         }
-.tour__content__block--consider .row div.item:nth-child(1) {
+.tour__content__block--consider .row2 div.item:nth-child(1) {
     order: 1;
 }
-.tour__content__block--consider .row div.item:nth-child(2) {
+.tour__content__block--consider .row2 div.item:nth-child(2) {
     order: 3;
 }
-.tour__content__block--consider .row div.item:nth-child(3), .tour__content__block--consider .row div.item:nth-child(6) {
+.tour__content__block--consider .row2 div.item:nth-child(3), .tour__content__block--consider .row2 div.item:nth-child(6) {
     margin-bottom: 0;
 }
-.tour__content__block--consider .row div.item:nth-child(3) {
+.tour__content__block--consider .row2 div.item:nth-child(3) {
     order: 5;
 }
-.tour__content__block--consider .row div.item:nth-child(4) {
+.tour__content__block--consider .row2 div.item:nth-child(4) {
     order: 2;
     padding-right: 0;
 }
-.tour__content__block--consider .row div.item:nth-child(5) {
+.tour__content__block--consider .row2 div.item:nth-child(5) {
     order: 4;
     padding-right: 0;
 }
-.tour__content__block--consider .row div.item:nth-child(6) {
+.tour__content__block--consider .row2 div.item:nth-child(6) {
     margin-bottom: 0;
 }
-.tour__content__block--consider .row div.item:nth-child(6) {
+.tour__content__block--consider .row2 div.item:nth-child(6) {
     order: 6;
     padding-right: 0;
 }
-    .tour__content__block--consider .row div.item {
+    .tour__content__block--consider .row2 div.item {
         padding-right: 0.625rem;
         width: 50%;
         flex-grow: 1;
@@ -274,7 +274,7 @@ tour__content__block--consider .row {
         height: 29px;
         top: 36px;
         left: 423px;
-        font-family: "Inter-Bold", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 700;
         color: #000000;
         font-size: 24px;
@@ -340,7 +340,7 @@ tour__content__block--consider .row {
         position: absolute;
         top: 16px;
         left: 139px;
-        font-family: "Inter-Bold", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 700;
         color: #000000;
         font-size: 20px;
@@ -354,7 +354,7 @@ tour__content__block--consider .row {
         height: 19px;
         top: 266px;
         left: 26px;
-        font-family: "Inter-Bold", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 700;
         color: #000000;
         font-size: 16px;
@@ -408,7 +408,7 @@ tour__content__block--consider .row {
     .member-field-trips .text {
         position: relative;
         align-self: stretch;
-        font-family: "Inter-Bold", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 400;
         color: #000000;
         font-size: 20px;
@@ -513,7 +513,7 @@ tour__content__block--consider .row {
         position: absolute;
         top: 16px;
         left: 44px;
-        font-family: "Inter-Bold", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 700;
         color: #000000;
         font-size: 20px;
@@ -574,7 +574,7 @@ tour__content__block--consider .row {
         position: absolute;
         top: 8px;
         left: 300px;
-        font-family: "Inter-Bold", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 700;
         color: #000000;
         font-size: 20px;
@@ -587,7 +587,7 @@ tour__content__block--consider .row {
         left: 269px;
         position: absolute;
         top: 8px;
-        font-family: "Inter-Bold", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 700;
         color: #000000;
         font-size: 20px;
@@ -600,7 +600,7 @@ tour__content__block--consider .row {
         position: absolute;
         top: 8px;
         left: 205px;
-        font-family: "Inter-Bold", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 700;
         color: #000000;
         font-size: 20px;
@@ -613,7 +613,7 @@ tour__content__block--consider .row {
         position: absolute;
         top: 8px;
         left: 173px;
-        font-family: "Inter-Bold", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 700;
         color: #000000;
         font-size: 20px;
@@ -627,7 +627,7 @@ tour__content__block--consider .row {
         position: absolute;
         top: 8px;
         left: 140px;
-        font-family: "Inter-Bold", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 700;
         color: #000000;
         font-size: 20px;
@@ -641,7 +641,7 @@ tour__content__block--consider .row {
         left: 107px;
         position: absolute;
         top: 8px;
-        font-family: "Inter-Bold", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 700;
         color: #000000;
         font-size: 20px;
@@ -655,7 +655,7 @@ tour__content__block--consider .row {
         left: 75px;
         position: absolute;
         top: 8px;
-        font-family: "Inter-Bold", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 700;
         color: #000000;
         font-size: 20px;
@@ -669,7 +669,7 @@ tour__content__block--consider .row {
         left: 46px;
         position: absolute;
         top: 8px;
-        font-family: "Inter-Bold", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 700;
         color: #000000;
         font-size: 20px;
@@ -682,7 +682,7 @@ tour__content__block--consider .row {
         left: 238px;
         position: absolute;
         top: 8px;
-        font-family: "Inter-Bold", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 700;
         color: #000000;
         font-size: 20px;
@@ -773,7 +773,7 @@ tour__content__block--consider .row {
         position: absolute;
         top: 16px;
         left: 71px;
-        font-family: "Inter-Bold", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 700;
         color: #000000;
         font-size: 20px;
@@ -810,7 +810,7 @@ tour__content__block--consider .row {
         width: 162px;
         top: 17px;
         left: 54px;
-        font-family: "Inter-Bold", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 700;
         color: #1f5200;
         font-size: 30px;
@@ -834,7 +834,7 @@ tour__content__block--consider .row {
         height: 19px;
         top: 22px;
         left: 336px;
-        font-family: "Inter-Bold", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 700;
         color: #000000;
         font-size: 16px;
@@ -858,7 +858,7 @@ tour__content__block--consider .row {
         height: 19px;
         top: 0;
         left: 164px;
-        font-family: "Inter-Bold", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 700;
         color: #000000;
         font-size: 16px;
@@ -874,7 +874,7 @@ tour__content__block--consider .row {
         height: 19px;
         top: 0;
         left: 0;
-        font-family: "Inter-Bold", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 700;
         color: #000000;
         font-size: 16px;
@@ -921,7 +921,7 @@ tour__content__block--consider .row {
         height: 19px;
         top: 22px;
         left: 0;
-        font-family: "Inter-Bold", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 700;
         color: #000000;
         font-size: 16px;
@@ -974,18 +974,18 @@ tour__content__block--consider .row {
     width: 100%;
 }
 
-.member-field-trips-post .overlap-wrapper {
-    background-color: transparent;
-    overflow: hidden;
-    width: 1440px; /* Adjust this width as needed */
-    min-height: 100vh; /* Set a minimum height to prevent content from disappearing */
-}
+    .member-field-trips-post .overlap-wrapper {
+        background-color: transparent;
+        overflow: hidden;
+        width: 1300px;
+        min-height:100vh;
+    }
 
 .member-field-trips-post .overlap {
     position: relative;
-    width: 100%; /* Adjust this width as needed */
-    min-height: 100%; /* Set a minimum height to prevent content from disappearing */
-    overflow-y: auto; /* Add a vertical scrollbar if content exceeds the container height */
+    width: 100%;
+    min-height: 100%;
+    overflow-y: auto;
 }
 .wrapper {
     display: flex;
@@ -1053,7 +1053,7 @@ tour__content__block--consider .row {
 
     .member-field-trips-post .headlines {
         position: absolute;
-        width: 1334px;
+        width: 1200px;
         height: 1453px;
         top: 196px;
         left: 54px;
@@ -1062,8 +1062,8 @@ tour__content__block--consider .row {
 .member-field-trips-post .group {
     background-color: white;
     position: relative;
-    width: 778px;
-    height: 1254px;
+    width: 500px;
+    height: 100%;
     border-radius: 58px;
     border: 5px solid black;
     box-shadow: 1px 1px 5px #b0b0b0;
@@ -1077,13 +1077,13 @@ tour__content__block--consider .row {
     height: 1254px;
 }
 
-    .member-field-trips-post .img {
-        position: absolute;
-        width: 764px;
-        height: 2187px;
-        top: 0;
-        left: 0;
-    }
+.member-field-trips-post .img {
+    position: absolute;
+    width: 764px;
+    height: 2187px;
+    top: 0;
+    left: 0;
+}
 
     .member-field-trips-post .rectangle-3 {
         width: 765px;
@@ -1097,22 +1097,22 @@ tour__content__block--consider .row {
         left: 0;
     }
 
-    .member-field-trips-post .flexcontainer {
-        width: 582px;
-        height: 154px;
-        top: 432px;
-        left: 91px;
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 1px;
-        position: absolute;
-    }
+.member-field-trips-post .flexcontainer {
+    width: 400px;
+    height: 300px;
+    top: 432px;
+    left: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1px;
+    position: absolute;
+}
 .member-field-trips-post .flexcontainer-3 {
-    width: 582px;
-    height: 154px;
-    top: 600px;
-    left: 91px;
+    width: 400px;
+    height: 300px;
+    top: 700px;
+    left: 40px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -1122,7 +1122,7 @@ tour__content__block--consider .row {
     .member-field-trips-post .text {
         position: relative;
         align-self: stretch;
-        font-family: "Inter-Bold", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 400;
         color: #000000;
         font-size: 24px;
@@ -1139,7 +1139,7 @@ tour__content__block--consider .row {
         margin-bottom: -245.81px;
         position: relative;
         align-self: stretch;
-        font-family: "Inter-Bold", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 400;
         color: #000000;
         font-size: 24px;
@@ -1155,23 +1155,23 @@ tour__content__block--consider .row {
         letter-spacing: 1px;
     }
 
-    .member-field-trips-post .flexcontainer-2 {
-        width: 636px;
-        height: 134px;
-        top: 812px;
-        left: 65px;
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 1px;
-        position: absolute;
-    }
+.member-field-trips-post .flexcontainer-2 {
+    width: 400px;
+    height: 300px;
+    top: 1050px;
+    left: 35px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1px;
+    position: absolute;
+}
 
     .member-field-trips-post .p {
         margin-bottom: -34.31px;
         position: relative;
         align-self: stretch;
-        font-family: "Inter-Bold", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 400;
         color: #000000;
         font-size: 24px;
@@ -1203,7 +1203,7 @@ tour__content__block--consider .row {
         height: 29px;
         top: 0;
         left: 37px;
-        font-family: "Inter-Bold", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 700;
         color: #000000;
         font-size: 24px;
@@ -1221,28 +1221,28 @@ tour__content__block--consider .row {
     }
 .member-field-trips-post .div-wrapper {
     position: relative;
-    width: 767px;
-    height: 100px;
+    width: 100%;
+    height: 100%;
     background-color: #99ffad;
     border-radius: 50px 50px 0px 0px;
 }
 
-    .member-field-trips-post .text-wrapper-3 {
-        position: absolute;
-        width: 129px;
-        top: 31px;
-        left: 317px;
-        font-family: "Inter-Bold", Helvetica;
-        font-weight: 700;
-        color: #000000;
-        font-size: 32px;
-        letter-spacing: 0;
-        line-height: normal;
-        white-space:nowrap;
-    }
+.member-field-trips-post .text-wrapper-3 {
+    position: absolute;
+    width: 129px;
+    top: 31px;
+    left: 188px;
+    font-family: "Font Awesome 5 Free", Arial, sans-serif;
+    font-weight: 700;
+    color: #000000;
+    font-size: 32px;
+    letter-spacing: 0;
+    line-height: normal;
+    white-space: nowrap;
+}
 .member-field-trips-post .soi-noi-hoi-thi-chim {
     position: absolute;
-    width: 768px;
+    width: 490px;
     height: 317px;
     top: 99px;
     left: 0;
@@ -1256,13 +1256,13 @@ tour__content__block--consider .row {
 .member-field-trips-post .info {
     position: absolute;
     background-color: white;
-    border-radius: 58px;
+    border-radius: 57px;
     border: 6px solid black;
     box-shadow: 1px 1px 5px #b0b0b0;
-    width: 540px;
+    width: 460px;
     height: 840px;
-    top: 100px;
-    left: 804px;
+    top: 0;
+    left: 600px;
 }
 
     .member-field-trips-post .overlap-3 {
@@ -1297,8 +1297,8 @@ tour__content__block--consider .row {
 
 .member-field-trips-post .tittle {
     position: absolute;
-    width: 100%;
-    height: 99px;
+    width: 489px;
+    height: 100px;
     top: 1px;
     left: 1px;
 }
@@ -1317,7 +1317,7 @@ tour__content__block--consider .row {
         height: 29px;
         top: 36px;
         left: 50px;
-        font-family: "Inter-Bold", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 700;
         color: #000000;
         font-size: 24px;
@@ -1351,7 +1351,7 @@ tour__content__block--consider .row {
         position: absolute;
         height: 29px;
         top: 84px;
-        font-family: "Inter-Bold", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 700;
         color: #000000;
         font-size: 24px;
@@ -1366,7 +1366,7 @@ tour__content__block--consider .row {
         height: 60px;
         top: 177px;
         left: 0;
-        font-family: "Inter-Bold", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 700;
         color: #000000;
         font-size: 24px;
@@ -1380,7 +1380,7 @@ tour__content__block--consider .row {
         width: 167px;
         height: 60px;
         top: 15px;
-        font-family: "Inter-Bold", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 700;
         color: #000000;
         font-size: 24px;
@@ -1394,7 +1394,7 @@ tour__content__block--consider .row {
         width: 167px;
         height: 29px;
         top: 281px;
-        font-family: "Inter-Bold", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 700;
         color: #000000;
         font-size: 24px;
@@ -1408,7 +1408,7 @@ tour__content__block--consider .row {
         width: 167px;
         height: 29px;
         top: 354px;
-        font-family: "Inter-Bold", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 700;
         color: #000000;
         font-size: 24px;
@@ -1515,7 +1515,7 @@ tour__content__block--consider .row {
     left: 66px;
     font-size: 20px;
     position: absolute;
-    font-family: "Inter-Bold", Helvetica;
+    font-family: "Font Awesome 5 Free", Arial, sans-serif;
     font-weight: 700;
     color: #000000;
     letter-spacing: 0;
@@ -1552,7 +1552,7 @@ tour__content__block--consider .row {
     width: 167px;
     height: 29px;
     top: 430px;
-    font-family: "Inter-Bold", Helvetica;
+    font-family: "Font Awesome 5 Free", Arial, sans-serif;
     font-weight: 700;
     color: #000000;
     font-size: 24px;
@@ -1595,7 +1595,7 @@ tour__content__block--consider .row {
         position: absolute;
         top: 16px;
         left: 71px;
-        font-family: "Inter-Bold", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 700;
         color: #000000;
         font-size: 20px;
@@ -1632,7 +1632,7 @@ tour__content__block--consider .row {
         width: 162px;
         top: 17px;
         left: 54px;
-        font-family: "Inter-Bold", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 700;
         color: #1f5200;
         font-size: 30px;
@@ -1655,7 +1655,7 @@ tour__content__block--consider .row {
         height: 19px;
         top: 22px;
         left: 336px;
-        font-family: "Inter-Bold", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 700;
         color: #000000;
         font-size: 16px;
@@ -1678,7 +1678,7 @@ tour__content__block--consider .row {
         height: 19px;
         top: 0;
         left: 164px;
-        font-family: "Inter-Bold", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 700;
         color: #000000;
         font-size: 16px;
@@ -1693,7 +1693,7 @@ tour__content__block--consider .row {
         height: 19px;
         top: 0;
         left: 0;
-        font-family: "Inter-Bold", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 700;
         color: #000000;
         font-size: 16px;
@@ -1739,7 +1739,7 @@ tour__content__block--consider .row {
         height: 19px;
         top: 22px;
         left: 0;
-        font-family: "Inter-Bold", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 700;
         color: #000000;
         font-size: 16px;
@@ -1909,7 +1909,7 @@ tour__content__block--consider .row {
         height: 29px;
         top: 35px;
         left: 211px;
-        font-family: "Inter-Bold", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 700;
         color: #000000;
         font-size: 24px;
@@ -1938,7 +1938,7 @@ tour__content__block--consider .row {
         left: 65px;
         font-size: 20px;
         position: absolute;
-        font-family: "Inter-Bold", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 700;
         color: #000000;
         letter-spacing: 0;
@@ -2133,7 +2133,7 @@ tour__content__block--consider .row {
         position: absolute;
         top: 267px;
         left: 720px;
-        font-family: "Inter-Bold", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 700;
         color: transparent;
         font-size: 64px;
@@ -2220,7 +2220,7 @@ tour__content__block--consider .row {
         position: absolute;
         top: 16px;
         left: 71px;
-        font-family: "Inter-Bold", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 700;
         color: #000000;
         font-size: 20px;
@@ -2257,7 +2257,7 @@ tour__content__block--consider .row {
         width: 162px;
         top: 17px;
         left: 54px;
-        font-family: "Inter-Bold", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 700;
         color: #1f5200;
         font-size: 30px;
@@ -2280,7 +2280,7 @@ tour__content__block--consider .row {
         height: 19px;
         top: 22px;
         left: 336px;
-        font-family: "Inter-Bold", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 700;
         color: #000000;
         font-size: 16px;
@@ -2303,7 +2303,7 @@ tour__content__block--consider .row {
         height: 19px;
         top: 0;
         left: 164px;
-        font-family: "Inter-Bold", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 700;
         color: #000000;
         font-size: 16px;
@@ -2333,7 +2333,7 @@ tour__content__block--consider .row {
         height: 19px;
         top: 0;
         left: 0;
-        font-family: "Inter-Bold", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 700;
         color: #000000;
         font-size: 16px;
@@ -2364,7 +2364,7 @@ tour__content__block--consider .row {
         height: 19px;
         top: 22px;
         left: 0;
-        font-family: "Inter-Bold", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 700;
         color: #000000;
         font-size: 16px;
@@ -2513,11 +2513,11 @@ h1 {
 }
 
 .serif {
-    font-family: "Gentium Basic",serif
+    font-family: "Font Awesome 5 Free", Arial, sans-serif;
 }
 
 .sans {
-    font-family: "Noto Sans","Arial",sans-serif
+    font-family: "Font Awesome 5 Free", Arial, sans-serif;
 }
 
 a, .a {
@@ -2928,7 +2928,7 @@ html {
     color: #fff;
     padding: 0 0 .625rem;
     text-shadow: 1px 1px 5px #000;
-    font-family: "Gentium Basic",serif
+    font-family: "Font Awesome 5 Free", Arial, sans-serif;
 }
 
 .container--hero__text {
@@ -3202,11 +3202,11 @@ svg.only-defs {
     }
 }
 
-.row {
+.row1 {
     position: relative
 }
 
-    .row .row-0 {
+    .row1 .row-0 {
         display: none
     }
 
@@ -5383,7 +5383,7 @@ li .besttime-blocks, .blog__sidebar .besttime-blocks {
     -webkit-appearance: none;
     vertical-align: top;
     white-space: nowrap;
-    font-family: "Noto Sans","Arial",sans-serif;
+    font-family: "Font Awesome 5 Free", Arial, sans-serif;
     transition: color .2s ease-in-out,opacity .2s ease-in-out,background .2s ease-in-out,border-color .2s ease-in-out
 }
 
@@ -7496,7 +7496,7 @@ html.no-touch .calendar__inner__year ul li.inactive, html.no-touch .calendar__in
 
 
 #CybotCookiebotDialog *, #CybotCookiebotDialogBodyUnderlay * {
-    font-family: "Noto Sans","Arial",sans-serif !important
+    font-family: "Font Awesome 5 Free", Arial, sans-serif; !important
 }
 
 a#CybotCookiebotDialogPoweredbyCybot, div#CybotCookiebotDialogPoweredByText {
@@ -8099,7 +8099,7 @@ svg.country-with-flag__flag {
 
         .directory-content .questions span {
             display: block;
-            font-family: "Gentium Basic",serif;
+            font-family: "Font Awesome 5 Free", Arial, sans-serif;;
             color: #444;
             width: 2.125rem;
             height: 2.125rem;
@@ -8453,12 +8453,12 @@ svg.country-with-flag__flag {
 }
 
 .enquiryform--new .enquiryform__verification div.messagebox {
-    font-family: "Gentium Basic",serif;
+    font-family: "Font Awesome 5 Free", Arial, sans-serif;;
     text-align: left
 }
 
     .enquiryform--new .enquiryform__verification div.messagebox.messagebox--greenfull {
-        font-family: "Noto Sans","Arial",sans-serif;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         padding: 1.875rem 1.5625rem;
         left: -1.5625rem;
         top: -1.25rem
@@ -12184,7 +12184,7 @@ div.error-balloon-container--warning div.error-balloon {
 
         .form[data-formtype=accommodationprofile] h1 {
             font-size: 2.125rem;
-            font-family: "Gentium Basic",serif
+            font-family: "Font Awesome 5 Free", Arial, sans-serif;
         }
 
     .form[data-state=invisible] {
@@ -15366,7 +15366,7 @@ a.wildlife, a.help.textonly {
 
 input, select, textarea, button {
     font-size: .9375rem;
-    font-family: "Noto Sans","Arial",sans-serif
+    font-family: "Font Awesome 5 Free", Arial, sans-serif;
 }
 
     input.error, select.error, textarea.error, button.error {
@@ -17414,7 +17414,7 @@ svg.zoom-box .box, svg.zoom-box .country {
 svg.zoom-box .information {
     font-size: 14px;
     font-weight: 600;
-    font-family: "Gentium Basic",serif
+    font-family: "Font Awesome 5 Free", Arial, sans-serif;
 }
 
 svg.zoom-box .country-name {
@@ -19319,7 +19319,7 @@ a.operator-snippet__data:hover {
     .overlay__header h4 {
         float: left;
         font-size: 1.25rem;
-        font-family: "Gentium Basic",serif;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;;
         width: 100%;
         white-space: nowrap;
         overflow: hidden;
@@ -20335,7 +20335,7 @@ html.no-touch .overlay__header a.close:hover {
 
 @media(max-width: 743px) {
     .relatedlinks h3 {
-        font-family: "Gentium Basic",serif
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
     }
 }
 
@@ -20730,7 +20730,7 @@ html.no-touch .overlay__header a.close:hover {
     margin-left: .125rem;
     font-size: .75rem;
     color: #666;
-    font-family: "Noto Sans","Arial",sans-serif
+    font-family: "Font Awesome 5 Free", Arial, sans-serif;
 }
 
     .review__body span em {
@@ -20762,7 +20762,7 @@ html.no-touch .overlay__header a.close:hover {
     margin-bottom: .5rem;
     position: relative;
     word-break: break-word;
-    font-family: "Gentium Basic",serif
+    font-family: "Font Awesome 5 Free", Arial, sans-serif;
 }
 
     .review__body h5:before {
@@ -20954,7 +20954,7 @@ html.no-touch .overlay__header a.close:hover {
     margin-left: .125rem;
     font-size: .75rem;
     color: #666;
-    font-family: "Noto Sans","Arial",sans-serif
+    font-family: "Font Awesome 5 Free", Arial, sans-serif;
 }
 
     .review-score em {
@@ -21063,7 +21063,7 @@ html.no-touch .overlay__header a.close:hover {
             margin-left: .125rem;
             font-size: .75rem;
             color: #666;
-            font-family: "Noto Sans","Arial",sans-serif
+            font-family: "Font Awesome 5 Free", Arial, sans-serif;
         }
 
             .review-summary ul:nth-child(1) span em {
@@ -21210,7 +21210,7 @@ html.no-touch .overlay__header a.close:hover {
         margin-left: .125rem;
         font-size: .75rem;
         color: #666;
-        font-family: "Noto Sans","Arial",sans-serif
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
     }
 
         .review-summaries span em {
@@ -24314,7 +24314,7 @@ html.no-touch .overlay__header a.close:hover {
     text-align: left;
     font-weight: 600;
     padding-bottom: 1.875rem;
-    font-family: "Gentium Basic",serif
+    font-family: "Font Awesome 5 Free", Arial, sans-serif;
 }
 
 @media(max-width: 743px) {
@@ -24559,7 +24559,7 @@ html.no-touch .overlay__header a.close:hover {
             left: 0;
             width: 100%;
             height: 100%;
-            font-family: "Gentium Basic",serif;
+            font-family: "Font Awesome 5 Free", Arial, sans-serif;;
             font-weight: normal;
             font-size: 1.1875rem;
             color: #fff;
@@ -24650,7 +24650,7 @@ html.no-touch .overlay__header a.close:hover {
         }
 
             .detail__content__block .park-list--alphabet.navigation-list li a {
-                font-family: "Noto Sans","Arial",sans-serif;
+                font-family: "Font Awesome 5 Free", Arial, sans-serif;
                 font-size: .9375rem;
                 display: block;
                 margin-top: 0
@@ -25819,7 +25819,7 @@ html.no-touch .container--home-toprated__mobnav__buttons a:hover {
         font-weight: bold;
         padding-top: .4375rem;
         width: 100%;
-        font-family: "Gentium Basic",serif
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
     }
 
         .container--home-topratedoperators .topratedoperators__snippet__rank span:before {
@@ -25902,7 +25902,7 @@ html.no-touch .container--home-toprated__mobnav__buttons a:hover {
             padding: 1.5625rem .625rem .625rem;
             text-decoration: none rgba(0,0,0,0);
             transition: text-decoration .2s ease-in-out;
-            font-family: "Gentium Basic",serif;
+            font-family: "Font Awesome 5 Free", Arial, sans-serif;;
             background: rgba(0,0,0,.4);
             background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5) 45%, rgba(0, 0, 0, 0.9) 100%)
         }
@@ -27148,7 +27148,7 @@ form.signup__accommodation .acc-chain div.checkbox {
         padding-right: .625rem;
         margin-bottom: .625rem;
         position: relative;
-        font-family: "Inter-Bold", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 700;
         color: #000000;
         font-size: 24px;
@@ -27237,7 +27237,7 @@ form.signup__accommodation .acc-chain div.checkbox {
         padding: .5rem 0 .375rem;
         line-height: .8125rem;
         font-size: .875rem;
-        font-family: "Gentium Basic",serif
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
     }
 
 .tour__content__block--operator .review + .review {
@@ -28519,18 +28519,18 @@ form.signup__accommodation .acc-chain div.checkbox {
                 text-decoration: none
             }
 
-.tour__content__block--consider .row {
+.tour__content__block--consider .row2 {
     margin-top: 1.25rem
 }
 
-    .tour__content__block--consider .row div.item {
+    .tour__content__block--consider .row2 div.item {
         text-align: left;
         padding-left: 3.4375rem;
         position: relative;
         margin-bottom: 1.875rem
     }
 
-        .tour__content__block--consider .row div.item .svg-box {
+        .tour__content__block--consider .row2 div.item .svg-box {
             width: 2.25rem;
             height: 2.25rem;
             position: absolute;
@@ -28538,7 +28538,7 @@ form.signup__accommodation .acc-chain div.checkbox {
             left: .1875rem
         }
 
-            .tour__content__block--consider .row div.item .svg-box img {
+            .tour__content__block--consider .row2 div.item .svg-box img {
                 max-width: none;
                 width: 2.25rem;
                 height: 2.25rem;
@@ -28548,7 +28548,7 @@ form.signup__accommodation .acc-chain div.checkbox {
                 left: 0
             }
 
-            .tour__content__block--consider .row div.item .svg-box span {
+            .tour__content__block--consider .row2 div.item .svg-box span {
                 width: 2.25rem;
                 position: absolute;
                 left: 0;
@@ -28560,23 +28560,25 @@ form.signup__accommodation .acc-chain div.checkbox {
                 text-align: center
             }
 
-        .tour__content__block--consider .row div.item h4 {
-            margin-bottom: .1875rem ;
-            font-family: "Inter-Bold", Italic;
+        .tour__content__block--consider .row2 div.item h4 {
+            font-family: "Font Awesome 5 Free", Arial, sans-serif;
             font-weight: 700;
             color: #000000;
-            font-size: 24px;
+            /*font-size: 24px;*/
             letter-spacing: 1.2px;
             line-height: normal;
+            font-style: italic;
+            line-height: 1.25rem;
+            margin-bottom: .1875rem;
         }
 
-        .tour__content__block--consider .row div.item p {
+        .tour__content__block--consider .row2 div.item p {
             color: #666;
             position: relative;
             align-self: stretch;
-            font-family: "Inter-Bold", Helvetica;
+            font-family: "Font Awesome 5 Free", Arial, sans-serif;
             font-weight: 500;
-            font-size: 20px;
+            /*font-size: 20px;*/
             text-align: center;
             letter-spacing: 1.2px;
             line-height: normal;
@@ -28593,7 +28595,7 @@ form.signup__accommodation .acc-chain div.checkbox {
     color: #666;
     position: absolute;
     align-self: stretch;
-    font-family: "Inter-Bold", Helvetica;
+    font-family: "Font Awesome 5 Free", Arial, sans-serif;
     font-weight: 500;
     font-size: 20px;
     text-align: center;
@@ -30749,7 +30751,7 @@ form.signup__accommodation .acc-chain div.checkbox {
             padding: .5rem 0 .375rem;
             line-height: .8125rem;
             font-size: .875rem;
-            font-family: "Gentium Basic",serif
+            font-family: "Font Awesome 5 Free", Arial, sans-serif;
         }
 
         .picture-frame a.enlarge:hover {
@@ -33483,46 +33485,46 @@ form.signup__accommodation .acc-chain div.checkbox {
         padding-top: 0
     }
 
-    .tour__content__block--consider .row {
+    .tour__content__block--consider .row2 {
         margin-top: 1.25rem;
         display: flex;
         flex-wrap: wrap
     }
 
-        .tour__content__block--consider .row div.item {
+        .tour__content__block--consider .row2 div.item {
             padding-right: .625rem;
             width: 50%;
             flex-grow: 1;
             padding-left: 3.75rem
         }
 
-            .tour__content__block--consider .row div.item .svg-box {
+            .tour__content__block--consider .row2 div.item .svg-box {
                 left: .625rem
             }
 
-            .tour__content__block--consider .row div.item:nth-child(1) {
+            .tour__content__block--consider .row2 div.item:nth-child(1) {
                 order: 1
             }
 
-            .tour__content__block--consider .row div.item:nth-child(2) {
+            .tour__content__block--consider .row2 div.item:nth-child(2) {
                 order: 3
             }
 
-            .tour__content__block--consider .row div.item:nth-child(3) {
+            .tour__content__block--consider .row2 div.item:nth-child(3) {
                 order: 5
             }
 
-            .tour__content__block--consider .row div.item:nth-child(4) {
+            .tour__content__block--consider .row2 div.item:nth-child(4) {
                 order: 2;
                 padding-right: 0
             }
 
-            .tour__content__block--consider .row div.item:nth-child(5) {
+            .tour__content__block--consider .row2 div.item:nth-child(5) {
                 order: 4;
                 padding-right: 0
             }
 
-            .tour__content__block--consider .row div.item:nth-child(6) {
+            .tour__content__block--consider .row2 div.item:nth-child(6) {
                 order: 6;
                 padding-right: 0
             }
@@ -33653,7 +33655,7 @@ form.signup__accommodation .acc-chain div.checkbox {
                 padding-top: .1875rem;
                 background-color: rgba(0,0,0,0);
                 text-shadow: 1px 1px 5px #000;
-                font-family: "Gentium Basic",serif
+                font-family: "Font Awesome 5 Free", Arial, sans-serif;
             }
 
                 .tour__content__block--daybyday .day__header--photo h2.dot:after {
@@ -33789,7 +33791,7 @@ form.signup__accommodation .acc-chain div.checkbox {
                     padding-top: 0;
                     padding-bottom: 0;
                     margin-bottom: .3125rem;
-                    font-family: "Gentium Basic",serif
+                    font-family: "Font Awesome 5 Free", Arial, sans-serif;
                 }
 
                     .tour__content__block--daybyday .day__header--text h2:not(.startend) span.txt--small {
@@ -35590,7 +35592,7 @@ form.signup__accommodation .acc-chain div.checkbox {
 
             .imgpagehead__overlay__sub .stars:after {
                 top: .125rem;
-                font-family: "Noto Sans","Arial",sans-serif
+                font-family: "Font Awesome 5 Free", Arial, sans-serif;
             }
 
         .imgpagehead__overlay__sub strong a {
@@ -36320,7 +36322,7 @@ form.signup__accommodation .acc-chain div.checkbox {
         top: 4.3125rem
     }
 
-    .tour__content__block--consider .row div.item:nth-child(3), .tour__content__block--consider .row div.item:nth-child(6) {
+    .tour__content__block--consider .row2 div.item:nth-child(3), .tour__content__block--consider .row2 div.item:nth-child(6) {
         margin-bottom: 0
     }
 
