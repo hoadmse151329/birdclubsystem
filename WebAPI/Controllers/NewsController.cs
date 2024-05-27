@@ -24,7 +24,7 @@ namespace WebAPI.Controllers
         [ProducesResponseType(typeof(List<NewsViewModel>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> GetAllBlogs(
+        public async Task<IActionResult> GetAllNews(
             )
         {
             try
@@ -35,7 +35,7 @@ namespace WebAPI.Controllers
                     return NotFound(new
                     {
                         Status = false,
-                        ErrorMessage = "List of Blogs Not Found!"
+                        ErrorMessage = "List of News Not Found!"
                     });
                 }
 

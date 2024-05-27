@@ -20,6 +20,8 @@ using Azure.Storage.Blobs.Models;
 using Azure.Storage.Blobs.Specialized;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc;
 using WebAppMVC.Models.ViewModels;
+using System.Data;
+using WebAppMVC.Models.Feedback;
 // thêm crud của meeting, fieldtrip, contest.
 namespace WebAppMVC.Controllers
 {
@@ -1677,9 +1679,44 @@ namespace WebAppMVC.Controllers
             return RedirectToAction("ManagerProfile");
         }
         [HttpGet("Feedback")]
-        public IActionResult ManagerFeedBack()
+        public async Task<IActionResult> ManagerFeedBack()
         {
-            return View();
+            ManagerAPI_URL += "Feedback/All";
+
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
+
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
+
+            var listFeedbackResponse = await methcall.CallMethodReturnObject<GetListFeedbackResponse>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: Constants.Constants.GET_METHOD,
+                url: ManagerAPI_URL,
+                accessToken: accToken,
+                _logger: _logger);
+
+            if (listFeedbackResponse == null)
+            {
+                _logger.LogInformation(
+                    "Error while processing your request! (Getting List Feedback!). List was Empty!: " + listFeedbackResponse);
+                ViewBag.Error =
+                    "Error while processing your request! (Getting List Feedback!).\n List was Empty!";
+                return View("ManagerIndex");
+            }
+            else
+            if (!listFeedbackResponse.Status)
+            {
+                ViewBag.Error =
+                    "Error while processing your request! (Getting List Feedback!).\n"
+                    + listFeedbackResponse.ErrorMessage;
+                return View("ManagerIndex");
+            }
+
+            dynamic listFeedback = new ExpandoObject();
+            listFeedback.Feedbacks = listFeedbackResponse.Data;
+
+            return View(listFeedback);
         }
         [HttpGet("MemberStatus")]
         public async Task<IActionResult> ManagerMemberStatus([FromQuery] string? search)
@@ -1776,6 +1813,11 @@ namespace WebAppMVC.Controllers
         [HttpGet("Blog")]
         public IActionResult ManagerBlog()
         {
+            ManagerAPI_URL += "Blog/All";
+
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
+
             return View();
         }
         [HttpGet("News")]

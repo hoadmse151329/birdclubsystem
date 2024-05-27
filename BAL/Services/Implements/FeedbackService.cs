@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BAL.Services.Interfaces;
 using BAL.ViewModels;
+using BAL.ViewModels.Manager;
 using DAL.Infrastructure;
 using DAL.Models;
 using System;
@@ -21,9 +22,9 @@ namespace BAL.Services.Implements
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<FeedbackViewModel>> GetAllFeedbacks()
+        public async Task<List<GetFeedbackResponse>> GetAllFeedbacks()
         {
-            return _mapper.Map<IEnumerable<FeedbackViewModel>>(await _unitOfWork.FeedbackRepository.GetAllFeedbacks());
+            return _mapper.Map<List<GetFeedbackResponse>>(await _unitOfWork.FeedbackRepository.GetAllFeedbacks());
         }
 
         public async Task<FeedbackViewModel?> GetFeedbackById(int id)

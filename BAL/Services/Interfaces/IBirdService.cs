@@ -1,4 +1,5 @@
 ﻿using BAL.ViewModels;
+using BAL.ViewModels.Event;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,6 @@ namespace BAL.Services.Interfaces
         Task<bool> Delete(string memberId, int birdId);
         Task<BirdViewModel> GetById(int birdId);
         Task<BirdViewModel> GetByBirdName(string birdName);
-        Task<IEnumerable<BirdViewModel>> GetBirdsOrderByElo();
+        Task<List<GetLeaderboardResponse>> GetBirdLeaderboard();
     }
 }

@@ -1,6 +1,7 @@
 ﻿using BAL.Services.Interfaces;
 using BAL.ViewModels;
 using BAL.ViewModels.Event;
+using BAL.ViewModels.Manager;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
@@ -23,7 +24,7 @@ namespace WebAPI.Controllers
 
         [HttpGet("All")]
         [Authorize(Roles = "Manager")]
-        [ProducesResponseType(typeof(List<FeedbackViewModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(List<GetFeedbackResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetAllFeedbacks()
@@ -92,21 +93,11 @@ namespace WebAPI.Controllers
                     Status = "Unread"
                 };
                 _feedbackService.Create(feed);
-                var result = await _feedbackService.GetFeedbackById(feed.FeedbackId.Value);
-                if (result == null)
-                {
-                    return NotFound(new
-                    {
-                        Status = false,
-                        ErrorMessage = "Feedback Create Failed!",
-                        BoolData = true
-                    });
-                }
                 return Ok(new
                 {
                     Status = true,
                     SuccessMessage = "Feedback Create successfully!",
-                    Data = result
+                    Data = feed
                 });
             }
             catch (Exception ex)

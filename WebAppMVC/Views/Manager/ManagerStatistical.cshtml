@@ -2,12 +2,8 @@
 @{
     Layout = null;
     ViewData["Title"] = "Manager Statistic Page";
-    List<string> locationList = Model.Locations;
-    List<BAL.ViewModels.MeetingViewModel> meetingList = Model.Meetings;
-    BAL.ViewModels.MeetingViewModel createMeet = new();
-    BAL.ViewModels.MeetingViewModel cancelMeet = new();
     string? search = string.Empty;
-    Layout = "~/Views/Shared/_MASLayout.cshtml";
+    Layout = "~/Views/Shared/_MLayout.cshtml";
 }
 <html lang="en">
 <head>

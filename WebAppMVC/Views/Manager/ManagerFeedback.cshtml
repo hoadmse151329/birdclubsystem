@@ -1,6 +1,8 @@
-﻿@{
+﻿@model dynamic
+@{
     Layout = null;
     ViewData["Title"] = "Manager Feedback Page";
+    List<BAL.ViewModels.Manager.GetFeedbackResponse> feedbackList = Model.Feedbacks;
     Layout = "~/Views/Shared/_MLayout.cshtml";
 }
 <html lang="en">
@@ -22,19 +24,7 @@
                                         <div class="nav flex-column nav-pills mb-3">
                                             <a href="#v-pills-home" data-toggle="pill" class="nav-link active show">
                                                 <i class='bx bx-book-content'></i>
-                                                <span>Tổng Nhận Xét</span>
-                                            </a>
-                                            <a href="#v-pills-profile" data-toggle="pill" class="nav-link">
-                                                <i class='bx bx-checkbox-minus'></i>
-                                                <span>Chưa đọc</span>
-                                            </a>
-                                            <a href="#v-pills-messages" data-toggle="pill" class="nav-link">
-                                                <i class='bx bx-checkbox-checked'></i>
-                                                <span> Đã đọc</span>
-                                            </a>
-                                            <a href="#v-pills-settings" data-toggle="pill" class="nav-link">
-                                                <i class='bx bx-chevron-down-square'></i>
-                                                <span>Đã xóa</span>
+                                                <span>All Feedbacks</span>
                                             </a>
                                         </div>
                                     </div>
@@ -43,7 +33,16 @@
                                             <div id="v-pills-home" class="tab-pane fade active show">
                                                 <table class="table table-hover">
                                                     <tbody>
-                                                        <tr data-toggle="collapse" data-target="#fb-1" class="feedback active">
+                                                        @foreach (var feedback in feedbackList)
+                                                        {
+                                                            <tr>
+                                                                <td>@feedback.Rating</td>
+                                                                <td>@feedback.Fullname</td>
+                                                                <td>@feedback.Details</td>
+                                                                <td>@feedback.Date</td>
+                                                            </tr>
+                                                        }
+                                                        @*<tr data-toggle="collapse" data-target="#fb-1" class="feedback active">
                                                             <td>4/5</td>
                                                             <td>Lê Minh Quân</td>
                                                             <td>Anh tuyệt voi lắm:))</td>
@@ -55,33 +54,18 @@
                                                             <td>Anh tuyệt voi lắm:))</td>
                                                             <td>25/5</td>
                                                         </tr>
+                                                        *@
                                                     </tbody>
                                                 </table>
-                                            </div>
-                                            <div id="v-pills-profile" class="tab-pane fade">
-                                                <table class="table table-hover">
-                                                    <tbody>
-                                                        <tr data-toggle="collapse" data-target="#fb-1" class="feedback">
-                                                            <td>4/5</td>
-                                                            <td>Lê Minh Quân</td>
-                                                            <td>Anh tuyệt voi lắm:))</td>
-                                                            <td>25/5</td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                            <div id="v-pills-messages" class="tab-pane fade">
-                                            </div>
-                                            <div id="v-pills-settings" class="tab-pane fade">
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-12 col-lg-5">
+                                    @*<div class="col-12 col-lg-5">
                                         <div id="fb-1" class="collapse show">
                                             <div class="feedback-box">
                                                 <div class="d-flex justify-content-between fb-box-header">
                                                     <div class="d-flex align-items-center">
-                                                        <img src="assets/img/avatar.jpg" alt="Avatar" class="mr-3 main-img">
+                                                        <img src="~/images/avatar.jpg" alt="Avatar" class="mr-3 main-img">
                                                         <h6 class="text-dark mb-sm-1 title-nm">Lê Minh Quân</h6>
                                                     </div>
                                                     <div class="d-flex align-items-center">
@@ -118,7 +102,7 @@
                                             <div class="feedback-box">
                                                 <div class="d-flex justify-content-between fb-box-header">
                                                     <div class="d-flex align-items-center">
-                                                        <img src="assets/img/avatar.jpg" alt="Avatar" class="mr-3 main-img">
+                                                        <img src="~/images/avatar.jpg" alt="Avatar" class="mr-3 main-img">
                                                         <h6 class="text-dark mb-sm-1 title-nm">Lê Minh Quân</h6>
                                                     </div>
                                                     <div class="d-flex align-items-center">
@@ -150,7 +134,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div>*@
                                     </div>
                                 </div>
                             </div>

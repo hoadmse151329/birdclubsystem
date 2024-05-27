@@ -1,5 +1,6 @@
 ﻿using BAL.Services.Interfaces;
 using BAL.ViewModels;
+using BAL.ViewModels.Event;
 using DAL.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -206,6 +207,40 @@ namespace WebAPI.Controllers
                 {
                     Status = false,
                     ErrorMessage = "Member does not exist or internal server error"
+                });
+            }
+            catch (Exception ex)
+            {
+                if (ex.InnerException != null)
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = ex.Message,
+                        InnerExceptionMessage = ex.InnerException.Message
+                    });
+                }
+                // Log the exception if needed
+                return BadRequest(new
+                {
+                    Status = false,
+                    ErrorMessage = ex.Message
+                });
+            }
+        }
+        [HttpGet("Leaderboard")]
+        [ProducesResponseType(typeof(GetLeaderboardResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetBirdLeaderboard()
+        {
+            try
+            {
+                var result = await _birdService.GetBirdLeaderboard();
+                return Ok(new
+                {
+                    Status = true,
+                    Data = result
                 });
             }
             catch (Exception ex)

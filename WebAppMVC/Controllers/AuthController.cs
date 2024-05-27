@@ -221,7 +221,11 @@ namespace WebAppMVC.Controllers
                 TempData[Constants.Constants.ROLE_NAME] = role;
                 _logger.LogInformation(authenResponse.ErrorMessage);
 				ViewBag.error = authenResponse.ErrorMessage;
-				return View("Login");
+				if (authenResponse.Data != null)
+				{
+                    HttpContext.Session.SetString(Constants.Constants.USR_ID, authenResponse.Data.UserId);
+                }
+                return View("Login");
             }
 
 			var responseAuth = authenResponse.Data;
@@ -434,6 +438,13 @@ namespace WebAppMVC.Controllers
 			};
 			var url = _vnPayService.CreatePaymentUrl(model, HttpContext);
 			return Redirect(url);
+		}
+
+		[HttpPost("MembershipRenew")]
+		public async Task<IActionResult> RenewMembership()
+		{
+            string? usrId = HttpContext.Session.GetString("USER_ID");
+            return View();
 		}
 	}
 }
