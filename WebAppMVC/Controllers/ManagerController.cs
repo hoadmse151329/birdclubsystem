@@ -1901,50 +1901,44 @@ namespace WebAppMVC.Controllers
         /*[Route("Manager/FieldTrip/Update/{id:int}")]*/
         public async Task<IActionResult> ManagerUpdateNewsDetail(
             [FromRoute][Required] int id,
-            [Required] FieldTripViewModel updateTrip
+            [Required] NewsViewModel updateNews
             )
         {
-            ManagerAPI_URL += "FieldTrip/" + id + "/Update";
-            if (updateTrip.Status.Equals(Constants.Constants.EVENT_STATUS_CLOSED_REGISTRATION) && (updateTrip.NumberOfParticipantsLimit - updateTrip.NumberOfParticipants) < 10)
-            {
-                ModelState.AddModelError("updateTrip.Status", "Error while processing your request (Updating FieldTrip). Not enough people to closed registration");
-                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_FIELDTRIP_VALID, updateTrip, jsonOptions);
-                return RedirectToAction("ManagerFieldTripDetail", new { id });
-            }
+            ManagerAPI_URL += "News/" + id + "/Update";
             if (!ModelState.IsValid)
             {
-                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_FIELDTRIP_VALID, updateTrip, jsonOptions);
-                return RedirectToAction("ManagerFieldTripDetail", new { id });
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_FIELDTRIP_VALID, updateNews, jsonOptions);
+                return RedirectToAction("ManagerNewsDetail", new { id });
             }
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
 
             string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
-            var fieldtripPostResponse = await methcall.CallMethodReturnObject<GetFieldTripPostResponse>(
+            var managerUpdateNewsPostVM = await methcall.CallMethodReturnObject<GetNewsPostResponse>(
                                 _httpClient: _httpClient,
                                 options: jsonOptions,
                                 methodName: Constants.Constants.PUT_METHOD,
                                 url: ManagerAPI_URL,
-                                inputType: updateTrip,
+                                inputType: updateNews,
                                 accessToken: accToken,
                                 _logger: _logger);
-            if (fieldtripPostResponse == null)
+            if (managerUpdateNewsPostVM == null)
             {
                 ViewBag.Error =
-                    "Error while processing your request! (Updating FieldTrip!).\n FieldTrip Not Found!";
-                return RedirectToAction("ManagerFieldTripDetail", new { id });
+                    "Error while processing your request! (Updating News!).\n News Not Found!";
+                return RedirectToAction("ManagerNewsDetail", new { id });
             }
-            if (!fieldtripPostResponse.Status)
+            if (!managerUpdateNewsPostVM.Status)
             {
-                _logger.LogInformation("Error while processing your request: " + fieldtripPostResponse.Status + " , Error Message: " + fieldtripPostResponse.ErrorMessage);
+                _logger.LogInformation("Error while processing your request: " + managerUpdateNewsPostVM.Status + " , Error Message: " + managerUpdateNewsPostVM.ErrorMessage);
                 ViewBag.Error =
-                    "Error while processing your request! (Updating FieldTrip Post!).\n"
-                    + fieldtripPostResponse.ErrorMessage;
-                return RedirectToAction("ManagerFieldTripDetail", new { id });
+                    "Error while processing your request! (Updating News Post!).\n"
+                    + managerUpdateNewsPostVM.ErrorMessage;
+                return RedirectToAction("ManagerNewsDetail", new { id });
             }
-            TempData["Success"] = fieldtripPostResponse.SuccessMessage;
-            return RedirectToAction("ManagerFieldTripDetail", new { id });
+            TempData["Success"] = "Successfully update News details";
+            return RedirectToAction("ManagerNewsDetail", new { id });
         }
         [HttpGet("Notification")]
         public IActionResult ManagerNotification()
