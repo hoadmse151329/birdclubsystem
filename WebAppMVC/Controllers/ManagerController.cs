@@ -20,8 +20,12 @@ using Azure.Storage.Blobs.Models;
 using Azure.Storage.Blobs.Specialized;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc;
 using WebAppMVC.Models.ViewModels;
+using System.Data;
+using WebAppMVC.Models.Feedback;
 using WebAppMVC.Models.News;
 using BAL.ViewModels.Admin;
+using BAL.ViewModels.News;
+using Microsoft.AspNetCore.Authorization;
 // thêm crud của meeting, fieldtrip, contest.
 namespace WebAppMVC.Controllers
 {
@@ -59,6 +63,7 @@ namespace WebAppMVC.Controllers
 
         // GET: ManagerController
         [HttpGet("Index")]
+        //[Authorize(Roles = "Manager")]
         public async Task<IActionResult> ManagerIndex()
         {
             if(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
@@ -1679,9 +1684,44 @@ namespace WebAppMVC.Controllers
             return RedirectToAction("ManagerProfile");
         }
         [HttpGet("Feedback")]
-        public IActionResult ManagerFeedBack()
+        public async Task<IActionResult> ManagerFeedBack()
         {
-            return View();
+            ManagerAPI_URL += "Feedback/All";
+
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
+
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
+
+            var listFeedbackResponse = await methcall.CallMethodReturnObject<GetListFeedbackResponse>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: Constants.Constants.GET_METHOD,
+                url: ManagerAPI_URL,
+                accessToken: accToken,
+                _logger: _logger);
+
+            if (listFeedbackResponse == null)
+            {
+                _logger.LogInformation(
+                    "Error while processing your request! (Getting List Feedback!). List was Empty!: " + listFeedbackResponse);
+                ViewBag.Error =
+                    "Error while processing your request! (Getting List Feedback!).\n List was Empty!";
+                return View("ManagerIndex");
+            }
+            else
+            if (!listFeedbackResponse.Status)
+            {
+                ViewBag.Error =
+                    "Error while processing your request! (Getting List Feedback!).\n"
+                    + listFeedbackResponse.ErrorMessage;
+                return View("ManagerIndex");
+            }
+
+            dynamic listFeedback = new ExpandoObject();
+            listFeedback.Feedbacks = listFeedbackResponse.Data;
+
+            return View(listFeedback);
         }
         [HttpGet("MemberStatus")]
         public async Task<IActionResult> ManagerMemberStatus([FromQuery] string? search)
@@ -1778,20 +1818,32 @@ namespace WebAppMVC.Controllers
         [HttpGet("Blog")]
         public IActionResult ManagerBlog([FromQuery] string search)
         {
+            ManagerAPI_URL += "Blog/All";
+
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
+
             return View();
         }
         [HttpGet("News")]
-        public async Task<IActionResult> ManagerNews([FromQuery] string search)
+        public async Task<IActionResult> ManagerNews([FromQuery] string? search)
         {
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
+
             string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
+            string? usrName = HttpContext.Session.GetString(Constants.Constants.USR_NAME);
+            string? usrRole = HttpContext.Session.GetString(Constants.Constants.ROLE_NAME);
+            ManagerAPI_URL += "News/Search?userName=" + usrName;
 
             ManagerNewsIndexVM managerNewsListVM = new();
 
             var listNewsResponse = await methcall.CallMethodReturnObject<GetListNews>(
                 _httpClient: _httpClient,
                 options: jsonOptions,
-                methodName: Constants.Constants.GET_METHOD,
+                methodName: Constants.Constants.POST_METHOD,
                 url: ManagerAPI_URL,
+                inputType: usrRole,
                 accessToken: accToken,
                 _logger: _logger);
 
@@ -1812,16 +1864,16 @@ namespace WebAppMVC.Controllers
                 return View("ManagerIndex");
             }
             managerNewsListVM.News = listNewsResponse.Data;
-            managerNewsListVM.createNews = methcall.GetValidationTempData<NewsViewModel>(this, TempData, Constants.Constants.CREATE_NEWS_VALID, "createNews", jsonOptions);
+            managerNewsListVM.createNews = methcall.GetValidationTempData<CreateNewNews>(this, TempData, Constants.Constants.CREATE_NEWS_VALID, "createNews", jsonOptions);
             if (managerNewsListVM.createNews == null)
             {
-                managerNewsListVM.createNews = new NewsViewModel();
+                managerNewsListVM.createNews = new CreateNewNews();
             }
             return View(managerNewsListVM);
         }
         [HttpPost("News/Create")]
         /*[Route("Manager/Meeting/Update/{id:int}")]*/
-        public async Task<IActionResult> ManagerCreateNews([Required] NewsViewModel createNews)
+        public async Task<IActionResult> ManagerCreateNews([Required] CreateNewNews createNews)
         {
             ManagerAPI_URL += "News/Create";
             if (!ModelState.IsValid)
@@ -1834,6 +1886,37 @@ namespace WebAppMVC.Controllers
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
 
             string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
+            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
+
+            createNews.MemberId = usrId;
+
+            IFormFile photo = createNews.ImageUpload;
+
+            if (photo != null && photo.Length > 0)
+            {
+                string connectionString = _config.GetSection("AzureStorage:BlobConnectionString").Value;
+                string containerName = _config.GetSection("AzureStorage:BlobContainerName").Value;
+                BlobServiceClient _blobServiceClient = new BlobServiceClient(connectionString);
+                BlobContainerClient _blobContainerClient = _blobServiceClient.GetBlobContainerClient(containerName);
+
+                var azureResponse = new List<BlobContentInfo>();
+                string filename = photo.FileName;
+                string uniqueBlobName = $"news/{Guid.NewGuid()}-{filename}";
+                using (var memoryStream = new MemoryStream())
+                {
+                    photo.CopyTo(memoryStream);
+                    memoryStream.Position = 0;
+
+                    var client = await _blobContainerClient.UploadBlobAsync(uniqueBlobName, memoryStream);
+                    azureResponse.Add(client);
+                }
+
+                var image = "https://edwinbirdclubstorage.blob.core.windows.net/images/" + uniqueBlobName;
+
+                createNews.Picture = image;
+            }
+
+            createNews.ImageUpload = null;
 
             var managerCreateNewsPostVM = await methcall.CallMethodReturnObject<GetNewsPostResponse>(
                                 _httpClient: _httpClient,
@@ -1847,10 +1930,12 @@ namespace WebAppMVC.Controllers
             {
                 ViewBag.Error =
                     "Error while processing your request! (Create News!).\n News Not Found!";
+                TempData["Error"] = managerCreateNewsPostVM.ErrorMessage;
                 return RedirectToAction("ManagerNews");
             }
             if (!managerCreateNewsPostVM.Status)
             {
+                TempData["Error"] = managerCreateNewsPostVM.ErrorMessage;
                 _logger.LogInformation("Error while processing your request: " + managerCreateNewsPostVM.Status + " , Error Message: " + managerCreateNewsPostVM.ErrorMessage);
                 ViewBag.Error =
                     "Error while processing your request! (Create News Post!).\n"
@@ -1867,7 +1952,7 @@ namespace WebAppMVC.Controllers
             )
         {
             ManagerAPI_URL += "News/" + id;
-            ManagerNewsDetailsVM contestDetailBigModel = new();
+            ManagerNewsDetailsVM managerNewsPostDetailsVM = new();
 
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
@@ -1882,7 +1967,7 @@ namespace WebAppMVC.Controllers
             {
                 ViewBag.Error =
                     "Error while processing your request! (Getting Contest!).\n Contest Not Found!";
-                return RedirectToAction("ManagerContest");
+                return RedirectToAction("ManagerNews");
             }
             if (!managerNewsPostVM.Status)
             {
@@ -1890,61 +1975,127 @@ namespace WebAppMVC.Controllers
                 ViewBag.Error =
                     "Error while processing your request! (Getting Contest Post!).\n"
                     + managerNewsPostVM.ErrorMessage;
-                return RedirectToAction("ManagerContest");
+                return RedirectToAction("ManagerNews");
             }
-            contestDetailBigModel.updateNews = methcall.GetValidationTempData<NewsViewModel>(this, TempData, Constants.Constants.UPDATE_NEWS_VALID, "updateNews", jsonOptions);
-            contestDetailBigModel.News = managerNewsPostVM.Data;
+            managerNewsPostDetailsVM.updateNews = methcall.GetValidationTempData<UpdateNewsDetail>(this, TempData, Constants.Constants.UPDATE_NEWS_VALID, "updateNews", jsonOptions);
+            if(managerNewsPostDetailsVM.updateNews != null)
+            {
+                managerNewsPostDetailsVM.updateNews.DefaultNewsCategorySelectList = methcall.GetManagerNewsCategorySelectableList(managerNewsPostDetailsVM.updateNews.Category);
+            }
+            else
+            {
+                managerNewsPostDetailsVM.updateNews = new UpdateNewsDetail();
+            }
+            managerNewsPostDetailsVM.News = managerNewsPostVM.Data;
 
-            return View(contestDetailBigModel);
+            return View(managerNewsPostDetailsVM);
         }
         [HttpPost("News/{id:int}/Update")]
         /*[Route("Manager/FieldTrip/Update/{id:int}")]*/
         public async Task<IActionResult> ManagerUpdateNewsDetail(
             [FromRoute][Required] int id,
-            [Required] FieldTripViewModel updateTrip
+            [Required] UpdateNewsDetail updateNews
             )
         {
-            ManagerAPI_URL += "FieldTrip/" + id + "/Update";
-            if (updateTrip.Status.Equals(Constants.Constants.EVENT_STATUS_CLOSED_REGISTRATION) && (updateTrip.NumberOfParticipantsLimit - updateTrip.NumberOfParticipants) < 10)
-            {
-                ModelState.AddModelError("updateTrip.Status", "Error while processing your request (Updating FieldTrip). Not enough people to closed registration");
-                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_FIELDTRIP_VALID, updateTrip, jsonOptions);
-                return RedirectToAction("ManagerFieldTripDetail", new { id });
-            }
+            ManagerAPI_URL += "News/" + id + "/Update";
             if (!ModelState.IsValid)
             {
-                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_FIELDTRIP_VALID, updateTrip, jsonOptions);
-                return RedirectToAction("ManagerFieldTripDetail", new { id });
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_NEWS_VALID, updateNews, jsonOptions);
+                return RedirectToAction("ManagerNewsDetail", new { id });
             }
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
 
             string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
-            var fieldtripPostResponse = await methcall.CallMethodReturnObject<GetFieldTripPostResponse>(
+            IFormFile photo = updateNews.ImageUpload;
+            string photoName = updateNews.Picture.Substring(57);
+            if (photo != null && photo.Length > 0)
+            {
+                string connectionString = _config.GetSection("AzureStorage:BlobConnectionString").Value;
+                string containerName = _config.GetSection("AzureStorage:BlobContainerName").Value;
+                BlobServiceClient _blobServiceClient = new BlobServiceClient(connectionString);
+                BlobContainerClient _blobContainerClient = _blobServiceClient.GetBlobContainerClient(containerName);
+
+                var azureResponse = new List<BlobContentInfo>();
+                string filename = photo.FileName;
+                string uniqueBlobName = $"news/{Guid.NewGuid()}-{filename}";
+                using (var memoryStream = new MemoryStream())
+                {
+                    photo.CopyTo(memoryStream);
+                    memoryStream.Position = 0;
+
+                    var client = await _blobContainerClient.UploadBlobAsync(uniqueBlobName, memoryStream);
+                    //await _blobContainerClient.DeleteBlobAsync(photoName);
+                    azureResponse.Add(client);
+                }
+
+                var image = "https://edwinbirdclubstorage.blob.core.windows.net/images/" + uniqueBlobName;
+
+                updateNews.Picture = image;
+            }
+
+            updateNews.ImageUpload = null;
+
+            var managerUpdateNewsPostVM = await methcall.CallMethodReturnObject<GetNewsPostResponse>(
                                 _httpClient: _httpClient,
                                 options: jsonOptions,
                                 methodName: Constants.Constants.PUT_METHOD,
                                 url: ManagerAPI_URL,
-                                inputType: updateTrip,
+                                inputType: updateNews,
                                 accessToken: accToken,
                                 _logger: _logger);
-            if (fieldtripPostResponse == null)
+            if (managerUpdateNewsPostVM == null)
             {
                 ViewBag.Error =
-                    "Error while processing your request! (Updating FieldTrip!).\n FieldTrip Not Found!";
-                return RedirectToAction("ManagerFieldTripDetail", new { id });
+                    "Error while processing your request! (Updating News!).\n News Not Found!";
+                return RedirectToAction("ManagerNewsDetail", new { id });
             }
-            if (!fieldtripPostResponse.Status)
+            if (!managerUpdateNewsPostVM.Status)
             {
-                _logger.LogInformation("Error while processing your request: " + fieldtripPostResponse.Status + " , Error Message: " + fieldtripPostResponse.ErrorMessage);
+                _logger.LogInformation("Error while processing your request: " + managerUpdateNewsPostVM.Status + " , Error Message: " + managerUpdateNewsPostVM.ErrorMessage);
                 ViewBag.Error =
-                    "Error while processing your request! (Updating FieldTrip Post!).\n"
-                    + fieldtripPostResponse.ErrorMessage;
-                return RedirectToAction("ManagerFieldTripDetail", new { id });
+                    "Error while processing your request! (Updating News Post!).\n"
+                    + managerUpdateNewsPostVM.ErrorMessage;
+                return RedirectToAction("ManagerNewsDetail", new { id });
             }
-            TempData["Success"] = fieldtripPostResponse.SuccessMessage;
-            return RedirectToAction("ManagerFieldTripDetail", new { id });
+            TempData["Success"] = "Successfully update News details";
+            return RedirectToAction("ManagerNewsDetail", new { id });
+        }
+        [HttpPost("News/{id:int}/Disable")]
+        public async Task<IActionResult> ManagerDisableNews(
+            [FromRoute][Required] int id)
+        {
+            ManagerAPI_URL += "News/" + id + "/Disable";
+
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
+
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
+
+            var meetPostResponse = await methcall.CallMethodReturnObject<GetNewsPostResponse>(
+                                _httpClient: _httpClient,
+                                options: jsonOptions,
+                                methodName: Constants.Constants.GET_METHOD,
+                                url: ManagerAPI_URL,
+                                accessToken: accToken,
+                                _logger: _logger);
+            if (meetPostResponse == null)
+            {
+                ViewBag.Error =
+                    "Error while processing your request! (Disabling News Post!).\n Post Not Found!";
+                return RedirectToAction("ManagerNews");
+            }
+            if (!meetPostResponse.Status)
+            {
+                _logger.LogInformation("Error while processing your request: " + meetPostResponse.Status + " , Error Message: " + meetPostResponse.ErrorMessage);
+                ViewBag.Error =
+                    "Error while processing your request! (Disabling News Post!).\n"
+                    + meetPostResponse.ErrorMessage;
+                return RedirectToAction("ManagerNews");
+            }
+            TempData["Success"] = "Successfully disabled News post";
+            return RedirectToAction("ManagerNews");
         }
         [HttpGet("Notification")]
         public IActionResult ManagerNotification()

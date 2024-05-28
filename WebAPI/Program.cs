@@ -6,6 +6,8 @@ using DAL.Infrastructure;
 using DAL.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
@@ -19,22 +21,84 @@ namespace WebAPI
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
+            // Configure services for web app.
 
-            builder.Services.AddControllers().AddJsonOptions(options =>
+            ConfigureServices(builder.Services,builder.Configuration);
+
+            var app = builder.Build();
+
+            // Configure the HTTP request pipeline.
+            if (app.Environment.IsDevelopment())
             {
-                options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
-                options.JsonSerializerOptions.WriteIndented = true;
-                options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-            });
-            builder.Services.AddDbContext<BirdClubContext>(options =>
+                ConfigureDevelopmentPipeline(app);
+            }
+
+            ConfigurePipeline(app);
+
+            app.MapControllers();
+
+            app.Run();
+        }
+        private static void ConfigureServices(IServiceCollection services, IConfiguration config)
+        {
+            // Add authentication services
+            AddAuthenticationServices(services, config);
+
+            // Add MVC services
+            AddMvcServices(services);
+
+            // Add Swagger services
+            AddSwaggerServices(services);
+
+            // Add Razor Pages services
+            AddRazorPagesServices(services);
+
+            // Add CORS services
+            AddCorsServices(services);
+
+            // Add AutoMapper
+            services.AddAutoMapper(typeof(MappingProfile));
+            services.AddDbContext<BirdClubContext>(options =>
             {
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+                options.UseSqlServer(config.GetConnectionString("DefaultConnection"));
             });
-            builder.Services.AddHttpContextAccessor();
+
+            // Register custom services
+            RegisterServices(services);
+        }
+        private static void RegisterServices(IServiceCollection services)
+        {
+            // Add scoped services
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IMemberService, MemberService>();
+            services.AddScoped<ILocationService, LocationService>();
+            services.AddTransient<IEmailService, EmailService>();
+            services.AddScoped<IJWTService, JWTService>();
+            services.AddScoped<IMeetingService, MeetingService>();
+            services.AddScoped<IMeetingMediaService, MeetingMediaService>();
+            services.AddScoped<IMeetingParticipantService, MeetingParticipantService>();
+            services.AddScoped<IFieldTripService, FieldTripService>();
+            services.AddScoped<IFieldTripParticipantService, FieldTripParticipantService>();
+            services.AddScoped<IFieldTripDayByDayService, FieldTripDayByDayService>();
+            services.AddScoped<IFieldTripInclusionService, FieldTripInclusionService>();
+            services.AddScoped<IFieldTripAdditionalDetailService, FieldTripAdditionalDetailService>();
+            services.AddScoped<IContestService, ContestService>();
+            services.AddScoped<IContestParticipantService, ContestParticipantService>();
+            services.AddScoped<ITransactionService, TransactionService>();
+            services.AddScoped<IMediaService, MediaService>();
+            services.AddScoped<IBirdService, BirdService>();
+            services.AddScoped<INotificationService, NotificationService>();
+            services.AddScoped<IFeedbackService, FeedbackService>();
+            services.AddScoped<IBlogService, BlogService>();
+            services.AddScoped<INewsService, NewsService>();
+        }
+        private static void AddSwaggerServices(IServiceCollection services)
+        {
+            services.AddHttpContextAccessor();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen(c =>
+            services.AddEndpointsApiExplorer();
+            services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
@@ -56,95 +120,77 @@ namespace WebAPI
                     }
                 };
                 c.AddSecurityDefinition("Bearer", securityScheme);
-
                 var securityRequirement = new OpenApiSecurityRequirement
                 {
                     { securityScheme, new[] { "Bearer" } }
                 };
                 c.AddSecurityRequirement(securityRequirement);
             });
-
-            builder.Services.AddAuthentication(options =>
+        }
+        private static void AddAuthenticationServices(IServiceCollection services, IConfiguration config)
+        {
+            services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(options =>
             {
-                options.RequireHttpsMetadata = false;
+                options.RequireHttpsMetadata = true;
                 options.SaveToken = true;
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(
-                        builder.Configuration.GetSection("AppSettings")["SecretKey"]
-                        //config["AppSettings:SecretKey"]
-                        )),
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(config.GetSection("AppSettings:SecretKey").Value)),
                     ValidateIssuer = false,
-                    ValidateAudience = false
+                    ValidateAudience = false,
+                    /*ValidIssuer = config.GetSection("AppSettings:ValidIssuer").Value,
+                    ValidAudience = config.GetSection("AppSettings:ValidAudience").Value,*/
                 };
             });
-
-            builder.Services.AddRazorPages().AddJsonOptions(options =>
+        }
+        private static void AddCorsServices(IServiceCollection services)
+        {
+            services.AddCors(options =>
             {
-                options.JsonSerializerOptions.Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
-            });
-
-            builder.Services.AddCors(options => 
-            { 
-                options.AddDefaultPolicy(policy => 
+                options.AddDefaultPolicy(policy =>
                 {
                     policy.AllowAnyOrigin()
                           .AllowAnyHeader()
                           .AllowAnyMethod();
                 });
             });
-            builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
-            builder.Services.AddScoped<IUserService, UserService>();
-            builder.Services.AddScoped<IMemberService,MemberService>();
-            builder.Services.AddScoped<ILocationService,LocationService>();
-            builder.Services.AddTransient<IEmailService,EmailService>();
-            builder.Services.AddScoped<IJWTService,JWTService>();
-            builder.Services.AddScoped<IMeetingService,MeetingService>();
-            builder.Services.AddScoped<IMeetingMediaService,MeetingMediaService>();
-            builder.Services.AddScoped<IMeetingParticipantService,MeetingParticipantService>();
-            builder.Services.AddScoped<IFieldTripService, FieldTripService>();
-            builder.Services.AddScoped<IFieldTripParticipantService, FieldTripParticipantService>();
-            builder.Services.AddScoped<IFieldTripDayByDayService,FieldTripDayByDayService>();
-            builder.Services.AddScoped<IFieldTripInclusionService, FieldTripInclusionService>();
-            builder.Services.AddScoped<IFieldTripAdditionalDetailService, FieldTripAdditionalDetailService>();
-            builder.Services.AddScoped<IContestService, ContestService>();
-            builder.Services.AddScoped<IContestParticipantService, ContestParticipantService>();
-            builder.Services.AddScoped<ITransactionService, TransactionService>();
-            builder.Services.AddScoped<IMediaService, MediaService>();
-            builder.Services.AddScoped<IBirdService, BirdService>();
-            builder.Services.AddScoped<INotificationService, NotificationService>();
-            builder.Services.AddScoped<IFeedbackService, FeedbackService>();
-            builder.Services.AddScoped<IBlogService, BlogService>();
-            builder.Services.AddScoped<INewsService, NewsService>();
-
-            builder.Services.AddAutoMapper(typeof(MappingProfile));
-            var app = builder.Build();
-
-            // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
+        }
+        private static void AddRazorPagesServices(IServiceCollection services)
+        {
+            services.AddRazorPages().AddJsonOptions(options =>
             {
-                app.UseSwagger();
-                app.UseSwaggerUI(c =>
-                {
-                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "ProjectAPI v1");
-                });
-            }
-
+                options.JsonSerializerOptions.Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
+            });
+        }
+        private static void AddMvcServices(IServiceCollection services)
+        {
+            services.AddControllers().AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+                options.JsonSerializerOptions.WriteIndented = true;
+                options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+            });
+        }
+        private static void ConfigureDevelopmentPipeline(WebApplication app)
+        {
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "ProjectAPI v1");
+            });
+        }
+        private static void ConfigurePipeline(WebApplication app)
+        {
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseCors();
-
-
-            app.MapControllers();
-
-            app.Run();
         }
     }
 }

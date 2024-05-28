@@ -35,7 +35,7 @@ namespace DAL.Repositories.Implements
 
         public async Task<IEnumerable<News>?> GetSortedNews(
             string? title, 
-            string? category, 
+            List<string>? categories, 
             DateTime? uploadDate, 
             List<string>? statuses, 
             string? orderBy, 
@@ -53,7 +53,7 @@ namespace DAL.Repositories.Implements
                 Disabled: The post is restricted due to a violation of platform policies.
              */
             List<string> statusListDefault = new List<string> { "Draft", "Active", "Hidden", "Archived", "Reported", "Disabled" };
-            //List<string> categoryListDefault = new List<string> { "Announcement", "Meeting", "Fieldtrip", "Contest", "Others" };
+            List<string> categoryListDefault = new List<string> { "Announcement", "Meeting", "Fieldtrip", "Contest", "Others" };
 
             if (isMemberOrGuest)
             {
@@ -70,9 +70,9 @@ namespace DAL.Repositories.Implements
                 newsfeeds = newsfeeds.Where(m => m.Title.Contains(title));
             }
 
-            if (!string.IsNullOrEmpty(category))
+            if (categories != null && categories.Any())
             {
-                newsfeeds = newsfeeds.Where(m => m.Category.Equals(category));
+                newsfeeds = newsfeeds.Where(m => categories.Contains(m.Category));
             }
 
             if (uploadDate.HasValue)
@@ -87,8 +87,8 @@ namespace DAL.Repositories.Implements
             {
                 "newstitle_asc" => newsfeeds.OrderBy(m => m.Title),
                 "newstitle_desc" => newsfeeds.OrderByDescending(m => m.Title),
-                "category_asc" => newsfeeds.OrderBy(m => m.Category),
-                "category_desc" => newsfeeds.OrderByDescending(m => m.Category),
+                "category_asc" => newsfeeds.OrderBy(m => categoryListDefault.IndexOf(m.Category)),
+                "category_desc" => newsfeeds.OrderByDescending(m => categoryListDefault.IndexOf(m.Category)),
                 "uploaddate_asc" => newsfeeds.OrderBy(m => m.UploadDate.Date),
                 "uploaddate_desc" => newsfeeds.OrderByDescending(m => m.UploadDate.Date),
                 "status_asc" => newsfeeds.OrderBy(m => statusListDefault.IndexOf(m.Status)),

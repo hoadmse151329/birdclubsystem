@@ -23,13 +23,27 @@ namespace WebAppMVC.Constants
         public readonly static string NEW_MEMBER_REGISTRATION_TRANSACTION_TYPE = "New-Membership-Registration";
 		public readonly static string MEMBER_FIELDTRIP_REGISTRATION_TRANSACTION_TYPE = "Member-FieldTrip-Registration";
         public readonly static string MEMBER_CONTEST_REGISTRATION_TRANSACTION_TYPE = "Member-Contest-Registration";
+        public readonly static string MEMBERSHIP_RENEWAL_TRANSACTION_TYPE = "Membership-Renewal-Transaction-Type";
 
         public readonly static string MEMBER_STATUS_INACTIVE = "Inactive";
         public readonly static string MEMBER_STATUS_ACTIVE = "Active";
         public readonly static string MEMBER_STATUS_EXPIRED = "Expired";
         public readonly static string MEMBER_STATUS_DENIED = "Denied";
         public readonly static string MEMBER_STATUS_SUSPENDED = "Suspended";
-    
+
+        public readonly static string NEWS_STATUS_DRAFT = "Draft";
+        public readonly static string NEWS_STATUS_ACTIVE = "Active";
+        public readonly static string NEWS_STATUS_HIDDEN = "Hidden";
+        public readonly static string NEWS_STATUS_ARCHIVED = "Archived";
+        public readonly static string NEWS_STATUS_REPORTED = "Reported";
+        public readonly static string NEWS_STATUS_DISABLED = "Disabled";
+
+        public readonly static string NEWS_CATEGORY_ANNOUNCEMENT = "Announcement";
+        public readonly static string NEWS_CATEGORY_MEETING = "Meeting";
+        public readonly static string NEWS_CATEGORY_FIELDTRIP = "Fieldtrip";
+        public readonly static string NEWS_CATEGORY_CONTEST = "Contest";
+        public readonly static string NEWS_CATEGORY_OTHERS = "Others";
+
         public readonly static string CREATE_BIRD_VALID = "CBirdValid";
         public readonly static string CREATE_OR_UPDATE_BIRD_PROFILE_PICTURE_VALID = "CBirdProfilePicValid";
         public readonly static string UPDATE_BIRD_VALID = "UBirdValid";
@@ -169,6 +183,10 @@ namespace WebAppMVC.Constants
 
         public const string GOOGLE_LINK_GET_TOKEN = "https://accounts.google.com/o/oauth2/token";
         public const string GOOGLE_LINK_GET_USER_INFO = "https://www.googleapis.com/oauth2/v1/userinfo?access_token=";
+
+        public const string JWT_SECRET_KEY = "Authentication:JWT:SecretKey";
+        public const string JWT_VALID_ISSUER = "Authentication:JWT:ValidIssuer";
+        public const string JWT_VALID_AUDIENCE = "Authentication:JWT:ValidAudience";
 
         public readonly static string TEMP_FILE_LOCATION_FOLDER = "wwwroot/tempFiles";
 

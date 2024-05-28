@@ -60,7 +60,7 @@ namespace WebAppMVC.Constants
                 _logger.LogError("Error while processing your request!: " + response.StatusCode + "\t\nApi Url: " + url + "\t\nError Message: " + jsonResponse);
                 if (!string.IsNullOrEmpty(jsonResponse) || !string.IsNullOrWhiteSpace(jsonResponse))
                 {
-                    if (jsonResponse.Contains("data"))
+                    if (jsonResponse.Contains("data") || jsonResponse.Contains("errorMessage"))
                     {
                         var errorT = JsonSerializer.Deserialize<T>(jsonResponse, options);
                         return errorT;
@@ -161,6 +161,59 @@ namespace WebAppMVC.Constants
                     }
             }
             return defaultEventStatus;
+        }
+        public List<SelectListItem> GetManagerNewsCategorySelectableList(string category)
+        {
+            List<SelectListItem> defaultNewsCategories = new();
+            switch (category)
+            {
+                case var value when value.Equals(Constants.NEWS_CATEGORY_ANNOUNCEMENT):
+                    {
+                        defaultNewsCategories.Add(new SelectListItem { Text = Constants.NEWS_CATEGORY_ANNOUNCEMENT, Value = Constants.NEWS_CATEGORY_ANNOUNCEMENT, Selected = true });
+                        defaultNewsCategories.Add(new SelectListItem { Text = Constants.NEWS_CATEGORY_MEETING, Value = Constants.NEWS_CATEGORY_MEETING });
+                        defaultNewsCategories.Add(new SelectListItem { Text = Constants.NEWS_CATEGORY_FIELDTRIP, Value = Constants.NEWS_CATEGORY_FIELDTRIP });
+                        defaultNewsCategories.Add(new SelectListItem { Text = Constants.NEWS_CATEGORY_CONTEST, Value = Constants.NEWS_CATEGORY_CONTEST });
+                        defaultNewsCategories.Add(new SelectListItem { Text = Constants.NEWS_CATEGORY_OTHERS, Value = Constants.NEWS_CATEGORY_OTHERS });
+                        break;
+                    }
+                case var value when value.Equals(Constants.NEWS_CATEGORY_MEETING):
+                    {
+                        defaultNewsCategories.Add(new SelectListItem { Text = Constants.NEWS_CATEGORY_ANNOUNCEMENT, Value = Constants.NEWS_CATEGORY_ANNOUNCEMENT });
+                        defaultNewsCategories.Add(new SelectListItem { Text = Constants.NEWS_CATEGORY_MEETING, Value = Constants.NEWS_CATEGORY_MEETING, Selected = true });
+                        defaultNewsCategories.Add(new SelectListItem { Text = Constants.NEWS_CATEGORY_FIELDTRIP, Value = Constants.NEWS_CATEGORY_FIELDTRIP });
+                        defaultNewsCategories.Add(new SelectListItem { Text = Constants.NEWS_CATEGORY_CONTEST, Value = Constants.NEWS_CATEGORY_CONTEST });
+                        defaultNewsCategories.Add(new SelectListItem { Text = Constants.NEWS_CATEGORY_OTHERS, Value = Constants.NEWS_CATEGORY_OTHERS });
+                        break;
+                    }
+                case var value when value.Equals(Constants.NEWS_CATEGORY_FIELDTRIP):
+                    {
+                        defaultNewsCategories.Add(new SelectListItem { Text = Constants.NEWS_CATEGORY_ANNOUNCEMENT, Value = Constants.NEWS_CATEGORY_ANNOUNCEMENT });
+                        defaultNewsCategories.Add(new SelectListItem { Text = Constants.NEWS_CATEGORY_MEETING, Value = Constants.NEWS_CATEGORY_MEETING });
+                        defaultNewsCategories.Add(new SelectListItem { Text = Constants.NEWS_CATEGORY_FIELDTRIP, Value = Constants.NEWS_CATEGORY_FIELDTRIP, Selected = true });
+                        defaultNewsCategories.Add(new SelectListItem { Text = Constants.NEWS_CATEGORY_CONTEST, Value = Constants.NEWS_CATEGORY_CONTEST });
+                        defaultNewsCategories.Add(new SelectListItem { Text = Constants.NEWS_CATEGORY_OTHERS, Value = Constants.NEWS_CATEGORY_OTHERS });
+                        break;
+                    }
+                case var value when value.Equals(Constants.NEWS_CATEGORY_CONTEST):
+                    {
+                        defaultNewsCategories.Add(new SelectListItem { Text = Constants.NEWS_CATEGORY_ANNOUNCEMENT, Value = Constants.NEWS_CATEGORY_ANNOUNCEMENT });
+                        defaultNewsCategories.Add(new SelectListItem { Text = Constants.NEWS_CATEGORY_MEETING, Value = Constants.NEWS_CATEGORY_MEETING });
+                        defaultNewsCategories.Add(new SelectListItem { Text = Constants.NEWS_CATEGORY_FIELDTRIP, Value = Constants.NEWS_CATEGORY_FIELDTRIP });
+                        defaultNewsCategories.Add(new SelectListItem { Text = Constants.NEWS_CATEGORY_CONTEST, Value = Constants.NEWS_CATEGORY_CONTEST, Selected = true });
+                        defaultNewsCategories.Add(new SelectListItem { Text = Constants.NEWS_CATEGORY_OTHERS, Value = Constants.NEWS_CATEGORY_OTHERS });
+                        break;
+                    }
+                case var value when value.Equals(Constants.NEWS_CATEGORY_OTHERS):
+                    {
+                        defaultNewsCategories.Add(new SelectListItem { Text = Constants.NEWS_CATEGORY_ANNOUNCEMENT, Value = Constants.NEWS_CATEGORY_ANNOUNCEMENT });
+                        defaultNewsCategories.Add(new SelectListItem { Text = Constants.NEWS_CATEGORY_MEETING, Value = Constants.NEWS_CATEGORY_MEETING });
+                        defaultNewsCategories.Add(new SelectListItem { Text = Constants.NEWS_CATEGORY_FIELDTRIP, Value = Constants.NEWS_CATEGORY_FIELDTRIP });
+                        defaultNewsCategories.Add(new SelectListItem { Text = Constants.NEWS_CATEGORY_CONTEST, Value = Constants.NEWS_CATEGORY_CONTEST });
+                        defaultNewsCategories.Add(new SelectListItem { Text = Constants.NEWS_CATEGORY_OTHERS, Value = Constants.NEWS_CATEGORY_OTHERS, Selected = true });
+                        break;
+                    }
+            }
+            return defaultNewsCategories;
         }
         public List<SelectListItem> GetManagerFieldTripInclusionTypeSelectableList(string inclusionType)
         {

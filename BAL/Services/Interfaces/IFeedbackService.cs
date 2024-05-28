@@ -1,4 +1,5 @@
 ﻿using BAL.ViewModels;
+using BAL.ViewModels.Manager;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace BAL.Services.Interfaces
 {
     public interface IFeedbackService
     {
-        Task<IEnumerable<FeedbackViewModel>> GetAllFeedbacks();
+        Task<List<GetFeedbackResponse>> GetAllFeedbacks();
         Task<FeedbackViewModel?> GetFeedbackById(int id);
         void Create(FeedbackViewModel feedback);
         Task<int> CountFeedback();

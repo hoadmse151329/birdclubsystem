@@ -206,7 +206,8 @@ namespace WebAPI.Controllers
                     return BadRequest(new
                     {
                         Status = false,
-                        ErrorMessage = "User Account is Currently InActivated!"
+                        ErrorMessage = "User Account is Currently InActivated!",
+                        Data = login
                     });
                 }
                 if (login.Status == "Expired")
@@ -214,7 +215,8 @@ namespace WebAPI.Controllers
                     return BadRequest(new
                     {
                         Status = false,
-                        ErrorMessage = "User Account is Currently Expired!"
+                        ErrorMessage = "User Account is Currently Expired!",
+                        Data = login
                     });
                 }
                 return Ok(new
