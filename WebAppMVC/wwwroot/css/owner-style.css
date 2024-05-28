@@ -5,7 +5,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: "Roboto", sans-serif;
+    font-family: "Font Awesome 5 Free", Arial, sans-serif;
 }
 
 html body {
@@ -1238,14 +1238,14 @@ html body {
     }
 
         .main-content .page-header .breadcrumb li.active {
-            font-family: 'Roboto', sans-serif;
+            font-family: "Font Awesome 5 Free", Arial, sans-serif;
             font-weight: normal;
             font-size: 20px;
         }
 
         .main-content .page-header .breadcrumb li a {
             font-size: 20px;
-            font-family: 'Roboto', sans-serif;
+            font-family: "Font Awesome 5 Free", Arial, sans-serif;
             display: block;
         }
 
@@ -1424,24 +1424,24 @@ html body {
         padding-bottom: 15px;
     }
 
-    .info-title h4 {
-        font-size: 12px;
-        text-transform: uppercase;
-        padding-top: 10px;
-        font-family: 'Roboto', sans-serif;
-    }
+.info-title h4 {
+    font-size: 12px;
+    text-transform: uppercase;
+    padding-top: 10px;
+    font-family: "Font Awesome 5 Free", Arial, sans-serif;
+}
 
-    .phone-number,
-    .mail-address,
-    .contact-email,
-    .contact-website,
-    .contact-skype,
-    .birth-date,
-    .gender {
-        font-family: 'Roboto', sans-serif;
-        font-size: 16px;
-        color: #373757;
-    }
+.phone-number,
+.mail-address,
+.contact-email,
+.contact-website,
+.contact-skype,
+.birth-date,
+.gender {
+    font-family: "Font Awesome 5 Free", Arial, sans-serif;
+    font-size: 16px;
+    color: #373757;
+}
 
     .contact-title {
         display: inline-block;

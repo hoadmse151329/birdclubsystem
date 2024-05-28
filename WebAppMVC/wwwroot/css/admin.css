@@ -119,7 +119,7 @@ body {
     box-shadow: 0 7px 23px -8px #efe8ff;
 }
 a, body, span, text {
-    font-family: 'Font Awesome 5 Free', Poppins,sans-serif;
+    font-family: "Font Awesome 5 Free", Arial, sans-serif;
 }
 .card-title {
     font-size: 18px;
@@ -152,7 +152,7 @@ a, body, span, text {
     margin-bottom: 30px;
 }
 h1, h2, h3, h4, h5, h6 {
-    font-family: Poppins,sans-serif;
+    font-family: "Font Awesome 5 Free", Arial, sans-serif;
 }
 p {
     
@@ -436,7 +436,7 @@ body {
 }
 
 a, body, span, text {
-    font-family: 'Font Awesome 5 Free',Poppins,sans-serif;
+    font-family: "Font Awesome 5 Free", Arial, sans-serif;
 }
 
 .card-title {
@@ -474,7 +474,7 @@ a, body, span, text {
 }
 
 h1, h2, h3, h4, h5, h6 {
-    font-family: 'Font Awesome 5 Free',Poppins,sans-serif;
+    font-family: "Font Awesome 5 Free", Arial, sans-serif;
 }
 
 p {
