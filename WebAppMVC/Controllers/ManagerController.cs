@@ -26,6 +26,7 @@ using WebAppMVC.Models.News;
 using BAL.ViewModels.Admin;
 using WebAppMVC.Models.Blog;
 using BAL.ViewModels.News;
+using Microsoft.AspNetCore.Authorization;
 // thêm crud của meeting, fieldtrip, contest.
 namespace WebAppMVC.Controllers
 {
@@ -63,6 +64,7 @@ namespace WebAppMVC.Controllers
 
         // GET: ManagerController
         [HttpGet("Index")]
+        //[Authorize(Roles = "Manager")]
         public async Task<IActionResult> ManagerIndex()
         {
             if(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
@@ -1892,7 +1894,12 @@ namespace WebAppMVC.Controllers
         [HttpGet("News")]
         public async Task<IActionResult> ManagerNews([FromQuery] string? search)
         {
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
             string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
+            string? usrName = HttpContext.Session.GetString(Constants.Constants.USR_NAME);
+            string? usrRole = HttpContext.Session.GetString(Constants.Constants.ROLE_NAME);
+            ManagerAPI_URL += "News/Search?userName=" + usrName;
 
             ManagerNewsIndexVM managerNewsListVM = new();
 
@@ -1901,8 +1908,10 @@ namespace WebAppMVC.Controllers
             var listNewsResponse = await methcall.CallMethodReturnObject<GetListNews>(
                 _httpClient: _httpClient,
                 options: jsonOptions,
-                methodName: Constants.Constants.GET_METHOD,
+                methodName: Constants.Constants.POST_METHOD,
                 url: ManagerAPI_URL,
+                inputType: usrRole,
+                accessToken: accToken,
                 _logger: _logger);
 
             if (listNewsResponse == null)
@@ -2010,7 +2019,7 @@ namespace WebAppMVC.Controllers
             )
         {
             ManagerAPI_URL += "News/" + id;
-            ManagerNewsDetailsVM contestDetailBigModel = new();
+            ManagerNewsDetailsVM managerNewsPostDetailsVM = new();
 
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
@@ -2035,28 +2044,65 @@ namespace WebAppMVC.Controllers
                     + managerNewsPostVM.ErrorMessage;
                 return RedirectToAction("ManagerNews");
             }
-            contestDetailBigModel.updateNews = methcall.GetValidationTempData<NewsViewModel>(this, TempData, Constants.Constants.UPDATE_NEWS_VALID, "updateNews", jsonOptions);
-            contestDetailBigModel.News = managerNewsPostVM.Data;
+            managerNewsPostDetailsVM.updateNews = methcall.GetValidationTempData<UpdateNewsDetail>(this, TempData, Constants.Constants.UPDATE_NEWS_VALID, "updateNews", jsonOptions);
+            if(managerNewsPostDetailsVM.updateNews != null)
+            {
+                managerNewsPostDetailsVM.updateNews.DefaultNewsCategorySelectList = methcall.GetManagerNewsCategorySelectableList(managerNewsPostDetailsVM.updateNews.Category);
+            }
+            else
+            {
+                managerNewsPostDetailsVM.updateNews = new UpdateNewsDetail();
+            }
+            managerNewsPostDetailsVM.News = managerNewsPostVM.Data;
 
-            return View(contestDetailBigModel);
+            return View(managerNewsPostDetailsVM);
         }
         [HttpPost("News/{id:int}/Update")]
         /*[Route("Manager/FieldTrip/Update/{id:int}")]*/
         public async Task<IActionResult> ManagerUpdateNewsDetail(
             [FromRoute][Required] int id,
-            [Required] NewsViewModel updateNews
+            [Required] UpdateNewsDetail updateNews
             )
         {
             ManagerAPI_URL += "News/" + id + "/Update";
             if (!ModelState.IsValid)
             {
-                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_FIELDTRIP_VALID, updateNews, jsonOptions);
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_NEWS_VALID, updateNews, jsonOptions);
                 return RedirectToAction("ManagerNewsDetail", new { id });
             }
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
 
             string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
+
+            IFormFile photo = updateNews.ImageUpload;
+            string photoName = updateNews.Picture.Substring(57);
+            if (photo != null && photo.Length > 0)
+            {
+                string connectionString = _config.GetSection("AzureStorage:BlobConnectionString").Value;
+                string containerName = _config.GetSection("AzureStorage:BlobContainerName").Value;
+                BlobServiceClient _blobServiceClient = new BlobServiceClient(connectionString);
+                BlobContainerClient _blobContainerClient = _blobServiceClient.GetBlobContainerClient(containerName);
+
+                var azureResponse = new List<BlobContentInfo>();
+                string filename = photo.FileName;
+                string uniqueBlobName = $"news/{Guid.NewGuid()}-{filename}";
+                using (var memoryStream = new MemoryStream())
+                {
+                    photo.CopyTo(memoryStream);
+                    memoryStream.Position = 0;
+
+                    var client = await _blobContainerClient.UploadBlobAsync(uniqueBlobName, memoryStream);
+                    //await _blobContainerClient.DeleteBlobAsync(photoName);
+                    azureResponse.Add(client);
+                }
+
+                var image = "https://edwinbirdclubstorage.blob.core.windows.net/images/" + uniqueBlobName;
+
+                updateNews.Picture = image;
+            }
+
+            updateNews.ImageUpload = null;
 
             var managerUpdateNewsPostVM = await methcall.CallMethodReturnObject<GetNewsPostResponse>(
                                 _httpClient: _httpClient,
@@ -2093,8 +2139,6 @@ namespace WebAppMVC.Controllers
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
 
             string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
-
-            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
 
             var meetPostResponse = await methcall.CallMethodReturnObject<GetNewsPostResponse>(
                                 _httpClient: _httpClient,

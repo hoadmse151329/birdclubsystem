@@ -29,6 +29,28 @@
                         </ol>
                     </div>
                 </div>
+                @if (TempData["Success"] != null)
+                {
+                    <div class="alert alert-success alert-dismissible fade show" id="notif">
+                        <i class='bx bx-message-alt-x p-1'></i>
+                        <strong class="mr-1">@TempData["Success"]</strong>
+                        <button type="button" class="close h-100" data-dismiss="alert" aria-label="Close">
+                            <span><i class='bx bx-x'></i></span>
+                        </button>
+                    </div>
+                    TempData["Success"] = null;
+                }
+                else if (TempData["Error"] != null)
+                {
+                    <div class="alert alert-danger alert-dismissible fade show" id="notif">
+                        <i class='bx bx-message-alt-x p-1'></i>
+                        <strong class="mr-1">@TempData["Error"]</strong>
+                        <button type="button" class="close h-100" data-dismiss="alert" aria-label="Close">
+                            <span><i class='bx bx-x'></i></span>
+                        </button>
+                    </div>
+                    TempData["Error"] = null;
+                }
                 <section>
                     <div class="card">
                         <div class="card-body">
@@ -149,10 +171,21 @@
                                                         </div>
                                                     </div>
                                                     <div class="form-group mx-auto">
-                                                        <form asp-action="News" asp-controller="Manager" method="get" asp-route-id="@data.NewsId">
-                                                            <button class="btn btn-primary clickable-row" type="submit">See Detail</button>
-                                                        </form>
-                                                        <button class="btn btn-danger" data-toggle="modal" data-target="#disableNews_@data.NewsId" type="submit">Disable News</button>
+                                                        @{
+                                                            if (data.Status.Equals("Active"))
+                                                            {
+                                                                <form asp-action="News" asp-controller="Manager" method="get" asp-route-id="@data.NewsId">
+                                                                    <button class="btn btn-primary clickable-row" type="submit">See Detail</button>
+                                                                </form>
+                                                                <button class="btn btn-danger" data-toggle="modal" data-target="#disableNews_@data.NewsId" type="submit">Disable News</button>
+                                                            }
+                                                            else
+                                                            {
+                                                                <form asp-action="News" asp-controller="Manager" method="get" asp-route-id="@data.NewsId">
+                                                                    <button class="btn btn-primary clickable-row" type="submit">See Detail</button>
+                                                                </form>
+                                                            }
+                                                        }
                                                     </div>
                                                 </div>
                                             </div>

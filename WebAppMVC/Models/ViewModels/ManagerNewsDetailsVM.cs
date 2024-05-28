@@ -6,10 +6,10 @@
         {
             News = new BAL.ViewModels.NewsViewModel();
             //SelectedNewsStatuses = new List<string>();
-            updateNews = new BAL.ViewModels.NewsViewModel();
+            updateNews = new BAL.ViewModels.News.UpdateNewsDetail();
         }
         public BAL.ViewModels.NewsViewModel? News { get; set; }
         //public List<string> SelectedNewsStatuses { get; set; }
-        public BAL.ViewModels.NewsViewModel? updateNews { get; set; }
+        public BAL.ViewModels.News.UpdateNewsDetail? updateNews { get; set; }
     }
 }

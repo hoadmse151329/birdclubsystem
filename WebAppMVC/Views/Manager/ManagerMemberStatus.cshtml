@@ -145,7 +145,15 @@
                                                         </td>
                                                         <td>
                                                             <input type="hidden" asp-for="@memberStatuses[i].ExpiryDate" name="listRequest[@i].ExpiryDate" value="@memberStatuses[i].ExpiryDate" class="form-control" />
-                                                            @memberStatuses[i].ExpiryDate.Value.ToString("dd-MM-yyyy HH:mm")
+
+                                                                    @if (memberStatuses[i].ExpiryDate.HasValue)
+                                                                    {
+                                                                        @memberStatuses[i].ExpiryDate.Value.ToString("dd-MM-yyyy HH:mm");
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        @DateTime.MinValue.ToString("dd-MM-yyyy HH:mm");
+                                                                    }
                                                         </td>
                                                         <td>
                                                             @* @{

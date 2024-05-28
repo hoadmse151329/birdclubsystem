@@ -4,9 +4,13 @@ using BAL.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 using WebAppMVC.Services.HostedServices;
 using WebAppMVC.Services.Implements;
 using WebAppMVC.Services.Interfaces;
+using static Org.BouncyCastle.Math.EC.ECCurve;
 
 namespace WebAppMVC
 {
@@ -39,13 +43,29 @@ namespace WebAppMVC
             .AddGoogle(options =>
             {
                 options.ClientId = configuration.GetSection(Constants.Constants.GOOGLE_CLIENT_ID).Value;
-				options.ClientSecret = configuration.GetSection(Constants.Constants.GOOGLE_CLIENT_SECRET).Value;
+                options.ClientSecret = configuration.GetSection(Constants.Constants.GOOGLE_CLIENT_SECRET).Value;
                 options.CallbackPath = Constants.Constants.GOOGLE_REDIRECT_URI_PATH;
                 options.AccessDeniedPath = Constants.Constants.LOGIN_URL;
                 options.SaveTokens = true;
                 options.Scope.Add("profile");
                 options.Scope.Add("email");
-            });
+            })/*.AddJwtBearer(options =>
+            {
+                *//*options.Authority = "your_authority_url"; // The URL of the authority that issues the JWT tokens
+                options.Audience = "your_api_audience"; // The expected audience of the JWT tokens*//*
+                options.RequireHttpsMetadata = true;
+                options.SaveToken = true;
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = configuration.GetSection(Constants.Constants.JWT_VALID_ISSUER).Value,
+                    ValidAudience = configuration.GetSection(Constants.Constants.JWT_VALID_AUDIENCE).Value,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration.GetSection(Constants.Constants.JWT_SECRET_KEY).Value))
+                };
+            })*/;
 
             // Add HttpClient
             services.AddHttpClient();
@@ -60,7 +80,7 @@ namespace WebAppMVC
             services.AddSession(options =>
             {
                 options.Cookie.IsEssential = true;
-                options.Cookie.SameSite = SameSiteMode.Strict;
+                options.Cookie.SameSite = SameSiteMode.None;
                 options.Cookie.HttpOnly = true;
                 options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
                 options.IdleTimeout = TimeSpan.FromMinutes(25); // Adjust the timeout as needed
