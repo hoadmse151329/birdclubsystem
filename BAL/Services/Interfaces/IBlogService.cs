@@ -1,4 +1,4 @@
-﻿using DAL.Infrastructure;
+﻿using BAL.ViewModels;
 using DAL.Models;
 using System;
 using System.Collections.Generic;
@@ -6,15 +6,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DAL.Repositories.Interfaces
+namespace BAL.Services.Interfaces
 {
-    public interface IBlogRepository : IRepositoryBase<Blog>
+    public interface IBlogService
     {
-        Task<IEnumerable<Blog>> GetAllBlogs();
-        Task<Blog?> GetBlogByIdNoTracking(int blogId);
-        Task<IEnumerable<Blog>?> GetAllBlogsByUserId(int usrId);
         Task<int> CountBlog();
-        Task<IEnumerable<Blog>?> GetSortedBlogs(
+        Task<BlogViewModel?> GetBlogByIdNoTracking(int blogId);
+        void Create(BlogViewModel entity);
+        void Update(BlogViewModel entity);
+        Task<IEnumerable<BlogViewModel>> GetAllBlogs();
+        Task<IEnumerable<BlogViewModel>?> GetAllBlogsByUserId(int usrId);
+        Task<IEnumerable<BlogViewModel>?> GetSortedBlogs(
             string? description,
             string? category,
             DateTime? uploadDate,

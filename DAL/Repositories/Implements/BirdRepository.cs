@@ -61,5 +61,10 @@ namespace DAL.Repositories.Implements
         {
             return _context.Birds.SingleOrDefault(b => b.BirdName.Equals(birdName));
         }
+
+        public async Task<IEnumerable<Bird>> GetBirdsOrderByElo()
+        {
+            return _context.Birds.OrderByDescending(b => b.Elo).ToList();
+        }
     }
 }

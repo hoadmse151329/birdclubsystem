@@ -39,5 +39,15 @@ namespace DAL.Repositories.Implements
                 .Include(t => t.UserDetail)
                 .Where(t => t.UserDetail.MemberId == id).ToList();
         }
+
+        public async Task<int> CalculateTotalValue()
+        {
+            return _context.Transactions.AsNoTracking().Where(t => t.Status != "Refund").Sum(t => t.Value.Value);
+        }
+
+        public async Task<int> CalculateTotalRefund()
+        {
+            return _context.Transactions.AsNoTracking().Where(t => t.Status == "Refund").Sum(t => t.Value.Value);
+        }
 	}
 }

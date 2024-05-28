@@ -1,6 +1,4 @@
-﻿
-
-namespace WebAppMVC.Models.ViewModels
+﻿namespace WebAppMVC.Models.ViewModels
 {
     public class AdminAccountIndexVM
     {

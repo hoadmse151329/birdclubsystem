@@ -40,6 +40,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Models\Blog\" />
     <Folder Include="wwwroot\ckfinder\images\" />
   </ItemGroup>
 

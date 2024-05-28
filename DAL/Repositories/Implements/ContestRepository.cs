@@ -72,20 +72,20 @@ namespace DAL.Repositories.Implements
 
             if (openRegistration.HasValue)
             {
-                contests = contests.AsNoTracking().Where(c => c.OpenRegistration == openRegistration.Value);
+                contests = contests.AsNoTracking().Where(c => c.OpenRegistration.Value.Date.Equals(openRegistration.Value.Date));
             }
 
             if (registrationDeadline.HasValue)
             {
-                contests = contests.AsNoTracking().Where(c => c.RegistrationDeadline == registrationDeadline.Value);
+                contests = contests.AsNoTracking().Where(c => c.RegistrationDeadline.Value.Date.Equals(registrationDeadline.Value.Date));
             }
             if (startDate.HasValue)
             {
-                contests = contests.AsNoTracking().Where(c => c.StartDate == startDate.Value);
+                contests = contests.AsNoTracking().Where(c => c.StartDate.Value.Date.Equals(startDate.Value.Date));
             }
             if (endDate.HasValue)
             {
-                contests = contests.AsNoTracking().Where(c => c.EndDate == endDate.Value);
+                contests = contests.AsNoTracking().Where(c => c.EndDate.Value.Date.Equals(endDate.Value.Date));
             }
             if (numberOfParticipants.HasValue)
             {
@@ -161,6 +161,11 @@ namespace DAL.Repositories.Implements
                 nameLocationList.AddRange(list);
             }
             return nameLocationList.Select(l => l.LocationId).ToList();
+        }
+
+        public async Task<int> CountContest()
+        {
+            return _context.Contests.AsNoTracking().Count();
         }
     }
 }

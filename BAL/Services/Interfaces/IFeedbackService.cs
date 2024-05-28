@@ -12,5 +12,6 @@ namespace BAL.Services.Interfaces
         Task<IEnumerable<FeedbackViewModel>> GetAllFeedbacks();
         Task<FeedbackViewModel?> GetFeedbackById(int id);
         void Create(FeedbackViewModel feedback);
+        Task<int> CountFeedback();
     }
 }

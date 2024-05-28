@@ -1,6 +1,8 @@
 ﻿@model dynamic
 @{
+    ViewData["Title"] = "Member Notifications Page";
     List<BAL.ViewModels.NotificationViewModel>? notifications = Model.MemberNotifications;
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <html lang="en">

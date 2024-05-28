@@ -1,6 +1,4 @@
-﻿
-
-using BAL.ViewModels.Admin;
+﻿using BAL.ViewModels.Admin;
 
 namespace WebAppMVC.Models.Admin
 {

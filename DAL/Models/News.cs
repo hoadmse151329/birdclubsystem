@@ -28,9 +28,6 @@ namespace DAL.Models
         [Column("picture")]
         [Unicode(false)]
         public string? Picture { get; set; }
-        [Column("filepdf")]
-        [Unicode(false)]
-        public string? Filepdf { get; set; }
         [Column("userId")]
         public int UserId { get; set; }
 

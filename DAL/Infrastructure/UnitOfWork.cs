@@ -32,6 +32,8 @@ namespace DAL.Infrastructure
         private IBirdRepository _birdRepository;
         private INotificationRepository _notificationRepository;
         private IFeedbackRepository _feedbackRepository;
+        private IBlogRepository _blogRepository;
+        private INewsRepository _newsRepository;
 		public UnitOfWork(BirdClubContext context)
 		{
 			_context = context;
@@ -47,20 +49,17 @@ namespace DAL.Infrastructure
         public IFieldTripParticipantRepository FieldTripParticipantRepository => _fieldTripParticipantRepository ??= new FieldTripParticipantRepository(_context);
         public IContestRepository ContestRepository => _contestRepository ??= new ContestRepository(_context);
         public IContestParticipantRepository ContestParticipantRepository => _contestParticipantRepository ??= new ContestParticipantRepository(_context);
-
         public IFieldtripDaybyDayRepository FieldTripDaybyDayRepository => _fieldTripDaybyDayRepository ??= new FIeldtripDaybyDayRepository(_context);
-
         public IFieldtripGettingThereRepository FieldTripGettingThereRepository => _fieldTripGettingThereRepository ??= new FieldtripGettingThereRepository(_context);
-
         public IFieldtripInclusionRepository FieldTripInclusionRepository => _fieldTripInclusionRepository ??= new FieldtripInclusionRepository(_context);
-
         public IFieldtripMediaRepository FieldTripMediaRepository => _fieldTripMediaRepository ??= new FieldtripMediaRepository(_context);
-
         public IFieldtripAdditionalDetailRepository FieldtripAdditionalDetailRepository => _fieldtripAddDetailsRepository ??= new FieldtripAdditionalDetailRepository(_context);
         public IContestMediaRepository ContestMediaRepository => _contestMediaRepository ??= new ContestMediaRepository(_context);
         public IBirdRepository BirdRepository => _birdRepository ??= new BirdRepository(_context);
         public INotificationRepository NotificationRepository => _notificationRepository ??= new NotificationRepository(_context);
         public IFeedbackRepository FeedbackRepository => _feedbackRepository ??= new FeedbackRepository(_context);
+        public IBlogRepository BlogRepository => _blogRepository ??= new BlogRepository(_context);
+        public INewsRepository NewsRepository => _newsRepository ??= new NewsRepository(_context);
 
         public void Dispose()
         {

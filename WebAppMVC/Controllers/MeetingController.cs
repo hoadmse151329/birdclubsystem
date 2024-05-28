@@ -54,7 +54,7 @@ namespace WebAppMVC.Controllers
         {
             MeetingAPI_URL += "/All";
 
-            MeetingIndexVM meetingListVM = new();
+            MemberMeetingIndexVM meetingListVM = new();
 
             methcall.SetUserDefaultData(this);
 
@@ -141,7 +141,7 @@ namespace WebAppMVC.Controllers
             if ((road == null || road.Count == 0) && (district == null || district.Count == 0) && (city == null || city.Count == 0)) MeetingAPI_URL += "/All";
             else MeetingAPI_URL += "/Search?";
 
-            MeetingIndexVM meetingFilteredM = new();
+            MemberMeetingIndexVM meetingFilteredM = new();
 
             if (road != null && road.Any())
             {

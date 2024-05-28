@@ -8,6 +8,11 @@ namespace BAL.ViewModels
 {
     public class NewsViewModel
     {
+        public NewsViewModel()
+        {
+            Status = "Active";
+            UploadDate = DateTime.Now;
+        }
         public int? NewsId { get; set; }
         public string? Title { get; set; }
         public string? Category { get; set; }
@@ -15,7 +20,6 @@ namespace BAL.ViewModels
         public DateTime? UploadDate { get; set; }
         public string? Status { get; set; }
         public string? Picture { get; set; }
-        public string? Filepdf { get; set; }
         public int? UserId { get; set; }
     }
 }

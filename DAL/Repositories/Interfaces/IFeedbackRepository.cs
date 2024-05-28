@@ -12,5 +12,6 @@ namespace DAL.Repositories.Interfaces
     {
         Task<IEnumerable<Feedback>> GetAllFeedbacks();
         Task<Feedback?> GetFeedbackById(int id);
+        Task<int> CountFeedback();
     }
 }

@@ -14,5 +14,7 @@ namespace DAL.Repositories.Interfaces
 		Task<Transaction?> GetTransactionByVnPayId(string? vnPayid);
 		Task<IEnumerable<Transaction>> GetAllTransactionsByUserId(int id);
         Task<IEnumerable<Transaction>> GetAllTransactionsByMemberId(string id);
+        Task<int> CalculateTotalValue();
+        Task<int> CalculateTotalRefund();
     }
 }

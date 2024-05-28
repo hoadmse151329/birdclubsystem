@@ -1,4 +1,4 @@
-﻿using DAL.Infrastructure;
+﻿using BAL.ViewModels;
 using DAL.Models;
 using System;
 using System.Collections.Generic;
@@ -6,14 +6,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DAL.Repositories.Interfaces
+namespace BAL.Services.Interfaces
 {
-    public interface INewsRepository : IRepositoryBase<News>
+    public interface INewsService
     {
-        Task<IEnumerable<News>> GetAllNews();
-        Task<News?> GetNewsByIdNoTracking(int newsId);
         Task<int> CountNews();
-        Task <IEnumerable<News>?> GetSortedNews(
+        Task<NewsViewModel?> GetNewsByIdNoTracking(int newsId);
+        void Create(NewsViewModel entity);
+        void Update(NewsViewModel entity);
+        Task<IEnumerable<NewsViewModel>> GetAllNews();
+        Task<IEnumerable<NewsViewModel>?> GetSortedNews(
             string? title,
             string? category,
             DateTime? uploadDate,
