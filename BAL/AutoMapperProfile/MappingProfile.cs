@@ -191,6 +191,12 @@ namespace BAL.AutoMapperProfile
             CreateMap<Feedback, FeedbackViewModel>() .ReverseMap();
             CreateMap<Blog,BlogViewModel>() .ReverseMap();
             CreateMap<News,NewsViewModel>() .ReverseMap();
+            CreateMap<Feedback, GetFeedbackResponse>()
+                .AfterMap((src, dest) =>
+                {
+                    dest.Fullname = src.UserDetail.MemberDetail.FullName;
+                })
+                .ReverseMap();
         }
     }
 }

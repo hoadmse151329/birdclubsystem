@@ -1,4 +1,4 @@
-﻿.member-meetings {
+﻿member-meetings {
     background-color: #ffffff;
     display: flex;
     flex-direction: row;
@@ -88,7 +88,7 @@
         height: 29px;
         top: 36px;
         left: 423px;
-        font-family: "Inter-Bold", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 700;
         color: #000000;
         font-size: 24px;
@@ -149,63 +149,63 @@
         border-radius: 25px 25px 0px 0px;
     }
 
-    .member-meetings .text-wrapper-2 {
-        text-align: center;
-        position: absolute;
-        top: 16px;
-        left: 139px;
-        font-family: "Inter-Bold", Helvetica;
-        font-weight: 700;
-        color: #000000;
-        font-size: 20px;
-        letter-spacing: 0;
-        line-height: normal;
-        white-space: nowrap;
-    }
+.member-meetings .text-wrapper-2 {
+    text-align: center;
+    position: absolute;
+    top: 16px;
+    left: 139px;
+    font-family: "Font Awesome 5 Free", Arial, sans-serif;
+    font-weight: 700;
+    color: #000000;
+    font-size: 20px;
+    letter-spacing: 0;
+    line-height: normal;
+    white-space: nowrap;
+}
 
-    .member-meetings .p {
-        position: absolute;
-        height: 19px;
-        top: 266px;
-        left: 26px;
-        font-family: "Inter-Bold", Helvetica;
-        font-weight: 700;
-        color: #000000;
-        font-size: 16px;
-        letter-spacing: 0.8px;
-        line-height: normal;
-        white-space: nowrap;
-    }
+.member-meetings .p {
+    position: absolute;
+    height: 19px;
+    top: 266px;
+    left: 26px;
+    font-family: "Font Awesome 5 Free", Arial, sans-serif;
+    font-weight: 700;
+    color: #000000;
+    font-size: 16px;
+    letter-spacing: 0.8px;
+    line-height: normal;
+    white-space: nowrap;
+}
 
-    .member-meetings .text-wrapper-3 {
-        text-align: center;
-        position: absolute;
-        height: 19px;
-        top: 291px;
-        left: 44px;
-        font-family: "Inter-Medium", Helvetica;
-        font-weight: 500;
-        color: #000000;
-        font-size: 16px;
-        letter-spacing: 0.8px;
-        line-height: normal;
-        white-space: nowrap;
-    }
+.member-meetings .text-wrapper-3 {
+    text-align: center;
+    position: absolute;
+    height: 19px;
+    top: 291px;
+    left: 44px;
+    font-family: "Font Awesome 5 Free", Arial, sans-serif;
+    font-weight: 500;
+    color: #000000;
+    font-size: 16px;
+    letter-spacing: 0.8px;
+    line-height: normal;
+    white-space: nowrap;
+}
 
-    .member-meetings .text-wrapper-4 {
-        text-align: center;
-        position: absolute;
-        width: 330px;
-        height: 46px;
-        top: 362px;
-        left: 17px;
-        font-family: "Inter-Medium", Helvetica;
-        font-weight: 500;
-        color: #000000;
-        font-size: 16px;
-        letter-spacing: 0.8px;
-        line-height: normal;
-    }
+.member-meetings .text-wrapper-4 {
+    text-align: center;
+    position: absolute;
+    width: 330px;
+    height: 46px;
+    top: 362px;
+    left: 17px;
+    font-family: "Font Awesome 5 Free", Arial, sans-serif;
+    font-weight: 500;
+    color: #000000;
+    font-size: 16px;
+    letter-spacing: 0.8px;
+    line-height: normal;
+}
 
     .member-meetings .flexcontainer {
         display: flex;
@@ -219,29 +219,29 @@
         left: 128px;
     }
 
-    .member-meetings .text {
-        position: relative;
-        align-self: stretch;
-        font-family: "Inter-Bold", Helvetica;
-        font-weight: 400;
-        color: #000000;
-        font-size: 20px;
-        text-align: center;
-        letter-spacing: 1px;
-        line-height: normal;
-    }
+.member-meetings .text {
+    position: relative;
+    align-self: stretch;
+    font-family: "Font Awesome 5 Free", Arial, sans-serif;
+    font-weight: 400;
+    color: #000000;
+    font-size: 20px;
+    text-align: center;
+    letter-spacing: 1px;
+    line-height: normal;
+}
 
     .member-meetings .span {
         font-weight: 700;
     }
 
-    .member-meetings .text-wrapper-5 {
-        text-align: center;
-        font-family: "Inter-Medium", Helvetica;
-        font-weight: 500;
-        font-size: 16px;
-        letter-spacing: 0.8px;
-    }
+.member-meetings .text-wrapper-5 {
+    text-align: center;
+    font-family: "Font Awesome 5 Free", Arial, sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    letter-spacing: 0.8px;
+}
 
     .member-meetings .overlap-group-wrapper {
         top: 160px;
@@ -251,20 +251,20 @@
         height: 464px;
     }
 
-    .member-meetings .text-wrapper-6 {
-        text-align: center;
-        position: absolute;
-        height: 19px;
-        top: 291px;
-        left: 53px;
-        font-family: "Inter-Medium", Helvetica;
-        font-weight: 500;
-        color: #000000;
-        font-size: 16px;
-        letter-spacing: 0.8px;
-        line-height: normal;
-        white-space: nowrap;
-    }
+.member-meetings .text-wrapper-6 {
+    text-align: center;
+    position: absolute;
+    height: 19px;
+    top: 291px;
+    left: 53px;
+    font-family: "Font Awesome 5 Free", Arial, sans-serif;
+    font-weight: 500;
+    color: #000000;
+    font-size: 16px;
+    letter-spacing: 0.8px;
+    line-height: normal;
+    white-space: nowrap;
+}
 
     .member-meetings .group-2 {
         top: 160px;
@@ -322,19 +322,19 @@
         border-radius: 50px;
     }
 
-    .member-meetings .text-wrapper-7 {
-        text-align: center;
-        position: absolute;
-        top: 16px;
-        left: 44px;
-        font-family: "Inter-Bold", Helvetica;
-        font-weight: 700;
-        color: #000000;
-        font-size: 20px;
-        letter-spacing: 0;
-        line-height: normal;
-        white-space: nowrap;
-    }
+.member-meetings .text-wrapper-7 {
+    text-align: center;
+    position: absolute;
+    top: 16px;
+    left: 44px;
+    font-family: "Font Awesome 5 Free", Arial, sans-serif;
+    font-weight: 700;
+    color: #000000;
+    font-size: 20px;
+    letter-spacing: 0;
+    line-height: normal;
+    white-space: nowrap;
+}
 
     .member-meetings .group-6 {
         top: 1142px;
@@ -384,126 +384,126 @@
         left: 320px;
     }
 
-    .member-meetings .element {
-        position: absolute;
-        top: 8px;
-        left: 300px;
-        font-family: "Inter-Bold", Helvetica;
-        font-weight: 700;
-        color: #000000;
-        font-size: 20px;
-        letter-spacing: 0;
-        line-height: normal;
-        white-space: nowrap;
-    }
+.member-meetings .element {
+    position: absolute;
+    top: 8px;
+    left: 300px;
+    font-family: "Font Awesome 5 Free", Arial, sans-serif;
+    font-weight: 700;
+    color: #000000;
+    font-size: 20px;
+    letter-spacing: 0;
+    line-height: normal;
+    white-space: nowrap;
+}
 
-    .member-meetings .element-2 {
-        left: 269px;
-        position: absolute;
-        top: 8px;
-        font-family: "Inter-Bold", Helvetica;
-        font-weight: 700;
-        color: #000000;
-        font-size: 20px;
-        letter-spacing: 0;
-        line-height: normal;
-        white-space: nowrap;
-    }
+.member-meetings .element-2 {
+    left: 269px;
+    position: absolute;
+    top: 8px;
+    font-family: "Font Awesome 5 Free", Arial, sans-serif;
+    font-weight: 700;
+    color: #000000;
+    font-size: 20px;
+    letter-spacing: 0;
+    line-height: normal;
+    white-space: nowrap;
+}
 
-    .member-meetings .element-3 {
-        position: absolute;
-        top: 8px;
-        left: 205px;
-        font-family: "Inter-Bold", Helvetica;
-        font-weight: 700;
-        color: #000000;
-        font-size: 20px;
-        letter-spacing: 0;
-        line-height: normal;
-        white-space: nowrap;
-    }
+.member-meetings .element-3 {
+    position: absolute;
+    top: 8px;
+    left: 205px;
+    font-family: "Font Awesome 5 Free", Arial, sans-serif;
+    font-weight: 700;
+    color: #000000;
+    font-size: 20px;
+    letter-spacing: 0;
+    line-height: normal;
+    white-space: nowrap;
+}
 
-    .member-meetings .element-4 {
-        position: absolute;
-        top: 8px;
-        left: 173px;
-        font-family: "Inter-Bold", Helvetica;
-        font-weight: 700;
-        color: #000000;
-        font-size: 20px;
-        letter-spacing: 0;
-        line-height: normal;
-        white-space: nowrap;
-    }
+.member-meetings .element-4 {
+    position: absolute;
+    top: 8px;
+    left: 173px;
+    font-family: "Font Awesome 5 Free", Arial, sans-serif;
+    font-weight: 700;
+    color: #000000;
+    font-size: 20px;
+    letter-spacing: 0;
+    line-height: normal;
+    white-space: nowrap;
+}
 
-    .member-meetings .text-wrapper-8 {
-        text-align: center;
-        position: absolute;
-        top: 8px;
-        left: 140px;
-        font-family: "Inter-Bold", Helvetica;
-        font-weight: 700;
-        color: #000000;
-        font-size: 20px;
-        letter-spacing: 0;
-        line-height: normal;
-        white-space: nowrap;
-    }
+.member-meetings .text-wrapper-8 {
+    text-align: center;
+    position: absolute;
+    top: 8px;
+    left: 140px;
+    font-family: "Font Awesome 5 Free", Arial, sans-serif;
+    font-weight: 700;
+    color: #000000;
+    font-size: 20px;
+    letter-spacing: 0;
+    line-height: normal;
+    white-space: nowrap;
+}
 
-    .member-meetings .text-wrapper-9 {
-        text-align: center;
-        left: 107px;
-        position: absolute;
-        top: 8px;
-        font-family: "Inter-Bold", Helvetica;
-        font-weight: 700;
-        color: #000000;
-        font-size: 20px;
-        letter-spacing: 0;
-        line-height: normal;
-        white-space: nowrap;
-    }
+.member-meetings .text-wrapper-9 {
+    text-align: center;
+    left: 107px;
+    position: absolute;
+    top: 8px;
+    font-family: "Font Awesome 5 Free", Arial, sans-serif;
+    font-weight: 700;
+    color: #000000;
+    font-size: 20px;
+    letter-spacing: 0;
+    line-height: normal;
+    white-space: nowrap;
+}
 
-    .member-meetings .text-wrapper-10 {
-        text-align: center;
-        left: 75px;
-        position: absolute;
-        top: 8px;
-        font-family: "Inter-Bold", Helvetica;
-        font-weight: 700;
-        color: #000000;
-        font-size: 20px;
-        letter-spacing: 0;
-        line-height: normal;
-        white-space: nowrap;
-    }
+.member-meetings .text-wrapper-10 {
+    text-align: center;
+    left: 75px;
+    position: absolute;
+    top: 8px;
+    font-family: "Font Awesome 5 Free", Arial, sans-serif;
+    font-weight: 700;
+    color: #000000;
+    font-size: 20px;
+    letter-spacing: 0;
+    line-height: normal;
+    white-space: nowrap;
+}
 
-    .member-meetings .text-wrapper-11 {
-        text-align: center;
-        left: 46px;
-        position: absolute;
-        top: 8px;
-        font-family: "Inter-Bold", Helvetica;
-        font-weight: 700;
-        color: #000000;
-        font-size: 20px;
-        letter-spacing: 0;
-        line-height: normal;
-        white-space: nowrap;
-    }
+.member-meetings .text-wrapper-11 {
+    text-align: center;
+    left: 46px;
+    position: absolute;
+    top: 8px;
+    font-family: "Font Awesome 5 Free", Arial, sans-serif;
+    font-weight: 700;
+    color: #000000;
+    font-size: 20px;
+    letter-spacing: 0;
+    line-height: normal;
+    white-space: nowrap;
+}
 
-    .member-meetings .element-5 {
-        left: 238px;
-        position: absolute;
-        top: 8px;
-        font-family: "Inter-Bold", Helvetica;
-        font-weight: 700;
-        color: #000000;
-        font-size: 20px;
-        letter-spacing: 0;
-        line-height: normal;
-        white-space: nowrap;
-    }
+.member-meetings .element-5 {
+    left: 238px;
+    position: absolute;
+    top: 8px;
+    font-family: "Font Awesome 5 Free", Arial, sans-serif;
+    font-weight: 700;
+    color: #000000;
+    font-size: 20px;
+    letter-spacing: 0;
+    line-height: normal;
+    white-space: nowrap;
+}
 
     .member-meetings .footer {
         position: absolute;
@@ -529,19 +529,19 @@
         left: 0;
     }
 
-    .member-meetings .text-wrapper-12 {
-        text-align: center;
-        position: absolute;
-        height: 29px;
-        top: 200px;
-        left: 153px;
-        font-family: "Inter-Regular", Helvetica;
-        font-weight: 400;
-        color: #000000;
-        font-size: 24px;
-        letter-spacing: 1.2px;
-        line-height: normal;
-    }
+.member-meetings .text-wrapper-12 {
+    text-align: center;
+    position: absolute;
+    height: 29px;
+    top: 200px;
+    left: 153px;
+    font-family: "Font Awesome 5 Free", Arial, sans-serif;
+    font-weight: 400;
+    color: #000000;
+    font-size: 24px;
+    letter-spacing: 1.2px;
+    line-height: normal;
+}
 
     .member-meetings .other-fanpages {
         position: absolute;
@@ -551,20 +551,20 @@
         left: 1140px;
     }
 
-    .member-meetings .text-wrapper-13 {
-        text-align: center;
-        position: absolute;
-        width: 1134px;
-        height: 84px;
-        top: 20px;
-        left: 152px;
-        font-family: "Inter-Regular", Helvetica;
-        font-weight: 400;
-        color: #000000;
-        font-size: 16px;
-        letter-spacing: 0.8px;
-        line-height: normal;
-    }
+.member-meetings .text-wrapper-13 {
+    text-align: center;
+    position: absolute;
+    width: 1134px;
+    height: 84px;
+    top: 20px;
+    left: 152px;
+    font-family: "Font Awesome 5 Free", Arial, sans-serif;
+    font-weight: 400;
+    color: #000000;
+    font-size: 16px;
+    letter-spacing: 0.8px;
+    line-height: normal;
+}
 
     .member-meetings .learn-more-button {
         position: absolute;
@@ -582,19 +582,19 @@
         border-radius: 50px;
     }
 
-    .member-meetings .text-wrapper-14 {
-        text-align: center;
-        position: absolute;
-        top: 16px;
-        left: 71px;
-        font-family: "Inter-Bold", Helvetica;
-        font-weight: 700;
-        color: #000000;
-        font-size: 20px;
-        letter-spacing: 0;
-        line-height: normal;
-        white-space: nowrap;
-    }
+.member-meetings .text-wrapper-14 {
+    text-align: center;
+    position: absolute;
+    top: 16px;
+    left: 71px;
+    font-family: "Font Awesome 5 Free", Arial, sans-serif;
+    font-weight: 700;
+    color: #000000;
+    font-size: 20px;
+    letter-spacing: 0;
+    line-height: normal;
+    white-space: nowrap;
+}
 
     .member-meetings .navbar {
         position: absolute;
@@ -619,20 +619,20 @@
         background-color: #ffffffcc;
     }
 
-    .member-meetings .chaomao-club {
-        position: absolute;
-        width: 162px;
-        top: 17px;
-        left: 54px;
-        font-family: "Inter-Bold", Helvetica;
-        font-weight: 700;
-        color: #1f5200;
-        font-size: 30px;
-        text-align: center;
-        letter-spacing: 0;
-        line-height: normal;
-        white-space: nowrap;
-    }
+.member-meetings .chaomao-club {
+    position: absolute;
+    width: 162px;
+    top: 17px;
+    left: 54px;
+    font-family: "Font Awesome 5 Free", Arial, sans-serif;
+    font-weight: 700;
+    color: #1f5200;
+    font-size: 30px;
+    text-align: center;
+    letter-spacing: 0;
+    line-height: normal;
+    white-space: nowrap;
+}
 
     .member-meetings .navbar-2 {
         position: absolute;
@@ -642,21 +642,21 @@
         left: 718px;
     }
 
-    .member-meetings .text-wrapper-15 {
-        text-align: center;
-        position: absolute;
-        height: 19px;
-        top: 22px;
-        left: 336px;
-        font-family: "Inter-Bold", Helvetica;
-        font-weight: 700;
-        color: #000000;
-        font-size: 16px;
-        text-align: center;
-        letter-spacing: 0;
-        line-height: normal;
-        white-space: nowrap;
-    }
+.member-meetings .text-wrapper-15 {
+    text-align: center;
+    position: absolute;
+    height: 19px;
+    top: 22px;
+    left: 336px;
+    font-family: "Font Awesome 5 Free", Arial, sans-serif;
+    font-weight: 700;
+    color: #000000;
+    font-size: 16px;
+    text-align: center;
+    letter-spacing: 0;
+    line-height: normal;
+    white-space: nowrap;
+}
 
     .member-meetings .overlap-7 {
         position: absolute;
@@ -666,37 +666,37 @@
         left: 70px;
     }
 
-    .member-meetings .text-wrapper-16 {
-        text-align: center;
-        position: absolute;
-        height: 19px;
-        top: 0;
-        left: 164px;
-        font-family: "Inter-Bold", Helvetica;
-        font-weight: 700;
-        color: #000000;
-        font-size: 16px;
-        text-align: center;
-        letter-spacing: 0;
-        line-height: normal;
-        white-space: nowrap;
-    }
+.member-meetings .text-wrapper-16 {
+    text-align: center;
+    position: absolute;
+    height: 19px;
+    top: 0;
+    left: 164px;
+    font-family: "Font Awesome 5 Free", Arial, sans-serif;
+    font-weight: 700;
+    color: #000000;
+    font-size: 16px;
+    text-align: center;
+    letter-spacing: 0;
+    line-height: normal;
+    white-space: nowrap;
+}
 
-    .member-meetings .text-wrapper-17 {
-        text-align: center;
-        position: absolute;
-        height: 19px;
-        top: 0;
-        left: 0;
-        font-family: "Inter-Bold", Helvetica;
-        font-weight: 700;
-        color: #000000;
-        font-size: 16px;
-        text-align: center;
-        letter-spacing: 0;
-        line-height: normal;
-        white-space: nowrap;
-    }
+.member-meetings .text-wrapper-17 {
+    text-align: center;
+    position: absolute;
+    height: 19px;
+    top: 0;
+    left: 0;
+    font-family: "Font Awesome 5 Free", Arial, sans-serif;
+    font-weight: 700;
+    color: #000000;
+    font-size: 16px;
+    text-align: center;
+    letter-spacing: 0;
+    line-height: normal;
+    white-space: nowrap;
+}
 
     .member-meetings .guest-contests {
         position: absolute;
@@ -729,21 +729,21 @@
         left: 549px;
     }
 
-    .member-meetings .text-wrapper-18 {
-        text-align: center;
-        position: absolute;
-        height: 19px;
-        top: 22px;
-        left: 0;
-        font-family: "Inter-Bold", Helvetica;
-        font-weight: 700;
-        color: #000000;
-        font-size: 16px;
-        text-align: center;
-        letter-spacing: 0;
-        line-height: normal;
-        white-space: nowrap;
-    }
+.member-meetings .text-wrapper-18 {
+    text-align: center;
+    position: absolute;
+    height: 19px;
+    top: 22px;
+    left: 0;
+    font-family: "Font Awesome 5 Free", Arial, sans-serif;
+    font-weight: 700;
+    color: #000000;
+    font-size: 16px;
+    text-align: center;
+    letter-spacing: 0;
+    line-height: normal;
+    white-space: nowrap;
+}
 
     .member-meetings .member-button {
         position: absolute;
@@ -788,8 +788,7 @@
 
     .member-meeting-post .overlap-wrapper {
         background-color: transparent;
-        overflow: hidden;
-        width: 1440px;
+        width: 1300px;
         height: 100%;
     }
 
@@ -850,7 +849,7 @@
 
     .member-meeting-post .headlines {
         position: absolute;
-        width: 1334px;
+        width: 1200px;
         height: 1453px;
         top: 196px;
         left: 54px;
@@ -859,19 +858,19 @@
     .member-meeting-post .group {
         background-color: white;
         position: relative;
-        width: 54.1vw;
-        height: 90vw;
+        width: 600px;
+        height: 1125px;
         border-radius: 30px;
         border: 5px solid black;
         box-shadow: 1px 1px 5px #b0b0b0;
         top: 0;
-        left: 0;
+        left: -10px;
     }
 
     .member-meeting-post .overlap-2 {
         position: relative;
-        width: 54.1vw;
-        height: 90vw;
+        width: 651px;
+        height: 1254px;
     }
 
     .member-meeting-post .img {
@@ -895,10 +894,10 @@
     }
 
     .member-meeting-post .flexcontainer {
-        width: 582px;
+        width: 535px;
         height: 154px;
-        top: 432px;
-        left: 91px;
+        top: 455px;
+        left: 36px;
         display: flex;
         flex-direction: column;
         align-items: flex-start;
@@ -909,7 +908,7 @@
     .member-meeting-post .text {
         position: relative;
         align-self: stretch;
-        font-family: "Inter-Bold", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 400;
         color: #000000;
         font-size: 24px;
@@ -926,7 +925,7 @@
         margin-bottom: -245.81px;
         position: relative;
         align-self: stretch;
-        font-family: "Inter-Bold", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 400;
         color: #000000;
         font-size: 24px;
@@ -936,17 +935,17 @@
     }
 
     .member-meeting-post .span {
-        font-family: "Inter-Medium", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 500;
         font-size: 20px;
         letter-spacing: 1px;
     }
 
     .member-meeting-post .flexcontainer-2 {
-        width: 636px;
+        width: 570px;
         height: 134px;
         top: 812px;
-        left: 65px;
+        left: 10px;
         display: flex;
         flex-direction: column;
         align-items: flex-start;
@@ -958,7 +957,7 @@
         margin-bottom: -34.31px;
         position: relative;
         align-self: stretch;
-        font-family: "Inter-Bold", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 400;
         color: #000000;
         font-size: 24px;
@@ -990,7 +989,7 @@
         height: 29px;
         top: 0;
         left: 37px;
-        font-family: "Inter-Bold", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 700;
         color: #000000;
         font-size: 24px;
@@ -1009,18 +1008,18 @@
 
     .member-meeting-post .div-wrapper {
         position: relative;
-        width: 53vw;
-        height: 12vw;
+        width: 100%;
+        height: 100%;
         background-color: #99ffad;
-        border-radius: 2.5vw 2.5vw 0vw 0vw;
+        border-radius: 25px 25px 0px 0px;
     }
 
     .member-meeting-post .text-wrapper-3 {
         position: absolute;
         width: 129px;
         top: 31px;
-        left: 317px;
-        font-family: "Inter-Bold", Helvetica;
+        left: 244px;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 700;
         color: #000000;
         font-size: 32px;
@@ -1030,10 +1029,10 @@
 
     .member-meeting-post .soi-noi-hoi-thi-chim {
         position: absolute;
-        width: 53.2vw;
-        height: 31vw;
-        top: 12vw;
-        left: -0.2vw;
+        width: 595px;
+        height: 317px;
+        top: 99px;
+        left: -3px;
     }
 
     .member-meeting-post .info {
@@ -1042,10 +1041,10 @@
         border-radius: 30px;
         border: 5px solid black;
         box-shadow: 1px 1px 5px #b0b0b0;
-        width: 540px;
+        width: 495px;
         height: 800px;
-        top: 100px;
-        left: 804px;
+        top: 0;
+        left: 700px;
     }
 
     .member-meeting-post .overlap-3 {
@@ -1080,15 +1079,15 @@
 
     .member-meeting-post .tittle {
         position: absolute;
-        width: 53.1vw;
-        height: 12vw;
-        top: 0.01vw;
-        left: 0.01vw;
+        width: 589px;
+        height: 100px;
+        top: 1px;
+        left: 1px;
     }
 
     .member-meeting-post .overlap-group-2 {
         position: relative;
-        width: 530px;
+        width: 485px;
         height: 100px;
         background-color: #99ffad;
         border-radius: 25px 25px 0px 0px;
@@ -1099,8 +1098,8 @@
         position: absolute;
         height: 29px;
         top: 36px;
-        left: 50px;
-        font-family: "Inter-Bold", Helvetica;
+        left: 35px;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 700;
         color: #000000;
         font-size: 24px;
@@ -1113,7 +1112,7 @@
         height: 24px;
         top: 112px;
         left: 95px;
-        font-family: "Inter-Medium", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 500;
         color: #000000;
         font-size: 20px;
@@ -1134,7 +1133,7 @@
         position: absolute;
         height: 29px;
         top: 84px;
-        font-family: "Inter-Bold", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 700;
         color: #000000;
         font-size: 24px;
@@ -1149,7 +1148,7 @@
         height: 60px;
         top: 177px;
         left: 0;
-        font-family: "Inter-Bold", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 700;
         color: #000000;
         font-size: 24px;
@@ -1163,7 +1162,7 @@
         width: 167px;
         height: 60px;
         top: 15px;
-        font-family: "Inter-Bold", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 700;
         color: #000000;
         font-size: 24px;
@@ -1177,7 +1176,7 @@
         width: 167px;
         height: 29px;
         top: 281px;
-        font-family: "Inter-Bold", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 700;
         color: #000000;
         font-size: 24px;
@@ -1191,7 +1190,7 @@
         width: 167px;
         height: 29px;
         top: 354px;
-        font-family: "Inter-Bold", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 700;
         color: #000000;
         font-size: 24px;
@@ -1202,7 +1201,7 @@
 
     .member-meeting-post .group-3 {
         position: absolute;
-        width: 300px;
+        width: 260px;
         height: 362px;
         top: 183px;
         left: 224px;
@@ -1210,7 +1209,7 @@
 
     .member-meeting-post .text-wrapper-11 {
         position: absolute;
-        font-family: "Inter-Medium", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 500;
         color: #000000;
         font-size: 20px;
@@ -1225,7 +1224,7 @@
         height: 74px;
         top: 72px;
         left: 0;
-        font-family: "Inter-Medium", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 500;
         color: #000000;
         font-size: 20px;
@@ -1238,7 +1237,7 @@
         position: absolute;
         height: 24px;
         top: 177px;
-        font-family: "Inter-Medium", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 500;
         color: #000000;
         font-size: 20px;
@@ -1252,7 +1251,7 @@
         top: 266px;
         position: absolute;
         height: 24px;
-        font-family: "Inter-Medium", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 500;
         color: #000000;
         font-size: 20px;
@@ -1266,7 +1265,7 @@
         top: 338px;
         height: 24px;
         position: absolute;
-        font-family: "Inter-Medium", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 500;
         color: #000000;
         font-size: 20px;
@@ -1280,7 +1279,7 @@
         width: 216px;
         height: 55px;
         top: 642px;
-        left: 159px;
+        left: 135px;
     }
 
     .member-meeting-post .overlap-group-3 {
@@ -1298,7 +1297,7 @@
         left: 66px;
         font-size: 20px;
         position: absolute;
-        font-family: "Inter-Bold", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 700;
         color: #000000;
         letter-spacing: 0;
@@ -1335,7 +1334,7 @@
         height: 29px;
         top: 200px;
         left: 153px;
-        font-family: "Inter-Regular", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 400;
         color: #000000;
         font-size: 24px;
@@ -1357,7 +1356,7 @@
         height: 84px;
         top: 20px;
         left: 152px;
-        font-family: "Inter-Regular", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 400;
         color: #000000;
         font-size: 16px;
@@ -1377,7 +1376,7 @@
         position: absolute;
         top: 16px;
         left: 71px;
-        font-family: "Inter-Bold", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 700;
         color: #000000;
         font-size: 20px;
@@ -1396,7 +1395,7 @@
 
     .member-meeting-post .overlap-5 {
         position: relative;
-        width: 1449px;
+        width: 1150px;
         height: 194px;
     }
 
@@ -1414,7 +1413,7 @@
         width: 162px;
         top: 17px;
         left: 54px;
-        font-family: "Inter-Bold", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 700;
         color: #1f5200;
         font-size: 30px;
@@ -1437,7 +1436,7 @@
         height: 19px;
         top: 22px;
         left: 336px;
-        font-family: "Inter-Bold", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 700;
         color: #000000;
         font-size: 16px;
@@ -1460,7 +1459,7 @@
         height: 19px;
         top: 0;
         left: 164px;
-        font-family: "Inter-Bold", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 700;
         color: #000000;
         font-size: 16px;
@@ -1475,7 +1474,7 @@
         height: 19px;
         top: 0;
         left: 0;
-        font-family: "Inter-Bold", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 700;
         color: #000000;
         font-size: 16px;
@@ -1521,7 +1520,7 @@
         height: 19px;
         top: 22px;
         left: 0;
-        font-family: "Inter-Bold", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 700;
         color: #000000;
         font-size: 16px;
@@ -1691,7 +1690,7 @@
         height: 29px;
         top: 35px;
         left: 211px;
-        font-family: "Inter-Bold", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 700;
         color: #000000;
         font-size: 24px;
@@ -1720,7 +1719,7 @@
         left: 65px;
         font-size: 20px;
         position: absolute;
-        font-family: "Inter-Bold", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 700;
         color: #000000;
         letter-spacing: 0;
@@ -1767,7 +1766,7 @@
         height: 24px;
         top: 24px;
         left: 140px;
-        font-family: "Inter-Medium", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 500;
         color: #929292;
         font-size: 20px;
@@ -1790,7 +1789,7 @@
         height: 24px;
         top: 24px;
         left: 136px;
-        font-family: "Inter-Medium", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 500;
         color: #929292;
         font-size: 20px;
@@ -1813,7 +1812,7 @@
         height: 24px;
         top: 24px;
         left: 150px;
-        font-family: "Inter-Medium", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 500;
         color: #929292;
         font-size: 20px;
@@ -1836,7 +1835,7 @@
         height: 24px;
         top: 24px;
         left: 160px;
-        font-family: "Inter-Medium", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 500;
         color: #929292;
         font-size: 20px;
@@ -1859,7 +1858,7 @@
         height: 24px;
         top: 24px;
         left: 111px;
-        font-family: "Inter-Medium", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 500;
         color: #929292;
         font-size: 20px;
@@ -1903,7 +1902,7 @@
         height: 29px;
         top: 180px;
         left: 624px;
-        font-family: "Inter-Regular", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 400;
         color: #000000;
         font-size: 24px;
@@ -1915,7 +1914,7 @@
         position: absolute;
         top: 267px;
         left: 720px;
-        font-family: "Inter-Bold", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 700;
         color: transparent;
         font-size: 64px;
@@ -1960,7 +1959,7 @@
         height: 29px;
         top: 200px;
         left: 153px;
-        font-family: "Inter-Regular", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 400;
         color: #000000;
         font-size: 24px;
@@ -1982,7 +1981,7 @@
         height: 84px;
         top: 20px;
         left: 152px;
-        font-family: "Inter-Regular", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 400;
         color: #000000;
         font-size: 16px;
@@ -2002,7 +2001,7 @@
         position: absolute;
         top: 16px;
         left: 71px;
-        font-family: "Inter-Bold", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 700;
         color: #000000;
         font-size: 20px;
@@ -2039,7 +2038,7 @@
         width: 162px;
         top: 17px;
         left: 54px;
-        font-family: "Inter-Bold", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 700;
         color: #1f5200;
         font-size: 30px;
@@ -2062,7 +2061,7 @@
         height: 19px;
         top: 22px;
         left: 336px;
-        font-family: "Inter-Bold", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 700;
         color: #000000;
         font-size: 16px;
@@ -2085,7 +2084,7 @@
         height: 19px;
         top: 0;
         left: 164px;
-        font-family: "Inter-Bold", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 700;
         color: #000000;
         font-size: 16px;
@@ -2115,7 +2114,7 @@
         height: 19px;
         top: 0;
         left: 0;
-        font-family: "Inter-Bold", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 700;
         color: #000000;
         font-size: 16px;
@@ -2146,7 +2145,7 @@
         height: 19px;
         top: 22px;
         left: 0;
-        font-family: "Inter-Bold", Helvetica;
+        font-family: "Font Awesome 5 Free", Arial, sans-serif;
         font-weight: 700;
         color: #000000;
         font-size: 16px;

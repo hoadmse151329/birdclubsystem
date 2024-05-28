@@ -8,6 +8,7 @@ using System.Net.Http.Headers;
 using System.Text.Json;
 using WebAppMVC.Constants;
 using WebAppMVC.Models.Meeting;
+using WebAppMVC.Models.Notification;
 using WebAppMVC.Models.Transaction;
 using WebAppMVC.Models.VnPay;
 using WebAppMVC.Services.Interfaces;
@@ -46,8 +47,59 @@ namespace WebAppMVC.Controllers
 			TransactionAPI_URL = "/api/Transaction/";
 			_vnPayService = vnPayService;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            string? usrId = HttpContext.Session.GetString("USER_ID");
+
+            string? role = HttpContext.Session.GetString("ROLE_NAME");
+            if (role == null) role = "Guest";
+            else TempData["NotificationMessage"] = "Logged in as Member!";
+
+            string? usrname = HttpContext.Session.GetString("USER_NAME");
+
+            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
+
+            TempData["ROLE_NAME"] = role;
+            TempData["USER_NAME"] = usrname;
+            TempData["IMAGE_PATH"] = imagepath;
+
+            #region NotificationBell
+            // show read and unread notifications when you click on the bell in the header bar
+            if (usrId != null)
+            {
+                string NotificationCountAPI_URL = "/api/Notification/Count";
+                string NotificationUnreadAPI_URL = "/api/Notification/Unread";
+                string NotificationReadAPI_URL = "/api/Notification/Read";
+
+                var notificationCount = await methcall.CallMethodReturnObject<GetNotificationCountResponse>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: "POST",
+                url: NotificationCountAPI_URL,
+                inputType: usrId,
+                _logger: _logger);
+
+                var notificationUnread = await methcall.CallMethodReturnObject<GetNotificationTitleResponse>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: "POST",
+                url: NotificationUnreadAPI_URL,
+                inputType: usrId,
+                _logger: _logger);
+
+                var notificationRead = await methcall.CallMethodReturnObject<GetNotificationTitleResponse>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: "POST",
+                url: NotificationReadAPI_URL,
+                inputType: usrId,
+                _logger: _logger);
+
+                ViewBag.NotificationCount = notificationCount.IntData;
+                ViewBag.NotificationUnread = notificationUnread.Data.ToList();
+                ViewBag.NotificationRead = notificationRead.Data.ToList();
+            }
+            #endregion
             return View();
         }
         public IActionResult CreatePaymentUrl(PaymentInformationModel model)

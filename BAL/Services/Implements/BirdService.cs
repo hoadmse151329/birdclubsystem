@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BAL.Services.Interfaces;
 using BAL.ViewModels;
+using BAL.ViewModels.Event;
 using DAL.Infrastructure;
 using DAL.Models;
 using System;
@@ -74,10 +75,23 @@ namespace BAL.Services.Implements
             return _mapper.Map<BirdViewModel>(await _unitOfWork.BirdRepository.GetBirdByName(birdName));
         }
 
-        public async Task<IEnumerable<BirdViewModel>> GetBirdsOrderByElo()
+        public async Task<List<GetLeaderboardResponse>> GetBirdLeaderboard()
         {
-            return _mapper.Map<IEnumerable<BirdViewModel>>(await
-                _unitOfWork.BirdRepository.GetBirdsOrderByElo());
+            var sortedBirds = await _unitOfWork.BirdRepository.GetBirdsOrderByElo();
+            var rankedLeaderboard = new List<GetLeaderboardResponse>();
+
+            for (int i = 0; i < sortedBirds.Count(); i++)
+            {
+                rankedLeaderboard.Add(new GetLeaderboardResponse
+                {
+                    Rank = i + 1,
+                    BirdId = sortedBirds[i].BirdId,
+                    BirdName = sortedBirds[i].BirdName,
+                    Elo = sortedBirds[i].Elo
+                });
+            }
+
+            return rankedLeaderboard;
         }
     }
 }
