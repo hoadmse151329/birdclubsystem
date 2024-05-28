@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BAL.Services.Interfaces;
 using BAL.ViewModels;
+using BAL.ViewModels.News;
 using DAL.Infrastructure;
 using DAL.Models;
 using System;
@@ -33,6 +34,20 @@ namespace BAL.Services.Implements
             _unitOfWork.Save();
         }
 
+        public async Task<bool> Create(CreateNewNews entity)
+        {
+            var usr = await _unitOfWork.UserRepository.GetByMemberId(entity.MemberId);
+            if(usr != null)
+            {
+                var news = _mapper.Map<News>(entity);
+                news.UserId = usr.UserId;
+                _unitOfWork.NewsRepository.Create(news);
+                _unitOfWork.Save();
+                return true;
+            }
+            return false;
+        }
+
         public async Task<IEnumerable<NewsViewModel>> GetAllNews()
         {
             return _mapper.Map<IEnumerable<NewsViewModel>>(await _unitOfWork.NewsRepository.GetAllNews());
@@ -45,7 +60,7 @@ namespace BAL.Services.Implements
 
         public async Task<IEnumerable<NewsViewModel>?> GetSortedNews(
             string? title, 
-            string? category, 
+            List<string>? categories, 
             DateTime? uploadDate, 
             List<string>? statuses, 
             string? orderBy, 
@@ -54,7 +69,7 @@ namespace BAL.Services.Implements
         {
             return _mapper.Map<IEnumerable<NewsViewModel>>(await _unitOfWork.NewsRepository.GetSortedNews(
                 title: title,
-                category: category,
+                categories: categories,
                 uploadDate: uploadDate,
                 statuses: statuses,
                 orderBy: orderBy,

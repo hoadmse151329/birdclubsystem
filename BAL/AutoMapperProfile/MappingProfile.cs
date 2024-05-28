@@ -3,6 +3,7 @@ using BAL.ViewModels;
 using BAL.ViewModels.Admin;
 using BAL.ViewModels.Event;
 using BAL.ViewModels.Manager;
+using BAL.ViewModels.News;
 using DAL.Models;
 
 namespace BAL.AutoMapperProfile
@@ -191,6 +192,7 @@ namespace BAL.AutoMapperProfile
             CreateMap<Feedback, FeedbackViewModel>() .ReverseMap();
             CreateMap<Blog,BlogViewModel>() .ReverseMap();
             CreateMap<News,NewsViewModel>() .ReverseMap();
+            CreateMap<News, CreateNewNews>() .ReverseMap();
             CreateMap<Feedback, GetFeedbackResponse>()
                 .AfterMap((src, dest) =>
                 {

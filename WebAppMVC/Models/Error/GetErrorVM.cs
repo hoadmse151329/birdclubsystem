@@ -5,8 +5,9 @@
         public GetErrorVM() 
         {
         }
+        public string Type { get; set; }
         public int? Status { get; set; }
         public string? Title { get; set; }
-        public List<List<string>> Errors { get; set; }
+        public Dictionary<string, string[]> Errors { get; set; }
     }
 }

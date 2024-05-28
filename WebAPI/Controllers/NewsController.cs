@@ -1,6 +1,7 @@
 ﻿using BAL.Services.Implements;
 using BAL.Services.Interfaces;
 using BAL.ViewModels;
+using BAL.ViewModels.News;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -22,7 +23,7 @@ namespace WebAPI.Controllers
             _config = config;
             _newsService = newsService;
         }
-        [HttpPost("All")]
+        [HttpGet("All")]
         [ProducesResponseType(typeof(List<NewsViewModel>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -65,7 +66,7 @@ namespace WebAPI.Controllers
             [FromBody] string? role,
             [FromQuery] string? title,
             [FromQuery] string? userName,
-            [FromQuery] string? category,
+            [FromQuery] List<string>? category,
             [FromQuery] DateTime? uploadDate,
             [FromQuery] List<string>? status,
             [FromQuery] string? orderBy)
@@ -88,7 +89,7 @@ namespace WebAPI.Controllers
                 }
                 var result = await _newsService.GetSortedNews(
                     title: title,
-                    category: category,
+                    categories: category,
                     uploadDate: uploadDate,
                     statuses: status,
                     orderBy: orderBy,
@@ -124,7 +125,7 @@ namespace WebAPI.Controllers
         [ProducesResponseType(typeof(NewsViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> GetMeetingById(
+        public async Task<IActionResult> GetNewsById(
             [FromRoute] int id)
         {
             try
@@ -162,16 +163,24 @@ namespace WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Create(
-            [Required][FromBody] NewsViewModel newsVM)
+            [Required][FromBody] CreateNewNews newsVM)
         {
             try
             {
-                _newsService.Create(newsVM);
-                return Ok(new
+                var isCreated = await _newsService.Create(newsVM);
+                if (isCreated)
                 {
-                    Status = true,
-                    SuccessMessage = "News Create successfully !",
-                    Data = newsVM
+                    return Ok(new
+                    {
+                        Status = true,
+                        SuccessMessage = "News Create successfully !",
+                        Data = newsVM
+                    });
+                }
+                return NotFound(new
+                {
+                    status = false,
+                    errorMessage = "User Id Not Found!"
                 });
             }
             catch (Exception ex)
@@ -210,6 +219,46 @@ namespace WebAPI.Controllers
                 return Ok(new
                 {
                     Status = true,
+                    Data = result
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new
+                {
+                    Status = false,
+                    ErrorMessage = ex.Message,
+                    InnerExceptionMessage = ex.InnerException?.Message
+                });
+            }
+        }
+        [HttpGet("{id:int}/Disable")]
+        [Authorize(Roles = "Manager")]
+        [ProducesResponseType(typeof(NewsViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> UpdateCancelMeeting(
+            [Required][FromRoute] int id)
+        {
+            try
+            {
+                var result = await _newsService.GetNewsByIdNoTracking(id);
+                if (result == null)
+                {
+                    return NotFound(new
+                    {
+                        Status = false,
+                        ErrorMessage = "News post does not exist!"
+                    });
+                }
+                result.NewsId = id;
+                result.Status = "Cancelled";
+                _newsService.Update(result);
+                result = await _newsService.GetNewsByIdNoTracking(id);
+                return Ok(new
+                {
+                    Status = true,
+                    SuccessMessage = "Successfully Disabled News post!",
                     Data = result
                 });
             }
