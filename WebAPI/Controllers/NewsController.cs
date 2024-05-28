@@ -252,7 +252,7 @@ namespace WebAPI.Controllers
                     });
                 }
                 result.NewsId = id;
-                result.Status = "Cancelled";
+                result.Status = "Disabled";
                 _newsService.Update(result);
                 result = await _newsService.GetNewsByIdNoTracking(id);
                 return Ok(new

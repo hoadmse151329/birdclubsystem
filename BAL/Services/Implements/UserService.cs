@@ -104,13 +104,14 @@ namespace BAL.Services.Implements
 			usr.MemberDetail.Status = "Inactive";
             usr.MemberDetail.Role = "Member";
 			usr.MemberDetail.Email = entity.Email;
+
 			if (newmem != null)
             {
                 usr.MemberDetail.FullName = newmem.FullName;
                 usr.MemberDetail.UserName = newmem.UserName;
 				usr.MemberDetail.Gender = newmem.Gender;
-				//usr.MemberDetail.Address = newmem.Address;
                 usr.MemberDetail.Phone = newmem.Phone;
+                usr.MemberDetail.ExpiryDate = DateTime.MinValue;
 			}
             _unitOfWork.UserRepository.Create(usr);
             _unitOfWork.Save();
@@ -130,6 +131,7 @@ namespace BAL.Services.Implements
                 usr.MemberDetail.UserName = newmem.UserName;
                 usr.MemberDetail.Gender = newmem.Gender;
                 usr.MemberDetail.Phone = newmem.Phone;
+                usr.MemberDetail.ExpiryDate = DateTime.MinValue;
             }
             _unitOfWork.UserRepository.Create(usr);
             _unitOfWork.Save();
