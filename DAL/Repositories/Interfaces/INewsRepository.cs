@@ -15,7 +15,7 @@ namespace DAL.Repositories.Interfaces
         Task<int> CountNews();
         Task <IEnumerable<News>?> GetSortedNews(
             string? title,
-            string? category,
+            List<string>? categories,
             DateTime? uploadDate,
             List<string>? statuses,
             string? orderBy,

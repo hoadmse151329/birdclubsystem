@@ -24,6 +24,7 @@ using System.Data;
 using WebAppMVC.Models.Feedback;
 using WebAppMVC.Models.News;
 using BAL.ViewModels.Admin;
+using BAL.ViewModels.News;
 // thêm crud của meeting, fieldtrip, contest.
 namespace WebAppMVC.Controllers
 {
@@ -1823,8 +1824,10 @@ namespace WebAppMVC.Controllers
             return View();
         }
         [HttpGet("News")]
-        public async Task<IActionResult> ManagerNews([FromQuery] string search)
+        public async Task<IActionResult> ManagerNews([FromQuery] string? search)
         {
+            ManagerAPI_URL += "News/All";
+
             string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
             ManagerNewsIndexVM managerNewsListVM = new();
@@ -1854,16 +1857,16 @@ namespace WebAppMVC.Controllers
                 return View("ManagerIndex");
             }
             managerNewsListVM.News = listNewsResponse.Data;
-            managerNewsListVM.createNews = methcall.GetValidationTempData<NewsViewModel>(this, TempData, Constants.Constants.CREATE_NEWS_VALID, "createNews", jsonOptions);
+            managerNewsListVM.createNews = methcall.GetValidationTempData<CreateNewNews>(this, TempData, Constants.Constants.CREATE_NEWS_VALID, "createNews", jsonOptions);
             if (managerNewsListVM.createNews == null)
             {
-                managerNewsListVM.createNews = new NewsViewModel();
+                managerNewsListVM.createNews = new CreateNewNews();
             }
             return View(managerNewsListVM);
         }
         [HttpPost("News/Create")]
         /*[Route("Manager/Meeting/Update/{id:int}")]*/
-        public async Task<IActionResult> ManagerCreateNews([Required] NewsViewModel createNews)
+        public async Task<IActionResult> ManagerCreateNews([Required] CreateNewNews createNews)
         {
             ManagerAPI_URL += "News/Create";
             if (!ModelState.IsValid)
@@ -1876,6 +1879,37 @@ namespace WebAppMVC.Controllers
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
 
             string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
+            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
+
+            createNews.MemberId = usrId;
+
+            IFormFile photo = createNews.ImageUpload;
+
+            if (photo != null && photo.Length > 0)
+            {
+                string connectionString = _config.GetSection("AzureStorage:BlobConnectionString").Value;
+                string containerName = _config.GetSection("AzureStorage:BlobContainerName").Value;
+                BlobServiceClient _blobServiceClient = new BlobServiceClient(connectionString);
+                BlobContainerClient _blobContainerClient = _blobServiceClient.GetBlobContainerClient(containerName);
+
+                var azureResponse = new List<BlobContentInfo>();
+                string filename = photo.FileName;
+                string uniqueBlobName = $"news/{Guid.NewGuid()}-{filename}";
+                using (var memoryStream = new MemoryStream())
+                {
+                    photo.CopyTo(memoryStream);
+                    memoryStream.Position = 0;
+
+                    var client = await _blobContainerClient.UploadBlobAsync(uniqueBlobName, memoryStream);
+                    azureResponse.Add(client);
+                }
+
+                var image = "https://edwinbirdclubstorage.blob.core.windows.net/images/" + uniqueBlobName;
+
+                createNews.Picture = image;
+            }
+
+            createNews.ImageUpload = null;
 
             var managerCreateNewsPostVM = await methcall.CallMethodReturnObject<GetNewsPostResponse>(
                                 _httpClient: _httpClient,
@@ -1889,10 +1923,12 @@ namespace WebAppMVC.Controllers
             {
                 ViewBag.Error =
                     "Error while processing your request! (Create News!).\n News Not Found!";
+                TempData["Error"] = managerCreateNewsPostVM.ErrorMessage;
                 return RedirectToAction("ManagerNews");
             }
             if (!managerCreateNewsPostVM.Status)
             {
+                TempData["Error"] = managerCreateNewsPostVM.ErrorMessage;
                 _logger.LogInformation("Error while processing your request: " + managerCreateNewsPostVM.Status + " , Error Message: " + managerCreateNewsPostVM.ErrorMessage);
                 ViewBag.Error =
                     "Error while processing your request! (Create News Post!).\n"
@@ -1924,7 +1960,7 @@ namespace WebAppMVC.Controllers
             {
                 ViewBag.Error =
                     "Error while processing your request! (Getting Contest!).\n Contest Not Found!";
-                return RedirectToAction("ManagerContest");
+                return RedirectToAction("ManagerNews");
             }
             if (!managerNewsPostVM.Status)
             {
@@ -1932,7 +1968,7 @@ namespace WebAppMVC.Controllers
                 ViewBag.Error =
                     "Error while processing your request! (Getting Contest Post!).\n"
                     + managerNewsPostVM.ErrorMessage;
-                return RedirectToAction("ManagerContest");
+                return RedirectToAction("ManagerNews");
             }
             contestDetailBigModel.updateNews = methcall.GetValidationTempData<NewsViewModel>(this, TempData, Constants.Constants.UPDATE_NEWS_VALID, "updateNews", jsonOptions);
             contestDetailBigModel.News = managerNewsPostVM.Data;
@@ -1981,6 +2017,43 @@ namespace WebAppMVC.Controllers
             }
             TempData["Success"] = "Successfully update News details";
             return RedirectToAction("ManagerNewsDetail", new { id });
+        }
+        [HttpPost("News/{id:int}/Disable")]
+        public async Task<IActionResult> ManagerDisableNews(
+            [FromRoute][Required] int id)
+        {
+            ManagerAPI_URL += "News/" + id + "/Disable";
+
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
+
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
+
+            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
+
+            var meetPostResponse = await methcall.CallMethodReturnObject<GetNewsPostResponse>(
+                                _httpClient: _httpClient,
+                                options: jsonOptions,
+                                methodName: Constants.Constants.GET_METHOD,
+                                url: ManagerAPI_URL,
+                                accessToken: accToken,
+                                _logger: _logger);
+            if (meetPostResponse == null)
+            {
+                ViewBag.Error =
+                    "Error while processing your request! (Disabling News Post!).\n Post Not Found!";
+                return RedirectToAction("ManagerNews");
+            }
+            if (!meetPostResponse.Status)
+            {
+                _logger.LogInformation("Error while processing your request: " + meetPostResponse.Status + " , Error Message: " + meetPostResponse.ErrorMessage);
+                ViewBag.Error =
+                    "Error while processing your request! (Disabling News Post!).\n"
+                    + meetPostResponse.ErrorMessage;
+                return RedirectToAction("ManagerNews");
+            }
+            TempData["Success"] = "Successfully disabled News post";
+            return RedirectToAction("ManagerNews");
         }
         [HttpGet("Notification")]
         public IActionResult ManagerNotification()
