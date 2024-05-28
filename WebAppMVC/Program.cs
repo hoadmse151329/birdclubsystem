@@ -36,7 +36,6 @@ namespace WebAppMVC
             // Authentication setup
             services.AddAuthentication(options =>
             {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
             })
@@ -81,7 +80,7 @@ namespace WebAppMVC
             services.AddSession(options =>
             {
                 options.Cookie.IsEssential = true;
-                options.Cookie.SameSite = SameSiteMode.Strict;
+                options.Cookie.SameSite = SameSiteMode.None;
                 options.Cookie.HttpOnly = true;
                 options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
                 options.IdleTimeout = TimeSpan.FromMinutes(25); // Adjust the timeout as needed

@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
 using WebAppMVC.Models.Notification;
 using WebAppMVC.Services.Interfaces;
+using System.Data;
 namespace WebAppMVC.Controllers
 {
     [Route("Auth")]
@@ -127,7 +128,7 @@ namespace WebAppMVC.Controllers
                 inputType: userInfo.Email,
                 _logger: _logger);
 
-            if (authenResponse == null)
+            if (authenResponse == null || !string.IsNullOrEmpty(authenResponse.ErrorMessage))
             {
                 string? role = HttpContext.Session.GetString(Constants.Constants.ROLE_NAME);
 
@@ -399,10 +400,13 @@ namespace WebAppMVC.Controllers
             {
                 string? role = HttpContext.Session.GetString(Constants.Constants.ROLE_NAME);
                 if (role == null) role = "Guest";
+
                 TempData[Constants.Constants.ROLE_NAME] = role;
+
                 ViewBag.Error =
                 "Error while processing your request! (Registering New Member!).\n Validation Failed!";
-                return View("Register");
+
+                return View("Register",newmemRequest);
             }
             var authenResponse = await methcall.CallMethodReturnObject<GetAuthenResponse>(
 				_httpClient: client,
@@ -416,7 +420,7 @@ namespace WebAppMVC.Controllers
 			{
 				_logger.LogInformation("Error while registering your new account: ");
 				ViewBag.error = "Error while registering your new account ! ";
-				return View("Register");
+				return View("Register", newmemRequest);
 			}
             var responseAuth = authenResponse.Data;
 
@@ -436,7 +440,10 @@ namespace WebAppMVC.Controllers
 				PayAmount = newmemRequest.PayAmount,
 				TransactionType = Constants.Constants.NEW_MEMBER_REGISTRATION_TRANSACTION_TYPE,
 			};
-			var url = _vnPayService.CreatePaymentUrl(model, HttpContext);
+            /*string? role = HttpContext.Session.GetString(Constants.Constants.ROLE_NAME);
+            if (role == null) role = "Guest";
+            TempData[Constants.Constants.ROLE_NAME] = role;*/
+            var url = _vnPayService.CreatePaymentUrl(model, HttpContext);
 			return Redirect(url);
 		}
 
