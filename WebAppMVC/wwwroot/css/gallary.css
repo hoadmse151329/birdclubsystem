@@ -1,0 +1,181 @@
+$color_1:#90cdf2;
+$color_2:#d390f2;
+$color_3:#ea9071;
+$color_4:#f2c390;
+$color_5:#f5e983;
+
+body {
+    font-family: "Font Awesome 5 Free", Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+    color: #333;
+    line-height: 1.6;
+}
+
+article {
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+}
+
+    article:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+        margin-bottom: 0;
+    }
+
+    article h2 {
+        color: #333;
+        font-size: 24px;
+        margin-top: 0;
+    }
+
+    article p {
+        color: #666;
+        font-size: 16px;
+        line-height: 1.5;
+    }
+
+/* Responsive Styles */
+@media (max-width: 600px) {
+    main {
+        margin: 10px;
+        padding: 15px;
+    }
+
+    article h2 {
+        font-size: 20px;
+    }
+
+    article p {
+        font-size: 14px;
+    }
+}
+
+#news-container {
+    position: relative; /* Ensure relative positioning for absolute child */
+    display: flex; /* Use flexbox layout */
+    flex-wrap: wrap; /* Allow items to wrap to the next line */
+    justify-content: space-between;
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+.news-item {
+    width: calc(50% - 20px); /* Set width to 50% of the container width with some margin */
+    margin: 10px; /* Adjust margin as needed */
+    float: left; /* Float elements to the left to align them horizontally */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    padding: 20px; /* Add padding as needed */
+    border: 1px solid #ccc; /* Add border for visual separation */
+}
+
+    .news-item h2 {
+        margin: 0;
+        font-size: 1.5em;
+    }
+
+    .news-item p {
+        margin: 5px 0 0;
+        color: #555;
+    }
+
+.view-detail {
+    margin-top: 10px;
+    padding: 5px 10px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+    .view-detail:hover {
+        background-color: #0056b3;
+        color:white;
+    }
+.content {
+    /*padding-bottom: 100px;*/ /* Adjust this value to ensure proper spacing */
+}
+
+#news-detail-container {
+    font-family: "Font Awesome 5 Free", Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+    color: #333;
+    line-height: 1.6;
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+.loader-container {
+    width: 100%; /* Ensure full width */
+    display: flex;
+    justify-content: center;
+    margin-top: 35px; /* Adjust margin as needed */
+}
+.loader {
+    position: absolute;
+    left: 50%; /* Center horizontally */
+    transform: translateX(-50%);
+    right: 380px;
+    bottom: 10px;
+}
+.dot-container {
+    width: 40px;
+    height: 20px;
+}
+
+.dot-spin {
+    position: relative;
+    width: 10px;
+    height: 10px;
+    border-radius: 5px;
+    background-color: transparent;
+    color: transparent;
+    box-shadow: 0 -18px 0 0 #80ff98, 12.727926px -12.727926px 0 0 #80ff95, 18px 0 0 0 #80ff94, 12.727926px 12.727926px 0 0 rgb(128 255 167 / 0%), 0 18px 0 0 rgb(128 255 160 / 0%), -12.727926px 12.727926px 0 0 rgb(128 255 173 / 0%), -18px 0 0 0 rgb(128 255 175 / 0%), -12.727926px -12.727926px 0 0 rgb(128 255 167 / 0%);
+    animation: dot-spin 1.5s infinite linear;
+}
+
+@keyframes dot-spin {
+    0%, 100% {
+        box-shadow: 0 -18px 0 0 #80ff98, 12.727926px -12.727926px 0 0 #80ff95, 18px 0 0 0 #80ff94, 12.727926px 12.727926px 0 -5px rgb(128 255 167 / 0%), 0 18px 0 -5px rgb(128 255 160 / 0%), -12.727926px 12.727926px 0 -5px rgb(128 255 173 / 0%), -18px 0 0 -5px rgb(128 255 175 / 0%), -12.727926px -12.727926px 0 -5px rgb(128 255 167 / 0%);
+    }
+
+    12.5% {
+        box-shadow: 0 -18px 0 -5px rgb(128 255 167 / 0%), 12.727926px -12.727926px 0 0 #80ff95, 18px 0 0 0 #80ff95, 12.727926px 12.727926px 0 0 #80ff95, 0 18px 0 -5px rgb(128 255 167 / 0%), -12.727926px 12.727926px 0 -5px rgb(128 255 167 / 0%), -18px 0 0 -5px rgb(128 255 167 / 0%), -12.727926px -12.727926px 0 -5px rgb(128 255 167 / 0%);
+    }
+
+    25% {
+        box-shadow: 0 -18px 0 -5px rgb(128 255 167 / 0%), 12.727926px -12.727926px 0 -5px rgb(128 255 167 / 0%), 18px 0 0 0 #80ff95, 12.727926px 12.727926px 0 0 #80ff95, 0 18px 0 0 #80ff95, -12.727926px 12.727926px 0 -5px rgb(128 255 167 / 0%), -18px 0 0 -5px rgb(128 255 167 / 0%), -12.727926px -12.727926px 0 -5px rgb(128 255 167 / 0%);
+    }
+
+    37.5% {
+        box-shadow: 0 -18px 0 -5px rgb(128 255 167 / 0%), 12.727926px -12.727926px 0 -5px rgb(128 255 167 / 0%), 18px 0 0 -5px rgb(128 255 167 / 0%), 12.727926px 12.727926px 0 0 #80ff95, 0 18px 0 0 #80ff95, -12.727926px 12.727926px 0 0 #80ff95, -18px 0 0 -5px rgb(128 255 167 / 0%), -12.727926px -12.727926px 0 -5px rgb(128 255 167 / 0%);
+    }
+
+    50% {
+        box-shadow: 0 -18px 0 -5px rgb(128 255 167 / 0%), 12.727926px -12.727926px 0 -5px rgb(128 255 167 / 0%), 18px 0 0 -5px rgb(128 255 167 / 0%), 12.727926px 12.727926px 0 -5px rgb(128 255 167 / 0%), 0 18px 0 0 #80ff95, -12.727926px 12.727926px 0 0 #80ff95, -18px 0 0 0 #80ff95, -12.727926px -12.727926px 0 -5px rgb(128 255 167 / 0%);
+    }
+
+    62.5% {
+        box-shadow: 0 -18px 0 -5px rgb(128 255 167 / 0%), 12.727926px -12.727926px 0 -5px rgb(128 255 167 / 0%), 18px 0 0 -5px rgb(128 255 167 / 0%), 12.727926px 12.727926px 0 -5px rgb(128 255 167 / 0%), 0 18px 0 -5px rgb(128 255 167 / 0%), -12.727926px 12.727926px 0 0 #80ff95, -18px 0 0 0 #80ff95, -12.727926px -12.727926px 0 0 #80ff95;
+    }
+
+    75% {
+        box-shadow: 0 -18px 0 0 #80ff95, 12.727926px -12.727926px 0 -5px rgb(128 255 167 / 0%), 18px 0 0 -5px rgb(128 255 167 / 0%), 12.727926px 12.727926px 0 -5px rgb(128 255 167 / 0%), 0 18px 0 -5px rgb(128 255 167 / 0%), -12.727926px 12.727926px 0 -5px rgb(128 255 167 / 0%), -18px 0 0 0 #80ff95, -12.727926px -12.727926px 0 0 #80ff95;
+    }
+
+    87.5% {
+        box-shadow: 0 -18px 0 0 #80ff95, 12.727926px -12.727926px 0 0 #80ff95, 18px 0 0 -5px rgb(128 255 167 / 0%), 12.727926px 12.727926px 0 -5px rgb(128 255 167 / 0%), 0 18px 0 -5px rgb(128 255 167 / 0%), -12.727926px 12.727926px 0 -5px rgb(128 255 167 / 0%), -18px 0 0 -5px rgb(128 255 167 / 0%), -12.727926px -12.727926px 0 0 #80ff95;
+    }
+}

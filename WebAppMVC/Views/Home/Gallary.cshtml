@@ -1,0 +1,76 @@
+﻿@model dynamic
+@{
+    ViewData["Title"] = "Gallary Page";
+}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="~/css/Index.css">
+</head>
+<body class="background">
+    @{
+        if (ViewBag.error != null)
+        {
+            <span class="text-danger">@ViewBag.error</span>
+        }
+    }
+
+    <!-- BackToTop -->
+    <a href="#" class="backToTop cd-top text-replace js-cd-top">
+        <i class="fa fa-angle-up"></i>
+    </a>
+
+    <!-- thư viện hỗ trợ -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" referrerpolicy="no-referrer">
+    </script>
+    <!-- Jquery Waypoint -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>
+    <!-- BS4 JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.5/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- BS4 carousels -->
+    
+    <!-- backToTop -->
+    <script src="~/js/util.js"></script>
+    <script src="~/js/main-backToTop.js"></script>
+    <!-- main js -->
+    <script>
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            var backToTopButton = $('.backToTop');
+
+            $(window).scroll(function () {
+                if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
+                    // User has scrolled to the bottom, hide the button
+                    backToTopButton.fadeOut();
+                } else {
+                    // User is not at the bottom, show the button
+                    backToTopButton.fadeIn();
+                }
+            });
+
+            backToTopButton.click(function (e) {
+                e.preventDefault();
+                $('html, body').animate({ scrollTop: 0 }, 'slow');
+            });
+        });
+    </script>
+    <script>
+        function showNotification(message) {
+            var notification = "Success!";
+            notification.text(message).fadeIn();
+
+            setTimeout(function () {
+                notification.fadeOut();
+            }, 3000); // 3 seconds duration
+        }
+    </script>
+    <script src="~/js/user-script.js"></script>
+</body>
+</html>

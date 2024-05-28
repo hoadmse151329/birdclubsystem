@@ -1,0 +1,169 @@
+﻿@model dynamic
+@{
+    ViewData["Title"] = "Blog Page";
+}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="~/css/blog.css">
+    <link rel='stylesheet' href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css'>
+</head>
+<body class="background">
+    @*@foreach (var post in Model)
+    {
+    var userId = User.Identity.GetUserId();
+    var liked = post.Likes.Any(l => l.UserId == userId);
+    var likeButtonText = liked ? "Unlike" : "Like";
+    var likeButtonClass = liked ? "liked" : "";
+    <div>
+    <p>@post.Content</p>
+    <button class="like-button @likeButtonClass" onclick="likePost(@post.Id)">@likeButtonText</button>
+    <span>@post.Likes.Count() Likes</span>
+    <div>
+    @foreach (var comment in post.Comments)
+    {
+    <div>@comment.User.UserName: @comment.Content</div>
+    }
+    </div>
+    <form action="@Url.Action("AddComment")" method="post">
+    <textarea name="content" rows="2" cols="40"></textarea>
+    <input type="hidden" name="postId" value="@post.Id" />
+    <input type="submit" value="Comment" />
+    </form>
+    </div>
+    }*@
+
+    @*<script>
+    function likePost(postId) {
+    $.post('@Url.Action("LikePost")', { postId: postId });
+    }*@
+    <div class="container" style="background-color:white">
+        <div class="row">
+            <h4 class="modal-title">Create Your Post</h4>
+            <div class="create-post">
+                <i class='bx bxs-edit-alt' data-toggle="modal" data-target="#createpost"></i>
+            </div>
+        </div>
+
+        <div id="createpost" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
+                <div class="modal-content modal-addRoom">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Create a Post</h4>
+                    </div>
+                    <form id="postForm" action="@Url.Action("CreatePost")" method="post">
+                        <div class="row p-4">
+                            <div class="col-12">
+                                <div class="row form-group">
+                                    <div class="form-group">
+                                        <textarea type="text" name="postDesc" placeholder="description..." class="form-control" rows="4"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="modal-footer justify-content-center">
+                        <button class="btn btn-success" type="submit" name="action" value="createPost">Post</button>
+                        <button class="btn btn-danger" type="button" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h2>Posts</h2>
+
+        <div class="post">
+            <div class="post-header">
+                <img src="~/images/avatar.png" alt="Profile Picture">
+                <div class="post-header-text">
+                    <h3>John Doe</h3>
+                    <p>3 hours ago</p>
+                </div>
+            </div>
+            <p>This is the first post. It's just for demonstration purposes.</p>
+            <div class="post-actions">
+                <button class="like-button">Like</button>
+                <span>10 Likes</span>
+            </div>
+            <div class="comments">
+                <div class="comment">
+                    <strong>Jane Smith:</strong> Nice post!
+                </div>
+                <div class="comment">
+                    <strong>Mike Johnson:</strong> Great job!
+                </div>
+                <!-- Add more comments here -->
+            </div>
+            <form action="@Url.Action("AddComment")" method="post" class="comment-form">
+                <textarea name="content" rows="2" cols="40" placeholder="Write a comment..."></textarea>
+                <input type="submit" value="Comment" />
+            </form>
+        </div>
+
+        <!-- Add more posts here -->
+    </div>
+    <!-- BackToTop -->
+    <a href="#" class="backToTop cd-top text-replace js-cd-top">
+        <i class="fa fa-angle-up"></i>
+    </a>
+    <script src="~/ckeditor/ckeditor.js"></script>
+    <script src="~/ckfinder/ckfinder.js"></script>
+    <script>
+
+        var editor = CKEDITOR.replace('postDesc');
+        CKFinder.setupCKEditor(editor, 'ckfinder/');
+        data["postDesc"] = editor.getData();
+    </script>
+    <!-- thư viện hỗ trợ -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" referrerpolicy="no-referrer">
+    </script>
+    <!-- Jquery Waypoint -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>
+    <!-- BS4 JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.5/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- BS4 carousels -->
+    <!-- backToTop -->
+    <script src="~/js/util.js"></script>
+    <script src="~/js/main-backToTop.js"></script>
+    <!-- main js -->
+    <script>
+        $(document).ready(function() {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            var backToTopButton = $('.backToTop');
+
+            $(window).scroll(function() {
+                if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
+                    // User has scrolled to the bottom, hide the button
+                    backToTopButton.fadeOut();
+                } else {
+                    // User is not at the bottom, show the button
+                    backToTopButton.fadeIn();
+                }
+            });
+
+            backToTopButton.click(function(e) {
+                e.preventDefault();
+                $('html, body').animate({ scrollTop: 0 }, 'slow');
+            });
+        });
+    </script>
+    <script>
+        function showNotification(message) {
+            var notification = "Success!";
+            notification.text(message).fadeIn();
+
+            setTimeout(function() {
+                notification.fadeOut();
+            }, 3000); // 3 seconds duration
+        }
+    </script>
+    <script src="~/js/user-script.js"></script>
+</body>
+</html>
