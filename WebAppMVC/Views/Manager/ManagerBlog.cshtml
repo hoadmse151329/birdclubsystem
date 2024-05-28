@@ -1,12 +1,10 @@
 ﻿@model dynamic
 @{
     Layout = null;
-    ViewData["Title"] = "Manager Meeting Page";
-    List<string> locationList = Model.Locations;
-    List<BAL.ViewModels.MeetingViewModel> meetingList = Model.Meetings;
-    BAL.ViewModels.MeetingViewModel createMeet = new();
-    BAL.ViewModels.MeetingViewModel cancelMeet = new();
+    ViewData["Title"] = "Manager Blog Page";
+    List<BAL.ViewModels.BlogViewModel> blogList = Model.Blogs;
     string? search = string.Empty;
+    Layout = "~/Views/Shared/_MLayout.cshtml";
 }
 <html lang="en">
 <head>
@@ -14,7 +12,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-<body>
+@*<body>
     <!-- sidebar -->
         <div class="sidebar">
         <div class="container">
@@ -204,7 +202,6 @@
                                                         <span>Meeting</span>
                                                         <div class="status">
                                                             <!-- dùng lệnh if -->
-                                                            @*<span class="stt1">Status:<h6>Processing</h6></span>*@
                                                             <span class="stt1">Status:<h6>@data.Status</h6></span>
                                                             <!-- <span class="stt2">Trạng thái:<h6>Done</h6></span>
                                                             <span class="stt3">Trạng thái:<h6>Cancle</h6></span>
@@ -297,7 +294,6 @@
                     <h4 class="modal-title">Add new meeting</h4>
                 </div>
                 <div class="modal-body">
-                    @*<form asp-action="ManagerCreateMeeting" asp-controller="Manager" method="get" onsubmit="return submitFunc()" id="form">*@
                     <form asp-action="ManagerCreateMeeting" asp-controller="Manager" method="post" id="form">
                         <div class="row p-4">
                             <div class="col-12">
@@ -367,5 +363,5 @@
             </div>
         </div>
     </div>
-</body>
+</body>*@
 </html>

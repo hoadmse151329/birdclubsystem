@@ -11,6 +11,6 @@ namespace BAL.ViewModels.Event
         public int? Rank { get; set; }
         public int? BirdId { get; set; }
         public string? BirdName { get; set; }
-        public string? Elo { get; set; }
+        public int? Elo { get; set; }
     }
 }

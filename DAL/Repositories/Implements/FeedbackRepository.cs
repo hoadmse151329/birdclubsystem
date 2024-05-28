@@ -18,9 +18,11 @@ namespace DAL.Repositories.Implements
             _context = context;
         }
 
-        public async Task<IEnumerable<Feedback>> GetAllFeedbacks()
+        public async Task<List<Feedback>> GetAllFeedbacks()
         {
-            return _context.Feedbacks.AsNoTracking().ToList();
+            return _context.Feedbacks.AsNoTracking()
+                .Include(f => f.UserDetail.MemberDetail)
+                .ToList();
         }
 
         public async Task<Feedback?> GetFeedbackById(int id)

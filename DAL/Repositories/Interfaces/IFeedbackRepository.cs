@@ -10,7 +10,7 @@ namespace DAL.Repositories.Interfaces
 {
     public interface IFeedbackRepository : IRepositoryBase<Feedback>
     {
-        Task<IEnumerable<Feedback>> GetAllFeedbacks();
+        Task<List<Feedback>> GetAllFeedbacks();
         Task<Feedback?> GetFeedbackById(int id);
         Task<int> CountFeedback();
     }

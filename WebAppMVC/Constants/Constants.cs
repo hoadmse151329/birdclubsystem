@@ -23,6 +23,7 @@ namespace WebAppMVC.Constants
         public readonly static string NEW_MEMBER_REGISTRATION_TRANSACTION_TYPE = "New-Membership-Registration";
 		public readonly static string MEMBER_FIELDTRIP_REGISTRATION_TRANSACTION_TYPE = "Member-FieldTrip-Registration";
         public readonly static string MEMBER_CONTEST_REGISTRATION_TRANSACTION_TYPE = "Member-Contest-Registration";
+        public readonly static string MEMBERSHIP_RENEWAL_TRANSACTION_TYPE = "Membership-Renewal-Transaction-Type";
 
         public readonly static string MEMBER_STATUS_INACTIVE = "Inactive";
         public readonly static string MEMBER_STATUS_ACTIVE = "Active";

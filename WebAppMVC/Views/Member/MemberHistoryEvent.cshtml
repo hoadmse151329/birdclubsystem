@@ -284,7 +284,7 @@
                                                                             <label asp-for="@createFeedback.Details" class="col-md-2 text-md-right pb-1"><span>Description: </span></label>
                                                                             <div class="col-md-8">
                                                                                 <div class="form-group">
-                                                                                    <textarea asp-for="@createFeedback.Details" type="text" name="feedbackDesct" placeholder="description..." class="form-control" rows="3"></textarea>
+                                                                                    <textarea asp-for="@createFeedback.Details" type="text" name="createFeedback.Details" placeholder="description..." class="form-control" rows="3"></textarea>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -322,9 +322,9 @@
     <script src="~/ckfinder/ckfinder.js"></script>
     <script>
 
-        var editor = CKEDITOR.replace('feedbackDesct');
+        var editor = CKEDITOR.replace('createFeedback.Details');
         CKFinder.setupCKEditor(editor, 'ckfinder/');
-        data["feedbackDesct"] = editor.getData();
+        data["createFeedback.Details"] = editor.getData();
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
             referrerpolicy="no-referrer"></script>
