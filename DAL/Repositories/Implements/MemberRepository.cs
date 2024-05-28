@@ -142,7 +142,7 @@ namespace DAL.Repositories.Implements
                         } else
                         if (mem.Status == "Inactive" && memberViewModel.Status == "Denied")
                         {
-                            mem.ExpiryDate = DateTime.MinValue;
+                            mem.ExpiryDate = null;
                         }
                         mem.Status = memberViewModel.Status;
                         _context.Update(mem);
@@ -174,7 +174,7 @@ namespace DAL.Repositories.Implements
                         } else
                         if (mem.Status == "Inactive" && memberViewModel.Status == "Denied")
                         {
-                            mem.ExpiryDate = DateTime.MinValue;
+                            mem.ExpiryDate = null;
                         }
                         mem.Status = memberViewModel.Status;
                         _context.Update(mem);
