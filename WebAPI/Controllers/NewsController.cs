@@ -237,7 +237,7 @@ namespace WebAPI.Controllers
         [ProducesResponseType(typeof(NewsViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> UpdateCancelMeeting(
+        public async Task<IActionResult> DisableNews(
             [Required][FromRoute] int id)
         {
             try
@@ -252,7 +252,7 @@ namespace WebAPI.Controllers
                     });
                 }
                 result.NewsId = id;
-                result.Status = "Cancelled";
+                result.Status = "Disabled";
                 _newsService.Update(result);
                 result = await _newsService.GetNewsByIdNoTracking(id);
                 return Ok(new

@@ -102,7 +102,7 @@
                                                     <div class="info-content">
                                                         <form id="form-4" asp-action="MemberUpdate" asp-controller="Member" class="form-check">
                                                             <div class="row userName-content">
-                                                                <label class="contact-title col-md-5 col-sm-4 mt-3"></label>
+                                                                <label asp-for="@memberDetail.UserName" class="contact-title col-md-5 col-sm-4 mt-3"></label>
                                                                 <input asp-for="@memberDetail.UserName" id="userName" type="text"
                                                                     class="form-control col-md-5 col-sm-8 mt-2" readonly
                                                                        value="@memberDetail.UserName">
@@ -111,7 +111,7 @@
 
                                                             </div>
                                                             <div class="row fullName-content">
-                                                                <label class="contact-title col-md-5 col-sm-4 mt-3"></label>
+                                                                <label asp-for="@memberDetail.FullName" class="contact-title col-md-5 col-sm-4 mt-3"></label>
                                                                 <input asp-for="@memberDetail.FullName" id="fullName" type="text" value="@memberDetail.FullName"
                                                                     class="form-control col-md-5 col-sm-8 mt-2">
                                                                 <span asp-validation-for="@memberDetail.FullName" id="error_message"
@@ -119,7 +119,7 @@
 
                                                             </div>
                                                             <div class="row fullName-content">
-                                                                <label class="contact-title col-md-5 col-sm-4 mt-3"></label>
+                                                                <label asp-for="@memberDetail.Description" class="contact-title col-md-5 col-sm-4 mt-3"></label>
                                                                 <input asp-for="@memberDetail.Description" id="description" type="text" value="@memberDetail.Description"
                                                                        class="form-control col-md-5 col-sm-8 mt-2">
                                                                 <span asp-validation-for="@memberDetail.Description" id="error_message"
@@ -127,7 +127,7 @@
 
                                                             </div>
                                                             <div class="row phone-content">
-                                                                <label class="contact-title col-md-5 col-sm-4 mt-3"></label>
+                                                                <label asp-for="@memberDetail.Phone" class="contact-title col-md-5 col-sm-4 mt-3"></label>
                                                                 <input asp-for="@memberDetail.Phone" id="phone" type="tel" value="@memberDetail.Phone"
                                                                     class="form-control col-md-5 col-sm-8 mt-2">
                                                                 <span asp-validation-for="@memberDetail.Phone" id="error_message"
@@ -135,7 +135,7 @@
 
                                                             </div>
                                                             <div class="row address-content">
-                                                                <label class="contact-title col-md-5 col-sm-4 mt-3"></label>
+                                                                <label asp-for="@memberDetail.Address" class="contact-title col-md-5 col-sm-4 mt-3"></label>
                                                                 <input asp-for="@memberDetail.Address" type="text" value="@memberDetail.Address"
                                                                     class="form-control col-md-5 col-sm-8 mt-2">
                                                                 <span asp-validation-for="@memberDetail.Address" id="error_message"
@@ -143,7 +143,7 @@
 
                                                             </div>
                                                             <div class="row email-content">
-                                                                <label
+                                                                <label asp-for="@memberDetail.Email"
                                                                     class="contact-title col-md-5 col-sm-4 mt-3"></label>
                                                                 <input asp-for="@memberDetail.Email" id="email" type="email" value="@memberDetail.Email"
                                                                     class="form-control col-md-5 col-sm-8 mt-2">
@@ -153,10 +153,11 @@
                                                             </div>
 
                                                             <div class="row gender-content">
-                                                                <label class="contact-title col-md-5 col-sm-4 mt-3"></label>
+                                                                <label asp-for="@memberDetail.Gender" class="contact-title col-md-5 col-sm-4 mt-3"></label>
                                                                 <select class="form-control col-md-5 col-sm-8 mt-2" asp-for="@memberDetail.Gender" asp-items="@genders" class="custom-select" id="road">
                                                                 </select>
                                                             </div>
+                                                            <input asp-for="@memberDetail.ImagePath" type="text" name="ImagePath" value="@memberDetail.ImagePath" hidden />
 
                                                             <div class="row pt-3 d-flex">
                                                                 <button type="submit" class="offset-5 button--primary text-white px-3" value="Update">
@@ -185,7 +186,7 @@
                                                                 </div>
                                                                 TempData["Error"] = null;
                                                             }
-                                                            <input asp-for="@memberDetail.ImagePath" type="text" name="ImagePath" value="@memberDetail.ImagePath" hidden />
+                                                            
                                                         </form>
                                                     </div>
                                                 </div>

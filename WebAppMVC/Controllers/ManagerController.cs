@@ -24,6 +24,7 @@ using System.Data;
 using WebAppMVC.Models.Feedback;
 using WebAppMVC.Models.News;
 using BAL.ViewModels.Admin;
+using WebAppMVC.Models.Blog;
 using BAL.ViewModels.News;
 // thêm crud của meeting, fieldtrip, contest.
 namespace WebAppMVC.Controllers
@@ -1814,30 +1815,94 @@ namespace WebAppMVC.Controllers
             return View();
         }
         [HttpGet("Blog")]
-        public IActionResult ManagerBlog([FromQuery] string search)
+        public async Task<IActionResult> ManagerBlog([FromQuery] string search)
         {
             ManagerAPI_URL += "Blog/All";
 
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
 
-            return View();
+            ManagerBlogIndexVM managerBlogListVM = new();
+
+            var listBlogResponse = await methcall.CallMethodReturnObject<GetListBlogResponse>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: Constants.Constants.GET_METHOD,
+                url: ManagerAPI_URL,
+                _logger: _logger);
+
+            if (listBlogResponse == null)
+            {
+                _logger.LogInformation(
+                    "Error while processing your request! (Getting List Blog Status!). List was Empty!: " + listBlogResponse);
+                ViewBag.Error =
+                    "Error while processing your request! (Getting List Blog Status!).\n List was Empty!";
+                return View("ManagerIndex");
+            }
+            else
+            if (!listBlogResponse.Status)
+            {
+                ViewBag.Error =
+                    "Error while processing your request! (Getting List Blog Status!).\n"
+                    + listBlogResponse.ErrorMessage;
+                return View("ManagerIndex");
+            }
+
+            managerBlogListVM.Blogs = listBlogResponse.Data;
+
+            return View(managerBlogListVM);
+        }
+        [HttpPost("Blog/{id:int}/Disable")]
+        public async Task<IActionResult> ManagerDisableBlog(
+            [FromRoute][Required] int id)
+        {
+            ManagerAPI_URL += "Blog/" + id + "/Disable";
+
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
+
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
+
+            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
+
+            var blogPostResponse = await methcall.CallMethodReturnObject<GetBlogPostResponse>(
+                                _httpClient: _httpClient,
+                                options: jsonOptions,
+                                methodName: Constants.Constants.GET_METHOD,
+                                url: ManagerAPI_URL,
+                                accessToken: accToken,
+                                _logger: _logger);
+            if (blogPostResponse == null)
+            {
+                ViewBag.Error =
+                    "Error while processing your request! (Disabling Blog Post!).\n Post Not Found!";
+                return RedirectToAction("ManagerBlog");
+            }
+            if (!blogPostResponse.Status)
+            {
+                _logger.LogInformation("Error while processing your request: " + blogPostResponse.Status + " , Error Message: " + blogPostResponse.ErrorMessage);
+                ViewBag.Error =
+                    "Error while processing your request! (Disabling Blog Post!).\n"
+                    + blogPostResponse.ErrorMessage;
+                return RedirectToAction("ManagerBlog");
+            }
+            TempData["Success"] = "Successfully disabled News post";
+            return RedirectToAction("ManagerBlog");
         }
         [HttpGet("News")]
         public async Task<IActionResult> ManagerNews([FromQuery] string? search)
         {
-            ManagerAPI_URL += "News/All";
-
             string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
             ManagerNewsIndexVM managerNewsListVM = new();
+
+            ManagerAPI_URL += "News/All";
 
             var listNewsResponse = await methcall.CallMethodReturnObject<GetListNews>(
                 _httpClient: _httpClient,
                 options: jsonOptions,
                 methodName: Constants.Constants.GET_METHOD,
                 url: ManagerAPI_URL,
-                accessToken: accToken,
                 _logger: _logger);
 
             if (listNewsResponse == null)
