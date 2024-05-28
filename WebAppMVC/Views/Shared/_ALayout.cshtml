@@ -16,8 +16,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,100&family=Roboto+Condensed:wght@400;700&display=swap"
           rel="stylesheet">
     <link rel="stylesheet" href="~/fonts/fontawesome-free-5.15.4-web/css/all.min.css">
-
-    <!-- main CSS -->
     <link rel="stylesheet" href="~/css/main.css">
 </head>
 <body>
@@ -26,29 +24,29 @@
         <div class="container">
             <div class="navigation">
                 <ul class="slide-menu">
-                    <div class="logo">
+                    <li class="logo">
                         <a href="@Url.Action("AdminIndex", "Admin")">
                             <img class="logo" src="~/images/Red_whiskered_bulbul_bird_logo_eps_10_generated 1.png" alt="logo">
                         </a>
-                    </div>
+                    </li>
                     <li class="active" data-toggle="tooltip" data-placement="right" title="Overview">
                         <a href="@Url.Action("AdminIndex", "Admin")">
                             <span><i class='bx bx-tachometer'></i></span>
                             <span class="title">Overview</span>
                         </a>
                     </li>
-                    <li data-toggle="tooltip" data-placement="right" title="AccountList">
-                        <a href="@Url.Action("AdminAccountIndex", "Admin")">
-                            <span><i class="bx bx-detail"></i></span>
-                            <span class="title">Manage Accounts</span>
+                    <li data-toggle="tooltip" data-placement="right" title="Manage Meeting">
+                        <a href="@Url.Action("AdminAccountIndex", "Admin")" li class="dropdown-item">
+                            <i class='bx bx-home-alt-2'></i>
+                            <span class="title">AccountIndex</span>
                         </a>
                     </li>
-                    <li data-toggle="tooltip" data-placement="right" title="Admin Profile">
-                        <a href="@Url.Action("AdminProfile", "Admin")">
-                            <span><i class='bx bx-user'></i></span>
-                            <span class="title">Your Profile</span>
-                        </a>
-                    </li>
+                <li data-toggle="tooltip" data-placement="right" title="Admin Profile">
+                    <a href="@Url.Action("AdminProfile", "Admin")">
+                        <span><i class='bx bx-user'></i></span>
+                        <span class="title">Your Profile</span>
+                    </a>
+                </li>
                 </ul>
             </div>
         </div>
@@ -96,10 +94,10 @@
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/owner-script.js"></script>
     <script src="~/js/user-script.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.5.0-beta.5/lightgallery.es5.min.js"></script>
     <script src="https://unpkg.com/filepond-plugin-file-poster/dist/filepond-plugin-file-poster.js"></script>
+    <script src="~/js/chart.js"></script>
 </body>
 </html>

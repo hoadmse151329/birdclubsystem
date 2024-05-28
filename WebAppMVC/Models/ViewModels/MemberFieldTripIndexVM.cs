@@ -1,8 +1,8 @@
 ﻿namespace WebAppMVC.Models.ViewModels
 {
-    public class FieldTripIndexVM
+    public class MemberFieldTripIndexVM
     {
-        public FieldTripIndexVM()
+        public MemberFieldTripIndexVM()
         {
             FieldTrips = new List<BAL.ViewModels.FieldTripViewModel>();
             Roads = new List<string>();

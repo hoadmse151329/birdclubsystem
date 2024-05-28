@@ -2,9 +2,9 @@
 
 namespace WebAppMVC.Models.ViewModels
 {
-    public class ContestIndexVM
+    public class MemberContestIndexVM
     {
-        public ContestIndexVM()
+        public MemberContestIndexVM()
         {
             Contests = new List<BAL.ViewModels.ContestViewModel>();
             Roads = new List<string>();

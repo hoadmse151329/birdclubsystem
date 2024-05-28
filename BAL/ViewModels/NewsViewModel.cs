@@ -8,6 +8,11 @@ namespace BAL.ViewModels
 {
     public class NewsViewModel
     {
+        public NewsViewModel()
+        {
+            Status = "Active";
+            UploadDate = DateTime.Now;
+        }
         public int? NewsId { get; set; }
         public string? Title { get; set; }
         public string? Category { get; set; }

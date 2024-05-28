@@ -11,7 +11,18 @@ namespace DAL.Repositories.Interfaces
     public interface IBlogRepository : IRepositoryBase<Blog>
     {
         Task<IEnumerable<Blog>> GetAllBlogs();
-        Task<IEnumerable<Blog>> GetAllBlogsByUserId(int usrId);
+        Task<Blog?> GetBlogByIdNoTracking(int blogId);
+        Task<IEnumerable<Blog>?> GetAllBlogsByUserId(int usrId);
         Task<int> CountBlog();
+        Task<IEnumerable<Blog>?> GetSortedBlogs(
+            string? description,
+            string? category,
+            DateTime? uploadDate,
+            int? vote,
+            List<string>? statuses,
+            string? orderBy,
+            int? userId = null,
+            bool isMemberOrGuest = false
+            );
     }
 }

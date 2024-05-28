@@ -40,7 +40,19 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Models\Blog\" />
     <Folder Include="wwwroot\ckfinder\images\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Views\Home\Index - Copy.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\fonts\fontawesome-free-5.15.4-web\css\all.min.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

@@ -1,4 +1,4 @@
-﻿@model dynamic
+@model dynamic
 @{
     Layout = null;
     ViewData["Title"] = "Manager Statistic Page";
@@ -25,8 +25,8 @@
                                         <button class="btn btn-xs btn-orange" onclick="timeFrame(this)" value="week">Week</button>
                                         <button class="btn btn-xs btn-orange" onclick="timeFrame(this)" value="month">Month</button>
                                     </div>
-                                    <div id="numOfHome">
-                                        <select name="aaa" id="a1234" style="display: none;">
+                                        <div id="numOfHome">
+                                            <select name="aaa" id="a1234" style="display: none;">
                                             <option value="10">2022-06-09 UTC+0700</option>
                                             <option value="9">2022-06-10 UTC+0700</option>
                                             <option value="3">2022-06-11 UTC+0700</option>
@@ -54,16 +54,54 @@
                                             <option value="2">2022-06-15 UTC+0700</option>
                                         </select>
                                     </div>
-                                    <canvas id="chart-Dashboard" width="400" height="200"></canvas>
+                                            @*<%
+                                                List<MotelDTO> listMotel = (ArrayList<MotelDTO>) request.getAttribute("LIST_MOTEL");
+                                                if (listMotel != null) {
+                                                    if (listMotel.size() > 0) {
+                                                        for (MotelDTO motel : listMotel) {
+
+                                            %>
+                                            <select name="<%= motel.getName()%>" id="a<%= motel.getMotelID()%>" style="display: none;">
+                                                <%
+                                                    List<ChartDTO> listChart = (ArrayList<ChartDTO>) request.getAttribute("LIST_DATA");
+                                                    if (listChart != null) {
+                                                        if (listChart.size() > 0) {
+                                                            for (ChartDTO data : listChart) {
+                                                                if (motel.getMotelID().equals(data.getMotelID())) {
+
+                                                %>
+                                                <option value="<%=data.getIncome()%>"><%=data.getDate()%> UTC+0700</option>
+                                                <%
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                %> 
+                                            </select>
+                                            <%
+                                                        }
+                                                    }
+                                                }
+                                            %>                                        
+                                        </div>*@
+                                        <canvas id="chart-Dashboard" width="400" height="200"></canvas>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </section>
+                    </section>
+                </div>
             </div>
         </div>
-    </div>
 
+        <!-- jQuery first, then Popper.js, then Bootstrap JS. -->
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>   
+        <script src="~/js/owner-script.js"></script>   
+        <script src="~/js/chart.js"></script>
 
-</body>
+    </body>
 </html>

@@ -62,7 +62,7 @@ namespace WebAppMVC.Controllers
 		public async Task<IActionResult> Index()
 		{
 			FieldTripAPI_URL += "/All";
-            FieldTripIndexVM fieldtripListVM = new();
+            MemberFieldTripIndexVM fieldtripListVM = new();
 
             methcall.SetUserDefaultData(this);
             string? role = HttpContext.Session.GetString(Constants.Constants.ROLE_NAME);
@@ -150,7 +150,7 @@ namespace WebAppMVC.Controllers
             if ((road == null || road.Count == 0) && (district == null || district.Count == 0) && (city == null || city.Count == 0)) FieldTripAPI_URL += "/All";
             else FieldTripAPI_URL += "/Search?";
 
-            FieldTripIndexVM fieldtripFilteredVM = new();
+            MemberFieldTripIndexVM fieldtripFilteredVM = new();
 
             if (road != null && road.Any())
             {

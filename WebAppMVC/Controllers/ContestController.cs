@@ -64,7 +64,7 @@ namespace WebAppMVC.Controllers
         public async Task<IActionResult> Index()
 		{
             ContestAPI_URL += "/All";
-            ContestIndexVM contestListVM = new();
+            MemberContestIndexVM contestListVM = new();
 
             methcall.SetUserDefaultData(this);
             string? role = HttpContext.Session.GetString(Constants.Constants.ROLE_NAME);
@@ -153,7 +153,7 @@ namespace WebAppMVC.Controllers
             if ((road == null || road.Count == 0) && (district == null || district.Count == 0) && (city == null || city.Count == 0)) ContestAPI_URL += "/All";
             else ContestAPI_URL += "/Search?";
 
-            ContestIndexVM contestFilteredVM = new();
+            MemberContestIndexVM contestFilteredVM = new();
 
             if (eloRange != null && !string.IsNullOrEmpty(eloRange.Trim()))
             {
