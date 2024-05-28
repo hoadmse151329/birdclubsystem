@@ -190,7 +190,12 @@ namespace BAL.AutoMapperProfile
             CreateMap<Bird, BirdViewModel>() .ReverseMap();
             CreateMap<Notification, NotificationViewModel>() .ReverseMap();
             CreateMap<Feedback, FeedbackViewModel>() .ReverseMap();
-            CreateMap<Blog,BlogViewModel>() .ReverseMap();
+            CreateMap<Blog,BlogViewModel>()
+                .AfterMap((src, dest) =>
+                {
+                    dest.Fullname = src.UserDetail.MemberDetail.FullName;
+                })
+                .ReverseMap();
             CreateMap<News,NewsViewModel>() .ReverseMap();
             CreateMap<News, CreateNewNews>() .ReverseMap();
             CreateMap<Feedback, GetFeedbackResponse>()

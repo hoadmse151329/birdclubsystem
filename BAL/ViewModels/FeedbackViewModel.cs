@@ -16,6 +16,5 @@ namespace BAL.ViewModels
         public DateTime? Date { get; set; }
         public string? Category { get; set; }
         public decimal? Rating { get; set; }
-        public string? Status { get; set; }
     }
 }

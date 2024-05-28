@@ -89,8 +89,7 @@ namespace WebAPI.Controllers
                     Details = feedback.Details,
                     Category = feedback.Category,
                     Rating = feedback.Rating,
-                    Date = DateTime.Now,
-                    Status = "Unread"
+                    Date = DateTime.Now
                 };
                 _feedbackService.Create(feed);
                 return Ok(new
