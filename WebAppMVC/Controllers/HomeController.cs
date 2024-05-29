@@ -164,8 +164,8 @@ namespace WebAppMVC.Controllers
         {
             return View();
         }
-        [Route("Gallary")]
-        public IActionResult Gallary()
+        [Route("Gallery")]
+        public IActionResult Gallery()
         {
             return View();
         }
