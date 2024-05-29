@@ -10,6 +10,7 @@ namespace BAL.ViewModels
     {
         public int? BlogId { get; set; }
         public int? UserId { get; set; }
+        public string? Fullname { get; set; }
         public string? Description { get; set; }
         public string? Category { get; set; }
         public DateTime? UploadDate { get; set; }

@@ -129,7 +129,7 @@ namespace DAL.Repositories.Implements
                 {
                     if (mem.Status != memberViewModel.Status)
                     {
-                        if (mem.Status == "Expired" && memberViewModel.Status == "Active")
+                        if ((mem.Status == "Expired" || mem.Status == "Inactive") && memberViewModel.Status == "Active")
                         {
                             if (DateTime.Now.Day >= DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month))
                             {
@@ -142,7 +142,7 @@ namespace DAL.Repositories.Implements
                         } else
                         if (mem.Status == "Inactive" && memberViewModel.Status == "Denied")
                         {
-                            mem.ExpiryDate = DateTime.MinValue;
+                            mem.ExpiryDate = null;
                         }
                         mem.Status = memberViewModel.Status;
                         _context.Update(mem);
@@ -161,7 +161,7 @@ namespace DAL.Repositories.Implements
                 {
                     if (mem.Status != memberViewModel.Status)
                     {
-                        if(mem.Status == "Expired" && memberViewModel.Status == "Active")
+                        if((mem.Status == "Expired" || mem.Status == "Inactive") && memberViewModel.Status == "Active")
                         {
                             if (DateTime.Now.Day >= DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month))
                             {
@@ -174,7 +174,7 @@ namespace DAL.Repositories.Implements
                         } else
                         if (mem.Status == "Inactive" && memberViewModel.Status == "Denied")
                         {
-                            mem.ExpiryDate = DateTime.MinValue;
+                            mem.ExpiryDate = null;
                         }
                         mem.Status = memberViewModel.Status;
                         _context.Update(mem);

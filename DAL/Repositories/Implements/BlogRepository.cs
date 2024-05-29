@@ -20,12 +20,12 @@ namespace DAL.Repositories.Implements
 
         public async Task<IEnumerable<Blog>> GetAllBlogs()
         {
-            return _context.Blogs.AsNoTracking().ToList();
+            return _context.Blogs.AsNoTracking().Include(b => b.UserDetail.MemberDetail).ToList();
         }
 
         public async Task<IEnumerable<Blog>?> GetAllBlogsByUserId(int usrId)
         {
-            return _context.Blogs.AsNoTracking().Where(b => b.UserId == usrId).ToList();
+            return _context.Blogs.AsNoTracking().Where(b => b.UserId == usrId).Include(b => b.UserDetail.MemberDetail).ToList();
         }
 
         public async Task<int> CountBlog()
@@ -43,7 +43,7 @@ namespace DAL.Repositories.Implements
             int? userId = null, 
             bool isMemberOrGuest = false)
         {
-            var newsfeeds = _context.Blogs.AsNoTracking().AsQueryable();
+            var newsfeeds = _context.Blogs.AsNoTracking().Include(b => b.UserDetail.MemberDetail).AsQueryable();
             /*  Draft: The post has been created but not yet published.
                 Archived: The post is no longer visible to the public but is kept for record-keeping.
                 Hidden: The post is temporarily hidden from the public view.
@@ -105,7 +105,7 @@ namespace DAL.Repositories.Implements
 
         public async Task<Blog?> GetBlogByIdNoTracking(int blogId)
         {
-            return await _context.Blogs.AsNoTracking().FirstOrDefaultAsync(b => b.BlogId.Equals(blogId));
+            return await _context.Blogs.AsNoTracking().Include(b => b.UserDetail.MemberDetail).FirstOrDefaultAsync(b => b.BlogId.Equals(blogId));
         }
     }
 }

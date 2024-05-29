@@ -444,6 +444,7 @@ namespace WebAppMVC.Controllers
             if (role == null) role = "Guest";
             TempData[Constants.Constants.ROLE_NAME] = role;*/
             var url = _vnPayService.CreatePaymentUrl(model, HttpContext);
+			//HttpContext.
 			return Redirect(url);
 		}
 

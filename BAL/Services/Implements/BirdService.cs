@@ -85,7 +85,6 @@ namespace BAL.Services.Implements
                 rankedLeaderboard.Add(new GetLeaderboardResponse
                 {
                     Rank = i + 1,
-                    BirdId = sortedBirds[i].BirdId,
                     BirdName = sortedBirds[i].BirdName,
                     Elo = sortedBirds[i].Elo
                 });

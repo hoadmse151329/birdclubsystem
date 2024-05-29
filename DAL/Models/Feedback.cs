@@ -15,7 +15,7 @@ namespace DAL.Models
         [Column("userId")]
         public int UserId { get; set; }
         [Column("eventId")]
-        [StringLength(5)]
+        [StringLength(50)]
         public string EventId { get; set; } = null!;
         [Column("title")]
         [StringLength(255)]
@@ -29,9 +29,6 @@ namespace DAL.Models
         public string? Category { get; set; }
         [Column("rating", TypeName = "decimal(5, 2)")]
         public decimal? Rating { get; set; }
-        [Column("status")]
-        [StringLength(20)]
-        public string? Status { get; set; }
 
         [ForeignKey(nameof(UserId))]
         [InverseProperty(nameof(User.Feedbacks))]

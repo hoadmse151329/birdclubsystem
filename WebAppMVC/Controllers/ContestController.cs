@@ -316,14 +316,14 @@ namespace WebAppMVC.Controllers
             }
             if (contestPostResponse == null)
             {
-                //_logger.LogInformation("Username or Password is invalid: " + contestPostResponse.Status + " , Error Message: " + contestPostResponse.ErrorMessage);
+                //_logger.LogInformation("Error while processing your request: " + contestPostResponse.Status + " , Error Message: " + contestPostResponse.ErrorMessage);
                 ViewBag.error =
                     "Error while processing your request! (Getting Contest!).\n Contest Not Found!";
                 return View("Index");
             }
             if (!contestPostResponse.Status)
             {
-                _logger.LogInformation("Username or Password is invalid: " + contestPostResponse.Status + " , Error Message: " + contestPostResponse.ErrorMessage);
+                _logger.LogInformation("Error while processing your request: " + contestPostResponse.Status + " , Error Message: " + contestPostResponse.ErrorMessage);
                 ViewBag.error =
                     "Error while processing your request! (Getting Contest Post!).\n"
                     + contestPostResponse.ErrorMessage;
@@ -698,9 +698,88 @@ namespace WebAppMVC.Controllers
             TempData["Success"] = participationNo.SuccessMessage;
             return RedirectToAction("ContestPost", new { id = contestId });
         }
-        public IActionResult LeaderBoard()
+        [HttpGet("Leaderboard")]
+        public async Task<IActionResult> LeaderBoard()
 		{
-			return View();
+            string? usrId = HttpContext.Session.GetString("USER_ID");
+
+            string? role = HttpContext.Session.GetString("ROLE_NAME");
+            if (role == null) role = "Guest";
+            else TempData["NotificationMessage"] = "Logged in as Member!";
+
+            string? usrname = HttpContext.Session.GetString("USER_NAME");
+
+            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
+
+            TempData["ROLE_NAME"] = role;
+            TempData["USER_NAME"] = usrname;
+            TempData["IMAGE_PATH"] = imagepath;
+
+            #region NotificationBell
+            // show read and unread notifications when you click on the bell in the header bar
+            if (usrId != null)
+            {
+                string NotificationCountAPI_URL = "/api/Notification/Count";
+                string NotificationUnreadAPI_URL = "/api/Notification/Unread";
+                string NotificationReadAPI_URL = "/api/Notification/Read";
+
+                var notificationCount = await methcall.CallMethodReturnObject<GetNotificationCountResponse>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: "POST",
+                url: NotificationCountAPI_URL,
+                inputType: usrId,
+                _logger: _logger);
+
+                var notificationUnread = await methcall.CallMethodReturnObject<GetNotificationTitleResponse>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: "POST",
+                url: NotificationUnreadAPI_URL,
+                inputType: usrId,
+                _logger: _logger);
+
+                var notificationRead = await methcall.CallMethodReturnObject<GetNotificationTitleResponse>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: "POST",
+                url: NotificationReadAPI_URL,
+                inputType: usrId,
+                _logger: _logger);
+
+                ViewBag.NotificationCount = notificationCount.IntData;
+                ViewBag.NotificationUnread = notificationUnread.Data.ToList();
+                ViewBag.NotificationRead = notificationRead.Data.ToList();
+            }
+            #endregion
+
+            string LeaderboardAPI_URL = "/api/Bird/Leaderboard";
+
+            var leaderboardResponse = await methcall.CallMethodReturnObject<GetBirdByRankResponse>(
+                                   _httpClient: _httpClient,
+                                   options: jsonOptions,
+                                   methodName: Constants.Constants.GET_METHOD,
+                                   url: LeaderboardAPI_URL,
+                                   _logger: _logger);
+
+            if (leaderboardResponse == null)
+            {
+                ViewBag.Error =
+                    "Error while proccesing your request! (Get leaderboard).\n Not Found!";
+                return RedirectToAction("Index", "Home");
+            }
+            if (!leaderboardResponse.Status)
+            {
+                ViewBag.Error =
+                    "Error while processing your request! (Get leaderboard).\n"
+                    + leaderboardResponse.ErrorMessage;
+                return RedirectToAction("Index", "Home");
+            }
+
+            dynamic leaderboardVM = new ExpandoObject();
+            leaderboardVM.Leaderboard = leaderboardResponse.Data;
+
+            return View(leaderboardVM);
 		}
         /*[HttpPost]
         public ActionResult UpdatePlayerElo(double playerElo, List<double> playerElos, List<int> birdPoints)
