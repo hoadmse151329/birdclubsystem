@@ -2,7 +2,7 @@
 @{
     ViewData["Title"] = "Member Bird Detail Page";
     BAL.ViewModels.BirdViewModel detailsBird = Model.MemberBirdDetails;
-    BAL.ViewModels.BirdViewModel updateBird = Model.UpdateBird != null ? Model.UpdateBird : new BAL.ViewModels.BirdViewModel();
+    BAL.ViewModels.BirdViewModel updateBird = Model.UpdateBird != null ? Model.UpdateBird : Model.MemberBirdDetails;
     List<SelectListItem> birdStatus = new()
     {
         new SelectListItem {Text = "Inactive", Value = "Inactive"},
@@ -89,14 +89,14 @@
                                             <div class="row1">
                                                 <div class="card profile col-12 mb-4">
                                                     <div class="card-header">
-                                                        <h4>Meeting Information</h4>
+                                                        <h4>Bird Information</h4>
                                                         <div class="edit-info">
                                                             <i class='bx bxs-edit-alt' data-toggle="modal" data-target="#editbird"></i>
                                                         </div>
                                                     </div>
                                                     <div class="card-body">
                                                         <div class="row">
-                                                            <div class="col-sm-5 text-sm-right">
+                                                            <div class="col-md-5 text-md-right">
                                                                 <span>Status:</span>
                                                             </div>
                                                             <div class="col-sm-7">
@@ -105,17 +105,17 @@
                                                                     {
                                                                         case "Active":
                                                                             {
-                                                                                <span class="stt1" style="float: left;">Status:<h6>@detailsBird.Status</h6></span>
+                                                                                <span>@detailsBird.Status</span>
                                                                                 break;
                                                                             }
                                                                         case "Injured":
                                                                             {
-                                                                                <span class="stt3" style="float: left;">Status:<h6>@detailsBird.Status</h6></span>
+                                                                                <span>@detailsBird.Status</span>
                                                                                 break;
                                                                             }
                                                                         case "Inactive":
                                                                             {
-                                                                                <span class="stt2" style="float: left;">Status:<h6>@detailsBird.Status</h6></span>
+                                                                                <span>@detailsBird.Status</span>
                                                                                 break;
                                                                             }
                                                                     }
@@ -355,80 +355,53 @@
                 <div class="modal-header">
                     <h4 class="modal-title">Edit Bird</h4>
                 </div>
-                <form asp-action="MemberUpdateBirdDetail" asp-controller="Member" method="post" asp-route-id="@detailsBird.BirdId" class="form-group">
-                    <div class="modal-body">
-                        <div class="row justify-content-center">
-                            <div class="col-12 col-md-6">
-                                <div class="form-group row">
-                                    <label asp-for="@updateBird.BirdName" class="col-sm-4 col-form-label"></label>
-                                    <div class="col-sm-8">
-                                        <input asp-for="@updateBird.BirdName" type="text"
-                                               value="@updateBird.BirdName" class="form-control" required>
-                                        <span asp-validation-for="@updateBird.BirdName" id="error_message"
-                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                    </div>
-                                </div>
+                <form asp-action="MemberUpdateBirdDetail" asp-controller="Member" method="post" asp-route-birdId="@detailsBird.BirdId" class="form-group" enctype="multipart/form-data">
+                    <div class="row p-4">
+                        <div class="col-12">
+                            <div class="row form-group">
+                                <label asp-for="@updateBird.BirdName" class="col-md-3 col-form-label text-md-right"></label>
+                                <input asp-for="@updateBird.BirdName" type="text" value="@updateBird.BirdName" class="form-control" required>
+                                <span asp-validation-for="@updateBird.BirdName" id="error_message"
+                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                             </div>
-                            <div class="col-12 col-md-6">
-                                <div class="form-group row">
-                                    <label asp-for="@updateBird.Elo" class="col-sm-4 col-form-label"></label>
-                                    <div class="col-sm-8">
-                                        <input asp-for="@updateBird.Elo" type="number"
-                                               value="@updateBird.Elo" class="form-control" required>
-                                        <span asp-validation-for="@updateBird.Elo" id="error_message"
-                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label asp-for="@updateBird.Age" class="col-sm-4 col-form-label"></label>
-                                    <div class="col-sm-8">
-                                        <input asp-for="@updateBird.Age" type="text"
-                                               value="@updateBird.Age" class="form-control" required>
-                                        <span asp-validation-for="@updateBird.Age" id="error_message"
-                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label asp-for="@updateBird.Color" class="col-sm-4 col-form-label"></label>
-                                    <div class="col-sm-8">
-                                        <input asp-for="@updateBird.Color" type="text"
-                                               value="@updateBird.Color" class="form-control" required>
-                                        <span asp-validation-for="@updateBird.Color" id="error_message"
-                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label asp-for="@updateBird.Status" class="col-sm-4 col-form-label"></label>
-                                    <div class="col-sm-8">
-                                        <select class="form-control" asp-for="@updateBird.Status" asp-items="@birdStatus" class="custom-select" required></select>
-                                        <span asp-validation-for="@updateBird.Status" id="error_message"
-                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                    </div>
-                                </div>
+                            <div class="row form-group">
+                                <label asp-for="@updateBird.ProfilePic" class="col-sm-4 col-form-label">Choose Bird Image</label>
+                                <img class="profile-pic" style="width:300px; height:300px" src="@updateBird.ProfilePic" />
+                                <input asp-for="@updateBird.BirdMainImage" type="file" class="file-upload" accept=".jpg, .png, .jpeg">
+                                <input asp-for="@updateBird.ProfilePic" type="text" value="@updateBird.ProfilePic" class="form-control" required hidden>
                             </div>
-                        </div>
-                        <div class="form-group row">
-                            <label asp-for="@updateBird.Description" class="col-sm-2 col-form-label"></label>
-                            <div class="col-sm-10">
-                                <textarea asp-for="@updateBird.Description" type="text"
-                                          value="@updateBird.Description" class="form-control" required></textarea>
+                            <div class="row form-group">
+                                <label asp-for="@updateBird.Age" class="col-md-3 col-form-label mt-3 text-md-right"></label>
+                                <input asp-for="@updateBird.Age" value="@updateBird.Age" type="number" class="form-control col-md-7 mt-3" required>
+                                <span asp-validation-for="@updateBird.Age" id="error_message"
+                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                            </div>
+                            <div class="row form-group">
+                                <label asp-for="@updateBird.Color" class="col-md-3 col-form-label mt-3 text-md-right"></label>
+                                <input asp-for="@updateBird.Color" value="@updateBird.Color" type="text" class="form-control col-md-7 mt-3" required>
+                                <span asp-validation-for="@updateBird.Color" id="error_message"
+                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                            </div>
+                            <div class="row form-group">
+                                <label asp-for="@updateBird.Description" class="col-md-3 col-form-label mt-3 text-md-right"></label>
+                                <textarea asp-for="@updateBird.Description" value="@updateBird.Description" type="text" placeholder="Bird description..." class="form-control col-md-7 mt-3" rows="3" required></textarea>
                                 <span asp-validation-for="@updateBird.Description" id="error_message"
                                       class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                             </div>
-                        </div>
-                        <div class="form-group row">
-                            <label asp-for="@updateBird.Origin" class="col-sm-2 col-form-label"></label>
-                            <div class="col-sm-10">
-                                <textarea asp-for="@updateBird.Origin" type="text"
-                                          value="@updateBird.Origin" class="form-control" required></textarea>
+                            <div class="row form-group">
+                                <label asp-for="@updateBird.Origin" class="col-md-3 col-form-label mt-3 text-md-right"></label>
+                                <textarea asp-for="@updateBird.Origin" value="@updateBird.Origin" type="text" placeholder="Bird Origin..." class="form-control col-md-7 mt-3" rows="3" required></textarea>
                                 <span asp-validation-for="@updateBird.Origin" id="error_message"
                                       class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                             </div>
+                            <input asp-for="@updateBird.Elo" value="@updateBird.Elo" class="form-control" hidden>
+                            <input asp-for="@updateBird.AddDate" value="@updateBird.AddDate" class="form-control" hidden>
+                            <input asp-for="@updateBird.MemberId" value="@updateBird.MemberId" class="form-control" hidden>
                         </div>
-                    </div>
-                    <div class="modal-footer justify-content-center">
-                        <button class="btn btn-success" type="submit" value="Update">Save</button>
-                        <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
+                        <div class="modal-footer justify-content-center">
+                            <button class="btn btn-success" type="submit" value="Update">Save</button>
+                            <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
+                        </div>
                     </div>
                 </form>
             </div>

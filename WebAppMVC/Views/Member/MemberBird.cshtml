@@ -155,7 +155,7 @@
                                     <span asp-validation-for="@createBird.BirdName" id="error_message"
                                           class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                 </div>
-                                <div class="form-group row">
+                                <div class="row form-group">
                                     <label asp-for="@createBird.ProfilePic" class="col-sm-4 col-form-label">Choose Bird Image</label>
                                     <img class="profile-pic" style="width:300px; height:300px" src="@createBird.ProfilePic" />
                                     <input asp-for="@createBird.BirdMainImage" type="file" class="file-upload" accept=".jpg, .png, .jpeg">
