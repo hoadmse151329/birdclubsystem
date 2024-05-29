@@ -61,8 +61,8 @@ namespace WebAppMVC.Controllers
             _httpClient = new HttpClient();
             var contentType = new MediaTypeWithQualityHeaderValue("application/json");
             _httpClient.DefaultRequestHeaders.Accept.Add(contentType);
-            _httpClient.BaseAddress = new Uri(config.GetSection("DefaultApiUrl:ConnectionString").Value);
-            ManagerAPI_URL = "/api/";
+            _httpClient.BaseAddress = new Uri(config.GetValue<string>("DefaultApiUrl:ConnectionString"));
+            ManagerAPI_URL = config.GetValue<string>("DefaultApiUrl:ApiConnectionString");
         }
 
         // GET: ManagerController

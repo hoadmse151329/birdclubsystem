@@ -25,6 +25,11 @@ namespace WebAppMVC.Constants
         public readonly static string MEMBER_CONTEST_REGISTRATION_TRANSACTION_TYPE = "Member-Contest-Registration";
         public readonly static string MEMBERSHIP_RENEWAL_TRANSACTION_TYPE = "Membership-Renewal-Transaction-Type";
 
+        public readonly static string ALERT_MEMBER_LOGIN_SUCCESS_NAME = "MemberLogin";
+        public readonly static string ALERT_MEMBER_LOGIN_SUCCESS = "Login as Member successfully!";
+        public readonly static string ALERT_DEFAULT_ERROR_NAME = "Error";
+        public readonly static string ALERT_DEFAULT_SUCCESS_NAME = "Success";
+
         public readonly static string MEMBER_STATUS_INACTIVE = "Inactive";
         public readonly static string MEMBER_STATUS_ACTIVE = "Active";
         public readonly static string MEMBER_STATUS_EXPIRED = "Expired";
