@@ -44,7 +44,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="Views\Home\Index - Copy.cshtml">
+    <Content Update="Views\Home\News.cshtml">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>

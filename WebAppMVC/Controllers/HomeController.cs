@@ -154,13 +154,27 @@ namespace WebAppMVC.Controllers
             testmodel.Contests = listContestResponse.Data;
             return View(testmodel);
 		}
-
-		public IActionResult Privacy()
+        [Route("News")]
+        public IActionResult News()
 		{
 			return View();
 		}
-
-		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        [Route("NewsDetail")]
+        public IActionResult NewsDetail()
+        {
+            return View();
+        }
+        [Route("Gallary")]
+        public IActionResult Gallary()
+        {
+            return View();
+        }
+        [Route("Blog")]
+        public IActionResult Blog()
+        {
+            return View();
+        }
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
 		public IActionResult Error()
 		{
 			return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });

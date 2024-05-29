@@ -1,0 +1,113 @@
+﻿@model dynamic
+@{
+    ViewData["Title"] = "News Detail Page";
+}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="~/css/news.css">
+</head>
+<body class="background">
+    @{
+        if (ViewBag.error != null)
+        {
+            <span class="text-danger">@ViewBag.error</span>
+        }
+    }
+    <main>
+        <div class="content">
+            <div id="news-detail-container">
+                <article>
+                    <img class="img-fluid" src="~/images/bird.png" alt="logo" />
+                    <h2>Exciting News Announcement</h2>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vehicula velit at risus tristique, ac posuere sapien posuere. Vivamus bibendum eros a gravida ultrices. Nam ut sapien a justo consequat commodo. Duis non nisi scelerisque, accumsan felis eget, ultricies enim. Donec lacinia purus vel sem ultrices tempus. Nullam eu aliquam urna. Sed eget arcu non sapien tincidunt vestibulum. Nam sit amet mi vel libero eleifend dignissim nec ac arcu. Cras consectetur, ex eu finibus ultricies, mi odio viverra ante, nec aliquam metus justo et felis. Vestibulum vel rhoncus quam. Morbi sed turpis vitae tortor vestibulum molestie sed non sapien.</p>
+                    <p>Ut pharetra turpis non efficitur volutpat. Proin nec arcu nec nisl congue eleifend. Nulla facilisi. Nulla in turpis eros. Aliquam at gravida magna, sed fermentum elit. Aliquam viverra convallis vehicula. Sed interdum est nec libero volutpat, ut egestas dui blandit. Sed tincidunt libero eu semper mattis. Proin vel gravida purus. Suspendisse nec dolor ac dui sollicitudin gravida. Aenean ullamcorper mauris vel libero vehicula, in rhoncus ligula accumsan.</p>
+                </article>
+            </div>
+        </div>
+    </main>
+    @*<script>
+    document.addEventListener('DOMContentLoaded', async () => {
+    const newsDetailContainer = document.getElementById('news-detail-container');
+    const urlParams = new URLSearchParams(window.location.search);
+    const newsId = urlParams.get('id');
+
+    try {
+    // Fetch news item data from an API endpoint
+    const response = await fetch(`https://your-api-url/news/${newsId}`);
+    if (!response.ok) {
+    throw new Error('Failed to fetch news item.');
+    }
+    const newsItem = await response.json();
+
+    // Display news item details
+    newsDetailContainer.innerHTML = `
+    <article>
+    <h2>${newsItem.title}</h2>
+    <p>${newsItem.body}</p>
+    </article>
+    `;
+    } catch (error) {
+    console.error('Error:', error.message);
+    newsDetailContainer.innerHTML = '<p>Failed to load news item details.</p>';
+    }
+    });
+    </script>*@
+    <!-- BackToTop -->
+    <a href="#" class="backToTop cd-top text-replace js-cd-top">
+        <i class="fa fa-angle-up"></i>
+    </a>
+    <script src="newloading.js"></script>
+    <!-- thư viện hỗ trợ -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" referrerpolicy="no-referrer">
+    </script>
+    <!-- Jquery Waypoint -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>
+    <!-- BS4 JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.5/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- BS4 carousels -->
+    <!-- backToTop -->
+    <script src="~/js/util.js"></script>
+    <script src="~/js/main-backToTop.js"></script>
+    <!-- main js -->
+    <script>
+        $(document).ready(function() {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            var backToTopButton = $('.backToTop');
+
+            $(window).scroll(function() {
+                if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
+                    // User has scrolled to the bottom, hide the button
+                    backToTopButton.fadeOut();
+                } else {
+                    // User is not at the bottom, show the button
+                    backToTopButton.fadeIn();
+                }
+            });
+
+            backToTopButton.click(function(e) {
+                e.preventDefault();
+                $('html, body').animate({ scrollTop: 0 }, 'slow');
+            });
+        });
+    </script>
+    <script>
+        function showNotification(message) {
+            var notification = "Success!";
+            notification.text(message).fadeIn();
+
+            setTimeout(function() {
+                notification.fadeOut();
+            }, 3000); // 3 seconds duration
+        }
+    </script>
+    <script src="~/js/user-script.js"></script>
+</body>
+</html>
