@@ -27,12 +27,14 @@ using BAL.ViewModels.Admin;
 using WebAppMVC.Models.Blog;
 using BAL.ViewModels.News;
 using Microsoft.AspNetCore.Authorization;
+using AutoMapper;
 // thêm crud của meeting, fieldtrip, contest.
 namespace WebAppMVC.Controllers
 {
     [Route("Manager")]
     public class ManagerController : Controller
     {
+        private readonly IMapper _mapper;
         private readonly ILogger<ManagerController> _logger;
         private readonly IConfiguration _config;
         private readonly HttpClient _httpClient = null;
@@ -51,10 +53,11 @@ namespace WebAppMVC.Controllers
         };
         private BirdClubLibrary methcall = new();
 
-        public ManagerController(ILogger<ManagerController> logger, IConfiguration config)
+        public ManagerController(ILogger<ManagerController> logger, IConfiguration config, IMapper mapper)
         {
             _logger = logger;
             _config = config;
+            _mapper = mapper;
             _httpClient = new HttpClient();
             var contentType = new MediaTypeWithQualityHeaderValue("application/json");
             _httpClient.DefaultRequestHeaders.Accept.Add(contentType);
@@ -319,13 +322,16 @@ namespace WebAppMVC.Controllers
             if (photo != null && photo.Length > 0)
             {
                 string connectionString = _config.GetSection("AzureStorage:BlobConnectionString").Value;
+                string defaultUrl = _config.GetSection("MyBirdClubAzureStorageString:blob").Value;
                 string containerName = _config.GetSection("AzureStorage:BlobContainerName").Value;
+                string meetingContainerName = _config.GetValue<string>("AzureStorage:BlobNewsContainerName");
+
                 BlobServiceClient _blobServiceClient = new BlobServiceClient(connectionString);
                 BlobContainerClient _blobContainerClient = _blobServiceClient.GetBlobContainerClient(containerName);
 
                 var azureResponse = new List<BlobContentInfo>();
                 string filename = photo.FileName;
-                string uniqueBlobName = $"meeting/{Guid.NewGuid()}-{filename}";
+                string uniqueBlobName = $"{Guid.NewGuid()}-{filename}";
                 using (var memoryStream = new MemoryStream())
                 {
                     photo.CopyTo(memoryStream);
@@ -335,7 +341,7 @@ namespace WebAppMVC.Controllers
                     azureResponse.Add(client);
                 }
 
-                var image = "https://edwinbirdclubstorage.blob.core.windows.net/images/" + uniqueBlobName;
+                var image = defaultUrl + containerName + meetingContainerName + uniqueBlobName;
 
                 createMedia.Image = image;
             }
@@ -1637,14 +1643,17 @@ namespace WebAppMVC.Controllers
 
             if (photo != null && photo.Length > 0)
             {
-                string connectionString = _config.GetSection("AzureStorage:BlobConnectionString").Value;
-                string containerName = _config.GetSection("AzureStorage:BlobContainerName").Value;
+                string connectionString = _config.GetValue<string>(Constants.Constants.SYSTEM_DEFAULT_AZURE_CONNECTION_STRING);
+                string defaultUrl = _config.GetValue<string>(Constants.Constants.SYSTEM_DEFAULT_AZURE_DEFAULT_BLOB_FOLDER_URL);
+                string containerName = _config.GetValue<string>(Constants.Constants.SYSTEM_DEFAULT_AZURE_DEFAULT_BLOB_FOLDER_NAME);
+                string avatarContainerName = _config.GetValue<string>(Constants.Constants.SYSTEM_DEFAULT_AZURE_BLOB_AVATAR_FOLDER_URL);
+
                 BlobServiceClient _blobServiceClient = new BlobServiceClient(connectionString);
                 BlobContainerClient _blobContainerClient = _blobServiceClient.GetBlobContainerClient(containerName);
 
                 var azureResponse = new List<BlobContentInfo>();
                 string filename = photo.FileName;
-                string uniqueBlobName = $"avatar/{Guid.NewGuid()}-{filename}";
+                string uniqueBlobName = avatarContainerName + $"{Guid.NewGuid()}-{filename}";
                 using (var memoryStream = new MemoryStream())
                 {
                     photo.CopyTo(memoryStream);
@@ -1654,7 +1663,7 @@ namespace WebAppMVC.Controllers
                     azureResponse.Add(client);
                 }
 
-                var image = "https://edwinbirdclubstorage.blob.core.windows.net/images/" + uniqueBlobName;
+                var image = defaultUrl + uniqueBlobName;
                 dynamic imageUpload = new ExpandoObject();
                 imageUpload.ImagePath = image;
                 imageUpload.MemberId = usrId;
@@ -1961,14 +1970,17 @@ namespace WebAppMVC.Controllers
 
             if (photo != null && photo.Length > 0)
             {
-                string connectionString = _config.GetSection("AzureStorage:BlobConnectionString").Value;
-                string containerName = _config.GetSection("AzureStorage:BlobContainerName").Value;
+                string connectionString = _config.GetValue<string>(Constants.Constants.SYSTEM_DEFAULT_AZURE_CONNECTION_STRING);
+                string defaultUrl = _config.GetValue<string>(Constants.Constants.SYSTEM_DEFAULT_AZURE_DEFAULT_BLOB_FOLDER_URL);
+                string containerName = _config.GetValue<string>(Constants.Constants.SYSTEM_DEFAULT_AZURE_DEFAULT_BLOB_FOLDER_NAME);
+                string newsContainerName = _config.GetValue<string>(Constants.Constants.SYSTEM_DEFAULT_AZURE_BLOB_NEWS_FOLDER_URL);
+
                 BlobServiceClient _blobServiceClient = new BlobServiceClient(connectionString);
                 BlobContainerClient _blobContainerClient = _blobServiceClient.GetBlobContainerClient(containerName);
 
                 var azureResponse = new List<BlobContentInfo>();
                 string filename = photo.FileName;
-                string uniqueBlobName = $"news/{Guid.NewGuid()}-{filename}";
+                string uniqueBlobName = newsContainerName + $"{Guid.NewGuid()}-{filename}";
                 using (var memoryStream = new MemoryStream())
                 {
                     photo.CopyTo(memoryStream);
@@ -1978,7 +1990,7 @@ namespace WebAppMVC.Controllers
                     azureResponse.Add(client);
                 }
 
-                var image = "https://edwinbirdclubstorage.blob.core.windows.net/images/" + uniqueBlobName;
+                var image = defaultUrl + uniqueBlobName;
 
                 createNews.Picture = image;
             }
@@ -2051,7 +2063,7 @@ namespace WebAppMVC.Controllers
             }
             else
             {
-                managerNewsPostDetailsVM.updateNews = new UpdateNewsDetail();
+                managerNewsPostDetailsVM.updateNews = _mapper.Map<UpdateNewsDetail>(managerNewsPostVM.Data);
             }
             managerNewsPostDetailsVM.News = managerNewsPostVM.Data;
 
@@ -2076,28 +2088,35 @@ namespace WebAppMVC.Controllers
             string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
             IFormFile photo = updateNews.ImageUpload;
-            string photoName = updateNews.Picture.Substring(57);
             if (photo != null && photo.Length > 0)
             {
-                string connectionString = _config.GetSection("AzureStorage:BlobConnectionString").Value;
-                string containerName = _config.GetSection("AzureStorage:BlobContainerName").Value;
+                string connectionString = _config.GetValue<string>(Constants.Constants.SYSTEM_DEFAULT_AZURE_CONNECTION_STRING);
+                string defaultUrl = _config.GetValue<string>(Constants.Constants.SYSTEM_DEFAULT_AZURE_DEFAULT_BLOB_FOLDER_URL);
+                string containerName = _config.GetValue<string>(Constants.Constants.SYSTEM_DEFAULT_AZURE_DEFAULT_BLOB_FOLDER_NAME);
+                string newsContainerName = _config.GetValue<string>(Constants.Constants.SYSTEM_DEFAULT_AZURE_BLOB_NEWS_FOLDER_URL);
+
                 BlobServiceClient _blobServiceClient = new BlobServiceClient(connectionString);
                 BlobContainerClient _blobContainerClient = _blobServiceClient.GetBlobContainerClient(containerName);
 
                 var azureResponse = new List<BlobContentInfo>();
                 string filename = photo.FileName;
-                string uniqueBlobName = $"news/{Guid.NewGuid()}-{filename}";
+                string uniqueBlobName = newsContainerName + $"{Guid.NewGuid()}-{filename}";
                 using (var memoryStream = new MemoryStream())
                 {
                     photo.CopyTo(memoryStream);
                     memoryStream.Position = 0;
 
                     var client = await _blobContainerClient.UploadBlobAsync(uniqueBlobName, memoryStream);
-                    //await _blobContainerClient.DeleteBlobAsync(photoName);
+
+                    if (updateNews.Picture.Contains(defaultUrl + newsContainerName))
+                    {
+                        string photoName = newsContainerName + updateNews.Picture.Substring((defaultUrl + newsContainerName).Length);
+                        await _blobContainerClient.DeleteBlobAsync(photoName);
+                    }
                     azureResponse.Add(client);
                 }
 
-                var image = "https://edwinbirdclubstorage.blob.core.windows.net/images/" + uniqueBlobName;
+                var image = defaultUrl + uniqueBlobName;
 
                 updateNews.Picture = image;
             }

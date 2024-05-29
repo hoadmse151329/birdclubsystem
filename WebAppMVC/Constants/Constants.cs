@@ -192,5 +192,12 @@ namespace WebAppMVC.Constants
 
         public readonly static string SYSTEM_DEFAULT_ACCOUNT_USR_NAME = "Authentication:DefaultSystemLogin:Username";
         public readonly static string SYSTEM_DEFAULT_ACCOUNT_USR_PASSWORD = "Authentication:DefaultSystemLogin:Password";
+
+        public readonly static string SYSTEM_DEFAULT_AZURE_CONNECTION_STRING = "AzureStorage:BlobConnectionString";
+        public readonly static string SYSTEM_DEFAULT_AZURE_DEFAULT_BLOB_FOLDER_URL = "AzureStorage:BlobDefaultFolderURL";
+        public readonly static string SYSTEM_DEFAULT_AZURE_DEFAULT_BLOB_FOLDER_NAME = "AzureStorage:BlobContainerName";
+        public readonly static string SYSTEM_DEFAULT_AZURE_BLOB_AVATAR_FOLDER_URL = "AzureStorage:BlobAvatarsContainerNamePath";
+        public readonly static string SYSTEM_DEFAULT_AZURE_BLOB_NEWS_FOLDER_URL = "AzureStorage:BlobNewsContainerNamePath";
+        public readonly static string SYSTEM_DEFAULT_AZURE_BLOB_MEETING_FOLDER_URL = "AzureStorage:BlobMeetingsContainerNamePath";
     }
 }

@@ -332,7 +332,7 @@ namespace WebAppMVC.Controllers
             return View(fieldtripDetail);
         }
 
-        [HttpPost("{tripId:int}/Register")]
+        [HttpGet("{tripId:int}/Register")]
         public async Task<IActionResult> FieldTripRegister(
             [FromRoute][Required] int tripId
             )
