@@ -19,10 +19,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="stylesheet" href="~/css/FieldTrip.css">
-        <link rel="stylesheet" href="~/css/sb-admin-2.css">
 </head>
  <body class="background">
-     <div>
     <div class="member-field-trips-post">
         <div class="overlap-wrapper">
             <div class="overlap">
@@ -32,7 +30,7 @@
                             <div class="flexcontainer">
                                 <p class="text">
 
-                                    <span class="text-wrapper">What can you expect from this trip<br /></span>
+                                    <span class="text-wrapper">Content Description<br /></span>
                                 </p>
                                 <p class="span-wrapper">
                                     <span class="span">
@@ -101,12 +99,15 @@
                                 <div class="text-wrapper-13">@fieldtripDetails.RegistrationDeadline</div>
                                 <div class="text-wrapper-14">ChaoMaoClub@gmail.com</div>
                                 <div class="text-wrapper-15">@fieldtripDetails.Host</div>
-                                <div class="text-wrapper-18"><span class="price-format" data-price="@fieldtripDetails.Fee""></span></div>
+                                <div class="text-wrapper-18"><span class="price-format" data-price="@fieldtripDetails.Fee"></span></div>
                             </div>
 
                             @{
                                 if (fieldtripDetails.ParticipationNo != 0 && fieldtripDetails.ParticipationNo != null)
                                 {
+                                    <div class="overlap-group-3 text-wrapper-16">
+                                        <span class="text-success">@ViewBag.PartNumber</span>
+                                    </div>
                                     if (fieldtripDetails.Status.Equals("OpenRegistration"))
                                     {
                                         <div class="register">
@@ -159,7 +160,7 @@
                             <div class="tab-pane active" id="home1" role="tabpanel">                           
                                 <div class="tour__content__block tour__content__block--consider avoid-break-p">
                                     <h2>Tour Features</h2>
-                                    <div class="row2">
+                                    <div class="row">
                                         @{
                                             foreach (var detail in tourFeatures)
                                             {
@@ -190,7 +191,7 @@
                                         <li class="footnote">
                                             <div class="txt--small txt--normal"><i class="sbi sbi--info-red"></i>Additional accommodation before and at the end of the tour can be arranged for an extra cost</div>
                                         </li>
-                                        <li class="heading txt--small">
+                                        <li class="heading">
                                             <div>Day</div>
                                             <div>Accommodation</div>
                                             <div class="hide show-ti">Meals And Drinks</div>
@@ -199,8 +200,8 @@
                                             foreach (var day in dayByDays)
                                             {
                                                 <li>
-                                                    <div class="txt--small">@day.Day</div>
-                                                    <div class="txt--small">
+                                                    <div>@day.Day</div>
+                                                    <div>
                                                         @day.Accommodation
 
                                                         <div class="gallery__preview--row">
@@ -229,7 +230,7 @@
                                             @foreach (var imtk in importantToKnow)
                                             {
                                                 <li>
-                                                    <h4 class="txt--small">@imtk.Title:</h4><p class="txt--small">@imtk.Description</p>
+                                                    <h4>@imtk.Title:</h4><p>@imtk.Description</p>
                                                 </li>
                                             }
                                         }
@@ -241,15 +242,7 @@
                                     <div class="day">
                                         <div class="day__header  day__header--text   startend  ">
                                             <div class="caption  ">
-                                                <h3 class="hide-t">
-                                                    <i class="sbi sbi--map-pin"></i>
-                                                    <span>Arrival</span>
-                                                </h3>
-                                                <h3 class="no-title hide show-t"></h3>
-                                                <h2 class="hide show-t startend">
-                                                    <i class="sbi sbi--map-pin"></i>
-                                                    <span>Arrival</span>
-                                                </h2>
+                                                <h3 class="hide-t"><i class="sbi sbi--map-pin"></i><span>Arrival <span class="txt--small hide show-ti">(See Getting There for more details)</span></span></h3><h3 class="no-title hide show-t"></h3><h2 class="hide show-t startend"><i class="sbi sbi--map-pin"></i><span>Arrival <span class="txt--small hide show-ti">(See <a href="#home6" class="tablink scrolltop" rel="nofollow">Getting There</a> for more details)</span></span></h2>
                                             </div>
                                         </div>
 
@@ -283,36 +276,36 @@
                                                         </picture>
                                                     </div>
                                                     <div class="caption  caption--photo  ">
-                                                        <h3 class="txt--small"><span>Day @day.Day</span></h3><h2 class="hide show-t txt--small"><span>@day.MainDestination</span></h2>
+                                                        <h3><span>Day @day.Day</span></h3><h2 class="hide show-t"><span>@day.MainDestination</span></h2>
                                                     </div>
                                                 </div>
 
                                                 <div class="day__inner">
                                                     <div class="day__inner__block">
-                                                        <h2 class="hide-t serif txt--small">@day.MainDestination</h2>
-                                                        <p class="shorten-m txt--small" data-shorten="300">@day.Description</p>
+                                                        <h2 class="hide-t serif">@day.MainDestination</h2>
+                                                        <p class="shorten-m" data-shorten="300">@day.Description</p>
                                                     </div>
                                                     <div class="day__inner__block">
                                                         <dl>
-                                                            <dt class="txt--small">
+                                                            <dt>
                                                                 Main Destination:
                                                             </dt>
-                                                            <dd class="txt--small">
+                                                            <dd>
                                                                 @day.MainDestination
                                                             </dd>
-                                                            <dt class="txt--small">
+                                                            <dt>
                                                                 Accommodation:
                                                             </dt>
                                                             <dd>
-                                                                <b class="external show-ti mb-4 txt--small">@day.Accommodation</b>
+                                                                <b class="external show-ti mb-4">@day.Accommodation</b>
                                                             </dd>
                                                         </dl>
                                                         <dl class="no-top-margin">
-                                                            <dt class="txt--small">
+                                                            <dt>
                                                                 Meals &amp; Drinks:
                                                             </dt>
                                                             <dd class="with-bullet">
-                                                                <b class="external show-ti mb-4 txt--small">@day.MealsAndDrinks</b>
+                                                                <b class="external show-ti mb-4">@day.MealsAndDrinks</b>
                                                             </dd>
                                                         </dl>
                                                     </div>
@@ -324,15 +317,7 @@
                                     <div class="day">
                                         <div class="day__header  day__header--text   startend  ">
                                             <div class="caption  ">
-                                                <h3 class="hide-t">
-                                                    <i class="sbi sbi--map-pin"></i>
-                                                    <span>End of tour</span>
-                                                </h3>
-                                                <h3 class="no-title hide show-t"></h3>
-                                                <h2 class="hide show-t startend">
-                                                    <i class="sbi sbi--map-pin"></i>
-                                                    <span class="txt--small">End of tour</span>
-                                                </h2>
+                                                <h3 class="hide-t"><i class="sbi sbi--map-pin"></i><span>End of tour <span class="txt--small hide show-ti">(See <a href="https://www.safaribookings.com/gettingthere/t56551" class="tablink scrolltop" rel="nofoll">Getting There</a> for more details)</span></span></h3><h3 class="no-title hide show-t"></h3><h2 class="hide show-t startend"><i class="sbi sbi--map-pin"></i><span>End of tour <span class="txt--small hide show-ti">(See <a href="https://www.safaribookings.com/gettingthere/t56551" class="tablink scrolltop" rel="nofoll">Getting There</a> for more details)</span></span></h2>
                                             </div>
                                         </div>
                                         <div class="day__inner">
@@ -348,23 +333,23 @@
                             </div>
                             <div class="tab-pane" id="home5" role="tabpanel">
                                 <div class="tour__content__block tour__content__block--inclusions">
-                                    <h2 class="with-icon txt--small"><span><i class="sbi sbi--plus"></i> Included</span></h2>
+                                    <h2 class="with-icon"><span><i class="sbi sbi--plus"></i> Included</span></h2>
                                     <ul class="list list--icon">
                                         @{
                                             @foreach (var inclusion in inclusions)
                                             {
-                                                <li class="txt--small"><h4><b>@inclusion.Title:</b></h4> @inclusion.InclusionText <span class="txt--xsmall txt--xgrey">@inclusion.Type</span></li>
+                                                <li><h4><b>@inclusion.Title:</b></h4> @inclusion.InclusionText <span class="txt--xsmall txt--xgrey">@inclusion.Type</span></li>
                                             }
                                         }                                      
                                     </ul>
                                 </div>
                                 <div class="tour__content__block tour__content__block--inclusions">
-                                    <h2 class="with-icon txt--small"><span><i class="sbi sbi--minus"></i> Excluded</span></h2>
+                                    <h2 class="with-icon"><span><i class="sbi sbi--minus"></i> Excluded</span></h2>
                                     <ul class="list list--icon">
                                         @{
                                             @foreach (var exclusion in exclusions)
                                             {
-                                                <li class="txt--small"><h4><b>@exclusion.Title:</b></h4> @exclusion.InclusionText <span class="txt--xsmall txt--xgrey">@exclusion.Type</span></li>
+                                                <li><h4><b>@exclusion.Title:</b></h4> @exclusion.InclusionText <span class="txt--xsmall txt--xgrey">@exclusion.Type</span></li>
                                             }
                                         }
                                     </ul>
@@ -380,7 +365,7 @@
                                                     <img src="https://cfstatic.safaribookings.com/img/svg/icons-red/icon-finish-flag.svg" class="" alt="">
                                                 </picture>
                                             </div>
-                                            <span class="txt--small">
+                                            <span>
                                                 @gettingTheres.GettingThereStartEnd
                                             </span>
                                         </li>
@@ -390,7 +375,7 @@
                                                     <img src="https://cfstatic.safaribookings.com/img/svg/icons-red/icon-internationaal-flight.svg" class="" alt="">
                                                 </picture>
                                             </div>
-                                            <span class="txt--small">
+                                            <span>
                                                 @gettingTheres.GettingThereFlight
                                             </span>
                                         </li>
@@ -400,7 +385,7 @@
                                                     <img src="https://cfstatic.safaribookings.com/img/svg/icons-red/icon-airport-transfer.svg" class="" alt="">
                                                 </picture>
                                             </div>
-                                            <span class="txt--small">
+                                            <span>
                                                 @gettingTheres.GettingThereTransportation
                                             </span>
                                         </li>
@@ -410,7 +395,7 @@
                                                     <img src="https://cfstatic.safaribookings.com/img/svg/icons-red/icon-accomodation-budget.svg" class="" alt="">
                                                 </picture>
                                             </div>
-                                            <span class="txt--small">
+                                            <span>
                                                 @gettingTheres.GettingThereAccommodation
                                             </span>
                                         </li>

@@ -11,6 +11,7 @@
     <link rel='stylesheet' href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css'>
 </head>
 <body class="background">
+    <div class="Title"><h1>Blog</h1></div>
     @*@foreach (var post in Model)
     {
     var userId = User.Identity.GetUserId();
@@ -84,8 +85,10 @@
             </div>
             <p>This is the first post. It's just for demonstration purposes.</p>
             <div class="post-actions">
-                <button class="like-button">Like</button>
-                <span>10 Likes</span>
+                <button class="like-button" onclick="toggleLike(this)">
+                    <i class='bx bx-like'></i>Like
+                </button>
+                <span class="like-count">10 Likes</span>
             </div>
             <div class="comments">
                 <div class="comment">
@@ -110,24 +113,90 @@
     </a>
     <script src="~/ckeditor/ckeditor.js"></script>
     <script src="~/ckfinder/ckfinder.js"></script>
-    <script>
-
-        var editor = CKEDITOR.replace('postDesc');
-        CKFinder.setupCKEditor(editor, 'ckfinder/');
-        data["postDesc"] = editor.getData();
-    </script>
-    <!-- thư viện hỗ trợ -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" referrerpolicy="no-referrer">
-    </script>
-    <!-- Jquery Waypoint -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>
     <!-- BS4 JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.5/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- BS4 carousels -->
-    <!-- backToTop -->
     <script src="~/js/util.js"></script>
     <script src="~/js/main-backToTop.js"></script>
+<script>
+    // Function to toggle like button state and update like count
+        function toggleLike(button) {
+            const post = button.closest('.post');
+            const postId = post.getAttribute('data-post-id');
+            const isLiked = button.classList.toggle('liked');
+            const likeCountSpan = button.nextElementSibling;
+            let likeCount = parseInt(likeCountSpan.textContent);
+
+            if (isLiked) {
+                likeCount++;
+                button.innerHTML = "<i class='bx bxs-like'></i> Liked";
+            } else {
+                likeCount--;
+                button.innerHTML = "<i class='bx bx-like'></i> Like";
+            }
+
+            likeCountSpan.textContent = `${likeCount} Likes`;
+
+            // Save the like state in local storage
+            saveLikeState(postId, isLiked, likeCount);
+        }
+
+        // Save the like state in local storage
+        function saveLikeState(postId, isLiked, likeCount) {
+            const likeState = JSON.parse(localStorage.getItem('likeState')) || {};
+            likeState[postId] = { isLiked, likeCount };
+            localStorage.setItem('likeState', JSON.stringify(likeState));
+        }
+
+        // Load the like state from local storage
+        function loadLikeState() {
+            const likeState = JSON.parse(localStorage.getItem('likeState')) || {};
+            document.querySelectorAll('.post').forEach(post => {
+                const postId = post.getAttribute('data-post-id');
+                const state = likeState[postId];
+                if (state) {
+                    const likeButton = post.querySelector('.like-button');
+                    const likeCountSpan = post.querySelector('.like-count');
+                    if (state.isLiked) {
+                        likeButton.classList.add('liked');
+                        likeButton.innerHTML = "<i class='bx bxs-like'></i> Liked";
+                    } else {
+                        likeButton.classList.remove('liked');
+                        likeButton.innerHTML = "<i class='bx bx-like'></i> Like";
+                    }
+                    likeCountSpan.textContent = `${state.likeCount} Likes`;
+                }
+            });
+        }
+
+        // Load like state on document ready
+        $(document).ready(function() {
+            loadLikeState();
+
+            $('[data-toggle="modal"]').on('click', function() {
+                var target = $(this).data('target');
+                $(target).modal('show');
+            });
+
+            $('[data-dismiss="modal"]').on('click', function() {
+                $(this).closest('.modal').modal('hide');
+            });
+
+            $('#postForm').on('submit', function(event) {
+                event.preventDefault();
+                // Add your post creation logic here
+                $('#createpost').modal('hide');
+            });
+        });
+</script>
+    <script>
+
+        var editor = CKEDITOR.replace('postDesc');
+        CKFinder.setupCKEditor(editor, 'ckfinder/');
+        //data["postDesc"] = editor.getData();
+    </script>
     <!-- main js -->
     <script>
         $(document).ready(function() {

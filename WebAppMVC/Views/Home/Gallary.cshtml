@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="~/css/Index.css">
+    <link rel="stylesheet" href="~/css/gallary.css">
 </head>
 <body class="background">
     @{
@@ -16,6 +16,26 @@
             <span class="text-danger">@ViewBag.error</span>
         }
     }
+    <h1>Bird Gallery</h1>
+    <form id="uploadForm">
+        <input type="text" id="title" placeholder="Title" required>
+        <input type="text" id="username" placeholder="Your Name" required>
+        <input type="file" id="imageUpload" accept="image/*" required>
+        <button type="submit">Upload</button>
+    </form>
+    <div id="gallery"></div>
+
+    <!-- Template for gallery item -->
+    <template id="gallery-item-template">
+        <div class="gallery-item">
+            <img src="" alt="">
+            <div class="info">
+                <p><strong>Title:</strong> <span class="title"></span></p>
+                <p><strong>Posted by:</strong> <span class="username"></span></p>
+                <p><strong>Posted on:</strong> <span class="date"></span></p>
+            </div>
+        </div>
+    </template>
 
     <!-- BackToTop -->
     <a href="#" class="backToTop cd-top text-replace js-cd-top">
@@ -36,6 +56,37 @@
     <script src="~/js/util.js"></script>
     <script src="~/js/main-backToTop.js"></script>
     <!-- main js -->
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const title = document.getElementById('title').value;
+    const username = document.getElementById('username').value;
+    const file = document.getElementById('imageUpload').files[0];
+    const date = new Date().toLocaleString();
+
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const imgSrc = e.target.result;
+
+            const template = document.getElementById('gallery-item-template');
+            const newItem = template.content.cloneNode(true);
+
+            newItem.querySelector('img').src = imgSrc;
+            newItem.querySelector('img').alt = title;
+            newItem.querySelector('.title').textContent = title;
+            newItem.querySelector('.username').textContent = username;
+            newItem.querySelector('.date').textContent = date;
+
+            const gallery = document.getElementById('gallery');
+            gallery.prepend(newItem);
+        };
+
+        reader.readAsDataURL(file);
+    }
+});
+    </script>
     <script>
         $(document).ready(function () {
             $('[data-toggle="tooltip"]').tooltip();
