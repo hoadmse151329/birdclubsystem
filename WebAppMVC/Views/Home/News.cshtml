@@ -1,0 +1,117 @@
+﻿@model dynamic
+@{
+    ViewData["Title"] = "News Page";
+}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="~/css/news.css">
+</head>
+<body class="background">
+    @{
+        if (ViewBag.error != null)
+        {
+            <span class="text-danger">@ViewBag.error</span>
+        }
+    }
+    <div class="Title"><h1>News</h1></div>
+    
+    <div class="content">
+        <div id="news-container">
+            @*<div class="news-item" data-id="1">
+            <h2>News Item 1</h2>
+            <p>Content for news item 1.</p>
+            <a href="@Url.Action("NewsDetail", "Home")"><button class="view-detail">View Details</button></a>
+            </div>
+            <div class="news-item" data-id="2">
+            <h2>News Item 2</h2>
+            <p>Content for news item 2.</p>
+            <a href="@Url.Action("NewsDetail", "Home")"><button class="view-detail">View Details</button></a>
+            </div>
+            <div class="news-item" data-id="3">
+            <h2>News Item 3</h2>
+            <p>Content for news item 3.</p>
+            <a href="@Url.Action("NewsDetail", "Home")"><button class="view-detail">View Details</button></a>
+            </div>
+            <div class="news-item" data-id="4">
+            <h2>News Item 4</h2>
+            <p>Content for news item 4.</p>
+            <a href="@Url.Action("NewsDetail", "Home")"><button class="view-detail">View Details</button></a>
+            </div>
+            <div class="news-item" data-id="5">
+            <h2>News Item 5</h2>
+            <p>Content for news item 5.</p>
+            <a href="@Url.Action("NewsDetail", "Home")"><button class="view-detail">View Details</button></a>
+            </div>*@
+            @*<div id="loader-container" class="loader-container">
+                <div id="loader" class="loader">
+                    <div class="dot-container">
+                        <div class="snippet" data-title="dot-spin">
+                            <div class="stage">
+                                <div class="dot-spin"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>*@
+        </div>
+    </div>
+
+    <!-- BackToTop -->
+    <a href="#" class="backToTop cd-top text-replace js-cd-top">
+        <i class="fa fa-angle-up"></i>
+    </a>
+    <script src="~/js/newloading.js"></script>
+    <!-- thư viện hỗ trợ -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" referrerpolicy="no-referrer">
+    </script>
+    <!-- Jquery Waypoint -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>
+    <!-- BS4 JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.5/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- BS4 carousels -->
+    <!-- backToTop -->
+    <script src="~/js/util.js"></script>
+    <script src="~/js/main-backToTop.js"></script>
+    <!-- main js -->
+    <script>
+        $(document).ready(function() {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            var backToTopButton = $('.backToTop');
+
+            $(window).scroll(function() {
+                if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
+                    // User has scrolled to the bottom, hide the button
+                    backToTopButton.fadeOut();
+                } else {
+                    // User is not at the bottom, show the button
+                    backToTopButton.fadeIn();
+                }
+            });
+
+            backToTopButton.click(function(e) {
+                e.preventDefault();
+                $('html, body').animate({ scrollTop: 0 }, 'slow');
+            });
+        });
+    </script>
+    <script>
+        function showNotification(message) {
+            var notification = "Success!";
+            notification.text(message).fadeIn();
+
+            setTimeout(function() {
+                notification.fadeOut();
+            }, 3000); // 3 seconds duration
+        }
+    </script>
+    <script src="~/js/user-script.js"></script>
+</body>
+</html>

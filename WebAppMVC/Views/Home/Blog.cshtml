@@ -1,0 +1,238 @@
+﻿@model dynamic
+@{
+    ViewData["Title"] = "Blog Page";
+}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="~/css/blog.css">
+    <link rel='stylesheet' href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css'>
+</head>
+<body class="background">
+    <div class="Title"><h1>Blog</h1></div>
+    @*@foreach (var post in Model)
+    {
+    var userId = User.Identity.GetUserId();
+    var liked = post.Likes.Any(l => l.UserId == userId);
+    var likeButtonText = liked ? "Unlike" : "Like";
+    var likeButtonClass = liked ? "liked" : "";
+    <div>
+    <p>@post.Content</p>
+    <button class="like-button @likeButtonClass" onclick="likePost(@post.Id)">@likeButtonText</button>
+    <span>@post.Likes.Count() Likes</span>
+    <div>
+    @foreach (var comment in post.Comments)
+    {
+    <div>@comment.User.UserName: @comment.Content</div>
+    }
+    </div>
+    <form action="@Url.Action("AddComment")" method="post">
+    <textarea name="content" rows="2" cols="40"></textarea>
+    <input type="hidden" name="postId" value="@post.Id" />
+    <input type="submit" value="Comment" />
+    </form>
+    </div>
+    }*@
+
+    @*<script>
+    function likePost(postId) {
+    $.post('@Url.Action("LikePost")', { postId: postId });
+    }*@
+    <div class="container" style="background-color:white">
+        <div class="row">
+            <h4 class="modal-title">Create Your Post</h4>
+            <div class="create-post">
+                <i class='bx bxs-edit-alt' data-toggle="modal" data-target="#createpost"></i>
+            </div>
+        </div>
+
+        <div id="createpost" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
+                <div class="modal-content modal-addRoom">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Create a Post</h4>
+                    </div>
+                    <form id="postForm" action="@Url.Action("CreatePost")" method="post">
+                        <div class="row p-4">
+                            <div class="col-12">
+                                <div class="row form-group">
+                                    <div class="form-group">
+                                        <textarea type="text" name="postDesc" placeholder="description..." class="form-control" rows="4"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="modal-footer justify-content-center">
+                        <button class="btn btn-success" type="submit" name="action" value="createPost">Post</button>
+                        <button class="btn btn-danger" type="button" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h2>Posts</h2>
+
+        <div class="post">
+            <div class="post-header">
+                <img src="~/images/avatar.png" alt="Profile Picture">
+                <div class="post-header-text">
+                    <h3>John Doe</h3>
+                    <p>3 hours ago</p>
+                </div>
+            </div>
+            <p>This is the first post. It's just for demonstration purposes.</p>
+            <div class="post-actions">
+                <button class="like-button" onclick="toggleLike(this)">
+                    <i class='bx bx-like'></i>Like
+                </button>
+                <span class="like-count">10 Likes</span>
+            </div>
+            <div class="comments">
+                <div class="comment">
+                    <strong>Jane Smith:</strong> Nice post!
+                </div>
+                <div class="comment">
+                    <strong>Mike Johnson:</strong> Great job!
+                </div>
+                <!-- Add more comments here -->
+            </div>
+            <form action="@Url.Action("AddComment")" method="post" class="comment-form">
+                <textarea name="content" rows="2" cols="40" placeholder="Write a comment..."></textarea>
+                <input type="submit" value="Comment" />
+            </form>
+        </div>
+
+        <!-- Add more posts here -->
+    </div>
+    <!-- BackToTop -->
+    <a href="#" class="backToTop cd-top text-replace js-cd-top">
+        <i class="fa fa-angle-up"></i>
+    </a>
+    <script src="~/ckeditor/ckeditor.js"></script>
+    <script src="~/ckfinder/ckfinder.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>
+    <!-- BS4 JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.5/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/util.js"></script>
+    <script src="~/js/main-backToTop.js"></script>
+<script>
+    // Function to toggle like button state and update like count
+        function toggleLike(button) {
+            const post = button.closest('.post');
+            const postId = post.getAttribute('data-post-id');
+            const isLiked = button.classList.toggle('liked');
+            const likeCountSpan = button.nextElementSibling;
+            let likeCount = parseInt(likeCountSpan.textContent);
+
+            if (isLiked) {
+                likeCount++;
+                button.innerHTML = "<i class='bx bxs-like'></i> Liked";
+            } else {
+                likeCount--;
+                button.innerHTML = "<i class='bx bx-like'></i> Like";
+            }
+
+            likeCountSpan.textContent = `${likeCount} Likes`;
+
+            // Save the like state in local storage
+            saveLikeState(postId, isLiked, likeCount);
+        }
+
+        // Save the like state in local storage
+        function saveLikeState(postId, isLiked, likeCount) {
+            const likeState = JSON.parse(localStorage.getItem('likeState')) || {};
+            likeState[postId] = { isLiked, likeCount };
+            localStorage.setItem('likeState', JSON.stringify(likeState));
+        }
+
+        // Load the like state from local storage
+        function loadLikeState() {
+            const likeState = JSON.parse(localStorage.getItem('likeState')) || {};
+            document.querySelectorAll('.post').forEach(post => {
+                const postId = post.getAttribute('data-post-id');
+                const state = likeState[postId];
+                if (state) {
+                    const likeButton = post.querySelector('.like-button');
+                    const likeCountSpan = post.querySelector('.like-count');
+                    if (state.isLiked) {
+                        likeButton.classList.add('liked');
+                        likeButton.innerHTML = "<i class='bx bxs-like'></i> Liked";
+                    } else {
+                        likeButton.classList.remove('liked');
+                        likeButton.innerHTML = "<i class='bx bx-like'></i> Like";
+                    }
+                    likeCountSpan.textContent = `${state.likeCount} Likes`;
+                }
+            });
+        }
+
+        // Load like state on document ready
+        $(document).ready(function() {
+            loadLikeState();
+
+            $('[data-toggle="modal"]').on('click', function() {
+                var target = $(this).data('target');
+                $(target).modal('show');
+            });
+
+            $('[data-dismiss="modal"]').on('click', function() {
+                $(this).closest('.modal').modal('hide');
+            });
+
+            $('#postForm').on('submit', function(event) {
+                event.preventDefault();
+                // Add your post creation logic here
+                $('#createpost').modal('hide');
+            });
+        });
+</script>
+    <script>
+
+        var editor = CKEDITOR.replace('postDesc');
+        CKFinder.setupCKEditor(editor, 'ckfinder/');
+        //data["postDesc"] = editor.getData();
+    </script>
+    <!-- main js -->
+    <script>
+        $(document).ready(function() {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            var backToTopButton = $('.backToTop');
+
+            $(window).scroll(function() {
+                if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
+                    // User has scrolled to the bottom, hide the button
+                    backToTopButton.fadeOut();
+                } else {
+                    // User is not at the bottom, show the button
+                    backToTopButton.fadeIn();
+                }
+            });
+
+            backToTopButton.click(function(e) {
+                e.preventDefault();
+                $('html, body').animate({ scrollTop: 0 }, 'slow');
+            });
+        });
+    </script>
+    <script>
+        function showNotification(message) {
+            var notification = "Success!";
+            notification.text(message).fadeIn();
+
+            setTimeout(function() {
+                notification.fadeOut();
+            }, 3000); // 3 seconds duration
+        }
+    </script>
+    <script src="~/js/user-script.js"></script>
+</body>
+</html>
