@@ -777,7 +777,7 @@ namespace WebAppMVC.Controllers
             if (staffInvalidPasswordUpdate != null)
             {
                 staffInvalids.managerPassword = staffInvalidPasswordUpdate;
-                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] = 
+                //TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] = 
             }
             staffDetails.Data.DefaultUserGenderSelectList = methcall.GetUserGenderSelectableList(staffDetails.Data.Gender);
             staffInvalids.managerDetail = staffDetails.Data;
@@ -930,7 +930,7 @@ namespace WebAppMVC.Controllers
                         "Error while processing your request! (Getting Staff Profile!).\n Staff Details Not Found!"
                     + getMemberAvatar.ErrorMessage;
                 }
-                TempData[Constants.Constants.ALERT_DEFAULT_SUCCESS_NAME] = Constants.Constants.ALERT_USER_AVATAR_IMAGE_CHANGE_SUCCESS;
+                TempData[Constants.Constants.ALERT_DEFAULT_SUCCESS_NAME] = Constants.Constants.ALERT_USER_AVATAR_IMAGE_UPDATE_SUCCESS;
                 HttpContext.Session.SetString(Constants.Constants.USR_IMAGE, getMemberAvatar.Data.ImagePath);
                 return RedirectToAction("StaffProfile");
             }
