@@ -179,19 +179,24 @@ namespace WebAppMVC.Controllers
             return RedirectToAction("Register");
 		}
 		[HttpGet("Logout")]
-        public IActionResult Logout()
+        public async Task<IActionResult> Logout()
         {
-			client.DefaultRequestHeaders.Authorization = null;
+            // Clear the authorization header
+            client.DefaultRequestHeaders.Authorization = null;
+
+            // Clear the session
             HttpContext.Session.Clear();
-            TempData[Constants.Constants.ACC_TOKEN] = null;
-            TempData[Constants.Constants.ROLE_NAME] = null;
-            TempData[Constants.Constants.USR_ID] = null;
-			SignOut();
+
+			// Clear TempData
+			TempData.Clear();
+
+            // Sign out from the authentication schemes
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
             // If using ASP.NET Identity, you may want to sign out the user
             // Example: await SignInManager.SignOutAsync();
 
-            return RedirectToAction(actionName: "Index", controllerName:"Home");
+            return RedirectToAction(actionName: "Index", controllerName: "Home");
         }
 		[HttpPost("Authorize")]
 		public async Task<IActionResult> Authorize(AuthenRequest authenRequest)

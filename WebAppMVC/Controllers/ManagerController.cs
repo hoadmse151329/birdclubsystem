@@ -2084,7 +2084,6 @@ namespace WebAppMVC.Controllers
             }
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
-
             string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
             IFormFile photo = updateNews.ImageUpload;

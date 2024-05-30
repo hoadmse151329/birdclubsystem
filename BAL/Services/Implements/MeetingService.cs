@@ -71,7 +71,7 @@ namespace BAL.Services.Implements
                 int partAmount = await _unitOfWork.MeetingParticipantRepository.GetCountMeetingParticipantsByMeetId(meet.MeetingId);
 
                 var meeting = _mapper.Map<MeetingViewModel>(meet);
-                meeting.NumberOfParticipants = meeting.NumberOfParticipantsLimit - partAmount;
+                meeting.NumberOfParticipants = partAmount;
                 meeting.Address = locationName;
 
                 meeting.MeetingPictures = (media.Count() > 0) ? _mapper.Map<IEnumerable<MeetingMediaViewModel>>(media).ToList() : meeting.MeetingPictures;
