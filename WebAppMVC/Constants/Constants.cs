@@ -27,6 +27,13 @@ namespace WebAppMVC.Constants
 
         public readonly static string ALERT_MEMBER_LOGIN_SUCCESS_NAME = "MemberLogin";
         public readonly static string ALERT_MEMBER_LOGIN_SUCCESS = "Login as Member successfully!";
+        //public readonly static string ALERT_USER_AVATAR_IMAGE_CHANGE_SUCCESS_NAME = "UserAvatarImageChange";
+        public readonly static string ALERT_USER_AVATAR_IMAGE_UPDATE_SUCCESS = "Successfully changed profile pic!";
+        public readonly static string ALERT_USER_AVATAR_IMAGE_UPDATE_ERROR = "Change Profile avatar failed!";
+        public readonly static string ALERT_USER_PASSWORD_UPDATE_SUCCESS = "Successfully changed user password!";
+        public readonly static string ALERT_USER_PASSWORD_UPDATE_ERROR = "Change user password failed!";
+        public readonly static string ALERT_MANAGER_CREATE_NEWS_SUCCESS = "Successfully create news!";
+        public readonly static string ALERT_MANAGER_CREATE_NEWS_ERROR = "Create news failed!";
         public readonly static string ALERT_DEFAULT_ERROR_NAME = "Error";
         public readonly static string ALERT_DEFAULT_SUCCESS_NAME = "Success";
 

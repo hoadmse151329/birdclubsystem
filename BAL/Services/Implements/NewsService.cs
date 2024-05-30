@@ -58,6 +58,11 @@ namespace BAL.Services.Implements
             return _mapper.Map<NewsViewModel>(await _unitOfWork.NewsRepository.GetNewsByIdNoTracking(newsId: newsId));
         }
 
+        public async Task<NewsViewModel?> GetNewsByIdNoTrackingGuestOrMember(int newsId)
+        {
+            return _mapper.Map<NewsViewModel>(await _unitOfWork.NewsRepository.GetNewsByIdNoTrackingGuestOrMember(newsId: newsId));
+        }
+
         public async Task<IEnumerable<NewsViewModel>?> GetSortedNews(
             string? title, 
             List<string>? categories, 

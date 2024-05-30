@@ -55,12 +55,15 @@ namespace WebAppMVC.Controllers
             }*/
             methcall.SetUserDefaultData(this);
             string? role = HttpContext.Session.GetString(Constants.Constants.ROLE_NAME);
+
             if(string.IsNullOrWhiteSpace(role) || string.IsNullOrEmpty(role))
             {
                 role = Constants.Constants.GUEST;
                 HttpContext.Session.SetString(Constants.Constants.ROLE_NAME, role);
-            }else if (role.Equals(Constants.Constants.MEMBER))
-            TempData[Constants.Constants.ALERT_MEMBER_LOGIN_SUCCESS_NAME] = Constants.Constants.ALERT_MEMBER_LOGIN_SUCCESS;
+            }
+            else if (role.Equals(Constants.Constants.MEMBER))
+                TempData[Constants.Constants.ALERT_MEMBER_LOGIN_SUCCESS_NAME] = Constants.Constants.ALERT_MEMBER_LOGIN_SUCCESS;
+
             string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
 
             #region NotificationBell
@@ -149,6 +152,7 @@ namespace WebAppMVC.Controllers
 		{
             methcall.SetUserDefaultData(this);
             string? role = HttpContext.Session.GetString(Constants.Constants.ROLE_NAME);
+
             if (string.IsNullOrWhiteSpace(role) || string.IsNullOrEmpty(role))
             {
                 role = Constants.Constants.GUEST;
@@ -156,6 +160,7 @@ namespace WebAppMVC.Controllers
             }
             else if (role.Equals(Constants.Constants.MEMBER))
                 TempData[Constants.Constants.ALERT_MEMBER_LOGIN_SUCCESS_NAME] = Constants.Constants.ALERT_MEMBER_LOGIN_SUCCESS;
+
             string NewsAPI_URL = HomeAPI_URL + "News/Search";
             var listNewsResponse = await methcall.CallMethodReturnObject<GetListNews>(
                 _httpClient: _httpClient,
@@ -167,24 +172,58 @@ namespace WebAppMVC.Controllers
             if (listNewsResponse == null)
             {
                 ViewBag.error =
-                    "Error while processing your request! (Getting List Meeting Or Fieldtrip!).\n List was Empty!";
-                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] = "Error while processing your request! (Getting List Meeting Or Fieldtrip!).\n List was Empty!";
-                Redirect("~/Home/Error");
+                    "Error while processing your request! (Getting List News!).\n List was Empty!";
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] = "Error while processing your request! (Getting List News!).\n List was Empty!";
+                Redirect("Index");
             }
             if (!listNewsResponse.Status)
             {
                 ViewBag.error =
-                    "Error while processing your request! (Getting List Meeting Or Fieldtrip!).\n"
+                    "Error while processing your request! (Getting List News!).\n"
                     + listNewsResponse.ErrorMessage;
-                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] = "Error while processing your request! (Getting List Meeting Or Fieldtrip!).\n" + listNewsResponse.ErrorMessage;
-                Redirect("~/Home/Error");
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] = "Error while processing your request! (Getting List News!).\n" + listNewsResponse.ErrorMessage;
+                Redirect("Index");
             }
             return View(listNewsResponse.Data);
 		}
-        [Route("NewsDetail")]
-        public IActionResult NewsDetail()
+        [HttpGet("News/{newsId:int}")]
+        public async Task<IActionResult> NewsDetail(int newsId)
         {
-            return View();
+            methcall.SetUserDefaultData(this);
+            string? role = HttpContext.Session.GetString(Constants.Constants.ROLE_NAME);
+
+            if (string.IsNullOrWhiteSpace(role) || string.IsNullOrEmpty(role))
+            {
+                role = Constants.Constants.GUEST;
+                HttpContext.Session.SetString(Constants.Constants.ROLE_NAME, role);
+            }
+            else if (role.Equals(Constants.Constants.MEMBER))
+                TempData[Constants.Constants.ALERT_MEMBER_LOGIN_SUCCESS_NAME] = Constants.Constants.ALERT_MEMBER_LOGIN_SUCCESS;
+
+            string NewsAPI_URL = HomeAPI_URL + "News/" + newsId;
+            var newsResponse = await methcall.CallMethodReturnObject<GetNewsPostResponse>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: Constants.Constants.POST_METHOD,
+                url: NewsAPI_URL,
+                inputType: role,
+                _logger: _logger);
+            if (newsResponse == null)
+            {
+                ViewBag.error =
+                    "Error while processing your request! (Getting News!).\n News was empty or not found!";
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] = "Error while processing your request! (Getting News!).\n News was empty or not found!";
+                RedirectToAction("Index");
+            }
+            if (!newsResponse.Status)
+            {
+                ViewBag.error =
+                    "Error while processing your request! (Getting News!).\n"
+                    + newsResponse.ErrorMessage;
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] = "Error while processing your request! (Getting News!).\n" + newsResponse.ErrorMessage;
+                Redirect("Index");
+            }
+            return View(newsResponse.Data);
         }
         [Route("Gallery")]
         public IActionResult Gallery()

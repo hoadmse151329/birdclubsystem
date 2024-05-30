@@ -9,8 +9,18 @@ namespace BAL.ViewModels.Member
 {
     public class UpdateMemberAvatar
     {
+        public UpdateMemberAvatar()
+        {
+        }
+
+        public UpdateMemberAvatar(string? memberId, string? imagePath)
+        {
+            MemberId = memberId;
+            ImagePath = imagePath;
+        }
+
         public string? MemberId { get; set; }
         public string? ImagePath { get; set; }
-        public IFormFile ImageFile { get; set; }
+        public IFormFile? ImageFile { get; set; }
     }
 }

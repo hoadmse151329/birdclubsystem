@@ -12,6 +12,7 @@ namespace DAL.Repositories.Interfaces
     {
         Task<IEnumerable<News>> GetAllNews();
         Task<News?> GetNewsByIdNoTracking(int newsId);
+        Task<News?> GetNewsByIdNoTrackingGuestOrMember(int newsId);
         Task<int> CountNews();
         Task <IEnumerable<News>?> GetSortedNews(
             string? title,
