@@ -787,8 +787,8 @@ namespace WebAppMVC.Controllers
         {
             StaffAPI_URL += "Staff/Profile/Update";
 
-            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
-                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.STAFF) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.STAFF));
 
             if (!ModelState.IsValid)
             {

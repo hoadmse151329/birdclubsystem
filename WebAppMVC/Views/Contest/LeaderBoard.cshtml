@@ -1,4 +1,6 @@
-﻿@{
+﻿@model dynamic
+@{
+    List<BAL.ViewModels.Event.GetLeaderboardResponse> leaderboard = Model.Leaderboard;
     ViewData["Title"] = "LeaderBoard Page";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -65,36 +67,14 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>Eagle</td>
-                    <td>2400</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>Hawk</td>
-                    <td>2300</td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>Owl</td>
-                    <td>2200</td>
-                </tr>
-                <tr>
-                    <td>4</td>
-                    <td>Robin</td>
-                    <td>2100</td>
-                </tr>
-                <tr>
-                    <td>5</td>
-                    <td>Pigeon</td>
-                    <td>2000</td>
-                </tr>
-                <tr>
-                    <td>6</td>
-                    <td>Sparrow</td>
-                    <td>1900</td>
-                </tr>
+                @foreach(var bird in leaderboard)
+                {
+                    <tr>
+                        <td>@bird.Rank</td>
+                        <td>@bird.BirdName</td>
+                        <td>@bird.Elo</td>
+                    </tr>
+                }
             </tbody>
         </table>
     </div>

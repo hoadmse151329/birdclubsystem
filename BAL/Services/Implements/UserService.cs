@@ -111,7 +111,6 @@ namespace BAL.Services.Implements
                 usr.MemberDetail.UserName = newmem.UserName;
 				usr.MemberDetail.Gender = newmem.Gender;
                 usr.MemberDetail.Phone = newmem.Phone;
-                usr.MemberDetail.ExpiryDate = DateTime.MinValue;
 			}
             _unitOfWork.UserRepository.Create(usr);
             _unitOfWork.Save();
@@ -131,7 +130,6 @@ namespace BAL.Services.Implements
                 usr.MemberDetail.UserName = newmem.UserName;
                 usr.MemberDetail.Gender = newmem.Gender;
                 usr.MemberDetail.Phone = newmem.Phone;
-                usr.MemberDetail.ExpiryDate = DateTime.MinValue;
             }
             _unitOfWork.UserRepository.Create(usr);
             _unitOfWork.Save();

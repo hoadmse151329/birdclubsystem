@@ -101,9 +101,7 @@
                                 <div class="text-wrapper-15">@fieldtripDetails.Host</div>
                                 <div class="text-wrapper-18"><span class="price-format" data-price="@fieldtripDetails.Fee"></span></div>
                             </div>
-
-                            @{
-                                if (fieldtripDetails.ParticipationNo != 0 && fieldtripDetails.ParticipationNo != null)
+                                @if (fieldtripDetails.ParticipationNo != 0 && fieldtripDetails.ParticipationNo != null)
                                 {
                                     <div class="overlap-group-3 text-wrapper-16">
                                         <span class="text-success">@ViewBag.PartNumber</span>
@@ -120,12 +118,11 @@
                                 else
                                 {
                                     <div class="register">
-                                        <form asp-action="FieldTripRegister" asp-controller="FieldTrip" method="post" asp-route-tripId="@fieldtripDetails.TripId">
-                                            <button class="overlap-group-3 text-wrapper-16 button-rgb" type="submit">Register</button>
+                                        <form asp-action="FieldTripRegister" asp-controller="FieldTrip" method="get" asp-route-tripId="@fieldtripDetails.TripId">
+                                        <button class="overlap-group-3 text-wrapper-16 button-rgb" type="submit">Register</button>
                                         </form>
                                     </div>
                                 }
-                            }
                         </div>
                     </div>
                     <section class="field-trips-section">
@@ -430,7 +427,7 @@
             </div>
         </div>
     </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
         referrerpolicy="no-referrer"></script>
         <!-- Jquery Waypoint -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>

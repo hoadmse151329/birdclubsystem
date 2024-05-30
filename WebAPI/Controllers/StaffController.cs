@@ -336,5 +336,65 @@ namespace WebAPI.Controllers
                 });
             }
         }
+        [HttpPut("Profile/Update")]
+        [Authorize(Roles = "Staff,Admin")]
+        [ProducesResponseType(typeof(MemberViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> UpdateStaffDetails(
+            [Required][FromBody] MemberViewModel member
+            )
+        {
+            try
+            {
+                var result = await _memberService.GetById(member.MemberId);
+                if (result == null)
+                {
+                    return NotFound(new
+                    {
+                        Status = false,
+                        ErrorMessage = "Staff Details Not Found!"
+                    });
+                }
+                if (member.Status == null)
+                {
+                    member.Status = result.Status;
+                }
+                if (member.ImagePath == null)
+                {
+                    member.ImagePath = result.ImagePath;
+                }
+                if (member.UserId == 0)
+                {
+                    member.UserId = result.UserId;
+                }
+                _memberService.Update(member);
+                result = await _memberService.GetById(member.MemberId);
+                return Ok(new
+                {
+                    Status = true,
+                    SuccessMessage = "Successfully update Profile!",
+                    Data = result
+                });
+            }
+            catch (Exception ex)
+            {
+                if (ex.InnerException != null)
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = ex.Message,
+                        InnerExceptionMessage = ex.InnerException.Message
+                    });
+                }
+                // Log the exception if needed
+                return BadRequest(new
+                {
+                    Status = false,
+                    ErrorMessage = ex.Message
+                });
+            }
+        }
     }
 }

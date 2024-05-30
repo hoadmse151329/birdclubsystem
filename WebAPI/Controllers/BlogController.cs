@@ -21,7 +21,7 @@ namespace WebAPI.Controllers
             _config = config;
             _blogService = blogService;
         }
-        [HttpPost("All")]
+        [HttpGet("All")]
         [ProducesResponseType(typeof(List<BlogViewModel>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -60,7 +60,7 @@ namespace WebAPI.Controllers
         [ProducesResponseType(typeof(BlogViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> GetMeetingById(
+        public async Task<IActionResult> GetBlogById(
             [FromRoute] int id)
         {
             try
@@ -93,7 +93,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("Create")]
-        [Authorize(Roles = "Manager")]
+        [Authorize(Roles = "Member")]
         [ProducesResponseType(typeof(OkObjectResult), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -121,7 +121,7 @@ namespace WebAPI.Controllers
             }
         }
         [HttpPut("{id:int}/Update")]
-        [Authorize(Roles = "Manager")]
+        [Authorize(Roles = "Member")]
         [ProducesResponseType(typeof(OkObjectResult), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -146,6 +146,46 @@ namespace WebAPI.Controllers
                 return Ok(new
                 {
                     Status = true,
+                    Data = result
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new
+                {
+                    Status = false,
+                    ErrorMessage = ex.Message,
+                    InnerExceptionMessage = ex.InnerException?.Message
+                });
+            }
+        }
+        [HttpGet("{id:int}/Disable")]
+        [Authorize(Roles = "Manager")]
+        [ProducesResponseType(typeof(BlogViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> DisableBlog(
+            [Required][FromRoute] int id)
+        {
+            try
+            {
+                var result = await _blogService.GetBlogByIdNoTracking(id);
+                if (result == null)
+                {
+                    return NotFound(new
+                    {
+                        Status = false,
+                        ErrorMessage = "Blog post does not exist!"
+                    });
+                }
+                result.BlogId = id;
+                result.Status = "Disabled";
+                _blogService.Update(result);
+                result = await _blogService.GetBlogByIdNoTracking(id);
+                return Ok(new
+                {
+                    Status = true,
+                    SuccessMessage = "Successfully Disabled Blog post!",
                     Data = result
                 });
             }

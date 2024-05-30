@@ -158,10 +158,13 @@ namespace WebAppMVC.Controllers
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER) != null)
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER));
 
+            string? imagePath = HttpContext.Session.GetString(Constants.Constants.USR_IMAGE);
+
             string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
             string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
 
+            memberDetail.ImagePath = imagePath;
             memberDetail.MemberId = usrId;
 
             var memberDetailupdate = await methcall.CallMethodReturnObject<GetMemberProfileResponse>(
