@@ -21,6 +21,7 @@ namespace WebAppMVC.Services.HostedServices
         private int fieldtripStatusUpdated = 0;
         private int fieldtripStatusUpdatedToOpen = 0;
         private int fieldtripStatusUpdatedToClosed = 0;
+        private int fieldtripStatusUpdatedToCancelled = 0;
         private DateTime today = DateTime.UtcNow;
         private readonly JsonSerializerOptions jsonOptions = new JsonSerializerOptions
         {
@@ -41,7 +42,7 @@ namespace WebAppMVC.Services.HostedServices
         {
             _logger.LogInformation("Fieldtrip Status update on Date Service is starting.");
 
-            _timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromHours(12)); // Adjust the interval as needed
+            _timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromHours(1)); // Adjust the interval as needed
 
             return Task.CompletedTask;
         }
@@ -80,7 +81,10 @@ namespace WebAppMVC.Services.HostedServices
                 _logger.LogInformation("Succeed Retrieved list of {Count} fieldtrips via API.", listFieldtripStatus.Data.Count);
                 foreach (var fieldtripToUpdate in listFieldtripStatus.Data)
                 {
-                    if (fieldtripToUpdate.OpenRegistration <= today && fieldtripToUpdate.Status.Equals(Constants.Constants.EVENT_STATUS_ON_HOLD))
+                    if (
+                        fieldtripToUpdate.OpenRegistration <= today && 
+                        fieldtripToUpdate.Status.Equals(Constants.Constants.EVENT_STATUS_ON_HOLD)
+                        )
                     {
                         fieldtripToUpdate.Status = Constants.Constants.EVENT_STATUS_OPEN_REGISTRATION;
                         // Call the API to update the membership status
@@ -103,7 +107,13 @@ namespace WebAppMVC.Services.HostedServices
                             _logger.LogInformation("Succeed updating Fieldtrip's status with ID: {TripId} via API.", fieldtripToUpdate.TripId);
                         }
                     }
-                    if (fieldtripToUpdate.RegistrationDeadline <= today && fieldtripToUpdate.Status.Equals(Constants.Constants.EVENT_STATUS_OPEN_REGISTRATION))
+                    if (
+                        (
+                        fieldtripToUpdate.RegistrationDeadline <= today || 
+                        fieldtripToUpdate.NumberOfParticipants >= fieldtripToUpdate.NumberOfParticipantsLimit
+                        ) && 
+                        fieldtripToUpdate.Status.Equals(Constants.Constants.EVENT_STATUS_OPEN_REGISTRATION)
+                        )
                     {
                         fieldtripToUpdate.Status = Constants.Constants.EVENT_STATUS_CLOSED_REGISTRATION;
                         // Call the API to update the membership status
@@ -126,8 +136,42 @@ namespace WebAppMVC.Services.HostedServices
                             _logger.LogInformation("Succeed updating Fieldtrip's status with ID: {TripId} via API.", fieldtripToUpdate.TripId);
                         }
                     }
+                    if (
+                        fieldtripToUpdate.StartDate <= today &&
+                        fieldtripToUpdate.Status.Equals(Constants.Constants.EVENT_STATUS_CLOSED_REGISTRATION) &&
+                        fieldtripToUpdate.NumberOfParticipants < fieldtripToUpdate.NumberOfParticipantsMinReq
+                        )
+                    {
+                        fieldtripToUpdate.Status = Constants.Constants.EVENT_STATUS_CANCELLED;
+                        // Call the API to update the membership status
+                        var fieldtripStatusResponse = await methcall.CallMethodReturnObject<GetFieldTripPostResponse>(
+                                        _httpClient: client,
+                                        options: jsonOptions,
+                                        methodName: Constants.Constants.PUT_METHOD,
+                                        url: FieldTripUpdateAPI_URL + fieldtripToUpdate.TripId + "/Update",
+                                        inputType: fieldtripToUpdate,
+                                        _logger: _logger,
+                                        accessToken: accToken);
+                        if (fieldtripStatusResponse == null || !fieldtripStatusResponse.Status || fieldtripStatusResponse.Data == null)
+                        {
+                            _logger.LogError("Failed to update Fieldtrip's status with ID: {TripId} via API.", fieldtripToUpdate.TripId);
+                        }
+                        else
+                        {
+                            fieldtripStatusUpdated += 1;
+                            fieldtripStatusUpdatedToCancelled += 1;
+                            _logger.LogInformation("Succeed updating Fieldtrip's status with ID: {TripId} via API.", fieldtripToUpdate.TripId);
+                        }
+                    }
                 }
-                _logger.LogInformation("Fieldtrip Status update on Date Service has updated {fieldtripStatusUpdated} fieldtrips status with {fieldtripStatusUpdatedToOpen} fieldtrips status updated to 'OpenRegistration' and {fieldtripStatusUpdatedToClosed} fieldtrips status updated to 'ClosedRegistration'.", fieldtripStatusUpdated, fieldtripStatusUpdatedToOpen, fieldtripStatusUpdatedToClosed);
+                _logger.LogInformation("Fieldtrip Status update on Date Service has updated {fieldtripStatusUpdated} fieldtrips status with:\n " +
+                    "{fieldtripStatusUpdatedToOpen} fieldtrips status updated to \'OpenRegistration\'\n" +
+                    "{fieldtripStatusUpdatedToClosed} fieldtrips status updated to \'ClosedRegistration\'\n" +
+                    "{fieldtripStatusUpdatedToCancelled} fieldtrips status updated to \'Cancelled\'", 
+                    fieldtripStatusUpdated, 
+                    fieldtripStatusUpdatedToOpen, 
+                    fieldtripStatusUpdatedToClosed,
+                    fieldtripStatusUpdatedToCancelled);
             }
         }
 

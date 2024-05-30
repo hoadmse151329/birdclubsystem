@@ -94,6 +94,7 @@ namespace WebAppMVC.Constants
         public readonly static string UPDATE_STAFF_DETAILS_VALID = "UStaffDetailsValid";
         public readonly static string UPDATE_STAFF_PASSWORD_VALID = "UStaffPasswordValid";
         public readonly static string UPDATE_ADMIN_DETAILS_VALID = "UAdminDetailsValid";
+        public readonly static string UPDATE_ADMIN_PASSWORD_VALID = "UAdminPasswordValid";
 
         public readonly static string EVENT_STATUS_ON_HOLD = "OnHold";
         public readonly static string EVENT_STATUS_NAME_ON_HOLD = "On Hold";

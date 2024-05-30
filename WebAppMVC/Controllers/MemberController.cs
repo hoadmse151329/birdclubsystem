@@ -71,7 +71,7 @@ namespace WebAppMVC.Controllers
             {
                 memberInvalidDetails.ImagePath = imagePath;
                 memberInvalidDetails.DefaultUserGenderSelectList = methcall.GetUserGenderSelectableList(memberInvalidDetails.Gender);
-                memberInvalids.managerDetail = memberInvalidDetails;
+                memberInvalids.memberDetail = memberInvalidDetails;
                 return View(memberInvalids);
             }
 
@@ -139,10 +139,10 @@ namespace WebAppMVC.Controllers
             var memberInvalidPasswordUpdate = methcall.GetValidationTempData<UpdateMemberPassword>(this, TempData, Constants.Constants.UPDATE_MEMBER_PASSWORD_VALID, "memberPassword", jsonOptions);
             if (memberInvalidPasswordUpdate != null)
             {
-                memberInvalids.managerPassword = memberInvalidPasswordUpdate;
+                memberInvalids.memberPassword = memberInvalidPasswordUpdate;
             }
             memberDetails.Data.DefaultUserGenderSelectList = methcall.GetUserGenderSelectableList(memberDetails.Data.Gender);
-            memberInvalids.managerDetail = memberDetails.Data;
+            memberInvalids.memberDetail = memberDetails.Data;
             return View(memberInvalids);
         }
         [HttpPost("Profile")]

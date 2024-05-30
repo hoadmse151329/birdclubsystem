@@ -131,14 +131,14 @@ namespace WebAppMVC.Controllers
             {
                 _logger.LogInformation(
                     "Error while processing your request! (Getting List Meeting!). List was Empty!: " + listMeetResponse);
-                ViewBag.error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting List Meeting!).\n List was Empty!";
                 return View("StaffIndex");
             }
             else
             if (!listMeetResponse.Status || !listLocationResponse.Status)
             {
-                ViewBag.error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting List Meeting!).\n"
                     + listMeetResponse.ErrorMessage + "\n" + listLocationResponse.ErrorMessage;
                 return View("StaffIndex");
@@ -189,14 +189,14 @@ namespace WebAppMVC.Controllers
                                 _logger: _logger);
             if (meetPostResponse == null)
             {
-                ViewBag.error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting Meeting!).\n Meeting Not Found!";
                 return RedirectToAction("StaffMeeting");
             }
             if (!meetPostResponse.Status)
             {
                 _logger.LogInformation("Error while processing your request: " + meetPostResponse.Status + " , Error Message: " + meetPostResponse.ErrorMessage);
-                ViewBag.error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting Meeting Post!).\n"
                     + meetPostResponse.ErrorMessage;
                 return RedirectToAction("StaffMeeting");
@@ -238,7 +238,7 @@ namespace WebAppMVC.Controllers
             {
                 TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_MEETING_VALID, updateMeeting, jsonOptions);
 
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Updating Meeting Status!).\n Meeting Not Found!";
                 return RedirectToAction("StaffMeetingDetail", new { id });
             }
@@ -247,7 +247,7 @@ namespace WebAppMVC.Controllers
                 TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_MEETING_VALID, updateMeeting, jsonOptions);
 
                 _logger.LogInformation("Error while processing your request: " + meetPostResponse.Status + " , Error Message: " + meetPostResponse.ErrorMessage);
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Updating Meeting Status!).\n"
                     + meetPostResponse.ErrorMessage;
                 return RedirectToAction("StaffMeetingDetail", new { id });
@@ -279,14 +279,14 @@ namespace WebAppMVC.Controllers
             {
                 _logger.LogInformation(
                     "Error while processing your request! (Getting List Meeting Participant Status!). List was Empty!: " + meetPartStatusResponse);
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting List Meeting Participant Status!).\n List was Empty!";
                 return View("StaffIndex");
             }
             else
             if (!meetPartStatusResponse.Status)
             {
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting List Meeting Participant Status!).\n"
                     + meetPartStatusResponse.ErrorMessage;
                 return View("StaffIndex");
@@ -332,14 +332,14 @@ namespace WebAppMVC.Controllers
             {
                 _logger.LogInformation(
                     "Error while processing your request! (Getting List FieldTrip!). List was Empty!: " + listLocationResponse + ",\n" + listFieldTripResponse);
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting List FieldTrip!).\n List was Empty!";
                 return View("StaffIndex");
             }
             else
             if (!listFieldTripResponse.Status || !listLocationResponse.Status)
             {
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting List FieldTrip!).\n"
                     + listFieldTripResponse.ErrorMessage + "\n" + listLocationResponse.ErrorMessage;
                 return View("StaffIndex");
@@ -375,14 +375,14 @@ namespace WebAppMVC.Controllers
                                 _logger: _logger);
             if (fieldtripPostResponse == null)
             {
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting FieldTrip!).\n FieldTrip Not Found!";
                 return RedirectToAction("StaffFieldTrip");
             }
             if (!fieldtripPostResponse.Status)
             {
                 _logger.LogInformation("Error while processing your request: " + fieldtripPostResponse.Status + " , Error Message: " + fieldtripPostResponse.ErrorMessage);
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting FieldTrip Post!).\n"
                     + fieldtripPostResponse.ErrorMessage;
                 return RedirectToAction("StaffFieldTrip");
@@ -426,14 +426,14 @@ namespace WebAppMVC.Controllers
                                 _logger: _logger);
             if (fieldtripPostResponse == null)
             {
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Updating FieldTrip Status!).\n FieldTrip Not Found!";
                 return RedirectToAction("StaffFieldTripDetail", new { id });
             }
             if (!fieldtripPostResponse.Status)
             {
                 _logger.LogInformation("Error while processing your request: " + fieldtripPostResponse.Status + " , Error Message: " + fieldtripPostResponse.ErrorMessage);
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Updating FieldTrip Status!).\n"
                     + fieldtripPostResponse.ErrorMessage;
                 return RedirectToAction("StaffFieldTripDetail", new { id });
@@ -465,14 +465,14 @@ namespace WebAppMVC.Controllers
             {
                 _logger.LogInformation(
                     "Error while processing your request! (Getting List Field Trip Participant Status!). List was Empty!: " + tripPartStatusResponse);
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting List Field Trip Participant Status!).\n List was Empty!";
                 return View("StaffIndex");
             }
             else
             if (!tripPartStatusResponse.Status)
             {
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting List Field Trip Participant Status!).\n"
                     + tripPartStatusResponse.ErrorMessage;
                 return View("StaffIndex");
@@ -519,14 +519,14 @@ namespace WebAppMVC.Controllers
             {
                 _logger.LogInformation(
                     "Error while processing your request! (Getting List Contest!). List was Empty!: " + listContestResponse);
-                ViewBag.error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting List Contest!).\n List was Empty!";
                 return View("StaffIndex");
             }
             else
             if (!listContestResponse.Status || !listLocationResponse.Status)
             {
-                ViewBag.error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting List Meeting!).\n"
                     + listContestResponse.ErrorMessage + "\n" + listLocationResponse.ErrorMessage;
                 return View("StaffIndex");
@@ -565,14 +565,14 @@ namespace WebAppMVC.Controllers
                                 _logger: _logger);
             if (contestPostResponse == null)
             {
-                ViewBag.error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting Contest!).\n Contest Not Found!";
                 return RedirectToAction("StaffContest");
             }
             if (!contestPostResponse.Status)
             {
                 _logger.LogInformation("Error while processing your request: " + contestPostResponse.Status + " , Error Message: " + contestPostResponse.ErrorMessage);
-                ViewBag.error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting Contest Post!).\n"
                     + contestPostResponse.ErrorMessage;
                 return RedirectToAction("StaffContest");
@@ -622,14 +622,14 @@ namespace WebAppMVC.Controllers
                                 _logger: _logger);
             if (contestPostResponse == null)
             {
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Updating Contest Status!).\n Contest Not Found!";
                 return RedirectToAction("StaffContestDetail", "Staff", new { id });
             }
             if (!contestPostResponse.Status)
             {
                 _logger.LogInformation("Error while processing your request: " + contestPostResponse.Status + " , Error Message: " + contestPostResponse.ErrorMessage);
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Updating Contest Status!).\n"
                     + contestPostResponse.ErrorMessage;
                 return RedirectToAction("StaffContestDetail", "Staff", new { id });
@@ -651,7 +651,7 @@ namespace WebAppMVC.Controllers
 
             if (contestPartView.Count == 0)
             {
-                ViewBag.Error = "Error while processing your request! (Getting List Contest Participant Status!).\n List was Empty!";
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] = "Error while processing your request! (Getting List Contest Participant Status!).\n List was Empty!";
                 return RedirectToAction("StaffContestDetail", "Staff", new { id });
             }
 
@@ -668,14 +668,14 @@ namespace WebAppMVC.Controllers
             {
                 _logger.LogInformation(
                     "Error while processing your request! (Getting List Contest Participant Status!). List was Empty!: " + contestPartStatusResponse);
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting List Contest Participant Status!).\n List was Empty!";
                 return RedirectToAction("StaffContestDetail", "Staff", new { id });
             }
             else
             if (!contestPartStatusResponse.Status)
             {
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting List Contest Participant Status!).\n"
                     + contestPartStatusResponse.ErrorMessage;
                 return RedirectToAction("StaffContestDetail", "Staff", new { id });
@@ -697,7 +697,7 @@ namespace WebAppMVC.Controllers
 
             if (contestPartView.Count == 0)
             {
-                ViewBag.Error = "Error while processing your request! (Getting List Contest Participant Status!).\n List was Empty!";
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] = "Error while processing your request! (Getting List Contest Participant Status!).\n List was Empty!";
                 return RedirectToAction("StaffContestDetail", "Staff", new { id });
             }
 
@@ -714,14 +714,14 @@ namespace WebAppMVC.Controllers
             {
                 _logger.LogInformation(
                     "Error while processing your request! (Getting List Contest Participant Score!). List was Empty!: " + contestPartScoresResponse);
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting List Contest Participant Score!).\n List was Empty!";
                 return RedirectToAction("StaffContestDetail", "Staff", new { id });
             }
             else
             if (!contestPartScoresResponse.Status)
             {
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting List Contest Participant Score!).\n"
                     + contestPartScoresResponse.ErrorMessage;
                 return RedirectToAction("StaffContestDetail", "Staff", new { id });
@@ -747,7 +747,7 @@ namespace WebAppMVC.Controllers
             {
                 staffInvalidDetails.ImagePath = imagePath;
                 staffInvalidDetails.DefaultUserGenderSelectList = methcall.GetUserGenderSelectableList(staffInvalidDetails.Gender);
-                staffInvalids.managerDetail = staffInvalidDetails;
+                staffInvalids.staffDetail = staffInvalidDetails;
                 return View(staffInvalids);
             }
 
@@ -761,14 +761,14 @@ namespace WebAppMVC.Controllers
                 accessToken: accToken);
             if (staffDetails == null)
             {
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting Staff Profile!).\n Staff Details Not Found!";
                 return RedirectToAction("Index");
             }
             else
             if (!staffDetails.Status)
             {
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting Staff Profile!).\n Staff Details Not Found!"
                 + staffDetails.ErrorMessage;
                 return RedirectToAction("Index");
@@ -776,11 +776,10 @@ namespace WebAppMVC.Controllers
             var staffInvalidPasswordUpdate = methcall.GetValidationTempData<UpdateMemberPassword>(this, TempData, Constants.Constants.UPDATE_STAFF_PASSWORD_VALID, "staffPassword", jsonOptions);
             if (staffInvalidPasswordUpdate != null)
             {
-                staffInvalids.managerPassword = staffInvalidPasswordUpdate;
-                //TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] = 
+                staffInvalids.staffPassword = staffInvalidPasswordUpdate;
             }
             staffDetails.Data.DefaultUserGenderSelectList = methcall.GetUserGenderSelectableList(staffDetails.Data.Gender);
-            staffInvalids.managerDetail = staffDetails.Data;
+            staffInvalids.staffDetail = staffDetails.Data;
             return View(staffInvalids);
         }
         [HttpPost("Profile")]
@@ -814,14 +813,14 @@ namespace WebAppMVC.Controllers
                 accessToken: accToken);
             if (staffDetailupdate == null)
             {
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting Member Profile!).\n Member Details Not Found!";
                 return RedirectToAction("StaffProfile");
             }
             else
             if (!staffDetailupdate.Status)
             {
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting Member Profile!).\n Member Details Not Found!"
                 + staffDetailupdate.ErrorMessage;
                 return RedirectToAction("StaffProfile");
@@ -859,14 +858,14 @@ namespace WebAppMVC.Controllers
                 accessToken: accToken);
             if (memberDetailupdate == null)
             {
-                ViewBag.error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting Staff Profile!).\n Staff Details Not Found!";
                 return RedirectToAction("StaffProfile");
             }
             else
             if (!memberDetailupdate.Status)
             {
-                ViewBag.error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting Staff Profile!).\n Staff Details Not Found!"
                 + memberDetailupdate.ErrorMessage;
                 return RedirectToAction("StaffProfile");
@@ -921,12 +920,12 @@ namespace WebAppMVC.Controllers
                     accessToken: accToken);
                 if (getMemberAvatar == null)
                 {
-                    ViewBag.error =
+                    TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                         "Error while processing your request! (Getting Staff Profile!).\n Staff Details Not Found!";
                 }
                 else if (!getMemberAvatar.Status)
                 {
-                    ViewBag.error =
+                    TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                         "Error while processing your request! (Getting Staff Profile!).\n Staff Details Not Found!"
                     + getMemberAvatar.ErrorMessage;
                 }

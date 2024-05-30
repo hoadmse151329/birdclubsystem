@@ -1,10 +1,11 @@
-﻿@model BAL.ViewModels.MemberViewModel
+﻿@model WebAppMVC.Models.ViewModels.AdminProfileVM
 @{
     ViewData["Title"] = "Admin Profile Page";
     Layout = "~/Views/Shared/_ALayout.cshtml";
     IFormFile? formFile = null;
-    BAL.ViewModels.Member.UpdateMemberPassword memberPassword = new();
-    List<SelectListItem> genders = Model.DefaultUserGenderSelectList;
+    BAL.ViewModels.Member.UpdateMemberPassword adminPassword = Model.adminPassword;
+    BAL.ViewModels.MemberViewModel adminDetail = Model.adminDetail;
+    List<SelectListItem> genders = adminDetail.DefaultUserGenderSelectList;
 }
 <html lang="en">
 
@@ -56,13 +57,13 @@
                             <div class="row">
                                 <div class="col-lg-4">
                                     <div class="profile-pic">
-                                        <img src="@Model.ImagePath" id="output" width="200" />
+                                        <img src="@adminDetail.ImagePath" id="output" width="200" />
                                         <div class="upload">
                                             <button class="btn btn-warning" data-toggle="modal" data-target="#uploadImg">Details</button>
                                             <i class='bx bxs-camera-plus'></i>
                                         </div>
                                     </div>
-                                    <div class="profile-name">@Model.FullName</div>
+                                    <div class="profile-name">@adminDetail.FullName</div>
                                 </div>
                                 <div class="col-lg-8">
                                     <div class="profile-content">
@@ -75,56 +76,56 @@
                                                     <div class="row username-content">
                                                         <label class="contact-title col-md-5 col-sm-4 mt-3">Username: </label>
 
-                                                        <input asp-for="UserName" id="userName" type="text" name="username"
+                                                        <input asp-for="@adminDetail.UserName" id="userName" type="text" name="username"
                                                                class="form-control col-md-5 col-sm-8 mt-2" readonly
-                                                               value="@Model.UserName">
-                                                        <span asp-validation-for="UserName" id="error_message"
+                                                               value="@adminDetail.UserName">
+                                                        <span asp-validation-for="@adminDetail.UserName" id="error_message"
                                                               class="error-message col-md-2 mt-3"></span>
 
                                                     </div>
                                                     <div class="row fullname-content">
                                                         <label class="contact-title col-md-5 col-sm-4 mt-3">Full Name: </label>
 
-                                                        <input asp-for="FullName" id="fullName" type="text" name="fullname"
+                                                        <input asp-for="@adminDetail.FullName" id="fullName" type="text" name="fullname"
                                                                class="form-control col-md-5 col-sm-8 mt-2" readonly
-                                                               value="@Model.FullName">
-                                                        <span asp-validation-for="FullName" id="error_message"
+                                                               value="@adminDetail.FullName">
+                                                        <span asp-validation-for="@adminDetail.FullName" id="error_message"
                                                               class="error-message col-md-2 mt-3"></span>
 
                                                     </div>
                                                     <div class="row phone-content">
                                                         <label class="contact-title col-md-5 col-sm-4 mt-3">Phone Number: </label>
 
-                                                        <input asp-for="Phone" id="phone" type="tel" name="phone" value="@Model.Phone"
+                                                        <input asp-for="@adminDetail.Phone" id="phone" type="tel" name="phone" value="@adminDetail.Phone"
                                                                class="form-control col-md-5 col-sm-8 mt-2">
-                                                        <span asp-validation-for="Phone" id="error_message"
+                                                        <span asp-validation-for="@adminDetail.Phone" id="error_message"
                                                               class="error-message col-md-2 mt-3"></span>
 
                                                     </div>
                                                     <div class="row address-content">
                                                         <label class="contact-title col-md-5 col-sm-4 mt-3">Address: </label>
 
-                                                        <input asp-for="Address" type="text" name="address" value="@Model.Address"
+                                                        <input asp-for="@adminDetail.Address" type="text" name="address" value="@adminDetail.Address"
                                                                class="form-control col-md-5 col-sm-8 mt-2">
-                                                        <span asp-validation-for="Address" id="error_message"
+                                                        <span asp-validation-for="@adminDetail.Address" id="error_message"
                                                               class="error-message col-md-2 mt-3"></span>
 
                                                     </div>
                                                     <div class="row email-content">
                                                         <label class="contact-title col-md-5 col-sm-4 mt-3">Email: </label>
 
-                                                        <input asp-for="Email" id="email" type="email" name="email" value="@Model.Email"
+                                                        <input asp-for="@adminDetail.Email" id="email" type="email" name="email" value="@adminDetail.Email"
                                                                class="form-control col-md-5 col-sm-8 mt-2">
-                                                        <span asp-validation-for="Email" id="error_message"
+                                                        <span asp-validation-for="@adminDetail.Email" id="error_message"
                                                               class="error-message col-md-2 mt-3"></span>
 
                                                     </div>
                                                     <div class="row gender-content">
                                                         <label class="contact-title col-md-5 col-sm-4 mt-3">Gender: </label>
-                                                        <select class="form-control col-md-5 col-sm-8 mt-2" asp-for="@Model.Gender" asp-items="@genders" class="custom-select" name="gender" id="gender">
+                                                        <select class="form-control col-md-5 col-sm-8 mt-2" asp-for="@adminDetail.Gender" asp-items="@genders" class="custom-select" name="gender" id="gender">
                                                         </select>
                                                     </div>
-                                                    <input asp-for="@Model.ImagePath" type="text" value="@Model.ImagePath" hidden />
+                                                    <input asp-for="@adminDetail.ImagePath" type="text" value="@adminDetail.ImagePath" hidden />
                                                     <div class="row pt-3 d-flex">
                                                         <button type="submit" class="offset-3 btn btn-success">Confirm Changes</button>
                                                     </div>
@@ -145,30 +146,35 @@
                 <div class="card-header card-setting" id="headingTwo">
                     <h5 class="mb-0">
                         <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo"
-                            aria-expanded="false" aria-controls="collapseTwo">
-                            Thay đổi mật khẩu <i class='bx bx-chevron-right'></i>
+                                aria-expanded="false" aria-controls="collapseTwo">
+                            Change Password <i class='bx bx-chevron-right'></i>
                         </button>
                     </h5>
                 </div>
                 <div class="collapse" id="collapseTwo" aria-labelledby="headingTwo" data-parent="#accordion">
                     <div class="card-body">
                         <div class="card-group d-block">
-                            <form action="#" method="post">
+                            <form asp-action="ChangePassword" asp-controller="Admin" method="post">
                                 <div class="row form-group">
-                                    <label class="offset-md-3 col-md-2 col-sm-3 col-form-label">Mật khẩu cũ:</label> 
-                                    <input class="col-md-3 col-sm-5 form-control" type="password" name="oldpassword" required>
-                                    <span class="error-message col-sm-3 mt-2">Mật khẩu sai!</span>
+                                    <label asp-for=@adminPassword.password class="offset-md-3 col-md-2 col-sm-3 col-form-label">Old Password</label>
+                                    <input asp-for=@adminPassword.password class="col-md-3 col-sm-5 form-control" type="password"
+                                           required value=@adminPassword.password>
+                                    <span asp-validation-for=@adminPassword.password class="error-message col-sm-3 mt-2"></span>
                                 </div>
                                 <div class="row form-group">
-                                    <label class="offset-md-3 col-md-2 col-sm-3 col-form-label">Mật khẩu mới:</label>
-                                    <input class="col-md-3 col-sm-5 form-control" type="password" name="newpassword" id="password" required>
+                                    <label asp-for=@adminPassword.Newpassword class="offset-md-3 col-md-2 col-sm-3 col-form-label">New Password</label>
+                                    <input asp-for=@adminPassword.Newpassword class="col-md-3 col-sm-5 form-control" type="password"
+                                           id="password" required value=@adminPassword.Newpassword>
+                                    <span asp-validation-for=@adminPassword.Newpassword class="error-message col-sm-3 mt-2"></span>
                                 </div>
                                 <div class="row form-group">
-                                    <label class="offset-md-3 col-md-2 col-sm-3 col-form-label">Xác nhận:</label>
-                                    <input class="col-md-3 col-sm-5 form-control" type="password" name="confirm" id="confirm" required>
+                                    <label asp-for=@adminPassword.NewConfirmPassword class="offset-md-3 col-md-2 col-sm-3 col-form-label">Confirm</label>
+                                    <input asp-for=@adminPassword.NewConfirmPassword class="col-md-3 col-sm-5 form-control" type="password"
+                                           id="confirm" required value=@adminPassword.NewConfirmPassword>
+                                    <span asp-validation-for=@adminPassword.NewConfirmPassword class="error-message col-sm-3 mt-2"></span>
                                 </div>
                                 <div class="row form-group justify-content-center">
-                                    <button type="submit" class="btn btn-success">Thay đổi</button>
+                                    <button type="submit" class="btn btn-success">Confirm Change</button>
                                 </div>
                             </form>
                         </div>
