@@ -25,6 +25,11 @@ namespace WebAppMVC.Constants
         public readonly static string MEMBER_CONTEST_REGISTRATION_TRANSACTION_TYPE = "Member-Contest-Registration";
         public readonly static string MEMBERSHIP_RENEWAL_TRANSACTION_TYPE = "Membership-Renewal-Transaction-Type";
 
+        public readonly static string ALERT_MEMBER_LOGIN_SUCCESS_NAME = "MemberLogin";
+        public readonly static string ALERT_MEMBER_LOGIN_SUCCESS = "Login as Member successfully!";
+        public readonly static string ALERT_DEFAULT_ERROR_NAME = "Error";
+        public readonly static string ALERT_DEFAULT_SUCCESS_NAME = "Success";
+
         public readonly static string MEMBER_STATUS_INACTIVE = "Inactive";
         public readonly static string MEMBER_STATUS_ACTIVE = "Active";
         public readonly static string MEMBER_STATUS_EXPIRED = "Expired";
@@ -192,5 +197,12 @@ namespace WebAppMVC.Constants
 
         public readonly static string SYSTEM_DEFAULT_ACCOUNT_USR_NAME = "Authentication:DefaultSystemLogin:Username";
         public readonly static string SYSTEM_DEFAULT_ACCOUNT_USR_PASSWORD = "Authentication:DefaultSystemLogin:Password";
+
+        public readonly static string SYSTEM_DEFAULT_AZURE_CONNECTION_STRING = "AzureStorage:BlobConnectionString";
+        public readonly static string SYSTEM_DEFAULT_AZURE_DEFAULT_BLOB_FOLDER_URL = "AzureStorage:BlobDefaultFolderURL";
+        public readonly static string SYSTEM_DEFAULT_AZURE_DEFAULT_BLOB_FOLDER_NAME = "AzureStorage:BlobContainerName";
+        public readonly static string SYSTEM_DEFAULT_AZURE_BLOB_AVATAR_FOLDER_URL = "AzureStorage:BlobAvatarsContainerNamePath";
+        public readonly static string SYSTEM_DEFAULT_AZURE_BLOB_NEWS_FOLDER_URL = "AzureStorage:BlobNewsContainerNamePath";
+        public readonly static string SYSTEM_DEFAULT_AZURE_BLOB_MEETING_FOLDER_URL = "AzureStorage:BlobMeetingsContainerNamePath";
     }
 }

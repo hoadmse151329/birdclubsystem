@@ -14,9 +14,9 @@ namespace BAL.ViewModels.News
     {
         public UpdateNewsDetail()
         {
-            /*Status = "Active";
+            //Status = "Active";
             UploadDate = DateTime.Now;
-            Picture = "https://edwinbirdclubstorage.blob.core.windows.net/images/meeting/meeting_image_1.png";*/
+            //Picture = "https://edwinbirdclubstorage.blob.core.windows.net/images/meeting/meeting_image_1.png";
             DefaultNewsCategorySelectList = new List<SelectListItem>() {
                 new SelectListItem() { Text = "Category", Value = ""},
                 new SelectListItem { Text = "Announcement", Value = "Announcement" },

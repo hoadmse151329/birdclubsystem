@@ -634,7 +634,7 @@ namespace WebAppMVC.Constants
         {
             string? accToken = context.HttpContext.Session.GetString(Constants.ACC_TOKEN);
             string? role = context.HttpContext.Session.GetString(Constants.ROLE_NAME);
-            if (string.IsNullOrEmpty(role))
+            if (string.IsNullOrEmpty(role) || string.IsNullOrWhiteSpace(role))
             {
                 role = Constants.GUEST;
                 context.HttpContext.Session.SetString(Constants.ROLE_NAME, role);
