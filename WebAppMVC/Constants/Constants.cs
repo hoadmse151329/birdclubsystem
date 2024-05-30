@@ -105,6 +105,10 @@ namespace WebAppMVC.Constants
         public readonly static string EVENT_STATUS_ONGOING = "Ongoing";
         public readonly static string EVENT_STATUS_NAME_ONGOING = "Ongoing";
 
+        public readonly static int EVENT_MEETING_MIN_PART_REQ = 10;
+        public readonly static int EVENT_FIELDTRIP_MIN_PART_REQ = 10;
+        public readonly static int EVENT_CONTEST_MIN_PART_REQ = 10;
+
         public readonly static string BIRD_STATUS_ACTIVE = "Active";
         public readonly static string BIRD_STATUS_INJURED = "Injured";
         public readonly static string BIRD_STATUS_INACTIVE = "Inactive";

@@ -81,7 +81,9 @@ namespace WebAppMVC.Services.HostedServices
                 _logger.LogInformation("Succeed Retrieved list of {Count} contests via API.", listContestStatus.Data.Count);
                 foreach (var contestToUpdate in listContestStatus.Data)
                 {
-                    if (contestToUpdate.OpenRegistration <= today && contestToUpdate.Status.Equals(Constants.Constants.EVENT_STATUS_ON_HOLD))
+                    if (
+                        contestToUpdate.OpenRegistration <= today && 
+                        contestToUpdate.Status.Equals(Constants.Constants.EVENT_STATUS_ON_HOLD))
                     {
                         contestToUpdate.Status = Constants.Constants.EVENT_STATUS_OPEN_REGISTRATION;
                         // Call the API to update the membership status
@@ -104,9 +106,37 @@ namespace WebAppMVC.Services.HostedServices
                             _logger.LogInformation("Succeed updating Contest's status with ID: {ContestId} via API.", contestToUpdate.ContestId);
                         }
                     }
-                    if (contestToUpdate.RegistrationDeadline <= today && contestToUpdate.Status.Equals(Constants.Constants.EVENT_STATUS_OPEN_REGISTRATION))
+                    if (
+                        (contestToUpdate.RegistrationDeadline <= today || contestToUpdate.NumberOfParticipants == contestToUpdate.NumberOfParticipantsLimit) && 
+                        contestToUpdate.Status.Equals(Constants.Constants.EVENT_STATUS_OPEN_REGISTRATION))
                     {
                         contestToUpdate.Status = Constants.Constants.EVENT_STATUS_CLOSED_REGISTRATION;
+                        // Call the API to update the membership status
+                        var contestStatusResponse = await methcall.CallMethodReturnObject<GetContestPostResponse>(
+                                        _httpClient: client,
+                                        options: jsonOptions,
+                                        methodName: Constants.Constants.PUT_METHOD,
+                                        url: ContestStatusUpdateAPI_URL + contestToUpdate.ContestId + "/Update",
+                                        inputType: contestToUpdate,
+                                        _logger: _logger,
+                                        accessToken: accToken);
+                        if (contestStatusResponse == null || !contestStatusResponse.Status || contestStatusResponse.Data == null)
+                        {
+                            _logger.LogError("Failed to update Contest's status with ID: {ContestId} via API.", contestToUpdate.ContestId);
+                        }
+                        else
+                        {
+                            contestStatusUpdated += 1;
+                            contestStatusUpdatedToClosed += 1;
+                            _logger.LogInformation("Succeed updating Contest's status with ID: {ContestId} via API.", contestToUpdate.ContestId);
+                        }
+                    }
+                    if (
+                        contestToUpdate.RegistrationDeadline <= today && 
+                        contestToUpdate.Status.Equals(Constants.Constants.EVENT_STATUS_OPEN_REGISTRATION) && 
+                        contestToUpdate.NumberOfParticipants < Constants.Constants.EVENT_CONTEST_MIN_PART_REQ)
+                    {
+                        contestToUpdate.Status = Constants.Constants.EVENT_STATUS_CANCELLED;
                         // Call the API to update the membership status
                         var contestStatusResponse = await methcall.CallMethodReturnObject<GetContestPostResponse>(
                                         _httpClient: client,

@@ -102,6 +102,7 @@ namespace WebAppMVC
             services.AddHostedService<MeetingStatusUpdateService>();
             services.AddHostedService<ContestStatusUpdateService>();
             services.AddHostedService<FieldTripStatusUpdateService>();
+            //services.AddHostedService<ApplicationStopClearDataService>();
         }
         private static void ConfigureMiddleware(WebApplication app)
         {

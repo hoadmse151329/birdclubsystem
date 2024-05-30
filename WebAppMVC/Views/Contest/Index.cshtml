@@ -1,6 +1,13 @@
-﻿@model WebAppMVC.Models.ViewModels.MemberContestIndexVM
+﻿@model dynamic
 @{
     ViewData["Title"] = "Bird Contest Page";
+    string locationSearchName = string.Empty;
+    string locationSearchAddress = string.Empty;
+    string locationSearchRoad = string.Empty;
+    string locationSearchDistrict = string.Empty;
+    string locationSearchCity = string.Empty;
+
+    List<BAL.ViewModels.ContestViewModel> contestList = Model.Contests;
 }
 
 <html lang="en">

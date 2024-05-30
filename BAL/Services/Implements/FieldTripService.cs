@@ -135,7 +135,7 @@ namespace BAL.Services.Implements
 
                 fieldTrip.FieldtripPictures = (media.Count() > 0) ? _mapper.Map<IEnumerable<FieldtripMediaViewModel>>(media).ToList() : fieldTrip.FieldtripPictures;
 
-                fieldTrip.NumberOfParticipants = fieldTrip.NumberOfParticipantsLimit - partAmount;
+                fieldTrip.NumberOfParticipants = partAmount;
                 fieldTrip.Address = locationName;
 
                 fieldTrip.AreaNumber = locationSplit[0];
