@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -21,6 +22,14 @@ namespace BAL.ViewModels
             Elo = 1500;
             BirdMainImage = null;
             ProfilePic = "https://edwinbirdclubstorage.blob.core.windows.net/images/bird/bulbul_placeholder.jpg";
+            DefaultBirdStatusSelectList = new List<SelectListItem>
+            {
+                new SelectListItem() { Text = "Status", Value = ""},
+                new SelectListItem { Text = "Active", Value = "Active"},
+                new SelectListItem { Text = "Sick", Value = "Sick"},
+                new SelectListItem { Text = "Injured", Value = "Injured"},
+                new SelectListItem { Text = "Unavailable", Value = "Unavailable"}
+            };
         }
         public int? BirdId { get; set; }
         public string? MemberId { get; set; }
@@ -45,6 +54,7 @@ namespace BAL.ViewModels
         public DateTime AddDate { get; set; }
         [DisplayName("Profile Picture")]
         public string? ProfilePic { get; set; }
+        [Required(ErrorMessage = "Status is required")]
         [DisplayName("Status")]
         public string? Status { get; set; }
         [Required(ErrorMessage = "Origin is required")]
@@ -52,5 +62,6 @@ namespace BAL.ViewModels
         public string? Origin { get; set; }
         [DisplayName("Main Image")]
         public IFormFile? BirdMainImage { get; set; }
+        public List<SelectListItem> DefaultBirdStatusSelectList { get; set; }
     }
 }
