@@ -26,7 +26,7 @@
                     <img class="img-fluid" src="@Model[i].Picture" alt="News Picture">
                     <h2>@Model[i].Title</h2>
                     <p class="truncate">@Model[i].NewsContent</p>
-                    <a href="@Url.Action("NewsDetail", "Home", new {id = Model[i].NewsId})"><button class="view-detail">View Details</button></a>
+                    <a href="@Url.Action("NewsDetail", "Home", new {newsId = Model[i].NewsId})"><button class="view-detail">View Details</button></a>
                 </div>
             }
             @*<div class="news-item" data-id="1">

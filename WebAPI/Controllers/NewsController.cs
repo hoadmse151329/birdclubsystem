@@ -23,11 +23,13 @@ namespace WebAPI.Controllers
             _config = config;
             _newsService = newsService;
         }
-        [HttpGet("All")]
+        [HttpPost("All")]
+        [Authorize("Manager")]
         [ProducesResponseType(typeof(List<NewsViewModel>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetAllNews(
+            [FromBody] string? role
             )
         {
             try
@@ -121,16 +123,26 @@ namespace WebAPI.Controllers
             }
         }
 
-        [HttpGet("{id}")]
+        [HttpPost("{id}")]
         [ProducesResponseType(typeof(NewsViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetNewsById(
+            [FromBody] string? role,
             [FromRoute] int id)
         {
             try
             {
+                bool isMemberOrGuest = false;
+                if (string.IsNullOrEmpty(role) || string.IsNullOrWhiteSpace(role) || role.Equals("Member") || role.Equals("Guest"))
+                {
+                    isMemberOrGuest = true;
+                }
                 var result = await _newsService.GetNewsByIdNoTracking(id);
+                if (isMemberOrGuest)
+                {
+                    result = await _newsService.GetNewsByIdNoTrackingGuestOrMember(id);
+                }
                 if (result == null)
                 {
                     return NotFound(new

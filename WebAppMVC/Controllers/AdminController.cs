@@ -197,18 +197,21 @@ namespace WebAppMVC.Controllers
 
             string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
 
-            string AdminAvatarAPI_URL = "/api/User/Upload";
+            string AdminAvatarAPI_URL = AdminAPI_URL + "User/Upload";
 
             if (photo != null && photo.Length > 0)
             {
-                string connectionString = _config.GetSection("AzureStorage:BlobConnectionString").Value;
-                string containerName = _config.GetSection("AzureStorage:BlobContainerName").Value;
+                string connectionString = _config.GetValue<string>(Constants.Constants.SYSTEM_DEFAULT_AZURE_CONNECTION_STRING);
+                string defaultUrl = _config.GetValue<string>(Constants.Constants.SYSTEM_DEFAULT_AZURE_DEFAULT_BLOB_FOLDER_URL);
+                string containerName = _config.GetValue<string>(Constants.Constants.SYSTEM_DEFAULT_AZURE_DEFAULT_BLOB_FOLDER_NAME);
+                string avatarContainerName = _config.GetValue<string>(Constants.Constants.SYSTEM_DEFAULT_AZURE_BLOB_AVATAR_FOLDER_URL);
+
                 BlobServiceClient _blobServiceClient = new BlobServiceClient(connectionString);
                 BlobContainerClient _blobContainerClient = _blobServiceClient.GetBlobContainerClient(containerName);
 
                 var azureResponse = new List<BlobContentInfo>();
                 string filename = photo.FileName;
-                string uniqueBlobName = $"avatar/{Guid.NewGuid()}-{filename}";
+                string uniqueBlobName = avatarContainerName + $"{Guid.NewGuid()}-{filename}";
                 using (var memoryStream = new MemoryStream())
                 {
                     photo.CopyTo(memoryStream);
@@ -218,10 +221,8 @@ namespace WebAppMVC.Controllers
                     azureResponse.Add(client);
                 }
 
-                var image = "https://edwinbirdclubstorage.blob.core.windows.net/images/" + uniqueBlobName;
-                dynamic imageUpload = new ExpandoObject();
-                imageUpload.ImagePath = image;
-                imageUpload.MemberId = usrId;
+                var image = defaultUrl + uniqueBlobName;
+                UpdateMemberAvatar imageUpload = new(memberId: usrId, imagePath: image);
 
                 var getMemberAvatar = await methcall.CallMethodReturnObject<GetMemberAvatarResponse>(
                     _httpClient: _httpClient,
@@ -243,6 +244,8 @@ namespace WebAppMVC.Controllers
                         "Error while processing your request! (Getting Admin Profile!).\n Admin Details Not Found!"
                     + getMemberAvatar.ErrorMessage;
                 }
+                TempData[Constants.Constants.ALERT_DEFAULT_SUCCESS_NAME] = Constants.Constants.ALERT_USER_AVATAR_IMAGE_CHANGE_SUCCESS;
+                HttpContext.Session.SetString(Constants.Constants.USR_IMAGE, getMemberAvatar.Data.ImagePath);
                 return RedirectToAction("AdminProfile");
             }
             return RedirectToAction("AdminProfile");

@@ -19,6 +19,28 @@
 <body>
     <div class="main-content">
         <div id="accordion">
+            @if (TempData["Success"] != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show" id="notif">
+                    <i class='bx bx-message-alt-x p-1'></i>
+                    <strong class="mr-1">@TempData["Success"]</strong>
+                    <button type="button" class="close h-100" data-dismiss="alert" aria-label="Close">
+                        <span><i class='bx bx-x'></i></span>
+                    </button>
+                </div>
+                TempData["Success"] = null;
+            }
+            else if (TempData["Error"] != null)
+            {
+                <div class="alert alert-danger alert-dismissible fade show" id="notif">
+                    <i class='bx bx-message-alt-x p-1'></i>
+                    <strong class="mr-1">@TempData["Error"]</strong>
+                    <button type="button" class="close h-100" data-dismiss="alert" aria-label="Close">
+                        <span><i class='bx bx-x'></i></span>
+                    </button>
+                </div>
+                TempData["Error"] = null;
+            }
             <!-- Thông tin cá nhân -->
             <div class="card mx-5 mb-2">
                 <div class="card-header card-setting" id="headingOne">
@@ -29,28 +51,6 @@
                         </button>
                     </h5>
                 </div>
-                @if (TempData["Success"] != null)
-                {
-                    <div class="alert alert-success alert-dismissible fade show" id="notif">
-                        <i class='bx bx-message-alt-x p-1'></i>
-                        <strong class="mr-1">@TempData["Success"]</strong>
-                        <button type="button" class="close h-100" data-dismiss="alert" aria-label="Close">
-                            <span><i class='bx bx-x'></i></span>
-                        </button>
-                    </div>
-                    TempData["Success"] = null;
-                }
-                else if (TempData["Error"] != null)
-                {
-                    <div class="alert alert-danger alert-dismissible fade show" id="notif">
-                        <i class='bx bx-message-alt-x p-1'></i>
-                        <strong class="mr-1">@TempData["Error"]</strong>
-                        <button type="button" class="close h-100" data-dismiss="alert" aria-label="Close">
-                            <span><i class='bx bx-x'></i></span>
-                        </button>
-                    </div>
-                    TempData["Error"] = null;
-                }
                 <div class="collapse show" id="profile" aria-labelledby="profile" data-parent="#accordion">
                     <div class="card-body">
                         <div class="user-profile">
@@ -127,7 +127,7 @@
                                                         <span asp-validation-for="@managerDetail.Gender" id="error_message"
                                                               class="error-message col-md-2 mt-3"></span>
                                                     </div>
-
+                                                    <input asp-for="@managerDetail.ImagePath" type="text" value="@managerDetail.ImagePath" hidden />
                                                     <div class="row pt-3 d-flex">
                                                         <button type="submit" class="offset-3 btn btn-success">Confirm Changes</button>
                                                     </div>

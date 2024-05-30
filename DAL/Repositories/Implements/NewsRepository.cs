@@ -33,6 +33,11 @@ namespace DAL.Repositories.Implements
             return await _context.News.AsNoTracking().FirstOrDefaultAsync(n => n.NewsId.Equals(newsId));
         }
 
+        public async Task<News?> GetNewsByIdNoTrackingGuestOrMember(int newsId)
+        {
+            return await _context.News.AsNoTracking().FirstOrDefaultAsync(n => n.NewsId.Equals(newsId) && n.Status.Equals("Active"));
+        }
+
         public async Task<IEnumerable<News>?> GetSortedNews(
             string? title, 
             List<string>? categories, 
