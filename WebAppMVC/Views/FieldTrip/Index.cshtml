@@ -1,6 +1,13 @@
-﻿@model WebAppMVC.Models.ViewModels.MemberFieldTripIndexVM
+﻿@model dynamic﻿
 @{
     ViewData["Title"] = "Field Trip Page";
+    string locationSearchName = string.Empty;
+    string locationSearchAddress = string.Empty;
+    string locationSearchRoad = string.Empty;
+    string locationSearchDistrict = string.Empty;
+    string locationSearchCity = string.Empty;
+
+    List<BAL.ViewModels.FieldTripViewModel> fieldtripList = Model.FieldTrips;
 }
 
 <html lang="en">
@@ -115,5 +122,6 @@
             });
         });
     </script>
+
   </body>
 </html>
