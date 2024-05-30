@@ -2,7 +2,7 @@
 @{
     Layout = null;
     ViewData["Title"] = "Manager News Post Detail Page";
-    BAL.ViewModels.NewsViewModel details = Model.News;
+    BAL.ViewModels.NewsViewModel detailsNews = Model.News;
     BAL.ViewModels.News.UpdateNewsDetail updateNews = Model.updateNews;
     Layout = "~/Views/Shared/_MLayout.cshtml";
 }
@@ -57,7 +57,7 @@
                                 <div class="card-header">
                                     <h4>News post Information</h4>
                                     @{
-                                        if (!(details.Status.Equals("Disabled")))
+                                        if (!(detailsNews.Status.Equals("Disabled")))
                                         {
                                             <div class="edit-info">
                                                 <i class='bx bxs-edit-alt' data-toggle="modal" data-target="#editnews"></i>
@@ -71,7 +71,37 @@
                                             <label for="meeting-name">News ID:</label>
                                         </div>
                                         <div class="col-md-7">
-                                            <span>@details.NewsId</span>
+                                            <span>@detailsNews.NewsId</span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-5 text-sm-right">
+                                            <span>Status:</span>
+                                        </div>
+                                        <div class="col-sm-7">
+                                            @{
+                                                switch (detailsNews.Status)
+                                                {
+                                                    case "Active":
+                                                        {
+                                                            <span class="outcome" style="float: left;">@detailsNews.Status</span>
+                                                            break;
+                                                        }
+                                                    case "Draft":
+                                                    case "Hidden":
+                                                        {
+                                                            <span class="approval" style="float: left;">@detailsNews.Status</span>
+                                                            break;
+                                                        }
+                                                    case "Archived":
+                                                    case "Reported":
+                                                    case "Disabled":
+                                                        {
+                                                            <span class="destroy" style="float: left;">@detailsNews.Status</span>
+                                                            break;
+                                                        }
+                                                }
+                                            }
                                         </div>
                                     </div>
                                     <div class="row">
@@ -79,7 +109,7 @@
                                             <label for="meeting-name">News Title:</label>
                                         </div>
                                         <div class="col-md-7">
-                                            <span>@details.Title</span>
+                                            <span>@detailsNews.Title</span>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -87,7 +117,7 @@
                                             <label for="customer-name">Upload Date:</label>
                                         </div>
                                         <div class="col-md-7">
-                                            <span>@details.UploadDate.Value.ToString("MM/dd/yyyy")</span>
+                                            <span>@detailsNews.UploadDate.Value.ToString("MM/dd/yyyy")</span>
                                         </div>
                                     </div>
                                     <div class="row mb-sm-2">
@@ -95,20 +125,20 @@
                                             <span>Category:</span>
                                         </div>
                                         <div class="col-sm-7 text-sm-left">
-                                            <span>@details.Category</span>
+                                            <span>@detailsNews.Category</span>
                                         </div>
                                     </div>
                                     <div class="row mb-sm-2">
                                         Post Main Image
                                     </div>
                                     <div class="row">
-                                        <span> <img src="@details.Picture" /></span>
+                                        <span> <img src="@detailsNews.Picture" /></span>
                                     </div>
                                     <div class="row mb-sm-2">
                                         Post Content
                                     </div>
                                     <div class="row">
-                                        <span>@Html.Raw(details.NewsContent)</span>
+                                        <span>@Html.Raw(detailsNews.NewsContent)</span>
                                     </div>
                                 </div>
                             </div>
@@ -155,14 +185,16 @@
                 <div class="modal-header">
                     <h4 class="modal-title">Edit News</h4>
                 </div>
-                <form asp-action="ManagerUpdateNewsDetail" asp-controller="Manager" method="post" asp-route-id="@details.NewsId" class="form-group">
+                <form asp-action="ManagerUpdateNewsDetail" asp-controller="Manager" method="post" asp-route-id="@detailsNews.NewsId" class="form-group" enctype="multipart/form-data">
                     <div class="modal-body">
                         <div class="row justify-content-center">
                             <div class="col-12 col-md-12">
+                                <input asp-for="@updateNews.UserId" type="text"
+                                       value="@updateNews.UserId" class="form-control" required hidden>
                                 <div class="form-group row">
                                     <label asp-for="@updateNews.Title" class="col-sm-4 col-form-label"></label>
                                     <div class="col-sm-8">
-                                        <input asp-for="@updateNews.Title" type="text" name="meetingname"
+                                        <input asp-for="@updateNews.Title" type="text"
                                                value="@updateNews.Title" class="form-control" required>
                                         <span asp-validation-for="@updateNews.Title" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
@@ -179,7 +211,7 @@
                                 <div class="form-group row">
                                     <label asp-for="@updateNews.UploadDate" class="col-sm-4 col-form-label"></label>
                                     <div class="col-sm-8">
-                                        <input asp-for="@updateNews.UploadDate" type="date" name="RegistrationDeadline"
+                                        <input asp-for="@updateNews.UploadDate" type="date"
                                                value="@updateNews.UploadDate.Value.ToString("yyyy-MM-dd")" class="form-control" required>
                                         <span asp-validation-for="@updateNews.UploadDate" id="error_message"
                                             class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
@@ -191,8 +223,6 @@
                                         <img class="profile-pic" style="width:300px; height:300px" src="@updateNews.Picture" />
                                         <input asp-for="@updateNews.ImageUpload" type="file" class="file-upload" accept=".jpg, .png, .jpeg">
                                         <input asp-for="@updateNews.Picture" type="text" value="@updateNews.Picture" class="form-control" required hidden>
-                                        <span asp-validation-for="@updateNews.Picture" id="error_message"
-                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -222,5 +252,13 @@
             </div>
         </div>
     </div>
+    <script src="~/ckeditor/ckeditor.js"></script>
+    <script src="~/ckfinder/ckfinder.js"></script>
+    <script>
+
+        var editor = CKEDITOR.replace('updateNews.NewsContent');
+        CKFinder.setupCKEditor(editor, 'ckfinder/');
+        data["updateNews.NewsContent"] = editor.getData();
+    </script>
 </body>
 </html>

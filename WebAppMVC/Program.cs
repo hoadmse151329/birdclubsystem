@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using WebAppMVC.Constants;
 using WebAppMVC.Services.HostedServices;
 using WebAppMVC.Services.Implements;
 using WebAppMVC.Services.Interfaces;
@@ -74,7 +75,7 @@ namespace WebAppMVC
             services.AddControllersWithViews();
 
             // Add AutoMapper
-            services.AddAutoMapper(typeof(MappingProfile));
+            services.AddAutoMapper(typeof(VMAutoMapper));
 
             // Add session configuration
             services.AddSession(options =>
@@ -101,6 +102,7 @@ namespace WebAppMVC
             services.AddHostedService<MeetingStatusUpdateService>();
             services.AddHostedService<ContestStatusUpdateService>();
             services.AddHostedService<FieldTripStatusUpdateService>();
+            //services.AddHostedService<ApplicationStopClearDataService>();
         }
         private static void ConfigureMiddleware(WebApplication app)
         {

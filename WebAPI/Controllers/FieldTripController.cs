@@ -108,7 +108,7 @@ namespace WebAPI.Controllers
             try
             {
                 bool isMemberOrGuest = false;
-                if (!string.IsNullOrEmpty(role) && (role.Equals("Member") || role.Equals("Guest")))
+                if (string.IsNullOrEmpty(role) || string.IsNullOrWhiteSpace(role) || role.Equals("Member") || role.Equals("Guest"))
                 {
                     isMemberOrGuest = true;
                 }

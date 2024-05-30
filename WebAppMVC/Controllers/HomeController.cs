@@ -14,6 +14,8 @@ using Microsoft.AspNetCore.Http.Json;
 using System;
 using WebAppMVC.Models.Notification;
 using BAL.ViewModels.Event;
+using WebAppMVC.Models.News;
+using Org.BouncyCastle.Ocsp;
 
 namespace WebAppMVC.Controllers
 {
@@ -37,8 +39,8 @@ namespace WebAppMVC.Controllers
             _httpClient = new HttpClient();
             var contentType = new MediaTypeWithQualityHeaderValue("application/json");
             _httpClient.DefaultRequestHeaders.Accept.Add(contentType);
-            _httpClient.BaseAddress = new Uri(config.GetSection("DefaultApiUrl:ConnectionString").Value);
-            HomeAPI_URL = config.GetSection("DefaultApiUrl:ApiConnectionString").Value;
+            _httpClient.BaseAddress = new Uri(config.GetValue<string>("DefaultApiUrl:ConnectionString"));
+            HomeAPI_URL = config.GetValue<string>("DefaultApiUrl:ApiConnectionString");
         }
         [HttpGet]
         public async Task<IActionResult> Index()
@@ -47,44 +49,32 @@ namespace WebAppMVC.Controllers
             string FieldTripAPI_URL_All = HomeAPI_URL + "FieldTrip/All";
             string ContestAPI_URL_All = HomeAPI_URL + "Contest/All";
             dynamic testmodel = new ExpandoObject();
-            if(_httpClient.DefaultRequestHeaders.Authorization != null)
+            /*if(_httpClient.DefaultRequestHeaders.Authorization != null)
             {
                 var token = _httpClient.DefaultRequestHeaders.Authorization.Parameter;
-            }
-            /*string? role = HttpContext.Session.GetString("ROLE_NAME");
-            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Member")) return RedirectToAction("Logout", "Home");
-            
-            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
-
-            string? usrname = HttpContext.Session.GetString("USER_NAME");
-            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");*/
-            string? usrId = HttpContext.Session.GetString("USER_ID");
-
-            string? role = HttpContext.Session.GetString("ROLE_NAME");
-            if (role == null) role = "Guest";
-            else TempData["NotificationMessage"] = "Logged in as Member!";
-
-            string? usrname = HttpContext.Session.GetString("USER_NAME");
-
-            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
-
-            TempData["ROLE_NAME"] = role;
-            TempData["USER_NAME"] = usrname;
-            TempData["IMAGE_PATH"] = imagepath;
+            }*/
+            methcall.SetUserDefaultData(this);
+            string? role = HttpContext.Session.GetString(Constants.Constants.ROLE_NAME);
+            if(string.IsNullOrWhiteSpace(role) || string.IsNullOrEmpty(role))
+            {
+                role = Constants.Constants.GUEST;
+                HttpContext.Session.SetString(Constants.Constants.ROLE_NAME, role);
+            }else if (role.Equals(Constants.Constants.MEMBER))
+            TempData[Constants.Constants.ALERT_MEMBER_LOGIN_SUCCESS_NAME] = Constants.Constants.ALERT_MEMBER_LOGIN_SUCCESS;
+            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
 
             #region NotificationBell
             // show read and unread notifications when you click on the bell in the header bar
             if (usrId != null)
             {
-                string NotificationCountAPI_URL = "/api/Notification/Count";
-                string NotificationUnreadAPI_URL = "/api/Notification/Unread";
-                string NotificationReadAPI_URL = "/api/Notification/Read";
+                string NotificationCountAPI_URL = HomeAPI_URL + "Notification/Count";
+                string NotificationUnreadAPI_URL = HomeAPI_URL + "Notification/Unread";
+                string NotificationReadAPI_URL = HomeAPI_URL + "Notification/Read";
 
                 var notificationCount = await methcall.CallMethodReturnObject<GetNotificationCountResponse>(
                 _httpClient: _httpClient,
                 options: jsonOptions,
-                methodName: "POST",
+                methodName: Constants.Constants.POST_METHOD,
                 url: NotificationCountAPI_URL,
                 inputType: usrId,
                 _logger: _logger);
@@ -92,7 +82,7 @@ namespace WebAppMVC.Controllers
                 var notificationUnread = await methcall.CallMethodReturnObject<GetNotificationTitleResponse>(
                 _httpClient: _httpClient,
                 options: jsonOptions,
-                methodName: "POST",
+                methodName: Constants.Constants.POST_METHOD,
                 url: NotificationUnreadAPI_URL,
                 inputType: usrId,
                 _logger: _logger);
@@ -100,7 +90,7 @@ namespace WebAppMVC.Controllers
                 var notificationRead = await methcall.CallMethodReturnObject<GetNotificationTitleResponse>(
                 _httpClient: _httpClient,
                 options: jsonOptions,
-                methodName: "POST",
+                methodName: Constants.Constants.POST_METHOD,
                 url: NotificationReadAPI_URL,
                 inputType: usrId,
                 _logger: _logger);
@@ -114,7 +104,7 @@ namespace WebAppMVC.Controllers
             var listFieldTripResponse = await methcall.CallMethodReturnObject<GetFieldTripResponseByList>(
                 _httpClient: _httpClient,
                 options: jsonOptions,
-                methodName: "POST",
+                methodName: Constants.Constants.POST_METHOD,
                 url: FieldTripAPI_URL_All,
                 inputType: role,
                 _logger: _logger);
@@ -122,7 +112,7 @@ namespace WebAppMVC.Controllers
             var listMeetResponse = await methcall.CallMethodReturnObject<GetMeetingResponseByList>(
                 _httpClient: _httpClient,
                 options: jsonOptions,
-                methodName: "POST",
+                methodName: Constants.Constants.POST_METHOD,
                 url: MeetingAPI_URL,
                 inputType: role,
                 _logger: _logger);
@@ -130,10 +120,10 @@ namespace WebAppMVC.Controllers
 			var listContestResponse = await methcall.CallMethodReturnObject<GetContestResponseByList>(
 				_httpClient: _httpClient,
 				options: jsonOptions,
-				methodName: "POST",
+				methodName: Constants.Constants.POST_METHOD,
 				url: ContestAPI_URL_All,
                 inputType: role,
-				_logger: _logger);
+                _logger: _logger);
 
 			if (listMeetResponse == null || listFieldTripResponse == null || listContestResponse == null)
             {
@@ -154,18 +144,50 @@ namespace WebAppMVC.Controllers
             testmodel.Contests = listContestResponse.Data;
             return View(testmodel);
 		}
-        [Route("News")]
-        public IActionResult News()
+        [HttpGet("News")]
+        public async Task<IActionResult> News()
 		{
-			return View();
+            methcall.SetUserDefaultData(this);
+            string? role = HttpContext.Session.GetString(Constants.Constants.ROLE_NAME);
+            if (string.IsNullOrWhiteSpace(role) || string.IsNullOrEmpty(role))
+            {
+                role = Constants.Constants.GUEST;
+                HttpContext.Session.SetString(Constants.Constants.ROLE_NAME, role);
+            }
+            else if (role.Equals(Constants.Constants.MEMBER))
+                TempData[Constants.Constants.ALERT_MEMBER_LOGIN_SUCCESS_NAME] = Constants.Constants.ALERT_MEMBER_LOGIN_SUCCESS;
+            string NewsAPI_URL = HomeAPI_URL + "News/Search";
+            var listNewsResponse = await methcall.CallMethodReturnObject<GetListNews>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: Constants.Constants.POST_METHOD,
+                url: NewsAPI_URL,
+                inputType: role,
+                _logger: _logger);
+            if (listNewsResponse == null)
+            {
+                ViewBag.error =
+                    "Error while processing your request! (Getting List Meeting Or Fieldtrip!).\n List was Empty!";
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] = "Error while processing your request! (Getting List Meeting Or Fieldtrip!).\n List was Empty!";
+                Redirect("~/Home/Error");
+            }
+            if (!listNewsResponse.Status)
+            {
+                ViewBag.error =
+                    "Error while processing your request! (Getting List Meeting Or Fieldtrip!).\n"
+                    + listNewsResponse.ErrorMessage;
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] = "Error while processing your request! (Getting List Meeting Or Fieldtrip!).\n" + listNewsResponse.ErrorMessage;
+                Redirect("~/Home/Error");
+            }
+            return View(listNewsResponse.Data);
 		}
         [Route("NewsDetail")]
         public IActionResult NewsDetail()
         {
             return View();
         }
-        [Route("Gallary")]
-        public IActionResult Gallary()
+        [Route("Gallery")]
+        public IActionResult Gallery()
         {
             return View();
         }
