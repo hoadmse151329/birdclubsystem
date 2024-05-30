@@ -61,8 +61,8 @@ namespace WebAppMVC.Controllers
             _httpClient = new HttpClient();
             var contentType = new MediaTypeWithQualityHeaderValue("application/json");
             _httpClient.DefaultRequestHeaders.Accept.Add(contentType);
-            _httpClient.BaseAddress = new Uri(config.GetSection("DefaultApiUrl:ConnectionString").Value);
-            ManagerAPI_URL = "/api/";
+            _httpClient.BaseAddress = new Uri(config.GetValue<string>("DefaultApiUrl:ConnectionString"));
+            ManagerAPI_URL = config.GetValue<string>("DefaultApiUrl:ApiConnectionString");
         }
 
         // GET: ManagerController
@@ -1496,7 +1496,7 @@ namespace WebAppMVC.Controllers
 
             string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
 
-            var managerInvalids = new ManagerProfileVM();
+            ManagerProfileVM managerInvalids = new();
 
             var managerInvalidDetails = methcall.GetValidationTempData<MemberViewModel>(this, TempData, Constants.Constants.UPDATE_MANAGER_DETAILS_VALID, "managerDetail", jsonOptions);
             if (managerInvalidDetails != null)
@@ -1639,7 +1639,7 @@ namespace WebAppMVC.Controllers
 
             string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
 
-            string ManagerAvatarAPI_URL = "/api/User/Upload";
+            string ManagerAvatarAPI_URL = ManagerAPI_URL + "User/Upload";
 
             if (photo != null && photo.Length > 0)
             {
@@ -1664,9 +1664,7 @@ namespace WebAppMVC.Controllers
                 }
 
                 var image = defaultUrl + uniqueBlobName;
-                dynamic imageUpload = new ExpandoObject();
-                imageUpload.ImagePath = image;
-                imageUpload.MemberId = usrId;
+                UpdateMemberAvatar imageUpload = new(memberId: usrId, imagePath: image);
 
                 var getMemberAvatar = await methcall.CallMethodReturnObject<GetMemberAvatarResponse>(
                     _httpClient: _httpClient,
@@ -1688,9 +1686,10 @@ namespace WebAppMVC.Controllers
                         "Error while processing your request! (Getting Manager Profile!).\n Manager Details Not Found!"
                     + getMemberAvatar.ErrorMessage;
                 }
+                TempData[Constants.Constants.ALERT_DEFAULT_SUCCESS_NAME] = Constants.Constants.ALERT_USER_AVATAR_IMAGE_CHANGE_SUCCESS;
+                HttpContext.Session.SetString(Constants.Constants.USR_IMAGE, getMemberAvatar.Data.ImagePath);
                 return RedirectToAction("ManagerProfile");
             }
-            TempData["Success"] = "Successfully changed profile pic!";
             return RedirectToAction("ManagerProfile");
         }
         [HttpGet("Feedback")]
@@ -1907,19 +1906,24 @@ namespace WebAppMVC.Controllers
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
             string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
             string? usrName = HttpContext.Session.GetString(Constants.Constants.USR_NAME);
-            string? usrRole = HttpContext.Session.GetString(Constants.Constants.ROLE_NAME);
-            ManagerAPI_URL += "News/Search?userName=" + usrName;
+            string? role = HttpContext.Session.GetString(Constants.Constants.ROLE_NAME);
+            if(!string.IsNullOrEmpty(search) || !string.IsNullOrWhiteSpace(search))
+            {
+                ManagerAPI_URL += "News/Search?userName=" + usrName;
+            }
+            else
+            {
+                ManagerAPI_URL += "News/All";
+            }
 
             ManagerNewsIndexVM managerNewsListVM = new();
-
-            ManagerAPI_URL += "News/All";
 
             var listNewsResponse = await methcall.CallMethodReturnObject<GetListNews>(
                 _httpClient: _httpClient,
                 options: jsonOptions,
                 methodName: Constants.Constants.POST_METHOD,
                 url: ManagerAPI_URL,
-                inputType: usrRole,
+                inputType: role,
                 accessToken: accToken,
                 _logger: _logger);
 
@@ -2021,7 +2025,7 @@ namespace WebAppMVC.Controllers
                     + managerCreateNewsPostVM.ErrorMessage;
                 return RedirectToAction("ManagerNews");
             }
-            TempData["Success"] = "Successfully create News!";
+            TempData[Constants.Constants.ALERT_DEFAULT_SUCCESS_NAME] = Constants.Constants.ALERT_MANAGER_CREATE_NEWS_SUCCESS;
             return RedirectToAction("ManagerNews");
         }
         [HttpGet("News/{id:int}")]
@@ -2035,12 +2039,14 @@ namespace WebAppMVC.Controllers
 
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
+            string? role = HttpContext.Session.GetString(Constants.Constants.ROLE_NAME);
 
             var managerNewsPostVM = await methcall.CallMethodReturnObject<GetNewsPostResponse>(
                                 _httpClient: _httpClient,
                                 options: jsonOptions,
-                                methodName: Constants.Constants.GET_METHOD,
+                                methodName: Constants.Constants.POST_METHOD,
                                 url: ManagerAPI_URL,
+                                inputType: role,
                                 _logger: _logger);
             if (managerNewsPostVM == null)
             {
@@ -2084,7 +2090,6 @@ namespace WebAppMVC.Controllers
             }
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
-
             string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
             IFormFile photo = updateNews.ImageUpload;

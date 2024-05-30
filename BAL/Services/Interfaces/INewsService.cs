@@ -13,6 +13,7 @@ namespace BAL.Services.Interfaces
     {
         Task<int> CountNews();
         Task<NewsViewModel?> GetNewsByIdNoTracking(int newsId);
+        Task<NewsViewModel?> GetNewsByIdNoTrackingGuestOrMember(int newsId);
         void Create(NewsViewModel entity);
         Task<bool> Create(CreateNewNews entity);
         void Update(NewsViewModel entity);

@@ -12,15 +12,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Chao Mao Bird Club</title>
     <link rel="stylesheet" href="~/css/Index.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body class="background">
-    @{
-        if (ViewBag.error != null)
-        {
-            <span class="text-danger">@ViewBag.error</span>
-        }
-    }
     @if (TempData["Success"] != null)
     {
         <div class="alert alert-success alert-dismissible fade show" id="notif">
@@ -42,6 +35,17 @@
             </button>
         </div>
         TempData["Error"] = null;
+    }
+    else if (TempData["MemberLogin"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" id="notif">
+            <i class='bx bx-message-alt-x p-1'></i>
+            <strong class="mr-1">@TempData["MemberLogin"]</strong>
+            <button type="button" class="close h-100" data-dismiss="alert" aria-label="Close">
+                <span><i class='bx bx-x'></i></span>
+            </button>
+        </div>
+        TempData["MemberLogin"] = null;
     }
 
     <section class="infor">

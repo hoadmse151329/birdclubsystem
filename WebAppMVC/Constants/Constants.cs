@@ -25,6 +25,18 @@ namespace WebAppMVC.Constants
         public readonly static string MEMBER_CONTEST_REGISTRATION_TRANSACTION_TYPE = "Member-Contest-Registration";
         public readonly static string MEMBERSHIP_RENEWAL_TRANSACTION_TYPE = "Membership-Renewal-Transaction-Type";
 
+        public readonly static string ALERT_MEMBER_LOGIN_SUCCESS_NAME = "MemberLogin";
+        public readonly static string ALERT_MEMBER_LOGIN_SUCCESS = "Login as Member successfully!";
+        //public readonly static string ALERT_USER_AVATAR_IMAGE_CHANGE_SUCCESS_NAME = "UserAvatarImageChange";
+        public readonly static string ALERT_USER_AVATAR_IMAGE_UPDATE_SUCCESS = "Successfully changed profile pic!";
+        public readonly static string ALERT_USER_AVATAR_IMAGE_UPDATE_ERROR = "Change Profile avatar failed!";
+        public readonly static string ALERT_USER_PASSWORD_UPDATE_SUCCESS = "Successfully changed user password!";
+        public readonly static string ALERT_USER_PASSWORD_UPDATE_ERROR = "Change user password failed!";
+        public readonly static string ALERT_MANAGER_CREATE_NEWS_SUCCESS = "Successfully create news!";
+        public readonly static string ALERT_MANAGER_CREATE_NEWS_ERROR = "Create news failed!";
+        public readonly static string ALERT_DEFAULT_ERROR_NAME = "Error";
+        public readonly static string ALERT_DEFAULT_SUCCESS_NAME = "Success";
+
         public readonly static string MEMBER_STATUS_INACTIVE = "Inactive";
         public readonly static string MEMBER_STATUS_ACTIVE = "Active";
         public readonly static string MEMBER_STATUS_EXPIRED = "Expired";
@@ -99,6 +111,10 @@ namespace WebAppMVC.Constants
         public readonly static string EVENT_STATUS_NAME_CHECKING_IN = "Checking In";
         public readonly static string EVENT_STATUS_ONGOING = "Ongoing";
         public readonly static string EVENT_STATUS_NAME_ONGOING = "Ongoing";
+
+        public readonly static int EVENT_MEETING_MIN_PART_REQ = 10;
+        public readonly static int EVENT_FIELDTRIP_MIN_PART_REQ = 10;
+        public readonly static int EVENT_CONTEST_MIN_PART_REQ = 10;
 
         public readonly static string BIRD_STATUS_ACTIVE = "Active";
         public readonly static string BIRD_STATUS_INJURED = "Injured";

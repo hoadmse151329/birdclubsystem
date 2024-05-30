@@ -1,6 +1,13 @@
-﻿@model WebAppMVC.Models.ViewModels.MemberContestIndexVM
+﻿@model dynamic
 @{
     ViewData["Title"] = "Bird Contest Page";
+    string locationSearchName = string.Empty;
+    string locationSearchAddress = string.Empty;
+    string locationSearchRoad = string.Empty;
+    string locationSearchDistrict = string.Empty;
+    string locationSearchCity = string.Empty;
+
+    List<BAL.ViewModels.ContestViewModel> contestList = Model.Contests;
 }
 
 <html lang="en">
@@ -10,6 +17,7 @@
     <link rel="stylesheet" href="~/css/Contest.css" />
   </head>
  <body class="background">
+     <div class="Title"><h1>Contests</h1></div>
     <hr>
     <div class="header__breadcrumb container">
         <nav aria-label="breadcrumb">
@@ -39,32 +47,26 @@
             $('.form-check-input').change(function () {
                 applyFilters();
             });
-
             function applyFilters() {
                 var selectedRoads = [];
                 var selectedDistricts = [];
                 var selectedCities = [];
-
                 // Collect selected checkboxes
                 $('input[name="road"]:checked').each(function () {
                     selectedRoads.push($(this).val());
                 });
-
                 $('input[name="district"]:checked').each(function () {
                     selectedDistricts.push($(this).val());
                 });
-
                 $('input[name="city"]:checked').each(function () {
                     selectedCities.push($(this).val());
                 });
-
                 var queryString = customParam({
                     road: selectedRoads,
                     district: selectedDistricts,
                     city: selectedCities
                 });
                 console.log(queryString);
-
                 // Make AJAX GET request to filter fieldtrips
                 $.ajax({
                     url: '@Url.Action("IndexFilter", "Contest")' + '?' + queryString,
@@ -74,21 +76,17 @@
                     }
                 });
             }
-
             function renderMeetings(meetingsHtml) {
                 var meetingList = $('#full-filter');
                 meetingList.html(meetingsHtml);
             }
-
             function customParam(object) {
                 var serializedParams = [];
-
                 function serialize(params, prefix) {
                     for (var key in params) {
                         if (Object.prototype.hasOwnProperty.call(params, key)) {
                             var paramKey = prefix ? prefix + "[" + key + "]" : key;
                             var paramValue = params[key];
-
                             if (typeof paramValue === "object") {
                                 serialize(paramValue, paramKey);
                             } else {
@@ -97,40 +95,32 @@
                                 );
                             }
                         }
+                        serialize(object);
+                        return serializedParams.join("&");
                     }
-                }
-
-                serialize(object);
-
-                return serializedParams.join("&");
-            }
-
-            // Toggle functionality for filter checkboxes
-            $('.toggle-btn').on('click', function (event) {
-                var fieldset = $(this).closest('.filter-group');
-                var checkBoxes = fieldset.find('.input-group');
-
-                var isExpanded = $(this).attr('aria-expanded') === 'true';
-
-                //if (isExpanded) {
-                //    checkBoxes.slice(3).hide();
-                //    $(this).attr('aria-expanded', 'false').find('span').text('More');
-                //} else {
-                //    checkBoxes.show();
-                //    $(this).attr('aria-expanded', 'true').find('span').text('Less');
-                //}
-            });
-
-            // Initialize toggle button states
-            $('.filter-group').each(function () {
-                var checkBoxes = $(this).find('.input-group');
-                if (checkBoxes.length <= 3) {
-                    $(this).find('.toggle-btn').attr('aria-expanded', 'true').find('span').text('Less');
-                } else {
-                    checkBoxes.slice(3).hide();
-                }
-            });
-        });
+                    // Toggle functionality for filter checkboxes
+                    $('.toggle-btn').on('click', function (event) {
+                        var fieldset = $(this).closest('.filter-group');
+                        var checkBoxes = fieldset.find('.input-group');
+                        var isExpanded = $(this).attr('aria-expanded') === 'true';
+                        //if (isExpanded) {
+                        //    checkBoxes.slice(3).hide();
+                        //    $(this).attr('aria-expanded', 'false').find('span').text('More');
+                        //} else {
+                        //    checkBoxes.show();
+                        //    $(this).attr('aria-expanded', 'true').find('span').text('Less');
+                        //}
+                    });
+                    // Initialize toggle button states
+                    $('.filter-group').each(function () {
+                        var checkBoxes = $(this).find('.input-group');
+                        if (checkBoxes.length <= 3) {
+                            $(this).find('.toggle-btn').attr('aria-expanded', 'true').find('span').text('Less');
+                        } else {
+                            checkBoxes.slice(3).hide();
+                        }
+                    });
+                });
     </script>
   </body>
 </html>
