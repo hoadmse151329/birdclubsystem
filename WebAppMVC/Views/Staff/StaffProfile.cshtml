@@ -1,9 +1,9 @@
 ﻿@model WebAppMVC.Models.ViewModels.StaffProfileVM
 @{
     IFormFile? formFile = null;
-    BAL.ViewModels.Member.UpdateMemberPassword memberPassword = Model.managerPassword;
+    BAL.ViewModels.Member.UpdateMemberPassword staffPassword = Model.staffPassword;
     ViewData["Title"] = "Staff Profile Page";
-    BAL.ViewModels.MemberViewModel staffDetail = Model.managerDetail;
+    BAL.ViewModels.MemberViewModel staffDetail = Model.staffDetail;
     List<SelectListItem> genders = staffDetail.DefaultUserGenderSelectList;
     Layout = "~/Views/Shared/_SLayout.cshtml";
 }
@@ -251,22 +251,22 @@
                         <div class="card-group d-block">
                             <form asp-action="ChangePassword" asp-controller="Staff" method="post">
                                 <div class="row form-group">
-                                    <label asp-for=@memberPassword.password class="offset-md-3 col-md-2 col-sm-3 col-form-label">Old Password</label>
-                                    <input asp-for=@memberPassword.password class="col-md-3 col-sm-5 form-control" type="password"
-                                           required value=@memberPassword.password>
-                                    <span asp-validation-for=@memberPassword.password class="error-message col-sm-3 mt-2"></span>
+                                    <label asp-for=@staffPassword.password class="offset-md-3 col-md-2 col-sm-3 col-form-label">Old Password</label>
+                                    <input asp-for=@staffPassword.password class="col-md-3 col-sm-5 form-control" type="password"
+                                           required value=@staffPassword.password>
+                                    <span asp-validation-for=@staffPassword.password class="error-message col-sm-3 mt-2"></span>
                                 </div>
                                 <div class="row form-group">
-                                    <label asp-for=@memberPassword.Newpassword class="offset-md-3 col-md-2 col-sm-3 col-form-label">New Password</label>
-                                    <input asp-for=@memberPassword.Newpassword class="col-md-3 col-sm-5 form-control" type="password"
-                                           id="password" required value=@memberPassword.Newpassword>
-                                    <span asp-validation-for=@memberPassword.Newpassword class="error-message col-sm-3 mt-2"></span>
+                                    <label asp-for=@staffPassword.Newpassword class="offset-md-3 col-md-2 col-sm-3 col-form-label">New Password</label>
+                                    <input asp-for=@staffPassword.Newpassword class="col-md-3 col-sm-5 form-control" type="password"
+                                           id="password" required value=@staffPassword.Newpassword>
+                                    <span asp-validation-for=@staffPassword.Newpassword class="error-message col-sm-3 mt-2"></span>
                                 </div>
                                 <div class="row form-group">
-                                    <label asp-for=@memberPassword.NewConfirmPassword class="offset-md-3 col-md-2 col-sm-3 col-form-label">Confirm</label>
-                                    <input asp-for=@memberPassword.NewConfirmPassword class="col-md-3 col-sm-5 form-control" type="password"
-                                           id="confirm" required value=@memberPassword.NewConfirmPassword>
-                                    <span asp-validation-for=@memberPassword.NewConfirmPassword class="error-message col-sm-3 mt-2"></span>
+                                    <label asp-for=@staffPassword.NewConfirmPassword class="offset-md-3 col-md-2 col-sm-3 col-form-label">Confirm</label>
+                                    <input asp-for=@staffPassword.NewConfirmPassword class="col-md-3 col-sm-5 form-control" type="password"
+                                           id="confirm" required value=@staffPassword.NewConfirmPassword>
+                                    <span asp-validation-for=@staffPassword.NewConfirmPassword class="error-message col-sm-3 mt-2"></span>
                                 </div>
                                 <div class="row form-group justify-content-center">
                                     <button type="submit" class="btn btn-success">Confirm Change</button>

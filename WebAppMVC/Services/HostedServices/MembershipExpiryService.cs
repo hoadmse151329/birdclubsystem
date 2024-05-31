@@ -46,7 +46,7 @@ namespace WebAppMVC.Services.HostedServices
         {
             _logger.LogInformation("Membership Expiry Service is starting.");
 
-            _timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromHours(12)); // Adjust the interval as needed
+            _timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromHours(1)); // Adjust the interval as needed
 
             return Task.CompletedTask;
         }

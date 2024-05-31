@@ -22,6 +22,7 @@ namespace WebAppMVC.Services.HostedServices
         private int contestStatusUpdated = 0;
         private int contestStatusUpdatedToOpen = 0;
         private int contestStatusUpdatedToClosed = 0;
+        private int contestStatusUpdatedToCancelled = 0;
         private DateTime today = DateTime.UtcNow;
         private readonly JsonSerializerOptions jsonOptions = new JsonSerializerOptions
         {
@@ -42,7 +43,7 @@ namespace WebAppMVC.Services.HostedServices
         {
             _logger.LogInformation("Contest Status update on Date Service is starting.");
 
-            _timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromHours(12)); // Adjust the interval as needed
+            _timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromHours(1)); // Adjust the interval as needed
 
             return Task.CompletedTask;
         }
@@ -107,8 +108,12 @@ namespace WebAppMVC.Services.HostedServices
                         }
                     }
                     if (
-                        (contestToUpdate.RegistrationDeadline <= today || contestToUpdate.NumberOfParticipants == contestToUpdate.NumberOfParticipantsLimit) && 
-                        contestToUpdate.Status.Equals(Constants.Constants.EVENT_STATUS_OPEN_REGISTRATION))
+                        (
+                        contestToUpdate.RegistrationDeadline <= today || 
+                        contestToUpdate.NumberOfParticipants >= contestToUpdate.NumberOfParticipantsLimit
+                        ) && 
+                        contestToUpdate.Status.Equals(Constants.Constants.EVENT_STATUS_OPEN_REGISTRATION)
+                        )
                     {
                         contestToUpdate.Status = Constants.Constants.EVENT_STATUS_CLOSED_REGISTRATION;
                         // Call the API to update the membership status
@@ -134,7 +139,8 @@ namespace WebAppMVC.Services.HostedServices
                     if (
                         contestToUpdate.RegistrationDeadline <= today && 
                         contestToUpdate.Status.Equals(Constants.Constants.EVENT_STATUS_OPEN_REGISTRATION) && 
-                        contestToUpdate.NumberOfParticipants < Constants.Constants.EVENT_CONTEST_MIN_PART_REQ)
+                        contestToUpdate.NumberOfParticipants < Constants.Constants.EVENT_CONTEST_MIN_PART_REQ
+                        )
                     {
                         contestToUpdate.Status = Constants.Constants.EVENT_STATUS_CANCELLED;
                         // Call the API to update the membership status
@@ -153,17 +159,19 @@ namespace WebAppMVC.Services.HostedServices
                         else
                         {
                             contestStatusUpdated += 1;
-                            contestStatusUpdatedToClosed += 1;
+                            contestStatusUpdatedToCancelled += 1;
                             _logger.LogInformation("Succeed updating Contest's status with ID: {ContestId} via API.", contestToUpdate.ContestId);
                         }
                     }
                 }
-                _logger.LogInformation("Contest Status update on Date Service has updated " +
-                    "{contestStatusUpdated} contests status with {contestStatusUpdatedToOpen} contests status updated to 'OpenRegistration' and " +
-                    "{contestStatusUpdatedToClosed} contests status updated to 'ClosedRegistration'.", 
+                _logger.LogInformation("Contest Status update on Date Service has updated {contestStatusUpdated} contests status with:\n" +
+                    "{contestStatusUpdatedToOpen} contests status updated to \'OpenRegistration\'\n" +
+                    "{contestStatusUpdatedToClosed} contests status updated to \'ClosedRegistration\'\n" +
+                    "{contestStatusUpdatedToCancelled} contests status updated to \'Cancelled\'\n", 
                     contestStatusUpdated, 
                     contestStatusUpdatedToOpen, 
-                    contestStatusUpdatedToClosed);
+                    contestStatusUpdatedToClosed,
+                    contestStatusUpdatedToCancelled);
             }
         }
 

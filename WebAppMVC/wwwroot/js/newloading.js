@@ -5,7 +5,7 @@
     let loading = false; // Flag to track if loading is in progress
 
     const newsData = [
-        { id: 1, image: '/images/bird.png', title: 'News Item 1', body: 'Content for news item 1.' },
+        /*{ id: 1, image: '/images/bird.png', title: 'News Item 1', body: 'Content for news item 1.' },
         { id: 2, image: '/images/bird.png', title: 'News Item 2', body: 'Content for news item 2.' },
         { id: 3, image: '/images/bird.png', title: 'News Item 3', body: 'Content for news item 3.' },
         { id: 4, image: '/images/bird.png', title: 'News Item 4', body: 'Content for news item 4.' },
@@ -31,7 +31,7 @@
         { id: 24, image: '/images/bird.png', title: 'News Item 24', body: 'Content for news item 24.' },
         { id: 25, image: '/images/bird.png', title: 'News Item 25', body: 'Content for news item 25.' },
         { id: 26, image: '/images/bird.png', title: 'News Item 26', body: 'Content for news item 26.' },
-        { id: 27, image: '/images/bird.png', title: 'News Item 27', body: 'Content for news item 27.' },
+        { id: 27, image: '/images/bird.png', title: 'News Item 27', body: 'Content for news item 27.' },*/
         // Add more items as needed
     ];
 
