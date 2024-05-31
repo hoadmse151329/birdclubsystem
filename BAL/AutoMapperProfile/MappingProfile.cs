@@ -194,6 +194,13 @@ namespace BAL.AutoMapperProfile
                 .AfterMap((src, dest) =>
                 {
                     dest.Fullname = src.UserDetail.MemberDetail.FullName;
+                    dest.MemberAvatar = src.UserDetail.ImagePath;
+                })
+                .ReverseMap();
+            CreateMap<Comment, CommentViewModel>()
+                .AfterMap((src, dest) =>
+                {
+                    dest.UserFullName = src.UserDetail.MemberDetail.FullName;
                 })
                 .ReverseMap();
             CreateMap<News,NewsViewModel>() .ReverseMap();

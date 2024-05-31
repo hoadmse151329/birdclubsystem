@@ -1604,7 +1604,7 @@ namespace WebAppMVC.Controllers
 
             managerPassword.userId = usrId;
 
-            var managerDetailupdate = await methcall.CallMethodReturnObject<GetMemberPasswordChangeResponse>(
+            var managerPasswordupdate = await methcall.CallMethodReturnObject<GetMemberPasswordChangeResponse>(
                 _httpClient: _httpClient,
                 options: jsonOptions,
                 methodName: Constants.Constants.PUT_METHOD,
@@ -1612,18 +1612,18 @@ namespace WebAppMVC.Controllers
                 _logger: _logger,
                 inputType: managerPassword,
                 accessToken: accToken);
-            if (managerDetailupdate == null)
+            if (managerPasswordupdate == null)
             {
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting Manager Profile!).\n Manager Details Not Found!";
                 return RedirectToAction("ManagerProfile");
             }
             else
-            if (!managerDetailupdate.Status)
+            if (!managerPasswordupdate.Status)
             {
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting Member Profile!).\n Member Details Not Found!"
-                + managerDetailupdate.ErrorMessage;
+                + managerPasswordupdate.ErrorMessage;
                 return RedirectToAction("ManagerProfile");
             }
             TempData["Success"] = "Successfully updated password!";
@@ -1905,15 +1905,14 @@ namespace WebAppMVC.Controllers
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
             string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
-            string? usrName = HttpContext.Session.GetString(Constants.Constants.USR_NAME);
-            string? role = HttpContext.Session.GetString(Constants.Constants.ROLE_NAME);
+            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
             if(!string.IsNullOrEmpty(search) || !string.IsNullOrWhiteSpace(search))
             {
-                ManagerAPI_URL += "News/Search?userName=" + usrName;
+                ManagerAPI_URL += "News/Search?title=" + search;
             }
             else
             {
-                ManagerAPI_URL += "News/All";
+                ManagerAPI_URL += "News/Search";
             }
 
             ManagerNewsIndexVM managerNewsListVM = new();
@@ -1923,8 +1922,8 @@ namespace WebAppMVC.Controllers
                 options: jsonOptions,
                 methodName: Constants.Constants.POST_METHOD,
                 url: ManagerAPI_URL,
-                inputType: role,
                 accessToken: accToken,
+                inputType: usrId,
                 _logger: _logger);
 
             if (listNewsResponse == null)

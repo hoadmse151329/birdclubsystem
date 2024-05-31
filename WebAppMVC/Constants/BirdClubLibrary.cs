@@ -12,6 +12,8 @@ using Org.BouncyCastle.Ocsp;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using WebAppMVC.Models;
 using WebAppMVC.Models.Error;
+using Microsoft.AspNetCore.Http.Json;
+using WebAppMVC.Models.Auth;
 
 namespace WebAppMVC.Constants
 {
@@ -64,6 +66,10 @@ namespace WebAppMVC.Constants
                     {
                         var errorT = JsonSerializer.Deserialize<T>(jsonResponse, options);
                         return errorT;
+                    }
+                    else if(jsonResponse.Contains("Exception"))
+                    {
+                        return null;
                     }
                     var error = JsonSerializer.Deserialize<GetErrorVM>(jsonResponse, options);
                     return null;
@@ -652,9 +658,10 @@ namespace WebAppMVC.Constants
         public void SetUserRoleGuest(Controller context)
         {
             string? role = context.HttpContext.Session.GetString(Constants.ROLE_NAME);
-            if (string.IsNullOrEmpty(role))
+            if (string.IsNullOrEmpty(role) || string.IsNullOrWhiteSpace(role))
             {
                 role = Constants.GUEST;
+                context.HttpContext.Session.SetString(Constants.ROLE_NAME, role);
             }
             context.TempData[Constants.ROLE_NAME] = role;
         }

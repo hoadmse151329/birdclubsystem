@@ -848,7 +848,7 @@ namespace WebAppMVC.Controllers
 
             staffPassword.userId = usrId;
 
-            var memberDetailupdate = await methcall.CallMethodReturnObject<GetMemberPasswordChangeResponse>(
+            var staffPasswordupdate = await methcall.CallMethodReturnObject<GetMemberPasswordChangeResponse>(
                 _httpClient: _httpClient,
                 options: jsonOptions,
                 methodName: Constants.Constants.PUT_METHOD,
@@ -856,18 +856,18 @@ namespace WebAppMVC.Controllers
                 _logger: _logger,
                 inputType: staffPassword,
                 accessToken: accToken);
-            if (memberDetailupdate == null)
+            if (staffPasswordupdate == null)
             {
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting Staff Profile!).\n Staff Details Not Found!";
                 return RedirectToAction("StaffProfile");
             }
             else
-            if (!memberDetailupdate.Status)
+            if (!staffPasswordupdate.Status)
             {
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting Staff Profile!).\n Staff Details Not Found!"
-                + memberDetailupdate.ErrorMessage;
+                + staffPasswordupdate.ErrorMessage;
                 return RedirectToAction("StaffProfile");
             }
             TempData["Success"] = "Successfully updated password!";

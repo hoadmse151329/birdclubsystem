@@ -83,6 +83,8 @@ namespace WebAppMVC.Constants
         public readonly static string CREATE_CONTEST_MEDIA_VALID = "CContestMediaValid";
         public readonly static string UPDATE_CONTEST_MEDIA_VALID = "UContestMediaValid";
         public readonly static string CREATE_CONTEST_PARTICIPATION_VALID = "CContestparticipantValid";
+        public readonly static string CREATE_BLOG_VALID = "CBlogValid";
+        public readonly static string UPDATE_BLOG_VALID = "UBlogValid";
         public readonly static string CREATE_NEWS_VALID = "CNewsValid";
         public readonly static string UPDATE_NEWS_VALID = "UNewsValid";
 
@@ -215,6 +217,7 @@ namespace WebAppMVC.Constants
         public readonly static string SYSTEM_DEFAULT_AZURE_DEFAULT_BLOB_FOLDER_NAME = "AzureStorage:BlobContainerName";
         public readonly static string SYSTEM_DEFAULT_AZURE_BLOB_AVATAR_FOLDER_URL = "AzureStorage:BlobAvatarsContainerNamePath";
         public readonly static string SYSTEM_DEFAULT_AZURE_BLOB_NEWS_FOLDER_URL = "AzureStorage:BlobNewsContainerNamePath";
+        public readonly static string SYSTEM_DEFAULT_AZURE_BLOB_BLOG_FOLDER_URL = "AzureStorage:BlobBlogContainerNamePath";
         public readonly static string SYSTEM_DEFAULT_AZURE_BLOB_MEETING_FOLDER_URL = "AzureStorage:BlobMeetingsContainerNamePath";
         public readonly static string SYSTEM_DEFAULT_AZURE_BLOB_BIRD_FOLDER_URL = "AzureStorage:BlobBirdsContainerNamePath";
     }

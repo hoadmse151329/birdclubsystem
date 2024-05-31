@@ -128,6 +128,15 @@ namespace WebAPI.Controllers
                         Data = result
                     });
                 }
+                if (result.Status == "Denied")
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = "Sorry, your registration request has been denied by the Birdclub manager",
+                        Data = result
+                    });
+                }
                 return Ok(new
                 {
                     Status = true,
@@ -187,11 +196,10 @@ namespace WebAPI.Controllers
                         ErrorMessage = "User not found." 
                     });
                 }
-                var loguser = new AuthenRequest()
-                {
-                    Username = result.UserName,
-                    Password = result.Password // No need to specify password
-                };
+                var loguser = new AuthenRequest(
+                    userName: result.UserName, 
+                    passWord: result.Password
+                    );
                 var login = await _userService.AuthenticateUser(loguser);
                 if (login == null)
                 {
@@ -306,17 +314,14 @@ namespace WebAPI.Controllers
                 {
 					UserName = newmem.UserName,
                     Email= newmem.Email,
-                    Password= newmem.Password,
-                    Role = "Member",
-                    ImagePath = "https://edwinbirdclubstorage.blob.core.windows.net/images/avatar/avatar2.png"
+                    Password= newmem.Password
                 };
                 _userService.Create(value,newmem);
-                var loguser = new AuthenRequest()
-                {
-                    Username = newmem.UserName,
-                    Password = newmem.Password,
-                    ImagePath = value.ImagePath
-                };
+                var loguser = new AuthenRequest(
+                    userName: newmem.UserName, 
+                    passWord: newmem.Password, 
+                    imagePath: value.ImagePath
+                    );
                 var resultaft = await _userService.AuthenticateUser(loguser);
 
                 if (resultaft == null)
@@ -388,11 +393,10 @@ namespace WebAPI.Controllers
 						ErrorMessage = "Password and Confirm Password are not the same !"
 					});
 				}
-				var loguser = new AuthenRequest()
-				{
-					Username = newmem.UserName,
-					Password = newmem.Password
-				};
+				var loguser = new AuthenRequest(
+                    userName: newmem.UserName, 
+                    passWord: newmem.Password
+                    );
 				var resultaft = await _userService.CreateTemporaryNewUser(loguser);
 
 				if (resultaft == null)
@@ -430,31 +434,77 @@ namespace WebAPI.Controllers
 				});
 			}
 		}
-		// PUT api/<UserController>/5
-		// PUT api/<UserController>/Update/5
-		/// <summary>
-		/// Update User Account informations by ID
-		/// aliases: api/User/{id} or api/User/Update/{id}
-		/// </summary>
-		/// <param name="id">Account ID</param>
-		/// <remarks>
-		/// Sample request:
-		/// 
-		///     PUT 
-		///     {
-		///         "id": 1,
-		///         "username": "ExampleMan123",
-		///         "password": "example123",
-		///         "confirmPassword": "example123",
-		///         "fullName": "Mr. ExampleMan",
-		///         "email": "example123@gmail.com",
-		///         "phone": "0123456789",
-		///         "address": "123, Brooklyn, New York City, USA"
-		///     } 
-		///     
-		/// </remarks>
-		/// <returns>Return result of action and error message</returns>
-		[HttpPut("{id}")]
+        [HttpGet("CreateGuestUser")]
+        [ProducesResponseType(typeof(UserViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> CreateGuestUser()
+        {
+            try
+            {
+                var loguser = new AuthenRequest();
+                var resultaft = await _userService.CreateGuestUser(loguser);
+
+                if (resultaft == null)
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, new
+                    {
+                        Status = false,
+                        ErrorMessage = "Error while Registering your Guest role to the system !"
+
+                    });
+                }
+                return Ok(new
+                {
+                    Status = true,
+                    SuccessMessage = "Guest role create successfully !",
+                    Data = resultaft
+                });
+            }
+            catch (Exception ex)
+            {
+                if (ex.InnerException != null)
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = ex.Message,
+                        InnerExceptionMessage = ex.InnerException.Message
+                    });
+                }
+                // Log the exception if needed
+                return BadRequest(new
+                {
+                    Status = false,
+                    ErrorMessage = ex.Message
+                });
+            }
+        }
+        // PUT api/<UserController>/5
+        // PUT api/<UserController>/Update/5
+        /// <summary>
+        /// Update User Account informations by ID
+        /// aliases: api/User/{id} or api/User/Update/{id}
+        /// </summary>
+        /// <param name="id">Account ID</param>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     PUT 
+        ///     {
+        ///         "id": 1,
+        ///         "username": "ExampleMan123",
+        ///         "password": "example123",
+        ///         "confirmPassword": "example123",
+        ///         "fullName": "Mr. ExampleMan",
+        ///         "email": "example123@gmail.com",
+        ///         "phone": "0123456789",
+        ///         "address": "123, Brooklyn, New York City, USA"
+        ///     } 
+        ///     
+        /// </remarks>
+        /// <returns>Return result of action and error message</returns>
+        [HttpPut("{id}")]
         [Authorize(Roles ="Admin,Member")]
         [HttpPut("Update/{id}")]
         [ProducesResponseType(typeof(UserViewModel), StatusCodes.Status200OK)]

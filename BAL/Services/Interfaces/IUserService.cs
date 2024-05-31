@@ -14,7 +14,8 @@ namespace BAL.Services.Interfaces
     {
         Task<AuthenResponse> AuthenticateUser(AuthenRequest request);
 		Task<AuthenResponse> CreateTemporaryNewUser(AuthenRequest request);
-		Task<AuthenResponse> AuthenticateUserEmail(string email);
+        Task<AuthenResponse> CreateGuestUser(AuthenRequest request);
+        Task<AuthenResponse> AuthenticateUserEmail(string email);
         Task<UserViewModel?> GetById(int id);
         Task<UserViewModel?> GetByMemberId(string memId);
         Task<bool> GetBoolById(int id);

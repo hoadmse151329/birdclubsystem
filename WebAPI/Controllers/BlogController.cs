@@ -22,6 +22,7 @@ namespace WebAPI.Controllers
             _blogService = blogService;
         }
         [HttpGet("All")]
+        [Authorize(Roles = "Manager")]
         [ProducesResponseType(typeof(List<BlogViewModel>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -56,7 +57,110 @@ namespace WebAPI.Controllers
                 });
             }
         }
+        [HttpGet("SearchForMemberOrGuest")]
+        [Authorize(Roles = "Member,Guest")]
+        [ProducesResponseType(typeof(List<BlogViewModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> SearchBlogByAttributes(
+            [FromQuery] string? description,
+            [FromQuery] string? category,
+            [FromQuery] DateTime? uploadDate,
+            [FromQuery] int? vote,
+            [FromQuery] List<string>? status,
+            [FromQuery] string? orderBy
+            )
+        {
+            try
+            {
+                bool isMemberOrGuest = true;
+                var result = await _blogService.GetSortedBlogs(
+                    description: description,
+                    category: category,
+                    uploadDate: uploadDate,
+                    vote: vote,
+                    statuses: status,
+                    orderBy: orderBy,
+                    isMemberOrGuest: isMemberOrGuest
+                    );
+                if (result == null || !result.Any())
+                {
+                    return NotFound(new
+                    {
+                        Status = false,
+                        ErrorMessage = "List of Blogs Not Found!"
+                    });
+                }
+
+                return Ok(new
+                {
+                    Status = true,
+                    Data = result
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new
+                {
+                    Status = false,
+                    ErrorMessage = ex.Message,
+                    InnerExceptionMessage = ex.InnerException?.Message
+                });
+            }
+        }
+        [HttpGet("Search")]
+        [Authorize(Roles = "Manager")]
+        [ProducesResponseType(typeof(List<BlogViewModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> SearchBlogByAttributesManager(
+            [FromQuery] string? description,
+            [FromQuery] string? category,
+            [FromQuery] DateTime? uploadDate,
+            [FromQuery] int? vote,
+            [FromQuery] List<string>? status,
+            [FromQuery] string? orderBy
+            )
+        {
+            try
+            {
+                bool isMemberOrGuest = false;
+                var result = await _blogService.GetSortedBlogs(
+                    description: description,
+                    category: category,
+                    uploadDate: uploadDate,
+                    vote: vote,
+                    statuses: status,
+                    orderBy: orderBy,
+                    isMemberOrGuest: isMemberOrGuest
+                    );
+                if (result == null || !result.Any())
+                {
+                    return NotFound(new
+                    {
+                        Status = false,
+                        ErrorMessage = "List of Blogs Not Found!"
+                    });
+                }
+
+                return Ok(new
+                {
+                    Status = true,
+                    Data = result
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new
+                {
+                    Status = false,
+                    ErrorMessage = ex.Message,
+                    InnerExceptionMessage = ex.InnerException?.Message
+                });
+            }
+        }
         [HttpGet("{id}")]
+        [Authorize(Roles = "Manager,Member,Guest")]
         [ProducesResponseType(typeof(BlogViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

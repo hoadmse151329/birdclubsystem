@@ -330,7 +330,7 @@ namespace WebAppMVC.Controllers
 
             adminPassword.userId = usrId;
 
-            var memberDetailupdate = await methcall.CallMethodReturnObject<GetMemberPasswordChangeResponse>(
+            var adminPasswordupdate = await methcall.CallMethodReturnObject<GetMemberPasswordChangeResponse>(
                 _httpClient: _httpClient,
                 options: jsonOptions,
                 methodName: Constants.Constants.PUT_METHOD,
@@ -338,18 +338,18 @@ namespace WebAppMVC.Controllers
                 _logger: _logger,
                 inputType: adminPassword,
                 accessToken: accToken);
-            if (memberDetailupdate == null)
+            if (adminPasswordupdate == null)
             {
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting Admin Profile!).\n Admin Details Not Found!";
                 return RedirectToAction("AdminProfile");
             }
             else
-            if (!memberDetailupdate.Status)
+            if (!adminPasswordupdate.Status)
             {
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting Admin Profile!).\n"
-                + memberDetailupdate.ErrorMessage;
+                + adminPasswordupdate.ErrorMessage;
                 return RedirectToAction("AdminProfile");
             }
             return RedirectToAction("AdminProfile");

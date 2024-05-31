@@ -16,6 +16,15 @@ using WebAppMVC.Models.Notification;
 using BAL.ViewModels.Event;
 using WebAppMVC.Models.News;
 using Org.BouncyCastle.Ocsp;
+using BAL.ViewModels.Member;
+using WebAppMVC.Models.Auth;
+using WebAppMVC.Models.Blog;
+using WebAppMVC.Models.ViewModels;
+using Azure.Storage.Blobs.Models;
+using Azure.Storage.Blobs;
+using BAL.ViewModels.News;
+using System.ComponentModel.DataAnnotations;
+using BAL.ViewModels.Blog;
 
 namespace WebAppMVC.Controllers
 {
@@ -49,23 +58,31 @@ namespace WebAppMVC.Controllers
             string FieldTripAPI_URL_All = HomeAPI_URL + "FieldTrip/All";
             string ContestAPI_URL_All = HomeAPI_URL + "Contest/All";
             dynamic testmodel = new ExpandoObject();
-            /*if(_httpClient.DefaultRequestHeaders.Authorization != null)
-            {
-                var token = _httpClient.DefaultRequestHeaders.Authorization.Parameter;
-            }*/
-            methcall.SetUserDefaultData(this);
-            string? role = HttpContext.Session.GetString(Constants.Constants.ROLE_NAME);
 
-            if(string.IsNullOrWhiteSpace(role) || string.IsNullOrEmpty(role))
-            {
-                role = Constants.Constants.GUEST;
-                HttpContext.Session.SetString(Constants.Constants.ROLE_NAME, role);
-            }
-            else if (role.Equals(Constants.Constants.MEMBER))
-                TempData[Constants.Constants.ALERT_MEMBER_LOGIN_SUCCESS_NAME] = Constants.Constants.ALERT_MEMBER_LOGIN_SUCCESS;
+            methcall.SetUserDefaultData(this);
+
+            string? role = HttpContext.Session.GetString(Constants.Constants.ROLE_NAME);
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
             string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
-
+            if(accToken == null)
+            {
+                var authenResponse = await methcall.CallMethodReturnObject<GetAuthenResponse>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: Constants.Constants.GET_METHOD,
+                url: HomeAPI_URL + "User/CreateGuestUser",
+                _logger: _logger);
+                if(authenResponse == null)
+                {
+                    _logger.LogError("Error while processing your request! (Create Guest User)");
+                }
+                if (!authenResponse.Status || authenResponse.Data == null)
+                {
+                    _logger.LogError("Error while processing your request! (Create Guest User)");
+                }
+                HttpContext.Session.SetString(Constants.Constants.ACC_TOKEN, accToken = authenResponse.Data.AccessToken);
+            }
             #region NotificationBell
             // show read and unread notifications when you click on the bell in the header bar
             if (usrId != null)
@@ -79,6 +96,7 @@ namespace WebAppMVC.Controllers
                 options: jsonOptions,
                 methodName: Constants.Constants.POST_METHOD,
                 url: NotificationCountAPI_URL,
+                accessToken: accToken,
                 inputType: usrId,
                 _logger: _logger);
                 
@@ -87,6 +105,7 @@ namespace WebAppMVC.Controllers
                 options: jsonOptions,
                 methodName: Constants.Constants.POST_METHOD,
                 url: NotificationUnreadAPI_URL,
+                accessToken: accToken,
                 inputType: usrId,
                 _logger: _logger);
 
@@ -95,6 +114,7 @@ namespace WebAppMVC.Controllers
                 options: jsonOptions,
                 methodName: Constants.Constants.POST_METHOD,
                 url: NotificationReadAPI_URL,
+                accessToken: accToken,
                 inputType: usrId,
                 _logger: _logger);
 
@@ -128,16 +148,27 @@ namespace WebAppMVC.Controllers
                 inputType: role,
                 _logger: _logger);
 
-			if (listMeetResponse == null || listFieldTripResponse == null || listContestResponse == null)
+			if (
+                listMeetResponse == null || 
+                listFieldTripResponse == null || 
+                listContestResponse == null
+                )
             {
-                ViewBag.error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting List Meeting Or Fieldtrip!).\n List was Empty!";
                 Redirect("~/Home/Error");
             }
             else
-            if (!listMeetResponse.Status || !listFieldTripResponse.Status || !listContestResponse.Status)
+            if (
+                !listMeetResponse.Status || 
+                !listFieldTripResponse.Status || 
+                !listContestResponse.Status ||
+                !listMeetResponse.Data.Any() ||
+                !listFieldTripResponse.Data.Any() ||
+                !listContestResponse.Data.Any()
+                )
             {
-                ViewBag.error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting List Meeting Or Fieldtrip!).\n"
                     + listMeetResponse.ErrorMessage + "\n" + listFieldTripResponse.ErrorMessage;
                 Redirect("~/Home/Error");
@@ -151,38 +182,44 @@ namespace WebAppMVC.Controllers
         public async Task<IActionResult> News()
 		{
             methcall.SetUserDefaultData(this);
-            string? role = HttpContext.Session.GetString(Constants.Constants.ROLE_NAME);
-
-            if (string.IsNullOrWhiteSpace(role) || string.IsNullOrEmpty(role))
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
+            if (accToken == null)
             {
-                role = Constants.Constants.GUEST;
-                HttpContext.Session.SetString(Constants.Constants.ROLE_NAME, role);
+                var authenResponse = await methcall.CallMethodReturnObject<GetAuthenResponse>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: Constants.Constants.GET_METHOD,
+                url: HomeAPI_URL + "User/CreateGuestUser",
+                _logger: _logger);
+                if (authenResponse == null)
+                {
+                    _logger.LogError("Error while processing your request! (Create Guest User)");
+                }
+                if (!authenResponse.Status || authenResponse.Data == null)
+                {
+                    _logger.LogError("Error while processing your request! (Create Guest User)");
+                }
+                HttpContext.Session.SetString(Constants.Constants.ACC_TOKEN, accToken = authenResponse.Data.AccessToken);
             }
-            else if (role.Equals(Constants.Constants.MEMBER))
-                TempData[Constants.Constants.ALERT_MEMBER_LOGIN_SUCCESS_NAME] = Constants.Constants.ALERT_MEMBER_LOGIN_SUCCESS;
 
-            string NewsAPI_URL = HomeAPI_URL + "News/Search";
+            string NewsAPI_URL = HomeAPI_URL + "News/SearchForMemberOrGuest";
             var listNewsResponse = await methcall.CallMethodReturnObject<GetListNews>(
                 _httpClient: _httpClient,
                 options: jsonOptions,
-                methodName: Constants.Constants.POST_METHOD,
+                methodName: Constants.Constants.GET_METHOD,
+                accessToken: accToken,
                 url: NewsAPI_URL,
-                inputType: role,
                 _logger: _logger);
             if (listNewsResponse == null)
             {
-                ViewBag.error =
-                    "Error while processing your request! (Getting List News!).\n List was Empty!";
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] = "Error while processing your request! (Getting List News!).\n List was Empty!";
-                Redirect("Index");
+                RedirectToAction("Index");
             }
             if (!listNewsResponse.Status)
             {
-                ViewBag.error =
-                    "Error while processing your request! (Getting List News!).\n"
-                    + listNewsResponse.ErrorMessage;
-                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] = "Error while processing your request! (Getting List News!).\n" + listNewsResponse.ErrorMessage;
-                Redirect("Index");
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] = "Error while processing your request! (Getting List News!).\n" + 
+                    listNewsResponse.ErrorMessage;
+                RedirectToAction("Index");
             }
             return View(listNewsResponse.Data);
 		}
@@ -191,15 +228,25 @@ namespace WebAppMVC.Controllers
         {
             methcall.SetUserDefaultData(this);
             string? role = HttpContext.Session.GetString(Constants.Constants.ROLE_NAME);
-
-            if (string.IsNullOrWhiteSpace(role) || string.IsNullOrEmpty(role))
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
+            if (accToken == null)
             {
-                role = Constants.Constants.GUEST;
-                HttpContext.Session.SetString(Constants.Constants.ROLE_NAME, role);
+                var authenResponse = await methcall.CallMethodReturnObject<GetAuthenResponse>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: Constants.Constants.GET_METHOD,
+                url: HomeAPI_URL + "User/CreateGuestUser",
+                _logger: _logger);
+                if (authenResponse == null)
+                {
+                    _logger.LogError("Error while processing your request! (Create Guest User)");
+                }
+                if (!authenResponse.Status || authenResponse.Data == null)
+                {
+                    _logger.LogError("Error while processing your request! (Create Guest User)");
+                }
+                HttpContext.Session.SetString(Constants.Constants.ACC_TOKEN, accToken = authenResponse.Data.AccessToken);
             }
-            else if (role.Equals(Constants.Constants.MEMBER))
-                TempData[Constants.Constants.ALERT_MEMBER_LOGIN_SUCCESS_NAME] = Constants.Constants.ALERT_MEMBER_LOGIN_SUCCESS;
-
             string NewsAPI_URL = HomeAPI_URL + "News/" + newsId;
             var newsResponse = await methcall.CallMethodReturnObject<GetNewsPostResponse>(
                 _httpClient: _httpClient,
@@ -210,18 +257,13 @@ namespace WebAppMVC.Controllers
                 _logger: _logger);
             if (newsResponse == null)
             {
-                ViewBag.error =
-                    "Error while processing your request! (Getting News!).\n News was empty or not found!";
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] = "Error while processing your request! (Getting News!).\n News was empty or not found!";
                 RedirectToAction("Index");
             }
             if (!newsResponse.Status)
             {
-                ViewBag.error =
-                    "Error while processing your request! (Getting News!).\n"
-                    + newsResponse.ErrorMessage;
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] = "Error while processing your request! (Getting News!).\n" + newsResponse.ErrorMessage;
-                Redirect("Index");
+                RedirectToAction("Index");
             }
             return View(newsResponse.Data);
         }
@@ -230,10 +272,146 @@ namespace WebAppMVC.Controllers
         {
             return View();
         }
-        [Route("Blog")]
-        public IActionResult Blog()
+        [HttpGet("Blog")]
+        public async Task<IActionResult> Blog()
         {
-            return View();
+            methcall.SetUserDefaultData(this);
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
+            if (accToken == null)
+            {
+                var authenResponse = await methcall.CallMethodReturnObject<GetAuthenResponse>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: Constants.Constants.GET_METHOD,
+                url: HomeAPI_URL + "User/CreateGuestUser",
+                _logger: _logger);
+                if (authenResponse == null)
+                {
+                    _logger.LogError("Error while processing your request! (Create Guest User)");
+                }
+                if (!authenResponse.Status || authenResponse.Data == null)
+                {
+                    _logger.LogError("Error while processing your request! (Create Guest User)");
+                }
+                HttpContext.Session.SetString(Constants.Constants.ACC_TOKEN, accToken = authenResponse.Data.AccessToken);
+            }
+            string? role = HttpContext.Session.GetString(Constants.Constants.ROLE_NAME);
+            MemberBlogIndexVM memberBlogIndexVM = new();
+
+            string BlogAPI_URL = HomeAPI_URL + "Blog/SearchForMemberOrGuest";
+
+            var listBlogResponse = await methcall.CallMethodReturnObject<GetListBlogResponse>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: Constants.Constants.GET_METHOD,
+                accessToken: accToken,
+                url: BlogAPI_URL,
+                _logger: _logger);
+            if (listBlogResponse == null)
+            {
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] = "Error while processing your request! (Getting List Blogs!).\n List was Empty!";
+                RedirectToAction("Index");
+            }
+            if (!listBlogResponse.Status)
+            {
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] = "Error while processing your request! (Getting List Blogs!).\n" +
+                    listBlogResponse.ErrorMessage;
+                RedirectToAction("Index");
+            }
+            memberBlogIndexVM.Blogs = listBlogResponse.Data;
+            if (role.Equals(Constants.Constants.MEMBER))
+            {
+                memberBlogIndexVM.isGuest = false;
+                memberBlogIndexVM.createBlog = methcall.GetValidationTempData<CreateNewBlog>(this, TempData, Constants.Constants.CREATE_BLOG_VALID, "createBlog", jsonOptions);
+                if (memberBlogIndexVM.createBlog == null)
+                {
+                    memberBlogIndexVM.createBlog = new CreateNewBlog()
+                    {
+                        Fullname = HttpContext.Session.GetString(Constants.Constants.USR_NAME),
+                        MemberAvatar = HttpContext.Session.GetString(Constants.Constants.USR_IMAGE)
+                    };
+                }
+            }
+            return View(memberBlogIndexVM);
+        }
+        [HttpPost("Blog/Create")]
+        /*[Route("Manager/Meeting/Update/{id:int}")]*/
+        public async Task<IActionResult> MemberCreateBlog([Required] CreateNewBlog createBlog)
+        {
+            HomeAPI_URL += "Blog/Create";
+            if(createBlog.Status == null)
+            {
+                createBlog.Status = "Draft";
+            }
+            if (!ModelState.IsValid)
+            {
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.CREATE_BLOG_VALID, createBlog, jsonOptions);
+                return RedirectToAction("Blog");
+            }
+
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
+
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
+            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
+
+            createBlog.MemberId = usrId;
+
+            IFormFile photo = createBlog.ImageUpload;
+
+            if (photo != null && photo.Length > 0)
+            {
+                string connectionString = _config.GetValue<string>(Constants.Constants.SYSTEM_DEFAULT_AZURE_CONNECTION_STRING);
+                string defaultUrl = _config.GetValue<string>(Constants.Constants.SYSTEM_DEFAULT_AZURE_DEFAULT_BLOB_FOLDER_URL);
+                string containerName = _config.GetValue<string>(Constants.Constants.SYSTEM_DEFAULT_AZURE_DEFAULT_BLOB_FOLDER_NAME);
+                string blogContainerName = _config.GetValue<string>(Constants.Constants.SYSTEM_DEFAULT_AZURE_BLOB_BLOG_FOLDER_URL);
+
+                BlobServiceClient _blobServiceClient = new BlobServiceClient(connectionString);
+                BlobContainerClient _blobContainerClient = _blobServiceClient.GetBlobContainerClient(containerName);
+
+                var azureResponse = new List<BlobContentInfo>();
+                string filename = photo.FileName;
+                string uniqueBlobName = blogContainerName + $"{Guid.NewGuid()}-{filename}";
+                using (var memoryStream = new MemoryStream())
+                {
+                    photo.CopyTo(memoryStream);
+                    memoryStream.Position = 0;
+
+                    var client = await _blobContainerClient.UploadBlobAsync(uniqueBlobName, memoryStream);
+                    azureResponse.Add(client);
+                }
+
+                var image = defaultUrl + uniqueBlobName;
+
+                createBlog.Image = image;
+            }
+
+            createBlog.ImageUpload = null;
+
+            var memberCreateBlogPostVM = await methcall.CallMethodReturnObject<GetBlogPostResponse>(
+                                _httpClient: _httpClient,
+                                options: jsonOptions,
+                                methodName: Constants.Constants.POST_METHOD,
+                                url: HomeAPI_URL,
+                                inputType: createBlog,
+                                accessToken: accToken,
+                                _logger: _logger);
+            if (memberCreateBlogPostVM == null)
+            {
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
+                    "Error while processing your request! (Create Blog!).\n Blog Not Found!";
+                return RedirectToAction("Blog");
+            }
+            if (!memberCreateBlogPostVM.Status)
+            {
+                _logger.LogInformation("Error while processing your request: " + memberCreateBlogPostVM.Status + " , Error Message: " + memberCreateBlogPostVM.ErrorMessage);
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
+                    "Error while processing your request! (Create Blog Post!).\n"
+                    + memberCreateBlogPostVM.ErrorMessage;
+                return RedirectToAction("Blog");
+            }
+            TempData[Constants.Constants.ALERT_DEFAULT_SUCCESS_NAME] = Constants.Constants.ALERT_MANAGER_CREATE_NEWS_SUCCESS;
+            return RedirectToAction("Blog");
         }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
 		public IActionResult Error()

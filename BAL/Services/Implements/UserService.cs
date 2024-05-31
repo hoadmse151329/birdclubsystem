@@ -247,5 +247,16 @@ namespace BAL.Services.Implements
         {
             return await _unitOfWork.UserRepository.GetIdByUsername(username);
         }
+
+        public async Task<AuthenResponse> CreateGuestUser(AuthenRequest request)
+        {
+            var accessToken = _jwtService.GenerateJWTToken(request.Username, "Guest", _configuration);
+            return new AuthenResponse()
+            {
+                RoleName = "Guest",
+                UserName = request.Username,
+                AccessToken = accessToken
+            };
+        }
     }
 }
