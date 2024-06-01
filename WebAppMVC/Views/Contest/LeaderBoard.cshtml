@@ -12,71 +12,76 @@
     <link rel="stylesheet" href="~/css/leaderboard.css">
 </head>
 <body>
-@*    <div class="leaderboard-container">
-        <h1>Bird Leaderboard</h1>
-        <table class="leaderboard">
-            <thead>
-                <tr>
-                    <th>Rank</th>
-                    <th>Name</th>
-                    <th>Score</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>Eagle</td>
-                    <td>100</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>Hawk</td>
-                    <td>90</td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>Owl</td>
-                    <td>85</td>
-                </tr>
-                <tr>
-                    <td>4</td>
-                    <td>Robin</td>
-                    <td>75</td>
-                </tr>
-                <tr>
-                    <td>5</td>
-                    <td>Pigeon</td>
-                    <td>60</td>
-                </tr>
-                <tr>
-                    <td>6</td>
-                    <td>Sparrow</td>
-                    <td>50</td>
-                </tr>
-            </tbody>
-        </table>
+    @*    <div class="leaderboard-container">
+    <h1>Bird Leaderboard</h1>
+    <table class="leaderboard">
+    <thead>
+    <tr>
+    <th>Rank</th>
+    <th>Name</th>
+    <th>Score</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+    <td>1</td>
+    <td>Eagle</td>
+    <td>100</td>
+    </tr>
+    <tr>
+    <td>2</td>
+    <td>Hawk</td>
+    <td>90</td>
+    </tr>
+    <tr>
+    <td>3</td>
+    <td>Owl</td>
+    <td>85</td>
+    </tr>
+    <tr>
+    <td>4</td>
+    <td>Robin</td>
+    <td>75</td>
+    </tr>
+    <tr>
+    <td>5</td>
+    <td>Pigeon</td>
+    <td>60</td>
+    </tr>
+    <tr>
+    <td>6</td>
+    <td>Sparrow</td>
+    <td>50</td>
+    </tr>
+    </tbody>
+    </table>
     </div>*@
-    <div class="leaderboard-container">
-        <h1>Bird Leaderboard</h1>
-        <table class="leaderboard">
-            <thead>
-                <tr>
-                    <th>Rank</th>
-                    <th>Name</th>
-                    <th>Elo</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach(var bird in leaderboard)
-                {
+    <div class="contain">
+        <div class="leaderboard-container">
+            <h1>Bird Leaderboard</h1>
+            <table class="leaderboard">
+                <thead>
                     <tr>
-                        <td>@bird.Rank</td>
-                        <td>@bird.BirdName</td>
-                        <td>@bird.Elo</td>
+                        <th>Rank</th>
+                        <th>Name</th>
+                        <th>Elo</th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody class="bird-list">
+                    @foreach (var bird in leaderboard)
+                    {
+                        <tr>
+                            <td>@bird.Rank</td>
+                            <td>@bird.BirdName</td>
+                            <td>@bird.Elo</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="pagination1 mb-3">
+        </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
             referrerpolicy="no-referrer"></script>
@@ -85,5 +90,57 @@
     <!-- BS4 JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.5/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+$(function () {
+    var numberOfItems = $(".bird-list tr").length;
+    var limitPerPage = 50;
+    var totalPages = Math.ceil(numberOfItems / limitPerPage);
+    var paginationSize = 7;
+    var currentPage;
+
+    function showPage(whichPage) {
+        if (whichPage < 1 || whichPage > totalPages) return false;
+        currentPage = whichPage;
+        $(".bird-list tr").hide().slice((currentPage - 1) * limitPerPage, currentPage * limitPerPage).show();
+        $(".pagination1 li").slice(1, -1).remove();
+        getPageList(totalPages, currentPage, paginationSize).forEach((item) => {
+            $("<li>")
+                .addClass("pages page-item")
+                .addClass(item ? "current-page" : "dots")
+                .toggleClass("active", item === currentPage)
+                .append($("<a>").addClass("page-link").attr({ href: "javascript: void(0)" }).text(item || "..."))
+                .insertBefore(".next-page");
+        });
+
+        $(".previous-page").toggleClass("disabled", currentPage === 1);
+        $(".next-page").toggleClass("disabled", currentPage === totalPages);
+        return true;
+    }
+
+    $(".pagination1").append(
+        $("<li>").addClass("page-item previous-page").append(
+            $("<a>").addClass("page-link btn").attr({ href: "javascript: void(0)" }).append($("<i>").addClass("fa fa-circle-left"))
+        ),
+        $("<li>").addClass("page-item next-page").append(
+            $("<a>").addClass("page-link btn").attr({ href: "javascript: void(0)" }).append($("<i>").addClass("fa fa-circle-right"))
+        )
+    );
+
+    $(".bird-list tr").show();
+    showPage(1);
+
+    $(document).on("click", ".pagination1 li.current-page:not(.active)", function () {
+        return showPage(+$(this).text());
+    });
+
+    $(document).on("click", ".next-page", function () {
+        return showPage(currentPage + 1);
+    });
+
+    $(document).on("click", ".previous-page", function () {
+        return showPage(currentPage - 1);
+    });
+});
+</script>
 </body>
 </html>
