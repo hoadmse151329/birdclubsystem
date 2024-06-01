@@ -1,6 +1,7 @@
 ﻿using BAL.Services.Implements;
 using BAL.Services.Interfaces;
 using BAL.ViewModels;
+using BAL.ViewModels.Blog;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
@@ -202,10 +203,11 @@ namespace WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Create(
-            [Required][FromBody] BlogViewModel blogVM)
+            [Required][FromBody] CreateNewBlog blogVM)
         {
             try
             {
+
                 _blogService.Create(blogVM);
                 return Ok(new
                 {

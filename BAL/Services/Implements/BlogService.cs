@@ -2,6 +2,7 @@
 using Azure.Storage.Blobs.Models;
 using BAL.Services.Interfaces;
 using BAL.ViewModels;
+using BAL.ViewModels.Blog;
 using DAL.Infrastructure;
 using DAL.Models;
 using System;
@@ -32,6 +33,17 @@ namespace BAL.Services.Implements
             var blog = _mapper.Map<Blog>(entity);
             _unitOfWork.BlogRepository.Create(blog);
             _unitOfWork.Save();
+        }
+        public void Create(CreateNewBlog entity)
+        {
+            var usr = _unitOfWork.UserRepository.GetByMemberId(entity.MemberId).Result;
+            if (usr != null)
+            {
+                var blog = _mapper.Map<Blog>(entity);
+                blog.UserId = usr.UserId;
+                _unitOfWork.BlogRepository.Create(blog);
+                _unitOfWork.Save();
+            }
         }
 
         public async Task<IEnumerable<BlogViewModel>> GetAllBlogs()

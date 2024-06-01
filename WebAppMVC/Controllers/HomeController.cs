@@ -349,8 +349,8 @@ namespace WebAppMVC.Controllers
                 return RedirectToAction("Blog");
             }
 
-            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
-                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER));
 
             string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
             string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);

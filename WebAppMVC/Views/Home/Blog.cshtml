@@ -60,7 +60,7 @@
                         <div class="modal-header">
                             <h4 class="modal-title">Create a Post</h4>
                         </div>
-                        <form id="postForm" asp-action="MemberCreateBlog" method="post" asp-controller="Home">
+                        <form asp-action="MemberCreateBlog" method="post" asp-controller="Home" enctype="multipart/form-data">
                             <div class="row p-4">
                                 <div class="col-12">
                                     <div class="row form-group">
@@ -70,10 +70,10 @@
                                                 <h3>@createBlog.Fullname</h3>
                                                 <p>@createBlog.UploadDate.Value.ToString("MM/dd/yyyy HH:mm")</p>
                                                 <input asp-for="@createBlog.Fullname" value="@createBlog.Fullname" type="text" hidden required class="form-control col-md-7">
-                                                <input asp-for="@createBlog.UploadDate" value="@createBlog.UploadDate" type="datetime-local" hidden required class="form-control col-md-7">
+                                                <input asp-for="@createBlog.UploadDate" value="@createBlog.UploadDate.Value.ToString("yyyy-MM-ddTHH:mm")" type="datetime-local" asp-format="{0:yyyy-MM-ddTHH:mm}" hidden required class="form-control col-md-7">
                                             </div>
                                         </div>
-                                        <div class="row form-group">
+                                        <div class="form-group">
                                             <label asp-for="@createBlog.Category" class="col-md-3 col-form-label text-md-right"></label>
                                             <select class="form-control" asp-for="@createBlog.Category" asp-items="@createBlog.DefaultBlogCategorySelectList" class="custom-select" required></select>
                                             <span asp-validation-for="@createBlog.Category" id="error_message"
@@ -201,7 +201,7 @@
                         likeButton.classList.remove('liked');
                         likeButton.innerHTML = "<i class='bx bx-like'></i> Like";
                     }
-                    likeCountSpan.textContent = `${state.likeCount} Likes`;
+                    //likeCountSpan.textContent = `${state.likeCount} Likes`;
                 }
             });
         }
