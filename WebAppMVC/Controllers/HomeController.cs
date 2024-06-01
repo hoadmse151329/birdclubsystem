@@ -410,7 +410,7 @@ namespace WebAppMVC.Controllers
                     + memberCreateBlogPostVM.ErrorMessage;
                 return RedirectToAction("Blog");
             }
-            TempData[Constants.Constants.ALERT_DEFAULT_SUCCESS_NAME] = Constants.Constants.ALERT_MANAGER_CREATE_NEWS_SUCCESS;
+            TempData[Constants.Constants.ALERT_DEFAULT_SUCCESS_NAME] = Constants.Constants.ALERT_MEMBER_CREATE_BLOG_SUCCESS;
             return RedirectToAction("Blog");
         }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

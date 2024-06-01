@@ -10,6 +10,28 @@
     <link rel="stylesheet" href="~/css/news.css">
 </head>
 <body class="background">
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" id="notif">
+            <i class='bx bx-message-alt-x p-1'></i>
+            <strong class="mr-1">@TempData["Success"]</strong>
+            <button type="button" class="close h-100" data-dismiss="alert" aria-label="Close">
+                <span><i class='bx bx-x'></i></span>
+            </button>
+        </div>
+        TempData["Success"] = null;
+    }
+    else if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" id="notif">
+            <i class='bx bx-message-alt-x p-1'></i>
+            <strong class="mr-1">@TempData["Error"]</strong>
+            <button type="button" class="close h-100" data-dismiss="alert" aria-label="Close">
+                <span><i class='bx bx-x'></i></span>
+            </button>
+        </div>
+        TempData["Error"] = null;
+    }
     <div class="Title"><h1>News</h1></div>
     
     <div class="content">

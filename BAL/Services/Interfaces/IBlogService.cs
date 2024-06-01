@@ -16,6 +16,7 @@ namespace BAL.Services.Interfaces
         void Create(BlogViewModel entity);
         void Create(CreateNewBlog entity);
         void Update(BlogViewModel entity);
+        void UpdateStatus(UpdateBlogStatus entity);
         Task<IEnumerable<BlogViewModel>> GetAllBlogs();
         Task<IEnumerable<BlogViewModel>?> GetAllBlogsByUserId(int usrId);
         Task<IEnumerable<BlogViewModel>?> GetSortedBlogs(
