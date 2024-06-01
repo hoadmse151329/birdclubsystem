@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Models
 {
-    [Table("FieldTripParticipant")]
+    [Table("FieldTripParticipants")]
     public partial class FieldTripParticipant
     {
         [Key]

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Models
 {
-    [Table("FieldtripInclusion")]
+    [Table("FieldtripInclusions")]
     public partial class FieldtripInclusion
     {
         [Column("tripId")]

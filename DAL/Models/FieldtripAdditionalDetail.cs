@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Models
 {
-    [Table("FieldtripAdditionalDetail")]
+    [Table("FieldtripAdditionalDetails")]
     public partial class FieldtripAdditionalDetail
     {
         [Key]
