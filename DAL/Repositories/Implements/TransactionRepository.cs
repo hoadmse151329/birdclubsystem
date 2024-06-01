@@ -24,7 +24,7 @@ namespace DAL.Repositories.Implements
         public async Task<IEnumerable<Transaction?>> GetAllTransactionsByUserId(int id)
         {
             return _context.Transactions.AsNoTracking()
-                .Include(t => t.UserDetail)
+                .Include(t => t.UserDetails)
                 .Where(t => t.UserId == id).ToList();
         }
 
@@ -36,8 +36,8 @@ namespace DAL.Repositories.Implements
         public async Task<IEnumerable<Transaction?>> GetAllTransactionsByMemberId(string id)
         {
             return _context.Transactions.AsNoTracking()
-                .Include(t => t.UserDetail)
-                .Where(t => t.UserDetail.MemberId == id).ToList();
+                .Include(t => t.UserDetails)
+                .Where(t => t.UserDetails.MemberId == id).ToList();
         }
 
         public async Task<int> CalculateTotalValue()

@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Models
 {
+    [Table("ContestMedia")]
     public partial class ContestMedia
     {
         [Key]

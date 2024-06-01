@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Models
 {
+    [Table("BirdMedia")]
     public partial class BirdMedia
     {
         [Key]
@@ -20,6 +21,6 @@ namespace DAL.Models
 
         [ForeignKey(nameof(BirdId))]
         [InverseProperty(nameof(Bird.BirdPictures))]
-        public virtual Bird? BirdDetails { get; set; }
+        public virtual Bird BirdDetails { get; set; }
     }
 }

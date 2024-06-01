@@ -6,31 +6,27 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Models
 {
-    [Table("MeetingParticipant")]
-    public partial class MeetingParticipant
+    [Table("MeetingAssignment")]
+    public partial class MeetingAssignment
     {
-        public MeetingParticipant()
-        {
-            CheckInStatus = "Not Checked-In";
-        }
-        [Key]
-        [Column("meetingId")]
-        public int MeetingId { get; set; }
         [Key]
         [Column("memberId")]
         [StringLength(255)]
         public string MemberId { get; set; } = null!;
-        [Column("participantNo")]
-        public int? ParticipantNo { get; set; }
-        [Column("checkInStatus")]
+        [Key]
+        [Column("meetingId")]
+        public int MeetingId { get; set; }
+        [Column("assignedDate", TypeName = "datetime")]
+        public DateTime? AssignedDate { get; set; }
+        [Column("role")]
         [StringLength(50)]
-        public string? CheckInStatus { get; set; }
+        public string? Role { get; set; }
 
         [ForeignKey(nameof(MeetingId))]
-        [InverseProperty(nameof(Meeting.MeetingParticipants))]
+        [InverseProperty(nameof(Meeting.MeetingAssignments))]
         public virtual Meeting MeetingDetails { get; set; } = null!;
         [ForeignKey(nameof(MemberId))]
-        [InverseProperty(nameof(Member.MeetingParticipants))]
+        [InverseProperty(nameof(Member.MeetingAssignments))]
         public virtual Member MemberDetails { get; set; } = null!;
     }
 }

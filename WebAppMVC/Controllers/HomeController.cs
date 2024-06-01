@@ -213,13 +213,13 @@ namespace WebAppMVC.Controllers
             if (listNewsResponse == null)
             {
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] = "Error while processing your request! (Getting List News!).\n List was Empty!";
-                RedirectToAction("Index");
+                return RedirectToAction("Index");
             }
             if (!listNewsResponse.Status)
             {
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] = "Error while processing your request! (Getting List News!).\n" + 
                     listNewsResponse.ErrorMessage;
-                RedirectToAction("Index");
+                return RedirectToAction("Index");
             }
             return View(listNewsResponse.Data);
 		}
@@ -258,12 +258,12 @@ namespace WebAppMVC.Controllers
             if (newsResponse == null)
             {
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] = "Error while processing your request! (Getting News!).\n News was empty or not found!";
-                RedirectToAction("Index");
+                return RedirectToAction("Index");
             }
             if (!newsResponse.Status)
             {
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] = "Error while processing your request! (Getting News!).\n" + newsResponse.ErrorMessage;
-                RedirectToAction("Index");
+                return RedirectToAction("Index");
             }
             return View(newsResponse.Data);
         }
@@ -310,13 +310,13 @@ namespace WebAppMVC.Controllers
             if (listBlogResponse == null)
             {
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] = "Error while processing your request! (Getting List Blogs!).\n List was Empty!";
-                RedirectToAction("Index");
+                return RedirectToAction("Index");
             }
             if (!listBlogResponse.Status)
             {
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] = "Error while processing your request! (Getting List Blogs!).\n" +
                     listBlogResponse.ErrorMessage;
-                RedirectToAction("Index");
+                return RedirectToAction("Index");
             }
             memberBlogIndexVM.Blogs = listBlogResponse.Data;
             if (role.Equals(Constants.Constants.MEMBER))

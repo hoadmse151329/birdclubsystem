@@ -6,13 +6,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Models
 {
+    [Table("FieldtripAdditionalDetail")]
     public partial class FieldtripAdditionalDetail
     {
         [Key]
         [Column("tripDetailsId")]
         public int TripDetailsId { get; set; }
         [Column("tripId")]
-        public int TripId { get; set; }
+        public int? TripId { get; set; }
         [Column("title")]
         [StringLength(50)]
         public string? Title { get; set; }
@@ -23,7 +24,7 @@ namespace DAL.Models
         public string? Type { get; set; }
 
         [ForeignKey(nameof(TripId))]
-        [InverseProperty(nameof(FieldTrip.FieldtripAdditionalDetails))]
-        public virtual FieldTrip Trip { get; set; } = null!;
+        [InverseProperty(nameof(FieldTrip.FieldTripAdditionalDetails))]
+        public virtual FieldTrip? Trip { get; set; }
     }
 }

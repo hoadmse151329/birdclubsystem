@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Models
 {
+    [Table("MeetingMedia")]
     public partial class MeetingMedia
     {
         [Key]
@@ -23,6 +24,6 @@ namespace DAL.Models
 
         [ForeignKey(nameof(MeetingId))]
         [InverseProperty(nameof(Meeting.MeetingPictures))]
-        public virtual Meeting? MeetingDetail { get; set; }
+        public virtual Meeting? MeetingDetails { get; set; }
     }
 }

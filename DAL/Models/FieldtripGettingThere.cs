@@ -6,32 +6,25 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Models
 {
-    [Table("FieldtripGettingThere")]
+    [Table("FieldTripGettingThere")]
     public partial class FieldtripGettingThere
     {
-        public FieldtripGettingThere()
-        {
-            GettingThereStartEnd = "Some Description";
-            GettingThereFlight = "Some Description";
-            GettingThereTransportation = "Some Description";
-            GettingThereAccommodation = "Some Description";
-        }
         [Column("tripId")]
-        public int TripId { get; set; }
+        public int? TripId { get; set; }
         [Key]
         [Column("gettingThereId")]
         public int GettingThereId { get; set; }
         [Column("gettingThereStartEnd")]
-        public string GettingThereStartEnd { get; set; } = null!;
+        public string? GettingThereStartEnd { get; set; }
         [Column("gettingThereFlight")]
-        public string GettingThereFlight { get; set; } = null!;
+        public string? GettingThereFlight { get; set; }
         [Column("gettingThereTransportation")]
-        public string GettingThereTransportation { get; set; } = null!;
+        public string? GettingThereTransportation { get; set; }
         [Column("gettingThereAccommodation")]
-        public string GettingThereAccommodation { get; set; } = null!;
+        public string? GettingThereAccommodation { get; set; }
 
         [ForeignKey(nameof(TripId))]
-        [InverseProperty(nameof(FieldTrip.FieldtripGettingTheres))]
-        public virtual FieldTrip Trip { get; set; } = null!;
+        [InverseProperty(nameof(FieldTrip.FieldTripGettingThereDetails))]
+        public virtual FieldTrip? Trip { get; set; }
     }
 }

@@ -12,7 +12,6 @@ namespace DAL.Models
         public Location()
         {
             ClubLocations = new HashSet<ClubLocation>();
-            Description = "Some Address Description";
         }
 
         [Key]
@@ -20,9 +19,9 @@ namespace DAL.Models
         public int LocationId { get; set; }
         [Column("locationName")]
         [StringLength(255)]
-        public string LocationName { get; set; } = null!;
+        public string? LocationName { get; set; }
         [Column("description")]
-        public string Description { get; set; } = null!;
+        public string? Description { get; set; }
 
         [InverseProperty(nameof(ClubLocation.Location))]
         public virtual ICollection<ClubLocation> ClubLocations { get; set; }
