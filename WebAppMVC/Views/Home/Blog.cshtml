@@ -1,6 +1,10 @@
-﻿@model dynamic
+﻿@model WebAppMVC.Models.ViewModels.MemberBlogIndexVM
 @{
     ViewData["Title"] = "Blog Page";
+    List<BAL.ViewModels.BlogViewModel> blogList = Model.Blogs;
+    BAL.ViewModels.Blog.CreateNewBlog createBlog = Model.createBlog;
+    List<SelectListItem> categories = createBlog.DefaultBlogCategorySelectList;
+    bool isGuest = Model.isGuest;
 }
 
 <html lang="en">
@@ -41,71 +45,102 @@
     $.post('@Url.Action("LikePost")', { postId: postId });
     }*@
     <div class="container" style="background-color:white">
-        <div class="row">
-            <h4 class="modal-title">Create Your Post</h4>
-            <div class="create-post">
-                <i class='bx bxs-edit-alt' data-toggle="modal" data-target="#createpost"></i>
+        @if (!isGuest)
+        {
+            <div class="row">
+                <h4 class="modal-title">Create Your Post</h4>
+                <div class="create-post">
+                    <i class='bx bxs-edit-alt' data-toggle="modal" data-target="#createpost"></i>
+                </div>
             </div>
-        </div>
 
-        <div id="createpost" class="modal fade" role="dialog">
-            <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
-                <div class="modal-content modal-addRoom">
-                    <div class="modal-header">
-                        <h4 class="modal-title">Create a Post</h4>
-                    </div>
-                    <form id="postForm" action="@Url.Action("CreatePost")" method="post">
-                        <div class="row p-4">
-                            <div class="col-12">
-                                <div class="row form-group">
-                                    <div class="form-group">
-                                        <textarea type="text" name="postDesc" placeholder="description..." class="form-control" rows="4"></textarea>
+            <div id="createpost" class="modal fade" role="dialog">
+                <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
+                    <div class="modal-content modal-addRoom">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Create a Post</h4>
+                        </div>
+                        <form asp-action="MemberCreateBlog" method="post" asp-controller="Home" enctype="multipart/form-data">
+                            <div class="row p-4">
+                                <div class="col-12">
+                                    <div class="row form-group">
+                                        <div class="post-header">
+                                            <img src="@createBlog.MemberAvatar" alt="Profile Picture">
+                                            <div class="post-header-text">
+                                                <h3>@createBlog.Fullname</h3>
+                                                <p>@createBlog.UploadDate.Value.ToString("MM/dd/yyyy HH:mm")</p>
+                                                <input asp-for="@createBlog.Fullname" value="@createBlog.Fullname" type="text" hidden required class="form-control col-md-7">
+                                                <input asp-for="@createBlog.UploadDate" value="@createBlog.UploadDate.Value.ToString("yyyy-MM-ddTHH:mm")" type="datetime-local" asp-format="{0:yyyy-MM-ddTHH:mm}" hidden required class="form-control col-md-7">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="@createBlog.Category" class="col-md-3 col-form-label text-md-right"></label>
+                                            <select class="form-control" asp-for="@createBlog.Category" asp-items="@createBlog.DefaultBlogCategorySelectList" class="custom-select" required></select>
+                                            <span asp-validation-for="@createBlog.Category" id="error_message"
+                                                  class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="@createBlog.Image" class="col-md-3 col-form-label text-md-right"></label>
+                                            <img class="profile-pic" style="width:600px; height:600px" src="@createBlog.Image" />
+                                            <input asp-for="@createBlog.ImageUpload" type="file" class="file-upload" accept=".jpg, .png, .jpeg">
+                                            <input asp-for="@createBlog.Image" value="@createBlog.Image" type="text" placeholder="Title" hidden required class="form-control col-md-7">
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="@createBlog.Description" class="col-md-3 col-form-label text-md-right"></label>
+                                            <textarea type="text" asp-for="@createBlog.Description" value="@createBlog.Description" placeholder="description..." required class="form-control" rows="4"></textarea>
+                                            <span asp-validation-for="@createBlog.Description" id="error_message"
+                                                  class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                        </div>
                                     </div>
                                 </div>
+                                <p>Upon clicking Post button, you agreed to our community standards and guidelines.<br />Our Club Manager will check out your post and decide whether your post is allow to be published so please be patience</p>
+                                <div class="modal-footer justify-content-center">
+                                    <button class="btn btn-success" type="submit" name="action" value="createPost">Post</button>
+                                    <button class="btn btn-danger" type="button" data-dismiss="modal">Close</button>
+                                </div>
                             </div>
-                        </div>
-                    </form>
-                    <div class="modal-footer justify-content-center">
-                        <button class="btn btn-success" type="submit" name="action" value="createPost">Post</button>
-                        <button class="btn btn-danger" type="button" data-dismiss="modal">Close</button>
+                        </form>
                     </div>
                 </div>
             </div>
-        </div>
+        }
 
-        <h2>Posts</h2>
-
-        <div class="post">
-            <div class="post-header">
-                <img src="~/images/avatar.png" alt="Profile Picture">
-                <div class="post-header-text">
-                    <h3>John Doe</h3>
-                    <p>3 hours ago</p>
+        <h2>Recent Posts</h2>
+        <section>
+            @foreach (var blogpost in blogList)
+            {
+                <div class="post">
+                    <div class="post-header">
+                        <img src="@blogpost.MemberAvatar" alt="Profile Picture">
+                        <div class="post-header-text">
+                            <h3>@blogpost.Fullname</h3>
+                            <p>@blogpost.UploadDate.Value.ToString("MM/dd/yyyy HH:mm")</p>
+                        </div>
+                    </div>
+                    <p>@Html.Raw(blogpost.Description)</p>
+                    <div class="post-actions">
+                        <button class="like-button" onclick="toggleLike(this)">
+                            <i class='bx bx-like'></i>Like
+                        </button>
+                        <span class="like-count">@blogpost.Vote.Value Likes</span>
+                    </div>
+                    <div class="comments">
+                        @foreach(var comment in blogpost.Comments)
+                        {
+                            <div class="comment">
+                                <strong>@comment.UserFullName</strong> @comment.Description
+                            </div>
+                        }
+                        <!-- Add more comments here -->
+                    </div>
+                    <form action="#" method="post" class="comment-form">
+                        <textarea name="content" rows="2" cols="40" placeholder="Write a comment..."></textarea>
+                        <input type="submit" value="Comment" />
+                    </form>
                 </div>
-            </div>
-            <p>This is the first post. It's just for demonstration purposes.</p>
-            <div class="post-actions">
-                <button class="like-button" onclick="toggleLike(this)">
-                    <i class='bx bx-like'></i>Like
-                </button>
-                <span class="like-count">10 Likes</span>
-            </div>
-            <div class="comments">
-                <div class="comment">
-                    <strong>Jane Smith:</strong> Nice post!
-                </div>
-                <div class="comment">
-                    <strong>Mike Johnson:</strong> Great job!
-                </div>
-                <!-- Add more comments here -->
-            </div>
-            <form action="@Url.Action("AddComment")" method="post" class="comment-form">
-                <textarea name="content" rows="2" cols="40" placeholder="Write a comment..."></textarea>
-                <input type="submit" value="Comment" />
-            </form>
-        </div>
-
-        <!-- Add more posts here -->
+            }
+            <!-- Add more posts here -->
+        </section>
     </div>
     <!-- BackToTop -->
     <a href="#" class="backToTop cd-top text-replace js-cd-top">
@@ -166,7 +201,7 @@
                         likeButton.classList.remove('liked');
                         likeButton.innerHTML = "<i class='bx bx-like'></i> Like";
                     }
-                    likeCountSpan.textContent = `${state.likeCount} Likes`;
+                    //likeCountSpan.textContent = `${state.likeCount} Likes`;
                 }
             });
         }
@@ -193,9 +228,9 @@
 </script>
     <script>
 
-        var editor = CKEDITOR.replace('postDesc');
+        var editor = CKEDITOR.replace('createBlog.Description');
         CKFinder.setupCKEditor(editor, 'ckfinder/');
-        //data["postDesc"] = editor.getData();
+        data["createBlog.Description"] = editor.getData();
     </script>
     <!-- main js -->
     <script>

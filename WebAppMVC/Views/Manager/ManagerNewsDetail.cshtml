@@ -117,7 +117,7 @@
                                             <label for="customer-name">Upload Date:</label>
                                         </div>
                                         <div class="col-md-7">
-                                            <span>@detailsNews.UploadDate.Value.ToString("MM/dd/yyyy")</span>
+                                            <span>@detailsNews.UploadDate.Value.ToString("MM/dd/yyyy HH:mm")</span>
                                         </div>
                                     </div>
                                     <div class="row mb-sm-2">
@@ -211,8 +211,8 @@
                                 <div class="form-group row">
                                     <label asp-for="@updateNews.UploadDate" class="col-sm-4 col-form-label"></label>
                                     <div class="col-sm-8">
-                                        <input asp-for="@updateNews.UploadDate" type="date"
-                                               value="@updateNews.UploadDate.Value.ToString("yyyy-MM-dd")" class="form-control" required>
+                                        <input asp-for="@updateNews.UploadDate" type="datetime"
+                                               value="@updateNews.UploadDate.Value.ToString("yyyy-MM-ddTHH:mm")" type="datetime-local" min="@DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm")" class="form-control" required>
                                         <span asp-validation-for="@updateNews.UploadDate" id="error_message"
                                             class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                     </div>

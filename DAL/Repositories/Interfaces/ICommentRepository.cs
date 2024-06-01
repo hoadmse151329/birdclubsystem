@@ -10,5 +10,6 @@ namespace DAL.Repositories.Interfaces
 {
     public interface ICommentRepository : IRepositoryBase<Comment>
     {
+        Task<IEnumerable<Comment>> GetAllByBlogId(int blogId);
     }
 }

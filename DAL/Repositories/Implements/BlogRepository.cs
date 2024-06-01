@@ -20,17 +20,26 @@ namespace DAL.Repositories.Implements
 
         public async Task<IEnumerable<Blog>> GetAllBlogs()
         {
-            return _context.Blogs.AsNoTracking().Include(b => b.UserDetail.MemberDetail).ToList();
+            return await _context.Blogs
+                .AsNoTracking()
+                .Include(b => b.UserDetail.MemberDetail)
+                .ToListAsync();
         }
 
         public async Task<IEnumerable<Blog>?> GetAllBlogsByUserId(int usrId)
         {
-            return _context.Blogs.AsNoTracking().Where(b => b.UserId == usrId).Include(b => b.UserDetail.MemberDetail).ToList();
+            return await _context.Blogs
+                .AsNoTracking()
+                .Where(b => b.UserId == usrId)
+                .Include(b => b.UserDetail.MemberDetail)
+                .ToListAsync();
         }
 
         public async Task<int> CountBlog()
         {
-            return _context.Blogs.AsNoTracking().Count();
+            return await _context.Blogs
+                .AsNoTracking()
+                .CountAsync();
         }
 
         public async Task<IEnumerable<Blog>?> GetSortedBlogs(
@@ -52,7 +61,7 @@ namespace DAL.Repositories.Implements
                 Disabled: The post is restricted due to a violation of platform policies.
              */
             List<string> statusListDefault = new List<string> { "Draft", "Active", "Hidden", "Archived", "Reported", "Disabled" };
-            //List<string> categoryListDefault = new List<string> { "Announcement", "Meeting", "Fieldtrip", "Contest", "Others" };
+            List<string> categoryListDefault = new List<string> { "Announcement", "Discussion", "Information", "Others" };
 
             if (isMemberOrGuest)
             {
@@ -105,7 +114,10 @@ namespace DAL.Repositories.Implements
 
         public async Task<Blog?> GetBlogByIdNoTracking(int blogId)
         {
-            return await _context.Blogs.AsNoTracking().Include(b => b.UserDetail.MemberDetail).FirstOrDefaultAsync(b => b.BlogId.Equals(blogId));
+            return await _context.Blogs
+                .AsNoTracking()
+                .Include(b => b.UserDetail.MemberDetail)
+                .FirstOrDefaultAsync(b => b.BlogId.Equals(blogId));
         }
     }
 }

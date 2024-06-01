@@ -31,6 +31,7 @@ namespace DAL.Infrastructure
         IFeedbackRepository FeedbackRepository { get; }
         IBlogRepository BlogRepository { get; }
         INewsRepository NewsRepository { get; }
+        ICommentRepository CommentRepository { get; }
         void Save();
     }
 }

@@ -10,6 +10,17 @@ namespace BAL.ViewModels.Authenticates
 {
     public class AuthenRequest
     {
+        public AuthenRequest()
+        {
+            Username = "GuestID" + Guid.NewGuid().ToString();
+            Password = "SomebodyOnceToldMeTheWorldIsGonnaRollMe" + Guid.NewGuid().ToString() + "IAin'tTheSharpestToolOnTheShelf";
+        }
+        public AuthenRequest(string userName, string passWord, string? imagePath = null)
+        {
+            Username = userName;
+            Password = passWord;
+            ImagePath = imagePath;
+        }
         [Required(ErrorMessage = "Username is required")]
         public string Username { get; set; }
 

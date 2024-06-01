@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BAL.ViewModels;
 using BAL.ViewModels.Admin;
+using BAL.ViewModels.Blog;
 using BAL.ViewModels.Event;
 using BAL.ViewModels.Manager;
 using BAL.ViewModels.News;
@@ -187,13 +188,21 @@ namespace BAL.AutoMapperProfile
                 });
             CreateMap<Transaction, TransactionViewModel>()
                 .ReverseMap();
-            CreateMap<Bird, BirdViewModel>() .ReverseMap();
+            CreateMap<Bird, BirdViewModel>().ReverseMap();
             CreateMap<Notification, NotificationViewModel>() .ReverseMap();
             CreateMap<Feedback, FeedbackViewModel>() .ReverseMap();
             CreateMap<Blog,BlogViewModel>()
                 .AfterMap((src, dest) =>
                 {
                     dest.Fullname = src.UserDetail.MemberDetail.FullName;
+                    dest.MemberAvatar = src.UserDetail.ImagePath;
+                })
+                .ReverseMap();
+            CreateMap<CreateNewBlog, Blog>();
+            CreateMap<Comment, CommentViewModel>()
+                .AfterMap((src, dest) =>
+                {
+                    dest.UserFullName = src.UserDetail.MemberDetail.FullName;
                 })
                 .ReverseMap();
             CreateMap<News,NewsViewModel>() .ReverseMap();
