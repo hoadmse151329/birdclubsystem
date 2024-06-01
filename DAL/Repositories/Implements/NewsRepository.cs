@@ -25,7 +25,7 @@ namespace DAL.Repositories.Implements
 
         public async Task<IEnumerable<News>> GetAllNews()
         {
-            return _context.News.AsNoTracking().ToList();
+            return await _context.News.AsNoTracking().ToListAsync();
         }
 
         public async Task<News?> GetNewsByIdNoTracking(int newsId)

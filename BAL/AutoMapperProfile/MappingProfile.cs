@@ -205,8 +205,8 @@ namespace BAL.AutoMapperProfile
                     dest.UserFullName = src.UserDetails.MemberDetails.FullName;
                 })
                 .ReverseMap();
-            CreateMap<News,NewsViewModel>() .ReverseMap();
-            CreateMap<News, CreateNewNews>() .ReverseMap();
+            CreateMap<ContestAssignment,NewsViewModel>() .ReverseMap();
+            CreateMap<ContestAssignment, CreateNewNews>() .ReverseMap();
             CreateMap<Feedback, GetFeedbackResponse>()
                 .AfterMap((src, dest) =>
                 {
