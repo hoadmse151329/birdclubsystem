@@ -90,13 +90,13 @@
         <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
             <div class="modal-content modal-addRoom">
                 <div class="modal-header">
-                    <h4 class="modal-title">Edit Meeting</h4>
+                    <h4 class="modal-title">Enter your email</h4>
                 </div>
                 <form asp-action="ChangePassword" asp-controller="Member">
                     <div class="row form-group">
                         <label asp-for=@memberPassword.password class="offset-md-3 col-md-2 col-sm-3 col-form-label">Email</label> 
-                        <input asp-for=@memberPassword.password class="col-md-3 col-sm-5 form-control" type="password"
-                               name="password" required value=@memberPassword.password>
+                        <input asp-for=@memberPassword.password class="col-md-3 col-sm-5 form-control" type="text"
+                               name="email" required value=@memberPassword.password>
                         <span asp-validation-for=@memberPassword.password class="error-message col-sm-3 mt-2"></span>
                     </div>
                     <div class="row form-group justify-content-center">
@@ -110,7 +110,7 @@
         <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
             <div class="modal-content modal-addRoom">
                 <div class="modal-header">
-                    <h4 class="modal-title">Edit Meeting</h4>
+                    <h4 class="modal-title">Change Password</h4>
                 </div>
                 <form asp-action="ChangePassword" asp-controller="Member">
                     <div class="row form-group">
