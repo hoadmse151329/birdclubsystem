@@ -1819,11 +1819,6 @@ namespace WebAppMVC.Controllers
             TempData["Success"] = listMemberStatusResponse.SuccessMessage;
             return RedirectToAction("ManagerMemberStatus");
         }
-        [HttpGet("Statistical")]
-        public IActionResult ManagerStatistical()
-        {
-            return View();
-        }
         [HttpGet("Blog")]
         public async Task<IActionResult> ManagerBlog([FromQuery] string search)
         {
@@ -2186,11 +2181,6 @@ namespace WebAppMVC.Controllers
             }
             TempData["Success"] = "Successfully disabled News post";
             return RedirectToAction("ManagerNews");
-        }
-        [HttpGet("Notification")]
-        public IActionResult ManagerNotification()
-        {
-            return View();
         }
     }
 }

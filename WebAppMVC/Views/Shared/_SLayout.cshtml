@@ -41,33 +41,32 @@
                             <span class="title">Overview</span>
                         </a>
                     </li>
-                    <li>
+                    <li class="noactive">
                         <a href="#" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
                             <i class='bx bx-bookmarks'></i>
                             <span class="title">Manage</span>
                             <i class='bx bxs-chevron-down drop'></i>
                         </a>
                         <ul class="collapse sub-menu" id="collapseOne">
-                            <li data-toggle="tooltip"data-placement="right" title="Manage Meeting">
+                            <li class="sub-active" data-toggle="tooltip"data-placement="right" title="Manage Meeting">
                                 <a href="@Url.Action("StaffMeeting", "Staff")" li class="dropdown-item">
                                     <i class='bx bx-home-alt-2'></i>
                                     <span class="title">Meeting</span>
                                 </a> 
                             </li>
-                            <li data-toggle="tooltip"data-placement="right" title="Manage Fieldtrip">
+                            <li class="sub-active" data-toggle="tooltip"data-placement="right" title="Manage Fieldtrip">
                                 <a href="@Url.Action("StaffFieldTrip", "Staff")" li class="dropdown-item">
                                     <i class='bx bx-calendar-edit'></i>
                                     <span class="title">Fieldtrip</span>
                                 </a>
                             </li> 
-                            <li data-toggle="tooltip"data-placement="right" title="Manage Bird Contest">
+                            <li class="sub-active" data-toggle="tooltip"data-placement="right" title="Manage Bird Contest">
                                 <a href="@Url.Action("StaffContest", "Staff")" li class="dropdown-item">
                                     <i class='bx bx-trophy'></i>
                                     <span class="title">Bird Contest</span>
                                 </a>
                             </li>
                         </ul>
-                    </li>
                     </li>
                     <li data-toggle="tooltip"data-placement="right" title="Staff Profile">
                         <a href="@Url.Action("StaffProfile", "Staff")">

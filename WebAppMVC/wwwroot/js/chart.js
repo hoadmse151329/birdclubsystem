@@ -76,7 +76,11 @@ for (let i = 0; i < numOfHome.length; i++) {
     if (period.value === 'month') {
       myChart.data.datasets[0].data = month;
       myChart.options.scales.x.time.unit = period.value;
-    }
+      }
+      if (period.value === 'year') {
+          myChart.data.datasets[0].data = year;
+          myChart.options.scales.x.time.unit = period.value;
+      }
     myChart.update();
 
     period.classList.addClass('active');
@@ -140,6 +144,10 @@ function timeFrame(period) {
 
     }
     if (period.value === 'month') {
+        chart.data.datasets[0].data = month;
+        chart.options.scales.x.time.unit = period.value;
+    }
+    if (period.value === 'year') {
         chart.data.datasets[0].data = month;
         chart.options.scales.x.time.unit = period.value;
     }

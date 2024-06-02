@@ -2,6 +2,7 @@
 @{
     Layout = null;
     ViewData["Title"] = "Manager Index Page";
+    //List<BAL.ViewModels.Manager.GetFeedbackResponse> feedbackList = Model.Feedbacks;
     Layout = "~/Views/Shared/_MLayout.cshtml";
 }
 <html lang="en">
@@ -64,96 +65,7 @@
             </div>
         </div>
 
-        <!-- Charts Section -->
-        <section class="chartBox">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="card">
-                        <div class="card-header d-flex justify-content-between p-4">
-                            <h4>Monthly Income</h4>
-                            <a href="#" class="btn-title float-right">See Detail</a>
-                        </div>
-                        <div class="card-body">
-                            <canvas id="chart-Dashboard" width="300" height="100"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="chartBox">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="card">
-                        <div class="card-header d-flex justify-content-between p-4">
-                            <h4>Refund</h4>
-                            <a href="#" class="btn-title float-right">See Detail</a>
-                        </div>
-                        <div class="card-body">
-                            <canvas id="chart-board" width="300" height="100"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Details Section -->
         <div class="details">
-            <!-- New Info -->
-            <div class="cardInfo">
-                <div class="card border-0 d-flex">
-                    <div class="card-header">
-                        <h4>New Notification</h4>
-                        <a href="#" class="btn-title">See All</a>
-                    </div>
-                    <div class="card-body">
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th>Full Name</th>
-                                    <th>Fee (&#8363;)</th>
-                                    <th>Event</th>
-                                    <th>Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Ho Tran Khanh Duy</td>
-                                    <td>1,200,000</td>
-                                    <td>Meeting</td>
-                                    <td><div class="demise">Processing</div></td>
-                                </tr>
-                                <tr>
-                                    <td>Ho Tran Khanh Duy</td>
-                                    <td>1,200,000</td>
-                                    <td>Meeting</td>
-                                    <td><div class="demise">Processing</div></td>
-                                </tr>
-                                <tr>
-                                    <td>Ho Tran Khanh Duy</td>
-                                    <td>1,200,000</td>
-                                    <td>Meeting</td>
-                                    <td><div class="demise">Processing</div></td>
-                                </tr>
-                                <tr>
-                                    <td>Ho Tran Khanh Duy</td>
-                                    <td>1,200,000</td>
-                                    <td>Meeting</td>
-                                    <td><div class="demise">Processing</div></td>
-                                </tr>
-                                <tr>
-                                    <td>Ho Tran Khanh Duy</td>
-                                    <td>1,200,000</td>
-                                    <td>Meeting</td>
-                                    <td><div class="demise">Processing</div></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Rating -->
             <div class="cardFB">
                 <div class="card border-0 d-flex">
                     <div class="card-header">
@@ -229,6 +141,27 @@
                                     <td></td>
                                     <td>4/5<i class='bx bxs-star yellow'></i></td>
                                 </tr>
+                                @*@foreach (var feedback in feedbackList)
+                                {
+                                <tr>
+                                <td><div class="imgBx"><img src="@Url.Content("~/images/avatar.jpg")" alt=""></div></td>
+                                <td>@feedback.Fullname</td>
+                                <td><div class="star-rating" data-rating="@feedback.Rating"></div></td>
+                                </tr>
+                                <tr>
+                                <td>Total</td>
+                                <td></td>
+                                <td>4/5<i class='bx bxs-star yellow'></i></td>
+                                </tr>
+                                }
+                                <tr>
+                                <td>Total</td>
+                                <td></td>
+                                <td>
+                                <div class="star-rating" id="total-rating" data-rating="0"></div>
+                                <span id="total-average-rating"></span>
+                                </td>
+                                </tr*@
                             </tbody>
                         </table>
                     </div>
@@ -236,5 +169,71 @@
             </div>
         </div>
     </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const starContainers = document.querySelectorAll('.star-rating');
+
+            starContainers.forEach(container => {
+                const rating = parseFloat(container.getAttribute('data-rating'));
+                const fullStars = Math.floor(rating);
+                const halfStar = rating % 1 !== 0;
+                let starsHtml = '';
+
+                // Add full stars
+                for (let i = 0; i < fullStars; i++) {
+                    starsHtml += "<i class='bx bxs-star yellow'></i>";
+                }
+
+                // Add half star if applicable
+                if (halfStar) {
+                    starsHtml += "<i class='bx bxs-star-half yellow'></i>";
+                }
+
+                // Fill remaining with empty stars to maintain consistent structure
+                const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+                for (let i = 0; i < emptyStars; i++) {
+                    starsHtml += "<i class='bx bx-star'></i>";
+                }
+
+                container.innerHTML = starsHtml;
+            });
+        });
+    </script>
+@*    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const starContainers = document.querySelectorAll('.star-rating');
+        const feedbackRatings = [@foreach (var feedback in feedbackList) { @feedback.Rating },];
+
+        // Calculate total average rating
+        const totalRating = feedbackRatings.reduce((acc, curr) => acc + curr, 0);
+        const averageRating = feedbackRatings.length > 0 ? totalRating / feedbackRatings.length : 0;
+        document.getElementById('total-average-rating').textContent = averageRating.toFixed(1);
+
+        starContainers.forEach(container => {
+            const rating = parseFloat(container.getAttribute('data-rating'));
+            const fullStars = Math.floor(rating);
+            const halfStar = rating % 1 !== 0;
+            let starsHtml = '';
+
+            // Add full stars
+            for (let i = 0; i < fullStars; i++) {
+                starsHtml += "<i class='bx bxs-star yellow'></i>";
+            }
+
+            // Add half star if applicable
+            if (halfStar) {
+                starsHtml += "<i class='bx bxs-star-half yellow'></i>";
+            }
+
+            // Fill remaining with empty stars to maintain consistent structure
+            const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+            for (let i = 0; i < emptyStars; i++) {
+                starsHtml += "<i class='bx bx-star'></i>";
+            }
+
+            container.innerHTML = starsHtml;
+        });
+    });
+</script>*@
 </body>
 </html>
