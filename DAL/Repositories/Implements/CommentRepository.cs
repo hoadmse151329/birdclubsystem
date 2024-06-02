@@ -20,7 +20,7 @@ namespace DAL.Repositories.Implements
 
         public async Task<IEnumerable<Comment>> GetAllByBlogId(int blogId)
         {
-            return await _context.Comments.AsNoTracking().Include(c => c.UserDetail.MemberDetail).Where(c => c.BlogId.Value.Equals(blogId)).ToListAsync();
+            return await _context.Comments.AsNoTracking().Include(c => c.UserDetails.MemberDetails).Where(c => c.BlogId.Value.Equals(blogId)).ToListAsync();
         }
     }
 }

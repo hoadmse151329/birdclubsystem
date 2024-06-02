@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Models
 {
+    [Table("FieldtripMedia")]
     public partial class FieldtripMedia
     {
         [Key]
@@ -24,7 +25,7 @@ namespace DAL.Models
         public int? DayByDayId { get; set; }
 
         [ForeignKey(nameof(TripId))]
-        [InverseProperty(nameof(FieldTrip.FieldtripPictures))]
-        public virtual FieldTrip? Trip { get; set; }
+        [InverseProperty(nameof(FieldTrip.FieldTripPictures))]
+        public virtual FieldTrip Trip { get; set; }
     }
 }

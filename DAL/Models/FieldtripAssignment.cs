@@ -6,27 +6,27 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Models
 {
-    [Table("FieldTripParticipants")]
-    public partial class FieldTripParticipant
+    [Table("FieldtripAssignment")]
+    public partial class FieldtripAssignment
     {
-        [Key]
-        [Column("tripId")]
-        public int TripId { get; set; }
         [Key]
         [Column("memberId")]
         [StringLength(255)]
         public string MemberId { get; set; } = null!;
-        [Column("participantNo")]
-        public int? ParticipantNo { get; set; }
-        [Column("checkInStatus")]
+        [Key]
+        [Column("tripId")]
+        public int TripId { get; set; }
+        [Column("assignedDate", TypeName = "datetime")]
+        public DateTime? AssignedDate { get; set; }
+        [Column("role")]
         [StringLength(50)]
-        public string? CheckInStatus { get; set; }
+        public string? Role { get; set; }
 
         [ForeignKey(nameof(MemberId))]
-        [InverseProperty(nameof(Member.FieldTripParticipants))]
+        [InverseProperty(nameof(Member.FieldtripAssignments))]
         public virtual Member MemberDetails { get; set; } = null!;
         [ForeignKey(nameof(TripId))]
-        [InverseProperty(nameof(FieldTrip.FieldTripParticipants))]
+        [InverseProperty(nameof(FieldTrip.FieldtripAssignments))]
         public virtual FieldTrip Trip { get; set; } = null!;
     }
 }

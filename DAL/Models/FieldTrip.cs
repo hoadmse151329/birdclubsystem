@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using DAL.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Models
@@ -11,12 +12,13 @@ namespace DAL.Models
     {
         public FieldTrip()
         {
+            FieldTripAdditionalDetails = new HashSet<FieldtripAdditionalDetail>();
+            FieldTripDaybyDays = new HashSet<FieldtripDaybyDay>();
+            FieldTripGettingThereDetails = new FieldtripGettingThere();
+            FieldTripInclusions = new HashSet<FieldtripInclusion>();
+            FieldTripPictures = new HashSet<FieldtripMedia>();
             FieldTripParticipants = new HashSet<FieldTripParticipant>();
-            FieldtripAdditionalDetails = new HashSet<FieldtripAdditionalDetail>();
-            FieldtripDaybyDays = new HashSet<FieldtripDaybyDay>();
-            FieldtripGettingTheres = new FieldtripGettingThere();
-            FieldtripInclusions = new HashSet<FieldtripInclusion>();
-            FieldtripPictures = new HashSet<FieldtripMedia>();
+            FieldtripAssignments = new HashSet<FieldtripAssignment>();
         }
 
         [Key]
@@ -24,11 +26,11 @@ namespace DAL.Models
         public int TripId { get; set; }
         [Column("tripName")]
         [StringLength(255)]
-        public string TripName { get; set; } = null!;
+        public string? TripName { get; set; }
         [Column("description")]
         public string? Description { get; set; }
         [Column("details")]
-        public string Details { get; set; } = null!;
+        public string? Details { get; set; }
         [Column("openRegistration", TypeName = "datetime")]
         public DateTime? OpenRegistration { get; set; }
         [Column("registrationDeadline", TypeName = "datetime")]
@@ -59,17 +61,19 @@ namespace DAL.Models
         [Column("note")]
         public string? Note { get; set; }
 
+        [InverseProperty(nameof(FieldtripAdditionalDetail.Trip))]
+        public virtual ICollection<FieldtripAdditionalDetail> FieldTripAdditionalDetails { get; set; }
+        [InverseProperty(nameof(FieldtripDaybyDay.Trip))]
+        public virtual ICollection<FieldtripDaybyDay> FieldTripDaybyDays { get; set; }
+        [InverseProperty(nameof(FieldtripGettingThere.Trip))]
+        public virtual FieldtripGettingThere FieldTripGettingThereDetails { get; set; }
+        [InverseProperty(nameof(FieldtripInclusion.Trip))]
+        public virtual ICollection<FieldtripInclusion> FieldTripInclusions { get; set; }
+        [InverseProperty(nameof(FieldtripMedia.Trip))]
+        public virtual ICollection<FieldtripMedia> FieldTripPictures { get; set; }
         [InverseProperty(nameof(FieldTripParticipant.Trip))]
         public virtual ICollection<FieldTripParticipant> FieldTripParticipants { get; set; }
-        [InverseProperty(nameof(FieldtripAdditionalDetail.Trip))]
-        public virtual ICollection<FieldtripAdditionalDetail> FieldtripAdditionalDetails { get; set; }
-        [InverseProperty(nameof(FieldtripDaybyDay.Trip))]
-        public virtual ICollection<FieldtripDaybyDay> FieldtripDaybyDays { get; set; }
-        [InverseProperty(nameof(FieldtripGettingThere.Trip))]
-        public virtual FieldtripGettingThere FieldtripGettingTheres { get; set; }
-        [InverseProperty(nameof(FieldtripInclusion.Trip))]
-        public virtual ICollection<FieldtripInclusion> FieldtripInclusions { get; set; }
-        [InverseProperty(nameof(FieldtripMedia.Trip))]
-        public virtual ICollection<FieldtripMedia> FieldtripPictures { get; set; }
+        [InverseProperty(nameof(FieldtripAssignment.Trip))]
+        public virtual ICollection<FieldtripAssignment> FieldtripAssignments { get; set; }
     }
 }

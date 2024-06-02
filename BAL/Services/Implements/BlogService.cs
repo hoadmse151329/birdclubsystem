@@ -121,5 +121,18 @@ namespace BAL.Services.Implements
             _unitOfWork.BlogRepository.Update(blog);
             _unitOfWork.Save();
         }
+        public void UpdateStatus(UpdateBlogStatus entity)
+        {
+            var blog = _unitOfWork.BlogRepository.GetBlogByIdNoTracking(entity.BlogId.Value).Result;
+            if(blog != null)
+            {
+                if(blog.Status != entity.Status)
+                {
+                    blog.Status = entity.Status;
+                    _unitOfWork.BlogRepository.Update(blog);
+                    _unitOfWork.Save();
+                }
+            }
+        }
     }
 }

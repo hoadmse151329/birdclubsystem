@@ -45,7 +45,7 @@ namespace DAL.Repositories.Implements
             return _context.FieldTripParticipants
                 .AsNoTracking()
                 .Where(trip => trip.TripId == tripId)
-                .Include(f => f.MemberDetail)
+                .Include(f => f.MemberDetails)
                 .OrderBy(p => p.ParticipantNo)
                 .ToList();
         }
@@ -62,7 +62,7 @@ namespace DAL.Repositories.Implements
         public async Task<int> GetParticipationNoFieldTripParticipantById(int tripId, string memberId)
         {
             var mempart = _context.FieldTripParticipants.AsNoTracking().SingleOrDefault(f => f.TripId.Equals(tripId) && f.MemberId.Equals(memberId));
-            if (mempart != null) return mempart.ParticipantNo;
+            if (mempart != null) return mempart.ParticipantNo.Value;
             return 0;
         }
 

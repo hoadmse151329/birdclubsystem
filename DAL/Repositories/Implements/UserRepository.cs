@@ -21,18 +21,18 @@ namespace DAL.Repositories.Implements
         public async Task<User?> GetByEmail(string email)
         {
             if(_context.Members.AsNoTracking().SingleOrDefault(mem => mem.Email == email) != null)
-                return _context.Users.AsNoTrackingWithIdentityResolution().Include(usr => usr.MemberDetail).SingleOrDefault(usr => usr.MemberDetail.Email == email);
+                return _context.Users.AsNoTrackingWithIdentityResolution().Include(usr => usr.MemberDetails).SingleOrDefault(usr => usr.MemberDetails.Email == email);
             return null;
         }
 
         public async Task<User?> GetByIdNoTracking(int id)
         {
-            return _context.Users.AsNoTrackingWithIdentityResolution().Include(usr => usr.MemberDetail).SingleOrDefault(usr => usr.UserId == id);
+            return _context.Users.AsNoTrackingWithIdentityResolution().Include(usr => usr.MemberDetails).SingleOrDefault(usr => usr.UserId == id);
         }
 
         public async Task<User?> GetByLogin(string userName, string passWord)
         {
-            return _context.Users.AsNoTrackingWithIdentityResolution().Include(usr => usr.MemberDetail).SingleOrDefault(usr => usr.UserName == userName && usr.Password == passWord);
+            return _context.Users.AsNoTrackingWithIdentityResolution().Include(usr => usr.MemberDetails).SingleOrDefault(usr => usr.UserName == userName && usr.Password == passWord);
         }
         public async Task<bool> ChangeUserAvatar(string usrId, string imageAvatar)
         {
@@ -62,7 +62,7 @@ namespace DAL.Repositories.Implements
 
         public async Task<string?> GetMemberIdByIdNoTracking(int id)
         {
-            var usr = _context.Users.AsNoTrackingWithIdentityResolution().Include(usr => usr.MemberDetail).SingleOrDefault(usr => usr.UserId == id);
+            var usr = _context.Users.AsNoTrackingWithIdentityResolution().Include(usr => usr.MemberDetails).SingleOrDefault(usr => usr.UserId == id);
             if (usr != null)
             {
                 return usr.MemberId;

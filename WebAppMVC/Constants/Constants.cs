@@ -34,6 +34,8 @@ namespace WebAppMVC.Constants
         public readonly static string ALERT_USER_PASSWORD_UPDATE_ERROR = "Change user password failed!";
         public readonly static string ALERT_MANAGER_CREATE_NEWS_SUCCESS = "Successfully create news!";
         public readonly static string ALERT_MANAGER_CREATE_NEWS_ERROR = "Create news failed!";
+        public readonly static string ALERT_MEMBER_CREATE_BLOG_SUCCESS = "Successfully create your blog!";
+        public readonly static string ALERT_MEMBER_CREATE_BLOG_ERROR = "Create your blog failed!";
         public readonly static string ALERT_DEFAULT_ERROR_NAME = "Error";
         public readonly static string ALERT_DEFAULT_SUCCESS_NAME = "Success";
 
@@ -55,6 +57,19 @@ namespace WebAppMVC.Constants
         public readonly static string NEWS_CATEGORY_FIELDTRIP = "Fieldtrip";
         public readonly static string NEWS_CATEGORY_CONTEST = "Contest";
         public readonly static string NEWS_CATEGORY_OTHERS = "Others";
+
+        public readonly static string BLOG_STATUS_DRAFT = "Draft";
+        public readonly static string BLOG_STATUS_ACTIVE = "Active";
+        public readonly static string BLOG_STATUS_HIDDEN = "Hidden";
+        public readonly static string BLOG_STATUS_ARCHIVED = "Archived";
+        public readonly static string BLOG_STATUS_REPORTED = "Reported";
+        public readonly static string BLOG_STATUS_DISABLED = "Disabled";
+
+        public readonly static string BLOG_CATEGORY_ANNOUNCEMENT = "Announcement";
+        public readonly static string BLOG_CATEGORY_MEETING = "Meeting";
+        public readonly static string BLOG_CATEGORY_FIELDTRIP = "Fieldtrip";
+        public readonly static string BLOG_CATEGORY_CONTEST = "Contest";
+        public readonly static string BLOG_CATEGORY_OTHERS = "Others";
 
         public readonly static string CREATE_BIRD_VALID = "CBirdValid";
         public readonly static string CREATE_OR_UPDATE_BIRD_PROFILE_PICTURE_VALID = "CBirdProfilePicValid";
