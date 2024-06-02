@@ -97,12 +97,26 @@
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                     <a class="dropdown-item" href="@Url.Action("MemberProfile", "Member")">
-                                        Member Profile
+                                        Profile
                                     </a>
+
                                     <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="@Url.Action("MemberHistoryEvent", "Member")">HistoryEvents</a>
+
+                                    <a class="dropdown-item" href="@Url.Action("MemberHistoryEvent", "Member")">
+                                        HistoryEvents
+                                    </a>
+
                                     <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="@Url.Action("Logout", "Auth")">Logout</a>
+
+                                    <a class="dropdown-item" href="@Url.Action("MemberBird", "Member")">
+                                        Birds
+                                    </a>
+
+                                    <div class="dropdown-divider"></div>
+
+                                    <a class="dropdown-item" href="@Url.Action("Logout", "Auth")">
+                                        Logout
+                                    </a>
                                 </div>
                             </div>
                         </li>

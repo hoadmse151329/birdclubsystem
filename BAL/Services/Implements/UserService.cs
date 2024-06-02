@@ -145,10 +145,10 @@ namespace BAL.Services.Implements
             return false;
 		}
 
-		public bool GetByEmail(string email)
+		public async Task<bool> IsUserExistByEmail(string email)
         {
-            var user = _unitOfWork.UserRepository.GetByEmail(email);
-            if (user == null)
+            var user = await _unitOfWork.UserRepository.GetByEmail(email);
+            if (user != null)
             {
                 return true;
             }

@@ -35,6 +35,10 @@ namespace BAL.Services.Interfaces
             bool isManager = false,
             bool isAdmin = false
             );
+        Task<IEnumerable<GetEmployeeStatus>?> GetAvailableStaffList(
+            DateTime? startAvailableDate = null,
+            DateTime? endAvailableDate = null
+            );
         Task<MemberViewModel?> GetById(string id);
 		Task<bool> GetBoolById(string id);
 		bool GetByEmail(string email);

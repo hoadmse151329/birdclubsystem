@@ -40,32 +40,33 @@ namespace DAL.Repositories.Implements
         }
 
         public async Task<IEnumerable<ContestAssignment>> GetSortedContestAssignmentsNoTracking(
-            int? contestId, 
-            string? memberId, 
-            DateTime? assignedDate, 
-            List<string>? roles, 
+            int? contestId = null, 
+            string? memberId = null, 
+            DateTime? assignedDate = null, 
+            List<string>? roles = null, 
             string? orderBy = null
             )
         {
             var conAss = _context.ContestAssignments.AsNoTracking().AsQueryable();
-            List<string> roleListDefault = new List<string> { 
-                "Registrar", 
+            List<string> roleListDefault = new List<string> {
+                "Organizer",
+                "Judge",
+                "Timer"
+            };
+            /*List<string> roleListDefault = new List<string> {
+                "Registrar",
                 "Master of Ceremonies",
-                "Technical", 
-                "Bird Handler", 
-                "Scorekeeper", 
+                "Technical",
+                "Bird Handler",
+                "Scorekeeper",
                 "Security Personnel",
                 "Veterinarian",
                 "Hospitality",
                 "Public Relations Officer",
                 "Awards Coordinator",
                 "Photographer"
-            };
+            };*/
 
-            if (contestId.HasValue && contestId.Value > 0)
-            {
-                conAss = conAss.Where(m => m.ContestId.Equals(contestId.Value));
-            }
             if (contestId.HasValue && contestId.Value > 0)
             {
                 conAss = conAss.Where(m => m.ContestId.Equals(contestId.Value));

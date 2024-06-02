@@ -404,7 +404,7 @@ namespace WebAppMVC.Controllers
 
 			if (authenResponse == null)
 			{
-                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] = "Error while registering your new account ! ";
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] = "Error while registering your new account: \n" + authenResponse.ErrorMessage;
 				return View("Register", newmemRequest);
 			}
             var responseAuth = authenResponse.Data;

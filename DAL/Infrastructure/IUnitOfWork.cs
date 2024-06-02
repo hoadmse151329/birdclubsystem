@@ -32,6 +32,9 @@ namespace DAL.Infrastructure
         IBlogRepository BlogRepository { get; }
         INewsRepository NewsRepository { get; }
         ICommentRepository CommentRepository { get; }
+        IMeetingAssignmentRepository MeetingAssignmentRepository { get; }
+        IFieldtripAssignmentRepository FieldTripAssignmentRepository { get; }
+        IContestAssignmentRepository ContestAssignmentRepository { get; }
         void Save();
     }
 }
