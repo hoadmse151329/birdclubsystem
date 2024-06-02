@@ -20,48 +20,48 @@ namespace DAL.Repositories.Implements
 
         public async Task<bool> GetBoolFieldTripParticipantById(int tripId, string memberId)
         {
-            var mempart = _context.FieldTripParticipants.AsNoTracking().FirstOrDefault(fp => fp.TripId == tripId && fp.MemberId == memberId);
+            var mempart = await _context.FieldTripParticipants.AsNoTracking().FirstOrDefaultAsync(fp => fp.TripId == tripId && fp.MemberId == memberId);
             if (mempart != null) return true;
             return false;
         }
 
         public async Task<int> GetCountFieldTripParticipantsByTripId(int tripId)
         {
-            return _context.FieldTripParticipants.AsNoTracking().Count(trip => trip.TripId == tripId);
+            return await _context.FieldTripParticipants.AsNoTracking().CountAsync(trip => trip.TripId == tripId);
         }
 
         public async Task<int> GetCountFieldTripParticipantsByMemberId(string memId)
         {
-            return _context.FieldTripParticipants.AsNoTracking().Count(m => m.MemberId == memId);
+            return await _context.FieldTripParticipants.AsNoTracking().CountAsync(m => m.MemberId == memId);
         }
 
         public async Task<FieldTripParticipant> GetFieldTripParticipantById(int tripId, string memberId)
         {
-            return _context.FieldTripParticipants.AsNoTracking().FirstOrDefault(fp => fp.TripId == tripId && fp.MemberId == memberId);
+            return await _context.FieldTripParticipants.AsNoTracking().FirstOrDefaultAsync(fp => fp.TripId == tripId && fp.MemberId == memberId);
         }
 
         public async Task<IEnumerable<FieldTripParticipant>> GetFieldTripParticipantsByTripId(int tripId)
         {
-            return _context.FieldTripParticipants
+            return await _context.FieldTripParticipants
                 .AsNoTracking()
                 .Where(trip => trip.TripId == tripId)
                 .Include(f => f.MemberDetails)
                 .OrderBy(p => p.ParticipantNo)
-                .ToList();
+                .ToListAsync();
         }
 
         public async Task<IEnumerable<FieldTripParticipant>> GetFieldTripParticipantsByMemberId(string memberId)
         {
-            return _context.FieldTripParticipants.AsNoTracking().Where(m => m.MemberId == memberId).ToList();
+            return await _context.FieldTripParticipants.AsNoTracking().Where(m => m.MemberId == memberId).ToListAsync();
         }
         public async Task<IEnumerable<FieldTripParticipant>> GetFieldTripParticipantsByMemberIdInclude(string memberId)
         {
-            return _context.FieldTripParticipants.AsNoTracking().Where(m => m.MemberId == memberId).Include(f => f.Trip).ToList();
+            return await _context.FieldTripParticipants.AsNoTracking().Where(m => m.MemberId == memberId).Include(f => f.Trip).ToListAsync();
         }
 
         public async Task<int> GetParticipationNoFieldTripParticipantById(int tripId, string memberId)
         {
-            var mempart = _context.FieldTripParticipants.AsNoTracking().SingleOrDefault(f => f.TripId.Equals(tripId) && f.MemberId.Equals(memberId));
+            var mempart = await _context.FieldTripParticipants.AsNoTracking().SingleOrDefaultAsync(f => f.TripId.Equals(tripId) && f.MemberId.Equals(memberId));
             if (mempart != null) return mempart.ParticipantNo.Value;
             return 0;
         }
@@ -70,8 +70,8 @@ namespace DAL.Repositories.Implements
         {
             foreach (var participant in part)
             {
-                var trippart = _context.FieldTripParticipants
-                    .SingleOrDefault(p => p.TripId == participant.TripId && p.MemberId == participant.MemberId);
+                var trippart = await _context.FieldTripParticipants
+                    .SingleOrDefaultAsync(p => p.TripId == participant.TripId && p.MemberId == participant.MemberId);
                 if (trippart != null)
                 {
                     if (trippart.CheckInStatus != participant.CheckInStatus)

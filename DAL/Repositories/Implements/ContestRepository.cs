@@ -167,5 +167,10 @@ namespace DAL.Repositories.Implements
         {
             return _context.Contests.AsNoTracking().Count();
         }
+
+        public async Task<int> CountContestByStatus(string status)
+        {
+            return _context.Contests.AsNoTracking().Where(c => c.Status == status).Count();
+        }
     }
 }

@@ -166,5 +166,10 @@ namespace DAL.Repositories.Implements
         {
             return _context.FieldTrips.AsNoTracking().Count();
         }
+
+        public async Task<int> CountFieldTripByStatus(string status)
+        {
+            return _context.FieldTrips.AsNoTracking().Where(f => f.Status == status).Count();
+        }
     }
 }

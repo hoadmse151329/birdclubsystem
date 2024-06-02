@@ -31,5 +31,6 @@ namespace DAL.Repositories.Interfaces
         Task<Meeting?> GetMeetingById(int id);
         Task<bool> GetBoolMeetingId(int id);
         Task<int> CountMeeting();
+        Task<int> CountMeetingByStatus(string status);
     }
 }

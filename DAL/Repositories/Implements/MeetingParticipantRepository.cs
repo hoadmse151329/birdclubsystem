@@ -20,24 +20,24 @@ namespace DAL.Repositories.Implements
 
         public async Task<bool> GetBoolMeetingParticipantById(int meetingId, string memberId)
         {
-            var mempart = _context.MeetingParticipants.AsNoTracking().FirstOrDefault(m => m.MeetingId == meetingId && m.MemberId == memberId);
+            var mempart = await _context.MeetingParticipants.AsNoTracking().FirstOrDefaultAsync(m => m.MeetingId == meetingId && m.MemberId == memberId);
             if (mempart != null) return true;
             return false;
         }
 
         public async Task<int> GetCountMeetingParticipantsByMeetId(int meetingId)
         {
-            return _context.MeetingParticipants.AsNoTracking().Count(m => m.MeetingId == meetingId);
+            return await _context.MeetingParticipants.AsNoTracking().CountAsync(m => m.MeetingId == meetingId);
         }
 
         public async Task<int> GetCountMeetingParticipantsByMemberId(string memId)
         {
-            return _context.MeetingParticipants.AsNoTracking().Count(m => m.MemberId == memId);
+            return await _context.MeetingParticipants.AsNoTracking().CountAsync(m => m.MemberId == memId);
         }
 
         public async Task<MeetingParticipant> GetMeetingParticipantById(int meetingId, string memberId)
         {
-            return _context.MeetingParticipants.AsNoTracking()
+            return await _context.MeetingParticipants.AsNoTracking()
                 .Where(m => m.MeetingId == meetingId && m.MemberId == memberId)
                 .Include(m => m.MemberDetails)
                 .Include(m => m.MeetingDetails)
@@ -45,7 +45,7 @@ namespace DAL.Repositories.Implements
         }
         public async Task<MeetingParticipant> GetMeetingParticipantByIdTracking(int meetingId, string memberId)
         {
-            return _context.MeetingParticipants
+            return await _context.MeetingParticipants
                 .Where(m => m.MeetingId == meetingId && m.MemberId == memberId)
                 .Include(m => m.MemberDetails)
                 .Include(m => m.MeetingDetails)
@@ -54,27 +54,27 @@ namespace DAL.Repositories.Implements
 
         public async Task<IEnumerable<MeetingParticipant>> GetMeetingParticipantsByMeetId(int meetingId)
         {
-            return _context.MeetingParticipants
+            return await _context.MeetingParticipants
                 .AsNoTracking()
                 .Where(m => m.MeetingId == meetingId)
                 .Include(m => m.MemberDetails)
                 .OrderBy(p => p.ParticipantNo)
-                .ToList();
+                .ToListAsync();
         }
 
         public async Task<IEnumerable<MeetingParticipant>> GetMeetingParticipantsByMemberId(string memId)
         {
-            return _context.MeetingParticipants.AsNoTracking().Where(m => m.MemberId == memId).ToList();
+            return await _context.MeetingParticipants.AsNoTracking().Where(m => m.MemberId == memId).ToListAsync();
         }
 
         public async Task<IEnumerable<MeetingParticipant>> GetMeetingParticipantsByMemberIdInclude(string memId)
         {
-            return _context.MeetingParticipants.AsNoTracking().Where(m => m.MemberId == memId).Include(m => m.MeetingDetails).ToList();
+            return await _context.MeetingParticipants.AsNoTracking().Where(m => m.MemberId == memId).Include(m => m.MeetingDetail).ToListAsync();
         }
 
         public async Task<int> GetParticipationNoMeetingParticipantById(int meetingId, string memberId)
         {
-            var mempart = _context.MeetingParticipants.AsNoTracking().SingleOrDefault(m => m.MeetingId.Equals(meetingId) && m.MemberId.Equals(memberId));
+            var mempart = await _context.MeetingParticipants.AsNoTracking().SingleOrDefaultAsync(m => m.MeetingId.Equals(meetingId) && m.MemberId.Equals(memberId));
             if (mempart != null) return mempart.ParticipantNo.Value;
             return 0;
         }
@@ -83,8 +83,8 @@ namespace DAL.Repositories.Implements
         {
             foreach (var participant in part)
             {
-                var meetpart = _context.MeetingParticipants
-                    .SingleOrDefault(p => p.MeetingId == participant.MeetingId && p.MemberId == participant.MemberId);
+                var meetpart = await _context.MeetingParticipants
+                    .SingleOrDefaultAsync(p => p.MeetingId == participant.MeetingId && p.MemberId == participant.MemberId);
                 if (meetpart != null)
                 {
                     if (meetpart.CheckInStatus != participant.CheckInStatus)
