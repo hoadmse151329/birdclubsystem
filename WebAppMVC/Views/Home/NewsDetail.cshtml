@@ -1,4 +1,4 @@
-﻿@model dynamic
+﻿@model BAL.ViewModels.NewsViewModel
 @{
     ViewData["Title"] = "News Detail Page";
 }
@@ -10,20 +10,35 @@
     <link rel="stylesheet" href="~/css/news.css">
 </head>
 <body class="background">
-    @{
-        if (ViewBag.error != null)
-        {
-            <span class="text-danger">@ViewBag.error</span>
-        }
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" id="notif">
+            <i class='bx bx-message-alt-x p-1'></i>
+            <strong class="mr-1">@TempData["Success"]</strong>
+            <button type="button" class="close h-100" data-dismiss="alert" aria-label="Close">
+                <span><i class='bx bx-x'></i></span>
+            </button>
+        </div>
+        TempData["Success"] = null;
+    }
+    else if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" id="notif">
+            <i class='bx bx-message-alt-x p-1'></i>
+            <strong class="mr-1">@TempData["Error"]</strong>
+            <button type="button" class="close h-100" data-dismiss="alert" aria-label="Close">
+                <span><i class='bx bx-x'></i></span>
+            </button>
+        </div>
+        TempData["Error"] = null;
     }
     <main>
         <div class="content">
             <div id="news-detail-container">
                 <article>
-                    <img class="img-fluid" src="~/images/bird.png" alt="logo" />
-                    <h2>Exciting News Announcement</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vehicula velit at risus tristique, ac posuere sapien posuere. Vivamus bibendum eros a gravida ultrices. Nam ut sapien a justo consequat commodo. Duis non nisi scelerisque, accumsan felis eget, ultricies enim. Donec lacinia purus vel sem ultrices tempus. Nullam eu aliquam urna. Sed eget arcu non sapien tincidunt vestibulum. Nam sit amet mi vel libero eleifend dignissim nec ac arcu. Cras consectetur, ex eu finibus ultricies, mi odio viverra ante, nec aliquam metus justo et felis. Vestibulum vel rhoncus quam. Morbi sed turpis vitae tortor vestibulum molestie sed non sapien.</p>
-                    <p>Ut pharetra turpis non efficitur volutpat. Proin nec arcu nec nisl congue eleifend. Nulla facilisi. Nulla in turpis eros. Aliquam at gravida magna, sed fermentum elit. Aliquam viverra convallis vehicula. Sed interdum est nec libero volutpat, ut egestas dui blandit. Sed tincidunt libero eu semper mattis. Proin vel gravida purus. Suspendisse nec dolor ac dui sollicitudin gravida. Aenean ullamcorper mauris vel libero vehicula, in rhoncus ligula accumsan.</p>
+                    <img class="img-fluid" src="@Model.Picture" alt="logo" />
+                    <h2>@Model.Title</h2> <p>@Model.UploadDate.Value.ToString("dd-MM-yyyy HH:mm")</p><p>@Model.Category</p>
+                    <p>@Html.Raw(Model.NewsContent)</p>
                 </article>
             </div>
         </div>

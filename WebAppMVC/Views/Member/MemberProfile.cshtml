@@ -2,8 +2,8 @@
 @{
     ViewData["Title"] = "Member Profile Page";
     IFormFile? formFile = null;
-    BAL.ViewModels.Member.UpdateMemberPassword memberPassword = Model.managerPassword;
-    BAL.ViewModels.MemberViewModel memberDetail = Model.managerDetail;
+    BAL.ViewModels.Member.UpdateMemberPassword memberPassword = Model.memberPassword;
+    BAL.ViewModels.MemberViewModel memberDetail = Model.memberDetail;
     List<SelectListItem> genders = memberDetail.DefaultUserGenderSelectList;
 }
 <html lang="en">

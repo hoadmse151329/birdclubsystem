@@ -15,13 +15,13 @@ namespace DAL.Models
         [Column("description")]
         public string? Description { get; set; }
         [Column("userId")]
-        public int UserId { get; set; }
+        public int? UserId { get; set; }
         [Column("image")]
         [Unicode(false)]
-        public string Image { get; set; } = null!;
+        public string? Image { get; set; }
 
         [ForeignKey(nameof(UserId))]
         [InverseProperty(nameof(User.Galleries))]
-        public virtual User UserDetail { get; set; } = null!;
+        public virtual User? UserDetails { get; set; }
     }
 }

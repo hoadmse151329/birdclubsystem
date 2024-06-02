@@ -39,17 +39,17 @@ namespace DAL.Repositories.Implements
         {
             return await _context.MeetingParticipants.AsNoTracking()
                 .Where(m => m.MeetingId == meetingId && m.MemberId == memberId)
-                .Include(m => m.MemberDetail)
-                .Include(m => m.MeetingDetail)
-                .FirstOrDefaultAsync();
+                .Include(m => m.MemberDetails)
+                .Include(m => m.MeetingDetails)
+                .FirstOrDefault();
         }
         public async Task<MeetingParticipant> GetMeetingParticipantByIdTracking(int meetingId, string memberId)
         {
             return await _context.MeetingParticipants
                 .Where(m => m.MeetingId == meetingId && m.MemberId == memberId)
-                .Include(m => m.MemberDetail)
-                .Include(m => m.MeetingDetail)
-                .FirstOrDefaultAsync();
+                .Include(m => m.MemberDetails)
+                .Include(m => m.MeetingDetails)
+                .FirstOrDefault();
         }
 
         public async Task<IEnumerable<MeetingParticipant>> GetMeetingParticipantsByMeetId(int meetingId)
@@ -57,7 +57,7 @@ namespace DAL.Repositories.Implements
             return await _context.MeetingParticipants
                 .AsNoTracking()
                 .Where(m => m.MeetingId == meetingId)
-                .Include(m => m.MemberDetail)
+                .Include(m => m.MemberDetails)
                 .OrderBy(p => p.ParticipantNo)
                 .ToListAsync();
         }
@@ -75,7 +75,7 @@ namespace DAL.Repositories.Implements
         public async Task<int> GetParticipationNoMeetingParticipantById(int meetingId, string memberId)
         {
             var mempart = await _context.MeetingParticipants.AsNoTracking().SingleOrDefaultAsync(m => m.MeetingId.Equals(meetingId) && m.MemberId.Equals(memberId));
-            if (mempart != null) return mempart.ParticipantNo;
+            if (mempart != null) return mempart.ParticipantNo.Value;
             return 0;
         }
 

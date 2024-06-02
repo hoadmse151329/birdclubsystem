@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BAL.ViewModels;
 using BAL.ViewModels.Admin;
+using BAL.ViewModels.Blog;
 using BAL.ViewModels.Event;
 using BAL.ViewModels.Manager;
 using BAL.ViewModels.News;
@@ -17,23 +18,23 @@ namespace BAL.AutoMapperProfile
                 .ForMember(dest => dest.Email, opt =>
                 {
                     opt.AllowNull();
-                    opt.MapFrom(src => src.MemberDetail != null ? src.MemberDetail.Email : "");
+                    opt.MapFrom(src => src.MemberDetails != null ? src.MemberDetails.Email : "");
                 })
                 .ReverseMap();
             CreateMap<Member, MemberViewModel>()
                 .AfterMap((src, dest) =>
                 {
-                    dest.UserId = src.UserDetail.UserId;
-                    if(src.UserDetail != null && src.UserDetail.ImagePath != null)
+                    dest.UserId = src.UserDetails.UserId;
+                    if(src.UserDetails != null && src.UserDetails.ImagePath != null)
                     {
-                        dest.ImagePath = src.UserDetail.ImagePath;
+                        dest.ImagePath = src.UserDetails.ImagePath;
                     }
                 })
                 .ReverseMap()
                 .AfterMap((src, dest) =>
                 {
-                    dest.UserDetail = new();
-                    dest.UserDetail.ImagePath = src.ImagePath;
+                    dest.UserDetails = new();
+                    dest.UserDetails.ImagePath = src.ImagePath;
                 })
                 ;
             CreateMap<Member, GetMemberStatus>().ReverseMap();
@@ -44,15 +45,15 @@ namespace BAL.AutoMapperProfile
                 {
                     dest.EventId = src.MeetingId;
                     dest.EventIdFull = "meeting" + src.MeetingId;
-                    dest.EventName = src.MeetingDetail.MeetingName;
+                    dest.EventName = src.MeetingDetails.MeetingName;
                     dest.EventType = "Meeting";
-                    dest.EventHost = src.MeetingDetail.Host;
-                    dest.EventStaff = src.MeetingDetail.Incharge;
-                    dest.StartDate = src.MeetingDetail.StartDate;
-                    dest.EndDate = src.MeetingDetail.EndDate;
+                    dest.EventHost = src.MeetingDetails.Host;
+                    dest.EventStaff = src.MeetingDetails.Incharge;
+                    dest.StartDate = src.MeetingDetails.StartDate;
+                    dest.EndDate = src.MeetingDetails.EndDate;
                     dest.Fee = 0;
-                    dest.RegistrationDeadline = src.MeetingDetail.RegistrationDeadline;
-                    dest.Status = src.MeetingDetail.Status;
+                    dest.RegistrationDeadline = src.MeetingDetails.RegistrationDeadline;
+                    dest.Status = src.MeetingDetails.Status;
                     dest.ParticipationNo = src.ParticipantNo;
                     dest.CheckInStatus = src.CheckInStatus;
                 })
@@ -91,15 +92,15 @@ namespace BAL.AutoMapperProfile
                 {
                     dest.EventId = src.ContestId;
                     dest.EventIdFull = "contest" + src.ContestId;
-                    dest.EventName = src.ContestDetail.ContestName;
+                    dest.EventName = src.ContestDetails.ContestName;
                     dest.EventType = "Contest";
-                    dest.EventHost = src.ContestDetail.Host;
-                    dest.EventStaff = src.ContestDetail.Incharge;
-                    dest.StartDate = src.ContestDetail.StartDate;
-                    dest.EndDate = src.ContestDetail.EndDate;
-                    dest.RegistrationDeadline = src.ContestDetail.RegistrationDeadline;
-                    dest.Status = src.ContestDetail.Status;
-                    dest.Fee = src.ContestDetail.Fee;
+                    dest.EventHost = src.ContestDetails.Host;
+                    dest.EventStaff = src.ContestDetails.Incharge;
+                    dest.StartDate = src.ContestDetails.StartDate;
+                    dest.EndDate = src.ContestDetails.EndDate;
+                    dest.RegistrationDeadline = src.ContestDetails.RegistrationDeadline;
+                    dest.Status = src.ContestDetails.Status;
+                    dest.Fee = src.ContestDetails.Fee;
                     dest.ParticipationNo = src.ParticipantNo;
                     dest.CheckInStatus = src.CheckInStatus;
                 })
@@ -107,25 +108,25 @@ namespace BAL.AutoMapperProfile
             CreateMap<MeetingParticipant, MeetingParticipantViewModel>()
                 .AfterMap((src, dest) =>
                 {
-                    dest.MemberName = src.MemberDetail.FullName;
+                    dest.MemberName = src.MemberDetails.FullName;
                 })
                 .ReverseMap()
                 .AfterMap((src, dest) =>
                 {
-                    dest.MemberDetail = new();
-                    dest.MemberDetail.FullName = src.MemberName;
+                    dest.MemberDetails = new();
+                    dest.MemberDetails.FullName = src.MemberName;
                 })
                 ;
             CreateMap<FieldTripParticipant, FieldTripParticipantViewModel>()
                 .AfterMap((src, dest) =>
                 {
-                    dest.MemberName = src.MemberDetail.FullName;
+                    dest.MemberName = src.MemberDetails.FullName;
                 })
                 .ReverseMap()
                 .AfterMap((src, dest) =>
                 {
-                    dest.MemberDetail = new();
-                    dest.MemberDetail.FullName = src.MemberName;
+                    dest.MemberDetails = new();
+                    dest.MemberDetails.FullName = src.MemberName;
                 });
             CreateMap<ContestParticipant, ContestParticipantViewModel>()
                 .AfterMap((src, dest) =>
@@ -133,14 +134,14 @@ namespace BAL.AutoMapperProfile
                     dest.ContestElo = src.Elo;
                     if (src.BirdDetails != null)
                     {
-                        dest.ParticipantElo = src.BirdDetails.Elo;
+                        dest.ParticipantElo = src.BirdDetails.Elo.Value;
                     }
-                    dest.MemberName = src.MemberDetail.FullName;
+                    dest.MemberName = src.MemberDetails.FullName;
                 })
                 .ReverseMap()
                 .AfterMap((src, dest) =>
                 {
-                    dest.MemberDetail = new();
+                    dest.MemberDetails = new();
                     if (src.ContestElo != null)
                     {
                         dest.Elo = src.ContestElo.Value;
@@ -149,7 +150,7 @@ namespace BAL.AutoMapperProfile
                     {
                         dest.BirdDetails.Elo = src.ParticipantElo;
                     }
-                    dest.MemberDetail.FullName = src.MemberName;
+                    dest.MemberDetails.FullName = src.MemberName;
                 });
             CreateMap<Meeting, MeetingViewModel>()
                 .ReverseMap();
@@ -187,13 +188,21 @@ namespace BAL.AutoMapperProfile
                 });
             CreateMap<Transaction, TransactionViewModel>()
                 .ReverseMap();
-            CreateMap<Bird, BirdViewModel>() .ReverseMap();
+            CreateMap<Bird, BirdViewModel>().ReverseMap();
             CreateMap<Notification, NotificationViewModel>() .ReverseMap();
             CreateMap<Feedback, FeedbackViewModel>() .ReverseMap();
             CreateMap<Blog,BlogViewModel>()
                 .AfterMap((src, dest) =>
                 {
-                    dest.Fullname = src.UserDetail.MemberDetail.FullName;
+                    dest.Fullname = src.UserDetails.MemberDetails.FullName;
+                    dest.MemberAvatar = src.UserDetails.ImagePath;
+                })
+                .ReverseMap();
+            CreateMap<CreateNewBlog, Blog>();
+            CreateMap<Comment, CommentViewModel>()
+                .AfterMap((src, dest) =>
+                {
+                    dest.UserFullName = src.UserDetails.MemberDetails.FullName;
                 })
                 .ReverseMap();
             CreateMap<News,NewsViewModel>() .ReverseMap();
@@ -201,7 +210,7 @@ namespace BAL.AutoMapperProfile
             CreateMap<Feedback, GetFeedbackResponse>()
                 .AfterMap((src, dest) =>
                 {
-                    dest.Fullname = src.UserDetail.MemberDetail.FullName;
+                    dest.Fullname = src.UserDetails.MemberDetails.FullName;
                 })
                 .ReverseMap();
         }

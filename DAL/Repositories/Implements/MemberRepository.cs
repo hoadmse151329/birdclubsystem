@@ -102,12 +102,12 @@ namespace DAL.Repositories.Implements
 
         public async Task<Member?> GetByIdNoTracking(string id)
         {
-            return await _context.Members.AsNoTrackingWithIdentityResolution().Include(mem => mem.UserDetail).SingleOrDefaultAsync(mem => mem.MemberId == id);
+            return await _context.Members.AsNoTrackingWithIdentityResolution().Include(mem => mem.UserDetails).SingleOrDefaultAsync(mem => mem.MemberId == id);
         }
 
         public async Task<Member?> GetByIdTracking(string id)
         {
-            return await _context.Members.Include(mem => mem.UserDetail).SingleOrDefaultAsync(mem => mem.MemberId == id);
+            return await _context.Members.Include(mem => mem.UserDetails).SingleOrDefaultAsync(mem => mem.MemberId == id);
         }
 
         public async Task<string?> GetMemberNameById(string id)
@@ -185,9 +185,9 @@ namespace DAL.Repositories.Implements
                     }
                     if (mem.Role != memberViewModel.Role)
                     {
-                        mem = await _context.Members.Include(m => m.UserDetail).SingleOrDefaultAsync(mem => mem.MemberId == memberViewModel.MemberId);
+                        mem = await _context.Members.Include(m => m.UserDetails).SingleOrDefaultAsync(mem => mem.MemberId == memberViewModel.MemberId);
                         mem.Role = memberViewModel.Role;
-                        mem.UserDetail.Role = memberViewModel.Role;
+                        mem.UserDetails.Role = memberViewModel.Role;
                         _context.Update(mem);
                     }
                 }

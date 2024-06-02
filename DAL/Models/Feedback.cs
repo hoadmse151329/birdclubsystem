@@ -13,13 +13,13 @@ namespace DAL.Models
         [Column("feedbackId")]
         public int FeedbackId { get; set; }
         [Column("userId")]
-        public int UserId { get; set; }
+        public int? UserId { get; set; }
         [Column("eventId")]
         [StringLength(50)]
-        public string EventId { get; set; } = null!;
+        public string? EventId { get; set; }
         [Column("title")]
         [StringLength(255)]
-        public string Title { get; set; } = null!;
+        public string? Title { get; set; }
         [Column("details")]
         public string? Details { get; set; }
         [Column("date", TypeName = "datetime")]
@@ -32,6 +32,6 @@ namespace DAL.Models
 
         [ForeignKey(nameof(UserId))]
         [InverseProperty(nameof(User.Feedbacks))]
-        public virtual User UserDetail { get; set; } = null!;
+        public virtual User? UserDetails { get; set; }
     }
 }

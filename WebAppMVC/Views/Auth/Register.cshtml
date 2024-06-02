@@ -20,6 +20,28 @@
 </head>
 
 <body class="background">
+	@if (TempData["Success"] != null)
+	{
+		<div class="alert alert-success alert-dismissible fade show" id="notif">
+			<i class='bx bx-message-alt-x p-1'></i>
+			<strong class="mr-1">@TempData["Success"]</strong>
+			<button type="button" class="close h-100" data-dismiss="alert" aria-label="Close">
+				<span><i class='bx bx-x'></i></span>
+			</button>
+		</div>
+		TempData["Success"] = null;
+	}
+	else if (TempData["Error"] != null)
+	{
+		<div class="alert alert-danger alert-dismissible fade show" id="notif">
+			<i class='bx bx-message-alt-x p-1'></i>
+			<strong class="mr-1">@TempData["Error"]</strong>
+			<button type="button" class="close h-100" data-dismiss="alert" aria-label="Close">
+				<span><i class='bx bx-x'></i></span>
+			</button>
+		</div>
+		TempData["Error"] = null;
+	}
 	<div
 		style="background-image: url(~/images/Background.png); background-repeat:no-repeat; background-size: 100% 100%;">
 		<div class="main-container">
@@ -32,12 +54,6 @@
 
 						<div class="d-flex box-body justify-content-center">
 							<form class="reg-form" asp-controller="Auth" asp-action="Register">
-								@* @{
-									if (ViewBag.error != null)
-									{
-										<span class="text-danger">@ViewBag.error</span>
-									}
-								} *@
 								<div class="form-group">
 									<input type="text" placeholder="Username" asp-for="UserName" class="form-control form-data" />
 
@@ -51,7 +67,6 @@
 								<div class="form-group">
 
 									<select class="form-control form-data custom-select" asp-for="Gender" asp-items="@genders"  name="gender">
-										@* <option value="">Gender</option> *@
 									</select>
 
 									<span asp-validation-for="Gender" class="text-danger"></span>

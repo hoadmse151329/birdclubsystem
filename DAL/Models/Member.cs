@@ -11,15 +11,19 @@ namespace DAL.Models
     {
         public Member()
         {
-            MemberBirds = new HashSet<Bird>();
+            Birds = new HashSet<Bird>();
+            ContestAssignments = new HashSet<ContestAssignment>();
             ContestParticipants = new HashSet<ContestParticipant>();
             FieldTripParticipants = new HashSet<FieldTripParticipant>();
+            FieldtripAssignments = new HashSet<FieldtripAssignment>();
+            MeetingAssignments = new HashSet<MeetingAssignment>();
             MeetingParticipants = new HashSet<MeetingParticipant>();
+            UserDetails = new User();
         }
 
         [Key]
         [Column("memberId")]
-        [StringLength(50)]
+        [StringLength(255)]
         public string MemberId { get; set; } = null!;
         [Column("fullName")]
         [StringLength(255)]
@@ -56,14 +60,20 @@ namespace DAL.Models
         public int? ClubId { get; set; }
 
         [InverseProperty(nameof(Bird.MemberDetails))]
-        public virtual ICollection<Bird> MemberBirds { get; set; }
-        [InverseProperty(nameof(ContestParticipant.MemberDetail))]
+        public virtual ICollection<Bird> Birds { get; set; }
+        [InverseProperty(nameof(ContestAssignment.MemberDetails))]
+        public virtual ICollection<ContestAssignment> ContestAssignments { get; set; }
+        [InverseProperty(nameof(ContestParticipant.MemberDetails))]
         public virtual ICollection<ContestParticipant> ContestParticipants { get; set; }
-        [InverseProperty(nameof(FieldTripParticipant.MemberDetail))]
+        [InverseProperty(nameof(FieldTripParticipant.MemberDetails))]
         public virtual ICollection<FieldTripParticipant> FieldTripParticipants { get; set; }
-        [InverseProperty(nameof(MeetingParticipant.MemberDetail))]
+        [InverseProperty(nameof(FieldtripAssignment.MemberDetails))]
+        public virtual ICollection<FieldtripAssignment> FieldtripAssignments { get; set; }
+        [InverseProperty(nameof(MeetingAssignment.MemberDetails))]
+        public virtual ICollection<MeetingAssignment> MeetingAssignments { get; set; }
+        [InverseProperty(nameof(MeetingParticipant.MemberDetails))]
         public virtual ICollection<MeetingParticipant> MeetingParticipants { get; set; }
-        [InverseProperty(nameof(User.MemberDetail))]
-        public virtual User? UserDetail { get; set; }
+        [InverseProperty(nameof(User.MemberDetails))]
+        public virtual User? UserDetails { get; set; }
     }
 }

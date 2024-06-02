@@ -1,4 +1,5 @@
 ﻿using BAL.ViewModels;
+using BAL.ViewModels.Blog;
 using DAL.Models;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,9 @@ namespace BAL.Services.Interfaces
         Task<int> CountBlog();
         Task<BlogViewModel?> GetBlogByIdNoTracking(int blogId);
         void Create(BlogViewModel entity);
+        void Create(CreateNewBlog entity);
         void Update(BlogViewModel entity);
+        void UpdateStatus(UpdateBlogStatus entity);
         Task<IEnumerable<BlogViewModel>> GetAllBlogs();
         Task<IEnumerable<BlogViewModel>?> GetAllBlogsByUserId(int usrId);
         Task<IEnumerable<BlogViewModel>?> GetSortedBlogs(

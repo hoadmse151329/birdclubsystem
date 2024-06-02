@@ -53,8 +53,6 @@ namespace BAL.ViewModels
 		public DateTime EndDate { get; set; }
         [DisplayName("Number Of Participants")]
         public int NumberOfParticipants { get; set; }
-        [DisplayName("Remaining Participant Slots")]
-        public int NumberOfParticipantsRemaining { get; set; }
         [DisplayName("Minimum Participants")]
         public int NumberOfParticipantsMinReq { get; set; }
         [Required(ErrorMessage = "Maximum Participants is required")]

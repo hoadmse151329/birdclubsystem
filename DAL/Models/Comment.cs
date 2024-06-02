@@ -21,10 +21,10 @@ namespace DAL.Models
         [Column("date", TypeName = "datetime")]
         public DateTime? Date { get; set; }
         [Column("userId")]
-        public int UserId { get; set; }
+        public int? UserId { get; set; }
 
         [ForeignKey(nameof(UserId))]
         [InverseProperty(nameof(User.Comments))]
-        public virtual User UserDetail { get; set; } = null!;
+        public virtual User? UserDetails { get; set; }
     }
 }

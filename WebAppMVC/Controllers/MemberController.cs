@@ -71,7 +71,7 @@ namespace WebAppMVC.Controllers
             {
                 memberInvalidDetails.ImagePath = imagePath;
                 memberInvalidDetails.DefaultUserGenderSelectList = methcall.GetUserGenderSelectableList(memberInvalidDetails.Gender);
-                memberInvalids.managerDetail = memberInvalidDetails;
+                memberInvalids.memberDetail = memberInvalidDetails;
                 return View(memberInvalids);
             }
 
@@ -139,10 +139,10 @@ namespace WebAppMVC.Controllers
             var memberInvalidPasswordUpdate = methcall.GetValidationTempData<UpdateMemberPassword>(this, TempData, Constants.Constants.UPDATE_MEMBER_PASSWORD_VALID, "memberPassword", jsonOptions);
             if (memberInvalidPasswordUpdate != null)
             {
-                memberInvalids.managerPassword = memberInvalidPasswordUpdate;
+                memberInvalids.memberPassword = memberInvalidPasswordUpdate;
             }
             memberDetails.Data.DefaultUserGenderSelectList = methcall.GetUserGenderSelectableList(memberDetails.Data.Gender);
-            memberInvalids.managerDetail = memberDetails.Data;
+            memberInvalids.memberDetail = memberDetails.Data;
             return View(memberInvalids);
         }
         [HttpPost("Profile")]
@@ -215,7 +215,7 @@ namespace WebAppMVC.Controllers
 
             memberPassword.userId = usrId;
 
-            var memberDetailupdate = await methcall.CallMethodReturnObject<GetMemberPasswordChangeResponse>(
+            var memberPasswordupdate = await methcall.CallMethodReturnObject<GetMemberPasswordChangeResponse>(
                 _httpClient: _httpClient,
                 options: jsonOptions,
                 methodName: Constants.Constants.PUT_METHOD,
@@ -223,7 +223,7 @@ namespace WebAppMVC.Controllers
                 _logger: _logger,
                 inputType: memberPassword,
                 accessToken: accToken);
-            if (memberDetailupdate == null)
+            if (memberPasswordupdate == null)
             {
                 ViewBag.error =
                     "Error while processing your request! (Getting Member Profile!).\n Member Details Not Found!";
@@ -231,11 +231,11 @@ namespace WebAppMVC.Controllers
                 return RedirectToAction("MemberProfile");
             }
             else
-            if (!memberDetailupdate.Status)
+            if (!memberPasswordupdate.Status)
             {
                 ViewBag.error =
                     "Error while processing your request! (Getting Member Profile!).\n Member Details Not Found!"
-                + memberDetailupdate.ErrorMessage;
+                + memberPasswordupdate.ErrorMessage;
                 TempData["Error"] = "Error while updating password.";
                 return RedirectToAction("MemberProfile");
             }

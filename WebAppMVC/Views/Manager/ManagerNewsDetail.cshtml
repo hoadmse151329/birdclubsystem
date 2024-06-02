@@ -117,7 +117,7 @@
                                             <label for="customer-name">Upload Date:</label>
                                         </div>
                                         <div class="col-md-7">
-                                            <span>@detailsNews.UploadDate.Value.ToString("MM/dd/yyyy")</span>
+                                            <span>@detailsNews.UploadDate.Value.ToString("MM/dd/yyyy HH:mm")</span>
                                         </div>
                                     </div>
                                     <div class="row mb-sm-2">
@@ -147,30 +147,6 @@
                     </div>
                     <div class="col-lg-5 cardFB">
                         <div class="card border-0 d-flex">
-                            @* <div class="card-header">
-                                <h4>Participants</h4>
-                            </div>
-                            <div class="card-body">
-                                <table class="table table-hover table-borderless">
-                                    <thead>
-                                        <tr>
-                                            <th>Participant No:</th>
-                                            <th>Name:</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach(var part in parts)
-                                        {
-                                            <tr>
-                                                <td>@part.ParticipantNo</td>
-                                                <td>@part.MemberName</td>
-                                            </tr>
-                                        }
-                                        <tr>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div> *@
                         </div>
                     </div>
                 </div>
@@ -179,86 +155,89 @@
     </div>
 
     <!-- edit Room -->
-    <div id="editnews" class="modal fade" role="dialog">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
-            <div class="modal-content modal-addRoom">
-                <div class="modal-header">
-                    <h4 class="modal-title">Edit News</h4>
-                </div>
-                <form asp-action="ManagerUpdateNewsDetail" asp-controller="Manager" method="post" asp-route-id="@detailsNews.NewsId" class="form-group" enctype="multipart/form-data">
-                    <div class="modal-body">
-                        <div class="row justify-content-center">
-                            <div class="col-12 col-md-12">
-                                <input asp-for="@updateNews.UserId" type="text"
-                                       value="@updateNews.UserId" class="form-control" required hidden>
-                                <div class="form-group row">
-                                    <label asp-for="@updateNews.Title" class="col-sm-4 col-form-label"></label>
-                                    <div class="col-sm-8">
-                                        <input asp-for="@updateNews.Title" type="text"
-                                               value="@updateNews.Title" class="form-control" required>
-                                        <span asp-validation-for="@updateNews.Title" id="error_message"
-                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+    @if (!(detailsNews.Status.Equals("Disabled")))
+    {
+        <div id="editnews" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
+                <div class="modal-content modal-addRoom">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Edit News</h4>
+                    </div>
+                    <form asp-action="ManagerUpdateNewsDetail" asp-controller="Manager" method="post" asp-route-id="@detailsNews.NewsId" class="form-group" enctype="multipart/form-data">
+                        <div class="modal-body">
+                            <div class="row justify-content-center">
+                                <div class="col-12 col-md-12">
+                                    <input asp-for="@updateNews.UserId" type="text"
+                                           value="@updateNews.UserId" class="form-control" required hidden>
+                                    <div class="form-group row">
+                                        <label asp-for="@updateNews.Title" class="col-sm-4 col-form-label"></label>
+                                        <div class="col-sm-8">
+                                            <input asp-for="@updateNews.Title" type="text"
+                                                   value="@updateNews.Title" class="form-control" required>
+                                            <span asp-validation-for="@updateNews.Title" id="error_message"
+                                                  class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label asp-for="@updateNews.Category" class="col-sm-4 col-form-label"></label>
-                                    <div class="col-sm-8">
-                                        <select class="form-control" asp-for="@updateNews.Category" asp-items="@updateNews.DefaultNewsCategorySelectList" class="custom-select" required></select>
-                                        <span asp-validation-for="@updateNews.Category" id="error_message"
-                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                    <div class="form-group row">
+                                        <label asp-for="@updateNews.Category" class="col-sm-4 col-form-label"></label>
+                                        <div class="col-sm-8">
+                                            <select class="form-control" asp-for="@updateNews.Category" asp-items="@updateNews.DefaultNewsCategorySelectList" class="custom-select" required></select>
+                                            <span asp-validation-for="@updateNews.Category" id="error_message"
+                                                  class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label asp-for="@updateNews.UploadDate" class="col-sm-4 col-form-label"></label>
-                                    <div class="col-sm-8">
-                                        <input asp-for="@updateNews.UploadDate" type="date"
-                                               value="@updateNews.UploadDate.Value.ToString("yyyy-MM-dd")" class="form-control" required>
-                                        <span asp-validation-for="@updateNews.UploadDate" id="error_message"
-                                            class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                    <div class="form-group row">
+                                        <label asp-for="@updateNews.UploadDate" class="col-sm-4 col-form-label"></label>
+                                        <div class="col-sm-8">
+                                            <input asp-for="@updateNews.UploadDate" type="datetime"
+                                                   value="@updateNews.UploadDate.Value.ToString("yyyy-MM-ddTHH:mm")" type="datetime-local" min="@DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm")" class="form-control" required>
+                                            <span asp-validation-for="@updateNews.UploadDate" id="error_message"
+                                                  class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label asp-for="@updateNews.Picture" class="col-sm-4 col-form-label"></label>
-                                    <div class="col-sm-8">
-                                        <img class="profile-pic" style="width:300px; height:300px" src="@updateNews.Picture" />
-                                        <input asp-for="@updateNews.ImageUpload" type="file" class="file-upload" accept=".jpg, .png, .jpeg">
-                                        <input asp-for="@updateNews.Picture" type="text" value="@updateNews.Picture" class="form-control" required hidden>
+                                    <div class="form-group row">
+                                        <label asp-for="@updateNews.Picture" class="col-sm-4 col-form-label"></label>
+                                        <div class="col-sm-8">
+                                            <img class="profile-pic" style="width:300px; height:300px" src="@updateNews.Picture" />
+                                            <input asp-for="@updateNews.ImageUpload" type="file" class="file-upload" accept=".jpg, .png, .jpeg">
+                                            <input asp-for="@updateNews.Picture" type="text" value="@updateNews.Picture" class="form-control" required hidden>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label asp-for="@updateNews.NewsContent" class="col-sm-4 col-form-label"></label>
-                                    <div class="col-sm-8">
-                                        <textarea asp-for="@updateNews.NewsContent" value="@updateNews.NewsContent" type="text" placeholder="Content..." class="form-control" rows="3" required></textarea>
-                                        <span asp-validation-for="@updateNews.NewsContent" id="error_message"
-                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                    <div class="form-group row">
+                                        <label asp-for="@updateNews.NewsContent" class="col-sm-4 col-form-label"></label>
+                                        <div class="col-sm-8">
+                                            <textarea asp-for="@updateNews.NewsContent" value="@updateNews.NewsContent" type="text" placeholder="Content..." class="form-control" rows="3" required></textarea>
+                                            <span asp-validation-for="@updateNews.NewsContent" id="error_message"
+                                                  class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label asp-for="@updateNews.Status" class="col-sm-4 col-form-label">Status:</label>
-                                    <div class="col-sm-8">
-                                        <select class="form-control" asp-for="@updateNews.Status" asp-items="@updateNews.DefaultNewsStatusSelectList" class="custom-select" required></select>
-                                        <span asp-validation-for="@updateNews.Status" id="error_message"
-                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                    <div class="form-group row">
+                                        <label asp-for="@updateNews.Status" class="col-sm-4 col-form-label">Status:</label>
+                                        <div class="col-sm-8">
+                                            <select class="form-control" asp-for="@updateNews.Status" asp-items="@updateNews.DefaultNewsStatusSelectList" class="custom-select" required></select>
+                                            <span asp-validation-for="@updateNews.Status" id="error_message"
+                                                  class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="modal-footer justify-content-center">
-                        <button class="btn btn-success" type="submit" value="Update">Save</button>
-                        <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
-                    </div>
-                </form>
+                        <div class="modal-footer justify-content-center">
+                            <button class="btn btn-success" type="submit" value="Update">Save</button>
+                            <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
-    <script src="~/ckeditor/ckeditor.js"></script>
-    <script src="~/ckfinder/ckfinder.js"></script>
-    <script>
+        <script src="~/ckeditor/ckeditor.js"></script>
+        <script src="~/ckfinder/ckfinder.js"></script>
+        <script>
 
-        var editor = CKEDITOR.replace('updateNews.NewsContent');
-        CKFinder.setupCKEditor(editor, 'ckfinder/');
-        data["updateNews.NewsContent"] = editor.getData();
-    </script>
+            var editor = CKEDITOR.replace('updateNews.NewsContent');
+            CKFinder.setupCKEditor(editor, 'ckfinder/');
+            data["updateNews.NewsContent"] = editor.getData();
+        </script>
+    }
 </body>
 </html>

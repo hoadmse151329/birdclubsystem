@@ -41,11 +41,10 @@ namespace WebAppMVC.Services.Implements
         {
             AuthenAPI_URL += "/Login";
 
-            AuthenRequest authenRequest = new()
-            {
-                Username = _config.GetSection(Constants.Constants.SYSTEM_DEFAULT_ACCOUNT_USR_NAME).Value,
-                Password = _config.GetSection(Constants.Constants.SYSTEM_DEFAULT_ACCOUNT_USR_PASSWORD).Value
-            };
+            AuthenRequest authenRequest = new(
+                userName: _config.GetSection(Constants.Constants.SYSTEM_DEFAULT_ACCOUNT_USR_NAME).Value,
+                passWord: _config.GetSection(Constants.Constants.SYSTEM_DEFAULT_ACCOUNT_USR_PASSWORD).Value
+                );
 
             var authenResponse = await methcall.CallMethodReturnObject<GetAuthenResponse>(
                 _httpClient: client,

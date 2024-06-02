@@ -23,13 +23,12 @@ namespace WebAPI.Controllers
             _config = config;
             _newsService = newsService;
         }
-        [HttpPost("All")]
-        [Authorize("Manager")]
+        [HttpGet("All")]
+        [Authorize(Roles = "Manager")]
         [ProducesResponseType(typeof(List<NewsViewModel>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetAllNews(
-            [FromBody] string? role
             )
         {
             try
@@ -60,12 +59,12 @@ namespace WebAPI.Controllers
                 });
             }
         }
-        [HttpPost("Search")]
+        [HttpGet("SearchForMemberOrGuest")]
+        [Authorize(Roles = "Member,Guest")]
         [ProducesResponseType(typeof(List<NewsViewModel>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> GetMeetingsByAttributes(
-            [FromBody] string? role,
+        public async Task<IActionResult> SearchNewsByAttributes(
             [FromQuery] string? title,
             [FromQuery] string? userName,
             [FromQuery] List<string>? category,
@@ -75,11 +74,7 @@ namespace WebAPI.Controllers
         {
             try
             {
-                bool isMemberOrGuest = false;
-                if (string.IsNullOrEmpty(role) || string.IsNullOrWhiteSpace(role) || role.Equals("Member") || role.Equals("Guest"))
-                {
-                    isMemberOrGuest = true;
-                }
+                bool isMemberOrGuest = true;
                 int? usrID = null;
                 if (!string.IsNullOrEmpty(userName) && !string.IsNullOrWhiteSpace(userName))
                 {
@@ -87,6 +82,64 @@ namespace WebAPI.Controllers
                     if (usrIDresult > 0)
                     {
                         usrID = usrIDresult;
+                    }
+                }
+                var result = await _newsService.GetSortedNews(
+                    title: title,
+                    categories: category,
+                    uploadDate: uploadDate,
+                    statuses: status,
+                    orderBy: orderBy,
+                    userId: usrID,
+                    isMemberOrGuest: isMemberOrGuest);
+                if (result == null)
+                {
+                    return NotFound(new
+                    {
+                        Status = false,
+                        ErrorMessage = "List of News Not Found!"
+                    });
+                }
+
+                return Ok(new
+                {
+                    Status = true,
+                    Data = result
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new
+                {
+                    Status = false,
+                    ErrorMessage = ex.Message,
+                    InnerExceptionMessage = ex.InnerException?.Message
+                });
+            }
+        }
+        [HttpPost("Search")]
+        [Authorize(Roles = "Manager")]
+        [ProducesResponseType(typeof(List<NewsViewModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> SearchNewsByAttributesManager(
+            [FromBody][Required] string? memberId,
+            [FromQuery] string? title,
+            [FromQuery] List<string>? category,
+            [FromQuery] DateTime? uploadDate,
+            [FromQuery] List<string>? status,
+            [FromQuery] string? orderBy)
+        {
+            try
+            {
+                bool isMemberOrGuest = false;
+                int? usrID = null;
+                if (!string.IsNullOrEmpty(memberId) && !string.IsNullOrWhiteSpace(memberId))
+                {
+                    var usrIDresult = await _userService.GetByMemberId(memberId);
+                    if (usrIDresult.UserId > 0)
+                    {
+                        usrID = usrIDresult.UserId;
                     }
                 }
                 var result = await _newsService.GetSortedNews(

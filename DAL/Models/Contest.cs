@@ -11,6 +11,7 @@ namespace DAL.Models
     {
         public Contest()
         {
+            ContestAssignments = new HashSet<ContestAssignment>();
             ContestPictures = new HashSet<ContestMedia>();
             ContestParticipants = new HashSet<ContestParticipant>();
         }
@@ -20,7 +21,7 @@ namespace DAL.Models
         public int ContestId { get; set; }
         [Column("contestName")]
         [StringLength(255)]
-        public string ContestName { get; set; } = null!;
+        public string? ContestName { get; set; }
         [Column("description")]
         public string? Description { get; set; }
         [Column("openRegistration", TypeName = "datetime")]
@@ -65,9 +66,11 @@ namespace DAL.Models
         [Column("numberOfParticipantsLimit")]
         public int? NumberOfParticipantsLimit { get; set; }
 
+        [InverseProperty(nameof(ContestAssignment.ContestDetails))]
+        public virtual ICollection<ContestAssignment> ContestAssignments { get; set; }
         [InverseProperty(nameof(ContestMedia.ContestDetail))]
         public virtual ICollection<ContestMedia> ContestPictures { get; set; }
-        [InverseProperty(nameof(ContestParticipant.ContestDetail))]
+        [InverseProperty(nameof(ContestParticipant.ContestDetails))]
         public virtual ICollection<ContestParticipant> ContestParticipants { get; set; }
     }
 }

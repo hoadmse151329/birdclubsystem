@@ -34,15 +34,31 @@
                 <div class="overlap">
                     <div class="headlines">
                         <div class="group">
+                        @if (TempData["Success"] != null)
+                        {
+                            <div class="alert alert-success alert-dismissible fade show" id="notif">
+                                <i class='bx bx-message-alt-x p-1'></i>
+                                <strong class="mr-1">@TempData["Success"]</strong>
+                                <button type="button" class="close h-100" data-dismiss="alert" aria-label="Close">
+                                    <span><i class='bx bx-x'></i></span>
+                                </button>
+                            </div>
+                            TempData["Success"] = null;
+                        }
+                        else if (TempData["Error"] != null)
+                        {
+                            <div class="alert alert-danger alert-dismissible fade show" id="notif">
+                                <i class='bx bx-message-alt-x p-1'></i>
+                                <strong class="mr-1">@TempData["Error"]</strong>
+                                <button type="button" class="close h-100" data-dismiss="alert" aria-label="Close">
+                                    <span><i class='bx bx-x'></i></span>
+                                </button>
+                            </div>
+                            TempData["Error"] = null;
+                        }
                             <div class="overlap-2">
                                 <div class="flexcontainer">
                                     <p class="text">
-                                        @{
-                                            if (ViewBag.error != null)
-                                            {
-                                                    <span class="text-danger">@ViewBag.error</span>
-                                            }
-                                        }
                                         <span class="text-wrapper">Content<br /></span>
                                     </p>
                                     <p class="span-wrapper">

@@ -1,9 +1,11 @@
-﻿@model dynamic
+﻿@model WebAppMVC.Models.ViewModels.ManagerBlogDetailsVM
 @{
     Layout = null;
-    ViewData["Title"] = "Manager Meeting Detail Page";
-    BAL.ViewModels.MeetingViewModel details = Model.MeetingDetails;
-    List<BAL.ViewModels.MeetingParticipantViewModel> parts = Model.MeetingParticipants;
+    ViewData["Title"] = "Manager Blog Detail Page";
+    BAL.ViewModels.BlogViewModel detailsBlog = Model.Blog;
+    BAL.ViewModels.Blog.UpdateBlogStatus updateBlogStatus = Model.updateBlogStatus;
+    List<BAL.ViewModels.CommentViewModel> comments = Model.Blog.Comments;
+    updateBlogStatus.Status = detailsBlog.Status;
     Layout = "~/Views/Shared/_MLayout.cshtml";
 }
 <html lang="en">
@@ -28,120 +30,126 @@
                         </ol>
                     </div>
                 </div>
+                @if (TempData["Success"] != null)
+                {
+                    <div class="alert alert-success alert-dismissible fade show" id="notif">
+                        <i class='bx bx-message-alt-x p-1'></i>
+                        <strong class="mr-1">@TempData["Success"]</strong>
+                        <button type="button" class="close h-100" data-dismiss="alert" aria-label="Close">
+                            <span><i class='bx bx-x'></i></span>
+                        </button>
+                    </div>
+                    TempData["Success"] = null;
+                }
+                else if (TempData["Error"] != null)
+                {
+                    <div class="alert alert-danger alert-dismissible fade show" id="notif">
+                        <i class='bx bx-message-alt-x p-1'></i>
+                        <strong class="mr-1">@TempData["Error"]</strong>
+                        <button type="button" class="close h-100" data-dismiss="alert" aria-label="Close">
+                            <span><i class='bx bx-x'></i></span>
+                        </button>
+                    </div>
+                    TempData["Error"] = null;
+                }
                 <div class="row">
                     <div class="col-7 customer-booking">
                         <div class="row">
                             <div class="card profile col-12 mb-4">
                                 <div class="card-header">
-                                    <h4>Meeting Status</h4>
+                                    <h4>Blog post Information</h4>
+                                    @{
+                                        if (!(detailsBlog.Status.Equals("Disabled")))
+                                        {
+                                            <div class="edit-info">
+                                                <i class='bx bxs-edit-alt' data-toggle="modal" data-target="#editblog"></i>
+                                            </div>
+                                        }
+                                    }
                                 </div>
                                 <div class="card-body">
-                                    <div class="row mb-sm-2">
+                                    <div class="row">
+                                        <div class="col-md-5 text-md-right">
+                                            <label for="meeting-name">Blog ID:</label>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <span>@detailsBlog.BlogId</span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
                                         <div class="col-sm-5 text-sm-right">
                                             <span>Status:</span>
                                         </div>
                                         <div class="col-sm-7">
-                                            <span class="destroy" style="float: left;">@details.Status</span>
+                                            @{
+                                                switch (detailsBlog.Status)
+                                                {
+                                                    case "Active":
+                                                        {
+                                                            <span class="outcome" style="float: left;">@detailsBlog.Status</span>
+                                                            break;
+                                                        }
+                                                    case "Draft":
+                                                    case "Hidden":
+                                                        {
+                                                            <span class="approval" style="float: left;">@detailsBlog.Status</span>
+                                                            break;
+                                                        }
+                                                    case "Archived":
+                                                    case "Reported":
+                                                    case "Disabled":
+                                                        {
+                                                            <span class="destroy" style="float: left;">@detailsBlog.Status</span>
+                                                            break;
+                                                        }
+                                                }
+                                            }
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="card profile col-12 mb-4">
-                                <div class="card-header">
-                                    <h4>Meeting Information</h4>
-                                    <div class="edit-info">
-                                        <i class='bx bxs-edit-alt' data-toggle="modal" data-target="#editprofile"></i>
-                                    </div>
-                                </div>
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-md-5 text-md-right">
-                                            <label for="meeting-name">Meeting Name:</label>
-                                        </div>
-                                        <div class="col-md-7">
-                                            <span>@details.MeetingName</span>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-5 text-md-right">
-                                            <label for="customer-name">Registration Deadlines:</label>
-                                        </div>
-                                        <div class="col-md-7">
-                                            <span>@details.RegistrationDeadline.ToString("MM/dd/yyyy")</span>
-                                        </div>
+                                    <div class="row mb-sm-2">
+                                        Blog Post Main Image
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-5 text-md-right">
-                                            <label for="customer-name">Start Date:</label>
+                                        <span> <img src="@detailsBlog.Image" /></span>
+                                    </div>
+                                    <div class="row mb-sm-2">
+                                        <div class="col-sm-5 text-sm-right">
+                                            <span>Member Fullname:</span>
                                         </div>
-                                        <div class="col-md-7">
-                                            <span>@details.StartDate.ToString("MM/dd/yyyy")</span>
+                                        <div class="col-sm-7 text-sm-left">
+                                            <span>@detailsBlog.Fullname</span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-sm-2">
+                                        <div class="col-sm-5 text-sm-right">
+                                            <span>Category:</span>
+                                        </div>
+                                        <div class="col-sm-7 text-sm-left">
+                                            <span>@detailsBlog.Category</span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-sm-2">
+                                        <div class="col-sm-5 text-sm-right">
+                                            <span>Vote:</span>
+                                        </div>
+                                        <div class="col-sm-7 text-sm-left">
+                                            <span>@detailsBlog.Vote</span>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-5 text-md-right">
-                                            <label for="customer-name">End Date:</label>
+                                            <label for="customer-name">Upload Date:</label>
                                         </div>
                                         <div class="col-md-7">
-                                            <span>@details.EndDate.ToString("MM/dd/yyyy")</span>
+                                            <span>@detailsBlog.UploadDate.Value.ToString("MM/dd/yyyy HH:mm")</span>
                                         </div>
                                     </div>
-                                    <div class="row mb-sm-2">
-                                        <div class="col-sm-5 text-sm-right">
-                                            <span>Host:</span>
+                                    <div class="row">
+                                        <div class="col-md-5 text-md-right">
+                                            <label for="meeting-name">Blog Post Details:</label>
                                         </div>
-                                        <div class="col-sm-7 text-sm-left">
-                                            <span>@details.Host</span>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-sm-2">
-                                        <div class="col-sm-5 text-sm-right">
-                                            <span>Incharge:</span>
-                                        </div>
-                                        <div class="col-sm-7 text-sm-left">
-                                            <span>@details.Incharge</span>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-sm-2">
-                                        <div class="col-sm-5 text-sm-right">
-                                            <span>Maximum Participations:</span>
-                                        </div>
-                                        <div class="col-sm-7 text-sm-left">
-                                            <span>@details.NumberOfParticipantsLimit</span>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-sm-2">
-                                        <div class="col-sm-5 text-sm-right">
-                                            <span>Remaining Participant Slots:</span>
-                                        </div>
-                                        <div class="col-sm-7 text-sm-left">
-                                            <span>@details.NumberOfParticipants</span>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-sm-2">
-                                        <div class="col-sm-5 text-sm-right">
-                                            <span>Location:</span>
-                                        </div>
-                                        <div class="col-sm-7 text-sm-left">
-                                            <span>@details.AreaNumber,@details.Street,@details.District,@details.City</span>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-sm-2">
-                                        <div class="col-sm-5 text-sm-right">
-                                            <span>Description:</span>
-                                        </div>
-                                        <div class="col-sm-7 text-sm-left">
-                                            <span>@details.Description</span>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-sm-2">
-                                        <div class="col-sm-5 text-sm-right">
-                                            <span>Note:</span>
-                                        </div>
-                                        <div class="col-sm-7 text-sm-left">
-                                            <span>@details.Note</span>
+                                        <div class="col-md-7">
+                                            <span>@Html.Raw(detailsBlog.Description)</span>
                                         </div>
                                     </div>
                                 </div>
@@ -152,22 +160,24 @@
                     <div class="col-lg-5 cardFB">
                         <div class="card border-0 d-flex">
                             <div class="card-header">
-                                <h4>Participants</h4>
+                                <h4>Comments</h4>
                             </div>
                             <div class="card-body">
                                 <table class="table table-hover table-borderless">
                                     <thead>
                                         <tr>
-                                            <th>Participant No:</th>
-                                            <th>Name:</th>
+                                            <th>Member Name:</th>
+                                            <th>Comment Date:</th>
+                                            <th>Description:</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach(var part in parts)
+                                        @foreach (var part in comments)
                                         {
                                             <tr>
-                                                <td>@part.ParticipantNo</td>
-                                                <td>@part.MemberName</td>
+                                                <td>@part.UserFullName</td>
+                                                <td>@part.Date</td>
+                                                <td>@part.Description</td>
                                             </tr>
                                         }
                                         <tr>
@@ -175,7 +185,6 @@
                                     </tbody>
                                 </table>
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -184,131 +193,38 @@
     </div>
 
     <!-- edit Room -->
-    <div id="editprofile" class="modal fade" role="dialog">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
-            <div class="modal-content modal-addRoom">
-                <div class="modal-header">
-                    <h4 class="modal-title">Edit Meeting</h4>
-                </div>
-                <form asp-action="ManagerUpdateMeetingDetail" asp-controller="Manager" method="post" asp-route-id="@details.MeetingId" class="form-group">
-                    <div class="modal-body">
-                        <div class="row justify-content-center">
-                            <div class="col-12 col-md-6">
-                                <div class="form-group row">
-                                    <label asp-for="@details.MeetingName" class="col-sm-4 col-form-label">Meeting Name:</label>
-                                    <div class="col-sm-8">
-                                        <input asp-for="@details.MeetingName" id="meetingname" type="text" name="meetingname"
-                                               value="@details.MeetingName" class="form-control" required>
-                                        <span asp-validation-for="@details.MeetingName" id="error_message"
-                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+    @if (!(detailsBlog.Status.Equals("Disabled")))
+    {
+        <div id="editblog" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
+                <div class="modal-content modal-addRoom">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Update Blog Status</h4>
+                    </div>
+                    <form asp-action="ManagerUpdateBlogStatus" asp-controller="Manager" method="post" asp-route-id="@detailsBlog.BlogId" class="form-group">
+                        <div class="modal-body">
+                            <div class="row justify-content-center">
+                                <div class="col-12 col-md-12">
+                                    <input asp-for="@updateBlogStatus.BlogId" value="@detailsBlog.BlogId" type="number" class="form-group" required hidden />
+                                    <div class="form-group row">
+                                        <label asp-for="@updateBlogStatus.Status" class="col-sm-4 col-form-label"></label>
+                                        <div class="col-sm-8">
+                                            <select asp-for="@updateBlogStatus.Status" asp-items="@updateBlogStatus.DefaultBlogStatusSelectList" class="form-control custom-select" required></select>
+                                            <span asp-validation-for="@updateBlogStatus.Status" id="error_message"
+                                                  class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="form-group row">
-                                <label asp-for="@details.RegistrationDeadline" class="col-sm-4 col-form-label">Registration Deadlines:</label>
-                                    <div class="col-sm-8">
-                                    <input asp-for="@details.RegistrationDeadline" id="RegistrationDeadline" type="date" name="RegistrationDeadline"
-                                               value="@details.RegistrationDeadline.ToString("yyyy-MM-dd")" class="form-control" required>
-                                    <span asp-validation-for="@details.RegistrationDeadline" id="error_message"
-                                            class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                <label asp-for="@details.StartDate" class="col-sm-4 col-form-label">Start date:</label>
-                                    <div class="col-sm-8">
-                                    <input asp-for="@details.StartDate" id="StartDate" type="date" name="StartDate"
-                                               value="@details.StartDate.ToString("yyyy-MM-dd")" class="form-control" required>
-                                    <span asp-validation-for="@details.StartDate" id="error_message"
-                                            class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                <label asp-for="@details.EndDate" class="col-sm-4 col-form-label">End date:</label>
-                                    <div class="col-sm-8">
-                                    <input asp-for="@details.EndDate" id="EndDate" type="date" name="EndDate"
-                                            value="@details.EndDate.ToString("yyyy-MM-dd")" class="form-control" required>
-                                    <span asp-validation-for="@details.EndDate" id="error_message"
-                                            class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                <label asp-for="@details.Host" class="col-sm-4 col-form-label">Host:</label>
-                                    <div class="col-sm-8">
-                                    <input asp-for="@details.Host" id="Host" type="text" name="Host"
-                                            value="@details.Host" class="form-control" required>
-                                    <span asp-validation-for="@details.Host" id="error_message"
-                                            class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                <label asp-for="@details.Incharge" class="col-sm-4 col-form-label">Incharge:</label>
-                                    <div class="col-sm-8">
-                                    <input asp-for="@details.Incharge" id="Incharge" type="text" name="Incharge"
-                                            value="@details.Incharge" class="form-control" required>
-                                    <span asp-validation-for="@details.Incharge" id="error_message"
-                                            class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-6">
-                                <div class="form-group row">
-                                    <label asp-for="@details.NumberOfParticipantsLimit" class="col-sm-4 col-form-label">Maximum Participantions:</label>
-                                    <div class="col-sm-8">
-                                        <input asp-for="@details.NumberOfParticipantsLimit" id="NumberOfParticipantsLimit" type="number" name="NumberOfParticipantsLimit"
-                                               value="@details.NumberOfParticipantsLimit" class="form-control" required>
-                                        <span asp-validation-for="@details.NumberOfParticipantsLimit" id="error_message"
-                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label asp-for="@details.Address" class="col-sm-4 col-form-label">Location</label>
-                                    <div class="col-sm-8">
-                                        <input asp-for="@details.Address" id="Address" type="text" name="Address"
-                                               value="@details.Address" class="form-control" required>
-                                        <span asp-validation-for="@details.Address" id="error_message"
-                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label asp-for="@details.Description" class="col-sm-4 col-form-label">Description</label>
-                                    <div class="col-sm-8">
-                                        <input asp-for="@details.Description" id="Description" type="text" name="Description"
-                                               value="@details.Description" class="form-control" required>
-                                        <span asp-validation-for="@details.Description" id="error_message"
-                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label asp-for="@details.Note" class="col-sm-4 col-form-label">Note</label>
-                                    <div class="col-sm-8">
-                                        <input asp-for="@details.Note" id="Note" type="text" name="Note"
-                                               value="@details.Note" class="form-control" required>
-                                        <span asp-validation-for="@details.Note" id="error_message"
-                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                <label asp-for="@details.Status" class="col-sm-4 col-form-label">Status:</label>
-                                    <div class="col-sm-8">
-                                    <input asp-for="@details.Status" id="Status" type="text" name="Status"
-                                            value="@details.Status" class="form-control" required>
-                                    <span asp-validation-for="@details.Status" id="error_message"
-                                            class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                    </div>
-                                </div>
-                                <input asp-for="@details.NumberOfParticipants" id="NumberOfParticipants" type="number" name="NumberOfParticipants"
-                                       value="@details.NumberOfParticipants" class="form-control" required hidden>
-                                <span asp-validation-for="@details.NumberOfParticipants" id="error_message"
-                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                             </div>
                         </div>
-                    </div>
-                    <div class="modal-footer justify-content-center">
-                        <button class="btn btn-success" type="submit" value="Update">Save</button>
-                        <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
-                    </div>
-                </form>
+                        <div class="modal-footer justify-content-center">
+                            <button class="btn btn-success" type="submit" value="Update">Save</button>
+                            <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
+    }
 </body>
 </html>

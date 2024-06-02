@@ -97,7 +97,7 @@
                                                 <form asp-action="ManagerNews" asp-controller="Manager" method="get" asp-route-search="@search">                   
                                                     <div>
                                                         <label>
-                                                            <input asp-for="@search" class="form-control" type="text" name="search" placeholder="Search..." value="@search">
+                                                            <input asp-for="@search" class="form-control" type="text" placeholder="Search News Title..." value="@search">
                                                             <i class='bx bx-search-alt'></i>
                                                         </label>
                                                     </div>
@@ -157,7 +157,7 @@
                                                                 </li>
                                                                 <li>
                                                                     <h6>Upload Date:</h6>
-                                                                    <span>@data.UploadDate.Value.ToString("MM/dd/yyyy")</span>
+                                                                    <span>@data.UploadDate.Value.ToString("MM/dd/yyyy HH:mm")</span>
                                                                 </li>
                                                                 <li>
                                                                     <h6>Category:</h6>

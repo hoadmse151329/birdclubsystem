@@ -28,6 +28,7 @@ using WebAppMVC.Models.Blog;
 using BAL.ViewModels.News;
 using Microsoft.AspNetCore.Authorization;
 using AutoMapper;
+using BAL.ViewModels.Blog;
 // thêm crud của meeting, fieldtrip, contest.
 namespace WebAppMVC.Controllers
 {
@@ -127,14 +128,14 @@ namespace WebAppMVC.Controllers
             {
                 _logger.LogInformation(
                     "Error while processing your request! (Getting List Meeting!). List was Empty!: " + listMeetResponse);
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting List Meeting!).\n List was Empty!";
                 return RedirectToAction("ManagerIndex");
             }
             else
             if (!listMeetResponse.Status || !listLocationResponse.Status)
             {
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting List Meeting!).\n"
                     + listMeetResponse.ErrorMessage + "\n" + listLocationResponse.ErrorMessage;
                 return RedirectToAction("ManagerIndex");
@@ -177,14 +178,14 @@ namespace WebAppMVC.Controllers
                                 _logger: _logger);
             if (meetPostResponse == null)
             {
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting Meeting!).\n Meeting Not Found!";
                 return RedirectToAction("ManagerMeeting");
             }
             if (!meetPostResponse.Status)
             {
                 _logger.LogInformation("Error while processing your request: " + meetPostResponse.Status + " , Error Message: " + meetPostResponse.ErrorMessage);
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting Meeting Post!).\n"
                     + meetPostResponse.ErrorMessage;
                 return RedirectToAction("ManagerMeeting");
@@ -238,7 +239,7 @@ namespace WebAppMVC.Controllers
             {
                 TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_MEETING_VALID, updateMeeting, jsonOptions);
 
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Updating Meeting!).\n Meeting Not Found!";
                 return RedirectToAction("ManagerMeetingDetail", new { id });
             }
@@ -247,7 +248,7 @@ namespace WebAppMVC.Controllers
                 TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_MEETING_VALID, updateMeeting, jsonOptions);
 
                 _logger.LogInformation("Error while processing your request: " + meetPostResponse.Status + " , Error Message: " + meetPostResponse.ErrorMessage);
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Updating Meeting Post!).\n"
                     + meetPostResponse.ErrorMessage;
                 return RedirectToAction("ManagerMeetingDetail", new { id });
@@ -283,7 +284,7 @@ namespace WebAppMVC.Controllers
             {
                 string validJson = JsonSerializer.Serialize(createMeeting, jsonOptions);
                 TempData[Constants.Constants.CREATE_MEETING_VALID] = validJson;
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Create Meeting!).\n Meeting Not Found!";
                 return RedirectToAction("ManagerMeeting");
             }
@@ -292,7 +293,7 @@ namespace WebAppMVC.Controllers
                 string validJson = JsonSerializer.Serialize(createMeeting, jsonOptions);
                 TempData[Constants.Constants.CREATE_MEETING_VALID] = validJson;
                 _logger.LogInformation("Error while processing your request: " + meetPostResponse.Status + " , Error Message: " + meetPostResponse.ErrorMessage);
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Create Meeting Post!).\n"
                     + meetPostResponse.ErrorMessage;
                 return RedirectToAction("ManagerMeeting");
@@ -358,14 +359,14 @@ namespace WebAppMVC.Controllers
                     _logger: _logger);
             if (meetMediaResponse == null)
             {
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Create Meeting Media!).\n Meeting Not Found!";
                 return RedirectToAction("ManagerMeetingDetail", new { id = meetingId });
             }
             if (!meetMediaResponse.Status)
             {
                 _logger.LogInformation("Error while processing your request: " + meetMediaResponse.Status + " , Error Message: " + meetMediaResponse.ErrorMessage);
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Create Meeting Media!).\n"
                     + meetMediaResponse.ErrorMessage;
                 return RedirectToAction("ManagerMeetingDetail", new { id = meetingId });
@@ -396,14 +397,14 @@ namespace WebAppMVC.Controllers
                                 _logger: _logger);
             if (meetPostResponse == null)
             {
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Create Meeting Media!).\n Meeting Not Found!";
                 return RedirectToAction("ManagerMeeting");
             }
             if (!meetPostResponse.Status)
             {
                 _logger.LogInformation("Error while processing your request: " + meetPostResponse.Status + " , Error Message: " + meetPostResponse.ErrorMessage);
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Create Meeting Media!).\n"
                     + meetPostResponse.ErrorMessage;
                 return RedirectToAction("ManagerMeeting");
@@ -451,14 +452,14 @@ namespace WebAppMVC.Controllers
             {
                 _logger.LogInformation(
                     "Error while processing your request! (Getting List FieldTrip!). List was Empty!: " + listLocationResponse + ",\n" + listFieldTripResponse);
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting List FieldTrip!).\n List was Empty!";
                 return RedirectToAction("ManagerIndex");
             }
             else
             if (!listFieldTripResponse.Status || !listLocationResponse.Status)
             {
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting List FieldTrip!).\n"
                     + listFieldTripResponse.ErrorMessage + "\n" + listLocationResponse.ErrorMessage;
                 return RedirectToAction("ManagerIndex");
@@ -499,14 +500,14 @@ namespace WebAppMVC.Controllers
                                 _logger: _logger);
             if (fieldtripPostResponse == null)
             {
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting FieldTrip!).\n FieldTrip Not Found!";
                 return RedirectToAction("ManagerFieldTrip");
             }
             if (!fieldtripPostResponse.Status)
             {
                 _logger.LogInformation("Error while processing your request: " + fieldtripPostResponse.Status + " , Error Message: " + fieldtripPostResponse.ErrorMessage);
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting FieldTrip Post!).\n"
                     + fieldtripPostResponse.ErrorMessage;
                 return RedirectToAction("ManagerFieldTrip");
@@ -577,14 +578,14 @@ namespace WebAppMVC.Controllers
                                 _logger: _logger);
             if (fieldtripPostResponse == null)
             {
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Updating FieldTrip!).\n FieldTrip Not Found!";
                 return RedirectToAction("ManagerFieldTripDetail", new { id });
             }
             if (!fieldtripPostResponse.Status)
             {
                 _logger.LogInformation("Error while processing your request: " + fieldtripPostResponse.Status + " , Error Message: " + fieldtripPostResponse.ErrorMessage);
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Updating FieldTrip Post!).\n"
                     + fieldtripPostResponse.ErrorMessage;
                 return RedirectToAction("ManagerFieldTripDetail", new { id });
@@ -623,14 +624,14 @@ namespace WebAppMVC.Controllers
                                 _logger: _logger);
             if (ftGettingThereResponse == null)
             {
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Updating FieldTrip!).\n FieldTrip Not Found!";
                 return RedirectToAction("ManagerFieldTripDetail", new { id });
             }
             if (!ftGettingThereResponse.Status)
             {
                 _logger.LogInformation("Error while processing your request: " + ftGettingThereResponse.Status + " , Error Message: " + ftGettingThereResponse.ErrorMessage);
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Updating FieldTrip Post!).\n"
                     + ftGettingThereResponse.ErrorMessage;
                 return RedirectToAction("ManagerFieldTripDetail", new { id });
@@ -669,14 +670,14 @@ namespace WebAppMVC.Controllers
                                 _logger: _logger);
             if (ftDayByDayResponse == null)
             {
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Updating FieldTrip!).\n FieldTrip Not Found!";
                 return RedirectToAction("ManagerFieldTripDetail", new { id });
             }
             if (!ftDayByDayResponse.Status)
             {
                 _logger.LogInformation("Error while processing your request: " + ftDayByDayResponse.Status + " , Error Message: " + ftDayByDayResponse.ErrorMessage);
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Updating FieldTrip Post!).\n"
                     + ftDayByDayResponse.ErrorMessage;
                 return RedirectToAction("ManagerFieldTripDetail", new { id });
@@ -716,14 +717,14 @@ namespace WebAppMVC.Controllers
                                 _logger: _logger);
             if (ftInclusionResponse == null)
             {
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Updating FieldTrip!).\n FieldTrip Not Found!";
                 return RedirectToAction("ManagerFieldTripDetail", new { id });
             }
             if (!ftInclusionResponse.Status)
             {
                 _logger.LogInformation("Error while processing your request: " + ftInclusionResponse.Status + " , Error Message: " + ftInclusionResponse.ErrorMessage);
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Updating FieldTrip Post!).\n"
                     + ftInclusionResponse.ErrorMessage;
                 return RedirectToAction("ManagerFieldTripDetail", new { id });
@@ -763,14 +764,14 @@ namespace WebAppMVC.Controllers
                                 _logger: _logger);
             if (ftTourFeaturesResponse == null)
             {
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Updating FieldTrip!).\n FieldTrip Not Found!";
                 return RedirectToAction("ManagerFieldTripDetail", new { id });
             }
             if (!ftTourFeaturesResponse.Status)
             {
                 _logger.LogInformation("Error while processing your request: " + ftTourFeaturesResponse.Status + " , Error Message: " + ftTourFeaturesResponse.ErrorMessage);
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Updating FieldTrip Post!).\n"
                     + ftTourFeaturesResponse.ErrorMessage;
                 return RedirectToAction("ManagerFieldTripDetail", new { id });
@@ -810,14 +811,14 @@ namespace WebAppMVC.Controllers
                                 _logger: _logger);
             if (ftImportantResponse == null)
             {
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Updating FieldTrip!).\n FieldTrip Not Found!";
                 return RedirectToAction("ManagerFieldTripDetail", new { id });
             }
             if (!ftImportantResponse.Status)
             {
                 _logger.LogInformation("Error while processing your request: " + ftImportantResponse.Status + " , Error Message: " + ftImportantResponse.ErrorMessage);
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Updating FieldTrip Post!).\n"
                     + ftImportantResponse.ErrorMessage;
                 return RedirectToAction("ManagerFieldTripDetail", new { id });
@@ -857,14 +858,14 @@ namespace WebAppMVC.Controllers
                                 _logger: _logger);
             if (ftActAndTrasResponse == null)
             {
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Updating FieldTrip!).\n FieldTrip Not Found!";
                 return RedirectToAction("ManagerFieldTripDetail", new { id });
             }
             if (!ftActAndTrasResponse.Status)
             {
                 _logger.LogInformation("Error while processing your request: " + ftActAndTrasResponse.Status + " , Error Message: " + ftActAndTrasResponse.ErrorMessage);
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Updating FieldTrip Post!).\n"
                     + ftActAndTrasResponse.ErrorMessage;
                 return RedirectToAction("ManagerFieldTripDetail", new { id });
@@ -900,14 +901,14 @@ namespace WebAppMVC.Controllers
                                 _logger: _logger);
             if (fieldtripPostResponse == null)
             {
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Create FieldTrip!).\n Meeting Not Found!";
                 return RedirectToAction("ManagerFieldTrip");
             }
             if (!fieldtripPostResponse.Status)
             {
                 _logger.LogInformation("Error while processing your request: " + fieldtripPostResponse.Status + " , Error Message: " + fieldtripPostResponse.ErrorMessage);
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Create Meeting Post!).\n"
                     + fieldtripPostResponse.ErrorMessage;
                 return RedirectToAction("ManagerFieldTrip");
@@ -947,14 +948,14 @@ namespace WebAppMVC.Controllers
                                 _logger: _logger);
             if (ftDayByDayResponse == null)
             {
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Create FieldTrip!).\n Meeting Not Found!";
                 return RedirectToAction("ManagerFieldTripDetail", new { id = tripId });
             }
             if (!ftDayByDayResponse.Status)
             {
                 _logger.LogInformation("Error while processing your request: " + ftDayByDayResponse.Status + " , Error Message: " + ftDayByDayResponse.ErrorMessage);
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Create Meeting Post!).\n"
                     + ftDayByDayResponse.ErrorMessage;
                 return RedirectToAction("ManagerFieldTripDetail", new { id = tripId });
@@ -994,14 +995,14 @@ namespace WebAppMVC.Controllers
                                 _logger: _logger);
             if (ftInclusionResponse == null)
             {
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Create FieldTrip!).\n Meeting Not Found!";
                 return RedirectToAction("ManagerFieldTripDetail", new { id = tripId });
             }
             if (!ftInclusionResponse.Status)
             {
                 _logger.LogInformation("Error while processing your request: " + ftInclusionResponse.Status + " , Error Message: " + ftInclusionResponse.ErrorMessage);
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Create Meeting Post!).\n"
                     + ftInclusionResponse.ErrorMessage;
                 return RedirectToAction("ManagerFieldTripDetail", new { id = tripId });
@@ -1041,14 +1042,14 @@ namespace WebAppMVC.Controllers
                                 _logger: _logger);
             if (ftDayByDayResponse == null)
             {
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Create FieldTrip!).\n Meeting Not Found!";
                 return RedirectToAction("ManagerFieldTripDetail", new { id = tripId });
             }
             if (!ftDayByDayResponse.Status)
             {
                 _logger.LogInformation("Error while processing your request: " + ftDayByDayResponse.Status + " , Error Message: " + ftDayByDayResponse.ErrorMessage);
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Create Meeting Post!).\n"
                     + ftDayByDayResponse.ErrorMessage;
                 return RedirectToAction("ManagerFieldTripDetail", new { id = tripId });
@@ -1088,14 +1089,14 @@ namespace WebAppMVC.Controllers
                                 _logger: _logger);
             if (ftImportantResponse == null)
             {
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Create FieldTrip!).\n Meeting Not Found!";
                 return RedirectToAction("ManagerFieldTripDetail", new { id = tripId });
             }
             if (!ftImportantResponse.Status)
             {
                 _logger.LogInformation("Error while processing your request: " + ftImportantResponse.Status + " , Error Message: " + ftImportantResponse.ErrorMessage);
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Create Meeting Post!).\n"
                     + ftImportantResponse.ErrorMessage;
                 return RedirectToAction("ManagerFieldTripDetail", new { id = tripId });
@@ -1133,14 +1134,14 @@ namespace WebAppMVC.Controllers
                                 _logger: _logger);
             if (ftActAndTrasResponse == null)
             {
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Create FieldTrip!).\n Meeting Not Found!";
                 return RedirectToAction("ManagerFieldTripDetail", new { id = tripId });
             }
             if (!ftActAndTrasResponse.Status)
             {
                 _logger.LogInformation("Error while processing your request: " + ftActAndTrasResponse.Status + " , Error Message: " + ftActAndTrasResponse.ErrorMessage);
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Create Meeting Post!).\n"
                     + ftActAndTrasResponse.ErrorMessage;
                 return RedirectToAction("ManagerFieldTripDetail", new { id = tripId });
@@ -1171,14 +1172,14 @@ namespace WebAppMVC.Controllers
                                 _logger: _logger);
             if (fieldtripPostResponse == null)
             {
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Updating FieldTrip!).\n Meeting Not Found!";
                 return RedirectToAction("ManagerFieldTrip");
             }
             if (!fieldtripPostResponse.Status)
             {
                 _logger.LogInformation("Error while processing your request: " + fieldtripPostResponse.Status + " , Error Message: " + fieldtripPostResponse.ErrorMessage);
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Updating FieldTrip Post!).\n"
                     + fieldtripPostResponse.ErrorMessage;
                 return RedirectToAction("ManagerFieldTrip");
@@ -1225,14 +1226,14 @@ namespace WebAppMVC.Controllers
             {
                 _logger.LogInformation(
                     "Error while processing your request! (Getting List Contest!). List was Empty!: " + listContestResponse);
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting List Contest!).\n List was Empty!";
                 return RedirectToAction("ManagerIndex");
             }
             else
             if (!listContestResponse.Status || !listLocationResponse.Status)
             {
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting List Meeting!).\n"
                     + listContestResponse.ErrorMessage + "\n" + listLocationResponse.ErrorMessage;
                 return RedirectToAction("ManagerIndex");
@@ -1274,14 +1275,14 @@ namespace WebAppMVC.Controllers
                                 _logger: _logger);
             if (contestPostResponse == null)
             {
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting Contest!).\n Contest Not Found!";
                 return RedirectToAction("ManagerContest");
             }
             if (!contestPostResponse.Status || contestpartPostResponse.Data == null)
             {
                 _logger.LogInformation("Error while processing your request: " + contestPostResponse.Status + " , Error Message: " + contestPostResponse.ErrorMessage);
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting Contest Post!).\n"
                     + contestPostResponse.ErrorMessage;
                 return RedirectToAction("ManagerContest");
@@ -1334,14 +1335,14 @@ namespace WebAppMVC.Controllers
                                 _logger: _logger);
             if (contestPostResponse == null)
             {
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Updating Contest!).\n Contest Not Found!";
                 return RedirectToAction("ManagerContestDetail", "Manager", new { id });
             }
             if (!contestPostResponse.Status)
             {
                 _logger.LogInformation("Error while processing your request: " + contestPostResponse.Status + " , Error Message: " + contestPostResponse.ErrorMessage);
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Updating Contest Post!).\n"
                     + contestPostResponse.ErrorMessage;
                 return RedirectToAction("ManagerContestDetail", "Manager", new { id });
@@ -1357,14 +1358,14 @@ namespace WebAppMVC.Controllers
                                 _logger: _logger);
                 if (contestpartPostResponse == null)
                 {
-                    ViewBag.Error =
+                    TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                         "Error while processing your request! (Updating Contest!).\n Contest Not Found!";
                     return RedirectToAction("ManagerContestDetail", "Manager", new { id });
                 }
                 if (!contestpartPostResponse.Status)
                 {
                     _logger.LogInformation("Error while processing your request: " + contestpartPostResponse.Status + " , Error Message: " + contestpartPostResponse.ErrorMessage);
-                    ViewBag.Error =
+                    TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                         "Error while processing your request! (Updating Contest Post!).\n"
                         + contestpartPostResponse.ErrorMessage;
                     return RedirectToAction("ManagerContestDetail", "Manager", new { id });
@@ -1386,14 +1387,14 @@ namespace WebAppMVC.Controllers
                 {
                     _logger.LogInformation(
                         "Error while processing your request! (Getting List Contest Participant Score!). List was Empty!: " + contestLastUpdateResponse);
-                    ViewBag.Error =
+                    TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                         "Error while processing your request! (Getting List Contest Participant Score!).\n List was Empty!";
                     return RedirectToAction("ManagerContestDetail", "Manager", new { id });
                 }
                 else
                 if (!contestLastUpdateResponse.Status)
                 {
-                    ViewBag.Error =
+                    TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                         "Error while processing your request! (Getting List Contest Participant Score!).\n"
                         + contestLastUpdateResponse.ErrorMessage;
                     return RedirectToAction("ManagerContestDetail", "Manager", new { id });
@@ -1430,14 +1431,14 @@ namespace WebAppMVC.Controllers
                                 _logger: _logger);
             if (contestPostResponse == null)
             {
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Create Contest!).\n Contest Not Found!";
                 return RedirectToAction("ManagerContest");
             }
             if (!contestPostResponse.Status)
             {
                 _logger.LogInformation("Error while processing your request: " + contestPostResponse.Status + " , Error Message: " + contestPostResponse.ErrorMessage);
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Create Contest Post!).\n"
                     + contestPostResponse.ErrorMessage;
                 return RedirectToAction("ManagerContest");
@@ -1468,14 +1469,14 @@ namespace WebAppMVC.Controllers
                                 _logger: _logger);
             if (contestPostResponse == null)
             {
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Updating Contest!).\n Contest Not Found!";
                 return RedirectToAction("ManagerContest");
             }
             if (!contestPostResponse.Status)
             {
                 _logger.LogInformation("Error while processing your request: " + contestPostResponse.Status + " , Error Message: " + contestPostResponse.ErrorMessage);
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Updating Contest Post!).\n"
                     + contestPostResponse.ErrorMessage;
                 return RedirectToAction("ManagerContest");
@@ -1518,14 +1519,14 @@ namespace WebAppMVC.Controllers
                 accessToken: accToken);
             if (managerDetails == null)
             {
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting Manager Profile!).\n Manager Details Not Found!";
                 return RedirectToAction("Index");
             }
             else
             if (!managerDetails.Status)
             {
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting Manager Profile!).\n Manager Details Not Found!"
                 + managerDetails.ErrorMessage;
                 return RedirectToAction("Index");
@@ -1571,14 +1572,14 @@ namespace WebAppMVC.Controllers
                 accessToken: accToken);
             if (managerDetailupdate == null)
             {
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting Member Profile!).\n Member Details Not Found!";
                 return RedirectToAction("ManagerProfile");
             }
             else
             if (!managerDetailupdate.Status)
             {
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting Member Profile!).\n Member Details Not Found!"
                 + managerDetailupdate.ErrorMessage;
                 return RedirectToAction("ManagerProfile");
@@ -1606,7 +1607,7 @@ namespace WebAppMVC.Controllers
 
             managerPassword.userId = usrId;
 
-            var managerDetailupdate = await methcall.CallMethodReturnObject<GetMemberPasswordChangeResponse>(
+            var managerPasswordupdate = await methcall.CallMethodReturnObject<GetMemberPasswordChangeResponse>(
                 _httpClient: _httpClient,
                 options: jsonOptions,
                 methodName: Constants.Constants.PUT_METHOD,
@@ -1614,18 +1615,18 @@ namespace WebAppMVC.Controllers
                 _logger: _logger,
                 inputType: managerPassword,
                 accessToken: accToken);
-            if (managerDetailupdate == null)
+            if (managerPasswordupdate == null)
             {
-                ViewBag.error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting Manager Profile!).\n Manager Details Not Found!";
                 return RedirectToAction("ManagerProfile");
             }
             else
-            if (!managerDetailupdate.Status)
+            if (!managerPasswordupdate.Status)
             {
-                ViewBag.error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting Member Profile!).\n Member Details Not Found!"
-                + managerDetailupdate.ErrorMessage;
+                + managerPasswordupdate.ErrorMessage;
                 return RedirectToAction("ManagerProfile");
             }
             TempData["Success"] = "Successfully updated password!";
@@ -1678,13 +1679,13 @@ namespace WebAppMVC.Controllers
                     accessToken: accToken);
                 if (getMemberAvatar == null)
                 {
-                    ViewBag.error =
+                    TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                         "Error while processing your request! (Getting Manager Profile!).\n Manager Details Not Found!";
                 }
                 else
                 if (!getMemberAvatar.Status)
                 {
-                    ViewBag.error =
+                    TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                         "Error while processing your request! (Getting Manager Profile!).\n Manager Details Not Found!"
                     + getMemberAvatar.ErrorMessage;
                 }
@@ -1716,14 +1717,14 @@ namespace WebAppMVC.Controllers
             {
                 _logger.LogInformation(
                     "Error while processing your request! (Getting List Feedback!). List was Empty!: " + listFeedbackResponse);
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting List Feedback!).\n List was Empty!";
                 return RedirectToAction("ManagerIndex");
             }
             else
             if (!listFeedbackResponse.Status)
             {
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting List Feedback!).\n"
                     + listFeedbackResponse.ErrorMessage;
                 return RedirectToAction("ManagerIndex");
@@ -1762,14 +1763,14 @@ namespace WebAppMVC.Controllers
             {
                 _logger.LogInformation(
                     "Error while processing your request! (Getting List Member Status!). List was Empty!: " + listMemberStatusResponse);
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting List Member Status!).\n List was Empty!";
                 return RedirectToAction("ManagerIndex");
             }
             else
             if (!listMemberStatusResponse.Status)
             {
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting List Member Status!).\n"
                     + listMemberStatusResponse.ErrorMessage;
                 return RedirectToAction("ManagerIndex");
@@ -1782,7 +1783,9 @@ namespace WebAppMVC.Controllers
             return View(managerMemberStatusListVM);
         }
         [HttpPost("MemberStatus/Update")]
-        public async Task<IActionResult> ManagerUpdateMemberStatus(List<GetMemberStatus> listRequest)
+        public async Task<IActionResult> ManagerUpdateMemberStatus(
+            List<GetMemberStatus> listRequest
+            )
         {
             ManagerAPI_URL += "Manager/MemberStatus/Update";
 
@@ -1806,14 +1809,14 @@ namespace WebAppMVC.Controllers
             {
                 _logger.LogInformation(
                     "Error while processing your request! (Getting List Member Status!). List was Empty!: " + listMemberStatusResponse);
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting List Member Status!).\n List was Empty!";
                 return RedirectToAction("ManagerMemberStatus");
             }
             else
             if (!listMemberStatusResponse.Status)
             {
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting List Member Status!).\n"
                     + listMemberStatusResponse.ErrorMessage;
                 return RedirectToAction("ManagerMemberStatus");
@@ -1827,12 +1830,13 @@ namespace WebAppMVC.Controllers
             return View();
         }
         [HttpGet("Blog")]
-        public async Task<IActionResult> ManagerBlog([FromQuery] string search)
+        public async Task<IActionResult> ManagerBlog([FromQuery] string? search)
         {
             ManagerAPI_URL += "Blog/All";
 
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
             ManagerBlogIndexVM managerBlogListVM = new();
 
@@ -1841,20 +1845,21 @@ namespace WebAppMVC.Controllers
                 options: jsonOptions,
                 methodName: Constants.Constants.GET_METHOD,
                 url: ManagerAPI_URL,
+                accessToken: accToken,
                 _logger: _logger);
 
             if (listBlogResponse == null)
             {
                 _logger.LogInformation(
                     "Error while processing your request! (Getting List Blog Status!). List was Empty!: " + listBlogResponse);
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting List Blog Status!).\n List was Empty!";
                 return RedirectToAction("ManagerIndex");
             }
             else
             if (!listBlogResponse.Status)
             {
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting List Blog Status!).\n"
                     + listBlogResponse.ErrorMessage;
                 return RedirectToAction("ManagerIndex");
@@ -1863,6 +1868,82 @@ namespace WebAppMVC.Controllers
             managerBlogListVM.Blogs = listBlogResponse.Data;
 
             return View(managerBlogListVM);
+        }
+        [HttpGet("Blog/{id:int}")]
+        /*[Route("Manager/Contest/{id:int}")]*/
+        public async Task<IActionResult> ManagerBlogDetail(
+            [FromRoute][Required] int id
+            )
+        {
+            ManagerAPI_URL += "Blog/" + id;
+            ManagerBlogDetailsVM managerBlogPostDetailsVM = new();
+
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
+
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
+
+            var managerBlogPostVM = await methcall.CallMethodReturnObject<GetBlogPostResponse>(
+                                _httpClient: _httpClient,
+                                options: jsonOptions,
+                                methodName: Constants.Constants.GET_METHOD,
+                                url: ManagerAPI_URL,
+                                accessToken: accToken,
+                                _logger: _logger);
+            if (managerBlogPostVM == null)
+            {
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
+                    "Error while processing your request! (Getting Blog!).\n Blog Not Found!";
+                return RedirectToAction("ManagerBlog");
+            }
+            if (!managerBlogPostVM.Status)
+            {
+                _logger.LogInformation("Error while processing your request: " + managerBlogPostVM.Status + " , Error Message: " + managerBlogPostVM.ErrorMessage);
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
+                    "Error while processing your request! (Getting Blog Post!).\n"
+                    + managerBlogPostVM.ErrorMessage;
+                return RedirectToAction("ManagerBlog");
+            }
+            managerBlogPostDetailsVM.Blog = managerBlogPostVM.Data;
+
+            return View(managerBlogPostDetailsVM);
+        }
+        [HttpPost("Blog/{id:int}/Status/Update")]
+        public async Task<IActionResult> ManagerUpdateBlogStatus(
+            [FromRoute][Required] int id,
+            [FromForm][Required] UpdateBlogStatus updateBlogStatus)
+        {
+            ManagerAPI_URL += "Blog/" + id + "/Status/Update";
+
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
+
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
+
+            var blogPostResponse = await methcall.CallMethodReturnObject<GetBlogPostResponse>(
+                                _httpClient: _httpClient,
+                                options: jsonOptions,
+                                methodName: Constants.Constants.PUT_METHOD,
+                                url: ManagerAPI_URL,
+                                accessToken: accToken,
+                                inputType: updateBlogStatus,
+                                _logger: _logger);
+            if (blogPostResponse == null)
+            {
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
+                    "Error while processing your request! (Update Blog Status!).\n Post Not Found!";
+                return RedirectToAction("ManagerBlogDetail", new {id = id});
+            }
+            if (!blogPostResponse.Status)
+            {
+                _logger.LogInformation("Error while processing your request: " + blogPostResponse.Status + " , Error Message: " + blogPostResponse.ErrorMessage);
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
+                    "Error while processing your request! (Update Blog Status!).\n"
+                    + blogPostResponse.ErrorMessage;
+                return RedirectToAction("ManagerBlogDetail", new { id = id });
+            }
+            TempData[Constants.Constants.ALERT_DEFAULT_SUCCESS_NAME] = "Successfully update Blog Status";
+            return RedirectToAction("ManagerBlogDetail", new { id = id });
         }
         [HttpPost("Blog/{id:int}/Disable")]
         public async Task<IActionResult> ManagerDisableBlog(
@@ -1886,14 +1967,14 @@ namespace WebAppMVC.Controllers
                                 _logger: _logger);
             if (blogPostResponse == null)
             {
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Disabling Blog Post!).\n Post Not Found!";
                 return RedirectToAction("ManagerBlog");
             }
             if (!blogPostResponse.Status)
             {
                 _logger.LogInformation("Error while processing your request: " + blogPostResponse.Status + " , Error Message: " + blogPostResponse.ErrorMessage);
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Disabling Blog Post!).\n"
                     + blogPostResponse.ErrorMessage;
                 return RedirectToAction("ManagerBlog");
@@ -1907,15 +1988,14 @@ namespace WebAppMVC.Controllers
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
             string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
-            string? usrName = HttpContext.Session.GetString(Constants.Constants.USR_NAME);
-            string? role = HttpContext.Session.GetString(Constants.Constants.ROLE_NAME);
+            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
             if(!string.IsNullOrEmpty(search) || !string.IsNullOrWhiteSpace(search))
             {
-                ManagerAPI_URL += "News/Search?userName=" + usrName;
+                ManagerAPI_URL += "News/Search?title=" + search;
             }
             else
             {
-                ManagerAPI_URL += "News/All";
+                ManagerAPI_URL += "News/Search";
             }
 
             ManagerNewsIndexVM managerNewsListVM = new();
@@ -1931,14 +2011,14 @@ namespace WebAppMVC.Controllers
             {
                 _logger.LogInformation(
                     "Error while processing your request! (Getting List News Status!). List was Empty!: " + listNewsResponse);
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting List News Status!).\n List was Empty!";
                 return RedirectToAction("ManagerIndex");
             }
             else
             if (!listNewsResponse.Status)
             {
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting List News Status!).\n"
                     + listNewsResponse.ErrorMessage;
                 return RedirectToAction("ManagerIndex");
@@ -2011,7 +2091,7 @@ namespace WebAppMVC.Controllers
                                 _logger: _logger);
             if (managerCreateNewsPostVM == null)
             {
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Create News!).\n News Not Found!";
                 TempData["Error"] = managerCreateNewsPostVM.ErrorMessage;
                 return RedirectToAction("ManagerNews");
@@ -2020,7 +2100,7 @@ namespace WebAppMVC.Controllers
             {
                 TempData["Error"] = managerCreateNewsPostVM.ErrorMessage;
                 _logger.LogInformation("Error while processing your request: " + managerCreateNewsPostVM.Status + " , Error Message: " + managerCreateNewsPostVM.ErrorMessage);
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Create News Post!).\n"
                     + managerCreateNewsPostVM.ErrorMessage;
                 return RedirectToAction("ManagerNews");
@@ -2050,14 +2130,14 @@ namespace WebAppMVC.Controllers
                                 _logger: _logger);
             if (managerNewsPostVM == null)
             {
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting Contest!).\n Contest Not Found!";
                 return RedirectToAction("ManagerNews");
             }
             if (!managerNewsPostVM.Status)
             {
                 _logger.LogInformation("Error while processing your request: " + managerNewsPostVM.Status + " , Error Message: " + managerNewsPostVM.ErrorMessage);
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting Contest Post!).\n"
                     + managerNewsPostVM.ErrorMessage;
                 return RedirectToAction("ManagerNews");
@@ -2138,14 +2218,14 @@ namespace WebAppMVC.Controllers
                                 _logger: _logger);
             if (managerUpdateNewsPostVM == null)
             {
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Updating News!).\n News Not Found!";
                 return RedirectToAction("ManagerNewsDetail", new { id });
             }
             if (!managerUpdateNewsPostVM.Status)
             {
                 _logger.LogInformation("Error while processing your request: " + managerUpdateNewsPostVM.Status + " , Error Message: " + managerUpdateNewsPostVM.ErrorMessage);
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Updating News Post!).\n"
                     + managerUpdateNewsPostVM.ErrorMessage;
                 return RedirectToAction("ManagerNewsDetail", new { id });
@@ -2173,14 +2253,14 @@ namespace WebAppMVC.Controllers
                                 _logger: _logger);
             if (meetPostResponse == null)
             {
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Disabling News Post!).\n Post Not Found!";
                 return RedirectToAction("ManagerNews");
             }
             if (!meetPostResponse.Status)
             {
                 _logger.LogInformation("Error while processing your request: " + meetPostResponse.Status + " , Error Message: " + meetPostResponse.ErrorMessage);
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Disabling News Post!).\n"
                     + meetPostResponse.ErrorMessage;
                 return RedirectToAction("ManagerNews");

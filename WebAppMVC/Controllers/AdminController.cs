@@ -88,14 +88,14 @@ namespace WebAppMVC.Controllers
             {
                 _logger.LogInformation(
                     "Error while processing your request! (Getting List Member Status!). List was Empty!: " + listMemberStatusResponse);
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting List Member Status!).\n List was Empty!";
                 return View("AdminIndex");
             }
             else
             if (!listMemberStatusResponse.Status)
             {
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting List Member Status!).\n"
                     + listMemberStatusResponse.ErrorMessage;
                 return View("AdminIndex");
@@ -136,14 +136,14 @@ namespace WebAppMVC.Controllers
             {
                 _logger.LogInformation(
                     "Error while processing your request! (Getting List Member Status!). List was Empty!: " + listMemberStatusResponse);
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting List Member Status!).\n List was Empty!";
                 return View("AdminIndex");
             }
             else
             if (!listMemberStatusResponse.Status)
             {
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting List Member Status!).\n"
                     + listMemberStatusResponse.ErrorMessage;
                 return View("AdminIndex");
@@ -159,10 +159,20 @@ namespace WebAppMVC.Controllers
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.ADMIN));
 
             string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
-
             string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
+            string? imagePath = HttpContext.Session.GetString(Constants.Constants.USR_IMAGE);
 
-            var memberDetails = await methcall.CallMethodReturnObject<GetMemberProfileResponse>(
+            var adminInvalids = new AdminProfileVM();
+            var memberInvalidDetails = methcall.GetValidationTempData<MemberViewModel>(this, TempData, Constants.Constants.UPDATE_ADMIN_DETAILS_VALID, "adminDetail", jsonOptions);
+            if (memberInvalidDetails != null)
+            {
+                memberInvalidDetails.ImagePath = imagePath;
+                memberInvalidDetails.DefaultUserGenderSelectList = methcall.GetUserGenderSelectableList(memberInvalidDetails.Gender);
+                adminInvalids.adminDetail = memberInvalidDetails;
+                return View(adminInvalids);
+            }
+
+            var adminDetails = await methcall.CallMethodReturnObject<GetMemberProfileResponse>(
                 _httpClient: _httpClient,
                 options: jsonOptions,
                 methodName: Constants.Constants.POST_METHOD,
@@ -170,22 +180,28 @@ namespace WebAppMVC.Controllers
                 _logger: _logger,
                 inputType: usrId,
                 accessToken: accToken);
-            if (memberDetails == null || memberDetails.Data == null)
+            if (adminDetails == null || adminDetails.Data == null)
             {
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting Admin Profile!).\n Admin Details Not Found!";
                 return RedirectToAction("AdminIndex");
             }
             else
-            if (!memberDetails.Status)
+            if (!adminDetails.Status)
             {
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting Admin Profile!).\n Admin Details Not Found!"
-                + memberDetails.ErrorMessage;
+                + adminDetails.ErrorMessage;
                 return RedirectToAction("AdminIndex");
             }
-            memberDetails.Data.DefaultUserGenderSelectList = methcall.GetUserGenderSelectableList(memberDetails.Data.Gender);
-            return View(memberDetails.Data);
+            var adminInvalidPasswordUpdate = methcall.GetValidationTempData<UpdateMemberPassword>(this, TempData, Constants.Constants.UPDATE_ADMIN_PASSWORD_VALID, "adminPassword", jsonOptions);
+            if (adminInvalidPasswordUpdate != null)
+            {
+                adminInvalids.adminPassword = adminInvalidPasswordUpdate;
+            }
+            adminDetails.Data.DefaultUserGenderSelectList = methcall.GetUserGenderSelectableList(adminDetails.Data.Gender);
+            adminInvalids.adminDetail = adminDetails.Data;
+            return View(adminInvalids);
         }
         [HttpPost("Upload")]
         public async Task<IActionResult> UploadImage(IFormFile photo)
@@ -234,13 +250,13 @@ namespace WebAppMVC.Controllers
                     accessToken: accToken);
                 if (getMemberAvatar == null)
                 {
-                    ViewBag.error =
+                    TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                         "Error while processing your request! (Getting Admin Profile!).\n Admin Details Not Found!";
                 }
                 else
                 if (!getMemberAvatar.Status)
                 {
-                    ViewBag.error =
+                    TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                         "Error while processing your request! (Getting Admin Profile!).\n Admin Details Not Found!"
                     + getMemberAvatar.ErrorMessage;
                 }
@@ -252,18 +268,23 @@ namespace WebAppMVC.Controllers
         }
         [HttpPost("Profile")]
         //[Authorize(Roles = "Member")]
-        public async Task<IActionResult> AdminProfileUpdate(MemberViewModel memberDetail)
+        public async Task<IActionResult> AdminProfileUpdate(MemberViewModel adminDetail)
         {
             AdminAPI_URL += "Admin/Profile/Update";
 
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.ADMIN) != null)
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.ADMIN));
 
-            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
+            if (!ModelState.IsValid)
+            {
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_ADMIN_DETAILS_VALID, adminDetail, jsonOptions);
+                return RedirectToAction("AdminProfile");
+            }
 
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
             string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
 
-            memberDetail.MemberId = usrId;
+            adminDetail.MemberId = usrId;
 
             var memberDetailupdate = await methcall.CallMethodReturnObject<GetMemberProfileResponse>(
                 _httpClient: _httpClient,
@@ -271,18 +292,18 @@ namespace WebAppMVC.Controllers
                 methodName: Constants.Constants.PUT_METHOD,
                 url: AdminAPI_URL,
                 _logger: _logger,
-                inputType: memberDetail,
+                inputType: adminDetail,
                 accessToken: accToken);
             if (memberDetailupdate == null)
             {
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting Member Profile!).\n Member Details Not Found!";
                 return RedirectToAction("AdminProfile");
             }
             else
             if (!memberDetailupdate.Status)
             {
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting Member Profile!).\n Member Details Not Found!"
                 + memberDetailupdate.ErrorMessage;
                 return RedirectToAction("AdminProfile");
@@ -291,39 +312,44 @@ namespace WebAppMVC.Controllers
         }
         [HttpPost("ChangePassword")]
         //[Authorize(Roles = "Member")]
-        public async Task<IActionResult> ChangePassword(UpdateMemberPassword memberPassword)
+        public async Task<IActionResult> ChangePassword(UpdateMemberPassword adminPassword)
         {
-            string AdminChangePasswordAPI_URL = "/api/User/ChangePassword";
+            string AdminChangePasswordAPI_URL = AdminAPI_URL + "User/ChangePassword";
 
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.ADMIN) != null)
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.ADMIN));
+            if (!ModelState.IsValid)
+            {
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_ADMIN_PASSWORD_VALID, adminPassword, jsonOptions);
+                return RedirectToAction("AdminProfile");
+            }
 
             string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
             string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
 
-            memberPassword.userId = usrId;
+            adminPassword.userId = usrId;
 
-            var memberDetailupdate = await methcall.CallMethodReturnObject<GetMemberPasswordChangeResponse>(
+            var adminPasswordupdate = await methcall.CallMethodReturnObject<GetMemberPasswordChangeResponse>(
                 _httpClient: _httpClient,
                 options: jsonOptions,
                 methodName: Constants.Constants.PUT_METHOD,
                 url: AdminChangePasswordAPI_URL,
                 _logger: _logger,
-                inputType: memberPassword,
+                inputType: adminPassword,
                 accessToken: accToken);
-            if (memberDetailupdate == null)
+            if (adminPasswordupdate == null)
             {
-                ViewBag.error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting Admin Profile!).\n Admin Details Not Found!";
                 return RedirectToAction("AdminProfile");
             }
             else
-            if (!memberDetailupdate.Status)
+            if (!adminPasswordupdate.Status)
             {
-                ViewBag.error =
-                    "Error while processing your request! (Getting Member Profile!).\n Member Details Not Found!"
-                + memberDetailupdate.ErrorMessage;
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
+                    "Error while processing your request! (Getting Admin Profile!).\n"
+                + adminPasswordupdate.ErrorMessage;
                 return RedirectToAction("AdminProfile");
             }
             return RedirectToAction("AdminProfile");
@@ -357,7 +383,7 @@ namespace WebAppMVC.Controllers
             {
                 _logger.LogError("Error while registering employee new account");
 
-                ViewBag.error = "Error while registering employee new account !";
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] = "Error while registering employee new account !";
 
                 return RedirectToAction("AdminAccountIndex");
             }
@@ -365,7 +391,7 @@ namespace WebAppMVC.Controllers
             {
                 _logger.LogError("Error while registering employee new account");
 
-                ViewBag.error = "Error while registering employee new account !";
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] = "Error while registering employee new account !";
 
                 return RedirectToAction("AdminAccountIndex");
             }

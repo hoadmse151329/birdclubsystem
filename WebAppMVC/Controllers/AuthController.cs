@@ -54,11 +54,7 @@ namespace WebAppMVC.Controllers
 		[HttpGet("Register")]
 		public async Task<IActionResult> Register()
 		{
-            string? role = HttpContext.Session.GetString(Constants.Constants.ROLE_NAME);
-
-            if (role == null) role = Constants.Constants.GUEST;
-
-            TempData[Constants.Constants.ROLE_NAME] = role;
+			methcall.SetUserRoleGuest(this);
 
 			var googleLoginDetails = await methcall.GetCookie<CreateNewMember>(Request, Constants.Constants.GOOGLE_ACC_COOKIE, jsonOptions);
 			if(googleLoginDetails != null)
@@ -71,11 +67,7 @@ namespace WebAppMVC.Controllers
 		[HttpGet("Login")]
 		public IActionResult Login()
 		{
-            string? role = HttpContext.Session.GetString(Constants.Constants.ROLE_NAME);
-
-            if (role == null) role = "Guest";
-
-            TempData[Constants.Constants.ROLE_NAME] = role;
+            methcall.SetUserRoleGuest(this);
 
             return View();
 		}
@@ -132,11 +124,7 @@ namespace WebAppMVC.Controllers
 
             if (authenResponse == null || !string.IsNullOrEmpty(authenResponse.ErrorMessage))
             {
-                string? role = HttpContext.Session.GetString(Constants.Constants.ROLE_NAME);
-
-                if (role == null) role = Constants.Constants.GUEST;
-
-                TempData[Constants.Constants.ROLE_NAME] = role;
+                methcall.SetUserRoleGuest(this);
                 /*_logger.LogInformation("Username or Password is invalid.");
                 ViewBag.error = "Username or Password is invalid.";*/
                 return RedirectToAction("Register");
@@ -215,18 +203,14 @@ namespace WebAppMVC.Controllers
 
             if (authenResponse == null)
 			{
-                string? role = HttpContext.Session.GetString(Constants.Constants.ROLE_NAME);
-                if (role == null) role = Constants.Constants.GUEST;
-                TempData[Constants.Constants.ROLE_NAME] = role;
+                methcall.SetUserRoleGuest(this);
                 _logger.LogInformation("Username or Password is invalid!");
                 ViewBag.error = "Username or Password is invalid!";
                 return View("Login");
 			}
 			if (!authenResponse.Status)
 			{
-                string? role = HttpContext.Session.GetString(Constants.Constants.ROLE_NAME);
-                if (role == null) role = Constants.Constants.GUEST;
-                TempData[Constants.Constants.ROLE_NAME] = role;
+                methcall.SetUserRoleGuest(this);
                 _logger.LogInformation(authenResponse.ErrorMessage);
 				ViewBag.error = authenResponse.ErrorMessage;
 				if (authenResponse.Data != null)
@@ -403,12 +387,9 @@ namespace WebAppMVC.Controllers
 
             if (!TryValidateModel(newmemRequest))
             {
-                string? role = HttpContext.Session.GetString(Constants.Constants.ROLE_NAME);
-                if (role == null) role = "Guest";
+                methcall.SetUserRoleGuest(this);
 
-                TempData[Constants.Constants.ROLE_NAME] = role;
-
-                ViewBag.Error =
+				TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                 "Error while processing your request! (Registering New Member!).\n Validation Failed!";
 
                 return View("Register",newmemRequest);
@@ -423,8 +404,7 @@ namespace WebAppMVC.Controllers
 
 			if (authenResponse == null)
 			{
-				_logger.LogInformation("Error while registering your new account: ");
-				ViewBag.error = "Error while registering your new account ! ";
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] = "Error while registering your new account ! ";
 				return View("Register", newmemRequest);
 			}
             var responseAuth = authenResponse.Data;
@@ -445,11 +425,7 @@ namespace WebAppMVC.Controllers
 				PayAmount = newmemRequest.PayAmount,
 				TransactionType = Constants.Constants.NEW_MEMBER_REGISTRATION_TRANSACTION_TYPE,
 			};
-            /*string? role = HttpContext.Session.GetString(Constants.Constants.ROLE_NAME);
-            if (role == null) role = "Guest";
-            TempData[Constants.Constants.ROLE_NAME] = role;*/
             var url = _vnPayService.CreatePaymentUrl(model, HttpContext);
-			//HttpContext.
 			return Redirect(url);
 		}
 

@@ -18,19 +18,19 @@ namespace DAL.Models
         public int MeetingId { get; set; }
         [Key]
         [Column("memberId")]
-        [StringLength(50)]
+        [StringLength(255)]
         public string MemberId { get; set; } = null!;
         [Column("participantNo")]
-        public int ParticipantNo { get; set; }
+        public int? ParticipantNo { get; set; }
         [Column("checkInStatus")]
         [StringLength(50)]
-        public string CheckInStatus { get; set; } = null!;
+        public string? CheckInStatus { get; set; }
 
         [ForeignKey(nameof(MeetingId))]
         [InverseProperty(nameof(Meeting.MeetingParticipants))]
-        public virtual Meeting MeetingDetail { get; set; } = null!;
+        public virtual Meeting MeetingDetails { get; set; } = null!;
         [ForeignKey(nameof(MemberId))]
-        [InverseProperty(nameof(Meeting.MeetingParticipants))]
-        public virtual Member MemberDetail { get; set; } = null!;
+        [InverseProperty(nameof(Member.MeetingParticipants))]
+        public virtual Member MemberDetails { get; set; } = null!;
     }
 }

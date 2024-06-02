@@ -4,12 +4,12 @@
     {
         public MemberProfileVM()
         {
-            managerPassword = new BAL.ViewModels.Member.UpdateMemberPassword();
-            managerDetail = new BAL.ViewModels.MemberViewModel();
+            memberPassword = new BAL.ViewModels.Member.UpdateMemberPassword();
+            memberDetail = new BAL.ViewModels.MemberViewModel();
         }
 
-        public BAL.ViewModels.Member.UpdateMemberPassword managerPassword { get; set; }
+        public BAL.ViewModels.Member.UpdateMemberPassword memberPassword { get; set; }
 
-        public BAL.ViewModels.MemberViewModel managerDetail { get; set; }
+        public BAL.ViewModels.MemberViewModel memberDetail { get; set; }
     }
 }

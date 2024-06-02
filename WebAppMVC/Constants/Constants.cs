@@ -35,6 +35,8 @@ namespace WebAppMVC.Constants
         public readonly static string ALERT_USER_PASSWORD_UPDATE_ERROR = "Change user password failed!";
         public readonly static string ALERT_MANAGER_CREATE_NEWS_SUCCESS = "Successfully create news!";
         public readonly static string ALERT_MANAGER_CREATE_NEWS_ERROR = "Create news failed!";
+        public readonly static string ALERT_MEMBER_CREATE_BLOG_SUCCESS = "Successfully create your blog!";
+        public readonly static string ALERT_MEMBER_CREATE_BLOG_ERROR = "Create your blog failed!";
         public readonly static string ALERT_DEFAULT_ERROR_NAME = "Error";
         public readonly static string ALERT_DEFAULT_SUCCESS_NAME = "Success";
 
@@ -56,6 +58,19 @@ namespace WebAppMVC.Constants
         public readonly static string NEWS_CATEGORY_FIELDTRIP = "Fieldtrip";
         public readonly static string NEWS_CATEGORY_CONTEST = "Contest";
         public readonly static string NEWS_CATEGORY_OTHERS = "Others";
+
+        public readonly static string BLOG_STATUS_DRAFT = "Draft";
+        public readonly static string BLOG_STATUS_ACTIVE = "Active";
+        public readonly static string BLOG_STATUS_HIDDEN = "Hidden";
+        public readonly static string BLOG_STATUS_ARCHIVED = "Archived";
+        public readonly static string BLOG_STATUS_REPORTED = "Reported";
+        public readonly static string BLOG_STATUS_DISABLED = "Disabled";
+
+        public readonly static string BLOG_CATEGORY_ANNOUNCEMENT = "Announcement";
+        public readonly static string BLOG_CATEGORY_MEETING = "Meeting";
+        public readonly static string BLOG_CATEGORY_FIELDTRIP = "Fieldtrip";
+        public readonly static string BLOG_CATEGORY_CONTEST = "Contest";
+        public readonly static string BLOG_CATEGORY_OTHERS = "Others";
 
         public readonly static string CREATE_BIRD_VALID = "CBirdValid";
         public readonly static string CREATE_OR_UPDATE_BIRD_PROFILE_PICTURE_VALID = "CBirdProfilePicValid";
@@ -84,6 +99,8 @@ namespace WebAppMVC.Constants
         public readonly static string CREATE_CONTEST_MEDIA_VALID = "CContestMediaValid";
         public readonly static string UPDATE_CONTEST_MEDIA_VALID = "UContestMediaValid";
         public readonly static string CREATE_CONTEST_PARTICIPATION_VALID = "CContestparticipantValid";
+        public readonly static string CREATE_BLOG_VALID = "CBlogValid";
+        public readonly static string UPDATE_BLOG_VALID = "UBlogValid";
         public readonly static string CREATE_NEWS_VALID = "CNewsValid";
         public readonly static string UPDATE_NEWS_VALID = "UNewsValid";
 
@@ -95,6 +112,7 @@ namespace WebAppMVC.Constants
         public readonly static string UPDATE_STAFF_DETAILS_VALID = "UStaffDetailsValid";
         public readonly static string UPDATE_STAFF_PASSWORD_VALID = "UStaffPasswordValid";
         public readonly static string UPDATE_ADMIN_DETAILS_VALID = "UAdminDetailsValid";
+        public readonly static string UPDATE_ADMIN_PASSWORD_VALID = "UAdminPasswordValid";
 
         public readonly static string EVENT_STATUS_ON_HOLD = "OnHold";
         public readonly static string EVENT_STATUS_NAME_ON_HOLD = "On Hold";
@@ -215,6 +233,7 @@ namespace WebAppMVC.Constants
         public readonly static string SYSTEM_DEFAULT_AZURE_DEFAULT_BLOB_FOLDER_NAME = "AzureStorage:BlobContainerName";
         public readonly static string SYSTEM_DEFAULT_AZURE_BLOB_AVATAR_FOLDER_URL = "AzureStorage:BlobAvatarsContainerNamePath";
         public readonly static string SYSTEM_DEFAULT_AZURE_BLOB_NEWS_FOLDER_URL = "AzureStorage:BlobNewsContainerNamePath";
+        public readonly static string SYSTEM_DEFAULT_AZURE_BLOB_BLOG_FOLDER_URL = "AzureStorage:BlobBlogContainerNamePath";
         public readonly static string SYSTEM_DEFAULT_AZURE_BLOB_MEETING_FOLDER_URL = "AzureStorage:BlobMeetingsContainerNamePath";
         public readonly static string SYSTEM_DEFAULT_AZURE_BLOB_BIRD_FOLDER_URL = "AzureStorage:BlobBirdsContainerNamePath";
     }
