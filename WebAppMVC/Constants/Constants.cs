@@ -39,6 +39,8 @@ namespace WebAppMVC.Constants
         public readonly static string ALERT_MEMBER_CREATE_BLOG_ERROR = "Create your blog failed!";
         public readonly static string ALERT_DEFAULT_ERROR_NAME = "Error";
         public readonly static string ALERT_DEFAULT_SUCCESS_NAME = "Success";
+        public readonly static string ALERT_DEFAULT_ERROR_CHECK = "ErrorCheck";
+        public readonly static string ALERT_DEFAULT_SUCCESS_CHECK = "SuccessCheck";
 
         public readonly static string MEMBER_STATUS_INACTIVE = "Inactive";
         public readonly static string MEMBER_STATUS_ACTIVE = "Active";

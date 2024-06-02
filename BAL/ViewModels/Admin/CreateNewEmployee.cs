@@ -50,6 +50,8 @@ namespace BAL.ViewModels.Admin
         public string? ConfirmPassword { get; set; }
         [PasswordPropertyText]
         [DataType(DataType.Password)]
+        [StringLength(maximumLength: int.MaxValue, ErrorMessage = "Password must have more than or equal 8 characters", MinimumLength = 8)]
+        [RegularExpression(@"^[a-zA-Z0-9_]+$", ErrorMessage = "Password is invalid")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "Password is required")]
         public string? Password { get; set; }
         //public string? ImagePath { get; set; }

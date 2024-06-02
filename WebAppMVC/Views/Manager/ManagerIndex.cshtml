@@ -2,6 +2,7 @@
 @{
     Layout = null;
     ViewData["Title"] = "Manager Index Page";
+    List<BAL.ViewModels.Manager.GetFeedbackResponse> getFeedbackResponses = Model.Feedbacks;
     Layout = "~/Views/Shared/_MLayout.cshtml";
 }
 <html lang="en">
@@ -80,61 +81,19 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td><div class="imgBx"><img src="@Url.Content("~/images/avatar.jpg")" alt=""></div></td>
-                                <td>Ho Tran Khanh Duy</td>
-                                <td>
-                                    <i class='bx bxs-star yellow'></i>
-                                    <i class='bx bxs-star yellow'></i>
-                                    <i class='bx bxs-star yellow'></i>
-                                    <i class='bx bxs-star yellow'></i>
-                                    <i class='bx bxs-star-half yellow'></i>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><div class="imgBx"><img src="@Url.Content("~/images/avatar.jpg")" alt=""></div></td>
-                                <td>Ho Tran Khanh Duy</td>
-                                <td>
-                                    <i class='bx bxs-star yellow'></i>
-                                    <i class='bx bxs-star yellow'></i>
-                                    <i class='bx bxs-star yellow'></i>
-                                    <i class='bx bxs-star-half yellow'></i>
-                                    <i class='bx bxs-star'></i>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><div class="imgBx"><img src="@Url.Content("~/images/avatar.jpg")" alt=""></div></td>
-                                <td>Ho Tran Khanh Duy</td>
-                                <td>
-                                    <i class='bx bxs-star yellow'></i>
-                                    <i class='bx bxs-star yellow'></i>
-                                    <i class='bx bxs-star yellow'></i>
-                                    <i class='bx bxs-star yellow'></i>
-                                    <i class='bx bxs-star yellow'></i>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><div class="imgBx"><img src="@Url.Content("~/images/avatar.jpg")" alt=""></div></td>
-                                <td>Ho Tran Khanh Duy</td>
-                                <td>
-                                    <i class='bx bxs-star yellow'></i>
-                                    <i class='bx bxs-star yellow'></i>
-                                    <i class='bx bxs-star yellow'></i>
-                                    <i class='bx bxs-star yellow'></i>
-                                    <i class='bx bxs-star yellow'></i>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><div class="imgBx"><img src="@Url.Content("~/images/avatar.jpg")" alt=""></div></td>
-                                <td>Ho Tran Khanh Duy</td>
-                                <td>
-                                    <i class='bx bxs-star'></i>
-                                    <i class='bx bxs-star yellow'></i>
-                                    <i class='bx bxs-star yellow'></i>
-                                    <i class='bx bxs-star yellow'></i>
-                                    <i class='bx bxs-star yellow'></i>
-                                </td>
-                            </tr>
+                            @foreach(var fb in getFeedbackResponses)
+                            {
+                                <tr>
+                                    <td><div class="imgBx"><img src="@fb.AvatarImage" alt=""></div></td>
+                                    <td>@fb.Fullname</td>
+                                    <td>
+                                        @foreach(var rate in fb.RatingDisplay)
+                                        {
+                                            @Html.Raw(rate);
+                                        }
+                                    </td>
+                                </tr>
+                            }
                             <tr>
                                 <td>Total</td>
                                 <td></td>

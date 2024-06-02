@@ -13,5 +13,6 @@ namespace BAL.ViewModels.Manager
         public int TotalBlogs { get; set; }
         public int TotalNews { get; set; }
         public int TotalIncome { get; set; }
+        public List<GetFeedbackResponse> Feedbacks { get; set; }
     }
 }

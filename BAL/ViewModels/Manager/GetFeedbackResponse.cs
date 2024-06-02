@@ -9,8 +9,10 @@ namespace BAL.ViewModels.Manager
     public class GetFeedbackResponse
     {
         public decimal? Rating { get; set; }
+        public string? AvatarImage { get; set; }
         public string? Fullname { get; set; }
         public string? Details { get; set; }
         public DateTime? Date { get; set; }
+        public List<string>? RatingDisplay {  get; set; }
     }
 }

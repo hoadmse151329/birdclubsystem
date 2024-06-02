@@ -86,12 +86,12 @@ namespace WebAppMVC.Controllers
 			var result = await HttpContext.AuthenticateAsync(GoogleDefaults.AuthenticationScheme);
             if (result.Failure != null)
             {
-                ViewBag.error = "Error while registering your new account (Failed to Login By Google)";
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] = "Error while registering your new account (Failed to Login By Google)";
                 return RedirectToAction("Login");
             }
             if (!result.Succeeded)
 			{
-                ViewBag.error = "Error while registering your new account (Failed to Login By Google)";
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] = "Error while registering your new account (Failed to Login By Google)";
                 return RedirectToAction("Login");
 			}
 
@@ -106,7 +106,7 @@ namespace WebAppMVC.Controllers
             var code = result.Properties.Items.FirstOrDefault(t => t.Key.Equals(Constants.Constants.GOOGLE_ACCESS_TOKEN_KEY_NAME)).Value;
 			if(code == null)
 			{
-                ViewBag.error = "Error while registering your new account (Failed to Get Login Token)";
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] = "Error while registering your new account (Failed to Get Login Token)";
                 return RedirectToAction("Login");
             }
 			var userInfo = await GoogleUtils.GetUserInfo(code);
@@ -204,16 +204,17 @@ namespace WebAppMVC.Controllers
             if (authenResponse == null)
 			{
                 methcall.SetUserRoleGuest(this);
-                _logger.LogInformation("Username or Password is invalid!");
-                ViewBag.error = "Username or Password is invalid!";
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] = "Username or Password is invalid!";
                 return View("Login");
 			}
 			if (!authenResponse.Status)
 			{
                 methcall.SetUserRoleGuest(this);
                 _logger.LogInformation(authenResponse.ErrorMessage);
-				ViewBag.error = authenResponse.ErrorMessage;
-				if (authenResponse.Data != null)
+				TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] = authenResponse.ErrorMessage;
+				TempData[Constants.Constants.ALERT_DEFAULT_ERROR_CHECK] = authenResponse.ErrorMessage;
+
+                if (authenResponse.Data != null)
 				{
                     HttpContext.Session.SetString(Constants.Constants.USR_ID, authenResponse.Data.UserId);
                 }
@@ -240,22 +241,25 @@ namespace WebAppMVC.Controllers
 			if (responseAuth!.RoleName == Constants.Constants.ADMIN)
 			{
 				_logger.LogInformation("Admin Login Successful: " + TempData[Constants.Constants.ROLE_NAME] + " , Id: " + TempData[Constants.Constants.USR_ID]);
-				return base.Redirect(Constants.Constants.ADMIN_URL);
+                TempData[Constants.Constants.ALERT_DEFAULT_SUCCESS_NAME] = authenResponse.SuccessMessage;
+                return base.Redirect(Constants.Constants.ADMIN_URL);
 			}
 			else if (responseAuth!.RoleName == Constants.Constants.MANAGER)
 			{
                 _logger.LogInformation("Manager Login Successful: " + TempData[Constants.Constants.ROLE_NAME] + " , Id: " + TempData[Constants.Constants.USR_ID]);
+                TempData[Constants.Constants.ALERT_DEFAULT_SUCCESS_NAME] = authenResponse.SuccessMessage;
                 return base.Redirect(Constants.Constants.MANAGER_URL);
 			}
 			else if (responseAuth!.RoleName == Constants.Constants.STAFF)
 			{
                 _logger.LogInformation("Staff Login Successful: " + TempData[Constants.Constants.ROLE_NAME] + " , Id: " + TempData[Constants.Constants.USR_ID]);
+                TempData[Constants.Constants.ALERT_DEFAULT_SUCCESS_NAME] = authenResponse.SuccessMessage;
                 return base.Redirect(Constants.Constants.STAFF_URL);
 			}
 			else
 			{
                 _logger.LogInformation("Member Login Successful: " + TempData[Constants.Constants.ROLE_NAME] + " , Id: " + TempData[Constants.Constants.USR_ID]);
-				TempData["Success"] = authenResponse.SuccessMessage;
+				TempData[Constants.Constants.ALERT_DEFAULT_SUCCESS_NAME] = authenResponse.SuccessMessage;
                 return base.Redirect(Constants.Constants.MEMBER_URL);
 			}
 		}
@@ -272,7 +276,7 @@ namespace WebAppMVC.Controllers
 			if (newmemRequest == null)
 			{
 				_logger.LogInformation("Error while registering your new account ! Please Try Again");
-				ViewBag.error = "Error while registering your new account ! ";
+				TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] = "Error while registering your new account ! ";
 				return View("Register");
 			}
 
@@ -290,7 +294,7 @@ namespace WebAppMVC.Controllers
 			{
 				_logger.LogError("Error while registering your new account");
 
-				ViewBag.error = "Error while registering your new account !";
+				TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] = "Error while registering your new account !";
 
 				return View("Register");
 			}
@@ -303,10 +307,8 @@ namespace WebAppMVC.Controllers
 			{
 				_logger.LogError("Error while registering your new account: Your Registration Transaction not found!");
 
-				ViewBag.error = "Error while registering your new account: Your Registration Transaction not found! " +
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] = "Error while registering your new account: Your Registration Transaction not found! " +
 					"\nPlease contact the birdclub manager for assistance with resolving this issue!";
-				TempData["Error"] = "Error while registering your new account: Your Registration Transaction not found! " +
-                    "\nPlease contact the birdclub manager for assistance with resolving this issue!";
 
                 return View("Register");
 			}
@@ -332,7 +334,7 @@ namespace WebAppMVC.Controllers
 			{
 				_logger.LogError("Error while registering your new account: User Transaction Saving Failed!");
 
-				ViewBag.error = "Error while registering your new account: User Transaction Saving Failed!, " +
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] = "Error while registering your new account: User Transaction Saving Failed!, " +
 					"\nPlease contact the birdclub manager for assistance with resolving this issue!";
 
 				return View("Register");
@@ -343,7 +345,7 @@ namespace WebAppMVC.Controllers
 				HttpContext.Session.Remove(Constants.Constants.USR_NAME);
 				HttpContext.Session.Remove(Constants.Constants.ROLE_NAME);
 			}
-            ViewBag.Success = "Account Create Successfully, Please contact the manager for your account approval!";
+            TempData[Constants.Constants.ALERT_DEFAULT_SUCCESS_NAME] = "Account Create Successfully, Please contact the manager for your account approval!";
 
 			NotificationViewModel notif = new NotificationViewModel()
 			{
@@ -366,14 +368,14 @@ namespace WebAppMVC.Controllers
 
             if (notificationResponse == null)
             {
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Create Notification).\n User Not Found!";
                 return RedirectToAction("Login", "Auth");
             }
             if (!notificationResponse.Status)
             {
                 _logger.LogInformation("Error while processing your request: " + notificationResponse.Status + " , Error Message: " + notificationResponse.ErrorMessage);
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Create Notification!).\n"
                     + notificationResponse.ErrorMessage;
                 return RedirectToAction("Login", "Auth");
@@ -471,13 +473,13 @@ namespace WebAppMVC.Controllers
 			if (membershipRenew == null)
 			{
 				_logger.LogInformation("Error while proccesing your request! (Renew Membership): Member not Found!");
-				ViewBag.error = "Error while proccesing your request! (Renew Membership): Member not Found!";
+				TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] = "Error while proccesing your request! (Renew Membership): Member not Found!";
 				RedirectToAction("Login");
             }
 			if (!membershipRenew.Status)
 			{
 				_logger.LogInformation("Error while proccesing your request! (Renew Membership): " + membershipRenew.Status + " , Error Message: " + membershipRenew.ErrorMessage);
-                ViewBag.error = "Error while proccesing your request! (Renew Membership): " + membershipRenew.ErrorMessage;
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] = "Error while proccesing your request! (Renew Membership): " + membershipRenew.ErrorMessage;
 				RedirectToAction("Login");
 			}
 
@@ -487,7 +489,7 @@ namespace WebAppMVC.Controllers
             {
                 _logger.LogError("Error while registering your new account: Your Registration Transaction not found!");
 
-                ViewBag.error = "Error while registering your new account: Your Registration Transaction not found! " +
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] = "Error while registering your new account: Your Registration Transaction not found! " +
                     "\nPlease contact the birdclub manager for assistance with resolving this issue!";
 
                 return RedirectToAction("Login");
@@ -514,7 +516,7 @@ namespace WebAppMVC.Controllers
             {
                 _logger.LogError("Error while registering your new account: User Transaction Saving Failed!");
 
-                ViewBag.error = "Error while registering your new account: User Transaction Saving Failed!, " +
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] = "Error while registering your new account: User Transaction Saving Failed!, " +
                     "\nPlease contact the birdclub manager for assistance with resolving this issue!";
 
                 return RedirectToAction("Login");
