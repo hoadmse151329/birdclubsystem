@@ -41,7 +41,7 @@ namespace DAL.Repositories.Implements
                 .Where(m => m.MeetingId == meetingId && m.MemberId == memberId)
                 .Include(m => m.MemberDetails)
                 .Include(m => m.MeetingDetails)
-                .FirstOrDefault();
+                .FirstOrDefaultAsync();
         }
         public async Task<MeetingParticipant> GetMeetingParticipantByIdTracking(int meetingId, string memberId)
         {
@@ -49,7 +49,7 @@ namespace DAL.Repositories.Implements
                 .Where(m => m.MeetingId == meetingId && m.MemberId == memberId)
                 .Include(m => m.MemberDetails)
                 .Include(m => m.MeetingDetails)
-                .FirstOrDefault();
+                .FirstOrDefaultAsync();
         }
 
         public async Task<IEnumerable<MeetingParticipant>> GetMeetingParticipantsByMeetId(int meetingId)
@@ -69,7 +69,7 @@ namespace DAL.Repositories.Implements
 
         public async Task<IEnumerable<MeetingParticipant>> GetMeetingParticipantsByMemberIdInclude(string memId)
         {
-            return await _context.MeetingParticipants.AsNoTracking().Where(m => m.MemberId == memId).Include(m => m.MeetingDetail).ToListAsync();
+            return await _context.MeetingParticipants.AsNoTracking().Where(m => m.MemberId == memId).Include(m => m.MeetingDetails).ToListAsync();
         }
 
         public async Task<int> GetParticipationNoMeetingParticipantById(int meetingId, string memberId)

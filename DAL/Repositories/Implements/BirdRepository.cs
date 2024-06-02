@@ -38,7 +38,7 @@ namespace DAL.Repositories.Implements
         public async Task<int> GetELOByBirdId(int birdId)
         {
             var result = await (from bird in _context.Birds where bird.BirdId == birdId select bird).FirstOrDefaultAsync();
-            if (result != null) return result.Elo;
+            if (result != null) return result.Elo.Value;
             return 0;
         }
 
