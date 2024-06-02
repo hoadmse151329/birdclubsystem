@@ -99,6 +99,7 @@ namespace WebAPI.Controllers
                 int blogCount = await _blogService.CountBlog();
                 int newsCount = await _newsService.CountNews();
                 int totalValue = await _transactionService.CalculateTotalValue();
+                var feedbackList = await _feedbackService.GetAllFeedbacks();
                 GetManagerDashboard result = new GetManagerDashboard()
                 {
                     TotalEvents = eventCount,
@@ -106,6 +107,7 @@ namespace WebAPI.Controllers
                     TotalBlogs = blogCount,
                     TotalNews = newsCount,
                     TotalIncome = totalValue,
+                    Feedbacks = feedbackList,
                 };
                 return Ok(new
                 {

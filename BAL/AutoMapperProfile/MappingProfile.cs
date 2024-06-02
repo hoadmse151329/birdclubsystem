@@ -211,6 +211,7 @@ namespace BAL.AutoMapperProfile
                 .AfterMap((src, dest) =>
                 {
                     dest.Fullname = src.UserDetails.MemberDetails.FullName;
+                    dest.AvatarImage = src.UserDetails.ImagePath;
                 })
                 .ReverseMap();
         }

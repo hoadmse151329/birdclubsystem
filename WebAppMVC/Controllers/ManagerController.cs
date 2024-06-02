@@ -85,7 +85,10 @@ namespace WebAppMVC.Controllers
                 url: ManagerAPI_URL,
                 accessToken: accToken,
                 _logger: _logger);
-
+            foreach(var fb in dashboardResponse.Data.Feedbacks)
+            {
+                fb.RatingDisplay = methcall.SetListStringsRatingDisplayByRating(fb.Rating.Value);
+            }
             return View(dashboardResponse.Data);
         }
         [HttpGet("Meeting")]

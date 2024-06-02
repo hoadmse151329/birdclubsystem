@@ -665,6 +665,30 @@ namespace WebAppMVC.Constants
             }
             context.TempData[Constants.ROLE_NAME] = role;
         }
+        public List<string>? SetListStringsRatingDisplayByRating(decimal rating)
+        {
+
+            List<string> htmlTags = new List<string>();
+            int fullStars = (int)rating;
+            bool hasHalfStar = rating - fullStars >= 0.5m;
+
+            for (int i = 0; i < fullStars; i++)
+            {
+                htmlTags.Add("<i class='bx bxs-star yellow'></i>");
+            }
+
+            if (hasHalfStar)
+            {
+                htmlTags.Add("<i class='bx bxs-star-half yellow'></i>");
+            }
+
+            for (int i = fullStars + (hasHalfStar ? 1 : 0); i < 5; i++)
+            {
+                htmlTags.Add("<i class='bx bxs-star'></i>");
+            }
+
+            return htmlTags;
+        }
         public void LogOut(Controller context)
         {
             context.HttpContext.Session.Clear();

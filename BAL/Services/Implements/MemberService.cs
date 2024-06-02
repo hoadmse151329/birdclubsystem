@@ -184,7 +184,16 @@ namespace BAL.Services.Implements
             return false;
         }
 
-        public async Task<IEnumerable<GetEmployeeStatus>?> GetSortedEmployees(string? memberId = null, string? memberUserName = null, string? memberFullName = null, DateTime? expiryDateTime = null, List<string>? roles = null, List<string>? statuses = null, string? orderBy = null, bool isManager = false, bool isAdmin = false)
+        public async Task<IEnumerable<GetEmployeeStatus>?> GetSortedEmployees(
+            string? memberId = null, 
+            string? memberUserName = null, 
+            string? memberFullName = null, 
+            DateTime? expiryDateTime = null, 
+            List<string>? roles = null, 
+            List<string>? statuses = null, 
+            string? orderBy = null, 
+            bool isManager = false, 
+            bool isAdmin = false)
         {
             return _mapper.Map<IEnumerable<GetEmployeeStatus>>(await _unitOfWork.MemberRepository.GetSortedMembers(
                 memberId,
@@ -208,6 +217,13 @@ namespace BAL.Services.Implements
                 FullName = fullname,
             };
             return member;
+        }
+
+        public Task<IEnumerable<GetEmployeeStatus>?> GetAvailableStaffList(
+            DateTime? startAvailableDate = null,
+            DateTime? endAvailableDate = null)
+        {
+            throw new NotImplementedException();
         }
     }
 }

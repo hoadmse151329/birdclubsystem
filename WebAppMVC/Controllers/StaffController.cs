@@ -787,7 +787,7 @@ namespace WebAppMVC.Controllers
             var staffInvalidPasswordUpdate = methcall.GetValidationTempData<UpdateMemberPassword>(this, TempData, Constants.Constants.UPDATE_STAFF_PASSWORD_VALID, "staffPassword", jsonOptions);
             if (staffInvalidPasswordUpdate != null)
             {
-                staffInvalids.managerPassword = staffInvalidPasswordUpdate;
+                staffInvalids.staffPassword = staffInvalidPasswordUpdate;
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] = ""; 
             }
             staffDetails.Data.DefaultUserGenderSelectList = methcall.GetUserGenderSelectableList(staffDetails.Data.Gender);

@@ -10,15 +10,16 @@ namespace DAL.Repositories.Interfaces
 {
     public interface IFieldtripAssignmentRepository : IRepositoryBase<FieldtripAssignment>
     {
-        Task<FieldtripAssignment> GetFieldtripAssignmentByIdNoTracking(int tripId, int memberId);
+        Task<FieldtripAssignment> GetFieldtripAssignmentByIdNoTracking(int tripId, string memberId);
+        Task<bool> IsFieldtripAssignmentExistByIdNoTracking(int tripId, string memberId);
         Task<IEnumerable<FieldtripAssignment>> GetFieldtripAssignmentsByFieldtripIdNoTracking(int tripId);
         Task<IEnumerable<FieldtripAssignment>> GetSortedFieldtripAssignmentsNoTracking(
             int? tripId = null,
-            int? memberId = null,
+            string? memberId = null,
             DateTime? assignedDate = null,
-            string? role = null,
+            List<string>? roles = null,
             string? orderBy = null
             );
-        Task<IEnumerable<FieldtripAssignment>> GetFieldtripAssignmentsByMemberIdNoTracking(int memberId);
+        Task<IEnumerable<FieldtripAssignment>> GetFieldtripAssignmentsByMemberIdNoTracking(string memberId);
     }
 }

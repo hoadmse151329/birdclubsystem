@@ -45,7 +45,7 @@ namespace DAL.Repositories.Implements
 
         public async Task<IEnumerable<ContestParticipant>> GetContestParticipantsByBirdIdInclude(int birdId)
         {
-            return await _context.ContestParticipants.Where(b => b.BirdId == birdId).Include(c => c.ContestDetail).ToListAsync();
+            return await _context.ContestParticipants.Where(b => b.BirdId == birdId).Include(c => c.ContestDetails).ToListAsync();
         }
 
 		public async Task<IEnumerable<ContestParticipant>> GetContestParticipantsByMemberId(string memberId)
@@ -55,7 +55,7 @@ namespace DAL.Repositories.Implements
 
 		public async Task<IEnumerable<ContestParticipant>> GetContestParticipantsByMemberIdInclude(string memberId)
 		{
-            return await _context.ContestParticipants.AsNoTracking().Where(c => c.MemberId == memberId).Include(c => c.ContestDetail).ToListAsync();
+            return await _context.ContestParticipants.AsNoTracking().Where(c => c.MemberId == memberId).Include(c => c.ContestDetails).ToListAsync();
 		}
 
 		public async Task<int> GetCountContestParticipantsByMemberId(string memberId)

@@ -14,51 +14,53 @@
     <title>Login</title>
 </head>
 <body class="background">
-    @if (TempData["Success"] != null)
-    {
-        <div class="alert alert-success alert-dismissible fade show" id="notif">
-            <i class='bx bx-message-alt-x p-1'></i>
-            <strong class="mr-1">@TempData["Success"]</strong>
-            <button type="button" class="close h-100" data-dismiss="alert" aria-label="Close">
-                <span><i class='bx bx-x'></i></span>
-            </button>
-        </div>
-        TempData["Success"] = null;
-    }
-    else if (TempData["Error"] != null)
-    {
-        <div class="alert alert-danger alert-dismissible fade show" id="notif">
-            <i class='bx bx-message-alt-x p-1'></i>
-            <strong class="mr-1">@TempData["Error"]</strong>
-            <button type="button" class="close h-100" data-dismiss="alert" aria-label="Close">
-                <span><i class='bx bx-x'></i></span>
-            </button>
-        </div>
-        TempData["Error"] = null;
-    }
     <div class="main-container">
         <div class="row justify-content-between">
             <div class="col-lg-6">
+                @if (TempData["Success"] != null)
+                {
+                    <div class="alert alert-success alert-dismissible fade show" id="notif">
+                        <i class='bx bx-message-alt-x p-1'></i>
+                        <strong class="mr-1">@TempData["Success"]</strong>
+                        <button type="button" class="close h-100" data-dismiss="alert" aria-label="Close">
+                            <span><i class='bx bx-x'></i></span>
+                        </button>
+                    </div>
+                    TempData["Success"] = null;
+                }
+                else if (TempData["Error"] != null)
+                {
+                    <div class="alert alert-danger alert-dismissible fade show" id="notif">
+                        <i class='bx bx-message-alt-x p-1'></i>
+                        <strong class="mr-1">@TempData["Error"]</strong>
+                        <button type="button" class="close h-100" data-dismiss="alert" aria-label="Close">
+                            <span><i class='bx bx-x'></i></span>
+                        </button>
+                    </div>
+                    TempData["Error"] = null;
+                }
                 <div class="box-container">
                     <div class="d-flex justify-content-center box-header light-green">
                         <h5><b>Login Account</b></h5>
                     </div>
-                    <div class="d-flex box-body justify-content-center">
-                        <div>
-                            @{
-                                if (ViewBag.Success != null)
+                    <div class="d-flex justify-content-center">
+                        @{
+                            if (TempData["SuccessCheck"] != null)
+                            {
+                                <span>@TempData["SuccessCheck"].ToString()</span>
+                            }
+                            if (TempData["ErrorCheck"] != null)
+                            {
+                                <span class="text-danger">@TempData["ErrorCheck"].ToString()</span>
+                                if (TempData["ErrorCheck"] == "User Account is Currently Expired!")
                                 {
-                                    <span>@ViewBag.Success</span>
-                                }
-                                if (ViewBag.error != null)
-                                {
-                                    <span class="text-danger">@ViewBag.error</span>
-                                    if (ViewBag.error == "User Account is Currently Expired!")
-                                    {
-                                        <a href="@Url.Action("RenewMembership", "Auth")">Renew Now!</a>
-                                    }
+                                    <a href="@Url.Action("RenewMembership", "Auth")">Renew Now!</a>
                                 }
                             }
+                        }
+                    </div>
+                    <div class="d-flex box-body justify-content-center">
+                        <div>
                             <form class="reg-form" asp-action="Authorize" asp-controller="Auth">
                                 <div class="form-group">
 
