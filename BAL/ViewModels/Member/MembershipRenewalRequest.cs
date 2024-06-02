@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DAL.Repositories.Implements
+namespace BAL.ViewModels.Member
 {
-    public class GalleryRepository
+    public class MembershipRenewalRequest
     {
+        public string FullName { get; set; }
     }
 }

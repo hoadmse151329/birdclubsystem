@@ -130,7 +130,7 @@ namespace WebAppMVC.Controllers
                     "Error while processing your request! (Getting List Meeting!). List was Empty!: " + listMeetResponse);
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting List Meeting!).\n List was Empty!";
-                return View("ManagerIndex");
+                return RedirectToAction("ManagerIndex");
             }
             else
             if (!listMeetResponse.Status || !listLocationResponse.Status)
@@ -138,7 +138,7 @@ namespace WebAppMVC.Controllers
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting List Meeting!).\n"
                     + listMeetResponse.ErrorMessage + "\n" + listLocationResponse.ErrorMessage;
-                return View("ManagerIndex");
+                return RedirectToAction("ManagerIndex");
             }
 
             testmodel.CreateMeeting = methcall.GetValidationTempData<MeetingViewModel>(this, TempData, Constants.Constants.CREATE_MEETING_VALID, "createMeeting", jsonOptions);
@@ -454,7 +454,7 @@ namespace WebAppMVC.Controllers
                     "Error while processing your request! (Getting List FieldTrip!). List was Empty!: " + listLocationResponse + ",\n" + listFieldTripResponse);
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting List FieldTrip!).\n List was Empty!";
-                return View("ManagerIndex");
+                return RedirectToAction("ManagerIndex");
             }
             else
             if (!listFieldTripResponse.Status || !listLocationResponse.Status)
@@ -462,7 +462,7 @@ namespace WebAppMVC.Controllers
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting List FieldTrip!).\n"
                     + listFieldTripResponse.ErrorMessage + "\n" + listLocationResponse.ErrorMessage;
-                return View("ManagerIndex");
+                return RedirectToAction("ManagerIndex");
             }
 
             fieldtripIndexVM.CreateFieldTrip = methcall.GetValidationTempData<FieldTripViewModel>(this, TempData, Constants.Constants.CREATE_FIELDTRIP_VALID, "createFieldTrip", jsonOptions);
@@ -1228,7 +1228,7 @@ namespace WebAppMVC.Controllers
                     "Error while processing your request! (Getting List Contest!). List was Empty!: " + listContestResponse);
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting List Contest!).\n List was Empty!";
-                return View("ManagerIndex");
+                return RedirectToAction("ManagerIndex");
             }
             else
             if (!listContestResponse.Status || !listLocationResponse.Status)
@@ -1236,7 +1236,7 @@ namespace WebAppMVC.Controllers
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting List Meeting!).\n"
                     + listContestResponse.ErrorMessage + "\n" + listLocationResponse.ErrorMessage;
-                return View("ManagerIndex");
+                return RedirectToAction("ManagerIndex");
             }
             testmodel3.CreateContest = methcall.GetValidationTempData<ContestViewModel>(this, TempData, Constants.Constants.CREATE_CONTEST_VALID, "createContest", jsonOptions);
             testmodel3.Contests = listContestResponse.Data;
@@ -1505,6 +1505,7 @@ namespace WebAppMVC.Controllers
                 managerInvalidDetails.ImagePath = imagePath;
                 managerInvalidDetails.DefaultUserGenderSelectList = methcall.GetUserGenderSelectableList(managerInvalidDetails.Gender);
                 managerInvalids.managerDetail = managerInvalidDetails;
+                TempData["Error"] = "There are invalid details.";
                 return View(managerInvalids);
             }
 
@@ -1537,6 +1538,7 @@ namespace WebAppMVC.Controllers
             }
             managerDetails.Data.DefaultUserGenderSelectList = methcall.GetUserGenderSelectableList(managerDetails.Data.Gender);
             managerInvalids.managerDetail = managerDetails.Data;
+            TempData["Success"] = "Successfully updated Profile!";
             return View(managerInvalids);
         }
         [HttpPost("Profile")]
@@ -1717,7 +1719,7 @@ namespace WebAppMVC.Controllers
                     "Error while processing your request! (Getting List Feedback!). List was Empty!: " + listFeedbackResponse);
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting List Feedback!).\n List was Empty!";
-                return View("ManagerIndex");
+                return RedirectToAction("ManagerIndex");
             }
             else
             if (!listFeedbackResponse.Status)
@@ -1725,7 +1727,7 @@ namespace WebAppMVC.Controllers
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting List Feedback!).\n"
                     + listFeedbackResponse.ErrorMessage;
-                return View("ManagerIndex");
+                return RedirectToAction("ManagerIndex");
             }
 
             dynamic listFeedback = new ExpandoObject();
@@ -1763,7 +1765,7 @@ namespace WebAppMVC.Controllers
                     "Error while processing your request! (Getting List Member Status!). List was Empty!: " + listMemberStatusResponse);
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting List Member Status!).\n List was Empty!";
-                return View("ManagerIndex");
+                return RedirectToAction("ManagerIndex");
             }
             else
             if (!listMemberStatusResponse.Status)
@@ -1771,7 +1773,7 @@ namespace WebAppMVC.Controllers
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting List Member Status!).\n"
                     + listMemberStatusResponse.ErrorMessage;
-                return View("ManagerIndex");
+                return RedirectToAction("ManagerIndex");
             }
             managerMemberStatusListVM.MemberStatuses = listMemberStatusResponse.Data;
             foreach(var status in managerMemberStatusListVM.MemberStatuses)
@@ -1809,7 +1811,7 @@ namespace WebAppMVC.Controllers
                     "Error while processing your request! (Getting List Member Status!). List was Empty!: " + listMemberStatusResponse);
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting List Member Status!).\n List was Empty!";
-                return View("ManagerIndex");
+                return RedirectToAction("ManagerMemberStatus");
             }
             else
             if (!listMemberStatusResponse.Status)
@@ -1817,7 +1819,7 @@ namespace WebAppMVC.Controllers
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting List Member Status!).\n"
                     + listMemberStatusResponse.ErrorMessage;
-                return View("ManagerIndex");
+                return RedirectToAction("ManagerMemberStatus");
             }
             TempData["Success"] = listMemberStatusResponse.SuccessMessage;
             return RedirectToAction("ManagerMemberStatus");
@@ -2001,10 +2003,8 @@ namespace WebAppMVC.Controllers
             var listNewsResponse = await methcall.CallMethodReturnObject<GetListNews>(
                 _httpClient: _httpClient,
                 options: jsonOptions,
-                methodName: Constants.Constants.POST_METHOD,
+                methodName: Constants.Constants.GET_METHOD,
                 url: ManagerAPI_URL,
-                accessToken: accToken,
-                inputType: usrId,
                 _logger: _logger);
 
             if (listNewsResponse == null)
@@ -2013,7 +2013,7 @@ namespace WebAppMVC.Controllers
                     "Error while processing your request! (Getting List News Status!). List was Empty!: " + listNewsResponse);
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting List News Status!).\n List was Empty!";
-                return View("ManagerIndex");
+                return RedirectToAction("ManagerIndex");
             }
             else
             if (!listNewsResponse.Status)
@@ -2021,7 +2021,7 @@ namespace WebAppMVC.Controllers
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting List News Status!).\n"
                     + listNewsResponse.ErrorMessage;
-                return View("ManagerIndex");
+                return RedirectToAction("ManagerIndex");
             }
             managerNewsListVM.News = listNewsResponse.Data;
             managerNewsListVM.createNews = methcall.GetValidationTempData<CreateNewNews>(this, TempData, Constants.Constants.CREATE_NEWS_VALID, "createNews", jsonOptions);
