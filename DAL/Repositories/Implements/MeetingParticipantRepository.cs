@@ -39,16 +39,16 @@ namespace DAL.Repositories.Implements
         {
             return _context.MeetingParticipants.AsNoTracking()
                 .Where(m => m.MeetingId == meetingId && m.MemberId == memberId)
-                .Include(m => m.MemberDetails)
-                .Include(m => m.MeetingDetails)
+                .Include(m => m.MemberDetail)
+                .Include(m => m.MeetingDetail)
                 .FirstOrDefault();
         }
         public async Task<MeetingParticipant> GetMeetingParticipantByIdTracking(int meetingId, string memberId)
         {
             return _context.MeetingParticipants
                 .Where(m => m.MeetingId == meetingId && m.MemberId == memberId)
-                .Include(m => m.MemberDetails)
-                .Include(m => m.MeetingDetails)
+                .Include(m => m.MemberDetail)
+                .Include(m => m.MeetingDetail)
                 .FirstOrDefault();
         }
 
@@ -57,7 +57,7 @@ namespace DAL.Repositories.Implements
             return _context.MeetingParticipants
                 .AsNoTracking()
                 .Where(m => m.MeetingId == meetingId)
-                .Include(m => m.MemberDetails)
+                .Include(m => m.MemberDetail)
                 .OrderBy(p => p.ParticipantNo)
                 .ToList();
         }
@@ -69,13 +69,13 @@ namespace DAL.Repositories.Implements
 
         public async Task<IEnumerable<MeetingParticipant>> GetMeetingParticipantsByMemberIdInclude(string memId)
         {
-            return _context.MeetingParticipants.AsNoTracking().Where(m => m.MemberId == memId).Include(m => m.MeetingDetails).ToList();
+            return _context.MeetingParticipants.AsNoTracking().Where(m => m.MemberId == memId).Include(m => m.MeetingDetail).ToList();
         }
 
         public async Task<int> GetParticipationNoMeetingParticipantById(int meetingId, string memberId)
         {
             var mempart = _context.MeetingParticipants.AsNoTracking().SingleOrDefault(m => m.MeetingId.Equals(meetingId) && m.MemberId.Equals(memberId));
-            if (mempart != null) return mempart.ParticipantNo.Value;
+            if (mempart != null) return mempart.ParticipantNo;
             return 0;
         }
 

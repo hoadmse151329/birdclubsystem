@@ -33,7 +33,7 @@ namespace DAL.Repositories.Implements
             return _context.ContestParticipants
                 .AsNoTracking()
                 .Where(con => con.ContestId == contestId)
-                .Include(m => m.MemberDetails)
+                .Include(m => m.MemberDetail)
                 .Include(b => b.BirdDetails)
                 .OrderBy(p => p.ParticipantNo).ToList();
         }
@@ -45,7 +45,7 @@ namespace DAL.Repositories.Implements
 
         public async Task<IEnumerable<ContestParticipant>> GetContestParticipantsByBirdIdInclude(int birdId)
         {
-            return _context.ContestParticipants.Where(b => b.BirdId == birdId).Include(c => c.ContestDetails).ToList();
+            return _context.ContestParticipants.Where(b => b.BirdId == birdId).Include(c => c.ContestDetail).ToList();
         }
 
 		public async Task<IEnumerable<ContestParticipant>> GetContestParticipantsByMemberId(string memberId)
@@ -55,7 +55,7 @@ namespace DAL.Repositories.Implements
 
 		public async Task<IEnumerable<ContestParticipant>> GetContestParticipantsByMemberIdInclude(string memberId)
 		{
-            return _context.ContestParticipants.AsNoTracking().Where(c => c.MemberId == memberId).Include(c => c.ContestDetails).ToList();
+            return _context.ContestParticipants.AsNoTracking().Where(c => c.MemberId == memberId).Include(c => c.ContestDetail).ToList();
 		}
 
 		public async Task<int> GetCountContestParticipantsByMemberId(string memberId)
@@ -116,9 +116,9 @@ namespace DAL.Repositories.Implements
 
             int n = part.Count;
             // Calculate the total points earned by all birds
-            int totalPoints = part.Sum(c => c.Score.Value);
+            int totalPoints = part.Sum(c => c.Score);
             // Calculate the average Elo of all players
-            double averageElo = conpartList.Sum(c => c.BirdDetails.Elo.Value) / n;
+            double averageElo = conpartList.Sum(c => c.BirdDetails.Elo) / n;
             // List of Elo change factors
             List<int> Y = new List<int> { 40, 35, 30, 25, 20 }; // Adjust this list as needed
 
@@ -132,9 +132,9 @@ namespace DAL.Repositories.Implements
                         conpart.Score = participant.Score;
 
                         // Calculate basic Elo change for the player based on the provided parameters
-                        double basicEloChange = CalculateBasicEloChange(conpart.BirdDetails.Elo.Value, averageElo, conpart.Score.Value, totalPoints, n, Y);
+                        double basicEloChange = CalculateBasicEloChange(conpart.BirdDetails.Elo, averageElo, conpart.Score, totalPoints, n, Y);
                         // Update the player's Elo using the calculated Elo change
-                        int updatedElo = UpdateElo(conpart.BirdDetails.Elo.Value, (int)Math.Round(basicEloChange, MidpointRounding.AwayFromZero));
+                        int updatedElo = UpdateElo(conpart.BirdDetails.Elo, (int)Math.Round(basicEloChange, MidpointRounding.AwayFromZero));
 
                         conpart.Elo = updatedElo;
 

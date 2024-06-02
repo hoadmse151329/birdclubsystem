@@ -28,7 +28,6 @@ using WebAppMVC.Models.Blog;
 using BAL.ViewModels.News;
 using Microsoft.AspNetCore.Authorization;
 using AutoMapper;
-using BAL.ViewModels.Blog;
 // thêm crud của meeting, fieldtrip, contest.
 namespace WebAppMVC.Controllers
 {
@@ -1781,9 +1780,7 @@ namespace WebAppMVC.Controllers
             return View(managerMemberStatusListVM);
         }
         [HttpPost("MemberStatus/Update")]
-        public async Task<IActionResult> ManagerUpdateMemberStatus(
-            List<GetMemberStatus> listRequest
-            )
+        public async Task<IActionResult> ManagerUpdateMemberStatus(List<GetMemberStatus> listRequest)
         {
             ManagerAPI_URL += "Manager/MemberStatus/Update";
 
@@ -1828,13 +1825,12 @@ namespace WebAppMVC.Controllers
             return View();
         }
         [HttpGet("Blog")]
-        public async Task<IActionResult> ManagerBlog([FromQuery] string? search)
+        public async Task<IActionResult> ManagerBlog([FromQuery] string search)
         {
             ManagerAPI_URL += "Blog/All";
 
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
-            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
             ManagerBlogIndexVM managerBlogListVM = new();
 
@@ -1843,7 +1839,6 @@ namespace WebAppMVC.Controllers
                 options: jsonOptions,
                 methodName: Constants.Constants.GET_METHOD,
                 url: ManagerAPI_URL,
-                accessToken: accToken,
                 _logger: _logger);
 
             if (listBlogResponse == null)
@@ -1852,7 +1847,7 @@ namespace WebAppMVC.Controllers
                     "Error while processing your request! (Getting List Blog Status!). List was Empty!: " + listBlogResponse);
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting List Blog Status!).\n List was Empty!";
-                return RedirectToAction("ManagerIndex");
+                return View("ManagerIndex");
             }
             else
             if (!listBlogResponse.Status)
@@ -1860,88 +1855,12 @@ namespace WebAppMVC.Controllers
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting List Blog Status!).\n"
                     + listBlogResponse.ErrorMessage;
-                return RedirectToAction("ManagerIndex");
+                return View("ManagerIndex");
             }
 
             managerBlogListVM.Blogs = listBlogResponse.Data;
 
             return View(managerBlogListVM);
-        }
-        [HttpGet("Blog/{id:int}")]
-        /*[Route("Manager/Contest/{id:int}")]*/
-        public async Task<IActionResult> ManagerBlogDetail(
-            [FromRoute][Required] int id
-            )
-        {
-            ManagerAPI_URL += "Blog/" + id;
-            ManagerBlogDetailsVM managerBlogPostDetailsVM = new();
-
-            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
-                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
-
-            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
-
-            var managerBlogPostVM = await methcall.CallMethodReturnObject<GetBlogPostResponse>(
-                                _httpClient: _httpClient,
-                                options: jsonOptions,
-                                methodName: Constants.Constants.GET_METHOD,
-                                url: ManagerAPI_URL,
-                                accessToken: accToken,
-                                _logger: _logger);
-            if (managerBlogPostVM == null)
-            {
-                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
-                    "Error while processing your request! (Getting Blog!).\n Blog Not Found!";
-                return RedirectToAction("ManagerBlog");
-            }
-            if (!managerBlogPostVM.Status)
-            {
-                _logger.LogInformation("Error while processing your request: " + managerBlogPostVM.Status + " , Error Message: " + managerBlogPostVM.ErrorMessage);
-                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
-                    "Error while processing your request! (Getting Blog Post!).\n"
-                    + managerBlogPostVM.ErrorMessage;
-                return RedirectToAction("ManagerBlog");
-            }
-            managerBlogPostDetailsVM.Blog = managerBlogPostVM.Data;
-
-            return View(managerBlogPostDetailsVM);
-        }
-        [HttpPost("Blog/{id:int}/Status/Update")]
-        public async Task<IActionResult> ManagerUpdateBlogStatus(
-            [FromRoute][Required] int id,
-            [FromForm][Required] UpdateBlogStatus updateBlogStatus)
-        {
-            ManagerAPI_URL += "Blog/" + id + "/Status/Update";
-
-            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
-                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
-
-            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
-
-            var blogPostResponse = await methcall.CallMethodReturnObject<GetBlogPostResponse>(
-                                _httpClient: _httpClient,
-                                options: jsonOptions,
-                                methodName: Constants.Constants.PUT_METHOD,
-                                url: ManagerAPI_URL,
-                                accessToken: accToken,
-                                inputType: updateBlogStatus,
-                                _logger: _logger);
-            if (blogPostResponse == null)
-            {
-                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
-                    "Error while processing your request! (Update Blog Status!).\n Post Not Found!";
-                return RedirectToAction("ManagerBlogDetail", new {id = id});
-            }
-            if (!blogPostResponse.Status)
-            {
-                _logger.LogInformation("Error while processing your request: " + blogPostResponse.Status + " , Error Message: " + blogPostResponse.ErrorMessage);
-                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
-                    "Error while processing your request! (Update Blog Status!).\n"
-                    + blogPostResponse.ErrorMessage;
-                return RedirectToAction("ManagerBlogDetail", new { id = id });
-            }
-            TempData[Constants.Constants.ALERT_DEFAULT_SUCCESS_NAME] = "Successfully update Blog Status";
-            return RedirectToAction("ManagerBlogDetail", new { id = id });
         }
         [HttpPost("Blog/{id:int}/Disable")]
         public async Task<IActionResult> ManagerDisableBlog(

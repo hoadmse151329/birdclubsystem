@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using DAL.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.Configuration;
@@ -25,22 +24,19 @@ namespace DAL.Models
         public virtual DbSet<ClubLocation> ClubLocations { get; set; } = null!;
         public virtual DbSet<Comment> Comments { get; set; } = null!;
         public virtual DbSet<Contest> Contests { get; set; } = null!;
-        public virtual DbSet<ContestAssignment> ContestAssignments { get; set; } = null!;
         public virtual DbSet<ContestMedia> ContestMedia { get; set; } = null!;
         public virtual DbSet<ContestParticipant> ContestParticipants { get; set; } = null!;
         public virtual DbSet<Feedback> Feedbacks { get; set; } = null!;
         public virtual DbSet<FieldTrip> FieldTrips { get; set; } = null!;
+        public virtual DbSet<FieldTripParticipant> FieldTripParticipants { get; set; } = null!;
         public virtual DbSet<FieldtripAdditionalDetail> FieldtripAdditionalDetails { get; set; } = null!;
         public virtual DbSet<FieldtripDaybyDay> FieldtripDaybyDays { get; set; } = null!;
         public virtual DbSet<FieldtripGettingThere> FieldtripGettingTheres { get; set; } = null!;
         public virtual DbSet<FieldtripInclusion> FieldtripInclusions { get; set; } = null!;
         public virtual DbSet<FieldtripMedia> FieldtripMedia { get; set; } = null!;
-        public virtual DbSet<FieldTripParticipant> FieldTripParticipants { get; set; } = null!;
-        public virtual DbSet<FieldtripAssignment> FieldtripAssignments { get; set; } = null!;
         public virtual DbSet<Gallery> Galleries { get; set; } = null!;
         public virtual DbSet<Location> Locations { get; set; } = null!;
         public virtual DbSet<Meeting> Meetings { get; set; } = null!;
-        public virtual DbSet<MeetingAssignment> MeetingAssignments { get; set; } = null!;
         public virtual DbSet<MeetingMedia> MeetingMedia { get; set; } = null!;
         public virtual DbSet<MeetingParticipant> MeetingParticipants { get; set; } = null!;
         public virtual DbSet<Member> Members { get; set; } = null!;
@@ -66,8 +62,9 @@ namespace DAL.Models
             modelBuilder.Entity<Bird>(entity =>
             {
                 entity.HasOne(d => d.MemberDetails)
-                    .WithMany(p => p.Birds)
+                    .WithMany(p => p.MemberBirds)
                     .HasForeignKey(d => d.MemberId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Bird_Member");
             });
 
@@ -84,16 +81,17 @@ namespace DAL.Models
 
             modelBuilder.Entity<Blog>(entity =>
             {
-                entity.HasOne(d => d.UserDetails)
+                entity.HasOne(d => d.UserDetail)
                     .WithMany(p => p.Blogs)
                     .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Blog_Users");
             });
 
             modelBuilder.Entity<ClubInformation>(entity =>
             {
                 entity.HasKey(e => e.ClubId)
-                    .HasName("PK__ClubInfo__DF4AEAB2C58A5A08");
+                    .HasName("PK__ClubInfo__DF4AEAB20A84BC20");
 
                 entity.HasOne(d => d.ClubLocation)
                     .WithMany(p => p.ClubInformations)
@@ -111,38 +109,21 @@ namespace DAL.Models
 
             modelBuilder.Entity<Comment>(entity =>
             {
-                entity.HasOne(d => d.UserDetails)
+                entity.HasOne(d => d.UserDetail)
                     .WithMany(p => p.Comments)
                     .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Comment_Users");
-            });
-
-            modelBuilder.Entity<ContestAssignment>(entity =>
-            {
-                entity.HasKey(e => new { e.MemberId, e.ContestId });
-
-                entity.HasOne(d => d.ContestDetails)
-                    .WithMany(p => p.ContestAssignments)
-                    .HasForeignKey(d => d.ContestId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_ContestAssignment_Contest");
-
-                entity.HasOne(d => d.MemberDetails)
-                    .WithMany(p => p.ContestAssignments)
-                    .HasForeignKey(d => d.MemberId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Assignment_Member");
             });
 
             modelBuilder.Entity<ContestMedia>(entity =>
             {
                 entity.HasKey(e => e.PictureId)
-                    .HasName("PK__ContestM__769A271AC5DF8E5B");
+                    .HasName("PK__ContestM__769A271AE03B7758");
 
                 entity.HasOne(d => d.ContestDetail)
                     .WithMany(p => p.ContestPictures)
                     .HasForeignKey(d => d.ContestId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Contest");
             });
 
@@ -156,13 +137,13 @@ namespace DAL.Models
                     .HasForeignKey(d => d.BirdId)
                     .HasConstraintName("FK__TournamentP__BID__0E6E26BF");
 
-                entity.HasOne(d => d.ContestDetails)
+                entity.HasOne(d => d.ContestDetail)
                     .WithMany(p => p.ContestParticipants)
                     .HasForeignKey(d => d.ContestId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__TournamentP__TID__0D7A0286");
 
-                entity.HasOne(d => d.MemberDetails)
+                entity.HasOne(d => d.MemberDetail)
                     .WithMany(p => p.ContestParticipants)
                     .HasForeignKey(d => d.MemberId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
@@ -171,9 +152,10 @@ namespace DAL.Models
 
             modelBuilder.Entity<Feedback>(entity =>
             {
-                entity.HasOne(d => d.UserDetails)
+                entity.HasOne(d => d.UserDetail)
                     .WithMany(p => p.Feedbacks)
                     .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Feedback_Users");
             });
 
@@ -183,54 +165,11 @@ namespace DAL.Models
                     .HasName("PK__FieldTri__C1BEA5A2CBA40722");
             });
 
-            modelBuilder.Entity<FieldtripAdditionalDetail>(entity =>
-            {
-                entity.HasOne(d => d.Trip)
-                    .WithMany(p => p.FieldTripAdditionalDetails)
-                    .HasForeignKey(d => d.TripId)
-                    .HasConstraintName("FK_FieldTripAdditionalDetails_Trip");
-            });
-
-            modelBuilder.Entity<FieldtripDaybyDay>(entity =>
-            {
-                entity.HasOne(d => d.Trip)
-                    .WithMany(p => p.FieldTripDaybyDays)
-                    .HasForeignKey(d => d.TripId)
-                    .HasConstraintName("FK_FieldTripDaybyDay_FieldTrip");
-            });
-
-            modelBuilder.Entity<FieldtripGettingThere>(entity =>
-            {
-                entity.HasOne(d => d.Trip)
-                    .WithOne(p => p.FieldTripGettingThereDetails)
-                    .HasForeignKey<FieldtripGettingThere>(d => d.TripId)
-                    .HasConstraintName("FK_FieldTripGettingThere_FieldTrip");
-            });
-
-            modelBuilder.Entity<FieldtripInclusion>(entity =>
-            {
-                entity.HasOne(d => d.Trip)
-                    .WithMany(p => p.FieldTripInclusions)
-                    .HasForeignKey(d => d.TripId)
-                    .HasConstraintName("FK_FieldTripInclusions_FieldTrip");
-            });
-
-            modelBuilder.Entity<FieldtripMedia>(entity =>
-            {
-                entity.HasKey(e => e.PictureId)
-                    .HasName("PK__FieldTri__769A271A1A196F52");
-
-                entity.HasOne(d => d.Trip)
-                    .WithMany(p => p.FieldTripPictures)
-                    .HasForeignKey(d => d.TripId)
-                    .HasConstraintName("FK_FieldTripMedia_FieldTrip");
-            });
-
             modelBuilder.Entity<FieldTripParticipant>(entity =>
             {
                 entity.HasKey(e => new { e.TripId, e.MemberId });
 
-                entity.HasOne(d => d.MemberDetails)
+                entity.HasOne(d => d.MemberDetail)
                     .WithMany(p => p.FieldTripParticipants)
                     .HasForeignKey(d => d.MemberId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
@@ -243,54 +182,68 @@ namespace DAL.Models
                     .HasConstraintName("FK_FieldTripParticipants_FieldTrip");
             });
 
-            modelBuilder.Entity<FieldtripAssignment>(entity =>
+            modelBuilder.Entity<FieldtripAdditionalDetail>(entity =>
             {
-                entity.HasKey(e => new { e.MemberId, e.TripId });
-
-                entity.HasOne(d => d.MemberDetails)
-                    .WithMany(p => p.FieldtripAssignments)
-                    .HasForeignKey(d => d.MemberId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_FieldtripAssignment_Member");
-
                 entity.HasOne(d => d.Trip)
-                    .WithMany(p => p.FieldtripAssignments)
+                    .WithMany(p => p.FieldtripAdditionalDetails)
                     .HasForeignKey(d => d.TripId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_FieldtripAssignment_FieldTrip");
+                    .HasConstraintName("FK_FieldtripAdditionalDetails_Trip");
+            });
+
+            modelBuilder.Entity<FieldtripDaybyDay>(entity =>
+            {
+                entity.HasOne(d => d.Trip)
+                    .WithMany(p => p.FieldtripDaybyDays)
+                    .HasForeignKey(d => d.TripId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_FieldtripDaybyDay_FieldTrip");
+            });
+
+            modelBuilder.Entity<FieldtripGettingThere>(entity =>
+            {
+                entity.HasOne(d => d.Trip)
+                    .WithOne(p => p.FieldtripGettingTheres)
+                    .HasForeignKey<FieldtripGettingThere>(d => d.TripId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_FieldtripGettingThere_FieldTrip");
+            });
+
+            modelBuilder.Entity<FieldtripInclusion>(entity =>
+            {
+                entity.HasOne(d => d.Trip)
+                    .WithMany(p => p.FieldtripInclusions)
+                    .HasForeignKey(d => d.TripId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_FieldtripInclusions_FieldTrip");
+            });
+
+            modelBuilder.Entity<FieldtripMedia>(entity =>
+            {
+                entity.HasKey(e => e.PictureId)
+                    .HasName("PK__Fieldtri__769A271AD61345EC");
+
+                entity.HasOne(d => d.Trip)
+                    .WithMany(p => p.FieldtripPictures)
+                    .HasForeignKey(d => d.TripId)
+                    .HasConstraintName("FK_FieldtripMedia_FieldTrip");
             });
 
             modelBuilder.Entity<Gallery>(entity =>
             {
-                entity.HasOne(d => d.UserDetails)
+                entity.HasOne(d => d.UserDetail)
                     .WithMany(p => p.Galleries)
                     .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Gallery_Users");
-            });
-
-            modelBuilder.Entity<MeetingAssignment>(entity =>
-            {
-                entity.HasKey(e => new { e.MemberId, e.MeetingId });
-
-                entity.HasOne(d => d.MeetingDetails)
-                    .WithMany(p => p.MeetingAssignments)
-                    .HasForeignKey(d => d.MeetingId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_MeetingAssignment_Meeting");
-
-                entity.HasOne(d => d.MemberDetails)
-                    .WithMany(p => p.MeetingAssignments)
-                    .HasForeignKey(d => d.MemberId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_MeetingAssignment_Member");
             });
 
             modelBuilder.Entity<MeetingMedia>(entity =>
             {
                 entity.HasKey(e => e.PictureId)
-                    .HasName("PK__MeetingM__769A271A6893DA3A");
+                    .HasName("PK__MeetingM__769A271AEF8C2935");
 
-                entity.HasOne(d => d.MeetingDetails)
+                entity.HasOne(d => d.MeetingDetail)
                     .WithMany(p => p.MeetingPictures)
                     .HasForeignKey(d => d.MeetingId)
                     .HasConstraintName("FK_Meeting");
@@ -300,13 +253,13 @@ namespace DAL.Models
             {
                 entity.HasKey(e => new { e.MeetingId, e.MemberId });
 
-                entity.HasOne(d => d.MeetingDetails)
+                entity.HasOne(d => d.MeetingDetail)
                     .WithMany(p => p.MeetingParticipants)
                     .HasForeignKey(d => d.MeetingId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__MeetingPar__MeID__03F0984C");
 
-                entity.HasOne(d => d.MemberDetails)
+                entity.HasOne(d => d.MemberDetail)
                     .WithMany(p => p.MeetingParticipants)
                     .HasForeignKey(d => d.MemberId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
@@ -315,24 +268,35 @@ namespace DAL.Models
 
             modelBuilder.Entity<News>(entity =>
             {
-                entity.HasOne(d => d.UserDetails)
-                    .WithMany(p => p.NewsList)
+                entity.HasOne(d => d.UserDetail)
+                    .WithMany(p => p.NewsDetail)
                     .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_News_Users");
             });
 
             modelBuilder.Entity<Notification>(entity =>
             {
-                entity.HasOne(d => d.UserDetails)
-                    .WithMany(p => p.Notifications)
+                entity.HasOne(d => d.UserDetail)
+                      .WithMany(p => p.Notifications)
+                      .HasForeignKey(d => d.UserId)
+                      .OnDelete(DeleteBehavior.ClientSetNull)
+                      .HasConstraintName("FK_Notification_Users");
+            });
+
+            modelBuilder.Entity<Transaction>(entity =>
+            {
+                /*entity.HasOne(d => d.UserDetail)
+                    .WithMany(p => p.Transactions)
                     .HasForeignKey(d => d.UserId)
-                    .HasConstraintName("FK_Notification_Users");
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Transactions_Users");*/
             });
 
             modelBuilder.Entity<User>(entity =>
             {
-                entity.HasOne(d => d.MemberDetails)
-                    .WithOne(p => p.UserDetails)
+                entity.HasOne(d => d.MemberDetail)
+                    .WithOne(p => p.UserDetail)
                     .HasForeignKey<User>(d => d.MemberId)
                     .HasConstraintName("FK_Users_Member");
             });

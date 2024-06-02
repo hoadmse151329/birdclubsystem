@@ -9,22 +9,26 @@ namespace DAL.Models
     [Table("FieldTripParticipants")]
     public partial class FieldTripParticipant
     {
+        public FieldTripParticipant()
+        {
+            CheckInStatus = "Not Checked-In";
+        }
         [Key]
         [Column("tripId")]
         public int TripId { get; set; }
         [Key]
         [Column("memberId")]
-        [StringLength(255)]
+        [StringLength(50)]
         public string MemberId { get; set; } = null!;
         [Column("participantNo")]
-        public int? ParticipantNo { get; set; }
+        public int ParticipantNo { get; set; }
         [Column("checkInStatus")]
         [StringLength(50)]
-        public string? CheckInStatus { get; set; }
+        public string CheckInStatus { get; set; } = null!;
 
         [ForeignKey(nameof(MemberId))]
-        [InverseProperty(nameof(Member.FieldTripParticipants))]
-        public virtual Member MemberDetails { get; set; } = null!;
+        [InverseProperty(nameof(FieldTrip.FieldTripParticipants))]
+        public virtual Member MemberDetail { get; set; } = null!;
         [ForeignKey(nameof(TripId))]
         [InverseProperty(nameof(FieldTrip.FieldTripParticipants))]
         public virtual FieldTrip Trip { get; set; } = null!;

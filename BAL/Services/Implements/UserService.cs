@@ -40,15 +40,15 @@ namespace BAL.Services.Implements
         public async Task<AuthenResponse> AuthenticateUser(AuthenRequest request)
         {
             var user = await _unitOfWork.UserRepository.GetByLogin(request.Username, request.Password);
-            if (user != null && user.MemberDetails != null)
+            if (user != null && user.MemberDetail != null)
             {
-                if(user.MemberDetails.Status != "Active")
+                if(user.MemberDetail.Status != "Active")
                 {
                     return new AuthenResponse()
                     {
                         UserId = user.MemberId,
                         UserName = request.Username,
-                        Status = user.MemberDetails.Status
+                        Status = user.MemberDetail.Status
                     };
                 }
                 //var role = _unitOfWork.UserRepository
@@ -60,7 +60,7 @@ namespace BAL.Services.Implements
                     UserName = user.UserName,
                     AccessToken = accessToken,
                     ImagePath = user.ImagePath,
-                    Status = user.MemberDetails.Status
+                    Status = user.MemberDetail.Status
                 };
             }
             return null;
@@ -71,11 +71,11 @@ namespace BAL.Services.Implements
             var user = await _unitOfWork.UserRepository.GetByEmail(email);
             if (user != null)
             {
-                var accessToken = _jwtService.GenerateJWTToken(user.MemberId, user.UserName, user.MemberDetails.Role, _configuration);
+                var accessToken = _jwtService.GenerateJWTToken(user.MemberId, user.UserName, user.MemberDetail.Role, _configuration);
                 return new AuthenResponse()
                 {
                     UserId = user.MemberId,
-                    RoleName = user.MemberDetails.Role,
+                    RoleName = user.MemberDetail.Role,
                     UserName = user.UserName,
                     AccessToken = accessToken,
                     ImagePath = user.ImagePath
@@ -99,18 +99,18 @@ namespace BAL.Services.Implements
 		public void Create(UserViewModel entity, CreateNewMember newmem = null)
         {
             var usr = _mapper.Map<User>(entity);
-			usr.MemberDetails = new Member();
-			usr.MemberDetails.MemberId = Guid.NewGuid().ToString();
-			usr.MemberDetails.Status = "Inactive";
-            usr.MemberDetails.Role = "Member";
-			usr.MemberDetails.Email = entity.Email;
+			usr.MemberDetail = new Member();
+			usr.MemberDetail.MemberId = Guid.NewGuid().ToString();
+			usr.MemberDetail.Status = "Inactive";
+            usr.MemberDetail.Role = "Member";
+			usr.MemberDetail.Email = entity.Email;
 
 			if (newmem != null)
             {
-                usr.MemberDetails.FullName = newmem.FullName;
-                usr.MemberDetails.UserName = newmem.UserName;
-				usr.MemberDetails.Gender = newmem.Gender;
-                usr.MemberDetails.Phone = newmem.Phone;
+                usr.MemberDetail.FullName = newmem.FullName;
+                usr.MemberDetail.UserName = newmem.UserName;
+				usr.MemberDetail.Gender = newmem.Gender;
+                usr.MemberDetail.Phone = newmem.Phone;
 			}
             _unitOfWork.UserRepository.Create(usr);
             _unitOfWork.Save();
@@ -119,17 +119,17 @@ namespace BAL.Services.Implements
         public void Create(UserViewModel entity, CreateNewEmployee newmem = null)
         {
             var usr = _mapper.Map<User>(entity);
-            usr.MemberDetails = new Member();
-            usr.MemberDetails.MemberId = Guid.NewGuid().ToString();
-            usr.MemberDetails.Status = "Inactive";
-            usr.MemberDetails.Role = newmem.Role;
-            usr.MemberDetails.Email = entity.Email;
+            usr.MemberDetail = new Member();
+            usr.MemberDetail.MemberId = Guid.NewGuid().ToString();
+            usr.MemberDetail.Status = "Inactive";
+            usr.MemberDetail.Role = newmem.Role;
+            usr.MemberDetail.Email = entity.Email;
             if (newmem != null)
             {
-                usr.MemberDetails.FullName = newmem.FullName;
-                usr.MemberDetails.UserName = newmem.UserName;
-                usr.MemberDetails.Gender = newmem.Gender;
-                usr.MemberDetails.Phone = newmem.Phone;
+                usr.MemberDetail.FullName = newmem.FullName;
+                usr.MemberDetail.UserName = newmem.UserName;
+                usr.MemberDetail.Gender = newmem.Gender;
+                usr.MemberDetail.Phone = newmem.Phone;
             }
             _unitOfWork.UserRepository.Create(usr);
             _unitOfWork.Save();
@@ -209,7 +209,7 @@ namespace BAL.Services.Implements
 				var usrmem =  _unitOfWork.MemberRepository.GetByIdNoTracking(usr.MemberId).Result;
                 if(usrmem == null)
                 {
-                    usr.MemberDetails = new Member()
+                    usr.MemberDetail = new Member()
                     {
                         Email = entity.Email
                     };
@@ -217,7 +217,7 @@ namespace BAL.Services.Implements
                 usrmem.Email = entity.Email;
 
                 usr.Role= entity.Role;
-                usr.MemberDetails = usrmem;
+                usr.MemberDetail = usrmem;
 			}
             _unitOfWork.UserRepository.Update(usr);
             _unitOfWork.Save();
@@ -230,7 +230,7 @@ namespace BAL.Services.Implements
             {
                 var usrmem = _unitOfWork.MemberRepository.GetByIdNoTracking(usr.MemberId).Result;
                 usr.Role = entity.Role;
-                usr.MemberDetails = usrmem;
+                usr.MemberDetail = usrmem;
             }
             _unitOfWork.UserRepository.Update(usr);
             _unitOfWork.Save();

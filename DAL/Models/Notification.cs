@@ -19,15 +19,15 @@ namespace DAL.Models
         [Column("description")]
         public string? Description { get; set; }
         [Column("date", TypeName = "datetime")]
-        public DateTime? Date { get; set; }
+        public DateTime Date { get; set; }
         [Column("userId")]
-        public int? UserId { get; set; }
+        public int UserId { get; set; }
         [Column("status")]
         [StringLength(50)]
         public string? Status { get; set; }
 
         [ForeignKey(nameof(UserId))]
         [InverseProperty(nameof(User.Notifications))]
-        public virtual User? UserDetails { get; set; }
+        public virtual User UserDetail { get; set; } = null!;
     }
 }

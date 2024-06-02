@@ -22,12 +22,12 @@ namespace DAL.Repositories.Implements
             if (role == "Manager" || role == "Staff")
             {
                 return await _context.FieldTrips.AsNoTracking()
-                .Include(f => f.FieldTripPictures.Where(fm => fm.Type.Equals("Spotlight")))
+                .Include(f => f.FieldtripPictures.Where(fm => fm.Type.Equals("Spotlight")))
                 .ToListAsync();
             }
             return await _context.FieldTrips.AsNoTracking()
                 .Where(f => f.Status == "OpenRegistration")
-                .Include(f => f.FieldTripPictures.Where(fm => fm.Type.Equals("Spotlight")))
+                .Include(f => f.FieldtripPictures.Where(fm => fm.Type.Equals("Spotlight")))
                 .ToListAsync();
         }
 
@@ -130,11 +130,11 @@ namespace DAL.Repositories.Implements
         public async Task<FieldTrip?> GetFieldTripById(int id)
         {
             return _context.FieldTrips.AsNoTracking()
-                .Include(f => f.FieldTripDaybyDays.OrderBy(pic => pic.Day))
-                .Include(f => f.FieldTripInclusions)
-                .Include(f => f.FieldTripGettingThereDetails)
-                .Include(f => f.FieldTripAdditionalDetails)
-                .Include(f => f.FieldTripPictures)
+                .Include(f => f.FieldtripDaybyDays.OrderBy(pic => pic.Day))
+                .Include(f => f.FieldtripInclusions)
+                .Include(f => f.FieldtripGettingTheres)
+                .Include(f => f.FieldtripAdditionalDetails)
+                .Include(f => f.FieldtripPictures)
                 .SingleOrDefault(trip => trip.TripId == id);
         }
         public async Task<bool> GetBoolFieldTripId(int id)

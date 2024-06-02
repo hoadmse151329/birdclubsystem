@@ -21,7 +21,7 @@ namespace DAL.Repositories.Implements
         public async Task<List<Feedback>> GetAllFeedbacks()
         {
             return _context.Feedbacks.AsNoTracking()
-                .Include(f => f.UserDetails.MemberDetails)
+                .Include(f => f.UserDetail.MemberDetail)
                 .ToList();
         }
 

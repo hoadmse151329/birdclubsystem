@@ -9,29 +9,33 @@ namespace DAL.Models
     [Table("Blog")]
     public partial class Blog
     {
+        public Blog()
+        {
+            Vote = 0;
+        }
         [Key]
         [Column("blogId")]
         public int BlogId { get; set; }
         [Column("userId")]
-        public int? UserId { get; set; }
+        public int UserId { get; set; }
         [Column("description")]
-        public string? Description { get; set; }
+        public string Description { get; set; } = null!;
         [Column("category")]
         [StringLength(255)]
         public string? Category { get; set; }
         [Column("uploadDate", TypeName = "datetime")]
-        public DateTime? UploadDate { get; set; }
+        public DateTime UploadDate { get; set; }
         [Column("vote")]
-        public int? Vote { get; set; }
+        public int Vote { get; set; }
         [Column("image")]
         [Unicode(false)]
         public string? Image { get; set; }
         [Column("status")]
         [StringLength(20)]
-        public string? Status { get; set; }
+        public string Status { get; set; } = null!;
 
         [ForeignKey(nameof(UserId))]
         [InverseProperty(nameof(User.Blogs))]
-        public virtual User? UserDetails { get; set; }
+        public virtual User UserDetail { get; set; } = null!;
     }
 }

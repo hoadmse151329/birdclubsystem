@@ -217,7 +217,7 @@ namespace BAL.Services.Implements
             var trip = _mapper.Map<FieldTrip>(entity);
 
             trip.LocationId = loc.LocationId;
-            trip.FieldTripGettingThereDetails = getting;
+            trip.FieldtripGettingTheres = getting;
 
             _unitOfWork.FieldTripRepository.Update(trip);
             _unitOfWork.Save();

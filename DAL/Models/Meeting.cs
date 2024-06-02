@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using DAL.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Models
@@ -12,7 +11,6 @@ namespace DAL.Models
     {
         public Meeting()
         {
-            MeetingAssignments = new HashSet<MeetingAssignment>();
             MeetingPictures = new HashSet<MeetingMedia>();
             MeetingParticipants = new HashSet<MeetingParticipant>();
         }
@@ -22,7 +20,7 @@ namespace DAL.Models
         public int MeetingId { get; set; }
         [Column("meetingName")]
         [StringLength(255)]
-        public string? MeetingName { get; set; }
+        public string MeetingName { get; set; } = null!;
         [Column("description")]
         public string? Description { get; set; }
         [Column("openRegistration", TypeName = "datetime")]
@@ -48,16 +46,14 @@ namespace DAL.Models
         public string? Status { get; set; }
         [Column("note")]
         public string? Note { get; set; }
-        [Column("numberOfParticipantsMinReq")]
-        public int? NumberOfParticipantsMinReq { get; set; }
         [Column("numberOfParticipantsLimit")]
         public int? NumberOfParticipantsLimit { get; set; }
+        [Column("numberOfParticipantsMinReq")]
+        public int? NumberOfParticipantsMinReq { get; set; }
 
-        [InverseProperty(nameof(MeetingAssignment.MeetingDetails))]
-        public virtual ICollection<MeetingAssignment> MeetingAssignments { get; set; }
-        [InverseProperty(nameof(MeetingMedia.MeetingDetails))]
+        [InverseProperty(nameof(MeetingMedia.MeetingDetail))]
         public virtual ICollection<MeetingMedia> MeetingPictures { get; set; }
-        [InverseProperty(nameof(MeetingParticipant.MeetingDetails))]
+        [InverseProperty(nameof(MeetingParticipant.MeetingDetail))]
         public virtual ICollection<MeetingParticipant> MeetingParticipants { get; set; }
     }
 }

@@ -36,7 +36,7 @@
                                 <li class="nav-item">
                                     <a class="nav-link active" data-toggle="tab" href="#home1">
                                         <i class='bx bx-home-alt-2'></i>
-                                        <span>Blog</span>
+                                        <span>Meeting</span>
                                     </a>
                                 </li>              
                             </ul>
@@ -71,7 +71,7 @@
                                             <div class="col-sm-6 d-flex address-home">
                                             </div>
                                             <div class="col-sm-6 d-flex justify-content-end">
-                                                <form asp-action="ManagerBlog" asp-controller="Manager" method="get" asp-route-search="@search">                   
+                                                <form asp-action="ManagerFieldTrip" asp-controller="Manager" method="get" asp-route-search="@search">                   
                                                     <div>
                                                         <label>
                                                             <input asp-for="@search" class="form-control" type="text" name="search" placeholder="Search..." value="@search">
@@ -124,7 +124,7 @@
                                                                 </li>
                                                                 <li>
                                                                     <h6>Blog Content:</h6>
-                                                                    <span class="truncate">@data.Description</span>
+                                                                    <span>@data.Description</span>
                                                                 </li>
                                                                 <li>
                                                                     <h6>Category:</h6>
@@ -132,7 +132,7 @@
                                                                 </li>
                                                                 <li>
                                                                     <h6>Upload Date:</h6>
-                                                                    <span>@data.UploadDate.Value.ToString("MM/dd/yyyy HH:mm")</span>
+                                                                    <span>@data.UploadDate.Value.ToString("MM/dd/yyyy")</span>
                                                                 </li>
                                                                 <li>
                                                                     <h6>Votes:</h6>
@@ -171,10 +171,8 @@
                                                 </div>
                                             </div>
                                         }
-                                    </div>                               
+                                </div>                               
                             <!-- end tapnet -->
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </section>
