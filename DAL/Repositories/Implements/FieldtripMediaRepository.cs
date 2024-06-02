@@ -20,21 +20,21 @@ namespace DAL.Repositories.Implements
 
         public async Task<FieldtripMedia> GetFieldTripMediaById(int tripId, int pictureId)
         {
-            return _context.FieldtripMedia.AsNoTracking().SingleOrDefault(f => f.TripId.Equals(tripId) && f.PictureId.Equals(pictureId));
+            return await _context.FieldtripMedia.AsNoTracking().SingleOrDefaultAsync(f => f.TripId.Equals(tripId) && f.PictureId.Equals(pictureId));
         }
 
         public async Task<FieldtripMedia> GetFieldTripMediaByIdTracking(int tripId, int pictureId)
         {
-            return _context.FieldtripMedia.SingleOrDefault(f => f.TripId.Equals(tripId) && f.PictureId.Equals(pictureId));
+            return await _context.FieldtripMedia.SingleOrDefaultAsync(f => f.TripId.Equals(tripId) && f.PictureId.Equals(pictureId));
         }
 
         public async Task<IEnumerable<FieldtripMedia>> GetFieldTripMediasByTripId(int tripId)
         {
-            return _context.FieldtripMedia.AsNoTracking().Where(f => f.TripId.Equals(tripId)).ToList();
+            return await _context.FieldtripMedia.AsNoTracking().Where(f => f.TripId.Equals(tripId)).ToListAsync();
         }
         public async Task<FieldtripMedia> GetFieldTripMediaByFieldTripIdAndType(int tripId, string mediaType)
         {
-            return _context.FieldtripMedia.AsNoTracking().SingleOrDefault(m => m.TripId.Equals(tripId) && m.Type.Equals(mediaType));
+            return await _context.FieldtripMedia.AsNoTracking().SingleOrDefaultAsync(m => m.TripId.Equals(tripId) && m.Type.Equals(mediaType));
         }
     }
 }
