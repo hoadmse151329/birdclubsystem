@@ -131,19 +131,19 @@ namespace DAL.Repositories.Implements
         {
             if (role == "Manager" || role == "Staff")
             {
-                return await _context.Meetings.AsNoTracking().ToListAsync();
+                return _context.Meetings.AsNoTracking().ToList();
             }
-            else return await _context.Meetings.AsNoTracking().Where(meet => meet.Status == "OpenRegistration").ToListAsync();
+            else return _context.Meetings.AsNoTracking().Where(meet => meet.Status == "OpenRegistration").ToList();
         }
 
         public async Task<Meeting?> GetMeetingById(int id)
         {
-            return await _context.Meetings.AsNoTracking().SingleOrDefaultAsync(meet => meet.MeetingId == id);
+            return _context.Meetings.AsNoTracking().SingleOrDefault(meet => meet.MeetingId == id);
         }
 
         public async Task<bool> GetBoolMeetingId(int id)
         {
-            var meet = await _context.Meetings.SingleOrDefaultAsync(m => m.MeetingId == id);
+            var meet = _context.Meetings.SingleOrDefault(m => m.MeetingId == id);
             if (meet != null) return true;
             else return false;
         }
@@ -161,12 +161,7 @@ namespace DAL.Repositories.Implements
 
         public async Task<int> CountMeeting()
         {
-            return await _context.Meetings.AsNoTracking().CountAsync();
-        }
-
-        public async Task<int> CountMeetingByStatus(string status)
-        {
-            return await _context.Meetings.AsNoTracking().Where(m => m.Status == status).CountAsync();
+            return _context.Meetings.AsNoTracking().Count();
         }
     }
 }

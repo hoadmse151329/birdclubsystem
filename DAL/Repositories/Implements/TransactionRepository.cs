@@ -19,35 +19,35 @@ namespace DAL.Repositories.Implements
         }
         public async Task<Transaction?> GetTransactionById(int id)
         {
-            return await _context.Transactions.AsNoTracking().SingleOrDefaultAsync(trans => trans.TransactionId == id);
+            return _context.Transactions.AsNoTracking().SingleOrDefault(trans => trans.TransactionId == id);
         }
         public async Task<IEnumerable<Transaction?>> GetAllTransactionsByUserId(int id)
         {
-            return await _context.Transactions.AsNoTracking()
-                .Include(t => t.UserDetail)
-                .Where(t => t.UserId == id).ToListAsync();
+            return _context.Transactions.AsNoTracking()
+                .Include(t => t.UserDetails)
+                .Where(t => t.UserId == id).ToList();
         }
 
 		public async Task<Transaction?> GetTransactionByVnPayId(string? vnPayid)
 		{
-			return await _context.Transactions.AsNoTracking().SingleOrDefaultAsync(t => t.VnPayId == vnPayid);
+			return _context.Transactions.AsNoTracking().SingleOrDefault(t => t.VnPayId == vnPayid);
 		}
 
         public async Task<IEnumerable<Transaction?>> GetAllTransactionsByMemberId(string id)
         {
-            return await _context.Transactions.AsNoTracking()
-                .Include(t => t.UserDetail)
-                .Where(t => t.UserDetail.MemberId == id).ToListAsync();
+            return _context.Transactions.AsNoTracking()
+                .Include(t => t.UserDetails)
+                .Where(t => t.UserDetails.MemberId == id).ToList();
         }
 
         public async Task<int> CalculateTotalValue()
         {
-            return await _context.Transactions.AsNoTracking().Where(t => t.Status != "Refund").SumAsync(t => t.Value.Value);
+            return _context.Transactions.AsNoTracking().Where(t => t.Status != "Refund").Sum(t => t.Value.Value);
         }
 
         public async Task<int> CalculateTotalRefund()
         {
-            return await _context.Transactions.AsNoTracking().Where(t => t.Status == "Refund").SumAsync(t => t.Value.Value);
+            return _context.Transactions.AsNoTracking().Where(t => t.Status == "Refund").Sum(t => t.Value.Value);
         }
 	}
 }

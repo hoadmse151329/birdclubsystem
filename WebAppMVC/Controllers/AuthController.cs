@@ -16,8 +16,6 @@ using System.Security.Claims;
 using WebAppMVC.Models.Notification;
 using WebAppMVC.Services.Interfaces;
 using System.Data;
-using System.Net.Http;
-using WebAppMVC.Models.Member;
 namespace WebAppMVC.Controllers
 {
     [Route("Auth")]
@@ -25,7 +23,7 @@ namespace WebAppMVC.Controllers
 	{
 		private readonly ILogger<AuthController> _logger;
 		private readonly IConfiguration _config;
-		private readonly HttpClient _httpClient = null;
+		private readonly HttpClient client = null;
 		private readonly IVnPayService _vnPayService;
 		private string AuthenAPI_URL = "";
         private BirdClubLibrary methcall = new();
@@ -44,11 +42,11 @@ namespace WebAppMVC.Controllers
 		{
 			_logger = logger;
 			_config = config;
-            _httpClient = new HttpClient();
+			client = new HttpClient();
 			_vnPayService = vnPayService;
 			var contentType = new MediaTypeWithQualityHeaderValue("application/json");
-            _httpClient.DefaultRequestHeaders.Accept.Add(contentType);
-            _httpClient.BaseAddress = new Uri(config.GetSection("DefaultApiUrl:ConnectionString").Value);
+			client.DefaultRequestHeaders.Accept.Add(contentType);
+			client.BaseAddress = new Uri(config.GetSection("DefaultApiUrl:ConnectionString").Value);
 			AuthenAPI_URL = "/api/User";
 		}
 		[HttpGet("Register")]
@@ -115,7 +113,7 @@ namespace WebAppMVC.Controllers
             AuthenAPI_URL += "/LoginByThirdParty";
 
             var authenResponse = await methcall.CallMethodReturnObject<GetAuthenResponse>(
-                _httpClient: _httpClient,
+                _httpClient: client,
                 options: jsonOptions,
                 methodName: Constants.Constants.POST_METHOD,
                 url: AuthenAPI_URL,
@@ -138,7 +136,7 @@ namespace WebAppMVC.Controllers
                 HttpContext.Session.SetString(Constants.Constants.USR_ID, responseAuth.UserId);
                 HttpContext.Session.SetString(Constants.Constants.USR_NAME, responseAuth.UserName);
                 HttpContext.Session.SetString(Constants.Constants.USR_IMAGE, responseAuth.ImagePath);
-                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", responseAuth.AccessToken);
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", responseAuth.AccessToken);
 
                 TempData[Constants.Constants.ACC_TOKEN] = responseAuth.AccessToken;
                 TempData[Constants.Constants.ROLE_NAME] = responseAuth.RoleName;
@@ -172,7 +170,7 @@ namespace WebAppMVC.Controllers
         public async Task<IActionResult> Logout()
         {
             // Clear the authorization header
-            _httpClient.DefaultRequestHeaders.Authorization = null;
+            client.DefaultRequestHeaders.Authorization = null;
 
             // Clear the session
             HttpContext.Session.Clear();
@@ -194,7 +192,7 @@ namespace WebAppMVC.Controllers
             AuthenAPI_URL += "/Login";
 
             var authenResponse = await methcall.CallMethodReturnObject<GetAuthenResponse>(
-                _httpClient: _httpClient,
+                _httpClient: client,
                 options: jsonOptions,
                 methodName: Constants.Constants.POST_METHOD,
                 url: AuthenAPI_URL,
@@ -229,7 +227,7 @@ namespace WebAppMVC.Controllers
 				HttpContext.Session.SetString(Constants.Constants.USR_ID, responseAuth.UserId);
                 HttpContext.Session.SetString(Constants.Constants.USR_NAME, responseAuth.UserName);
 				HttpContext.Session.SetString(Constants.Constants.USR_IMAGE, responseAuth.ImagePath);
-                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", responseAuth.AccessToken);
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", responseAuth.AccessToken);
 
 				TempData[Constants.Constants.ACC_TOKEN] = responseAuth.AccessToken;
 				TempData[Constants.Constants.ROLE_NAME] = responseAuth.RoleName;
@@ -279,7 +277,7 @@ namespace WebAppMVC.Controllers
 			methcall.RemoveCookie(Response, Constants.Constants.NEW_MEMBER_REGISTRATION_COOKIE, cookieOptions, jsonOptions);
 
 			var authenResponse = await methcall.CallMethodReturnObject<GetAuthenResponse>(
-				_httpClient: _httpClient,
+				_httpClient: client,
 				options: jsonOptions,
 				methodName: Constants.Constants.POST_METHOD,
 				url: AuthenAPI_URL,
@@ -321,11 +319,12 @@ namespace WebAppMVC.Controllers
 			string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
 			var transactionResponse = await methcall.CallMethodReturnObject<GetTransactionResponse>(
-				_httpClient: _httpClient,
+				_httpClient: client,
 				options: jsonOptions,
 				methodName: Constants.Constants.PUT_METHOD,
 				url: TransactionAPI_URL,
 				inputType: unmtr,
+				accessToken: accToken,
 				_logger: _logger);
 
 			if (transactionResponse == null)
@@ -343,10 +342,11 @@ namespace WebAppMVC.Controllers
 				HttpContext.Session.Remove(Constants.Constants.USR_NAME);
 				HttpContext.Session.Remove(Constants.Constants.ROLE_NAME);
 			}
-            ViewBag.Success = "Account Create Successfully, Please contact the manager for your account approval!";
+            TempData["Success"] = ViewBag.Success = "Account Create Successfully, Please contact the manager for your account approval!";
 
 			NotificationViewModel notif = new NotificationViewModel()
 			{
+				NotificationId = Guid.NewGuid().ToString(),
 				Title = Constants.Constants.NOTIFICATION_TYPE_ACCOUNT_REGISTER,
 				Description = Constants.Constants.NOTIFICATION_DESCRIPTION_ACCOUNT_REGISTER,
 				Date = DateTime.Now,
@@ -356,7 +356,7 @@ namespace WebAppMVC.Controllers
             string NotificationAPI_URL = "/api/Notification/CreateRegister";
 
             var notificationResponse = await methcall.CallMethodReturnObject<GetNotificationPostResponse>(
-					_httpClient: _httpClient,
+					_httpClient: client,
                     options: jsonOptions,
                     methodName: Constants.Constants.POST_METHOD,
                     url: NotificationAPI_URL,
@@ -395,7 +395,7 @@ namespace WebAppMVC.Controllers
                 return View("Register",newmemRequest);
             }
             var authenResponse = await methcall.CallMethodReturnObject<GetAuthenResponse>(
-				_httpClient: _httpClient,
+				_httpClient: client,
 				options: jsonOptions,
 				methodName: Constants.Constants.POST_METHOD,
 				url: AuthenAPI_URL,
@@ -415,7 +415,7 @@ namespace WebAppMVC.Controllers
 				HttpContext.Session.SetString(Constants.Constants.ROLE_NAME, responseAuth.RoleName);
 				HttpContext.Session.SetString(Constants.Constants.USR_NAME, responseAuth.UserName);
 
-                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", responseAuth.AccessToken);
+				client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", responseAuth.AccessToken);
 			}
 
 			methcall.SetCookie(Response, Constants.Constants.NEW_MEMBER_REGISTRATION_COOKIE, newmemRequest, cookieOptions, jsonOptions, 20);
@@ -429,97 +429,11 @@ namespace WebAppMVC.Controllers
 			return Redirect(url);
 		}
 
-		[HttpGet("RenewMembership")]
+		[HttpPost("MembershipRenew")]
 		public async Task<IActionResult> RenewMembership()
 		{
             string? usrId = HttpContext.Session.GetString("USER_ID");
-
-			string MemberAPI_URL = "/api/Member/MemberName";
-
-            var memberDetails = await methcall.CallMethodReturnObject<GetMemberFullNameResponse>(
-                _httpClient: _httpClient,
-                options: jsonOptions,
-                methodName: Constants.Constants.POST_METHOD,
-                url: MemberAPI_URL,
-                _logger: _logger,
-                inputType: usrId);
-
-            PaymentInformationModel model = new PaymentInformationModel()
-			{
-				Fullname = memberDetails.Data.FullName,
-				PayAmount = 30000,
-				TransactionType = Constants.Constants.MEMBERSHIP_RENEWAL_TRANSACTION_TYPE
-			};
-			var url = _vnPayService.CreatePaymentUrl(model, HttpContext);
-            return Redirect(url);
+            return View();
 		}
-
-		[HttpGet("ConfirmMembershipRenewal")]
-		public async Task<IActionResult> ConfirmRenewMembership()
-		{
-            string? usrId = HttpContext.Session.GetString("USER_ID");
-
-			string MemberAPI_URL = "/api/Member/RenewMembership";
-
-			var membershipRenew = await methcall.CallMethodReturnObject<GetMemberProfileResponse>(
-				_httpClient: _httpClient,
-				options: jsonOptions,
-				methodName: Constants.Constants.PUT_METHOD,
-				url: MemberAPI_URL,
-				_logger: _logger,
-				inputType: usrId);
-			if (membershipRenew == null)
-			{
-				_logger.LogInformation("Error while proccesing your request! (Renew Membership): Member not Found!");
-				ViewBag.error = "Error while proccesing your request! (Renew Membership): Member not Found!";
-				RedirectToAction("Login");
-            }
-			if (!membershipRenew.Status)
-			{
-				_logger.LogInformation("Error while proccesing your request! (Renew Membership): " + membershipRenew.Status + " , Error Message: " + membershipRenew.ErrorMessage);
-                ViewBag.error = "Error while proccesing your request! (Renew Membership): " + membershipRenew.ErrorMessage;
-				RedirectToAction("Login");
-			}
-
-			var tran = await methcall.GetCookie<TransactionViewModel>(Request, Constants.Constants.MEMBERSHIP_RENEWAL_TRANSACTION_COOKIE, jsonOptions);
-
-            if (tran == null)
-            {
-                _logger.LogError("Error while registering your new account: Your Registration Transaction not found!");
-
-                ViewBag.error = "Error while registering your new account: Your Registration Transaction not found! " +
-                    "\nPlease contact the birdclub manager for assistance with resolving this issue!";
-
-                return RedirectToAction("Login");
-            }
-            methcall.RemoveCookie(Response, Constants.Constants.MEMBERSHIP_RENEWAL_TRANSACTION_COOKIE, cookieOptions, jsonOptions);
-
-            UpdateTransactionRequest unmtr = new UpdateTransactionRequest()
-            {
-                MemberId = usrId,
-                TransactionId = tran.TransactionId
-            };
-
-            string TransactionAPI_URL = "/api/Transaction/UpdateUser";
-
-            var transactionResponse = await methcall.CallMethodReturnObject<GetTransactionResponse>(
-                _httpClient: _httpClient,
-                options: jsonOptions,
-                methodName: Constants.Constants.PUT_METHOD,
-                url: TransactionAPI_URL,
-                inputType: unmtr,
-                _logger: _logger);
-
-            if (transactionResponse == null)
-            {
-                _logger.LogError("Error while registering your new account: User Transaction Saving Failed!");
-
-                ViewBag.error = "Error while registering your new account: User Transaction Saving Failed!, " +
-                    "\nPlease contact the birdclub manager for assistance with resolving this issue!";
-
-                return RedirectToAction("Login");
-            }
-			return RedirectToAction("Login");
-        }
 	}
 }

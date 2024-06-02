@@ -82,10 +82,5 @@ namespace BAL.Services.Implements
             if (notif != null) return notif;
             return null;
         }
-
-        public async Task<string> GenerateNewNotificationId()
-        {
-            return await _unitOfWork.NotificationRepository.GenerateNewNotificationId();
-        }
     }
 }

@@ -21,7 +21,7 @@ namespace DAL.Repositories.Implements
 
         public async Task<IEnumerable<Member>> GetAllByRole(string role)
         {
-            return await _context.Members.AsNoTracking().Where(x => x.Role == role).OrderBy(m => m.Status).ToListAsync();
+            return _context.Members.AsNoTracking().Where(x => x.Role == role).OrderBy(m => m.Status).ToList();
         }
 
         public async Task<IEnumerable<Member>> GetSortedMembers(
@@ -97,7 +97,7 @@ namespace DAL.Repositories.Implements
 
         public async Task<Member?> GetByEmail(string email)
         {
-            return await _context.Members.AsNoTrackingWithIdentityResolution().SingleOrDefaultAsync(mem => mem.Email == email);
+            return _context.Members.AsNoTrackingWithIdentityResolution().SingleOrDefault(mem => mem.Email == email);
         }
 
         public async Task<Member?> GetByIdNoTracking(string id)
@@ -117,7 +117,7 @@ namespace DAL.Repositories.Implements
 
         public async Task<IEnumerable<Member>> GetAllMemberOnly()
         {
-            return await _context.Members.Where(mem => mem.Role == "Member").OrderBy(mem => mem.MemberId).ToListAsync();
+            return _context.Members.Where(mem => mem.Role == "Member").OrderBy(mem => mem.MemberId).ToList();
         }
 
         public async Task<IEnumerable<Member>> UpdateAllMemberStatus(List<Member> members)
@@ -163,10 +163,6 @@ namespace DAL.Repositories.Implements
                     {
                         if((mem.Status == "Expired" || mem.Status == "Inactive") && memberViewModel.Status == "Active")
                         {
-                            if (mem.JoinDate == null && mem.Status == "Inactive")
-                            {
-                                mem.JoinDate = DateTime.Now;
-                            }
                             if (DateTime.Now.Day >= DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month))
                             {
                                 mem.ExpiryDate = DateTime.UtcNow.AddDays(30);
@@ -193,17 +189,6 @@ namespace DAL.Repositories.Implements
                 }
             }
             return members;
-        }
-
-        public string GenerateNewMemberId()
-        {
-            var lastMember = _context.Members.OrderByDescending(m => Convert.ToInt32(m.MemberId)).FirstOrDefault();
-            int newId = 1;
-            if (lastMember != null)
-            {
-                newId = int.Parse(lastMember.MemberId) + 1;
-            }
-            return newId.ToString();
         }
     }
 }

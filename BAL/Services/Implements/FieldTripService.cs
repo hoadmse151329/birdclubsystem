@@ -286,10 +286,5 @@ namespace BAL.Services.Implements
         {
             return await _unitOfWork.FieldTripRepository.CountFieldTrip();
         }
-
-        public async Task<int> CountFieldTripByStatus(string status)
-        {
-            return await _unitOfWork.FieldTripRepository.CountFieldTripByStatus(status);
-        }
     }
 }

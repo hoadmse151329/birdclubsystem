@@ -220,10 +220,5 @@ namespace BAL.Services.Implements
         {
             return await _unitOfWork.ContestRepository.CountContest();
         }
-
-        public async Task<int> CountContestByStatus(string status)
-        {
-            return await _unitOfWork.ContestRepository.CountContestByStatus(status);
-        }
     }
 }

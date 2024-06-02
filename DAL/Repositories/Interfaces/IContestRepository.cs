@@ -33,6 +33,5 @@ namespace DAL.Repositories.Interfaces
         Task<Contest?> GetContestByIdTracking(int id);
         Task<bool> GetBoolContestId(int id);
         Task<int> CountContest();
-        Task<int> CountContestByStatus(string status);
     }
 }

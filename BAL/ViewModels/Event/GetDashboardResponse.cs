@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BAL.ViewModels.Manager
+namespace BAL.ViewModels.Event
 {
-    public class GetManagerDashboard
+    public class GetDashboardResponse
     {
         public int TotalEvents { get; set; }
         public int TotalFeedbacks { get; set; }

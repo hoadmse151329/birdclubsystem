@@ -41,25 +41,21 @@
             <div class="col-lg-6">
                 <div class="box-container">
                     <div class="d-flex justify-content-center box-header light-green">
-                        <h5><b>Login Account</b></h5>
+                        <h5><b>Member login</b></h5>
                     </div>
                     <div class="d-flex box-body justify-content-center">
                         <div>
-                            @{
-                                if (ViewBag.Success != null)
-                                {
-                                    <span>@ViewBag.Success</span>
-                                }
-                                if (ViewBag.error != null)
-                                {
-                                    <span class="text-danger">@ViewBag.error</span>
-                                    if (ViewBag.error == "User Account is Currently Expired!")
+                            <form class="reg-form" asp-action="Authorize" asp-controller="Auth">
+                                @{
+                                    if (ViewBag.error != null)
                                     {
-                                        <a href="@Url.Action("RenewMembership", "Auth")">Renew Now!</a>
+                                        <span class="text-danger">@ViewBag.error</span>
+                                        if (ViewBag.error == "User Account is Currently Expired!")
+                                        {
+                                            <a href="@Url.Action("RenewMembership", "Auth")">Renew Now!</a>
+                                        }
                                     }
                                 }
-                            }
-                            <form class="reg-form" asp-action="Authorize" asp-controller="Auth">
                                 <div class="form-group">
 
                                     <input placeholder="Username" asp-for="Username" class="form-control" />

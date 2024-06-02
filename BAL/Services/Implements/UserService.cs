@@ -99,14 +99,13 @@ namespace BAL.Services.Implements
 		public void Create(UserViewModel entity, CreateNewMember newmem = null)
         {
             var usr = _mapper.Map<User>(entity);
-			usr.MemberDetail = new Member();
-            usr.MemberDetail.MemberId = _unitOfWork.MemberRepository.GenerateNewMemberId();
-			usr.MemberDetail.Status = "Inactive";
-            usr.MemberDetail.Role = "Member";
-			usr.MemberDetail.Email = entity.Email;
-            usr.MemberDetail.RegisterDate = DateTime.Now;
+			usr.MemberDetails = new Member();
+			usr.MemberDetails.MemberId = Guid.NewGuid().ToString();
+			usr.MemberDetails.Status = "Inactive";
+            usr.MemberDetails.Role = "Member";
+			usr.MemberDetails.Email = entity.Email;
 
-            if (newmem != null)
+			if (newmem != null)
             {
                 usr.MemberDetails.FullName = newmem.FullName;
                 usr.MemberDetails.UserName = newmem.UserName;
@@ -120,13 +119,11 @@ namespace BAL.Services.Implements
         public void Create(UserViewModel entity, CreateNewEmployee newmem = null)
         {
             var usr = _mapper.Map<User>(entity);
-            usr.MemberDetail = new Member();
-            usr.MemberDetail.MemberId = _unitOfWork.MemberRepository.GenerateNewMemberId();
-            usr.MemberDetail.Status = "Inactive";
-            usr.MemberDetail.Role = newmem.Role;
-            usr.MemberDetail.Email = entity.Email;
-            usr.MemberDetail.RegisterDate = DateTime.Now;
-            usr.MemberDetail.JoinDate = DateTime.Now;
+            usr.MemberDetails = new Member();
+            usr.MemberDetails.MemberId = Guid.NewGuid().ToString();
+            usr.MemberDetails.Status = "Inactive";
+            usr.MemberDetails.Role = newmem.Role;
+            usr.MemberDetails.Email = entity.Email;
             if (newmem != null)
             {
                 usr.MemberDetails.FullName = newmem.FullName;

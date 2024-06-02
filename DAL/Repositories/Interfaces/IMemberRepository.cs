@@ -29,6 +29,6 @@ namespace DAL.Repositories.Interfaces
         Task<IEnumerable<Member>> GetAllMemberOnly();
         Task<IEnumerable<Member>> UpdateAllMemberStatus(List<Member> members);
         Task<IEnumerable<Member>> UpdateAllMemberStatusAndRole(List<Member> members);
-        string GenerateNewMemberId();
+
     }
 }

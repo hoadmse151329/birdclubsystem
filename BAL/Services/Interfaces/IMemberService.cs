@@ -7,7 +7,6 @@ using System.Text;
 using System.Threading.Tasks;
 using BAL.ViewModels.Manager;
 using BAL.ViewModels.Admin;
-using BAL.ViewModels.Member;
 
 namespace BAL.Services.Interfaces
 {
@@ -45,10 +44,8 @@ namespace BAL.Services.Interfaces
 		/*void Update(UserViewModel entity);*/
 		void Update(MemberViewModel entity);
         void UpdateMemberStatus(GetMembershipExpire entity);
-        void RenewMembership(string id);
         Task<bool> UpdateAllMemberStatus (List<GetMemberStatus> listMem);
         Task<bool> UpdateAllEmployeeStatus(List<GetEmployeeStatus> listMem);
         Task<MemberViewModel?> GetByEmailModel(string email);
-        Task<MembershipRenewalRequest> GetMemberNameById(string id);
 	}
 }

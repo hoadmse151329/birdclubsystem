@@ -20,7 +20,7 @@ namespace DAL.Repositories.Implements
 
         public async Task<int> CountNews()
         {
-            return await _context.News.AsNoTracking().CountAsync();
+            return _context.News.AsNoTracking().Count();
         }
 
         public async Task<IEnumerable<News>> GetAllNews()
