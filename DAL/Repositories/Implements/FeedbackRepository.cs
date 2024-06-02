@@ -20,19 +20,19 @@ namespace DAL.Repositories.Implements
 
         public async Task<List<Feedback>> GetAllFeedbacks()
         {
-            return _context.Feedbacks.AsNoTracking()
+            return await _context.Feedbacks.AsNoTracking()
                 .Include(f => f.UserDetail.MemberDetail)
-                .ToList();
+                .ToListAsync();
         }
 
         public async Task<Feedback?> GetFeedbackById(int id)
         {
-            return _context.Feedbacks.AsNoTracking().SingleOrDefault(f => f.FeedbackId == id);
+            return await _context.Feedbacks.AsNoTracking().SingleOrDefaultAsync(f => f.FeedbackId == id);
         }
 
         public async Task<int> CountFeedback()
         {
-            return _context.Feedbacks.AsNoTracking().Count();
+            return await _context.Feedbacks.AsNoTracking().CountAsync();
         }
     }
 }

@@ -243,5 +243,10 @@ namespace BAL.Services.Implements
         {
             return await _unitOfWork.MeetingRepository.CountMeeting();
         }
+
+        public async Task<int> CountMeetingByStatus(string status)
+        {
+            return await _unitOfWork.MeetingRepository.CountMeetingByStatus(status);
+        }
     }
 }

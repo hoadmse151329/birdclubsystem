@@ -46,6 +46,10 @@ namespace DAL.Models
         [Column("status")]
         [StringLength(50)]
         public string? Status { get; set; }
+        [Column("registerDate", TypeName = "datetime")]
+        public DateTime? RegisterDate { get; set; }
+        [Column("joinDate", TypeName = "datetime")]
+        public DateTime? JoinDate { get; set; }
         [Column("expiryDate", TypeName = "datetime")]
         public DateTime? ExpiryDate { get; set; }
         [Column("clubId")]

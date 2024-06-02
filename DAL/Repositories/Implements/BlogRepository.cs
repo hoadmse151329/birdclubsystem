@@ -20,12 +20,12 @@ namespace DAL.Repositories.Implements
 
         public async Task<IEnumerable<Blog>> GetAllBlogs()
         {
-            return _context.Blogs.AsNoTracking().Include(b => b.UserDetail.MemberDetail).ToList();
+            return await _context.Blogs.AsNoTracking().Include(b => b.UserDetail.MemberDetail).ToListAsync();
         }
 
         public async Task<IEnumerable<Blog>?> GetAllBlogsByUserId(int usrId)
         {
-            return _context.Blogs.AsNoTracking().Where(b => b.UserId == usrId).Include(b => b.UserDetail.MemberDetail).ToList();
+            return await _context.Blogs.AsNoTracking().Where(b => b.UserId == usrId).Include(b => b.UserDetail.MemberDetail).ToListAsync();
         }
 
         public async Task<int> CountBlog()

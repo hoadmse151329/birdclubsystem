@@ -20,19 +20,19 @@ namespace DAL.Repositories.Implements
 
         public async Task<User?> GetByEmail(string email)
         {
-            if(_context.Members.AsNoTracking().SingleOrDefault(mem => mem.Email == email) != null)
-                return _context.Users.AsNoTrackingWithIdentityResolution().Include(usr => usr.MemberDetail).SingleOrDefault(usr => usr.MemberDetail.Email == email);
+            if(await _context.Members.AsNoTracking().SingleOrDefaultAsync(mem => mem.Email == email) != null)
+                return await _context.Users.AsNoTrackingWithIdentityResolution().Include(usr => usr.MemberDetail).SingleOrDefaultAsync(usr => usr.MemberDetail.Email == email);
             return null;
         }
 
         public async Task<User?> GetByIdNoTracking(int id)
         {
-            return _context.Users.AsNoTrackingWithIdentityResolution().Include(usr => usr.MemberDetail).SingleOrDefault(usr => usr.UserId == id);
+            return await _context.Users.AsNoTrackingWithIdentityResolution().Include(usr => usr.MemberDetail).SingleOrDefaultAsync(usr => usr.UserId == id);
         }
 
         public async Task<User?> GetByLogin(string userName, string passWord)
         {
-            return _context.Users.AsNoTrackingWithIdentityResolution().Include(usr => usr.MemberDetail).SingleOrDefault(usr => usr.UserName == userName && usr.Password == passWord);
+            return await _context.Users.AsNoTrackingWithIdentityResolution().Include(usr => usr.MemberDetail).SingleOrDefaultAsync(usr => usr.UserName == userName && usr.Password == passWord);
         }
         public async Task<bool> ChangeUserAvatar(string usrId, string imageAvatar)
         {
@@ -62,7 +62,7 @@ namespace DAL.Repositories.Implements
 
         public async Task<string?> GetMemberIdByIdNoTracking(int id)
         {
-            var usr = _context.Users.AsNoTrackingWithIdentityResolution().Include(usr => usr.MemberDetail).SingleOrDefault(usr => usr.UserId == id);
+            var usr = await _context.Users.AsNoTrackingWithIdentityResolution().Include(usr => usr.MemberDetail).SingleOrDefaultAsync(usr => usr.UserId == id);
             if (usr != null)
             {
                 return usr.MemberId;
@@ -77,7 +77,7 @@ namespace DAL.Repositories.Implements
 
         public async Task<int> GetIdByUsername(string username)
         {
-            var result = (from usr in _context.Users where usr.UserName.Trim().ToLower() == username.Trim().ToLower() select usr).FirstOrDefault();
+            var result = await (from usr in _context.Users where usr.UserName.Trim().ToLower() == username.Trim().ToLower() select usr).FirstOrDefaultAsync();
             if (result != null) return result.UserId;
             return 0;
         }

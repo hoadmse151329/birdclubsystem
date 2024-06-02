@@ -3,6 +3,7 @@ using BAL.Services.Interfaces;
 using BAL.ViewModels;
 using BAL.ViewModels.Admin;
 using BAL.ViewModels.Manager;
+using BAL.ViewModels.Member;
 using DAL.Infrastructure;
 using DAL.Models;
 using System;
@@ -146,6 +147,21 @@ namespace BAL.Services.Implements
             _unitOfWork.Save();
         }
 
+        public void RenewMembership(string id)
+        {
+            var member = _unitOfWork.MemberRepository.GetByIdNoTracking(id).Result;
+            if (member == null)
+            {
+                throw new Exception("Member not Found!");
+            }
+            if (member.Status == "Expired")
+            {
+                member.Status = "Active";
+            }
+            _unitOfWork.MemberRepository.Update(member);
+            _unitOfWork.Save();
+        }
+
         public async Task<bool> UpdateAllMemberStatus(List<GetMemberStatus> listMem)
         {
 			var mems = await _unitOfWork.MemberRepository.UpdateAllMemberStatus(_mapper.Map<List<Member>>(listMem));
@@ -181,6 +197,17 @@ namespace BAL.Services.Implements
                 isManager,
                 isAdmin
                 ));
+        }
+
+        public async Task<MembershipRenewalRequest> GetMemberNameById(string id)
+        {
+            string fullname = await _unitOfWork.MemberRepository.GetMemberNameById(id);
+            if (fullname == null) return null;
+            MembershipRenewalRequest member = new MembershipRenewalRequest()
+            {
+                FullName = fullname,
+            };
+            return member;
         }
     }
 }

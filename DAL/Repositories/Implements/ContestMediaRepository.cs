@@ -20,16 +20,16 @@ namespace DAL.Repositories.Implements
 
         public async Task<ContestMedia> GetContestMediaById(int contestId, int pictureId)
         {
-            return _context.ContestMedia.AsNoTracking().SingleOrDefault(c => c.ContestId.Equals(contestId) && c.PictureId.Equals(pictureId));
+            return await _context.ContestMedia.AsNoTracking().SingleOrDefaultAsync(c => c.ContestId.Equals(contestId) && c.PictureId.Equals(pictureId));
         }
 
         public async Task<IEnumerable<ContestMedia>> GetContestMediasByContestId(int contestId)
         {
-            return _context.ContestMedia.AsNoTracking().Where(c => c.ContestId.Equals(contestId)).ToList();
+            return await _context.ContestMedia.AsNoTracking().Where(c => c.ContestId.Equals(contestId)).ToListAsync();
         }
         public async Task<ContestMedia> GetContestMediaByContestIdAndType(int contestId, string mediaType)
         {
-            return _context.ContestMedia.AsNoTracking().SingleOrDefault(m => m.ContestId.Equals(contestId) && m.Type.Equals(mediaType));
+            return await _context.ContestMedia.AsNoTracking().SingleOrDefaultAsync(m => m.ContestId.Equals(contestId) && m.Type.Equals(mediaType));
         }
     }
 }

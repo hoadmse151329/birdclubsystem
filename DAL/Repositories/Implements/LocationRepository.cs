@@ -20,15 +20,15 @@ namespace DAL.Repositories.Implements
 
         public async Task<IEnumerable<string?>> GetAllLocationName()
         {
-            return _context.Locations.AsNoTracking()
+            return await _context.Locations.AsNoTracking()
                 .Select(m => m.LocationName)
                 .Distinct()
-                .ToList();
+                .ToListAsync();
         }
         public async Task<Location?> GetLocationByName(string locationName)
         {
-            return _context.Locations.AsNoTracking()
-                .FirstOrDefault(m => m.LocationName.Equals(locationName));
+            return await _context.Locations.AsNoTracking()
+                .FirstOrDefaultAsync(m => m.LocationName.Equals(locationName));
         }
 
         public async Task<Location?> GetLocationByMeetingId(int meetingId)
@@ -43,8 +43,8 @@ namespace DAL.Repositories.Implements
         {
             var trip = await _context.FieldTrips.AsNoTracking().SingleOrDefaultAsync(f => f.TripId.Equals(tripId));
 
-            return _context.Locations.AsNoTracking()
-                .FirstOrDefault(f => f.LocationId.Equals(trip.LocationId));
+            return await _context.Locations.AsNoTracking()
+                .FirstOrDefaultAsync(f => f.LocationId.Equals(trip.LocationId));
         }
 
         public async Task<Location?> GetLocationByContestId(int contestId)
@@ -57,9 +57,10 @@ namespace DAL.Repositories.Implements
 
         public async Task<string?> GetLocationNameById(int id)
         {
-            return _context.Locations.AsNoTracking()
-                .SingleOrDefaultAsync(m => m.LocationId.Equals(id)).Result
-                .LocationName;
+            var location = await _context.Locations.AsNoTracking()
+                .SingleOrDefaultAsync(m => m.LocationId == id);
+
+            return location?.LocationName;
         }
     }
 }

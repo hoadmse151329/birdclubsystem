@@ -26,6 +26,7 @@ using Azure.Storage.Blobs.Models;
 using DAL.Models;
 using Microsoft.AspNetCore.Http.Json;
 using WebAppMVC.Models.ViewModels;
+using WebAppMVC.Models.Manager;
 
 namespace WebAppMVC.Controllers
 {
@@ -56,7 +57,7 @@ namespace WebAppMVC.Controllers
 
         // GET: StaffController
         [HttpGet("Index")]
-        public IActionResult StaffIndex()
+        public async Task<IActionResult> StaffIndex()
         {
             string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
             if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
@@ -77,7 +78,17 @@ namespace WebAppMVC.Controllers
             TempData["USER_NAME"] = usrname;
             TempData["IMAGE_PATH"] = imagepath;
 
-            return View();
+            StaffAPI_URL += "Staff/Index";
+
+            var dashboardResponse = await methcall.CallMethodReturnObject<GetStaffDashboardResponse>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: Constants.Constants.GET_METHOD,
+                url: StaffAPI_URL,
+                accessToken: accToken,
+                _logger: _logger);
+
+            return View(dashboardResponse.Data);
         }
         [HttpGet("Meeting")]
         public async Task<IActionResult> StaffMeeting([FromQuery] string search)
@@ -777,7 +788,7 @@ namespace WebAppMVC.Controllers
             if (staffInvalidPasswordUpdate != null)
             {
                 staffInvalids.managerPassword = staffInvalidPasswordUpdate;
-                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] = 
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] = ""; 
             }
             staffDetails.Data.DefaultUserGenderSelectList = methcall.GetUserGenderSelectableList(staffDetails.Data.Gender);
             staffInvalids.managerDetail = staffDetails.Data;
@@ -930,7 +941,7 @@ namespace WebAppMVC.Controllers
                         "Error while processing your request! (Getting Staff Profile!).\n Staff Details Not Found!"
                     + getMemberAvatar.ErrorMessage;
                 }
-                TempData[Constants.Constants.ALERT_DEFAULT_SUCCESS_NAME] = Constants.Constants.ALERT_USER_AVATAR_IMAGE_CHANGE_SUCCESS;
+                TempData[Constants.Constants.ALERT_DEFAULT_SUCCESS_NAME] = Constants.Constants.ALERT_USER_AVATAR_IMAGE_UPDATE_SUCCESS;
                 HttpContext.Session.SetString(Constants.Constants.USR_IMAGE, getMemberAvatar.Data.ImagePath);
                 return RedirectToAction("StaffProfile");
             }

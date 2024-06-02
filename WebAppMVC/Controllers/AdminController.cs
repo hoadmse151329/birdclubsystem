@@ -244,7 +244,7 @@ namespace WebAppMVC.Controllers
                         "Error while processing your request! (Getting Admin Profile!).\n Admin Details Not Found!"
                     + getMemberAvatar.ErrorMessage;
                 }
-                TempData[Constants.Constants.ALERT_DEFAULT_SUCCESS_NAME] = Constants.Constants.ALERT_USER_AVATAR_IMAGE_CHANGE_SUCCESS;
+                TempData[Constants.Constants.ALERT_DEFAULT_SUCCESS_NAME] = Constants.Constants.ALERT_USER_AVATAR_IMAGE_UPDATE_SUCCESS;
                 HttpContext.Session.SetString(Constants.Constants.USR_IMAGE, getMemberAvatar.Data.ImagePath);
                 return RedirectToAction("AdminProfile");
             }

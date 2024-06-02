@@ -35,7 +35,6 @@ namespace BAL.Services.Implements
             message.ReplyToList.Add(new MailAddress(_from));
             message.Sender = new MailAddress(_from);
 
-
             try
             {
                 await client.SendMailAsync(message);
@@ -70,7 +69,6 @@ namespace BAL.Services.Implements
         public async Task<bool> SendEmailGoogleSmtpAsync(string _from, string _to, string _subject,
                                                             string _body, string _gmailsend, string? _gmailpassword)
         {
-
             MailMessage message = new MailMessage(
                 from: _from,
                 to: _to,

@@ -83,6 +83,7 @@ namespace WebAPI.Controllers
         {
             try
             {
+                notif.NotificationId = await _notificationService.GenerateNewNotificationId();
                 _notificationService.Create(notif);
                 var result = await _notificationService.GetNotificationById(notif.NotificationId);
                 if (result == null)
@@ -137,7 +138,7 @@ namespace WebAPI.Controllers
                 });
                 NotificationViewModel notification = new NotificationViewModel()
                 {
-                    NotificationId = Guid.NewGuid().ToString(),
+                    NotificationId = await _notificationService.GenerateNewNotificationId(),
                     Title = notif.Title,
                     Description = notif.Description,
                     Date = DateTime.Now,

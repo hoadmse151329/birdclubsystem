@@ -20,51 +20,51 @@ namespace DAL.Repositories.Implements
 
         public async Task<IEnumerable<Bird>> GetBirdsByMemberId(string memberId)
         {
-            return _context.Birds.Where(m => m.MemberId == memberId).OrderBy(b => b.BirdName).ToList();
+            return await _context.Birds.Where(m => m.MemberId == memberId).OrderBy(b => b.BirdName).ToListAsync();
         }
 
         public async Task<IEnumerable<Bird>> GetBirdsByMemberIdInclude(string memberId)
         {
-            return _context.Birds.Where(m => m.MemberId == memberId).Include(m => m.MemberDetails).ToList();
+            return await _context.Birds.Where(m => m.MemberId == memberId).Include(m => m.MemberDetails).ToListAsync();
         }
 
         public async Task<int> GetBirdIdByMemberId(string memberId)
         {
-            var result = (from mem in _context.Birds where mem.MemberId == memberId select mem).FirstOrDefault();
+            var result = await (from mem in _context.Birds where mem.MemberId == memberId select mem).FirstOrDefaultAsync();
             if (result != null) return result.BirdId;
             return 0;
         }
 
         public async Task<int> GetELOByBirdId(int birdId)
         {
-            var result = (from bird in _context.Birds where bird.BirdId == birdId select bird).FirstOrDefault();
+            var result = await (from bird in _context.Birds where bird.BirdId == birdId select bird).FirstOrDefaultAsync();
             if (result != null) return result.Elo;
             return 0;
         }
 
         public async Task<Bird> GetBirdById(int birdId)
         {
-            return _context.Birds.AsNoTracking().SingleOrDefault(b => b.BirdId.Equals(birdId));
+            return await _context.Birds.AsNoTracking().SingleOrDefaultAsync(b => b.BirdId.Equals(birdId));
         }
 
         public async Task<Bird> GetBirdByIdTracking(int birdId)
         {
-            return _context.Birds.SingleOrDefault(b => b.BirdId.Equals(birdId));
+            return await _context.Birds.SingleOrDefaultAsync(b => b.BirdId.Equals(birdId));
         }
 
         public async Task<Bird> GetBirdByName(string birdName)
         {
-            return _context.Birds.AsNoTracking().SingleOrDefault(b => b.BirdName.Equals(birdName));
+            return await _context.Birds.AsNoTracking().SingleOrDefaultAsync(b => b.BirdName.Equals(birdName));
         }
 
         public async Task<Bird> GetBirdByNameTracking(string birdName)
         {
-            return _context.Birds.SingleOrDefault(b => b.BirdName.Equals(birdName));
+            return await _context.Birds.SingleOrDefaultAsync(b => b.BirdName.Equals(birdName));
         }
 
         public async Task<List<Bird>> GetBirdsOrderByElo()
         {
-            return _context.Birds.OrderByDescending(b => b.Elo).ToList();
+            return await _context.Birds.OrderByDescending(b => b.Elo).ToListAsync();
         }
     }
 }

@@ -20,22 +20,22 @@ namespace DAL.Repositories.Implements
 
         public async Task<MeetingMedia> GetMeetingMediaById(int pictureId)
         {
-            return _context.MeetingMedia.AsNoTracking().SingleOrDefault(m => m.PictureId.Equals(pictureId));
+            return await _context.MeetingMedia.AsNoTracking().SingleOrDefaultAsync(m => m.PictureId.Equals(pictureId));
         }
 
         public async Task<MeetingMedia> GetMeetingMediaByIdTracking(int pictureId)
         {
-            return _context.MeetingMedia.SingleOrDefault(m => m.PictureId.Equals(pictureId));
+            return await _context.MeetingMedia.SingleOrDefaultAsync(m => m.PictureId.Equals(pictureId));
         }
 
         public async Task<IEnumerable<MeetingMedia>> GetAllMeetingMediasByMeetingId(int meetingId)
         {
-            return _context.MeetingMedia.AsNoTracking().Where(m => m.MeetingId.Equals(meetingId)).ToList();
+            return await _context.MeetingMedia.AsNoTracking().Where(m => m.MeetingId.Equals(meetingId)).ToListAsync();
         }
 
         public async Task<MeetingMedia> GetMeetingMediaByMeetingIdAndType(int meetingId, string mediaType)
         {
-            return _context.MeetingMedia.AsNoTracking().SingleOrDefault(m => m.MeetingId.Equals(meetingId) && m.Type.Equals(mediaType));
+            return await _context.MeetingMedia.AsNoTracking().SingleOrDefaultAsync(m => m.MeetingId.Equals(meetingId) && m.Type.Equals(mediaType));
         }
     }
 }

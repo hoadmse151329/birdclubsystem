@@ -100,12 +100,13 @@ namespace BAL.Services.Implements
         {
             var usr = _mapper.Map<User>(entity);
 			usr.MemberDetail = new Member();
-			usr.MemberDetail.MemberId = Guid.NewGuid().ToString();
+            usr.MemberDetail.MemberId = _unitOfWork.MemberRepository.GenerateNewMemberId();
 			usr.MemberDetail.Status = "Inactive";
             usr.MemberDetail.Role = "Member";
 			usr.MemberDetail.Email = entity.Email;
+            usr.MemberDetail.RegisterDate = DateTime.Now;
 
-			if (newmem != null)
+            if (newmem != null)
             {
                 usr.MemberDetail.FullName = newmem.FullName;
                 usr.MemberDetail.UserName = newmem.UserName;
@@ -120,10 +121,12 @@ namespace BAL.Services.Implements
         {
             var usr = _mapper.Map<User>(entity);
             usr.MemberDetail = new Member();
-            usr.MemberDetail.MemberId = Guid.NewGuid().ToString();
+            usr.MemberDetail.MemberId = _unitOfWork.MemberRepository.GenerateNewMemberId();
             usr.MemberDetail.Status = "Inactive";
             usr.MemberDetail.Role = newmem.Role;
             usr.MemberDetail.Email = entity.Email;
+            usr.MemberDetail.RegisterDate = DateTime.Now;
+            usr.MemberDetail.JoinDate = DateTime.Now;
             if (newmem != null)
             {
                 usr.MemberDetail.FullName = newmem.FullName;
