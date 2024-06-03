@@ -81,5 +81,12 @@ namespace DAL.Repositories.Implements
             if (result != null) return result.UserId;
             return 0;
         }
+
+        public async Task<User?> GetByUsername(string username)
+        {
+            if (await _context.Members.AsNoTracking().SingleOrDefaultAsync(mem => mem.UserName == username) != null)
+                return await _context.Users.AsNoTrackingWithIdentityResolution().Include(usr => usr.MemberDetails).SingleOrDefaultAsync(usr => usr.MemberDetails.UserName == username);
+            return null;
+        }
     }
 }

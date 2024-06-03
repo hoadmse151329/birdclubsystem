@@ -261,5 +261,15 @@ namespace BAL.Services.Implements
                 AccessToken = accessToken
             };
         }
+
+        public async Task<bool> IsUserExistByUsername(string username)
+        {
+            var user = await _unitOfWork.UserRepository.GetByUsername(username);
+            if (user != null)
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }

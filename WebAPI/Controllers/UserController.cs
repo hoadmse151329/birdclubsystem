@@ -124,7 +124,7 @@ namespace WebAPI.Controllers
                     return BadRequest(new
                     {
                         Status = false,
-                        ErrorMessage = "User Account is Currently Expired!",
+                        ErrorMessage = "User Account is Currently Expired! Please renew your Membership",
                         Data = result
                     });
                 }
@@ -214,7 +214,7 @@ namespace WebAPI.Controllers
                     return BadRequest(new
                     {
                         Status = false,
-                        ErrorMessage = "User Account is Currently InActivated!",
+                        ErrorMessage = "User Account is Currently InActivated! Please contact Manager",
                         Data = login
                     });
                 }
@@ -223,7 +223,16 @@ namespace WebAPI.Controllers
                     return BadRequest(new
                     {
                         Status = false,
-                        ErrorMessage = "User Account is Currently Expired!",
+                        ErrorMessage = "User Account is Currently Expired! Please renew your Membership",
+                        Data = login
+                    });
+                }
+                if (login.Status == "Denied")
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = "Sorry, your registration request has been denied by the Birdclub manager",
                         Data = login
                     });
                 }
@@ -285,21 +294,30 @@ namespace WebAPI.Controllers
         {
             try
             {
-                if (newmem.Password == null || newmem.Password == string.Empty)
+                if (string.IsNullOrEmpty(newmem.Password) || string.IsNullOrWhiteSpace(newmem.Password))
                 {
                     return BadRequest(new
                     {
                         Status = false,
-						ErrorMessage = "Password is Empty !"
+						ErrorMessage = "Password is empty !"
                     });
                 }
-                var result = await _userService.IsUserExistByEmail(newmem.Email);
-                if (result)
+                var resultEmail = await _userService.IsUserExistByEmail(newmem.Email);
+                if (resultEmail)
                 {
                     return BadRequest(new
                     {
                         Status = false,
 						ErrorMessage = "Your email has already been registered !, would you like to login instead?"
+                    });
+                }
+                var resultUsername = await _userService.IsUserExistByUsername(newmem.UserName);
+                if (resultUsername)
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = "Username has already been taken, please type in a different Username !"
                     });
                 }
                 if (!newmem.Password.Equals(newmem.ConfirmPassword))
@@ -368,7 +386,7 @@ namespace WebAPI.Controllers
 		{
 			try
 			{
-				if (newmem.Password == null || newmem.Password == string.Empty)
+				if (string.IsNullOrEmpty(newmem.Password) || string.IsNullOrWhiteSpace(newmem.Password))
 				{
 					return BadRequest(new
 					{
@@ -376,16 +394,25 @@ namespace WebAPI.Controllers
 						ErrorMessage = "Password is Empty !"
 					});
 				}
-				var result = await _userService.GetByEmailModel(newmem.Email);
-				if (result != null)
+				var resultEmail = await _userService.IsUserExistByEmail(newmem.Email);
+				if (resultEmail)
 				{
 					return BadRequest(new
 					{
 						Status = false,
-						ErrorMessage = "Email has already registered !"
-					});
+						ErrorMessage = "Your email has already been registered !, would you like to login instead?"
+                    });
 				}
-				if (!newmem.Password.Equals(newmem.ConfirmPassword))
+                var resultUsername = await _userService.IsUserExistByUsername(newmem.UserName);
+                if (resultUsername)
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = "Username has already been taken, please type in a different Username !"
+                    });
+                }
+                if (!newmem.Password.Equals(newmem.ConfirmPassword))
 				{
 					return BadRequest(new
 					{
@@ -711,7 +738,7 @@ namespace WebAPI.Controllers
             }
         }
         #region old code reset password
-        /*// PUT api/<UserController>/5
+        // PUT api/<UserController>/5
         /// <summary>
         /// Reset Account Password, requires Email OTP Verification
         /// </summary>
@@ -770,7 +797,7 @@ namespace WebAPI.Controllers
                     errorMessage = ex.Message
                 });
             }
-        }*/
+        }
         #endregion
         #region old code verify otp
         /*/// <summary>
