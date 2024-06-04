@@ -79,6 +79,7 @@ namespace WebAppMVC.Constants
         public readonly static string UPDATE_BIRD_VALID = "UBirdValid";
         public readonly static string CREATE_MEETING_VALID = "CMeetingValid";
         public readonly static string UPDATE_MEETING_VALID = "UMeetingValid";
+        public readonly static string UPDATE_MEETING_STATUS_VALID = "UMeetingStatusValid";
         public readonly static string CREATE_MEETING_MEDIA_VALID = "CMeetingMediaValid";
         public readonly static string UPDATE_MEETING_MEDIA_VALID = "UMeetingMediaValid";
         public readonly static string CREATE_FIELDTRIP_VALID = "CFieldTripValid";

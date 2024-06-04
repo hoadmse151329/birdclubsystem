@@ -25,7 +25,6 @@ namespace DAL.Models
         public virtual DbSet<ClubLocation> ClubLocations { get; set; } = null!;
         public virtual DbSet<Comment> Comments { get; set; } = null!;
         public virtual DbSet<Contest> Contests { get; set; } = null!;
-        public virtual DbSet<ContestAssignment> ContestAssignments { get; set; } = null!;
         public virtual DbSet<ContestMedia> ContestMedia { get; set; } = null!;
         public virtual DbSet<ContestParticipant> ContestParticipants { get; set; } = null!;
         public virtual DbSet<Feedback> Feedbacks { get; set; } = null!;
@@ -36,11 +35,9 @@ namespace DAL.Models
         public virtual DbSet<FieldtripInclusion> FieldtripInclusions { get; set; } = null!;
         public virtual DbSet<FieldtripMedia> FieldtripMedia { get; set; } = null!;
         public virtual DbSet<FieldTripParticipant> FieldTripParticipants { get; set; } = null!;
-        public virtual DbSet<FieldtripAssignment> FieldtripAssignments { get; set; } = null!;
         public virtual DbSet<Gallery> Galleries { get; set; } = null!;
         public virtual DbSet<Location> Locations { get; set; } = null!;
         public virtual DbSet<Meeting> Meetings { get; set; } = null!;
-        public virtual DbSet<MeetingAssignment> MeetingAssignments { get; set; } = null!;
         public virtual DbSet<MeetingMedia> MeetingMedia { get; set; } = null!;
         public virtual DbSet<MeetingParticipant> MeetingParticipants { get; set; } = null!;
         public virtual DbSet<Member> Members { get; set; } = null!;
@@ -115,23 +112,6 @@ namespace DAL.Models
                     .WithMany(p => p.Comments)
                     .HasForeignKey(d => d.UserId)
                     .HasConstraintName("FK_Comment_Users");
-            });
-
-            modelBuilder.Entity<ContestAssignment>(entity =>
-            {
-                entity.HasKey(e => new { e.MemberId, e.ContestId });
-
-                entity.HasOne(d => d.ContestDetails)
-                    .WithMany(p => p.ContestAssignments)
-                    .HasForeignKey(d => d.ContestId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_ContestAssignment_Contest");
-
-                entity.HasOne(d => d.MemberDetails)
-                    .WithMany(p => p.ContestAssignments)
-                    .HasForeignKey(d => d.MemberId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Assignment_Member");
             });
 
             modelBuilder.Entity<ContestMedia>(entity =>
@@ -243,46 +223,12 @@ namespace DAL.Models
                     .HasConstraintName("FK_FieldTripParticipants_FieldTrip");
             });
 
-            modelBuilder.Entity<FieldtripAssignment>(entity =>
-            {
-                entity.HasKey(e => new { e.MemberId, e.TripId });
-
-                entity.HasOne(d => d.MemberDetails)
-                    .WithMany(p => p.FieldtripAssignments)
-                    .HasForeignKey(d => d.MemberId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_FieldtripAssignment_Member");
-
-                entity.HasOne(d => d.Trip)
-                    .WithMany(p => p.FieldtripAssignments)
-                    .HasForeignKey(d => d.TripId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_FieldtripAssignment_FieldTrip");
-            });
-
             modelBuilder.Entity<Gallery>(entity =>
             {
                 entity.HasOne(d => d.UserDetails)
                     .WithMany(p => p.Galleries)
                     .HasForeignKey(d => d.UserId)
                     .HasConstraintName("FK_Gallery_Users");
-            });
-
-            modelBuilder.Entity<MeetingAssignment>(entity =>
-            {
-                entity.HasKey(e => new { e.MemberId, e.MeetingId });
-
-                entity.HasOne(d => d.MeetingDetails)
-                    .WithMany(p => p.MeetingAssignments)
-                    .HasForeignKey(d => d.MeetingId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_MeetingAssignment_Meeting");
-
-                entity.HasOne(d => d.MemberDetails)
-                    .WithMany(p => p.MeetingAssignments)
-                    .HasForeignKey(d => d.MemberId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_MeetingAssignment_Member");
             });
 
             modelBuilder.Entity<MeetingMedia>(entity =>

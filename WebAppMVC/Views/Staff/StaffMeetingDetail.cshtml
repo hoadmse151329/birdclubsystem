@@ -1,15 +1,14 @@
-﻿@model dynamic
+﻿@model WebAppMVC.Models.ViewModels.StaffMeetingDetailsVM
 @{
     Layout = null;
     ViewData["Title"] = "Staff Meeting Detail Page";
     BAL.ViewModels.MeetingViewModel detailsMeeting = Model.MeetingDetails;
-    BAL.ViewModels.MeetingViewModel updateMeeting = Model.UpdateMeeting != null ? Model.UpdateMeeting : Model.MeetingDetails;
+    BAL.ViewModels.Manager.UpdateMeetingStatusVM updateMeetingStatus = Model.UpdateMeetingStatus;
     List<BAL.ViewModels.MeetingMediaViewModel> Media = detailsMeeting.MeetingPictures;
     List<BAL.ViewModels.MeetingParticipantViewModel> meetPartView = Model.MeetingParticipants;
     BAL.ViewModels.MeetingMediaViewModel Spotlight = detailsMeeting.SpotlightImage;
     BAL.ViewModels.MeetingMediaViewModel LocationMap = detailsMeeting.LocationMapImage;
-    List<SelectListItem> checkInStatus = Model.SelectListParticipationStatus;
-    List<SelectListItem> defaultMeetingStatus = Model.SelectListStatus;
+    List<SelectListItem> checkInStatus = Model.ParticipantStatusSelectableList;
     Layout = "~/Views/Shared/_SLayout.cshtml";
 
 }
@@ -590,39 +589,15 @@
                                 <div class="row justify-content-center">
                                     <div class="col-12 col-md-6">
                                         <div class="form-group row">
-                                            <label asp-for="@updateMeeting.Status" class="col-sm-4 col-form-label"></label>
+                                            <label asp-for="@updateMeetingStatus.Status" class="col-sm-4 col-form-label"></label>
                                             <div class="col-sm-8">
-                                                <select class="form-control" asp-for="@updateMeeting.Status" asp-items="@defaultMeetingStatus" class="custom-select" required></select>
-                                                <span asp-validation-for="@updateMeeting.Status" id="error_message"
+                                                <select class="form-control" asp-for="@updateMeetingStatus.Status" asp-items="@updateMeetingStatus.MeetingStatusSelectableList" class="custom-select" required></select>
+                                                <span asp-validation-for="@updateMeetingStatus.Status" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <input asp-for="@updateMeeting.MeetingName" type="text"
-                               value="@updateMeeting.MeetingName" required hidden>
-                                <input asp-for="@updateMeeting.OpenRegistration" type="datetime-local" asp-format="{0:yyyy-MM-ddTHH:mm}"
-                                       value="@updateMeeting.OpenRegistration.ToString("yyyy-MM-ddTHH:mm")" required hidden />
-                                <input asp-for="@updateMeeting.RegistrationDeadline" type="datetime-local" asp-format="{0:yyyy-MM-ddTHH:mm}"
-                                       value="@updateMeeting.RegistrationDeadline.ToString("yyyy-MM-ddTHH:mm")" required hidden />
-                                <input asp-for="@updateMeeting.StartDate" type="datetime-local" asp-format="{0:yyyy-MM-ddTHH:mm}"
-                                       value="@updateMeeting.StartDate.ToString("yyyy-MM-ddTHH:mm")" required hidden />
-                                <input asp-for="@updateMeeting.EndDate" type="datetime-local" asp-format="{0:yyyy-MM-ddTHH:mm}"
-                                       value="@updateMeeting.EndDate.ToString("yyyy-MM-ddTHH:mm")" required hidden />
-                                <input asp-for="@updateMeeting.NumberOfParticipantsLimit" type="number"
-                               value="@updateMeeting.NumberOfParticipantsLimit" required hidden>
-                                <input asp-for="@updateMeeting.Host" type="text"
-                               value="@updateMeeting.Host" required hidden>
-                                <input asp-for="@updateMeeting.Incharge" type="text"
-                               value="@updateMeeting.Incharge" required hidden>
-                                <input asp-for="@updateMeeting.Address" type="text"
-                               value="@updateMeeting.Address" required hidden>
-                                <textarea asp-for="@updateMeeting.Description" type="text"
-                                  value="@updateMeeting.Description" required hidden></textarea>
-                                <textarea asp-for="@updateMeeting.Note" type="text"
-                                  value="@updateMeeting.Note" required hidden></textarea>
-                                <input asp-for="@updateMeeting.NumberOfParticipants" type="number"
-                               value="@updateMeeting.NumberOfParticipants" required hidden>
                             </div>
                             <div class="modal-footer justify-content-center">
                                 <button class="btn btn-success" type="submit" value="Update">Save</button>

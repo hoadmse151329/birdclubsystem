@@ -1,4 +1,5 @@
 ﻿using BAL.ViewModels;
+using BAL.ViewModels.Manager;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,7 +29,10 @@ namespace BAL.Services.Interfaces
             );
         List<string> GetAllMeetingName();
         void Create(MeetingViewModel entity);
+        void Create(CreateNewMeetingVM entity);
         void Update(MeetingViewModel entity);
+        void Update(UpdateMeetingDetailsVM entity);
+        Task<bool> UpdateStatus(UpdateMeetingStatusVM entity);
         Task<bool> GetBoolMeetingId(int id);
         Task<int> CountMeeting();
         Task<int> CountMeetingByStatus(string status);

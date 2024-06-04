@@ -45,9 +45,10 @@ namespace BAL.Services.Implements
 			DateTime? expiryDateTime = null, 
 			List<string>? roles = null, 
 			List<string>? statuses = null, 
-			string? orderBy = null, 
-			bool isManager = false, 
-			bool isAdmin = false)
+			string? orderBy = null,
+            bool isManagerGetMemberList = true,
+            bool isManagerGetStaffList = false,
+            bool isAdmin = false)
         {
             return _mapper.Map<IEnumerable<GetMemberStatus>>(await _unitOfWork.MemberRepository.GetSortedMembers(
                 memberId,
@@ -57,7 +58,8 @@ namespace BAL.Services.Implements
                 roles,
                 statuses,
                 orderBy,
-                isManager,
+                isManagerGetMemberList,
+                isManagerGetStaffList,
                 isAdmin
                 ));
         }
@@ -128,10 +130,22 @@ namespace BAL.Services.Implements
 			{
 				throw new Exception("User not Found!");
 			}
-            var mem = _mapper.Map<Member>(entity);
+            var member = _unitOfWork.MemberRepository.GetByIdNoTracking(entity.MemberId).Result;
+            if(member == null)
+            {
+                throw new Exception("User not Found!");
+            }
+            member.Address = entity.Address;
+            member.UserName = entity.UserName;
+            member.Status = entity.Status;
+            member.Email = entity.Email;
+            member.Phone = entity.Phone;
+            member.Description = entity.Description;
+            member.FullName = entity.FullName;
+            member.Gender = entity.Gender;
 			usr.ImagePath = entity.ImagePath;
-			mem.UserDetails = usr;
-			_unitOfWork.MemberRepository.Update(mem);
+            member.UserDetails = usr;
+			_unitOfWork.MemberRepository.Update(member);
 			_unitOfWork.Save();
 		}
 
@@ -191,9 +205,10 @@ namespace BAL.Services.Implements
             DateTime? expiryDateTime = null, 
             List<string>? roles = null, 
             List<string>? statuses = null, 
-            string? orderBy = null, 
-            bool isManager = false, 
-            bool isAdmin = false)
+            string? orderBy = null,
+            bool isManagerGetMemberList = false,
+            bool isManagerGetStaffList = false,
+            bool isAdmin = true)
         {
             return _mapper.Map<IEnumerable<GetEmployeeStatus>>(await _unitOfWork.MemberRepository.GetSortedMembers(
                 memberId,
@@ -203,7 +218,8 @@ namespace BAL.Services.Implements
                 roles,
                 statuses,
                 orderBy,
-                isManager,
+                isManagerGetMemberList,
+                isManagerGetStaffList,
                 isAdmin
                 ));
         }
@@ -224,6 +240,33 @@ namespace BAL.Services.Implements
             DateTime? endAvailableDate = null)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<IEnumerable<GetStaffName>?> GetSortedStaffNames(
+            string? memberId = null, 
+            string? memberUserName = null, 
+            string? memberFullName = null, 
+            DateTime? expiryDateTime = null, 
+            List<string>? roles = null, 
+            List<string>? statuses = null, 
+            string? orderBy = null, 
+            bool isManagerGetMemberList = false, 
+            bool isManagerGetStaffList = true, 
+            bool isAdmin = false
+            )
+        {
+            return _mapper.Map<IEnumerable<GetStaffName>>(await _unitOfWork.MemberRepository.GetSortedMembers(
+                memberId,
+                memberUserName,
+                memberFullName,
+                expiryDateTime,
+                roles,
+                statuses,
+                orderBy,
+                isManagerGetMemberList,
+                isManagerGetStaffList,
+                isAdmin
+                ));
         }
     }
 }

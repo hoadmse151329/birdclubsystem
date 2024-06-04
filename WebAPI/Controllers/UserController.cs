@@ -738,7 +738,7 @@ namespace WebAPI.Controllers
             }
         }
         #region old code reset password
-        // PUT api/<UserController>/5
+        /*// PUT api/<UserController>/5
         /// <summary>
         /// Reset Account Password, requires Email OTP Verification
         /// </summary>
@@ -797,7 +797,7 @@ namespace WebAPI.Controllers
                     errorMessage = ex.Message
                 });
             }
-        }
+        }*/
         #endregion
         #region old code verify otp
         /*/// <summary>

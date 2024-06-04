@@ -18,7 +18,6 @@ namespace DAL.Models
             FieldTripInclusions = new HashSet<FieldtripInclusion>();
             FieldTripPictures = new HashSet<FieldtripMedia>();
             FieldTripParticipants = new HashSet<FieldTripParticipant>();
-            FieldtripAssignments = new HashSet<FieldtripAssignment>();
         }
 
         [Key]
@@ -73,7 +72,5 @@ namespace DAL.Models
         public virtual ICollection<FieldtripMedia> FieldTripPictures { get; set; }
         [InverseProperty(nameof(FieldTripParticipant.Trip))]
         public virtual ICollection<FieldTripParticipant> FieldTripParticipants { get; set; }
-        [InverseProperty(nameof(FieldtripAssignment.Trip))]
-        public virtual ICollection<FieldtripAssignment> FieldtripAssignments { get; set; }
     }
 }

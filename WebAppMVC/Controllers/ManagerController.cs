@@ -29,6 +29,7 @@ using BAL.ViewModels.News;
 using Microsoft.AspNetCore.Authorization;
 using AutoMapper;
 using BAL.ViewModels.Blog;
+using System;
 // thêm crud của meeting, fieldtrip, contest.
 namespace WebAppMVC.Controllers
 {
@@ -97,6 +98,8 @@ namespace WebAppMVC.Controllers
             _logger.LogInformation(search);
 
             string LocationAPI_URL_All = ManagerAPI_URL + "Location/AllAddresses";
+            string ManagerNameAPI_URL = ManagerAPI_URL + "Manager/Profile";
+            string ManagerStaffListAPI_URL = ManagerAPI_URL + "Manager/Staff";
 
             if (search != null || !string.IsNullOrEmpty(search))
             {
@@ -105,12 +108,14 @@ namespace WebAppMVC.Controllers
             }
             else ManagerAPI_URL += "Meeting/All";
 
-            dynamic testmodel = new ExpandoObject();
+            ManagerMeetingIndexVM managerMeetingListVM = new();
 
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
 
             string? role = HttpContext.Session.GetString(Constants.Constants.ROLE_NAME);
+            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
             var listLocationResponse = await methcall.CallMethodReturnObject<GetLocationAddressResponseByList>(
                 _httpClient: _httpClient,
@@ -127,16 +132,45 @@ namespace WebAppMVC.Controllers
                 inputType: role,
                 _logger: _logger);
 
-            if (listMeetResponse == null || listLocationResponse == null)
+            var managerDetails = await methcall.CallMethodReturnObject<GetMemberProfileResponse>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: Constants.Constants.POST_METHOD,
+                url: ManagerNameAPI_URL,
+                _logger: _logger,
+                inputType: usrId,
+                accessToken: accToken);
+
+            var listStaffNameResponse = await methcall.CallMethodReturnObject<GetListStaffName>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: Constants.Constants.GET_METHOD,
+                url: ManagerStaffListAPI_URL,
+                accessToken: accToken,
+                _logger: _logger);
+
+            if (
+                listMeetResponse == null || 
+                listLocationResponse == null || 
+                managerDetails == null ||
+                listStaffNameResponse == null ||
+                listMeetResponse.Data == null ||
+                listLocationResponse.Data == null ||
+                managerDetails.Data == null ||
+                listStaffNameResponse.Data == null
+                )
             {
-                _logger.LogInformation(
-                    "Error while processing your request! (Getting List Meeting!). List was Empty!: " + listMeetResponse);
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting List Meeting!).\n List was Empty!";
                 return RedirectToAction("ManagerIndex");
             }
             else
-            if (!listMeetResponse.Status || !listLocationResponse.Status)
+            if (
+                !listMeetResponse.Status || 
+                !listLocationResponse.Status || 
+                !managerDetails.Status ||
+                !listStaffNameResponse.Status
+                )
             {
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting List Meeting!).\n"
@@ -144,41 +178,56 @@ namespace WebAppMVC.Controllers
                 return RedirectToAction("ManagerIndex");
             }
 
-            testmodel.CreateMeeting = methcall.GetValidationTempData<MeetingViewModel>(this, TempData, Constants.Constants.CREATE_MEETING_VALID, "createMeeting", jsonOptions);
-            testmodel.Locations = listLocationResponse.Data;
-            testmodel.Meetings = listMeetResponse.Data;
-            return View(testmodel);
+            managerMeetingListVM.CreateMeeting = methcall.GetValidationTempData<CreateNewMeetingVM>(this, TempData, Constants.Constants.CREATE_MEETING_VALID, "createMeeting", jsonOptions);
+            if(managerMeetingListVM.CreateMeeting == null)
+            {
+                managerMeetingListVM.CreateMeeting = new();
+            }
+            managerMeetingListVM.CreateMeeting.Host = managerDetails.Data.FullName;
+            managerMeetingListVM.CreateMeeting.StaffNames = methcall.GetStaffNameSelectableList(managerMeetingListVM.CreateMeeting.Incharge, listStaffNameResponse.Data);
+            managerMeetingListVM.Roads = listLocationResponse.Data;
+            managerMeetingListVM.MeetingList = listMeetResponse.Data;
+            return View(managerMeetingListVM);
         }
         [HttpGet("Meeting/{id:int}")]
         /*[Route("Manager/Meeting/{id:int}")]*/
         public async Task<IActionResult> ManagerMeetingDetail([FromRoute][Required] int id)
         {
             string ManagerMeetingDetailAPI_URL = ManagerAPI_URL + "Meeting/AllParticipants/" + id;
+            string ManagerStaffListAPI_URL = ManagerAPI_URL + "Manager/Staff";
 
             ManagerAPI_URL += "Meeting/" + id;
 
-            dynamic meetingDetailBigModel = new ExpandoObject();
+            ManagerMeetingDetailsVM managerMeetingDetailsVM = new();
 
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
 
             string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
-
-            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
-
+            //Get meeting details
             var meetPostResponse = await methcall.CallMethodReturnObject<GetMeetingPostResponse>(
-                                _httpClient: _httpClient,
-                                options: jsonOptions,
-                                methodName: Constants.Constants.GET_METHOD,
-                                url: ManagerAPI_URL,
-                                _logger: _logger);
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: Constants.Constants.GET_METHOD,
+                url: ManagerAPI_URL,
+                _logger: _logger);
+            //Get meeting participant list
             var meetpartPostResponse = await methcall.CallMethodReturnObject<GetListMeetingParticipation>(
-                                _httpClient: _httpClient,
-                                options: jsonOptions,
-                                methodName: Constants.Constants.GET_METHOD,
-                                url: ManagerMeetingDetailAPI_URL,
-                                accessToken: accToken,
-                                _logger: _logger);
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: Constants.Constants.GET_METHOD,
+                url: ManagerMeetingDetailAPI_URL,
+                accessToken: accToken,
+                _logger: _logger);
+            //Get staff names list for meeting assignment (incharge)
+            var listStaffNameResponse = await methcall.CallMethodReturnObject<GetListStaffName>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: Constants.Constants.GET_METHOD,
+                url: ManagerStaffListAPI_URL,
+                accessToken: accToken,
+                _logger: _logger);
+
             if (meetPostResponse == null)
             {
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
@@ -193,25 +242,29 @@ namespace WebAppMVC.Controllers
                     + meetPostResponse.ErrorMessage;
                 return RedirectToAction("ManagerMeeting");
             }
-            meetingDetailBigModel.UpdateMeeting = methcall.GetValidationTempData<MeetingViewModel>(this, TempData, Constants.Constants.UPDATE_MEETING_VALID, "updateMeeting", jsonOptions);
-            meetingDetailBigModel.SelectListStatus = methcall.GetManagerEventStatusSelectableList(meetPostResponse.Data.Status);
+            managerMeetingDetailsVM.UpdateMeeting = methcall.GetValidationTempData<UpdateMeetingDetailsVM>(this, TempData, Constants.Constants.UPDATE_MEETING_VALID, "updateMeeting", jsonOptions);
+            if(managerMeetingDetailsVM.UpdateMeeting == null)
+            {
+                managerMeetingDetailsVM.UpdateMeeting = _mapper.Map<UpdateMeetingDetailsVM>(managerMeetingDetailsVM.MeetingDetails);
+            }
+            managerMeetingDetailsVM.UpdateMeeting.MeetingStatusSelectableList = methcall.GetManagerEventStatusSelectableList(meetPostResponse.Data.Status);
+            managerMeetingDetailsVM.UpdateMeeting.MeetingStaffNames = methcall.GetStaffNameSelectableList(managerMeetingDetailsVM.UpdateMeeting.Incharge, listStaffNameResponse.Data);
+            managerMeetingDetailsVM.UpdateMeetingStatus = methcall.GetValidationTempData<UpdateMeetingStatusVM>(this, TempData, Constants.Constants.UPDATE_MEETING_STATUS_VALID, "updateMeetingStatus", jsonOptions);
+            managerMeetingDetailsVM.CreateMeetingMedia = methcall.GetValidationTempData<MeetingMediaViewModel>(this, TempData, Constants.Constants.CREATE_MEETING_MEDIA_VALID, "createMedia", jsonOptions);
+            managerMeetingDetailsVM.MeetingDetails = meetPostResponse.Data;
+            managerMeetingDetailsVM.MeetingParticipants = meetpartPostResponse.Data;
 
-            meetingDetailBigModel.CreateMeetingMedia = methcall.GetValidationTempData<MeetingMediaViewModel>(this, TempData, Constants.Constants.CREATE_MEETING_MEDIA_VALID, "createMedia", jsonOptions);
-
-            meetingDetailBigModel.MeetingDetails = meetPostResponse.Data;
-            meetingDetailBigModel.MeetingParticipants = meetpartPostResponse.Data;
-
-            return View(meetingDetailBigModel);
+            return View(managerMeetingDetailsVM);
         }
         [HttpPost("Meeting/{id:int}/Update")]
         public async Task<IActionResult> ManagerUpdateMeetingDetail(
             [FromRoute][Required] int id,
-            [Required] MeetingViewModel updateMeeting
+            [Required] UpdateMeetingDetailsVM updateMeeting
             )
         {
             ManagerAPI_URL += "Meeting/" + id + "/Update";
 
-            if (updateMeeting.Status.Equals(Constants.Constants.EVENT_STATUS_CLOSED_REGISTRATION) && (updateMeeting.NumberOfParticipantsLimit - updateMeeting.NumberOfParticipants) < 10)
+            if (updateMeeting.Status.Equals(Constants.Constants.EVENT_STATUS_CLOSED_REGISTRATION) && updateMeeting.NumberOfParticipants < 10)
             {
                 ModelState.AddModelError("updateMeeting.Status", "Error while processing your request (Updating Meeting). Not enough people to closed registration");
                 TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_MEETING_VALID, updateMeeting, jsonOptions);
@@ -227,8 +280,6 @@ namespace WebAppMVC.Controllers
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
 
             string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
-
-            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
 
             var meetPostResponse = await methcall.CallMethodReturnObject<GetMeetingPostResponse>(
                                 _httpClient: _httpClient,
@@ -256,12 +307,63 @@ namespace WebAppMVC.Controllers
                     + meetPostResponse.ErrorMessage;
                 return RedirectToAction("ManagerMeetingDetail", new { id });
             }
-            TempData["Success"] = meetPostResponse.SuccessMessage;
+            TempData[Constants.Constants.ALERT_DEFAULT_SUCCESS_NAME] = meetPostResponse.SuccessMessage;
+            return RedirectToAction("ManagerMeetingDetail", new { id });
+        }
+        [HttpPost("Meeting/{id:int}/Status/Update")]
+        public async Task<IActionResult> ManagerUpdateMeetingStatus(
+            [FromRoute][Required] int id,
+            [Required] UpdateMeetingStatusVM updateMeetingStatus
+            )
+        {
+            ManagerAPI_URL += "Meeting/" + id + "/Status/Update";
+
+            if (updateMeetingStatus.Status.Equals(Constants.Constants.EVENT_STATUS_CLOSED_REGISTRATION) && updateMeetingStatus.NumberOfParticipants < 10)
+            {
+                ModelState.AddModelError("updateMeeting.Status", "Error while processing your request (Updating Meeting). Not enough people to closed registration");
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_MEETING_STATUS_VALID, updateMeetingStatus, jsonOptions);
+                return RedirectToAction("ManagerMeetingDetail", new { id });
+            }
+            if (!ModelState.IsValid)
+            {
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_MEETING_STATUS_VALID, updateMeetingStatus, jsonOptions);
+                return RedirectToAction("ManagerMeetingDetail", new { id });
+            }
+
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
+
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
+
+            var meetPostResponse = await methcall.CallMethodReturnObject<GetMeetingPostResponse>(
+                                _httpClient: _httpClient,
+                                options: jsonOptions,
+                                methodName: Constants.Constants.PUT_METHOD,
+                                url: ManagerAPI_URL,
+                                inputType: updateMeetingStatus,
+                                accessToken: accToken,
+                                _logger: _logger);
+            if (meetPostResponse == null)
+            {
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_MEETING_VALID, updateMeetingStatus, jsonOptions);
+
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
+                    "Error while processing your request! (Updating Meeting Status!).\n Meeting Not Found!";
+                return RedirectToAction("ManagerMeetingDetail", new { id });
+            }
+            if (!meetPostResponse.Status)
+            {
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_MEETING_VALID, updateMeetingStatus, jsonOptions);
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
+                    "Error while processing your request! (Updating Meeting Status!).\n"
+                    + meetPostResponse.ErrorMessage;
+                return RedirectToAction("ManagerMeetingDetail", new { id });
+            }
+            TempData[Constants.Constants.ALERT_DEFAULT_SUCCESS_NAME] = meetPostResponse.SuccessMessage;
             return RedirectToAction("ManagerMeetingDetail", new { id });
         }
         [HttpPost("Meeting/Create")]
-        /*[Route("Manager/Meeting/Update/{id:int}")]*/
-        public async Task<IActionResult> ManagerCreateMeeting([Required] MeetingViewModel createMeeting)
+        public async Task<IActionResult> ManagerCreateMeeting([Required] CreateNewMeetingVM createMeeting)
         {
             ManagerAPI_URL += "Meeting/Create";
             if (!ModelState.IsValid)
@@ -275,7 +377,7 @@ namespace WebAppMVC.Controllers
 
             string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
-            var meetPostResponse = await methcall.CallMethodReturnObject<GetMeetingPostResponse>(
+            var meetPostResponse = await methcall.CallMethodReturnObject<GetMeetingCreateResponse>(
                                 _httpClient: _httpClient,
                                 options: jsonOptions,
                                 methodName: Constants.Constants.POST_METHOD,
@@ -301,7 +403,7 @@ namespace WebAppMVC.Controllers
                     + meetPostResponse.ErrorMessage;
                 return RedirectToAction("ManagerMeeting");
             }
-            TempData["Success"] = meetPostResponse.SuccessMessage;
+            TempData[Constants.Constants.ALERT_DEFAULT_SUCCESS_NAME] = meetPostResponse.SuccessMessage;
             return RedirectToAction("ManagerMeeting");
         }
 
@@ -555,7 +657,7 @@ namespace WebAppMVC.Controllers
             )
         {
             ManagerAPI_URL += "FieldTrip/" + id + "/Update";
-            if (updateTrip.Status.Equals(Constants.Constants.EVENT_STATUS_CLOSED_REGISTRATION) && (updateTrip.NumberOfParticipantsLimit - updateTrip.NumberOfParticipants) < 10)
+            if (updateTrip.Status.Equals(Constants.Constants.EVENT_STATUS_CLOSED_REGISTRATION) && updateTrip.NumberOfParticipants < 10)
             {
                 ModelState.AddModelError("updateTrip.Status", "Error while processing your request (Updating FieldTrip). Not enough people to closed registration");
                 TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_FIELDTRIP_VALID, updateTrip, jsonOptions);
@@ -1308,7 +1410,7 @@ namespace WebAppMVC.Controllers
         {
             string ManagerContestDetailAPI_URL = ManagerAPI_URL + "Contest/AllParticipants/" + id;
             ManagerAPI_URL += "Contest/Update/" + id;
-            if(updateContest.Status.Equals(Constants.Constants.EVENT_STATUS_CLOSED_REGISTRATION) && (updateContest.NumberOfParticipantsLimit - updateContest.NumberOfParticipants) < 10)
+            if(updateContest.Status.Equals(Constants.Constants.EVENT_STATUS_CLOSED_REGISTRATION) && updateContest.NumberOfParticipants < 10)
             {
                 ModelState.AddModelError("updateContest.Status", "Error while processing your request (Updating Contest). Not enough people to closed registration");
                 TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_CONTEST_VALID, updateContest, jsonOptions);

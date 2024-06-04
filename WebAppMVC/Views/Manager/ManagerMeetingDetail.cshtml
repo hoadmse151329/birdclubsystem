@@ -1,9 +1,9 @@
-﻿@model dynamic
+﻿@model WebAppMVC.Models.ViewModels.ManagerMeetingDetailsVM
 @{
     Layout = null;
     ViewData["Title"] = "Manager Meeting Detail Page";
     BAL.ViewModels.MeetingViewModel detailsMeeting = Model.MeetingDetails;
-    BAL.ViewModels.MeetingViewModel updateMeeting = Model.UpdateMeeting != null ? Model.UpdateMeeting : Model.MeetingDetails;
+    BAL.ViewModels.Manager.UpdateMeetingDetailsVM updateMeeting = Model.UpdateMeeting;
 
     List<BAL.ViewModels.MeetingParticipantViewModel> parts = Model.MeetingParticipants;
 
@@ -11,9 +11,7 @@
     BAL.ViewModels.MeetingMediaViewModel LocationMap = detailsMeeting.LocationMapImage;
 
     List<BAL.ViewModels.MeetingMediaViewModel> Media = detailsMeeting.MeetingPictures;
-    BAL.ViewModels.MeetingMediaViewModel createMedia = Model.CreateMeetingMedia != null ? Model.CreateMeetingMedia : new BAL.ViewModels.MeetingMediaViewModel();
-
-    List<SelectListItem> defaultMeetingStatus = Model.SelectListStatus;
+    BAL.ViewModels.MeetingMediaViewModel createMedia = Model.CreateMeetingMedia;
 
     Layout = "~/Views/Shared/_MLayout.cshtml";
 }
@@ -210,7 +208,7 @@
                                             <span>Description:</span>
                                         </div>
                                         <div class="col-sm-7 text-sm-left">
-                                            <span>@detailsMeeting.Description</span>
+                                            <span>@Html.Raw(detailsMeeting.Description)</span>
                                         </div>
                                     </div>
                                     <div class="row mb-sm-2">
@@ -511,8 +509,7 @@
                                         <div class="form-group row">
                                             <label asp-for="@updateMeeting.Incharge" class="col-sm-4 col-form-label"></label>
                                             <div class="col-sm-8">
-                                                <input asp-for="@updateMeeting.Incharge" type="text"
-                                                       value="@updateMeeting.Incharge" class="form-control" required>
+                                                <select class="form-control" asp-for="@updateMeeting.Incharge" asp-items="@updateMeeting.MeetingStaffNames" class="custom-select" required></select>
                                                 <span asp-validation-for="@updateMeeting.Incharge" id="error_message"
                                                       class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                             </div>
@@ -520,7 +517,7 @@
                                         <div class="form-group row">
                                             <label asp-for="@updateMeeting.Status" class="col-sm-4 col-form-label"></label>
                                             <div class="col-sm-8">
-                                                <select class="form-control" asp-for="@updateMeeting.Status" asp-items="@defaultMeetingStatus" class="custom-select" required></select>
+                                                <select class="form-control" asp-for="@updateMeeting.Status" asp-items="@updateMeeting.MeetingStatusSelectableList" class="custom-select" required></select>
                                                 <span asp-validation-for="@updateMeeting.Status" id="error_message"
                                                       class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                             </div>
@@ -718,36 +715,20 @@
                         <div class="modal-header">
                             <h4 class="modal-title">Edit Meeting Status</h4>
                         </div>
-                        <form asp-action="ManagerUpdateMeetingDetail" asp-controller="Manager" method="post" asp-route-id="@detailsMeeting.MeetingId" class="form-group">
+                        <form asp-action="ManagerUpdateMeetingStatus" asp-controller="Manager" method="post" asp-route-id="@detailsMeeting.MeetingId" class="form-group">
                             <div class="modal-body">
                                 <div class="row justify-content-center">
                                     <div class="col-12 col-md-6">
                                         <div class="form-group row">
                                             <label asp-for="@updateMeeting.Status" class="col-sm-4 col-form-label"></label>
                                             <div class="col-sm-8">
-                                                <select class="form-control" asp-for="@updateMeeting.Status" asp-items="@defaultMeetingStatus" class="custom-select" required></select>
+                                                <select class="form-control" asp-for="@updateMeeting.Status" asp-items="@updateMeeting.MeetingStatusSelectableList" class="custom-select" required></select>
                                                 <span asp-validation-for="@updateMeeting.Status" id="error_message"
                                                       class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <input asp-for="@updateMeeting.MeetingName" type="text" value="@updateMeeting.MeetingName" required hidden>
-                                <input asp-for="@updateMeeting.OpenRegistration" type="datetime-local" asp-format="{0:yyyy-MM-ddTHH:mm}"
-                                       value="@updateMeeting.OpenRegistration.ToString("yyyy-MM-ddTHH:mm")" required hidden />
-                                <input asp-for="@updateMeeting.RegistrationDeadline" type="datetime-local" asp-format="{0:yyyy-MM-ddTHH:mm}"
-                                       value="@updateMeeting.RegistrationDeadline.ToString("yyyy-MM-ddTHH:mm")" required hidden />
-                                <input asp-for="@updateMeeting.StartDate" type="datetime-local" asp-format="{0:yyyy-MM-ddTHH:mm}"
-                                       value="@updateMeeting.StartDate.ToString("yyyy-MM-ddTHH:mm")" required hidden />
-                                <input asp-for="@updateMeeting.EndDate" type="datetime-local" asp-format="{0:yyyy-MM-ddTHH:mm}"
-                                       value="@updateMeeting.EndDate.ToString("yyyy-MM-ddTHH:mm")" required hidden />
-                                <input asp-for="@updateMeeting.NumberOfParticipantsLimit" type="number" value="@updateMeeting.NumberOfParticipantsLimit" required hidden>
-                                <input asp-for="@updateMeeting.Host" type="text" value="@updateMeeting.Host" required hidden>
-                                <input asp-for="@updateMeeting.Incharge" type="text" value="@updateMeeting.Incharge" required hidden>
-                                <input asp-for="@updateMeeting.Address" type="text" value="@updateMeeting.Address" required hidden>
-                                <textarea asp-for="@updateMeeting.Description" type="text" value="@updateMeeting.Description" required hidden></textarea>
-                                <textarea asp-for="@updateMeeting.Note" type="text" value="@updateMeeting.Note" required hidden></textarea>
-                                <input asp-for="@updateMeeting.NumberOfParticipants" type="number" value="@updateMeeting.NumberOfParticipants" required hidden>
                             </div>
                             <div class="modal-footer justify-content-center">
                                 <button class="btn btn-success" type="submit" value="Update">Save</button>
@@ -760,5 +741,13 @@
         }
     }
     <script src="~/js/user-script.js"></script>
+    <script src="~/ckeditor/ckeditor.js"></script>
+    <script src="~/ckfinder/ckfinder.js"></script>
+    <script>
+
+        var editor = CKEDITOR.replace('updateMeeting.Description');
+        CKFinder.setupCKEditor(editor, 'ckfinder/');
+        data["updateMeeting.Description"] = editor.getData();
+    </script>
 </body>
 </html>

@@ -83,11 +83,11 @@ namespace WebAPI.Controllers
         [ProducesResponseType(typeof(List<GetMembershipExpire>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> GetListofMembers()
+        public async Task<IActionResult> GetListofMembers([FromQuery] string? memberUsername)
         {
             try
             {
-                var result = await _memberService.GetSortedMembers(roles: new List<string> { "Member" }, isManager: true);
+                var result = await _memberService.GetSortedMembers(memberUserName: memberUsername, isManagerGetMemberList: true);
                 if (result == null)
                 {
                     return NotFound(new

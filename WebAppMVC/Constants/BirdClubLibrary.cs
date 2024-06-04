@@ -14,6 +14,7 @@ using WebAppMVC.Models;
 using WebAppMVC.Models.Error;
 using Microsoft.AspNetCore.Http.Json;
 using WebAppMVC.Models.Auth;
+using BAL.ViewModels.Manager;
 
 namespace WebAppMVC.Constants
 {
@@ -366,6 +367,22 @@ namespace WebAppMVC.Constants
             }
             return defaultEmployeeStatus;
         }
+        public List<SelectListItem> GetStaffNameSelectableList(string? staffName, List<GetStaffName> staffNameList)
+        {
+            List<SelectListItem> defaultStaffNameList = new();
+            foreach(var name in staffNameList)
+            {
+                if(!string.IsNullOrEmpty(staffName) && !string.IsNullOrWhiteSpace(staffName) && staffName.Equals(name))
+                {
+                    defaultStaffNameList.Add(new SelectListItem { Text = name.FullName, Value = name.FullName, Selected = true });
+                }
+                else
+                {
+                    defaultStaffNameList.Add(new SelectListItem { Text = name.FullName, Value = name.FullName });
+                }
+            }
+            return defaultStaffNameList;
+        }
         public List<SelectListItem> GetUserGenderSelectableList(string userGender)
         {
             List<SelectListItem> defaultUserGenders = new();
@@ -489,7 +506,7 @@ namespace WebAppMVC.Constants
             return defaultReqEloRange;
         }
 
-        public T GetValidationTempData<T>(
+        public T? GetValidationTempData<T>(
             ControllerBase context,
             ITempDataDictionary tempData, 
             string tempDataName, 

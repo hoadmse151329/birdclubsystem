@@ -32,7 +32,8 @@ namespace DAL.Repositories.Implements
             List<string>? roles = null, 
             List<string>? statuses = null, 
             string? orderBy = null, 
-            bool isManager = false,
+            bool isManagerGetMemberList = false,
+            bool isManagerGetStaffList = false,
             bool isAdmin = false)
         {
             /*var roadLocationIds = roles != null && roles.Any() ? GetLocationIdListByLocationName(roads).ToList() : new List<int>();
@@ -43,9 +44,13 @@ namespace DAL.Repositories.Implements
             List<string> statusListDefault = new List<string> { "Inactive", "Active", "Expired", "Denied", "Suspended" };
             List<string> roleListDefault = new List<string> { "Member", "Manager", "Staff" };
 
-            if (isManager)
+            if (isManagerGetMemberList)
             {
                 roles = new List<string>() { "Member" };
+            }
+            if (isManagerGetStaffList)
+            {
+                roles = new List<string>() { "Staff" };
             }
 
             if (isAdmin)

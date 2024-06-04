@@ -40,6 +40,7 @@ namespace BAL.AutoMapperProfile
             CreateMap<Member, GetMemberStatus>().ReverseMap();
             CreateMap<Member, GetEmployeeStatus>().ReverseMap();
             CreateMap<Member, GetMembershipExpire>().ReverseMap();
+            CreateMap<Member, GetStaffName>().ReverseMap();
             CreateMap<MeetingParticipant, GetEventParticipation>()
                 .AfterMap((src, dest) =>
                 {
@@ -69,6 +70,8 @@ namespace BAL.AutoMapperProfile
                     dest.ParticipationNo = Int32.Parse(src.ParticipantNo);
                     dest.Incharge = src.Meeting.Incharge;
                 })*/;
+            CreateMap<CreateNewMeetingVM, Meeting>();
+            CreateMap<UpdateMeetingDetailsVM, Meeting>();
             CreateMap<FieldTripParticipant, GetEventParticipation>()
                 .AfterMap((src, dest) =>
                 {

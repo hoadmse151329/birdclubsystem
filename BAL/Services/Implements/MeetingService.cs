@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BAL.Services.Interfaces;
 using BAL.ViewModels;
+using BAL.ViewModels.Manager;
 using DAL.Infrastructure;
 using DAL.Models;
 using DAL.Repositories.Implements;
@@ -198,6 +199,26 @@ namespace BAL.Services.Implements
             _unitOfWork.MeetingRepository.Create(meeting);
             _unitOfWork.Save();
         }
+        public void Create(CreateNewMeetingVM entity)
+        {
+            var loc = _unitOfWork.LocationRepository.GetLocationByName(entity.Address.Trim()).Result;
+
+            if (loc == null)
+            {
+                _unitOfWork.LocationRepository.Update(loc = new Location
+                {
+                    LocationName = entity.Address.Trim(),
+                    Description = ""
+                });
+                _unitOfWork.Save();
+                loc = _unitOfWork.LocationRepository.GetLocationByName(entity.Address.Trim()).Result;
+            }
+
+            var meeting = _mapper.Map<Meeting>(entity);
+            meeting.LocationId = loc.LocationId;
+            _unitOfWork.MeetingRepository.Create(meeting);
+            _unitOfWork.Save();
+        }
 
         public void Update(MeetingViewModel entity)
         {
@@ -247,6 +268,52 @@ namespace BAL.Services.Implements
         public async Task<int> CountMeetingByStatus(string status)
         {
             return await _unitOfWork.MeetingRepository.CountMeetingByStatus(status);
+        }
+
+        public void Update(UpdateMeetingDetailsVM entity)
+        {
+            var loc = _unitOfWork.LocationRepository.GetLocationByMeetingId(entity.MeetingId.Value).Result;
+
+            if (!loc.LocationName.Equals(entity.Address.Trim()))
+            {
+                _unitOfWork.LocationRepository.Update(loc = new Location
+                {
+                    LocationName = entity.Address,
+                    Description = "Dunno"
+                });
+                _unitOfWork.Save();
+                loc = _unitOfWork.LocationRepository.GetLocationByName(entity.Address.Trim()).Result;
+            }
+            var media = _unitOfWork.MeetingMediaRepository.GetAllMeetingMediasByMeetingId(entity.MeetingId.Value).Result;
+
+            if (media == null)
+            {
+                _unitOfWork.MeetingMediaRepository.Update(new MeetingMedia
+                {
+                    MeetingId = entity.MeetingId.Value,
+                });
+                _unitOfWork.Save();
+                media = _unitOfWork.MeetingMediaRepository.GetAllMeetingMediasByMeetingId(entity.MeetingId.Value).Result;
+            }
+
+            var meeting = _mapper.Map<Meeting>(entity);
+            meeting.LocationId = loc.LocationId;
+            meeting.MeetingPictures = (ICollection<MeetingMedia>)media;
+            _unitOfWork.MeetingRepository.Update(meeting);
+            _unitOfWork.Save();
+        }
+
+        public async Task<bool> UpdateStatus(UpdateMeetingStatusVM entity)
+        {
+            var meeting = await _unitOfWork.MeetingRepository.GetMeetingById(entity.MeetingId.Value);
+            if(entity.Status.Equals("ClosedRegistration") && meeting.NumberOfParticipants < 10)
+            {
+                return false;
+            }
+            meeting.Status = entity.Status;
+            _unitOfWork.MeetingRepository.Update(meeting);
+            _unitOfWork.Save();
+            return true;
         }
     }
 }
