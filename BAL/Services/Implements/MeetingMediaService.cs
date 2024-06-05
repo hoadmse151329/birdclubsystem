@@ -27,7 +27,10 @@ namespace BAL.Services.Implements
             if (meet == null) return false;
             var pic = _mapper.Map<MeetingMedia>(media);
             pic.MeetingId = meetingId;
-            pic.Image = "https://edwinbirdclubstorage.blob.core.windows.net/images/meeting/meeting_image_1.png";
+            if(media.Image == null)
+            {
+                pic.Image = "https://edwinbirdclubstorage.blob.core.windows.net/images/meeting/meeting_image_1.png";
+            }
             _unitOfWork.MeetingMediaRepository.Create(pic);
             _unitOfWork.Save();
             return true;

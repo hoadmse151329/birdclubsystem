@@ -137,7 +137,16 @@
                 {
                     <div class="club-item">
                         <a href="#" class="club-image">
-                            <img class="img-fluid" src="~/images/meeting.png" alt="nt1">
+                            @{
+                                if (data.SpotlightImage != null)
+                                {
+                                    <img class="img-fluid" src="@data.SpotlightImage.Image" alt="nt1">
+                                }
+                                else
+                                {
+                                    <img class="img-fluid" src="~/images/meeting.png" alt="nt1">
+                                }
+                            }
                         </a>
                         <div class="club-title">
                             <div class="d-flex justify-content-between">
@@ -167,7 +176,16 @@
                 {
                     <div class="club-item">
                         <a href="#" class="club-image">
-                            <img class="img-fluid" src="~/images/meeting.png" alt="nt1">
+                            @{
+                                if (data.SpotlightImage != null)
+                                {
+                                    <img class="img-fluid" src="@data.SpotlightImage.Image" alt="nt1">
+                                }
+                                else
+                                {
+                                    <img class="img-fluid" src="~/images/fieldtrip.png" alt="nt1">
+                                }
+                            }
                         </a>
                         <div class="club-title">
                             <div class="d-flex justify-content-between">
@@ -197,7 +215,16 @@
                 {
                     <div class="club-item">
                         <a href="#" class="club-image">
-                            <img class="img-fluid" src="~/images/meeting.png" alt="nt1">
+                            @{
+                                if (data.SpotlightImage != null)
+                                {
+                                    <img class="img-fluid" src="@data.SpotlightImage.Image" alt="nt1">
+                                }
+                                else
+                                {
+                                    <img class="img-fluid" src="~/images/contest.png" alt="nt1">
+                                }
+                            }
                         </a>
                         <div class="club-title">
                             <div class="d-flex justify-content-between">

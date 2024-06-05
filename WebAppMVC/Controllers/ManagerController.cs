@@ -435,17 +435,17 @@ namespace WebAppMVC.Controllers
 
             if (photo != null && photo.Length > 0)
             {
-                string connectionString = _config.GetSection("AzureStorage:BlobConnectionString").Value;
-                string defaultUrl = _config.GetSection("MyBirdClubAzureStorageString:blob").Value;
-                string containerName = _config.GetSection("AzureStorage:BlobContainerName").Value;
-                string meetingContainerName = _config.GetValue<string>("AzureStorage:BlobNewsContainerName");
+                string connectionString = _config.GetSection(Constants.Constants.SYSTEM_DEFAULT_AZURE_CONNECTION_STRING).Value;
+                string defaultUrl = _config.GetSection(Constants.Constants.SYSTEM_DEFAULT_AZURE_DEFAULT_BLOB_FOLDER_URL).Value;
+                string containerName = _config.GetSection(Constants.Constants.SYSTEM_DEFAULT_AZURE_DEFAULT_BLOB_FOLDER_NAME).Value;
+                string meetingContainerName = _config.GetValue<string>(Constants.Constants.SYSTEM_DEFAULT_AZURE_BLOB_MEETING_FOLDER_URL);
 
                 BlobServiceClient _blobServiceClient = new BlobServiceClient(connectionString);
                 BlobContainerClient _blobContainerClient = _blobServiceClient.GetBlobContainerClient(containerName);
 
                 var azureResponse = new List<BlobContentInfo>();
                 string filename = photo.FileName;
-                string uniqueBlobName = $"{Guid.NewGuid()}-{filename}";
+                string uniqueBlobName = meetingContainerName + $"{Guid.NewGuid()}-{filename}";
                 using (var memoryStream = new MemoryStream())
                 {
                     photo.CopyTo(memoryStream);
@@ -455,7 +455,7 @@ namespace WebAppMVC.Controllers
                     azureResponse.Add(client);
                 }
 
-                var image = defaultUrl + containerName + meetingContainerName + uniqueBlobName;
+                var image = defaultUrl + uniqueBlobName;
 
                 createMedia.Image = image;
             }
