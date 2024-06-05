@@ -14,6 +14,8 @@ namespace BAL.ViewModels
         public MeetingMediaViewModel()
         {
             Image = "https://edwinbirdclubstorage.blob.core.windows.net/images/meeting/meeting_image_1.png";
+            Description = "Image Description";
+            Type = "Additional";
         }
         public int? PictureId { get; set; }
         public int? MeetingId { get; set; }

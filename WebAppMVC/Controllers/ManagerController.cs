@@ -248,6 +248,9 @@ namespace WebAppMVC.Controllers
             var updateMeeting = methcall.GetValidationTempData<UpdateMeetingDetailsVM>(this, TempData, Constants.Constants.UPDATE_MEETING_VALID, "updateMeeting", jsonOptions);
             var updateMeetingStatus = methcall.GetValidationTempData<UpdateMeetingStatusVM>(this, TempData, Constants.Constants.UPDATE_MEETING_STATUS_VALID, "updateMeetingStatus", jsonOptions);
             var createMeetingMedia = methcall.GetValidationTempData<MeetingMediaViewModel>(this, TempData, Constants.Constants.CREATE_MEETING_MEDIA_VALID, "createMedia", jsonOptions);
+            var updateMeetingMediaSpotlight = methcall.GetValidationTempData<MeetingMediaViewModel>(this, TempData, Constants.Constants.UPDATE_MEETING_MEDIA_VALID, "updateMediaSpotlight", jsonOptions);
+            var updateMeetingMediaLocationMap = methcall.GetValidationTempData<MeetingMediaViewModel>(this, TempData, Constants.Constants.UPDATE_MEETING_MEDIA_VALID, "updateMediaLocationMap", jsonOptions);
+            var updateMeetingMediaAdditional = methcall.GetValidationTempData<MeetingMediaViewModel>(this, TempData, Constants.Constants.UPDATE_MEETING_MEDIA_VALID, "updateMediaAdditional", jsonOptions);
 
             managerMeetingDetailsVM.UpdateMeeting = updateMeeting != null ? updateMeeting : _mapper.Map<UpdateMeetingDetailsVM>(managerMeetingDetailsVM.MeetingDetails);
             managerMeetingDetailsVM.UpdateMeetingStatus = updateMeetingStatus != null ? updateMeetingStatus : new()
@@ -257,8 +260,19 @@ namespace WebAppMVC.Controllers
                 Status = managerMeetingDetailsVM.MeetingDetails.Status,
                 MeetingStatusSelectableList = methcall.GetManagerEventStatusSelectableList(managerMeetingDetailsVM.MeetingDetails.Status)
             };
-            managerMeetingDetailsVM.CreateMeetingMedia = createMeetingMedia != null ? createMeetingMedia : new();
 
+            managerMeetingDetailsVM.CreateMeetingMedia = createMeetingMedia != null ? createMeetingMedia : new();
+            managerMeetingDetailsVM.UpdateMeetingMediaSpotlight = updateMeetingMediaSpotlight != null ? updateMeetingMediaSpotlight : managerMeetingDetailsVM.MeetingDetails.SpotlightImage;
+            managerMeetingDetailsVM.UpdateMeetingMediaLocationMap = updateMeetingMediaLocationMap != null ? updateMeetingMediaSpotlight : managerMeetingDetailsVM.MeetingDetails.LocationMapImage;
+
+            if(updateMeetingMediaAdditional != null)
+            {
+                var updateMMA = managerMeetingDetailsVM.MeetingDetails.MeetingPictures.FirstOrDefault(mm => mm.PictureId.Value.Equals(updateMeetingMediaAdditional.PictureId));
+                updateMMA = updateMeetingMediaAdditional != null ? updateMeetingMediaAdditional : updateMMA;
+            }
+
+            managerMeetingDetailsVM.UpdateMeetingMediaAdditional = managerMeetingDetailsVM.MeetingDetails.MeetingPictures;
+            
             managerMeetingDetailsVM.UpdateMeeting.MeetingStatusSelectableList = methcall.GetManagerEventStatusSelectableList(meetPostResponse.Data.Status);
             managerMeetingDetailsVM.UpdateMeeting.MeetingStaffNames = methcall.GetStaffNameSelectableList(managerMeetingDetailsVM.UpdateMeeting.Incharge, listStaffNameResponse.Data);
 
@@ -484,8 +498,246 @@ namespace WebAppMVC.Controllers
                     + meetMediaResponse.ErrorMessage;
                 return RedirectToAction("ManagerMeetingDetail", new { id = meetingId });
             }
-            TempData["Success"] = meetMediaResponse.SuccessMessage;
+            TempData[Constants.Constants.ALERT_DEFAULT_SUCCESS_NAME] = meetMediaResponse.SuccessMessage;
             return RedirectToAction("ManagerMeetingDetail", new {id = meetingId});
+        }
+
+        [HttpPost("Meeting/{meetingId:int}/Media/Spotlight/{meetingMediaId:int}/Update")]
+        public async Task<IActionResult> ManagerUpdateMeetingMediaSpotlight(
+            [Required][FromRoute] int meetingId,
+            [Required][FromRoute] int meetingMediaId, 
+            [FromForm] MeetingMediaViewModel? updateMediaSpotlight)
+        {
+            ManagerAPI_URL += "Meeting/" + meetingId + "/Media/" + meetingMediaId + "/Update";
+            if (!ModelState.IsValid)
+            {
+                updateMediaSpotlight.ImageUpload = null;
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_MEETING_MEDIA_VALID, updateMediaSpotlight, jsonOptions);
+                return RedirectToAction("ManagerMeetingDetail", new { id = meetingId });
+            }
+
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
+
+            IFormFile photo = updateMediaSpotlight.ImageUpload;
+
+            if (photo != null && photo.Length > 0)
+            {
+                string connectionString = _config.GetSection(Constants.Constants.SYSTEM_DEFAULT_AZURE_CONNECTION_STRING).Value;
+                string defaultUrl = _config.GetSection(Constants.Constants.SYSTEM_DEFAULT_AZURE_DEFAULT_BLOB_FOLDER_URL).Value;
+                string containerName = _config.GetSection(Constants.Constants.SYSTEM_DEFAULT_AZURE_DEFAULT_BLOB_FOLDER_NAME).Value;
+                string meetingContainerName = _config.GetValue<string>(Constants.Constants.SYSTEM_DEFAULT_AZURE_BLOB_MEETING_FOLDER_URL);
+
+                BlobServiceClient _blobServiceClient = new BlobServiceClient(connectionString);
+                BlobContainerClient _blobContainerClient = _blobServiceClient.GetBlobContainerClient(containerName);
+
+                var azureResponse = new List<BlobContentInfo>();
+                string filename = photo.FileName;
+                string uniqueBlobName = meetingContainerName + $"{Guid.NewGuid()}-{filename}";
+                using (var memoryStream = new MemoryStream())
+                {
+                    photo.CopyTo(memoryStream);
+                    memoryStream.Position = 0;
+
+                    var client = await _blobContainerClient.UploadBlobAsync(uniqueBlobName, memoryStream);
+                    if (updateMediaSpotlight.Image.Contains(defaultUrl + meetingContainerName))
+                    {
+                        string photoName = meetingContainerName + updateMediaSpotlight.Image.Substring((defaultUrl + meetingContainerName).Length);
+                        await _blobContainerClient.DeleteBlobAsync(photoName);
+                    }
+                    azureResponse.Add(client);
+                }
+
+                var image = defaultUrl + uniqueBlobName;
+
+                updateMediaSpotlight.Image = image;
+            }
+
+            updateMediaSpotlight.ImageUpload = null;
+
+            var meetMediaResponse = await methcall.CallMethodReturnObject<GetMeetingMediaResponse>(
+                    _httpClient: _httpClient,
+                    options: jsonOptions,
+                    methodName: Constants.Constants.PUT_METHOD,
+                    url: ManagerAPI_URL,
+                    inputType: updateMediaSpotlight,
+                    accessToken: accToken,
+                    _logger: _logger);
+            if (meetMediaResponse == null)
+            {
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
+                    "Error while processing your request! (Create Meeting Media!).\n Meeting Not Found!";
+                return RedirectToAction("ManagerMeetingDetail", new { id = meetingId });
+            }
+            if (!meetMediaResponse.Status)
+            {
+                _logger.LogInformation("Error while processing your request: " + meetMediaResponse.Status + " , Error Message: " + meetMediaResponse.ErrorMessage);
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
+                    "Error while processing your request! (Create Meeting Media!).\n"
+                    + meetMediaResponse.ErrorMessage;
+                return RedirectToAction("ManagerMeetingDetail", new { id = meetingId });
+            }
+            TempData[Constants.Constants.ALERT_DEFAULT_SUCCESS_NAME] = meetMediaResponse.SuccessMessage;
+            return RedirectToAction("ManagerMeetingDetail", new { id = meetingId });
+        }
+        [HttpPost("Meeting/{meetingId:int}/Media/Additional/{meetingMediaId:int}/Update")]
+        public async Task<IActionResult> ManagerUpdateMeetingMediaAdditional(
+            [Required][FromRoute] int meetingId,
+            [Required][FromRoute] int meetingMediaId,
+            [FromForm] MeetingMediaViewModel? updateMediaAdditional)
+        {
+            ManagerAPI_URL += "Meeting/" + meetingId + "/Media/" + meetingMediaId + "/Update";
+            if (!ModelState.IsValid)
+            {
+                updateMediaAdditional.ImageUpload = null;
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_MEETING_MEDIA_VALID, updateMediaAdditional, jsonOptions);
+                return RedirectToAction("ManagerMeetingDetail", new { id = meetingId });
+            }
+
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
+
+            IFormFile photo = updateMediaAdditional.ImageUpload;
+
+            if (photo != null && photo.Length > 0)
+            {
+                string connectionString = _config.GetSection(Constants.Constants.SYSTEM_DEFAULT_AZURE_CONNECTION_STRING).Value;
+                string defaultUrl = _config.GetSection(Constants.Constants.SYSTEM_DEFAULT_AZURE_DEFAULT_BLOB_FOLDER_URL).Value;
+                string containerName = _config.GetSection(Constants.Constants.SYSTEM_DEFAULT_AZURE_DEFAULT_BLOB_FOLDER_NAME).Value;
+                string meetingContainerName = _config.GetValue<string>(Constants.Constants.SYSTEM_DEFAULT_AZURE_BLOB_MEETING_FOLDER_URL);
+
+                BlobServiceClient _blobServiceClient = new BlobServiceClient(connectionString);
+                BlobContainerClient _blobContainerClient = _blobServiceClient.GetBlobContainerClient(containerName);
+
+                var azureResponse = new List<BlobContentInfo>();
+                string filename = photo.FileName;
+                string uniqueBlobName = meetingContainerName + $"{Guid.NewGuid()}-{filename}";
+                using (var memoryStream = new MemoryStream())
+                {
+                    photo.CopyTo(memoryStream);
+                    memoryStream.Position = 0;
+
+                    var client = await _blobContainerClient.UploadBlobAsync(uniqueBlobName, memoryStream);
+                    if (updateMediaAdditional.Image.Contains(defaultUrl + meetingContainerName))
+                    {
+                        string photoName = meetingContainerName + updateMediaAdditional.Image.Substring((defaultUrl + meetingContainerName).Length);
+                        await _blobContainerClient.DeleteBlobAsync(photoName);
+                    }
+                    azureResponse.Add(client);
+                }
+
+                var image = defaultUrl + uniqueBlobName;
+
+                updateMediaAdditional.Image = image;
+            }
+
+            updateMediaAdditional.ImageUpload = null;
+
+            var meetMediaResponse = await methcall.CallMethodReturnObject<GetMeetingMediaResponse>(
+                    _httpClient: _httpClient,
+                    options: jsonOptions,
+                    methodName: Constants.Constants.PUT_METHOD,
+                    url: ManagerAPI_URL,
+                    inputType: updateMediaAdditional,
+                    accessToken: accToken,
+                    _logger: _logger);
+            if (meetMediaResponse == null)
+            {
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
+                    "Error while processing your request! (Create Meeting Media!).\n Meeting Not Found!";
+                return RedirectToAction("ManagerMeetingDetail", new { id = meetingId });
+            }
+            if (!meetMediaResponse.Status)
+            {
+                _logger.LogInformation("Error while processing your request: " + meetMediaResponse.Status + " , Error Message: " + meetMediaResponse.ErrorMessage);
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
+                    "Error while processing your request! (Create Meeting Media!).\n"
+                    + meetMediaResponse.ErrorMessage;
+                return RedirectToAction("ManagerMeetingDetail", new { id = meetingId });
+            }
+            TempData[Constants.Constants.ALERT_DEFAULT_SUCCESS_NAME] = meetMediaResponse.SuccessMessage;
+            return RedirectToAction("ManagerMeetingDetail", new { id = meetingId });
+        }
+        [HttpPost("Meeting/{meetingId:int}/Media/LocationMap/{meetingMediaId:int}/Update")]
+        public async Task<IActionResult> ManagerUpdateMeetingMediaLocation(
+            [Required][FromRoute] int meetingId,
+            [Required][FromRoute] int meetingMediaId,
+            [FromForm] MeetingMediaViewModel? updateMediaLocationMap)
+        {
+            ManagerAPI_URL += "Meeting/" + meetingId + "/Media/" + meetingMediaId + "/Update";
+            if (!ModelState.IsValid)
+            {
+                updateMediaLocationMap.ImageUpload = null;
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_MEETING_MEDIA_VALID, updateMediaLocationMap, jsonOptions);
+                return RedirectToAction("ManagerMeetingDetail", new { id = meetingId });
+            }
+
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
+
+            IFormFile photo = updateMediaLocationMap.ImageUpload;
+
+            if (photo != null && photo.Length > 0)
+            {
+                string connectionString = _config.GetSection(Constants.Constants.SYSTEM_DEFAULT_AZURE_CONNECTION_STRING).Value;
+                string defaultUrl = _config.GetSection(Constants.Constants.SYSTEM_DEFAULT_AZURE_DEFAULT_BLOB_FOLDER_URL).Value;
+                string containerName = _config.GetSection(Constants.Constants.SYSTEM_DEFAULT_AZURE_DEFAULT_BLOB_FOLDER_NAME).Value;
+                string meetingContainerName = _config.GetValue<string>(Constants.Constants.SYSTEM_DEFAULT_AZURE_BLOB_MEETING_FOLDER_URL);
+
+                BlobServiceClient _blobServiceClient = new BlobServiceClient(connectionString);
+                BlobContainerClient _blobContainerClient = _blobServiceClient.GetBlobContainerClient(containerName);
+
+                var azureResponse = new List<BlobContentInfo>();
+                string filename = photo.FileName;
+                string uniqueBlobName = meetingContainerName + $"{Guid.NewGuid()}-{filename}";
+                using (var memoryStream = new MemoryStream())
+                {
+                    photo.CopyTo(memoryStream);
+                    memoryStream.Position = 0;
+
+                    var client = await _blobContainerClient.UploadBlobAsync(uniqueBlobName, memoryStream);
+                    if (updateMediaLocationMap.Image.Contains(defaultUrl + meetingContainerName))
+                    {
+                        string photoName = meetingContainerName + updateMediaLocationMap.Image.Substring((defaultUrl + meetingContainerName).Length);
+                        await _blobContainerClient.DeleteBlobAsync(photoName);
+                    }
+                    azureResponse.Add(client);
+                }
+
+                var image = defaultUrl + uniqueBlobName;
+
+                updateMediaLocationMap.Image = image;
+            }
+
+            updateMediaLocationMap.ImageUpload = null;
+
+            var meetMediaResponse = await methcall.CallMethodReturnObject<GetMeetingMediaResponse>(
+                    _httpClient: _httpClient,
+                    options: jsonOptions,
+                    methodName: Constants.Constants.PUT_METHOD,
+                    url: ManagerAPI_URL,
+                    inputType: updateMediaLocationMap,
+                    accessToken: accToken,
+                    _logger: _logger);
+            if (meetMediaResponse == null)
+            {
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
+                    "Error while processing your request! (Create Meeting Media!).\n Meeting Not Found!";
+                return RedirectToAction("ManagerMeetingDetail", new { id = meetingId });
+            }
+            if (!meetMediaResponse.Status)
+            {
+                _logger.LogInformation("Error while processing your request: " + meetMediaResponse.Status + " , Error Message: " + meetMediaResponse.ErrorMessage);
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
+                    "Error while processing your request! (Create Meeting Media!).\n"
+                    + meetMediaResponse.ErrorMessage;
+                return RedirectToAction("ManagerMeetingDetail", new { id = meetingId });
+            }
+            TempData[Constants.Constants.ALERT_DEFAULT_SUCCESS_NAME] = meetMediaResponse.SuccessMessage;
+            return RedirectToAction("ManagerMeetingDetail", new { id = meetingId });
         }
 
         [HttpPost("Meeting/{id:int}/Cancel")]
@@ -511,14 +763,14 @@ namespace WebAppMVC.Controllers
             if (meetPostResponse == null)
             {
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
-                    "Error while processing your request! (Create Meeting Media!).\n Meeting Not Found!";
+                    "Error while processing your request! (Cancel Meeting!).\n Meeting Not Found!";
                 return RedirectToAction("ManagerMeeting");
             }
             if (!meetPostResponse.Status)
             {
                 _logger.LogInformation("Error while processing your request: " + meetPostResponse.Status + " , Error Message: " + meetPostResponse.ErrorMessage);
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
-                    "Error while processing your request! (Create Meeting Media!).\n"
+                    "Error while processing your request! (Cancel Meeting!).\n"
                     + meetPostResponse.ErrorMessage;
                 return RedirectToAction("ManagerMeeting");
             }
