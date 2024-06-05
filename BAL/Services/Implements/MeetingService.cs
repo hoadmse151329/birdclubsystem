@@ -5,6 +5,7 @@ using BAL.ViewModels.Manager;
 using DAL.Infrastructure;
 using DAL.Models;
 using DAL.Repositories.Implements;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,11 +17,15 @@ namespace BAL.Services.Implements
     public class MeetingService : IMeetingService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IJWTService _jwtService;
         private readonly IMapper _mapper;
-        public MeetingService(IUnitOfWork unitOfWork, IMapper mapper)
+        private readonly IConfiguration _configuration;
+        public MeetingService(IUnitOfWork unitOfWork, IMapper mapper, IJWTService jwtService, IConfiguration configuration)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _jwtService = jwtService;
+            _configuration = configuration;
         }
         public async Task<IEnumerable<MeetingViewModel>> GetAllMeetings(string? role)
         {
@@ -83,6 +88,53 @@ namespace BAL.Services.Implements
                 meeting.Street = temp[1];
                 meeting.District = temp[2];
                 meeting.City = temp[3];
+                foreach (var picture in meeting.MeetingPictures.ToList())
+                {
+                    if (picture.Type == "Spotlight")
+                    {
+                        meeting.SpotlightImage = picture;
+                        meeting.MeetingPictures.Remove(picture);
+                    }
+                    else
+                    if (picture.Type == "LocationMap")
+                    {
+                        meeting.LocationMapImage = picture;
+                        meeting.MeetingPictures.Remove(picture);
+                    }
+                }
+                return meeting;
+            }
+            return null;
+        }
+        public async Task<MeetingViewModel?> GetByIdCheckIncharge(int id, string? accToken)
+        {
+            var meet = await _unitOfWork.MeetingRepository.GetMeetingById(id);
+            if (meet != null)
+            {
+                var media = await _unitOfWork.MeetingMediaRepository.GetAllMeetingMediasByMeetingId(meet.MeetingId);
+                string locationName = await _unitOfWork.LocationRepository.GetLocationNameById(meet.LocationId.Value);
+                if (locationName == null)
+                {
+                    return null;
+                }
+                int partAmount = await _unitOfWork.MeetingParticipantRepository.GetCountMeetingParticipantsByMeetId(meet.MeetingId);
+
+                var meeting = _mapper.Map<MeetingViewModel>(meet);
+                meeting.NumberOfParticipants = partAmount;
+                meeting.Address = locationName;
+
+                meeting.MeetingPictures = (media.Count() > 0) ? _mapper.Map<IEnumerable<MeetingMediaViewModel>>(media).ToList() : meeting.MeetingPictures;
+
+                string[] temp = locationName.Split(",");
+
+                meeting.AreaNumber = temp[0];
+                meeting.Street = temp[1];
+                meeting.District = temp[2];
+                meeting.City = temp[3];
+
+                var member = await _unitOfWork.MemberRepository.GetMemberNameById(_jwtService.ExtractToken(accToken, _configuration).UserId);
+                meeting.isIncharge = member.Equals(meeting.Incharge);
+
                 foreach (var picture in meeting.MeetingPictures.ToList())
                 {
                     if (picture.Type == "Spotlight")

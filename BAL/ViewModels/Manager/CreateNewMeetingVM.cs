@@ -20,6 +20,7 @@ namespace BAL.ViewModels.Manager
             StartDate = DateTime.Now.AddDays(21);
             EndDate = DateTime.Now.AddDays(22);
             Status = "OnHold";
+            NumberOfParticipants = 0;
             NumberOfParticipantsMinReq = 10;
             NumberOfParticipantsLimit = 200;
         }
@@ -49,6 +50,8 @@ namespace BAL.ViewModels.Manager
         [DateGreaterThan(comparisonProperty: "StartDate", comparisonRange: 1, comparisonType: "Day", ErrorMessage = "End Date must be greater than Start Date at least 1 day")]
         [DataType(DataType.DateTime)]
         public DateTime EndDate { get; set; }
+        [DisplayName("Number Of Participants")]
+        public int NumberOfParticipants { get; set; }
         [DisplayName("Minimum Participants")]
         public int NumberOfParticipantsMinReq { get; set; }
         [Required(ErrorMessage = "Maximum Participants is required")]

@@ -252,6 +252,8 @@ namespace WebAppMVC.Controllers
 			}
 			else if (responseAuth!.RoleName == Constants.Constants.STAFF)
 			{
+                /*HttpContext.Session.SetString(Constants.Constants.USR_FULL_NAME, responseAuth.FullName);
+                TempData[Constants.Constants.USR_FULL_NAME] = responseAuth.FullName;*/
                 _logger.LogInformation("Staff Login Successful: " + TempData[Constants.Constants.ROLE_NAME] + " , Id: " + TempData[Constants.Constants.USR_ID]);
                 TempData[Constants.Constants.ALERT_DEFAULT_SUCCESS_NAME] = authenResponse.SuccessMessage;
                 return base.Redirect(Constants.Constants.STAFF_URL);

@@ -228,7 +228,7 @@ namespace WebAppMVC.Controllers
                 accessToken: accToken,
                 _logger: _logger);
 
-            if (meetPostResponse == null)
+            if (meetPostResponse == null || meetPostResponse.Data == null || meetpartPostResponse == null || meetpartPostResponse.Data == null)
             {
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting Meeting!).\n Meeting Not Found!";
@@ -242,17 +242,25 @@ namespace WebAppMVC.Controllers
                     + meetPostResponse.ErrorMessage;
                 return RedirectToAction("ManagerMeeting");
             }
-            managerMeetingDetailsVM.UpdateMeeting = methcall.GetValidationTempData<UpdateMeetingDetailsVM>(this, TempData, Constants.Constants.UPDATE_MEETING_VALID, "updateMeeting", jsonOptions);
-            if(managerMeetingDetailsVM.UpdateMeeting == null)
-            {
-                managerMeetingDetailsVM.UpdateMeeting = _mapper.Map<UpdateMeetingDetailsVM>(managerMeetingDetailsVM.MeetingDetails);
-            }
-            managerMeetingDetailsVM.UpdateMeeting.MeetingStatusSelectableList = methcall.GetManagerEventStatusSelectableList(meetPostResponse.Data.Status);
-            managerMeetingDetailsVM.UpdateMeeting.MeetingStaffNames = methcall.GetStaffNameSelectableList(managerMeetingDetailsVM.UpdateMeeting.Incharge, listStaffNameResponse.Data);
-            managerMeetingDetailsVM.UpdateMeetingStatus = methcall.GetValidationTempData<UpdateMeetingStatusVM>(this, TempData, Constants.Constants.UPDATE_MEETING_STATUS_VALID, "updateMeetingStatus", jsonOptions);
-            managerMeetingDetailsVM.CreateMeetingMedia = methcall.GetValidationTempData<MeetingMediaViewModel>(this, TempData, Constants.Constants.CREATE_MEETING_MEDIA_VALID, "createMedia", jsonOptions);
             managerMeetingDetailsVM.MeetingDetails = meetPostResponse.Data;
             managerMeetingDetailsVM.MeetingParticipants = meetpartPostResponse.Data;
+
+            var updateMeeting = methcall.GetValidationTempData<UpdateMeetingDetailsVM>(this, TempData, Constants.Constants.UPDATE_MEETING_VALID, "updateMeeting", jsonOptions);
+            var updateMeetingStatus = methcall.GetValidationTempData<UpdateMeetingStatusVM>(this, TempData, Constants.Constants.UPDATE_MEETING_STATUS_VALID, "updateMeetingStatus", jsonOptions);
+            var createMeetingMedia = methcall.GetValidationTempData<MeetingMediaViewModel>(this, TempData, Constants.Constants.CREATE_MEETING_MEDIA_VALID, "createMedia", jsonOptions);
+
+            managerMeetingDetailsVM.UpdateMeeting = updateMeeting != null ? updateMeeting : _mapper.Map<UpdateMeetingDetailsVM>(managerMeetingDetailsVM.MeetingDetails);
+            managerMeetingDetailsVM.UpdateMeetingStatus = updateMeetingStatus != null ? updateMeetingStatus : new()
+            {
+                MeetingId = managerMeetingDetailsVM.MeetingDetails.MeetingId,
+                NumberOfParticipants = managerMeetingDetailsVM.MeetingDetails.NumberOfParticipants,
+                Status = managerMeetingDetailsVM.MeetingDetails.Status,
+                MeetingStatusSelectableList = methcall.GetManagerEventStatusSelectableList(managerMeetingDetailsVM.MeetingDetails.Status)
+            };
+            managerMeetingDetailsVM.CreateMeetingMedia = createMeetingMedia != null ? createMeetingMedia : new();
+
+            managerMeetingDetailsVM.UpdateMeeting.MeetingStatusSelectableList = methcall.GetManagerEventStatusSelectableList(meetPostResponse.Data.Status);
+            managerMeetingDetailsVM.UpdateMeeting.MeetingStaffNames = methcall.GetStaffNameSelectableList(managerMeetingDetailsVM.UpdateMeeting.Incharge, listStaffNameResponse.Data);
 
             return View(managerMeetingDetailsVM);
         }

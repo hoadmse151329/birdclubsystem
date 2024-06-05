@@ -11,6 +11,7 @@ namespace BAL.Services.Interfaces
     public interface IMeetingService
     {
         Task<MeetingViewModel?> GetById(int id);
+        Task<MeetingViewModel?> GetByIdCheckIncharge(int id, string? accToken);
         Task<IEnumerable<MeetingViewModel>> GetAllMeetings(string? role);
         Task<IEnumerable<MeetingViewModel>?> GetSortedMeetings(
             int? meetingId,

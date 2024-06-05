@@ -178,6 +178,42 @@ namespace WebAPI.Controllers
                 });
             }
         }
+        [HttpPost("{id}")]
+        [ProducesResponseType(typeof(MeetingViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetStaffMeetingById(
+            [FromRoute] int id,
+            [FromBody][Required] string? accToken)
+        {
+            try
+            {
+                var result = await _meetingService.GetByIdCheckIncharge(id,accToken);
+                if (result == null)
+                {
+                    return NotFound(new
+                    {
+                        status = false,
+                        errorMessage = "Meeting Not Found!"
+                    });
+                }
+
+                return Ok(new
+                {
+                    status = true,
+                    Data = result
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new
+                {
+                    Status = false,
+                    ErrorMessage = ex.Message,
+                    InnerExceptionMessage = ex.InnerException?.Message
+                });
+            }
+        }
 
         [HttpPost("Create")]
         [Authorize(Roles = "Manager")]

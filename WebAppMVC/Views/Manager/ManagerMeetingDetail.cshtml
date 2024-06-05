@@ -4,6 +4,7 @@
     ViewData["Title"] = "Manager Meeting Detail Page";
     BAL.ViewModels.MeetingViewModel detailsMeeting = Model.MeetingDetails;
     BAL.ViewModels.Manager.UpdateMeetingDetailsVM updateMeeting = Model.UpdateMeeting;
+    BAL.ViewModels.Manager.UpdateMeetingStatusVM updateMeetingStatus = Model.UpdateMeetingStatus;
 
     List<BAL.ViewModels.MeetingParticipantViewModel> parts = Model.MeetingParticipants;
 
@@ -707,7 +708,7 @@
                 </div>
             </div>
         }
-        else if (!(detailsMeeting.Status.Equals("Ended") || detailsMeeting.Status.Equals("Cancelled")))
+        else if (!(detailsMeeting.Status.Equals("Ended") || detailsMeeting.Status.Equals("Cancelled") || !detailsMeeting.isIncharge))
         {
             <div id="editprofile" class="modal fade" role="dialog">
                 <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
@@ -719,11 +720,12 @@
                             <div class="modal-body">
                                 <div class="row justify-content-center">
                                     <div class="col-12 col-md-6">
+                                    <input asp-for="@updateMeetingStatus.NumberOfParticipants" value="@updateMeetingStatus.NumberOfParticipants" required hidden/>
                                         <div class="form-group row">
-                                            <label asp-for="@updateMeeting.Status" class="col-sm-4 col-form-label"></label>
+                                            <label asp-for="@updateMeetingStatus.Status" class="col-sm-4 col-form-label"></label>
                                             <div class="col-sm-8">
-                                                <select class="form-control" asp-for="@updateMeeting.Status" asp-items="@updateMeeting.MeetingStatusSelectableList" class="custom-select" required></select>
-                                                <span asp-validation-for="@updateMeeting.Status" id="error_message"
+                                                <select class="form-control" asp-for="@updateMeetingStatus.Status" asp-items="@updateMeetingStatus.MeetingStatusSelectableList" class="custom-select" required></select>
+                                                <span asp-validation-for="@updateMeetingStatus.Status" id="error_message"
                                                       class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                             </div>
                                         </div>

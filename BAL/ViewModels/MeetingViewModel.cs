@@ -24,6 +24,7 @@ namespace BAL.ViewModels
             NumberOfParticipants = 0;
             NumberOfParticipantsMinReq = 10;
             NumberOfParticipantsLimit = 200;
+            isIncharge = false;
         }
         public int? MeetingId { get; set; }
         [Required(ErrorMessage = "Meeting Name is required")]
@@ -80,6 +81,7 @@ namespace BAL.ViewModels
         public string? Street { get; set; }
         public string? District { get; set; }
         public string? City { get; set; }
+        public bool isIncharge { get; set; }
         [Required(ErrorMessage = "Status is required")]
         [DisplayName("Status")]
         public string? Status { get; set; }

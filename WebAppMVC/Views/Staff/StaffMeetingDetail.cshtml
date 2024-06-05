@@ -163,7 +163,7 @@
                                 <div class="card-header">
                                     <h4>Meeting Information</h4>
                                     @{
-                                        if (!(detailsMeeting.Status.Equals("Ongoing") || detailsMeeting.Status.Equals("Cancelled") || detailsMeeting.Status.Equals("Ended")))
+                                        if (!(detailsMeeting.Status.Equals("Ongoing") || detailsMeeting.Status.Equals("Cancelled") || detailsMeeting.Status.Equals("Ended")) && detailsMeeting.isIncharge)
                                         {
                                             <div class="edit-info">
                                                 <i class='bx bxs-edit-alt' data-toggle="modal" data-target="#editprofile"></i>
@@ -307,14 +307,6 @@
                             <div class="card profile col-12 mb-4">
                                 <div class="card-header">
                                     <h4>Meeting Medias</h4>
-                                    @{
-                                        if (detailsMeeting.Status.Equals("OnHold") || detailsMeeting.Status.Equals("Postponed"))
-                                        {
-                                            <div class="edit-info">
-                                                <i class='bx bxs-plus-circle' data-toggle="modal" data-target="#createmedia"></i>
-                                            </div>
-                                        }
-                                    }
                                 </div>
                                 <div class="card-body">
                                     <div class="card-header">
@@ -575,7 +567,7 @@
         </div>
     </div>
     @{
-        if (!(detailsMeeting.Status.Equals("Ongoing") || detailsMeeting.Status.Equals("Cancelled") || detailsMeeting.Status.Equals("Ended")))
+        if (!(detailsMeeting.Status.Equals("Ongoing") || detailsMeeting.Status.Equals("Cancelled") || detailsMeeting.Status.Equals("Ended")) && detailsMeeting.isIncharge)
         {
             <!-- edit Meeting Status -->
             <div id="editprofile" class="modal fade" role="dialog">

@@ -188,6 +188,7 @@ namespace WebAppMVC.Constants
 
         public readonly static string ROLE_NAME = "ROLE_NAME";
         public readonly static string ACC_TOKEN = "ACCESS_TOKEN";
+        //public readonly static string USR_FULL_NAME = "USER_FULL_NAME";
         public readonly static string USR_ID = "USER_ID";
         public readonly static string USR_NAME = "USER_NAME";
         public readonly static string USR_IMAGE = "IMAGE_PATH";

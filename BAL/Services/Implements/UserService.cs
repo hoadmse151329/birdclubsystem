@@ -53,6 +53,19 @@ namespace BAL.Services.Implements
                 }
                 //var role = _unitOfWork.UserRepository
                 var accessToken = _jwtService.GenerateJWTToken(user.MemberId, user.UserName, user.Role, _configuration);
+                /*if(user.MemberDetails.Role == "Staff")
+                {
+                    return new AuthenResponse()
+                    {
+                        UserId = user.MemberId,
+                        RoleName = user.Role,
+                        UserName = user.UserName,
+                        AccessToken = accessToken,
+                        ImagePath = user.ImagePath,
+                        Status = user.MemberDetails.Status,
+                        FullName = user.MemberDetails.FullName
+                    };
+                }*/
                 return new AuthenResponse()
                 {
                     UserId = user.MemberId,

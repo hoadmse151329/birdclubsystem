@@ -166,31 +166,17 @@ namespace WebAppMVC.Controllers
             string StaffMeetingDetailAPI_URL = StaffAPI_URL + "Meeting/AllParticipants/" + id;
             StaffAPI_URL += "Meeting/" + id;
             StaffMeetingDetailsVM staffMeetingDetailsVM = new();
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.STAFF) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.STAFF));
 
-            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
-            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
-
-            string? role = HttpContext.Session.GetString("ROLE_NAME");
-            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Staff")) return View("Index");
-
-            string? usrId = HttpContext.Session.GetString("USER_ID");
-            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
-
-            string? usrname = HttpContext.Session.GetString("USER_NAME");
-            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
-
-            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
-
-            TempData["ROLE_NAME"] = role;
-            TempData["USER_NAME"] = usrname;
-            TempData["IMAGE_PATH"] = imagepath;
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
             var meetPostResponse = await methcall.CallMethodReturnObject<GetMeetingPostResponse>(
                                 _httpClient: _httpClient,
                                 options: jsonOptions,
-                                methodName: Constants.Constants.GET_METHOD,
+                                methodName: Constants.Constants.POST_METHOD,
                                 url: StaffAPI_URL,
+                                inputType: accToken,
                                 _logger: _logger);
             var meetpartPostResponse = await methcall.CallMethodReturnObject<GetListMeetingParticipation>(
                                 _httpClient: _httpClient,
@@ -214,6 +200,10 @@ namespace WebAppMVC.Controllers
                 return RedirectToAction("StaffMeeting");
             }
             staffMeetingDetailsVM.UpdateMeetingStatus = methcall.GetValidationTempData<UpdateMeetingStatusVM>(this, TempData, Constants.Constants.UPDATE_MEETING_STATUS_VALID, "updateMeetingStatus", jsonOptions);
+            if(staffMeetingDetailsVM.UpdateMeetingStatus == null)
+            {
+                staffMeetingDetailsVM.UpdateMeetingStatus = new();
+            }
             staffMeetingDetailsVM.UpdateMeetingStatus.MeetingStatusSelectableList = methcall.GetStaffEventStatusSelectableList(meetPostResponse.Data.Status);
             staffMeetingDetailsVM.ParticipantStatusSelectableList = methcall.GetStaffEventParticipationStatusSelectableList(meetPostResponse.Data.Status);
             staffMeetingDetailsVM.MeetingDetails = meetPostResponse.Data;
