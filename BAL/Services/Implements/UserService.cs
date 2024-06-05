@@ -118,7 +118,7 @@ namespace BAL.Services.Implements
             usr.MemberDetails.Role = "Member";
 			usr.MemberDetails.Email = entity.Email;
             usr.MemberDetails.RegisterDate = DateTime.Now;
-
+            usr.MemberDetails.ClubId = 1;
             if (newmem != null)
             {
                 usr.MemberDetails.FullName = newmem.FullName;
