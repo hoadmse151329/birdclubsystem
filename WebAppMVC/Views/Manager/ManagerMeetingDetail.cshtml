@@ -278,51 +278,54 @@
                                                     <span>@Spotlight.Type</span>
                                                 </div>
                                             </div>
-                                            <!-- update meeting spotlight media -->
-                                            <div id="editmedia_@Spotlight.PictureId" class="modal fade" role="dialog">
-                                                <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
-                                                    <div class="modal-content modal-addRoom">
-                                                        <div class="modal-header">
-                                                            <h4 class="modal-title">Update Meeting Spotlight Media</h4>
-                                                        </div>
-                                                        <form asp-action="ManagerUpdateMeetingMediaSpotlight" asp-controller="Manager" method="post" asp-route-meetingId="@detailsMeeting.MeetingId" asp-route-meetingMediaId="@Spotlight.PictureId" class="form-group" enctype="multipart/form-data">
-                                                            <div class="modal-content modal-addRoom">
-                                                                <div class="row justify-content-center">
-                                                                    <div class="col-12 col-md-6">
-                                                                    <input asp-for="@updateMediaSpotlight.PictureId" value="@updateMediaSpotlight.PictureId" required hidden/>
-                                                                        <div class="form-group row">
-                                                                            <label asp-for="@updateMediaSpotlight.Image" class="col-sm-4 col-form-label">Upload Meeting Spotlight Image</label>
-                                                                            <img class="profile-pic" style="width:300px; height:300px" src="@updateMediaSpotlight.Image" />
-                                                                            <input asp-for="@updateMediaSpotlight.ImageUpload" type="file" class="file-upload" accept=".jpg, .png, .jpeg">
-                                                                            <input asp-for="@updateMediaSpotlight.Image" type="text" value="@updateMediaSpotlight.Image" class="form-control" required hidden>
-                                                                        </div>
-                                                                        <div class="form-group row">
-                                                                            <label asp-for="@updateMediaSpotlight.Description" class="col-sm-4 col-form-label"></label>
-                                                                            <div class="col-sm-8">
-                                                                                <textarea asp-for="@updateMediaSpotlight.Description" type="text" placeholder="Enter Media Description..."
-                                                                                          value="@updateMediaSpotlight.Description" class="form-control" required></textarea>
-                                                                                <span asp-validation-for="@updateMediaSpotlight.Description" id="error_message"
-                                                                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                            if (detailsMeeting.Status.Equals("OnHold") || detailsMeeting.Status.Equals("Postponed"))
+                                            {
+                                                <!-- update meeting spotlight media -->
+                                                <div id="editmedia_@Spotlight.PictureId" class="modal fade" role="dialog">
+                                                    <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
+                                                        <div class="modal-content modal-addRoom">
+                                                            <div class="modal-header">
+                                                                <h4 class="modal-title">Update Meeting Spotlight Media</h4>
+                                                            </div>
+                                                            <form asp-action="ManagerUpdateMeetingMediaSpotlight" asp-controller="Manager" method="post" asp-route-meetingId="@detailsMeeting.MeetingId" asp-route-meetingMediaId="@Spotlight.PictureId" class="form-group" enctype="multipart/form-data">
+                                                                <div class="modal-content modal-addRoom">
+                                                                    <div class="row justify-content-center">
+                                                                        <div class="col-12 col-md-6">
+                                                                            <input asp-for="@updateMediaSpotlight.PictureId" value="@updateMediaSpotlight.PictureId" required hidden/>
+                                                                            <div class="form-group row">
+                                                                                <label asp-for="@updateMediaSpotlight.Image" class="col-sm-4 col-form-label">Upload Meeting Spotlight Image</label>
+                                                                                <img class="profile-pic" style="width:300px; height:300px" src="@updateMediaSpotlight.Image" />
+                                                                                <input asp-for="@updateMediaSpotlight.ImageUpload" type="file" class="file-upload" accept=".jpg, .png, .jpeg">
+                                                                                <input asp-for="@updateMediaSpotlight.Image" type="text" value="@updateMediaSpotlight.Image" class="form-control" required hidden>
                                                                             </div>
-                                                                        </div>
-                                                                        <div class="form-group row">
-                                                                            <label asp-for="@updateMediaSpotlight.Type" class="col-sm-4 col-form-label"></label>
-                                                                            <div class="col-sm-8">
-                                                                                <input asp-for="@updateMediaSpotlight.Type" type="text"
-                                                                                       value="Spotlight" class="form-control" readonly>
+                                                                            <div class="form-group row">
+                                                                                <label asp-for="@updateMediaSpotlight.Description" class="col-sm-4 col-form-label"></label>
+                                                                                <div class="col-sm-8">
+                                                                                    <textarea asp-for="@updateMediaSpotlight.Description" type="text" placeholder="Enter Media Description..."
+                                                                                    value="@updateMediaSpotlight.Description" class="form-control" required></textarea>
+                                                                                    <span asp-validation-for="@updateMediaSpotlight.Description" id="error_message"
+                                                                                    class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="form-group row">
+                                                                                <label asp-for="@updateMediaSpotlight.Type" class="col-sm-4 col-form-label"></label>
+                                                                                <div class="col-sm-8">
+                                                                                    <input asp-for="@updateMediaSpotlight.Type" type="text"
+                                                                                    value="Spotlight" class="form-control" readonly>
+                                                                                </div>
                                                                             </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                            </div>
-                                                            <div class="modal-footer justify-content-center">
-                                                                <button class="btn btn-success" type="submit" value="Update">Save</button>
-                                                                <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
-                                                            </div>
-                                                        </form>
+                                                                <div class="modal-footer justify-content-center">
+                                                                    <button class="btn btn-success" type="submit" value="Update">Save</button>
+                                                                    <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            }
                                         }
                                         else
                                         {
@@ -379,51 +382,54 @@
                                                     <span>@LocationMap.Type</span>
                                                 </div>
                                             </div>
-                                            <!-- update meeting location map media -->
-                                            <div id="editmedia_@LocationMap.PictureId" class="modal fade" role="dialog">
-                                                <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
-                                                    <div class="modal-content modal-addRoom">
-                                                        <div class="modal-header">
-                                                            <h4 class="modal-title">Update Meeting Spotlight Media</h4>
-                                                        </div>
-                                                        <form asp-action="ManagerUpdateMeetingMediaLocation" asp-controller="Manager" method="post" asp-route-meetingId="@detailsMeeting.MeetingId" asp-route-meetingMediaId="@LocationMap.PictureId" class="form-group" enctype="multipart/form-data">
-                                                            <div class="modal-content modal-addRoom">
-                                                                <div class="row justify-content-center">
-                                                                    <div class="col-12 col-md-6">
-                                                                        <input asp-for="@updateMediaLocationMap.PictureId" value="@updateMediaLocationMap.PictureId" required hidden />
-                                                                        <div class="form-group row">
-                                                                            <label asp-for="@updateMediaLocationMap.Image" class="col-sm-4 col-form-label">Upload Meeting Spotlight Image</label>
-                                                                            <img class="profile-pic" style="width:300px; height:300px" src="@updateMediaLocationMap.Image" />
-                                                                            <input asp-for="@updateMediaLocationMap.ImageUpload" type="file" class="file-upload" accept=".jpg, .png, .jpeg">
-                                                                            <input asp-for="@updateMediaLocationMap.Image" type="text" value="@updateMediaLocationMap.Image" class="form-control" required hidden>
-                                                                        </div>
-                                                                        <div class="form-group row">
-                                                                            <label asp-for="@updateMediaLocationMap.Description" class="col-sm-4 col-form-label"></label>
-                                                                            <div class="col-sm-8">
-                                                                                <textarea asp-for="@updateMediaLocationMap.Description" type="text" placeholder="Enter Media Description..."
-                                                                                          value="@updateMediaLocationMap.Description" class="form-control" required></textarea>
-                                                                                <span asp-validation-for="@updateMediaLocationMap.Description" id="error_message"
-                                                                                      class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                            if (detailsMeeting.Status.Equals("OnHold") || detailsMeeting.Status.Equals("Postponed"))
+                                            {
+                                                <!-- update meeting location map media -->
+                                                <div id="editmedia_@LocationMap.PictureId" class="modal fade" role="dialog">
+                                                    <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
+                                                        <div class="modal-content modal-addRoom">
+                                                            <div class="modal-header">
+                                                                <h4 class="modal-title">Update Meeting Spotlight Media</h4>
+                                                            </div>
+                                                            <form asp-action="ManagerUpdateMeetingMediaLocation" asp-controller="Manager" method="post" asp-route-meetingId="@detailsMeeting.MeetingId" asp-route-meetingMediaId="@LocationMap.PictureId" class="form-group" enctype="multipart/form-data">
+                                                                <div class="modal-content modal-addRoom">
+                                                                    <div class="row justify-content-center">
+                                                                        <div class="col-12 col-md-6">
+                                                                            <input asp-for="@updateMediaLocationMap.PictureId" value="@updateMediaLocationMap.PictureId" required hidden />
+                                                                            <div class="form-group row">
+                                                                                <label asp-for="@updateMediaLocationMap.Image" class="col-sm-4 col-form-label">Upload Meeting Spotlight Image</label>
+                                                                                <img class="profile-pic" style="width:300px; height:300px" src="@updateMediaLocationMap.Image" />
+                                                                                <input asp-for="@updateMediaLocationMap.ImageUpload" type="file" class="file-upload" accept=".jpg, .png, .jpeg">
+                                                                                <input asp-for="@updateMediaLocationMap.Image" type="text" value="@updateMediaLocationMap.Image" class="form-control" required hidden>
                                                                             </div>
-                                                                        </div>
-                                                                        <div class="form-group row">
-                                                                            <label asp-for="@updateMediaLocationMap.Type" class="col-sm-4 col-form-label"></label>
-                                                                            <div class="col-sm-8">
-                                                                                <input asp-for="@updateMediaLocationMap.Type" type="text"
-                                                                                       value="LocationMap" class="form-control" readonly>
+                                                                            <div class="form-group row">
+                                                                                <label asp-for="@updateMediaLocationMap.Description" class="col-sm-4 col-form-label"></label>
+                                                                                <div class="col-sm-8">
+                                                                                    <textarea asp-for="@updateMediaLocationMap.Description" type="text" placeholder="Enter Media Description..."
+                                                                                    value="@updateMediaLocationMap.Description" class="form-control" required></textarea>
+                                                                                    <span asp-validation-for="@updateMediaLocationMap.Description" id="error_message"
+                                                                                    class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="form-group row">
+                                                                                <label asp-for="@updateMediaLocationMap.Type" class="col-sm-4 col-form-label"></label>
+                                                                                <div class="col-sm-8">
+                                                                                    <input asp-for="@updateMediaLocationMap.Type" type="text"
+                                                                                    value="LocationMap" class="form-control" readonly>
+                                                                                </div>
                                                                             </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                            </div>
-                                                            <div class="modal-footer justify-content-center">
-                                                                <button class="btn btn-success" type="submit" value="Update">Save</button>
-                                                                <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
-                                                            </div>
-                                                        </form>
+                                                                <div class="modal-footer justify-content-center">
+                                                                    <button class="btn btn-success" type="submit" value="Update">Save</button>
+                                                                    <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            }
                                         }
                                         else
                                         {
