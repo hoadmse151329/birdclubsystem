@@ -50,7 +50,9 @@ namespace BAL.ViewModels.Member
         public string? ConfirmPassword { get; set; }
         [PasswordPropertyText]
 		[DataType(DataType.Password)]
-		[Required(AllowEmptyStrings = false, ErrorMessage = "Password is required")]
+        [StringLength(maximumLength: int.MaxValue, ErrorMessage = "Password must have more than or equal 8 characters", MinimumLength = 8)]
+        [RegularExpression(@"^[a-zA-Z0-9_]+$", ErrorMessage = "Password is invalid")]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Password is required")]
 		public string? Password { get; set; }
 		[DataType(DataType.Currency)]
 		[Range(1, int.MaxValue, ErrorMessage = "Payment Amount must be more than 0")]

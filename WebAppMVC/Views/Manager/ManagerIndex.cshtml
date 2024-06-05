@@ -2,7 +2,7 @@
 @{
     Layout = null;
     ViewData["Title"] = "Manager Index Page";
-    //List<BAL.ViewModels.Manager.GetFeedbackResponse> feedbackList = Model.Feedbacks;
+    List<BAL.ViewModels.Manager.GetFeedbackResponse> getFeedbackResponses = Model.Feedbacks;
     Layout = "~/Views/Shared/_MLayout.cshtml";
 }
 <html lang="en">
@@ -65,81 +65,33 @@
             </div>
         </div>
 
-        <div class="details">
-            <div class="cardFB">
-                <div class="card border-0 d-flex">
-                    <div class="card-header">
-                        <h4>Feedback</h4>
-                    </div>
-                    <div class="card-body">
-                        <table class="table table-hover table-borderless">
-                            <thead>
+        <!-- Rating -->
+        <div class="cardFB">
+            <div class="card border-0 d-flex">
+                <div class="card-header">
+                    <h4>Feedback</h4>
+                </div>
+                <div class="card-body">
+                    <table class="table table-hover table-borderless">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Name</th>
+                                <th>Rating</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach(var fb in getFeedbackResponses)
+                            {
                                 <tr>
-                                    <th></th>
-                                    <th>Name</th>
-                                    <th>Rating</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><div class="imgBx"><img src="@Url.Content("~/images/avatar.jpg")" alt=""></div></td>
-                                    <td>Ho Tran Khanh Duy</td>
+                                    <td><div class="imgBx"><img src="@fb.AvatarImage" alt=""></div></td>
+                                    <td>@fb.Fullname</td>
                                     <td>
-                                        <i class='bx bxs-star yellow'></i>
-                                        <i class='bx bxs-star yellow'></i>
-                                        <i class='bx bxs-star yellow'></i>
-                                        <i class='bx bxs-star yellow'></i>
-                                        <i class='bx bxs-star-half yellow'></i>
+                                        @foreach(var rate in fb.RatingDisplay)
+                                        {
+                                            @Html.Raw(rate);
+                                        }
                                     </td>
-                                </tr>
-                                <tr>
-                                    <td><div class="imgBx"><img src="@Url.Content("~/images/avatar.jpg")" alt=""></div></td>
-                                    <td>Ho Tran Khanh Duy</td>
-                                    <td>
-                                        <i class='bx bxs-star yellow'></i>
-                                        <i class='bx bxs-star yellow'></i>
-                                        <i class='bx bxs-star yellow'></i>
-                                        <i class='bx bxs-star-half yellow'></i>
-                                        <i class='bx bxs-star'></i>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><div class="imgBx"><img src="@Url.Content("~/images/avatar.jpg")" alt=""></div></td>
-                                    <td>Ho Tran Khanh Duy</td>
-                                    <td>
-                                        <i class='bx bxs-star yellow'></i>
-                                        <i class='bx bxs-star yellow'></i>
-                                        <i class='bx bxs-star yellow'></i>
-                                        <i class='bx bxs-star yellow'></i>
-                                        <i class='bx bxs-star yellow'></i>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><div class="imgBx"><img src="@Url.Content("~/images/avatar.jpg")" alt=""></div></td>
-                                    <td>Ho Tran Khanh Duy</td>
-                                    <td>
-                                        <i class='bx bxs-star yellow'></i>
-                                        <i class='bx bxs-star yellow'></i>
-                                        <i class='bx bxs-star yellow'></i>
-                                        <i class='bx bxs-star yellow'></i>
-                                        <i class='bx bxs-star yellow'></i>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><div class="imgBx"><img src="@Url.Content("~/images/avatar.jpg")" alt=""></div></td>
-                                    <td>Ho Tran Khanh Duy</td>
-                                    <td>
-                                        <i class='bx bxs-star'></i>
-                                        <i class='bx bxs-star yellow'></i>
-                                        <i class='bx bxs-star yellow'></i>
-                                        <i class='bx bxs-star yellow'></i>
-                                        <i class='bx bxs-star yellow'></i>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Total</td>
-                                    <td></td>
-                                    <td>4/5<i class='bx bxs-star yellow'></i></td>
                                 </tr>
                                 @*@foreach (var feedback in feedbackList)
                                 {
@@ -165,6 +117,14 @@
                             </tbody>
                         </table>
                     </div>
+                            }
+                            <tr>
+                                <td>Total</td>
+                                <td></td>
+                                <td>4/5<i class='bx bxs-star yellow'></i></td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

@@ -21,7 +21,20 @@ namespace BAL.Services.Interfaces
             List<string>? roles = null,
             List<string>? statuses = null,
             string? orderBy = null,
-            bool isManager = false,
+            bool isManagerGetMemberList = true,
+            bool isManagerGetStaffList = false,
+            bool isAdmin = false
+            );
+        Task<IEnumerable<GetStaffName>?> GetSortedStaffNames(
+            string? memberId = null,
+            string? memberUserName = null,
+            string? memberFullName = null,
+            DateTime? expiryDateTime = null,
+            List<string>? roles = null,
+            List<string>? statuses = null,
+            string? orderBy = null,
+            bool isManagerGetMemberList = false,
+            bool isManagerGetStaffList = true,
             bool isAdmin = false
             );
         Task<IEnumerable<GetEmployeeStatus>?> GetSortedEmployees(
@@ -32,8 +45,13 @@ namespace BAL.Services.Interfaces
             List<string>? roles = null,
             List<string>? statuses = null,
             string? orderBy = null,
-            bool isManager = false,
-            bool isAdmin = false
+            bool isManagerGetMemberList = false,
+            bool isManagerGetStaffList = false,
+            bool isAdmin = true
+            );
+        Task<IEnumerable<GetEmployeeStatus>?> GetAvailableStaffList(
+            DateTime? startAvailableDate = null,
+            DateTime? endAvailableDate = null
             );
         Task<MemberViewModel?> GetById(string id);
 		Task<bool> GetBoolById(string id);

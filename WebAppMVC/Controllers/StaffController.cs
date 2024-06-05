@@ -26,13 +26,15 @@ using Azure.Storage.Blobs.Models;
 using DAL.Models;
 using Microsoft.AspNetCore.Http.Json;
 using WebAppMVC.Models.ViewModels;
+using WebAppMVC.Models.Manager;
+using BAL.ViewModels.Manager;
 
 namespace WebAppMVC.Controllers
 {
     [Route("Staff")]
     public class StaffController : Controller
     {
-        private readonly ILogger<MeetingController> _logger;
+        private readonly ILogger<StaffController> _logger;
         private readonly IConfiguration _config;
         private readonly HttpClient _httpClient = null;
         private string StaffAPI_URL = "";
@@ -43,7 +45,7 @@ namespace WebAppMVC.Controllers
         };
         private BirdClubLibrary methcall = new();
 
-        public StaffController(ILogger<MeetingController> logger, IConfiguration config)
+        public StaffController(ILogger<StaffController> logger, IConfiguration config)
         {
             _logger = logger;
             _config = config;
@@ -153,32 +155,18 @@ namespace WebAppMVC.Controllers
         {
             string StaffMeetingDetailAPI_URL = StaffAPI_URL + "Meeting/AllParticipants/" + id;
             StaffAPI_URL += "Meeting/" + id;
-            dynamic meetingDetailBigModel = new ExpandoObject();
+            StaffMeetingDetailsVM staffMeetingDetailsVM = new();
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.STAFF) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.STAFF));
 
-            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
-            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
-
-            string? role = HttpContext.Session.GetString("ROLE_NAME");
-            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Staff")) return View("Index");
-
-            string? usrId = HttpContext.Session.GetString("USER_ID");
-            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
-
-            string? usrname = HttpContext.Session.GetString("USER_NAME");
-            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
-
-            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
-
-            TempData["ROLE_NAME"] = role;
-            TempData["USER_NAME"] = usrname;
-            TempData["IMAGE_PATH"] = imagepath;
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
             var meetPostResponse = await methcall.CallMethodReturnObject<GetMeetingPostResponse>(
                                 _httpClient: _httpClient,
                                 options: jsonOptions,
-                                methodName: Constants.Constants.GET_METHOD,
+                                methodName: Constants.Constants.POST_METHOD,
                                 url: StaffAPI_URL,
+                                inputType: accToken,
                                 _logger: _logger);
             var meetpartPostResponse = await methcall.CallMethodReturnObject<GetListMeetingParticipation>(
                                 _httpClient: _httpClient,
@@ -201,24 +189,33 @@ namespace WebAppMVC.Controllers
                     + meetPostResponse.ErrorMessage;
                 return RedirectToAction("StaffMeeting");
             }
-            meetingDetailBigModel.UpdateMeeting = methcall.GetValidationTempData<MeetingViewModel>(this, TempData, Constants.Constants.UPDATE_MEETING_VALID, "updateMeeting", jsonOptions);
-            meetingDetailBigModel.SelectListStatus = methcall.GetStaffEventStatusSelectableList(meetPostResponse.Data.Status);
-            meetingDetailBigModel.SelectListParticipationStatus = methcall.GetStaffEventParticipationStatusSelectableList(meetPostResponse.Data.Status);
-            meetingDetailBigModel.MeetingDetails = meetPostResponse.Data;
-            meetingDetailBigModel.MeetingParticipants = meetpartPostResponse.Data;
-            return View(meetingDetailBigModel);
+            staffMeetingDetailsVM.UpdateMeetingStatus = methcall.GetValidationTempData<UpdateMeetingStatusVM>(this, TempData, Constants.Constants.UPDATE_MEETING_STATUS_VALID, "updateMeetingStatus", jsonOptions);
+            if(staffMeetingDetailsVM.UpdateMeetingStatus == null)
+            {
+                staffMeetingDetailsVM.UpdateMeetingStatus = new();
+            }
+            staffMeetingDetailsVM.UpdateMeetingStatus.MeetingStatusSelectableList = methcall.GetStaffEventStatusSelectableList(meetPostResponse.Data.Status);
+            staffMeetingDetailsVM.ParticipantStatusSelectableList = methcall.GetStaffEventParticipationStatusSelectableList(meetPostResponse.Data.Status);
+            staffMeetingDetailsVM.MeetingDetails = meetPostResponse.Data;
+            staffMeetingDetailsVM.MeetingParticipants = meetpartPostResponse.Data;
+            return View(staffMeetingDetailsVM);
         }
-        [HttpPost("Meeting/{id:int}/Update")]
+        [HttpPost("Meeting/{id:int}/Status/Update")]
         public async Task<IActionResult> StaffUpdateMeetingStatus(
             [FromRoute][Required] int id,
-            [Required] MeetingViewModel updateMeeting)
+            [FromForm][Required] UpdateMeetingStatusVM updateMeetingStatus)
         {
-            StaffAPI_URL += "Meeting/" + id + "/Update";
-            if (updateMeeting.Status.Equals(Constants.Constants.EVENT_STATUS_CLOSED_REGISTRATION) && (updateMeeting.NumberOfParticipantsLimit - updateMeeting.NumberOfParticipants) < 10)
+            StaffAPI_URL += "Meeting/" + id + "/Status/Update";
+            if (updateMeetingStatus.Status.Equals(Constants.Constants.EVENT_STATUS_CLOSED_REGISTRATION) && updateMeetingStatus.NumberOfParticipants < 10)
             {
                 ModelState.AddModelError("updateMeeting.Status", "Error while processing your request (Updating Meeting).\n Not enough people to closed registration");
-                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_CONTEST_VALID, updateMeeting, jsonOptions);
-                TempData["Error"] = "Not enough participants to close registration!";
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_MEETING_STATUS_VALID, updateMeetingStatus, jsonOptions);
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] = "Not enough participants to close registration!";
+                return RedirectToAction("StaffMeetingDetail", new { id });
+            }
+            if (!ModelState.IsValid)
+            {
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_MEETING_STATUS_VALID, updateMeetingStatus, jsonOptions);
                 return RedirectToAction("StaffMeetingDetail", new { id });
             }
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.STAFF) != null)
@@ -231,12 +228,12 @@ namespace WebAppMVC.Controllers
                                 options: jsonOptions,
                                 methodName: Constants.Constants.PUT_METHOD,
                                 url: StaffAPI_URL,
-                                inputType: updateMeeting,
+                                inputType: updateMeetingStatus,
                                 accessToken: accToken,
                                 _logger: _logger);
             if (meetPostResponse == null)
             {
-                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_MEETING_VALID, updateMeeting, jsonOptions);
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_MEETING_VALID, updateMeetingStatus, jsonOptions);
 
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Updating Meeting Status!).\n Meeting Not Found!";
@@ -244,7 +241,7 @@ namespace WebAppMVC.Controllers
             }
             if (!meetPostResponse.Status)
             {
-                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_MEETING_VALID, updateMeeting, jsonOptions);
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_MEETING_VALID, updateMeetingStatus, jsonOptions);
 
                 _logger.LogInformation("Error while processing your request: " + meetPostResponse.Status + " , Error Message: " + meetPostResponse.ErrorMessage);
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
@@ -255,7 +252,7 @@ namespace WebAppMVC.Controllers
             return RedirectToAction("StaffMeetingDetail", new { id });
         }
 
-        [HttpPost("Meeting/UpdateStatus/{id:int}")]
+        [HttpPost("Meeting/{id:int}/Participant/Status/Update")]
         public async Task<IActionResult> StaffUpdateMeetingPartStatus(
             int id,
             List<MeetingParticipantViewModel> meetPartView)
@@ -777,6 +774,7 @@ namespace WebAppMVC.Controllers
             if (staffInvalidPasswordUpdate != null)
             {
                 staffInvalids.staffPassword = staffInvalidPasswordUpdate;
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] = ""; 
             }
             staffDetails.Data.DefaultUserGenderSelectList = methcall.GetUserGenderSelectableList(staffDetails.Data.Gender);
             staffInvalids.staffDetail = staffDetails.Data;

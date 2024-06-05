@@ -16,6 +16,6 @@ namespace BAL.ViewModels.Event
         public int TotalBlogs { get; set; }
         public int TotalNews { get; set; }
         public int TotalIncome { get; set; }
-        public List<BAL.ViewModels.Manager.GetFeedbackResponse> Feedbacks { get => feedbacks; set => feedbacks = value; }
+        public List<GetFeedbackResponse> Feedbacks { get; set; }
     }
 }

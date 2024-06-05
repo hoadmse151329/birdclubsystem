@@ -1,0 +1,25 @@
+﻿using BAL.ViewModels.Manager;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace BAL.ViewModels.Event
+{
+    public class GetDashboardResponse
+    {
+        private List<GetFeedbackResponse> feedbacks;
+
+        public int TotalEvents { get; set; }
+        public int TotalFeedbacks { get; set; }
+        public int TotalBlogs { get; set; }
+        public int TotalNews { get; set; }
+        public int TotalIncome { get; set; }
+<<<<<<< HEAD:BAL/ViewModels/Event/GetDashboardResponse.cs
+        public List<BAL.ViewModels.Manager.GetFeedbackResponse> Feedbacks { get => feedbacks; set => feedbacks = value; }
+=======
+        public List<GetFeedbackResponse> Feedbacks { get; set; }
+>>>>>>> minh:BAL/ViewModels/Manager/GetManagerDashboard.cs
+    }
+}

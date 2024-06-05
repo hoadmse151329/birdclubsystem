@@ -36,6 +36,8 @@ namespace WebAppMVC.Constants
         public readonly static string ALERT_MANAGER_CREATE_NEWS_ERROR = "Create news failed!";
         public readonly static string ALERT_DEFAULT_ERROR_NAME = "Error";
         public readonly static string ALERT_DEFAULT_SUCCESS_NAME = "Success";
+        public readonly static string ALERT_DEFAULT_ERROR_CHECK = "ErrorCheck";
+        public readonly static string ALERT_DEFAULT_SUCCESS_CHECK = "SuccessCheck";
 
         public readonly static string MEMBER_STATUS_INACTIVE = "Inactive";
         public readonly static string MEMBER_STATUS_ACTIVE = "Active";
@@ -61,6 +63,7 @@ namespace WebAppMVC.Constants
         public readonly static string UPDATE_BIRD_VALID = "UBirdValid";
         public readonly static string CREATE_MEETING_VALID = "CMeetingValid";
         public readonly static string UPDATE_MEETING_VALID = "UMeetingValid";
+        public readonly static string UPDATE_MEETING_STATUS_VALID = "UMeetingStatusValid";
         public readonly static string CREATE_MEETING_MEDIA_VALID = "CMeetingMediaValid";
         public readonly static string UPDATE_MEETING_MEDIA_VALID = "UMeetingMediaValid";
         public readonly static string CREATE_FIELDTRIP_VALID = "CFieldTripValid";
@@ -169,6 +172,7 @@ namespace WebAppMVC.Constants
 
         public readonly static string ROLE_NAME = "ROLE_NAME";
         public readonly static string ACC_TOKEN = "ACCESS_TOKEN";
+        //public readonly static string USR_FULL_NAME = "USER_FULL_NAME";
         public readonly static string USR_ID = "USER_ID";
         public readonly static string USR_NAME = "USER_NAME";
         public readonly static string USR_IMAGE = "IMAGE_PATH";

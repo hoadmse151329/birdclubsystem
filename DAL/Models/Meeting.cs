@@ -51,7 +51,7 @@ namespace DAL.Models
         [Column("numberOfParticipantsMinReq")]
         public int? NumberOfParticipantsMinReq { get; set; }
 
-        [InverseProperty(nameof(MeetingMedia.MeetingDetail))]
+        [InverseProperty(nameof(MeetingMedia.MeetingDetails))]
         public virtual ICollection<MeetingMedia> MeetingPictures { get; set; }
         [InverseProperty(nameof(MeetingParticipant.MeetingDetail))]
         public virtual ICollection<MeetingParticipant> MeetingParticipants { get; set; }

@@ -53,6 +53,19 @@ namespace BAL.Services.Implements
                 }
                 //var role = _unitOfWork.UserRepository
                 var accessToken = _jwtService.GenerateJWTToken(user.MemberId, user.UserName, user.Role, _configuration);
+                /*if(user.MemberDetails.Role == "Staff")
+                {
+                    return new AuthenResponse()
+                    {
+                        UserId = user.MemberId,
+                        RoleName = user.Role,
+                        UserName = user.UserName,
+                        AccessToken = accessToken,
+                        ImagePath = user.ImagePath,
+                        Status = user.MemberDetails.Status,
+                        FullName = user.MemberDetails.FullName
+                    };
+                }*/
                 return new AuthenResponse()
                 {
                     UserId = user.MemberId,
@@ -99,11 +112,12 @@ namespace BAL.Services.Implements
 		public void Create(UserViewModel entity, CreateNewMember newmem = null)
         {
             var usr = _mapper.Map<User>(entity);
-			usr.MemberDetail = new Member();
-			usr.MemberDetail.MemberId = Guid.NewGuid().ToString();
-			usr.MemberDetail.Status = "Inactive";
-            usr.MemberDetail.Role = "Member";
-			usr.MemberDetail.Email = entity.Email;
+			usr.MemberDetails = new Member();
+            usr.MemberDetails.MemberId = _unitOfWork.MemberRepository.GenerateNewMemberId();
+			usr.MemberDetails.Status = "Inactive";
+            usr.MemberDetails.Role = "Member";
+			usr.MemberDetails.Email = entity.Email;
+            usr.MemberDetails.RegisterDate = DateTime.Now;
 
 			if (newmem != null)
             {
@@ -119,11 +133,13 @@ namespace BAL.Services.Implements
         public void Create(UserViewModel entity, CreateNewEmployee newmem = null)
         {
             var usr = _mapper.Map<User>(entity);
-            usr.MemberDetail = new Member();
-            usr.MemberDetail.MemberId = Guid.NewGuid().ToString();
-            usr.MemberDetail.Status = "Inactive";
-            usr.MemberDetail.Role = newmem.Role;
-            usr.MemberDetail.Email = entity.Email;
+            usr.MemberDetails = new Member();
+            usr.MemberDetails.MemberId = _unitOfWork.MemberRepository.GenerateNewMemberId();
+            usr.MemberDetails.Status = "Inactive";
+            usr.MemberDetails.Role = newmem.Role;
+            usr.MemberDetails.Email = entity.Email;
+            usr.MemberDetails.RegisterDate = DateTime.Now;
+            usr.MemberDetails.JoinDate = DateTime.Now;
             if (newmem != null)
             {
                 usr.MemberDetail.FullName = newmem.FullName;
@@ -145,10 +161,10 @@ namespace BAL.Services.Implements
             return false;
 		}
 
-		public bool GetByEmail(string email)
+		public async Task<bool> IsUserExistByEmail(string email)
         {
-            var user = _unitOfWork.UserRepository.GetByEmail(email);
-            if (user == null)
+            var user = await _unitOfWork.UserRepository.GetByEmail(email);
+            if (user != null)
             {
                 return true;
             }
@@ -257,6 +273,16 @@ namespace BAL.Services.Implements
                 UserName = request.Username,
                 AccessToken = accessToken
             };
+        }
+
+        public async Task<bool> IsUserExistByUsername(string username)
+        {
+            var user = await _unitOfWork.UserRepository.GetByUsername(username);
+            if (user != null)
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

@@ -19,7 +19,8 @@ namespace BAL.Services.Interfaces
         Task<UserViewModel?> GetById(int id);
         Task<UserViewModel?> GetByMemberId(string memId);
         Task<bool> GetBoolById(int id);
-        bool GetByEmail(string email);
+        Task<bool> IsUserExistByEmail(string email);
+        Task<bool> IsUserExistByUsername(string username);
         Task<bool> UpdateUserAvatar(string memId, string imagePath);
         Task<UserViewModel?> GetByLogin(string username, string password);
         /* void Create(UserViewModel entity);*/

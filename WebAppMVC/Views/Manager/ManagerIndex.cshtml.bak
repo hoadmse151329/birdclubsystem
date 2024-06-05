@@ -1,0 +1,277 @@
+@model BAL.ViewModels.Event.GetDashboardResponse;
+@{
+    Layout = null;
+    ViewData["Title"] = "Manager Index Page";
+<<<<<<< HEAD
+    //List<BAL.ViewModels.Manager.GetFeedbackResponse> feedbackList = Model.Feedbacks;
+=======
+    List<BAL.ViewModels.Manager.GetFeedbackResponse> getFeedbackResponses = Model.Feedbacks;
+>>>>>>> minh
+    Layout = "~/Views/Shared/_MLayout.cshtml";
+}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Bird Club System</title>
+    <link rel="stylesheet" href="~/Content/leaderboard.css">
+    <!-- Include any other stylesheets or scripts here -->
+</head>
+<body>
+    <div class="main-content">
+        <!-- num of data -->
+        <div class="cardBox">
+            <div class="card event">
+                <div class="inconBx">
+                    <i class='bx bx-home-heart'></i>
+                </div>
+                <div>
+                    <div class="number">@Model.TotalEvents</div>
+                    <div class="cardName">Total Events</div>
+                </div>
+            </div>
+            <div class="card feedback">
+                <div class="inconBx">
+                    <i class='bx bx-conversation'></i>
+                </div>
+                <div>
+                    <div class="number">@Model.TotalFeedbacks</div>
+                    <div class="cardName">Total Feedbacks</div>
+                </div>
+            </div>
+            <div class="card blog">
+                <div class="inconBx">
+                    <i class='bx bx-group'></i>
+                </div>
+                <div>
+                    <div class="number">@Model.TotalBlogs</div>
+                    <div class="cardName">Total Blogs</div>
+                </div>
+            </div>
+            <div class="card news">
+                <div class="inconBx">
+                    <i class='bx bx-pencil'></i>
+                </div>
+                <div>
+                    <div class="number">@Model.TotalNews</div>
+                    <div class="cardName">Total News</div>
+                </div>
+            </div>
+            <div class="card turnover">
+                <div class="inconBx">
+                    <i class='bx bx-money'></i>
+                </div>
+                <div>
+                    <div class="number"><span class="price-format" data-price="@Model.TotalIncome"></span></div>
+                    <div class="cardName">Total Income</div>
+                </div>
+            </div>
+        </div>
+
+<<<<<<< HEAD
+        <div class="details">
+            <div class="cardFB">
+                <div class="card border-0 d-flex">
+                    <div class="card-header">
+                        <h4>Feedback</h4>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-hover table-borderless">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Name</th>
+                                    <th>Rating</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><div class="imgBx"><img src="@Url.Content("~/images/avatar.jpg")" alt=""></div></td>
+                                    <td>Ho Tran Khanh Duy</td>
+=======
+        <!-- Rating -->
+        <div class="cardFB">
+            <div class="card border-0 d-flex">
+                <div class="card-header">
+                    <h4>Feedback</h4>
+                </div>
+                <div class="card-body">
+                    <table class="table table-hover table-borderless">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Name</th>
+                                <th>Rating</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach(var fb in getFeedbackResponses)
+                            {
+                                <tr>
+                                    <td><div class="imgBx"><img src="@fb.AvatarImage" alt=""></div></td>
+                                    <td>@fb.Fullname</td>
+>>>>>>> minh
+                                    <td>
+                                        @foreach(var rate in fb.RatingDisplay)
+                                        {
+                                            @Html.Raw(rate);
+                                        }
+                                    </td>
+                                </tr>
+<<<<<<< HEAD
+                                <tr>
+                                    <td><div class="imgBx"><img src="@Url.Content("~/images/avatar.jpg")" alt=""></div></td>
+                                    <td>Ho Tran Khanh Duy</td>
+                                    <td>
+                                        <i class='bx bxs-star yellow'></i>
+                                        <i class='bx bxs-star yellow'></i>
+                                        <i class='bx bxs-star yellow'></i>
+                                        <i class='bx bxs-star-half yellow'></i>
+                                        <i class='bx bxs-star'></i>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><div class="imgBx"><img src="@Url.Content("~/images/avatar.jpg")" alt=""></div></td>
+                                    <td>Ho Tran Khanh Duy</td>
+                                    <td>
+                                        <i class='bx bxs-star yellow'></i>
+                                        <i class='bx bxs-star yellow'></i>
+                                        <i class='bx bxs-star yellow'></i>
+                                        <i class='bx bxs-star yellow'></i>
+                                        <i class='bx bxs-star yellow'></i>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><div class="imgBx"><img src="@Url.Content("~/images/avatar.jpg")" alt=""></div></td>
+                                    <td>Ho Tran Khanh Duy</td>
+                                    <td>
+                                        <i class='bx bxs-star yellow'></i>
+                                        <i class='bx bxs-star yellow'></i>
+                                        <i class='bx bxs-star yellow'></i>
+                                        <i class='bx bxs-star yellow'></i>
+                                        <i class='bx bxs-star yellow'></i>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><div class="imgBx"><img src="@Url.Content("~/images/avatar.jpg")" alt=""></div></td>
+                                    <td>Ho Tran Khanh Duy</td>
+                                    <td>
+                                        <i class='bx bxs-star'></i>
+                                        <i class='bx bxs-star yellow'></i>
+                                        <i class='bx bxs-star yellow'></i>
+                                        <i class='bx bxs-star yellow'></i>
+                                        <i class='bx bxs-star yellow'></i>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Total</td>
+                                    <td></td>
+                                    <td>4/5<i class='bx bxs-star yellow'></i></td>
+                                </tr>
+                                @*@foreach (var feedback in feedbackList)
+                                {
+                                <tr>
+                                <td><div class="imgBx"><img src="@Url.Content("~/images/avatar.jpg")" alt=""></div></td>
+                                <td>@feedback.Fullname</td>
+                                <td><div class="star-rating" data-rating="@feedback.Rating"></div></td>
+                                </tr>
+                                <tr>
+                                <td>Total</td>
+                                <td></td>
+                                <td>4/5<i class='bx bxs-star yellow'></i></td>
+                                </tr>
+                                }
+                                <tr>
+                                <td>Total</td>
+                                <td></td>
+                                <td>
+                                <div class="star-rating" id="total-rating" data-rating="0"></div>
+                                <span id="total-average-rating"></span>
+                                </td>
+                                </tr*@
+                            </tbody>
+                        </table>
+                    </div>
+=======
+                            }
+                            <tr>
+                                <td>Total</td>
+                                <td></td>
+                                <td>4/5<i class='bx bxs-star yellow'></i></td>
+                            </tr>
+                        </tbody>
+                    </table>
+>>>>>>> minh
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const starContainers = document.querySelectorAll('.star-rating');
+
+            starContainers.forEach(container => {
+                const rating = parseFloat(container.getAttribute('data-rating'));
+                const fullStars = Math.floor(rating);
+                const halfStar = rating % 1 !== 0;
+                let starsHtml = '';
+
+                // Add full stars
+                for (let i = 0; i < fullStars; i++) {
+                    starsHtml += "<i class='bx bxs-star yellow'></i>";
+                }
+
+                // Add half star if applicable
+                if (halfStar) {
+                    starsHtml += "<i class='bx bxs-star-half yellow'></i>";
+                }
+
+                // Fill remaining with empty stars to maintain consistent structure
+                const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+                for (let i = 0; i < emptyStars; i++) {
+                    starsHtml += "<i class='bx bx-star'></i>";
+                }
+
+                container.innerHTML = starsHtml;
+            });
+        });
+    </script>
+@*    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const starContainers = document.querySelectorAll('.star-rating');
+        const feedbackRatings = [@foreach (var feedback in feedbackList) { @feedback.Rating },];
+
+        // Calculate total average rating
+        const totalRating = feedbackRatings.reduce((acc, curr) => acc + curr, 0);
+        const averageRating = feedbackRatings.length > 0 ? totalRating / feedbackRatings.length : 0;
+        document.getElementById('total-average-rating').textContent = averageRating.toFixed(1);
+
+        starContainers.forEach(container => {
+            const rating = parseFloat(container.getAttribute('data-rating'));
+            const fullStars = Math.floor(rating);
+            const halfStar = rating % 1 !== 0;
+            let starsHtml = '';
+
+            // Add full stars
+            for (let i = 0; i < fullStars; i++) {
+                starsHtml += "<i class='bx bxs-star yellow'></i>";
+            }
+
+            // Add half star if applicable
+            if (halfStar) {
+                starsHtml += "<i class='bx bxs-star-half yellow'></i>";
+            }
+
+            // Fill remaining with empty stars to maintain consistent structure
+            const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+            for (let i = 0; i < emptyStars; i++) {
+                starsHtml += "<i class='bx bx-star'></i>";
+            }
+
+            container.innerHTML = starsHtml;
+        });
+    });
+</script>*@
+</body>
+</html>

@@ -34,6 +34,7 @@ namespace DAL.Models
         public virtual DbSet<FieldtripGettingThere> FieldtripGettingTheres { get; set; } = null!;
         public virtual DbSet<FieldtripInclusion> FieldtripInclusions { get; set; } = null!;
         public virtual DbSet<FieldtripMedia> FieldtripMedia { get; set; } = null!;
+        public virtual DbSet<FieldTripParticipant> FieldTripParticipants { get; set; } = null!;
         public virtual DbSet<Gallery> Galleries { get; set; } = null!;
         public virtual DbSet<Location> Locations { get; set; } = null!;
         public virtual DbSet<Meeting> Meetings { get; set; } = null!;
@@ -228,7 +229,6 @@ namespace DAL.Models
                     .HasForeignKey(d => d.TripId)
                     .HasConstraintName("FK_FieldtripMedia_FieldTrip");
             });
-
             modelBuilder.Entity<Gallery>(entity =>
             {
                 entity.HasOne(d => d.UserDetail)

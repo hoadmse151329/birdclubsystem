@@ -19,7 +19,7 @@ namespace DAL.Repositories.Implements
         }
         public async Task<IEnumerable<Notification>> GetAllNotificationsByMemberId(string id)
         {
-            return _context.Notifications.AsNoTracking().Where(n => n.UserDetail.MemberId == id).ToList();
+            return await _context.Notifications.AsNoTracking().Where(n => n.UserDetails.MemberId == id).ToListAsync();
         }
 
         public async Task<IEnumerable<Notification>> UpdateAllNotificationStatus(List<Notification> notif)
@@ -42,7 +42,7 @@ namespace DAL.Repositories.Implements
 
         public async Task<int> GetCountUnreadNotificationsByMemberId(string id)
         {
-            return _context.Notifications.AsNoTracking().Count(n => n.UserDetail.MemberId == id && n.Status == "Unread");
+            return await _context.Notifications.AsNoTracking().CountAsync(n => n.UserDetails.MemberId == id && n.Status == "Unread");
         }
 
         public async Task<bool> GetBoolNotificationId(string id)
@@ -59,16 +59,16 @@ namespace DAL.Repositories.Implements
 
         public async Task<IEnumerable<string?>> GetUnreadNotificationTitle(string id)
         {
-            return _context.Notifications.AsNoTracking()
-                .Where(n => n.UserDetail.MemberId == id && n.Status == "Unread")
+            return await _context.Notifications.AsNoTracking()
+                .Where(n => n.UserDetails.MemberId == id && n.Status == "Unread")
                 .OrderByDescending(n => n.Date)
                 .Select(n => n.Title).ToList();
         }
 
         public async Task<IEnumerable<string?>> GetReadNotificationTitle(string id)
         {
-            return _context.Notifications.AsNoTracking()
-                .Where(n => n.UserDetail.MemberId == id && n.Status == "Read")
+            return await _context.Notifications.AsNoTracking()
+                .Where(n => n.UserDetails.MemberId == id && n.Status == "Read")
                 .OrderByDescending(n => n.Date)
                 .Select(n => n.Title).ToList();
         }

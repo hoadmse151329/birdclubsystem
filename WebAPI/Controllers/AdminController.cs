@@ -270,13 +270,22 @@ namespace WebAPI.Controllers
                         ErrorMessage = "Password is Empty !"
                     });
                 }
-                var result = await _userService.GetByEmailModel(newmem.Email);
-                if (result != null)
+                var resultEmail = await _userService.IsUserExistByEmail(newmem.Email);
+                if (resultEmail)
                 {
                     return BadRequest(new
                     {
                         Status = false,
                         ErrorMessage = "Email has already registered !"
+                    });
+                }
+                var resultUsername = await _userService.IsUserExistByUsername(newmem.UserName);
+                if (resultUsername)
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = "Username has already been taken, please type in a different Username !"
                     });
                 }
                 if (!newmem.Password.Equals(newmem.ConfirmPassword))

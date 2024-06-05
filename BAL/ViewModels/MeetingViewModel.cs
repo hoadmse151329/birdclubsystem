@@ -24,6 +24,7 @@ namespace BAL.ViewModels
             NumberOfParticipants = 0;
             NumberOfParticipantsMinReq = 10;
             NumberOfParticipantsLimit = 200;
+            isIncharge = false;
         }
         public int? MeetingId { get; set; }
         [Required(ErrorMessage = "Meeting Name is required")]
@@ -48,7 +49,7 @@ namespace BAL.ViewModels
 		public DateTime StartDate { get; set; }
         [Required(ErrorMessage = "End Date is required")]
         [DisplayName("End Date")]
-        [DateGreaterThan(comparisonProperty: "StartDate", comparisonRange: 1, comparisonType: "Hour", ErrorMessage = "End Date must be greater than Start Date at least 1 hour")]
+        [DateGreaterThan(comparisonProperty: "StartDate", comparisonRange: 1, comparisonType: "Day", ErrorMessage = "End Date must be greater than Start Date at least 1 day")]
         [DataType(DataType.DateTime)]
 		public DateTime EndDate { get; set; }
         [DisplayName("Number Of Participants")]
@@ -80,6 +81,7 @@ namespace BAL.ViewModels
         public string? Street { get; set; }
         public string? District { get; set; }
         public string? City { get; set; }
+        public bool isIncharge { get; set; }
         [Required(ErrorMessage = "Status is required")]
         [DisplayName("Status")]
         public string? Status { get; set; }

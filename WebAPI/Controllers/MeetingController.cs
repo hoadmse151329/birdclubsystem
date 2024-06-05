@@ -3,6 +3,7 @@ using BAL.Services.Interfaces;
 using BAL.ViewModels;
 using BAL.ViewModels.Authenticates;
 using BAL.ViewModels.Event;
+using BAL.ViewModels.Manager;
 using DAL.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -177,6 +178,42 @@ namespace WebAPI.Controllers
                 });
             }
         }
+        [HttpPost("{id}")]
+        [ProducesResponseType(typeof(MeetingViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetStaffMeetingById(
+            [FromRoute] int id,
+            [FromBody][Required] string? accToken)
+        {
+            try
+            {
+                var result = await _meetingService.GetByIdCheckIncharge(id,accToken);
+                if (result == null)
+                {
+                    return NotFound(new
+                    {
+                        status = false,
+                        errorMessage = "Meeting Not Found!"
+                    });
+                }
+
+                return Ok(new
+                {
+                    status = true,
+                    Data = result
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new
+                {
+                    Status = false,
+                    ErrorMessage = ex.Message,
+                    InnerExceptionMessage = ex.InnerException?.Message
+                });
+            }
+        }
 
         [HttpPost("Create")]
         [Authorize(Roles = "Manager")]
@@ -184,7 +221,7 @@ namespace WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Create(
-            [Required][FromBody] MeetingViewModel meet)
+            [Required][FromBody] CreateNewMeetingVM meet)
         {
             try
             {
@@ -206,7 +243,7 @@ namespace WebAPI.Controllers
                 });
             }
         }
-        [HttpPut("{id:int}/Update")]
+        /*[HttpPut("{id:int}/Update")]
         [Authorize(Roles = "Manager,Staff")]
         [ProducesResponseType(typeof(MeetingViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -228,6 +265,92 @@ namespace WebAPI.Controllers
                 }
                 meet.MeetingId = id;
                 _meetingService.Update(meet);
+                result = await _meetingService.GetById(meet.MeetingId.Value);
+                return Ok(new
+                {
+                    Status = true,
+                    Data = result
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new
+                {
+                    Status = false,
+                    ErrorMessage = ex.Message,
+                    InnerExceptionMessage = ex.InnerException?.Message
+                });
+            }
+        }*/
+        [HttpPut("{id:int}/Update")]
+        [Authorize(Roles = "Manager")]
+        [ProducesResponseType(typeof(MeetingViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> UpdateDetails(
+            [Required][FromRoute] int id,
+            [FromBody] UpdateMeetingDetailsVM meet)
+        {
+            try
+            {
+                var result = _meetingService.GetById(id).Result;
+                if (result == null)
+                {
+                    return NotFound(new
+                    {
+                        Status = false,
+                        ErrorMessage = "Meeting does not exist!"
+                    });
+                }
+                meet.MeetingId = id;
+                _meetingService.Update(meet);
+                result = await _meetingService.GetById(meet.MeetingId.Value);
+                return Ok(new
+                {
+                    Status = true,
+                    Data = result
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new
+                {
+                    Status = false,
+                    ErrorMessage = ex.Message,
+                    InnerExceptionMessage = ex.InnerException?.Message
+                });
+            }
+        }
+        [HttpPut("{id:int}/Status/Update")]
+        [Authorize(Roles = "Manager,Staff")]
+        [ProducesResponseType(typeof(MeetingViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> UpdateStatus(
+            [Required][FromRoute] int id,
+            [FromBody] UpdateMeetingStatusVM meet)
+        {
+            try
+            {
+                var result = _meetingService.GetById(id).Result;
+                if (result == null)
+                {
+                    return NotFound(new
+                    {
+                        Status = false,
+                        ErrorMessage = "Meeting does not exist!"
+                    });
+                }
+                meet.MeetingId = id;
+                var isUpdated = await _meetingService.UpdateStatus(meet);
+                if (!isUpdated)
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = "Meeting does not have enough participants to close registration!"
+                    });
+                }
                 result = await _meetingService.GetById(meet.MeetingId.Value);
                 return Ok(new
                 {
