@@ -16,6 +16,8 @@ namespace DAL.Repositories.Interfaces
             string? memberUserName,
             string? memberFullName,
             DateTime? expiryDateTime,
+            DateTime? registerDateTime,
+            DateTime? joinDateTime,
             List<string>? roles,
             List<string>? statuses,
             string? orderBy,

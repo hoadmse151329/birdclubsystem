@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using BAL.Attributes;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -30,6 +31,10 @@ namespace BAL.ViewModels.Manager
         public string FullName { get; set; }
         [DataType(DataType.DateTime)]
         public DateTime? ExpiryDate { get; set; }
+        [DataType(DataType.DateTime)]
+        public DateTime? RegisterDate { get; set; }
+        [DataType(DataType.DateTime)]
+        public DateTime? JoinDate { get; set; }
         public string? Status { get; set; }
         public List<SelectListItem> DefaultMemberStatusSelectList { get; set; }
     }

@@ -152,6 +152,7 @@ namespace WebAppMVC.Controllers
             if (!ModelState.IsValid)
             {
                 TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_MEMBER_DETAILS_VALID, memberDetail, jsonOptions);
+                TempData["Error"] = "Error while updating your profile";
                 return RedirectToAction("MemberProfile");
             }
 

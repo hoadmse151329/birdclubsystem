@@ -123,6 +123,11 @@ namespace WebAppMVC.Controllers
 
 			var response = _vnPayService.PaymentExecute(Request.Query);
 
+            if (response.TransactionType == null)
+            {
+                return RedirectToAction("Logout", "Auth");
+            }
+
 			switch (response.TransactionType)
 			{
 				case var value when value.Equals(Constants.Constants.NEW_MEMBER_REGISTRATION_TRANSACTION_TYPE):
