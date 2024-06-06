@@ -45,6 +45,8 @@ namespace BAL.ViewModels
 		[RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Gender is invalid")]
 		[DisplayName("Gender")]
 		public string? Gender { get; set; }
+		[DisplayName("Role")]
+		public string? Role { get; set; }
 		[Required(ErrorMessage = "Address is required")]
 		[RegularExpression(@"^[a-zA-Z0-9\/?\s?]+,[a-zA-Z0-9\s?]+,[a-zA-Z0-9\s?]+,[a-zA-Z\s?]{4,}$", ErrorMessage = "Address is Invalid, it must be writen in this format: Area Number,Street,District,City")]
 		[DisplayName("Address")]
@@ -60,6 +62,9 @@ namespace BAL.ViewModels
         public string? Description { get; set; }
 
         public string? Status { get; set; }
+		public DateTime RegisterDate { get; set; }
+		public DateTime JoinDate { get; set; }
+		public DateTime ExpiryDate { get; set; }
 
 		public List<BirdViewModel> Birds { get; set; }
 		public List<SelectListItem> DefaultUserGenderSelectList { get; set; }
