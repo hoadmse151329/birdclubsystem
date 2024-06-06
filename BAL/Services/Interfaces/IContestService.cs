@@ -36,6 +36,5 @@ namespace BAL.Services.Interfaces
         Task<bool> UpdateStatus(UpdateContestStatusVM entity);
         Task<bool> GetBoolContestId(int id);
         Task<int> CountContest();
-        Task<int> CountContestByStatus(string status);
     }
 }

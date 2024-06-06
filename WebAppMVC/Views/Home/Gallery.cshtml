@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="~/css/gallery.css">
+    <link rel="stylesheet" href="~/css/gallary.css">
 </head>
 <body class="background">
     @{
@@ -16,7 +16,8 @@
             <span class="text-danger">@ViewBag.error</span>
         }
     }
-    <h1>Bird Gallery</h1>
+    <div class="Title"><h1>Bird Gallery</h1></div>
+    <div class="container" style="background-color:white">
     <form id="uploadForm">
         <input type="text" id="title" placeholder="Title" required>
         <input type="text" id="username" placeholder="Your Name" required>
@@ -24,7 +25,25 @@
         <button type="submit">Upload</button>
     </form>
     <div id="gallery"></div>
-
+    <div id="gallery">
+            <!-- Example gallery items -->
+            <div class="gallery-item">
+                <img src="https://via.placeholder.com/150" alt="Sample Bird 1">
+                <div class="info">
+                    <p><strong>Title:</strong> Sample Bird 1</p>
+                    <p><strong>Posted by:</strong> User1</p>
+                    <p><strong>Posted on:</strong> @DateTime.Now.ToString("MM/dd/yyyy")</p>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://via.placeholder.com/150" alt="Sample Bird 2">
+                <div class="info">
+                    <p><strong>Title:</strong> Sample Bird 2</p>
+                    <p><strong>Posted by:</strong> User2</p>
+                    <p><strong>Posted on:</strong> @DateTime.Now.ToString("MM/dd/yyyy")</p>
+                </div>
+            </div>
+        </div>
     <!-- Template for gallery item -->
     <template id="gallery-item-template">
         <div class="gallery-item">
@@ -36,7 +55,7 @@
             </div>
         </div>
     </template>
-
+    </div>
     <!-- BackToTop -->
     <a href="#" class="backToTop cd-top text-replace js-cd-top">
         <i class="fa fa-angle-up"></i>

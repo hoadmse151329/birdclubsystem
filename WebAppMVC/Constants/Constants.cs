@@ -2,15 +2,15 @@
 
 namespace WebAppMVC.Constants
 {
-	public static class Constants
-	{
-		public readonly static string ADMIN_URL = "/Admin/Index";
-		public readonly static string MEMBER_URL = "/Home/Index";
-		public readonly static string MANAGER_URL = "/Manager/Index";
-		public readonly static string STAFF_URL = "/Staff/Index";
-		public readonly static string NOTFOUND_URL = "/Auth/NotFound";
-		public readonly static string LOGIN_URL = "/Auth/Login";
-		public readonly static string NEW_MEMBER_CONFIRM_REGISTRATION_URL = "/Auth/SignUp";
+    public static class Constants
+    {
+        public readonly static string ADMIN_URL = "/Admin/Index";
+        public readonly static string MEMBER_URL = "/Home/Index";
+        public readonly static string MANAGER_URL = "/Manager/Index";
+        public readonly static string STAFF_URL = "/Staff/Index";
+        public readonly static string NOTFOUND_URL = "/Auth/NotFound";
+        public readonly static string LOGIN_URL = "/Auth/Login";
+        public readonly static string NEW_MEMBER_CONFIRM_REGISTRATION_URL = "/Auth/SignUp";
 
         public readonly static string NEW_MEMBER_REGISTRATION_COOKIE = "New-Membership-Registration-Cookie";
         public readonly static string NEW_MEMBER_REGISTRATION_TRANSACTION_COOKIE = "New-Membership-Registration-Transaction-Cookie";
@@ -22,7 +22,7 @@ namespace WebAppMVC.Constants
         public readonly static string MEMBERSHIP_RENEWAL_TRANSACTION_COOKIE = "Membership-Renewal-Transaction-Cookie";
 
         public readonly static string NEW_MEMBER_REGISTRATION_TRANSACTION_TYPE = "New-Membership-Registration";
-		public readonly static string MEMBER_FIELDTRIP_REGISTRATION_TRANSACTION_TYPE = "Member-FieldTrip-Registration";
+        public readonly static string MEMBER_FIELDTRIP_REGISTRATION_TRANSACTION_TYPE = "Member-FieldTrip-Registration";
         public readonly static string MEMBER_CONTEST_REGISTRATION_TRANSACTION_TYPE = "Member-Contest-Registration";
         public readonly static string MEMBERSHIP_RENEWAL_TRANSACTION_TYPE = "Membership-Renewal-Transaction-Type";
 
@@ -200,11 +200,11 @@ namespace WebAppMVC.Constants
         public readonly static string USR_IMAGE = "IMAGE_PATH";
 
         public readonly static string ADMIN = "Admin";
-		public readonly static string MEMBER = "Member";
-		public readonly static string TEMPMEMBER = "TempMember";
+        public readonly static string MEMBER = "Member";
+        public readonly static string TEMPMEMBER = "TempMember";
         public readonly static string GUEST = "Guest";
-		public readonly static string STAFF = "Staff";
-		public readonly static string MANAGER = "Manager";
+        public readonly static string STAFF = "Staff";
+        public readonly static string MANAGER = "Manager";
 
         public readonly static string MALE = "Male";
         public readonly static string FEMALE = "Female";
@@ -212,8 +212,8 @@ namespace WebAppMVC.Constants
 
         public readonly static string GET_METHOD = "GET";
         public readonly static string POST_METHOD = "POST";
-		public readonly static string PUT_METHOD = "PUT";
-		public readonly static string DELETE_METHOD = "DELETE";
+        public readonly static string PUT_METHOD = "PUT";
+        public readonly static string DELETE_METHOD = "DELETE";
 
         public const string GOOGLE_CLIENT_ID = "Authentication:Google:ClientId";
         public const string GOOGLE_CLIENT_SECRET = "Authentication:Google:ClientSecret";

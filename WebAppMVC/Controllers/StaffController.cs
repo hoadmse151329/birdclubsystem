@@ -58,7 +58,7 @@ namespace WebAppMVC.Controllers
 
         // GET: StaffController
         [HttpGet("Index")]
-        public async Task<IActionResult> StaffIndex()
+        public IActionResult StaffIndex()
         {
             string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
             if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
@@ -79,17 +79,7 @@ namespace WebAppMVC.Controllers
             TempData["USER_NAME"] = usrname;
             TempData["IMAGE_PATH"] = imagepath;
 
-            StaffAPI_URL += "Staff/Index";
-
-            var dashboardResponse = await methcall.CallMethodReturnObject<GetStaffDashboardResponse>(
-                _httpClient: _httpClient,
-                options: jsonOptions,
-                methodName: Constants.Constants.GET_METHOD,
-                url: StaffAPI_URL,
-                accessToken: accToken,
-                _logger: _logger);
-
-            return View(dashboardResponse.Data);
+            return View();
         }
         [HttpGet("Meeting")]
         public async Task<IActionResult> StaffMeeting([FromQuery] string search)

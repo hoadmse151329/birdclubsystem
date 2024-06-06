@@ -15,10 +15,10 @@ namespace DAL.Models
         [Column("description")]
         public string? Description { get; set; }
         [Column("userId")]
-        public int? UserId { get; set; }
+        public int UserId { get; set; }
         [Column("image")]
         [Unicode(false)]
-        public string? Image { get; set; }
+        public string Image { get; set; } = null!;
 
         [ForeignKey(nameof(UserId))]
         [InverseProperty(nameof(User.Galleries))]

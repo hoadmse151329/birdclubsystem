@@ -24,14 +24,14 @@ namespace BAL.Services.Implements
             _mapper = mapper;
         }
 
-		public void Create(MemberViewModel entity)
-		{
-			var mem = _mapper.Map<Member>(entity);
-			mem.Status = "Inactive";
-			mem.Role = "Member";
-			_unitOfWork.MemberRepository.Create(mem);
-			_unitOfWork.Save();
-		}
+        public void Create(MemberViewModel entity)
+        {
+            var mem = _mapper.Map<Member>(entity);
+            mem.Status = "Inactive";
+            mem.Role = "Member";
+            _unitOfWork.MemberRepository.Create(mem);
+            _unitOfWork.Save();
+        }
 
         /*public async Task<IEnumerable<GetMembershipExpire?>> GetAllMemberStatusWithExpireByRole(string role)
         {
@@ -86,56 +86,56 @@ namespace BAL.Services.Implements
         }
 
         public bool GetByEmail(string email)
-		{
-			throw new NotImplementedException();
-		}
+        {
+            throw new NotImplementedException();
+        }
 
-		public async Task<MemberViewModel?> GetByEmailModel(string email)
-		{
-			throw new NotImplementedException();
-		}
+        public async Task<MemberViewModel?> GetByEmailModel(string email)
+        {
+            throw new NotImplementedException();
+        }
 
-		public async Task<MemberViewModel?> GetById(string id)
-		{
-			var mem = await _unitOfWork.MemberRepository.GetByIdNoTracking(id);
-			/*if (mem != null)
+        public async Task<MemberViewModel?> GetById(string id)
+        {
+            var mem = await _unitOfWork.MemberRepository.GetByIdNoTracking(id);
+            /*if (mem != null)
 			{
 				var mem = _unitOfWork.MemberRepository.GetById(user.MemberId.Value);
 				var usr = _mapper.Map<UserViewModel>(user);
 				usr.Email = mem.Email;
 				return usr;
 			}*/
-			if(mem != null)
-			{
-				var memb = _mapper.Map<MemberViewModel>(mem);
-				return memb;
-			}
-			return null;
-		}
+            if (mem != null)
+            {
+                var memb = _mapper.Map<MemberViewModel>(mem);
+                return memb;
+            }
+            return null;
+        }
 
-		public async Task<MemberViewModel?> GetByUserId(int id)
-		{
+        public async Task<MemberViewModel?> GetByUserId(int id)
+        {
             var memId = await _unitOfWork.UserRepository.GetMemberIdByIdNoTracking(id);
-			if(memId != null)
-			{
+            if (memId != null)
+            {
                 var mem = await _unitOfWork.MemberRepository.GetByIdNoTracking(memId);
-				if(mem != null)
-				{
-					return _mapper.Map<MemberViewModel>(mem);
+                if (mem != null)
+                {
+                    return _mapper.Map<MemberViewModel>(mem);
                 }
             }
             return null;
         }
 
-		public void Update(MemberViewModel entity)
-		{
+        public void Update(MemberViewModel entity)
+        {
             var usr = _unitOfWork.UserRepository.GetByMemberId(entity.MemberId).Result;
-			if(usr == null)
-			{
-				throw new Exception("User not Found!");
-			}
+            if (usr == null)
+            {
+                throw new Exception("User not Found!");
+            }
             var member = _unitOfWork.MemberRepository.GetByIdNoTracking(entity.MemberId).Result;
-            if(member == null)
+            if (member == null)
             {
                 throw new Exception("User not Found!");
             }
@@ -147,11 +147,11 @@ namespace BAL.Services.Implements
             member.Description = entity.Description;
             member.FullName = entity.FullName;
             member.Gender = entity.Gender;
-			usr.ImagePath = entity.ImagePath;
+            usr.ImagePath = entity.ImagePath;
             member.UserDetails = usr;
-			_unitOfWork.MemberRepository.Update(member);
-			_unitOfWork.Save();
-		}
+            _unitOfWork.MemberRepository.Update(member);
+            _unitOfWork.Save();
+        }
 
         public void UpdateMemberStatus(GetMembershipExpire entity)
         {
@@ -160,7 +160,7 @@ namespace BAL.Services.Implements
             {
                 throw new Exception("User not Found!");
             }
-			member.Status = entity.Status;
+            member.Status = entity.Status;
             _unitOfWork.MemberRepository.Update(member);
             _unitOfWork.Save();
         }
@@ -182,13 +182,13 @@ namespace BAL.Services.Implements
 
         public async Task<bool> UpdateAllMemberStatus(List<GetMemberStatus> listMem)
         {
-			var mems = await _unitOfWork.MemberRepository.UpdateAllMemberStatus(_mapper.Map<List<Member>>(listMem));
-			if (mems != null)
-			{
-				_unitOfWork.Save();
-				return true;
-			}
-			return false;
+            var mems = await _unitOfWork.MemberRepository.UpdateAllMemberStatus(_mapper.Map<List<Member>>(listMem));
+            if (mems != null)
+            {
+                _unitOfWork.Save();
+                return true;
+            }
+            return false;
         }
 
         public async Task<bool> UpdateAllEmployeeStatus(List<GetEmployeeStatus> listMem)
@@ -251,15 +251,15 @@ namespace BAL.Services.Implements
         }
 
         public async Task<IEnumerable<GetStaffName>?> GetSortedStaffNames(
-            string? memberId = null, 
-            string? memberUserName = null, 
-            string? memberFullName = null, 
-            DateTime? expiryDateTime = null, 
-            List<string>? roles = null, 
-            List<string>? statuses = null, 
-            string? orderBy = null, 
-            bool isManagerGetMemberList = false, 
-            bool isManagerGetStaffList = true, 
+            string? memberId = null,
+            string? memberUserName = null,
+            string? memberFullName = null,
+            DateTime? expiryDateTime = null,
+            List<string>? roles = null,
+            List<string>? statuses = null,
+            string? orderBy = null,
+            bool isManagerGetMemberList = false,
+            bool isManagerGetStaffList = true,
             bool isAdmin = false
             )
         {

@@ -33,6 +33,5 @@ namespace BAL.Services.Interfaces
         Task<bool> GetBoolFieldTripId(int id);
         bool UpdateMedia(FieldtripMediaViewModel entity);
         Task<int> CountFieldTrip();
-        Task<int> CountFieldTripByStatus(string status);
     }
 }

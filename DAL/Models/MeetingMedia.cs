@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Models
 {
-    [Table("MeetingMedia")]
     public partial class MeetingMedia
     {
         [Key]

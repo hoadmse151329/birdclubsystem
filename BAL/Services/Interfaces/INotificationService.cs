@@ -17,6 +17,5 @@ namespace BAL.Services.Interfaces
         Task<NotificationViewModel?> GetNotificationById(string id);
         Task<IEnumerable<string?>?> GetUnreadNotificationTitle(string id);
         Task<IEnumerable<string?>?> GetReadNotificationTitle(string id);
-        Task<string> GenerateNewNotificationId();
     }
 }

@@ -39,12 +39,12 @@ namespace DAL.Repositories.Implements
         }
 
         public async Task<IEnumerable<News>?> GetSortedNews(
-            string? title, 
-            List<string>? categories, 
-            DateTime? uploadDate, 
-            List<string>? statuses, 
-            string? orderBy, 
-            int? userId = null, 
+            string? title,
+            List<string>? categories,
+            DateTime? uploadDate,
+            List<string>? statuses,
+            string? orderBy,
+            int? userId = null,
             bool isMemberOrGuest = false
             )
         {

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Repositories.Implements
 {
-    public class GalleryRepository
+    internal class GalleryRepository
     {
     }
 }

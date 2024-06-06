@@ -13,13 +13,13 @@ namespace DAL.Models
         [Column("feedbackId")]
         public int FeedbackId { get; set; }
         [Column("userId")]
-        public int? UserId { get; set; }
+        public int UserId { get; set; }
         [Column("eventId")]
         [StringLength(50)]
-        public string? EventId { get; set; }
+        public string EventId { get; set; } = null!;
         [Column("title")]
         [StringLength(255)]
-        public string? Title { get; set; }
+        public string Title { get; set; } = null!;
         [Column("details")]
         public string? Details { get; set; }
         [Column("date", TypeName = "datetime")]

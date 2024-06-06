@@ -77,7 +77,7 @@ namespace DAL.Repositories.Implements
 
         public async Task<int> GetIdByUsername(string username)
         {
-            var result = await (from usr in _context.Users where usr.UserName.Trim().ToLower() == username.Trim().ToLower() select usr).FirstOrDefaultAsync();
+            var result = (from usr in _context.Users where usr.UserName.Trim().ToLower() == username.Trim().ToLower() select usr).FirstOrDefault();
             if (result != null) return result.UserId;
             return 0;
         }

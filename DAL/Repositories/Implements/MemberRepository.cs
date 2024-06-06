@@ -25,9 +25,9 @@ namespace DAL.Repositories.Implements
         }
 
         public async Task<IEnumerable<Member>> GetSortedMembers(
-            string? memberId = null, 
-            string? memberUserName = null, 
-            string? memberFullName = null, 
+            string? memberId = null,
+            string? memberUserName = null,
+            string? memberFullName = null,
             DateTime? expiryDateTime = null,
             DateTime? registerDateTime = null,
             DateTime? joinDateTime = null,
@@ -129,7 +129,7 @@ namespace DAL.Repositories.Implements
 
         public async Task<IEnumerable<Member>> UpdateAllMemberStatus(List<Member> members)
         {
-            foreach(var memberViewModel in members)
+            foreach (var memberViewModel in members)
             {
                 var mem = await _context.Members.SingleOrDefaultAsync(mem => mem.MemberId == memberViewModel.MemberId);
                 if (mem != null)
@@ -146,7 +146,8 @@ namespace DAL.Repositories.Implements
                             {
                                 mem.ExpiryDate = DateTime.UtcNow.AddMonths(1);
                             }
-                        } else
+                        }
+                        else
                         if (mem.Status == "Inactive" && memberViewModel.Status == "Denied")
                         {
                             mem.ExpiryDate = null;
@@ -168,7 +169,7 @@ namespace DAL.Repositories.Implements
                 {
                     if (mem.Status != memberViewModel.Status)
                     {
-                        if((mem.Status == "Expired" || mem.Status == "Inactive") && memberViewModel.Status == "Active")
+                        if ((mem.Status == "Expired" || mem.Status == "Inactive") && memberViewModel.Status == "Active")
                         {
                             if (mem.JoinDate == null && mem.Status == "Inactive")
                             {
@@ -182,7 +183,8 @@ namespace DAL.Repositories.Implements
                             {
                                 mem.ExpiryDate = DateTime.UtcNow.AddMonths(1);
                             }
-                        } else
+                        }
+                        else
                         if (mem.Status == "Inactive" && memberViewModel.Status == "Denied")
                         {
                             mem.ExpiryDate = null;

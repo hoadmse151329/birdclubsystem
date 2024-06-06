@@ -124,7 +124,7 @@ namespace WebAPI.Controllers
 					return BadRequest(new
 					{
 						Status = false,
-						ErrorMessage = "User Account is Currently InActivated! Please contact Manager",
+						ErrorMessage = "User Account is Currently InActivated!",
                         Data = result
                     });
 				}

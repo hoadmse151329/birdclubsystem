@@ -20,7 +20,7 @@ namespace DAL.Models
         public int ContestId { get; set; }
         [Column("contestName")]
         [StringLength(255)]
-        public string? ContestName { get; set; }
+        public string ContestName { get; set; } = null!;
         [Column("description")]
         public string? Description { get; set; }
         [Column("openRegistration", TypeName = "datetime")]

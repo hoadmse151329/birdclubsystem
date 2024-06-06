@@ -19,9 +19,9 @@ namespace DAL.Models
         [Column("description")]
         public string? Description { get; set; }
         [Column("date", TypeName = "datetime")]
-        public DateTime? Date { get; set; }
+        public DateTime Date { get; set; }
         [Column("userId")]
-        public int? UserId { get; set; }
+        public int UserId { get; set; }
         [Column("status")]
         [StringLength(50)]
         public string? Status { get; set; }
