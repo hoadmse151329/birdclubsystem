@@ -71,7 +71,7 @@ namespace WebAppMVC.Controllers
             {
                 memberInvalidDetails.ImagePath = imagePath;
                 memberInvalidDetails.DefaultUserGenderSelectList = methcall.GetUserGenderSelectableList(memberInvalidDetails.Gender);
-                memberInvalids.managerDetail = memberInvalidDetails;
+                memberInvalids.memberDetail = memberInvalidDetails;
                 return View(memberInvalids);
             }
 
@@ -139,10 +139,10 @@ namespace WebAppMVC.Controllers
             var memberInvalidPasswordUpdate = methcall.GetValidationTempData<UpdateMemberPassword>(this, TempData, Constants.Constants.UPDATE_MEMBER_PASSWORD_VALID, "memberPassword", jsonOptions);
             if (memberInvalidPasswordUpdate != null)
             {
-                memberInvalids.managerPassword = memberInvalidPasswordUpdate;
+                memberInvalids.memberPassword = memberInvalidPasswordUpdate;
             }
             memberDetails.Data.DefaultUserGenderSelectList = methcall.GetUserGenderSelectableList(memberDetails.Data.Gender);
-            memberInvalids.managerDetail = memberDetails.Data;
+            memberInvalids.memberDetail = memberDetails.Data;
             return View(memberInvalids);
         }
         [HttpPost("Profile")]
@@ -215,7 +215,7 @@ namespace WebAppMVC.Controllers
 
             memberPassword.userId = usrId;
 
-            var memberDetailupdate = await methcall.CallMethodReturnObject<GetMemberPasswordChangeResponse>(
+            var memberPasswordupdate = await methcall.CallMethodReturnObject<GetMemberPasswordChangeResponse>(
                 _httpClient: _httpClient,
                 options: jsonOptions,
                 methodName: Constants.Constants.PUT_METHOD,
@@ -223,7 +223,7 @@ namespace WebAppMVC.Controllers
                 _logger: _logger,
                 inputType: memberPassword,
                 accessToken: accToken);
-            if (memberDetailupdate == null)
+            if (memberPasswordupdate == null)
             {
                 ViewBag.error =
                     "Error while processing your request! (Getting Member Profile!).\n Member Details Not Found!";
@@ -231,11 +231,11 @@ namespace WebAppMVC.Controllers
                 return RedirectToAction("MemberProfile");
             }
             else
-            if (!memberDetailupdate.Status)
+            if (!memberPasswordupdate.Status)
             {
                 ViewBag.error =
                     "Error while processing your request! (Getting Member Profile!).\n Member Details Not Found!"
-                + memberDetailupdate.ErrorMessage;
+                + memberPasswordupdate.ErrorMessage;
                 TempData["Error"] = "Error while updating password.";
                 return RedirectToAction("MemberProfile");
             }
@@ -404,14 +404,17 @@ namespace WebAppMVC.Controllers
 
             if (photo != null && photo.Length > 0)
             {
-                string connectionString = _config.GetSection("AzureStorage:BlobConnectionString").Value;
-                string containerName = _config.GetSection("AzureStorage:BlobContainerName").Value;
+                string connectionString = _config.GetValue<string>(Constants.Constants.SYSTEM_DEFAULT_AZURE_CONNECTION_STRING);
+                string defaultUrl = _config.GetValue<string>(Constants.Constants.SYSTEM_DEFAULT_AZURE_DEFAULT_BLOB_FOLDER_URL);
+                string containerName = _config.GetValue<string>(Constants.Constants.SYSTEM_DEFAULT_AZURE_DEFAULT_BLOB_FOLDER_NAME);
+                string avatarContainerName = _config.GetValue<string>(Constants.Constants.SYSTEM_DEFAULT_AZURE_BLOB_AVATAR_FOLDER_URL);
+
                 BlobServiceClient _blobServiceClient = new BlobServiceClient(connectionString);
                 BlobContainerClient _blobContainerClient = _blobServiceClient.GetBlobContainerClient(containerName);
 
                 var azureResponse = new List<BlobContentInfo>();
                 string filename = photo.FileName;
-                string uniqueBlobName = $"avatar/{Guid.NewGuid()}-{filename}";
+                string uniqueBlobName = avatarContainerName + $"{Guid.NewGuid()}-{filename}";
                 using (var memoryStream = new MemoryStream())
                 {
                     photo.CopyTo(memoryStream);
@@ -421,10 +424,8 @@ namespace WebAppMVC.Controllers
                     azureResponse.Add(client);
                 }
 
-                var image = "https://edwinbirdclubstorage.blob.core.windows.net/images/" + uniqueBlobName;
-                dynamic imageUpload = new ExpandoObject();
-                imageUpload.ImagePath = image;
-                imageUpload.MemberId = usrId;
+                var image = defaultUrl + uniqueBlobName;
+                UpdateMemberAvatar imageUpload = new(memberId:usrId,imagePath:image);
 
                 var getMemberAvatar = await methcall.CallMethodReturnObject<GetMemberAvatarResponse>(
                     _httpClient: _httpClient,
@@ -446,6 +447,8 @@ namespace WebAppMVC.Controllers
                         "Error while processing your request! (Getting Member Profile!).\n Member Details Not Found!"
                     + getMemberAvatar.ErrorMessage;
                 }
+                TempData[Constants.Constants.ALERT_DEFAULT_SUCCESS_NAME] = Constants.Constants.ALERT_USER_AVATAR_IMAGE_UPDATE_SUCCESS;
+                HttpContext.Session.SetString(Constants.Constants.USR_IMAGE, getMemberAvatar.Data.ImagePath);
                 return RedirectToAction("MemberProfile");
             }
             return RedirectToAction("MemberProfile");
@@ -611,7 +614,8 @@ namespace WebAppMVC.Controllers
 
             dynamic memberBirdVM = new ExpandoObject();
             memberBirdVM.MemberBirdDetails = memberBirdDetail.Data;
-            memberBirdVM.UpdateBird = methcall.GetValidationTempData<BirdViewModel>(this, TempData, Constants.Constants.UPDATE_BIRD_VALID, "updateBird", jsonOptions);
+            //memberBirdVM.UpdateBird = methcall.GetValidationTempData<BirdViewModel>(this, TempData, Constants.Constants.UPDATE_BIRD_VALID, "updateBird", jsonOptions);
+            memberBirdVM.UpdateBird = null;
             return View(memberBirdVM);
         }
         [HttpPost("Bird/Create")]
@@ -686,6 +690,93 @@ namespace WebAppMVC.Controllers
             }
             return RedirectToAction("MemberBird");
         }
+        [HttpPost("Bird/{birdId:int}/Update")]
+        public async Task<IActionResult> MemberUpdateBirdDetail(
+            [FromRoute][Required] int birdId,
+            [Required] BirdViewModel updateBird)
+        {
+            string MemberBirdAPI_URL = "/api/Bird/" + birdId + "/Update";
+
+            if (!ModelState.IsValid)
+            {
+                updateBird.BirdMainImage = null;
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_BIRD_VALID, updateBird, jsonOptions);
+                return RedirectToAction("MemberBirdDetail", new { birdId });
+            }
+
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER));
+
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
+
+            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
+
+            updateBird.MemberId = usrId;
+
+            IFormFile photo = updateBird.BirdMainImage;
+
+            if (photo != null && photo.Length > 0)
+            {
+                string connectionString = _config.GetValue<string>(Constants.Constants.SYSTEM_DEFAULT_AZURE_CONNECTION_STRING);
+                string defaultUrl = _config.GetValue<string>(Constants.Constants.SYSTEM_DEFAULT_AZURE_DEFAULT_BLOB_FOLDER_URL);
+                string containerName = _config.GetValue<string>(Constants.Constants.SYSTEM_DEFAULT_AZURE_DEFAULT_BLOB_FOLDER_NAME);
+                string newsContainerName = _config.GetValue<string>(Constants.Constants.SYSTEM_DEFAULT_AZURE_BLOB_BIRD_FOLDER_URL);
+
+                BlobServiceClient _blobServiceClient = new BlobServiceClient(connectionString);
+                BlobContainerClient _blobContainerClient = _blobServiceClient.GetBlobContainerClient(containerName);
+
+                var azureResponse = new List<BlobContentInfo>();
+                string filename = photo.FileName;
+                string uniqueBlobName = newsContainerName + $"{Guid.NewGuid()}-{filename}";
+                using (var memoryStream = new MemoryStream())
+                {
+                    photo.CopyTo(memoryStream);
+                    memoryStream.Position = 0;
+
+                    var client = await _blobContainerClient.UploadBlobAsync(uniqueBlobName, memoryStream);
+
+                    if (updateBird.ProfilePic.Contains(defaultUrl + newsContainerName))
+                    {
+                        string photoName = newsContainerName + updateBird.ProfilePic.Substring((defaultUrl + newsContainerName).Length);
+                        await _blobContainerClient.DeleteBlobAsync(photoName);
+                    }
+                    azureResponse.Add(client);
+                }
+
+                var image = defaultUrl + uniqueBlobName;
+
+                updateBird.ProfilePic = image;
+            }
+
+            updateBird.BirdMainImage = null;
+
+            var memberBirdUpdate = await methcall.CallMethodReturnObject<GetBirdResponse>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: Constants.Constants.POST_METHOD,
+                url: MemberBirdAPI_URL,
+                inputType: updateBird,
+                accessToken: accToken,
+                _logger: _logger);
+            if (memberBirdUpdate != null)
+            {
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_BIRD_VALID, updateBird, jsonOptions);
+                ViewBag.Error =
+                    "Error while processing your request: (Updating Bird!).\n Bird Not Found!";
+                return RedirectToAction("MemberBirdDetail", new { birdId });
+            }
+            if (!memberBirdUpdate.Status)
+            {
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_BIRD_VALID, updateBird, jsonOptions);
+                _logger.LogInformation("Error while processing your request: " + memberBirdUpdate.Status + " , Error Message: " + memberBirdUpdate.ErrorMessage);
+                ViewBag.Error =
+                    "Error while processing your request! (Updating Bird!).\n"
+                    + memberBirdUpdate.ErrorMessage;
+                return RedirectToAction("MemberBirdDetail", new { birdId });
+            }
+            return RedirectToAction("MemberBirdDetail", new { birdId });
+        }
+
         [HttpGet("Payment")]
         public async Task<IActionResult> MemberPayment()
         {

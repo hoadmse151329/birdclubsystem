@@ -63,7 +63,7 @@ a{
     font-weight: 700;
 }
 .button {
-    justify-content:center;
+    margin-left: 50%;
 }
 .text-color{
     color:white;

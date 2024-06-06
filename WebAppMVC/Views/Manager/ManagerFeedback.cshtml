@@ -36,105 +36,17 @@
                                                         @foreach (var feedback in feedbackList)
                                                         {
                                                             <tr>
-                                                                <td>@feedback.Rating</td>
+                                                                <td><div class="star-rating" data-rating="@feedback.Rating"></div></td>
                                                                 <td>@feedback.Fullname</td>
                                                                 <td>@feedback.Details</td>
                                                                 <td>@feedback.Date</td>
                                                             </tr>
                                                         }
-                                                        @*<tr data-toggle="collapse" data-target="#fb-1" class="feedback active">
-                                                            <td>4/5</td>
-                                                            <td>Lê Minh Quân</td>
-                                                            <td>Anh tuyệt voi lắm:))</td>
-                                                            <td>25/5</td>
-                                                        </tr>
-                                                        <tr data-toggle="collapse" data-target="#fb-2" class="feedback">
-                                                            <td>4/5</td>
-                                                            <td>Lê Minh Quân</td>
-                                                            <td>Anh tuyệt voi lắm:))</td>
-                                                            <td>25/5</td>
-                                                        </tr>
-                                                        *@
                                                     </tbody>
                                                 </table>
                                             </div>
                                         </div>
                                     </div>
-                                    @*<div class="col-12 col-lg-5">
-                                        <div id="fb-1" class="collapse show">
-                                            <div class="feedback-box">
-                                                <div class="d-flex justify-content-between fb-box-header">
-                                                    <div class="d-flex align-items-center">
-                                                        <img src="~/images/avatar.jpg" alt="Avatar" class="mr-3 main-img">
-                                                        <h6 class="text-dark mb-sm-1 title-nm">Lê Minh Quân</h6>
-                                                    </div>
-                                                    <div class="d-flex align-items-center">
-                                                        <span class="d-sm-inline-block d-none">3/5*  25/5</span>
-                                                        <div class="dropdown ml-2">
-                                                            <a href="#" data-toggle="dropdown"><i class='bx bx-dots-vertical-rounded'></i></a>
-                                                            <div class="dropdown-menu">
-                                                                <a class="dropdown-item" href="#">Xóa</a>
-                                                                <a class="dropdown-item" href="#"></a>
-                                                                <a class="dropdown-item" href="#">Chi tiết</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="fb-box-area">
-                                                </div>
-                                                <div class="card-footer border-0 fb-box-send">
-                                                    <div class="input-group">
-                                                        <input type="text" class="form-control" placeholder="Type message...">
-                                                        <div class="input-group-append">
-                                                            <button type="button" class="bn p-0 mr-3">
-                                                                <i class='bx bx-paperclip'></i>
-                                                            </button>
-                                                            <button type="button" class="bn p-0 mr-3">
-                                                                <i class='bx bx-image'></i>
-                                                            </button>
-                                                            <button type="button" class="bn btn-primary send-btn">SEND</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div id="fb-2" class="collapse">
-                                            <div class="feedback-box">
-                                                <div class="d-flex justify-content-between fb-box-header">
-                                                    <div class="d-flex align-items-center">
-                                                        <img src="~/images/avatar.jpg" alt="Avatar" class="mr-3 main-img">
-                                                        <h6 class="text-dark mb-sm-1 title-nm">Lê Minh Quân</h6>
-                                                    </div>
-                                                    <div class="d-flex align-items-center">
-                                                        <span class="d-sm-inline-block d-none">3/5*  25/5</span>
-                                                        <div class="dropdown ml-2">
-                                                            <a href="#" data-toggle="dropdown"><i class='bx bx-dots-vertical-rounded'></i></a>
-                                                            <div class="dropdown-menu">
-                                                                <a class="dropdown-item" href="#">Xóa</a>
-                                                                <a class="dropdown-item" href="#"></a>
-                                                                <a class="dropdown-item" href="#">Chi tiết</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="fb-box-area">
-                                                </div>
-                                                <div class="card-footer border-0 fb-box-send">
-                                                    <div class="input-group">
-                                                        <input type="text" class="form-control" placeholder="Type message...">
-                                                        <div class="input-group-append">
-                                                            <button type="button" class="bn p-0 mr-3">
-                                                                <i class='bx bx-paperclip'></i>
-                                                            </button>
-                                                            <button type="button" class="bn p-0 mr-3">
-                                                                <i class='bx bx-image'></i>
-                                                            </button>
-                                                            <button type="button" class="bn btn-primary send-btn">SEND</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>*@
                                     </div>
                                 </div>
                             </div>
@@ -143,6 +55,35 @@
                 </div>
             </div>
         </div>
-    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const starContainers = document.querySelectorAll('.star-rating');
+
+            starContainers.forEach(container => {
+                const rating = parseFloat(container.getAttribute('data-rating'));
+                const fullStars = Math.floor(rating);
+                const halfStar = rating % 1 !== 0;
+                let starsHtml = '';
+
+                // Add full stars
+                for (let i = 0; i < fullStars; i++) {
+                    starsHtml += "<i class='bx bxs-star yellow'></i>";
+                }
+
+                // Add half star if applicable
+                if (halfStar) {
+                    starsHtml += "<i class='bx bxs-star-half yellow'></i>";
+                }
+
+                // Fill remaining with empty stars to maintain consistent structure
+                const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+                for (let i = 0; i < emptyStars; i++) {
+                    starsHtml += "<i class='bx bx-star'></i>";
+                }
+
+                container.innerHTML = starsHtml;
+            });
+        });
+    </script>
 </body>
 </html>

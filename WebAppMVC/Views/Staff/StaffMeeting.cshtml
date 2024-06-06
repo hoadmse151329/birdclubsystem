@@ -122,6 +122,10 @@
                                                                     <span>@data.MeetingName</span>
                                                                 </li>
                                                                 <li>
+                                                                    <h6>Incharge:</h6>
+                                                                    <span>@data.Incharge</span>
+                                                                </li>
+                                                                <li>
                                                                     <h6>Open Registration Date:</h6>
                                                                     <span>@data.OpenRegistration.ToString("dd-MM-yyyy HH:mm")</span>
                                                                 </li>
@@ -156,11 +160,14 @@
                                                             </ul>
                                                         </div>
                                                     </div>
-                                                    <div class="form-group mx-auto">
-                                                        <form asp-action="Meeting" asp-controller="Staff" method="get" asp-route-id="@data.MeetingId">
-                                                            <button class="btn btn-primary clickable-row" type="submit">See Detail</button>
-                                                        </form>
-                                                    </div>
+                                                    @if (data.isIncharge)
+                                                    {
+                                                        <div class="form-group mx-auto">
+                                                            <form asp-action="Meeting" asp-controller="Staff" method="get" asp-route-id="@data.MeetingId">
+                                                                <button class="btn btn-primary clickable-row" type="submit">See Detail</button>
+                                                            </form>
+                                                        </div>
+                                                    }
                                                 </div>
                                             </div>
                                         }

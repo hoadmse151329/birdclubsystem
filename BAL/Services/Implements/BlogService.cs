@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using Azure.Storage.Blobs.Models;
 using BAL.Services.Interfaces;
 using BAL.ViewModels;
+using BAL.ViewModels.Blog;
 using DAL.Infrastructure;
 using DAL.Models;
 using System;
@@ -32,20 +34,55 @@ namespace BAL.Services.Implements
             _unitOfWork.BlogRepository.Create(blog);
             _unitOfWork.Save();
         }
+        public void Create(CreateNewBlog entity)
+        {
+            var usr = _unitOfWork.UserRepository.GetByMemberId(entity.MemberId).Result;
+            if (usr != null)
+            {
+                var blog = _mapper.Map<Blog>(entity);
+                blog.UserId = usr.UserId;
+                _unitOfWork.BlogRepository.Create(blog);
+                _unitOfWork.Save();
+            }
+        }
 
         public async Task<IEnumerable<BlogViewModel>> GetAllBlogs()
         {
-            return _mapper.Map<IEnumerable<BlogViewModel>>(await _unitOfWork.BlogRepository.GetAllBlogs());
+            var blogList = _mapper.Map<IEnumerable<BlogViewModel>>(await _unitOfWork.BlogRepository.GetAllBlogs());
+            foreach (var blog in blogList)
+            {
+                var blogCommentList = _mapper.Map<List<CommentViewModel>>(await _unitOfWork.CommentRepository.GetAllByBlogId(blog.BlogId.Value));
+                if (blogCommentList != null)
+                {
+                    blog.Comments = blogCommentList;
+                }
+            }
+            return blogList;
         }
 
         public async Task<IEnumerable<BlogViewModel>?> GetAllBlogsByUserId(int usrId)
         {
-            return _mapper.Map<IEnumerable<BlogViewModel>?>(await _unitOfWork.BlogRepository.GetAllBlogsByUserId(usrId));
+            var blogList = _mapper.Map<IEnumerable<BlogViewModel>?>(await _unitOfWork.BlogRepository.GetAllBlogsByUserId(usrId));
+            foreach (var blog in blogList)
+            {
+                var blogCommentList = _mapper.Map<List<CommentViewModel>>(await _unitOfWork.CommentRepository.GetAllByBlogId(blog.BlogId.Value));
+                if (blogCommentList != null)
+                {
+                    blog.Comments = blogCommentList;
+                }
+            }
+            return blogList;
         }
 
-        public Task<BlogViewModel?> GetBlogByIdNoTracking(int blogId)
+        public async Task<BlogViewModel?> GetBlogByIdNoTracking(int blogId)
         {
-            throw new NotImplementedException();
+            var blog = _mapper.Map<BlogViewModel?>(await _unitOfWork.BlogRepository.GetBlogByIdNoTracking(blogId));
+            var blogCommentList = _mapper.Map<List<CommentViewModel>>(await _unitOfWork.CommentRepository.GetAllByBlogId(blog.BlogId.Value));
+            if (blogCommentList != null)
+            {
+                blog.Comments = blogCommentList;
+            }
+            return blog;
         }
 
         public async Task<IEnumerable<BlogViewModel>?> GetSortedBlogs(
@@ -58,7 +95,7 @@ namespace BAL.Services.Implements
             int? userId = null, 
             bool isMemberOrGuest = false)
         {
-            return _mapper.Map<IEnumerable<BlogViewModel>?>(await _unitOfWork.BlogRepository.GetSortedBlogs(
+            var blogList = _mapper.Map<IEnumerable<BlogViewModel>?>(await _unitOfWork.BlogRepository.GetSortedBlogs(
                 description: description,
                 category: category,
                 uploadDate: uploadDate,
@@ -67,6 +104,15 @@ namespace BAL.Services.Implements
                 orderBy: orderBy,
                 userId: userId,
                 isMemberOrGuest: isMemberOrGuest));
+            foreach (var blog in blogList)
+            {
+                var blogCommentList = _mapper.Map<List<CommentViewModel>>(await _unitOfWork.CommentRepository.GetAllByBlogId(blog.BlogId.Value));
+                if (blogCommentList != null)
+                {
+                    blog.Comments = blogCommentList;
+                }
+            }
+            return blogList;
         }
 
         public void Update(BlogViewModel entity)

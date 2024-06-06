@@ -1,0 +1,61 @@
+{
+  "bannerImages": [
+    "~/images/chao-mao2.png",
+    "~/images/chaomao5.png",
+    "~/images/chao-mao-2.png"
+  ],
+  "features": [
+    {
+      "image": "~/images/best-choice.png",
+      "title": "Best choice",
+      "description": "CHAO MAO BIRDCLUB gives you suitable accommodation options for you to have a wonderful bird hobby."
+    },
+    {
+      "image": "~/images/security.png",
+      "title": "Safety & security",
+      "description": "Cohesion information, high security and reputable services bring the best experience for you."
+    },
+    {
+      "image": "~/images/support.png",
+      "title": "Support 24/7",
+      "description": "Always listen, always support you with all services at CHAO MAO BIRDCLUB."
+    }
+  ],
+  "welcomeMessage": "Welcome to ChaoMao BirdClub",
+  "aboutUs": {
+    "heading": "About Us",
+    "description": "Chao Mao Bird Club CMBC, WE GIVE NOT ONLY WHAT YOU NEED BUT ALSO WHAT YOU DESIRE...",
+    "founder": "Founded in 2012 by Mr. Duy...",
+    "mission": "Our mission is to encourage and promote birdwatching..."
+  },
+  "team": [
+    {
+      "name": "Ho Tran Khanh Duy",
+      "role": "Manager",
+      "experience": "Chao Mao Bird Manager, expert in Chao Mao Bird with 5 years of experience.",
+      "image": "~/images/tv-4.jpg",
+      "github": "https://github.com/DuyZomega"
+    },
+    {
+      "name": "Dao Minh Hoa",
+      "role": "Staff",
+      "experience": "Chao Mao Bird Staff, expert in Chao Mao Bird with 3 years of experience.",
+      "image": "~/images/tv-2.jpg",
+      "github": "https://github.com/hoadmse151329"
+    },
+    {
+      "name": "Dao Minh Hoa",
+      "role": "Staff",
+      "experience": "Chao Mao Bird Staff, expert in Chao Mao Bird with 3 years of experience.",
+      "image": "~/images/tv-2.jpg",
+      "github": "https://github.com/hoadmse151329"
+    },
+    {
+      "name": "Dao Minh Hoa",
+      "role": "Staff",
+      "experience": "Chao Mao Bird Staff, expert in Chao Mao Bird with 3 years of experience.",
+      "image": "~/images/tv-2.jpg",
+      "github": "https://github.com/hoadmse151329"
+    }
+  ]
+}

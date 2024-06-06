@@ -17,23 +17,51 @@
     <div class="main-container">
         <div class="row justify-content-between">
             <div class="col-lg-6">
+                @if (TempData["Success"] != null)
+                {
+                    <div class="alert alert-success alert-dismissible fade show" id="notif">
+                        <i class='bx bx-message-alt-x p-1'></i>
+                        <strong class="mr-1">@TempData["Success"]</strong>
+                        <button type="button" class="close h-100" data-dismiss="alert" aria-label="Close">
+                            <span><i class='bx bx-x'></i></span>
+                        </button>
+                    </div>
+                    TempData["Success"] = null;
+                }
+                else if (TempData["Error"] != null)
+                {
+                    <div class="alert alert-danger alert-dismissible fade show" id="notif">
+                        <i class='bx bx-message-alt-x p-1'></i>
+                        <strong class="mr-1">@TempData["Error"]</strong>
+                        <button type="button" class="close h-100" data-dismiss="alert" aria-label="Close">
+                            <span><i class='bx bx-x'></i></span>
+                        </button>
+                    </div>
+                    TempData["Error"] = null;
+                }
                 <div class="box-container">
                     <div class="d-flex justify-content-center box-header light-green">
                         <h5><b>Member login</b></h5>
                     </div>
+                    <div class="d-flex justify-content-center">
+                        @{
+                            if (TempData["SuccessCheck"] != null)
+                            {
+                                <span>@TempData["SuccessCheck"].ToString()</span>
+                            }
+                            if (TempData["ErrorCheck"] != null)
+                            {
+                                <span class="text-danger">@TempData["ErrorCheck"].ToString()</span>
+                                if (TempData["ErrorCheck"] == "User Account is Currently Expired!")
+                                {
+                                    <a href="@Url.Action("RenewMembership", "Auth")">Renew Now!</a>
+                                }
+                            }
+                        }
+                    </div>
                     <div class="d-flex box-body justify-content-center">
                         <div>
                             <form class="reg-form" asp-action="Authorize" asp-controller="Auth">
-                                @{
-                                    if (ViewBag.error != null)
-                                    {
-                                        <span class="text-danger">@ViewBag.error</span>
-                                        if (ViewBag.error == "User Account is Currently Expired!")
-                                        {
-                                            <a href="@Url.Action("RenewMembership", "Auth")">Renew Now!</a>
-                                        }
-                                    }
-                                }
                                 <div class="form-group">
 
                                     <input placeholder="Username" asp-for="Username" class="form-control" />
@@ -46,7 +74,7 @@
 
                                     <span asp-validation-for="Password" class="text-danger"></span>
                                 </div>
-                                <a href="#forgotpassword" class="float-end">Forgot Password?</a>
+                                @*<i data-toggle="modal" data-target="#forgotpassword"><a href="#" class="float-end">Forgot Password?</a></i>*@
                                 <button class="reg-button btn1 light-green" type="submit" value="Login">Login</button>
 
                             </form>
@@ -85,17 +113,18 @@
 
         </div>
     </div>
+    @*điền email hoặc tên vào nếu có trong hệ thống mới mở tiếp bảng đổi mật khẩu hoặc in ra thông báo không có tài khoản trong hệ thống
     <div id="forgotpassword" class="modal fade" role="dialog">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
             <div class="modal-content modal-addRoom">
                 <div class="modal-header">
-                    <h4 class="modal-title">Edit Meeting</h4>
+                    <h4 class="modal-title">Enter your email</h4>
                 </div>
                 <form asp-action="ChangePassword" asp-controller="Member">
                     <div class="row form-group">
-                        <label asp-for=@memberPassword.password class="offset-md-3 col-md-2 col-sm-3 col-form-label">Old Password</label> @*điền email hoặc tên vào nếu có trong hệ thống mới mở tiếp bảng đổi mật khẩu hoặc in ra thông báo không có tài khoản trong hệ thống*@
-                        <input asp-for=@memberPassword.password class="col-md-3 col-sm-5 form-control" type="password"
-                               name="password" required value=@memberPassword.password>
+                        <label asp-for=@memberPassword.password class="offset-md-3 col-md-2 col-sm-3 col-form-label">Email</label> 
+                        <input asp-for=@memberPassword.password class="col-md-3 col-sm-5 form-control" type="text"
+                               name="email" required value=@memberPassword.password>
                         <span asp-validation-for=@memberPassword.password class="error-message col-sm-3 mt-2"></span>
                     </div>
                     <div class="row form-group justify-content-center">
@@ -109,7 +138,7 @@
         <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
             <div class="modal-content modal-addRoom">
                 <div class="modal-header">
-                    <h4 class="modal-title">Edit Meeting</h4>
+                    <h4 class="modal-title">Change Password</h4>
                 </div>
                 <form asp-action="ChangePassword" asp-controller="Member">
                     <div class="row form-group">
@@ -136,14 +165,8 @@
                 </form>
             </div>
         </div>
-    </div>
-    <script>
-        $(document).ready(function () {
-            setTimeout(function () {
-                $('#notif').css('display', 'none');
-            }, 3000);
-        })
-    </script>
+    </div>*@
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
                 referrerpolicy="no-referrer"></script>
         <!-- Jquery Waypoint -->
@@ -151,5 +174,12 @@
         <!-- BS4 JS -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.5/umd/popper.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
+        <script>
+        $(document).ready(function () {
+            setTimeout(function () {
+                $('#notif').css('display', 'none');
+            }, 3000);
+        })
+    </script>
 </body>
 </html>

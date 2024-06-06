@@ -10,6 +10,11 @@ namespace BAL.ViewModels
 {
     public class UserViewModel
     {
+        public UserViewModel()
+        {
+            Role = "Member";
+            ImagePath = "https://edwinbirdclubstorage.blob.core.windows.net/images/avatar/avatar2.png";
+        }
         public int? UserId { get; set; }
         public int? ClubId { get; set; }
         public string? UserName { get; set; }

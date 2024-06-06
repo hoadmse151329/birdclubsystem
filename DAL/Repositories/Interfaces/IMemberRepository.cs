@@ -19,7 +19,8 @@ namespace DAL.Repositories.Interfaces
             List<string>? roles,
             List<string>? statuses,
             string? orderBy,
-            bool isManager = false,
+            bool isManagerGetMemberList = false,
+            bool isManagerGetStaffList = false,
             bool isAdmin = false
             );
         Task<Member?> GetByIdNoTracking(string id);
@@ -29,6 +30,6 @@ namespace DAL.Repositories.Interfaces
         Task<IEnumerable<Member>> GetAllMemberOnly();
         Task<IEnumerable<Member>> UpdateAllMemberStatus(List<Member> members);
         Task<IEnumerable<Member>> UpdateAllMemberStatusAndRole(List<Member> members);
-
+        string GenerateNewMemberId();
     }
 }

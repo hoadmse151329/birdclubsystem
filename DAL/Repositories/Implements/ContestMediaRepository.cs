@@ -18,9 +18,9 @@ namespace DAL.Repositories.Implements
             _context = context;
         }
 
-        public async Task<ContestMedia> GetContestMediaById(int contestId, int pictureId)
+        public async Task<ContestMedia> GetContestMediaById(int pictureId)
         {
-            return _context.ContestMedia.AsNoTracking().SingleOrDefault(c => c.ContestId.Equals(contestId) && c.PictureId.Equals(pictureId));
+            return await _context.ContestMedia.AsNoTracking().SingleOrDefaultAsync(c => c.PictureId.Equals(pictureId));
         }
 
         public async Task<IEnumerable<ContestMedia>> GetContestMediasByContestId(int contestId)
@@ -30,6 +30,11 @@ namespace DAL.Repositories.Implements
         public async Task<ContestMedia> GetContestMediaByContestIdAndType(int contestId, string mediaType)
         {
             return _context.ContestMedia.AsNoTracking().SingleOrDefault(m => m.ContestId.Equals(contestId) && m.Type.Equals(mediaType));
+        }
+
+        public async Task<ContestMedia> GetContestMediaByIdTracking(int pictureId)
+        {
+            return await _context.ContestMedia.SingleOrDefaultAsync(m => m.PictureId.Equals(pictureId));
         }
     }
 }

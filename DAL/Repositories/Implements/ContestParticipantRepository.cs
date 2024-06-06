@@ -20,84 +20,84 @@ namespace DAL.Repositories.Implements
 
         public async Task<int> GetCountContestParticipantsByContestId(int contestId)
         {
-            return _context.ContestParticipants.Count(con => con.ContestId == contestId);
+            return await _context.ContestParticipants.CountAsync(con => con.ContestId == contestId);
         }
 
         public async Task<int> GetCountContestParticipantsByBirdId(int birdId)
         {
-            return _context.ContestParticipants.Count(b => b.BirdId == birdId);
+            return await _context.ContestParticipants.CountAsync(b => b.BirdId == birdId);
         }
 
         public async Task<IEnumerable<ContestParticipant>> GetContestParticipantsByContestId(int contestId)
         {
-            return _context.ContestParticipants
+            return await _context.ContestParticipants
                 .AsNoTracking()
                 .Where(con => con.ContestId == contestId)
-                .Include(m => m.MemberDetail)
+                .Include(m => m.MemberDetails)
                 .Include(b => b.BirdDetails)
-                .OrderBy(p => p.ParticipantNo).ToList();
+                .OrderBy(p => p.ParticipantNo).ToListAsync();
         }
 
         public async Task<IEnumerable<ContestParticipant>> GetContestParticipantsByBirdId(int birdId)
         {
-            return _context.ContestParticipants.Where(b => b.BirdId == birdId).ToList();
+            return await _context.ContestParticipants.Where(b => b.BirdId == birdId).ToListAsync();
         }
 
         public async Task<IEnumerable<ContestParticipant>> GetContestParticipantsByBirdIdInclude(int birdId)
         {
-            return _context.ContestParticipants.Where(b => b.BirdId == birdId).Include(c => c.ContestDetail).ToList();
+            return await _context.ContestParticipants.Where(b => b.BirdId == birdId).Include(c => c.ContestDetails).ToListAsync();
         }
 
-		public async Task<IEnumerable<ContestParticipant>> GetContestParticipantsByMemberId(string memberId)
-		{
-			return _context.ContestParticipants.Where(cp => cp.MemberId == memberId).ToList();
-		}
+        public async Task<IEnumerable<ContestParticipant>> GetContestParticipantsByMemberId(string memberId)
+        {
+            return await _context.ContestParticipants.Where(cp => cp.MemberId == memberId).ToListAsync();
+        }
 
-		public async Task<IEnumerable<ContestParticipant>> GetContestParticipantsByMemberIdInclude(string memberId)
-		{
-            return _context.ContestParticipants.AsNoTracking().Where(c => c.MemberId == memberId).Include(c => c.ContestDetail).ToList();
-		}
+        public async Task<IEnumerable<ContestParticipant>> GetContestParticipantsByMemberIdInclude(string memberId)
+        {
+            return await _context.ContestParticipants.AsNoTracking().Where(c => c.MemberId == memberId).Include(c => c.ContestDetails).ToListAsync();
+        }
 
-		public async Task<int> GetCountContestParticipantsByMemberId(string memberId)
-		{
-			return _context.ContestParticipants.Count(b => b.MemberId == memberId);
-		}
+        public async Task<int> GetCountContestParticipantsByMemberId(string memberId)
+        {
+            return await _context.ContestParticipants.CountAsync(b => b.MemberId == memberId);
+        }
 
-		public async Task<bool> GetBoolContestParticipantById(int contestId, string memberId, int? birdId = null)
-		{
+        public async Task<bool> GetBoolContestParticipantById(int contestId, string memberId, int? birdId = null)
+        {
             ContestParticipant cp = null;
-            if(birdId.HasValue)
+            if (birdId.HasValue)
             {
-                cp = _context.ContestParticipants.FirstOrDefault(b => b.ContestId == contestId && b.MemberId == memberId && b.BirdId == birdId);
-                if(cp != null)
+                cp = await _context.ContestParticipants.FirstOrDefaultAsync(b => b.ContestId == contestId && b.MemberId == memberId && b.BirdId == birdId);
+                if (cp != null)
                     return true;
                 return false;
-			}
-			cp = _context.ContestParticipants.FirstOrDefault(b => b.ContestId == contestId && b.MemberId == memberId);
+            }
+            cp = await _context.ContestParticipants.FirstOrDefaultAsync(b => b.ContestId == contestId && b.MemberId == memberId);
             if (cp != null) return true;
             return false;
 
-		}
+        }
 
-		public async Task<int> GetParticipationNoContestParticipantById(int contestId, string memberId, int? birdId = null)
-		{
-            var cp = _context.ContestParticipants.FirstOrDefault(cp => cp.ContestId == contestId && cp.MemberId == memberId);
+        public async Task<int> GetParticipationNoContestParticipantById(int contestId, string memberId, int? birdId = null)
+        {
+            var cp = await _context.ContestParticipants.FirstOrDefaultAsync(cp => cp.ContestId == contestId && cp.MemberId == memberId);
             if (cp == null) return 0;
             return cp.ParticipantNo.Value;
-		}
+        }
 
-		public async Task<ContestParticipant> GetContestParticipantById(int contestId, string memberId, int? birdId = null)
-		{
-            if (birdId != null) return _context.ContestParticipants.FirstOrDefault(b => b.ContestId == contestId && b.MemberId == memberId && b.BirdId == birdId);
-			return _context.ContestParticipants.FirstOrDefault(b => b.ContestId == contestId && b.MemberId == memberId);
-		}
+        public async Task<ContestParticipant> GetContestParticipantById(int contestId, string memberId, int? birdId = null)
+        {
+            if (birdId != null) return await _context.ContestParticipants.FirstOrDefaultAsync(b => b.ContestId == contestId && b.MemberId == memberId && b.BirdId == birdId);
+            return await _context.ContestParticipants.FirstOrDefaultAsync(b => b.ContestId == contestId && b.MemberId == memberId);
+        }
 
         public async Task<IEnumerable<ContestParticipant>> UpdateAllContestParticipantStatus(List<ContestParticipant> part)
         {
             foreach (var participant in part)
             {
-                var conpart = _context.ContestParticipants
-                    .SingleOrDefault(p => p.ContestId == participant.ContestId && p.MemberId == participant.MemberId);
+                var conpart = await _context.ContestParticipants
+                    .SingleOrDefaultAsync(p => p.ContestId == participant.ContestId && p.MemberId == participant.MemberId);
                 if (conpart != null)
                 {
                     if (conpart.CheckInStatus != participant.CheckInStatus)
@@ -116,15 +116,15 @@ namespace DAL.Repositories.Implements
 
             int n = part.Count;
             // Calculate the total points earned by all birds
-            int totalPoints = part.Sum(c => c.Score);
+            int totalPoints = part.Sum(c => c.Score.Value);
             // Calculate the average Elo of all players
-            double averageElo = conpartList.Sum(c => c.BirdDetails.Elo) / n;
+            double averageElo = conpartList.Sum(c => c.BirdDetails.Elo.Value) / n;
             // List of Elo change factors
             List<int> Y = new List<int> { 40, 35, 30, 25, 20 }; // Adjust this list as needed
 
             foreach (var participant in part)
             {
-                var conpart = conpartList.SingleOrDefault(p => p.ContestId == participant.ContestId && p.MemberId == participant.MemberId);
+                var conpart = await conpartList.SingleOrDefaultAsync(p => p.ContestId == participant.ContestId && p.MemberId == participant.MemberId);
                 if (conpart != null)
                 {
                     if (conpart.Score != participant.Score)
@@ -132,9 +132,9 @@ namespace DAL.Repositories.Implements
                         conpart.Score = participant.Score;
 
                         // Calculate basic Elo change for the player based on the provided parameters
-                        double basicEloChange = CalculateBasicEloChange(conpart.BirdDetails.Elo, averageElo, conpart.Score, totalPoints, n, Y);
+                        double basicEloChange = CalculateBasicEloChange(conpart.BirdDetails.Elo.Value, averageElo, conpart.Score.Value, totalPoints, n, Y);
                         // Update the player's Elo using the calculated Elo change
-                        int updatedElo = UpdateElo(conpart.BirdDetails.Elo, (int)Math.Round(basicEloChange, MidpointRounding.AwayFromZero));
+                        int updatedElo = UpdateElo(conpart.BirdDetails.Elo.Value, (int)Math.Round(basicEloChange, MidpointRounding.AwayFromZero));
 
                         conpart.Elo = updatedElo;
 
@@ -168,7 +168,7 @@ namespace DAL.Repositories.Implements
         private static double CalculateBasicEloChange(int playerCurBirdElo, double averageContestElo, int birdContestPoints, int totalbirdContestPoints, int totalAmountOfBird, List<int> Y)
         {
             // Calculate the expected score of the player
-            int expected = (int)Math.Round( CalculateExpectedScore(playerCurBirdElo, averageContestElo), MidpointRounding.AwayFromZero);
+            int expected = (int)Math.Round(CalculateExpectedScore(playerCurBirdElo, averageContestElo), MidpointRounding.AwayFromZero);
             // Determine if the player won or lost the match based on bird points
             int result = birdContestPoints > totalbirdContestPoints / totalAmountOfBird ? 1 : 0;
 

@@ -1,11 +1,9 @@
-﻿@model dynamic
+﻿@model WebAppMVC.Models.ViewModels.ManagerMeetingIndexVM
 @{
     Layout = null;
     ViewData["Title"] = "Manager Meeting Page";
-    List<string> locationList = Model.Locations;
-    List<BAL.ViewModels.MeetingViewModel> meetingList = Model.Meetings;
-    BAL.ViewModels.MeetingViewModel createMeeting = Model.CreateMeeting != null ? Model.CreateMeeting : new BAL.ViewModels.MeetingViewModel();
-    BAL.ViewModels.MeetingViewModel cancelMeet = new();
+    List<BAL.ViewModels.MeetingViewModel> meetingList = Model.MeetingList;
+    BAL.ViewModels.Manager.CreateNewMeetingVM createMeeting = Model.CreateMeeting;
     string? search = string.Empty;
     Layout = "~/Views/Shared/_MLayout.cshtml";
 }
@@ -265,7 +263,7 @@
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
                                     <label asp-for="@createMeeting.Incharge" class="col-md-3 col-form-label mt-3 text-md-right"></label>
-                                    <input asp-for="@createMeeting.Incharge" value="@createMeeting.Incharge" type="text" placeholder="Staff incharge of Meeting" class="form-control col-md-7 mt-3" rows="3" required>
+                                    <select asp-for="@createMeeting.Incharge" asp-items="@createMeeting.StaffNames" placeholder="Staff incharge of Meeting" class="custom-select form-control col-md-7 mt-3" required></select>
                                     <span asp-validation-for="@createMeeting.Incharge" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
@@ -295,5 +293,13 @@
             </div>
         </div>
     </div>
+    <script src="~/ckeditor/ckeditor.js"></script>
+    <script src="~/ckfinder/ckfinder.js"></script>
+    <script>
+
+        var editor = CKEDITOR.replace('createMeeting.Description');
+        CKFinder.setupCKEditor(editor, 'ckfinder/');
+        data["createMeeting.Description"] = editor.getData();
+    </script>
 </body>
 </html>

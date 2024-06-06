@@ -110,7 +110,16 @@ namespace WebAPI.Controllers
 						ErrorMessage = "Username or Password is invalid!"
                     });
                 }
-				if (result.Status == "Inactive")
+                if (result.Status == "Suspended")
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = "User Account is Suspended! Due to your violations of our club guidelines",
+                        Data = result
+                    });
+                }
+                if (result.Status == "Inactive")
 				{
 					return BadRequest(new
 					{
@@ -124,7 +133,16 @@ namespace WebAPI.Controllers
                     return BadRequest(new
                     {
                         Status = false,
-                        ErrorMessage = "User Account is Currently Expired!",
+                        ErrorMessage = "User Account is Currently Expired! Please renew your Membership",
+                        Data = result
+                    });
+                }
+                if (result.Status == "Denied")
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = "Sorry, your registration request has been denied by the Birdclub manager",
                         Data = result
                     });
                 }
@@ -187,11 +205,10 @@ namespace WebAPI.Controllers
                         ErrorMessage = "User not found." 
                     });
                 }
-                var loguser = new AuthenRequest()
-                {
-                    Username = result.UserName,
-                    Password = result.Password // No need to specify password
-                };
+                var loguser = new AuthenRequest(
+                    userName: result.UserName, 
+                    passWord: result.Password
+                    );
                 var login = await _userService.AuthenticateUser(loguser);
                 if (login == null)
                 {
@@ -206,7 +223,7 @@ namespace WebAPI.Controllers
                     return BadRequest(new
                     {
                         Status = false,
-                        ErrorMessage = "User Account is Currently InActivated!",
+                        ErrorMessage = "User Account is Currently InActivated! Please contact Manager",
                         Data = login
                     });
                 }
@@ -215,7 +232,16 @@ namespace WebAPI.Controllers
                     return BadRequest(new
                     {
                         Status = false,
-                        ErrorMessage = "User Account is Currently Expired!",
+                        ErrorMessage = "User Account is Currently Expired! Please renew your Membership",
+                        Data = login
+                    });
+                }
+                if (login.Status == "Denied")
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = "Sorry, your registration request has been denied by the Birdclub manager",
                         Data = login
                     });
                 }
@@ -277,21 +303,30 @@ namespace WebAPI.Controllers
         {
             try
             {
-                if (newmem.Password == null || newmem.Password == string.Empty)
+                if (string.IsNullOrEmpty(newmem.Password) || string.IsNullOrWhiteSpace(newmem.Password))
                 {
                     return BadRequest(new
                     {
                         Status = false,
-						ErrorMessage = "Password is Empty !"
+						ErrorMessage = "Password is empty !"
                     });
                 }
-                var result = await _userService.GetByEmailModel(newmem.Email);
-                if (result != null)
+                var resultEmail = await _userService.IsUserExistByEmail(newmem.Email);
+                if (resultEmail)
                 {
                     return BadRequest(new
                     {
                         Status = false,
-						ErrorMessage = "Email has already registered !"
+						ErrorMessage = "Your email has already been registered !, would you like to login instead?"
+                    });
+                }
+                var resultUsername = await _userService.IsUserExistByUsername(newmem.UserName);
+                if (resultUsername)
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = "Username has already been taken, please type in a different Username !"
                     });
                 }
                 if (!newmem.Password.Equals(newmem.ConfirmPassword))
@@ -304,19 +339,18 @@ namespace WebAPI.Controllers
                 }
                 UserViewModel value = new UserViewModel()
                 {
-					UserName = newmem.UserName,
-                    Email= newmem.Email,
-                    Password= newmem.Password,
-                    Role = "Member",
-                    ImagePath = "https://edwinbirdclubstorage.blob.core.windows.net/images/avatar/avatar2.png"
+                    UserName = newmem.UserName,
+                    Email = newmem.Email,
+                    Password = newmem.Password,
+                    ClubId = 1
+                    
                 };
                 _userService.Create(value,newmem);
-                var loguser = new AuthenRequest()
-                {
-                    Username = newmem.UserName,
-                    Password = newmem.Password,
-                    ImagePath = value.ImagePath
-                };
+                var loguser = new AuthenRequest(
+                    userName: newmem.UserName, 
+                    passWord: newmem.Password, 
+                    imagePath: value.ImagePath
+                    );
                 var resultaft = await _userService.AuthenticateUser(loguser);
 
                 if (resultaft == null)
@@ -363,7 +397,7 @@ namespace WebAPI.Controllers
 		{
 			try
 			{
-				if (newmem.Password == null || newmem.Password == string.Empty)
+				if (string.IsNullOrEmpty(newmem.Password) || string.IsNullOrWhiteSpace(newmem.Password))
 				{
 					return BadRequest(new
 					{
@@ -371,16 +405,25 @@ namespace WebAPI.Controllers
 						ErrorMessage = "Password is Empty !"
 					});
 				}
-				var result = await _userService.GetByEmailModel(newmem.Email);
-				if (result != null)
+				var resultEmail = await _userService.IsUserExistByEmail(newmem.Email);
+				if (resultEmail)
 				{
 					return BadRequest(new
 					{
 						Status = false,
-						ErrorMessage = "Email has already registered !"
-					});
+						ErrorMessage = "Your email has already been registered !, would you like to login instead?"
+                    });
 				}
-				if (!newmem.Password.Equals(newmem.ConfirmPassword))
+                var resultUsername = await _userService.IsUserExistByUsername(newmem.UserName);
+                if (resultUsername)
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = "Username has already been taken, please type in a different Username !"
+                    });
+                }
+                if (!newmem.Password.Equals(newmem.ConfirmPassword))
 				{
 					return BadRequest(new
 					{
@@ -388,11 +431,10 @@ namespace WebAPI.Controllers
 						ErrorMessage = "Password and Confirm Password are not the same !"
 					});
 				}
-				var loguser = new AuthenRequest()
-				{
-					Username = newmem.UserName,
-					Password = newmem.Password
-				};
+				var loguser = new AuthenRequest(
+                    userName: newmem.UserName, 
+                    passWord: newmem.Password
+                    );
 				var resultaft = await _userService.CreateTemporaryNewUser(loguser);
 
 				if (resultaft == null)
@@ -430,31 +472,77 @@ namespace WebAPI.Controllers
 				});
 			}
 		}
-		// PUT api/<UserController>/5
-		// PUT api/<UserController>/Update/5
-		/// <summary>
-		/// Update User Account informations by ID
-		/// aliases: api/User/{id} or api/User/Update/{id}
-		/// </summary>
-		/// <param name="id">Account ID</param>
-		/// <remarks>
-		/// Sample request:
-		/// 
-		///     PUT 
-		///     {
-		///         "id": 1,
-		///         "username": "ExampleMan123",
-		///         "password": "example123",
-		///         "confirmPassword": "example123",
-		///         "fullName": "Mr. ExampleMan",
-		///         "email": "example123@gmail.com",
-		///         "phone": "0123456789",
-		///         "address": "123, Brooklyn, New York City, USA"
-		///     } 
-		///     
-		/// </remarks>
-		/// <returns>Return result of action and error message</returns>
-		[HttpPut("{id}")]
+        [HttpGet("CreateGuestUser")]
+        [ProducesResponseType(typeof(UserViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> CreateGuestUser()
+        {
+            try
+            {
+                var loguser = new AuthenRequest();
+                var resultaft = await _userService.CreateGuestUser(loguser);
+
+                if (resultaft == null)
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, new
+                    {
+                        Status = false,
+                        ErrorMessage = "Error while Registering your Guest role to the system !"
+
+                    });
+                }
+                return Ok(new
+                {
+                    Status = true,
+                    SuccessMessage = "Guest role create successfully !",
+                    Data = resultaft
+                });
+            }
+            catch (Exception ex)
+            {
+                if (ex.InnerException != null)
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = ex.Message,
+                        InnerExceptionMessage = ex.InnerException.Message
+                    });
+                }
+                // Log the exception if needed
+                return BadRequest(new
+                {
+                    Status = false,
+                    ErrorMessage = ex.Message
+                });
+            }
+        }
+        // PUT api/<UserController>/5
+        // PUT api/<UserController>/Update/5
+        /// <summary>
+        /// Update User Account informations by ID
+        /// aliases: api/User/{id} or api/User/Update/{id}
+        /// </summary>
+        /// <param name="id">Account ID</param>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     PUT 
+        ///     {
+        ///         "id": 1,
+        ///         "username": "ExampleMan123",
+        ///         "password": "example123",
+        ///         "confirmPassword": "example123",
+        ///         "fullName": "Mr. ExampleMan",
+        ///         "email": "example123@gmail.com",
+        ///         "phone": "0123456789",
+        ///         "address": "123, Brooklyn, New York City, USA"
+        ///     } 
+        ///     
+        /// </remarks>
+        /// <returns>Return result of action and error message</returns>
+        [HttpPut("{id}")]
         [Authorize(Roles ="Admin,Member")]
         [HttpPut("Update/{id}")]
         [ProducesResponseType(typeof(UserViewModel), StatusCodes.Status200OK)]

@@ -28,6 +28,6 @@ namespace DAL.Models
 
         [ForeignKey(nameof(UserId))]
         [InverseProperty(nameof(User.Notifications))]
-        public virtual User UserDetail { get; set; } = null!;
+        public virtual User? UserDetails { get; set; }
     }
 }

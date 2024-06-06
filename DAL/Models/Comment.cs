@@ -25,6 +25,6 @@ namespace DAL.Models
 
         [ForeignKey(nameof(UserId))]
         [InverseProperty(nameof(User.Comments))]
-        public virtual User UserDetail { get; set; } = null!;
+        public virtual User? UserDetails { get; set; }
     }
 }

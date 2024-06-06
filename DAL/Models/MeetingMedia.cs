@@ -23,6 +23,6 @@ namespace DAL.Models
 
         [ForeignKey(nameof(MeetingId))]
         [InverseProperty(nameof(Meeting.MeetingPictures))]
-        public virtual Meeting? MeetingDetail { get; set; }
+        public virtual Meeting? MeetingDetails { get; set; }
     }
 }

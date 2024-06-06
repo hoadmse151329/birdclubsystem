@@ -41,33 +41,32 @@
                             <span class="title">Overview</span>
                         </a>
                     </li>
-                    <li>
+                    <li class="noactive">
                         <a href="#" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
                             <i class='bx bx-bookmarks'></i>
                             <span class="title">Manage</span>
                             <i class='bx bxs-chevron-down drop'></i>
                         </a>
                         <ul class="collapse sub-menu" id="collapseOne">
-                            <li data-toggle="tooltip"data-placement="right" title="Manage Meeting">
+                            <li class="sub-active" data-toggle="tooltip"data-placement="right" title="Manage Meeting">
                                 <a href="@Url.Action("StaffMeeting", "Staff")" li class="dropdown-item">
                                     <i class='bx bx-home-alt-2'></i>
                                     <span class="title">Meeting</span>
                                 </a> 
                             </li>
-                            <li data-toggle="tooltip"data-placement="right" title="Manage Fieldtrip">
+                            <li class="sub-active" data-toggle="tooltip"data-placement="right" title="Manage Fieldtrip">
                                 <a href="@Url.Action("StaffFieldTrip", "Staff")" li class="dropdown-item">
                                     <i class='bx bx-calendar-edit'></i>
                                     <span class="title">Fieldtrip</span>
                                 </a>
                             </li> 
-                            <li data-toggle="tooltip"data-placement="right" title="Manage Bird Contest">
+                            <li class="sub-active" data-toggle="tooltip"data-placement="right" title="Manage Bird Contest">
                                 <a href="@Url.Action("StaffContest", "Staff")" li class="dropdown-item">
                                     <i class='bx bx-trophy'></i>
                                     <span class="title">Bird Contest</span>
                                 </a>
                             </li>
                         </ul>
-                    </li>
                     </li>
                     <li data-toggle="tooltip"data-placement="right" title="Staff Profile">
                         <a href="@Url.Action("StaffProfile", "Staff")">
@@ -134,6 +133,48 @@
     function redirectToDetailPage() {
         window.location.href = '@Url.Action("StaffContestDetail", "Staff")';
     }
+    </script>
+    <script>
+$(document).ready(function() {
+    // Get the current URL path
+    var currentUrl = window.location.pathname;
+
+    // Find the corresponding <a> element with the href attribute matching the current URL
+    var $currentLink = $('.slide-menu a[href="' + currentUrl + '"]');
+
+    // Add the active class based on the current URL
+    if ($currentLink.closest('ul').hasClass('sub-menu')) {
+        $currentLink.closest('li.sub-active').addClass('active');
+    } else {
+        $currentLink.closest('li').addClass('active');
+    }
+
+    // Handle click events on <a> elements
+    $('.slide-menu a').click(function(e) {
+        var $clickedLi = $(this).closest('li');
+
+        // Check if the clicked <a> is inside a <li> with class noactive
+        if (!$clickedLi.hasClass('noactive')) {
+            // Prevent the default action of the link
+            e.preventDefault();
+
+            // Remove the active class from all <li> elements
+            $('.slide-menu li').removeClass('active');
+
+            // Check if the clicked link is inside a sub-menu and its parent <li> has the class sub-active
+            if ($clickedLi.hasClass('sub-active')) {
+                // Add active class to the <li> with sub-active class
+                $clickedLi.addClass('active');
+            } else if (!$clickedLi.hasClass('noactive')) {
+                // Add active class to the <li> of the clicked <a> if it is not noactive
+                $clickedLi.addClass('active');
+            }
+
+            // Redirect to the href of the clicked link
+            window.location.href = $(this).attr('href');
+        }
+    });
+});
     </script>
 </body>
 </html>

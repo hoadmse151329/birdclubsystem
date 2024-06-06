@@ -34,6 +34,6 @@ namespace DAL.Models
 
         [ForeignKey(nameof(UserId))]
         [InverseProperty(nameof(User.Transactions))]
-        public virtual User? UserDetail { get; set; }
+        public virtual User? UserDetails { get; set; }
     }
 }

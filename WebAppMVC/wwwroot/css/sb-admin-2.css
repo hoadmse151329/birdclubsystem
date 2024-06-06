@@ -1193,8 +1193,8 @@ pre code {
     max-width: 33.33333%;
   }
   .col-lg-5 {
-    flex: 0 0 41.66667%;
-    max-width: 41.66667%;
+    flex: 0 0 82.66667%;
+    max-width: 82.66667%;
   }
   .col-lg-6 {
     flex: 0 0 50%;
@@ -4756,7 +4756,12 @@ input[type="button"].btn-block {
   list-style: none;
   border-radius: 0.35rem;
 }
-
+.pagination1 {
+    display: flex;
+    padding-left: 0;
+    list-style: none;
+    border-radius: 0.35rem;
+}
 .page-link {
   position: relative;
   display: block;

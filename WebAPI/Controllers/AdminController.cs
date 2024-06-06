@@ -270,13 +270,22 @@ namespace WebAPI.Controllers
                         ErrorMessage = "Password is Empty !"
                     });
                 }
-                var result = await _userService.GetByEmailModel(newmem.Email);
-                if (result != null)
+                var resultEmail = await _userService.IsUserExistByEmail(newmem.Email);
+                if (resultEmail)
                 {
                     return BadRequest(new
                     {
                         Status = false,
                         ErrorMessage = "Email has already registered !"
+                    });
+                }
+                var resultUsername = await _userService.IsUserExistByUsername(newmem.UserName);
+                if (resultUsername)
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = "Username has already been taken, please type in a different Username !"
                     });
                 }
                 if (!newmem.Password.Equals(newmem.ConfirmPassword))
@@ -293,15 +302,13 @@ namespace WebAPI.Controllers
                     Email = newmem.Email,
                     Password = newmem.Password,
                     Role = newmem.Role,
-                    ImagePath = "https://edwinbirdclubstorage.blob.core.windows.net/images/avatar/avatar2.png"
                 };
                 _userService.Create(value, newmem);
-                var loguser = new AuthenRequest()
-                {
-                    Username = newmem.UserName,
-                    Password = newmem.Password,
-                    ImagePath = value.ImagePath
-                };
+                var loguser = new AuthenRequest(
+                    userName: newmem.UserName, 
+                    passWord: newmem.Password, 
+                    imagePath: value.ImagePath
+                    );
                 var resultaft = await _userService.AuthenticateUser(loguser);
 
                 if (resultaft == null)

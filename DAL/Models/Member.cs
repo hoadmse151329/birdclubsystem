@@ -11,15 +11,16 @@ namespace DAL.Models
     {
         public Member()
         {
-            MemberBirds = new HashSet<Bird>();
+            Birds = new HashSet<Bird>();
             ContestParticipants = new HashSet<ContestParticipant>();
             FieldTripParticipants = new HashSet<FieldTripParticipant>();
             MeetingParticipants = new HashSet<MeetingParticipant>();
+            UserDetails = new User();
         }
 
         [Key]
         [Column("memberId")]
-        [StringLength(50)]
+        [StringLength(255)]
         public string MemberId { get; set; } = null!;
         [Column("fullName")]
         [StringLength(255)]
@@ -46,20 +47,24 @@ namespace DAL.Models
         [Column("status")]
         [StringLength(50)]
         public string? Status { get; set; }
+        [Column("registerDate", TypeName = "datetime")]
+        public DateTime? RegisterDate { get; set; }
+        [Column("joinDate", TypeName = "datetime")]
+        public DateTime? JoinDate { get; set; }
         [Column("expiryDate", TypeName = "datetime")]
         public DateTime? ExpiryDate { get; set; }
         [Column("clubId")]
         public int? ClubId { get; set; }
 
         [InverseProperty(nameof(Bird.MemberDetails))]
-        public virtual ICollection<Bird> MemberBirds { get; set; }
-        [InverseProperty(nameof(ContestParticipant.MemberDetail))]
+        public virtual ICollection<Bird> Birds { get; set; }
+        [InverseProperty(nameof(ContestParticipant.MemberDetails))]
         public virtual ICollection<ContestParticipant> ContestParticipants { get; set; }
-        [InverseProperty(nameof(FieldTripParticipant.MemberDetail))]
+        [InverseProperty(nameof(FieldTripParticipant.MemberDetails))]
         public virtual ICollection<FieldTripParticipant> FieldTripParticipants { get; set; }
-        [InverseProperty(nameof(MeetingParticipant.MemberDetail))]
+        [InverseProperty(nameof(MeetingParticipant.MemberDetails))]
         public virtual ICollection<MeetingParticipant> MeetingParticipants { get; set; }
-        [InverseProperty(nameof(User.MemberDetail))]
-        public virtual User? UserDetail { get; set; }
+        [InverseProperty(nameof(User.MemberDetails))]
+        public virtual User? UserDetails { get; set; }
     }
 }

@@ -14,11 +14,13 @@ namespace BAL.Services.Interfaces
     {
         Task<AuthenResponse> AuthenticateUser(AuthenRequest request);
 		Task<AuthenResponse> CreateTemporaryNewUser(AuthenRequest request);
-		Task<AuthenResponse> AuthenticateUserEmail(string email);
+        Task<AuthenResponse> CreateGuestUser(AuthenRequest request);
+        Task<AuthenResponse> AuthenticateUserEmail(string email);
         Task<UserViewModel?> GetById(int id);
         Task<UserViewModel?> GetByMemberId(string memId);
         Task<bool> GetBoolById(int id);
-        bool GetByEmail(string email);
+        Task<bool> IsUserExistByEmail(string email);
+        Task<bool> IsUserExistByUsername(string username);
         Task<bool> UpdateUserAvatar(string memId, string imagePath);
         Task<UserViewModel?> GetByLogin(string username, string password);
         /* void Create(UserViewModel entity);*/

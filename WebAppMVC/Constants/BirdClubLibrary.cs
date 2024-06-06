@@ -12,6 +12,9 @@ using Org.BouncyCastle.Ocsp;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using WebAppMVC.Models;
 using WebAppMVC.Models.Error;
+using Microsoft.AspNetCore.Http.Json;
+using WebAppMVC.Models.Auth;
+using BAL.ViewModels.Manager;
 
 namespace WebAppMVC.Constants
 {
@@ -64,6 +67,10 @@ namespace WebAppMVC.Constants
                     {
                         var errorT = JsonSerializer.Deserialize<T>(jsonResponse, options);
                         return errorT;
+                    }
+                    else if(jsonResponse.Contains("Exception"))
+                    {
+                        return null;
                     }
                     var error = JsonSerializer.Deserialize<GetErrorVM>(jsonResponse, options);
                     return null;
@@ -360,6 +367,22 @@ namespace WebAppMVC.Constants
             }
             return defaultEmployeeStatus;
         }
+        public List<SelectListItem> GetStaffNameSelectableList(string? staffName, List<GetStaffName> staffNameList)
+        {
+            List<SelectListItem> defaultStaffNameList = new();
+            foreach(var name in staffNameList)
+            {
+                if(!string.IsNullOrEmpty(staffName) && !string.IsNullOrWhiteSpace(staffName) && staffName.Equals(name))
+                {
+                    defaultStaffNameList.Add(new SelectListItem { Text = name.FullName, Value = name.FullName, Selected = true });
+                }
+                else
+                {
+                    defaultStaffNameList.Add(new SelectListItem { Text = name.FullName, Value = name.FullName });
+                }
+            }
+            return defaultStaffNameList;
+        }
         public List<SelectListItem> GetUserGenderSelectableList(string userGender)
         {
             List<SelectListItem> defaultUserGenders = new();
@@ -483,7 +506,7 @@ namespace WebAppMVC.Constants
             return defaultReqEloRange;
         }
 
-        public T GetValidationTempData<T>(
+        public T? GetValidationTempData<T>(
             ControllerBase context,
             ITempDataDictionary tempData, 
             string tempDataName, 
@@ -495,6 +518,7 @@ namespace WebAppMVC.Constants
             {
                 var objectForValidation = JsonSerializer.Deserialize<T>(tempData[tempDataName].ToString(), jsonOptions);
                 tempData.Remove(tempDataName);
+                //viewObjectName is basically a prefix
                 context.TryValidateModel(objectForValidation, viewObjectName);
                 return objectForValidation;
             }
@@ -652,11 +676,36 @@ namespace WebAppMVC.Constants
         public void SetUserRoleGuest(Controller context)
         {
             string? role = context.HttpContext.Session.GetString(Constants.ROLE_NAME);
-            if (string.IsNullOrEmpty(role))
+            if (string.IsNullOrEmpty(role) || string.IsNullOrWhiteSpace(role))
             {
                 role = Constants.GUEST;
+                context.HttpContext.Session.SetString(Constants.ROLE_NAME, role);
             }
             context.TempData[Constants.ROLE_NAME] = role;
+        }
+        public List<string>? SetListStringsRatingDisplayByRating(decimal rating)
+        {
+
+            List<string> htmlTags = new List<string>();
+            int fullStars = (int)rating;
+            bool hasHalfStar = rating - fullStars >= 0.5m;
+
+            for (int i = 0; i < fullStars; i++)
+            {
+                htmlTags.Add("<i class='bx bxs-star yellow'></i>");
+            }
+
+            if (hasHalfStar)
+            {
+                htmlTags.Add("<i class='bx bxs-star-half yellow'></i>");
+            }
+
+            for (int i = fullStars + (hasHalfStar ? 1 : 0); i < 5; i++)
+            {
+                htmlTags.Add("<i class='bx bxs-star'></i>");
+            }
+
+            return htmlTags;
         }
         public void LogOut(Controller context)
         {

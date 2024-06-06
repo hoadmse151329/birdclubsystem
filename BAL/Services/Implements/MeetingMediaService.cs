@@ -27,7 +27,10 @@ namespace BAL.Services.Implements
             if (meet == null) return false;
             var pic = _mapper.Map<MeetingMedia>(media);
             pic.MeetingId = meetingId;
-            pic.Image = "https://edwinbirdclubstorage.blob.core.windows.net/images/meeting/meeting_image_1.png";
+            if(media.Image == null)
+            {
+                pic.Image = "https://edwinbirdclubstorage.blob.core.windows.net/images/meeting/meeting_image_1.png";
+            }
             _unitOfWork.MeetingMediaRepository.Create(pic);
             _unitOfWork.Save();
             return true;
@@ -37,7 +40,7 @@ namespace BAL.Services.Implements
         {
             var meet = await _unitOfWork.MeetingRepository.GetMeetingById(meetingId);
             if (meet == null) return false;
-            var pic = await _unitOfWork.MeetingMediaRepository.GetMeetingMediaByIdTracking(pictureId);
+            var pic = await _unitOfWork.MeetingMediaRepository.GetMeetingMediaById(pictureId);
             if (pic == null) return false;
             _unitOfWork.MeetingMediaRepository.Delete(pic);
             _unitOfWork.Save();
@@ -53,6 +56,11 @@ namespace BAL.Services.Implements
             if (meetmedia == null) return false;
             var pic = _mapper.Map<MeetingMedia>(media);
             pic.MeetingId = meetingId;
+            if (media.Image == null)
+            {
+                pic.Image = "https://edwinbirdclubstorage.blob.core.windows.net/images/meeting/meeting_image_1.png";
+            }
+            _unitOfWork.MeetingMediaRepository.Update(pic);
             _unitOfWork.Save();
             return true;
         }

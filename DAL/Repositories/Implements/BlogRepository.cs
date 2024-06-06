@@ -20,30 +20,39 @@ namespace DAL.Repositories.Implements
 
         public async Task<IEnumerable<Blog>> GetAllBlogs()
         {
-            return _context.Blogs.AsNoTracking().Include(b => b.UserDetail.MemberDetail).ToList();
+            return await _context.Blogs
+                .AsNoTracking()
+                .Include(b => b.UserDetails.MemberDetails)
+                .ToListAsync();
         }
 
         public async Task<IEnumerable<Blog>?> GetAllBlogsByUserId(int usrId)
         {
-            return _context.Blogs.AsNoTracking().Where(b => b.UserId == usrId).Include(b => b.UserDetail.MemberDetail).ToList();
+            return await _context.Blogs
+                .AsNoTracking()
+                .Where(b => b.UserId == usrId)
+                .Include(b => b.UserDetails.MemberDetails)
+                .ToListAsync();
         }
 
         public async Task<int> CountBlog()
         {
-            return _context.Blogs.AsNoTracking().Count();
+            return await _context.Blogs
+                .AsNoTracking()
+                .CountAsync();
         }
 
         public async Task<IEnumerable<Blog>?> GetSortedBlogs(
-            string? description, 
-            string? category, 
-            DateTime? uploadDate, 
-            int? vote, 
-            List<string>? statuses, 
-            string? orderBy, 
-            int? userId = null, 
+            string? description,
+            string? category,
+            DateTime? uploadDate,
+            int? vote,
+            List<string>? statuses,
+            string? orderBy,
+            int? userId = null,
             bool isMemberOrGuest = false)
         {
-            var newsfeeds = _context.Blogs.AsNoTracking().Include(b => b.UserDetail.MemberDetail).AsQueryable();
+            var newsfeeds = _context.Blogs.AsNoTracking().Include(b => b.UserDetails.MemberDetails).AsQueryable();
             /*  Draft: The post has been created but not yet published.
                 Archived: The post is no longer visible to the public but is kept for record-keeping.
                 Hidden: The post is temporarily hidden from the public view.
@@ -52,7 +61,7 @@ namespace DAL.Repositories.Implements
                 Disabled: The post is restricted due to a violation of platform policies.
              */
             List<string> statusListDefault = new List<string> { "Draft", "Active", "Hidden", "Archived", "Reported", "Disabled" };
-            //List<string> categoryListDefault = new List<string> { "Announcement", "Meeting", "Fieldtrip", "Contest", "Others" };
+            List<string> categoryListDefault = new List<string> { "Announcement", "Discussion", "Information", "Others" };
 
             if (isMemberOrGuest)
             {
@@ -81,7 +90,7 @@ namespace DAL.Repositories.Implements
 
             if (uploadDate.HasValue)
             {
-                newsfeeds = newsfeeds.Where(m => m.UploadDate.Date.Equals(uploadDate.Value.Date));
+                newsfeeds = newsfeeds.Where(m => m.UploadDate.Value.Date.Equals(uploadDate.Value.Date));
             }
             if (statuses != null && statuses.Any())
             {
@@ -93,8 +102,8 @@ namespace DAL.Repositories.Implements
                 "vote_desc" => newsfeeds.OrderByDescending(m => m.Vote),
                 "category_asc" => newsfeeds.OrderBy(m => m.Category),
                 "category_desc" => newsfeeds.OrderByDescending(m => m.Category),
-                "uploaddate_asc" => newsfeeds.OrderBy(m => m.UploadDate.Date),
-                "uploaddate_desc" => newsfeeds.OrderByDescending(m => m.UploadDate.Date),
+                "uploaddate_asc" => newsfeeds.OrderBy(m => m.UploadDate.Value.Date),
+                "uploaddate_desc" => newsfeeds.OrderByDescending(m => m.UploadDate.Value.Date),
                 "status_asc" => newsfeeds.OrderBy(m => statusListDefault.IndexOf(m.Status)),
                 "status_desc" => newsfeeds.OrderByDescending(m => statusListDefault.IndexOf(m.Status)),
                 _ => newsfeeds.OrderBy(m => m.BlogId)
@@ -105,7 +114,10 @@ namespace DAL.Repositories.Implements
 
         public async Task<Blog?> GetBlogByIdNoTracking(int blogId)
         {
-            return await _context.Blogs.AsNoTracking().Include(b => b.UserDetail.MemberDetail).FirstOrDefaultAsync(b => b.BlogId.Equals(blogId));
+            return await _context.Blogs
+                .AsNoTracking()
+                .Include(b => b.UserDetails.MemberDetails)
+                .FirstOrDefaultAsync(b => b.BlogId.Equals(blogId));
         }
     }
 }

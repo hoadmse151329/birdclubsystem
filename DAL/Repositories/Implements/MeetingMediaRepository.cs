@@ -28,7 +28,7 @@ namespace DAL.Repositories.Implements
             return _context.MeetingMedia.SingleOrDefault(m => m.PictureId.Equals(pictureId));
         }
 
-        public async Task<IEnumerable<MeetingMedia>> GetAllMeetingMediasByMeetingId(int meetingId)
+        public async Task<IEnumerable<MeetingMedia>> GetMeetingMediasByMeetingId(int meetingId)
         {
             return _context.MeetingMedia.AsNoTracking().Where(m => m.MeetingId.Equals(meetingId)).ToList();
         }
