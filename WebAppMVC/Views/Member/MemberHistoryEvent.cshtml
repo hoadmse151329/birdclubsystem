@@ -321,7 +321,7 @@
     <script src="~/ckeditor/ckeditor.js"></script>
     <script src="~/ckfinder/ckfinder.js"></script>
     <script>
-
+        var data = {};
         var editor = CKEDITOR.replace('createFeedback.Details');
         CKFinder.setupCKEditor(editor, 'ckfinder/');
         data["createFeedback.Details"] = editor.getData();
