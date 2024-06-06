@@ -330,9 +330,11 @@ namespace WebAPI.Controllers
                 }
                 UserViewModel value = new UserViewModel()
                 {
-					UserName = newmem.UserName,
-                    Email= newmem.Email,
-                    Password= newmem.Password
+                    UserName = newmem.UserName,
+                    Email = newmem.Email,
+                    Password = newmem.Password,
+                    ClubId = 1
+                    
                 };
                 _userService.Create(value,newmem);
                 var loguser = new AuthenRequest(

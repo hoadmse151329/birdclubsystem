@@ -518,6 +518,7 @@ namespace WebAppMVC.Constants
             {
                 var objectForValidation = JsonSerializer.Deserialize<T>(tempData[tempDataName].ToString(), jsonOptions);
                 tempData.Remove(tempDataName);
+                //viewObjectName is basically a prefix
                 context.TryValidateModel(objectForValidation, viewObjectName);
                 return objectForValidation;
             }

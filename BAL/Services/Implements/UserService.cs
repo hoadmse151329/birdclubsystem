@@ -40,15 +40,15 @@ namespace BAL.Services.Implements
         public async Task<AuthenResponse> AuthenticateUser(AuthenRequest request)
         {
             var user = await _unitOfWork.UserRepository.GetByLogin(request.Username, request.Password);
-            if (user != null && user.MemberDetail != null)
+            if (user != null && user.MemberDetails != null)
             {
-                if(user.MemberDetail.Status != "Active")
+                if(user.MemberDetails.Status != "Active")
                 {
                     return new AuthenResponse()
                     {
                         UserId = user.MemberId,
                         UserName = request.Username,
-                        Status = user.MemberDetail.Status
+                        Status = user.MemberDetails.Status
                     };
                 }
                 //var role = _unitOfWork.UserRepository
@@ -73,7 +73,7 @@ namespace BAL.Services.Implements
                     UserName = user.UserName,
                     AccessToken = accessToken,
                     ImagePath = user.ImagePath,
-                    Status = user.MemberDetail.Status
+                    Status = user.MemberDetails.Status
                 };
             }
             return null;
@@ -84,11 +84,11 @@ namespace BAL.Services.Implements
             var user = await _unitOfWork.UserRepository.GetByEmail(email);
             if (user != null)
             {
-                var accessToken = _jwtService.GenerateJWTToken(user.MemberId, user.UserName, user.MemberDetail.Role, _configuration);
+                var accessToken = _jwtService.GenerateJWTToken(user.MemberId, user.UserName, user.MemberDetails.Role, _configuration);
                 return new AuthenResponse()
                 {
                     UserId = user.MemberId,
-                    RoleName = user.MemberDetail.Role,
+                    RoleName = user.MemberDetails.Role,
                     UserName = user.UserName,
                     AccessToken = accessToken,
                     ImagePath = user.ImagePath
@@ -118,13 +118,13 @@ namespace BAL.Services.Implements
             usr.MemberDetails.Role = "Member";
 			usr.MemberDetails.Email = entity.Email;
             usr.MemberDetails.RegisterDate = DateTime.Now;
-
-			if (newmem != null)
+            usr.MemberDetails.ClubId = 1;
+            if (newmem != null)
             {
-                usr.MemberDetail.FullName = newmem.FullName;
-                usr.MemberDetail.UserName = newmem.UserName;
-				usr.MemberDetail.Gender = newmem.Gender;
-                usr.MemberDetail.Phone = newmem.Phone;
+                usr.MemberDetails.FullName = newmem.FullName;
+                usr.MemberDetails.UserName = newmem.UserName;
+				usr.MemberDetails.Gender = newmem.Gender;
+                usr.MemberDetails.Phone = newmem.Phone;
 			}
             _unitOfWork.UserRepository.Create(usr);
             _unitOfWork.Save();
@@ -142,10 +142,10 @@ namespace BAL.Services.Implements
             usr.MemberDetails.JoinDate = DateTime.Now;
             if (newmem != null)
             {
-                usr.MemberDetail.FullName = newmem.FullName;
-                usr.MemberDetail.UserName = newmem.UserName;
-                usr.MemberDetail.Gender = newmem.Gender;
-                usr.MemberDetail.Phone = newmem.Phone;
+                usr.MemberDetails.FullName = newmem.FullName;
+                usr.MemberDetails.UserName = newmem.UserName;
+                usr.MemberDetails.Gender = newmem.Gender;
+                usr.MemberDetails.Phone = newmem.Phone;
             }
             _unitOfWork.UserRepository.Create(usr);
             _unitOfWork.Save();
@@ -225,7 +225,7 @@ namespace BAL.Services.Implements
 				var usrmem =  _unitOfWork.MemberRepository.GetByIdNoTracking(usr.MemberId).Result;
                 if(usrmem == null)
                 {
-                    usr.MemberDetail = new Member()
+                    usr.MemberDetails = new Member()
                     {
                         Email = entity.Email
                     };
@@ -233,7 +233,7 @@ namespace BAL.Services.Implements
                 usrmem.Email = entity.Email;
 
                 usr.Role= entity.Role;
-                usr.MemberDetail = usrmem;
+                usr.MemberDetails = usrmem;
 			}
             _unitOfWork.UserRepository.Update(usr);
             _unitOfWork.Save();
@@ -246,7 +246,7 @@ namespace BAL.Services.Implements
             {
                 var usrmem = _unitOfWork.MemberRepository.GetByIdNoTracking(usr.MemberId).Result;
                 usr.Role = entity.Role;
-                usr.MemberDetail = usrmem;
+                usr.MemberDetails = usrmem;
             }
             _unitOfWork.UserRepository.Update(usr);
             _unitOfWork.Save();

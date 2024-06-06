@@ -118,6 +118,11 @@ namespace WebAppMVC.Constants
         public readonly static string EVENT_STATUS_ONGOING = "Ongoing";
         public readonly static string EVENT_STATUS_NAME_ONGOING = "Ongoing";
 
+        public readonly static string EVENT_MEDIA_TYPE_SPOTLIGHT = "Spotlight";
+        public readonly static string EVENT_MEDIA_TYPE_LOCATION_MAP = "LocationMap";
+        public readonly static string EVENT_MEDIA_TYPE_ADDITIONAL = "Additional";
+        public readonly static string FIELDTRIP_MEDIA_TYPE_DAYBYDAY = "DayByDay";
+
         public readonly static int EVENT_MEETING_MIN_PART_REQ = 10;
         public readonly static int EVENT_FIELDTRIP_MIN_PART_REQ = 10;
         public readonly static int EVENT_CONTEST_MIN_PART_REQ = 10;
