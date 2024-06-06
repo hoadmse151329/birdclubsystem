@@ -96,7 +96,7 @@ namespace DAL.Repositories.Implements
             }
             if (districtLocationIds.Any())
             {
-                meetings = meetings.AsNoTracking()  .Where(m => districtLocationIds.Contains(m.LocationId.Value));
+                meetings = meetings.AsNoTracking().Where(m => districtLocationIds.Contains(m.LocationId.Value));
             }
 
             if (cityLocationIds.Any())
@@ -131,19 +131,19 @@ namespace DAL.Repositories.Implements
         {
             if (role == "Manager" || role == "Staff")
             {
-                return _context.Meetings.AsNoTracking().ToList();
+                return await _context.Meetings.AsNoTracking().ToListAsync();
             }
-            else return _context.Meetings.AsNoTracking().Where(meet => meet.Status == "OpenRegistration").ToList();
+            else return await _context.Meetings.AsNoTracking().Where(meet => meet.Status == "OpenRegistration").ToListAsync();
         }
 
         public async Task<Meeting?> GetMeetingById(int id)
         {
-            return _context.Meetings.AsNoTracking().SingleOrDefault(meet => meet.MeetingId == id);
+            return await _context.Meetings.AsNoTracking().SingleOrDefaultAsync(meet => meet.MeetingId == id);
         }
 
         public async Task<bool> GetBoolMeetingId(int id)
         {
-            var meet = _context.Meetings.SingleOrDefault(m => m.MeetingId == id);
+            var meet = await _context.Meetings.SingleOrDefaultAsync(m => m.MeetingId == id);
             if (meet != null) return true;
             else return false;
         }
@@ -161,7 +161,12 @@ namespace DAL.Repositories.Implements
 
         public async Task<int> CountMeeting()
         {
-            return _context.Meetings.AsNoTracking().Count();
+            return await _context.Meetings.AsNoTracking().CountAsync();
+        }
+
+        public async Task<int> CountMeetingByStatus(string status)
+        {
+            return await _context.Meetings.AsNoTracking().Where(m => m.Status == status).CountAsync();
         }
     }
 }

@@ -2,15 +2,15 @@
 
 namespace WebAppMVC.Constants
 {
-	public static class Constants
-	{
-		public readonly static string ADMIN_URL = "/Admin/Index";
-		public readonly static string MEMBER_URL = "/Home/Index";
-		public readonly static string MANAGER_URL = "/Manager/Index";
-		public readonly static string STAFF_URL = "/Staff/Index";
-		public readonly static string NOTFOUND_URL = "/Auth/NotFound";
-		public readonly static string LOGIN_URL = "/Auth/Login";
-		public readonly static string NEW_MEMBER_CONFIRM_REGISTRATION_URL = "/Auth/SignUp";
+    public static class Constants
+    {
+        public readonly static string ADMIN_URL = "/Admin/Index";
+        public readonly static string MEMBER_URL = "/Home/Index";
+        public readonly static string MANAGER_URL = "/Manager/Index";
+        public readonly static string STAFF_URL = "/Staff/Index";
+        public readonly static string NOTFOUND_URL = "/Auth/NotFound";
+        public readonly static string LOGIN_URL = "/Auth/Login";
+        public readonly static string NEW_MEMBER_CONFIRM_REGISTRATION_URL = "/Auth/SignUp";
 
         public readonly static string NEW_MEMBER_REGISTRATION_COOKIE = "New-Membership-Registration-Cookie";
         public readonly static string NEW_MEMBER_REGISTRATION_TRANSACTION_COOKIE = "New-Membership-Registration-Transaction-Cookie";
@@ -19,9 +19,10 @@ namespace WebAppMVC.Constants
         public readonly static string MEMBER_CONTEST_REGISTRATION_COOKIE = "Member-Contest-Registration-Cookie";
         public readonly static string MEMBER_CONTEST_BIRD_REGISTRATION_COOKIE = "Member-Contest-Bird-Registration-Cookie";
         public readonly static string MEMBER_CONTEST_REGISTRATION_TRANSACTION_COOKIE = "Member-Contest-Registration-Transaction-Cookie";
+        public readonly static string MEMBERSHIP_RENEWAL_TRANSACTION_COOKIE = "Membership-Renewal-Transaction-Cookie";
 
         public readonly static string NEW_MEMBER_REGISTRATION_TRANSACTION_TYPE = "New-Membership-Registration";
-		public readonly static string MEMBER_FIELDTRIP_REGISTRATION_TRANSACTION_TYPE = "Member-FieldTrip-Registration";
+        public readonly static string MEMBER_FIELDTRIP_REGISTRATION_TRANSACTION_TYPE = "Member-FieldTrip-Registration";
         public readonly static string MEMBER_CONTEST_REGISTRATION_TRANSACTION_TYPE = "Member-Contest-Registration";
         public readonly static string MEMBERSHIP_RENEWAL_TRANSACTION_TYPE = "Membership-Renewal-Transaction-Type";
 
@@ -34,6 +35,8 @@ namespace WebAppMVC.Constants
         public readonly static string ALERT_USER_PASSWORD_UPDATE_ERROR = "Change user password failed!";
         public readonly static string ALERT_MANAGER_CREATE_NEWS_SUCCESS = "Successfully create news!";
         public readonly static string ALERT_MANAGER_CREATE_NEWS_ERROR = "Create news failed!";
+        public readonly static string ALERT_MEMBER_CREATE_BLOG_SUCCESS = "Successfully create your blog!";
+        public readonly static string ALERT_MEMBER_CREATE_BLOG_ERROR = "Create your blog failed!";
         public readonly static string ALERT_DEFAULT_ERROR_NAME = "Error";
         public readonly static string ALERT_DEFAULT_SUCCESS_NAME = "Success";
         public readonly static string ALERT_DEFAULT_ERROR_CHECK = "ErrorCheck";
@@ -57,6 +60,19 @@ namespace WebAppMVC.Constants
         public readonly static string NEWS_CATEGORY_FIELDTRIP = "Fieldtrip";
         public readonly static string NEWS_CATEGORY_CONTEST = "Contest";
         public readonly static string NEWS_CATEGORY_OTHERS = "Others";
+
+        public readonly static string BLOG_STATUS_DRAFT = "Draft";
+        public readonly static string BLOG_STATUS_ACTIVE = "Active";
+        public readonly static string BLOG_STATUS_HIDDEN = "Hidden";
+        public readonly static string BLOG_STATUS_ARCHIVED = "Archived";
+        public readonly static string BLOG_STATUS_REPORTED = "Reported";
+        public readonly static string BLOG_STATUS_DISABLED = "Disabled";
+
+        public readonly static string BLOG_CATEGORY_ANNOUNCEMENT = "Announcement";
+        public readonly static string BLOG_CATEGORY_MEETING = "Meeting";
+        public readonly static string BLOG_CATEGORY_FIELDTRIP = "Fieldtrip";
+        public readonly static string BLOG_CATEGORY_CONTEST = "Contest";
+        public readonly static string BLOG_CATEGORY_OTHERS = "Others";
 
         public readonly static string CREATE_BIRD_VALID = "CBirdValid";
         public readonly static string CREATE_OR_UPDATE_BIRD_PROFILE_PICTURE_VALID = "CBirdProfilePicValid";
@@ -184,11 +200,11 @@ namespace WebAppMVC.Constants
         public readonly static string USR_IMAGE = "IMAGE_PATH";
 
         public readonly static string ADMIN = "Admin";
-		public readonly static string MEMBER = "Member";
-		public readonly static string TEMPMEMBER = "TempMember";
+        public readonly static string MEMBER = "Member";
+        public readonly static string TEMPMEMBER = "TempMember";
         public readonly static string GUEST = "Guest";
-		public readonly static string STAFF = "Staff";
-		public readonly static string MANAGER = "Manager";
+        public readonly static string STAFF = "Staff";
+        public readonly static string MANAGER = "Manager";
 
         public readonly static string MALE = "Male";
         public readonly static string FEMALE = "Female";
@@ -196,8 +212,8 @@ namespace WebAppMVC.Constants
 
         public readonly static string GET_METHOD = "GET";
         public readonly static string POST_METHOD = "POST";
-		public readonly static string PUT_METHOD = "PUT";
-		public readonly static string DELETE_METHOD = "DELETE";
+        public readonly static string PUT_METHOD = "PUT";
+        public readonly static string DELETE_METHOD = "DELETE";
 
         public const string GOOGLE_CLIENT_ID = "Authentication:Google:ClientId";
         public const string GOOGLE_CLIENT_SECRET = "Authentication:Google:ClientSecret";

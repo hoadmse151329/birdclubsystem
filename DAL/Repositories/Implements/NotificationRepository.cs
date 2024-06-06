@@ -26,8 +26,8 @@ namespace DAL.Repositories.Implements
         {
             foreach (var notification in notif)
             {
-                var usrnotif = _context.Notifications
-                    .SingleOrDefault(n => n.UserId == notification.UserId && n.NotificationId == notification.NotificationId);
+                var usrnotif = await _context.Notifications
+                    .SingleOrDefaultAsync(n => n.UserId == notification.UserId && n.NotificationId == notification.NotificationId);
                 if (usrnotif != null)
                 {
                     if (usrnotif.Status != "Read")
@@ -47,14 +47,14 @@ namespace DAL.Repositories.Implements
 
         public async Task<bool> GetBoolNotificationId(string id)
         {
-            var notif = _context.Notifications.SingleOrDefault(n => n.NotificationId.Equals(id));
+            var notif = await _context.Notifications.SingleOrDefaultAsync(n => n.NotificationId.Equals(id));
             if (notif != null) return true;
             else return false;
         }
 
         public async Task<Notification?> GetNotificationById(string id)
         {
-            return _context.Notifications.AsNoTracking().SingleOrDefault(n => n.NotificationId == id);
+            return await _context.Notifications.AsNoTracking().SingleOrDefaultAsync(n => n.NotificationId == id);
         }
 
         public async Task<IEnumerable<string?>> GetUnreadNotificationTitle(string id)
@@ -62,7 +62,7 @@ namespace DAL.Repositories.Implements
             return await _context.Notifications.AsNoTracking()
                 .Where(n => n.UserDetails.MemberId == id && n.Status == "Unread")
                 .OrderByDescending(n => n.Date)
-                .Select(n => n.Title).ToList();
+                .Select(n => n.Title).ToListAsync();
         }
 
         public async Task<IEnumerable<string?>> GetReadNotificationTitle(string id)
@@ -70,7 +70,18 @@ namespace DAL.Repositories.Implements
             return await _context.Notifications.AsNoTracking()
                 .Where(n => n.UserDetails.MemberId == id && n.Status == "Read")
                 .OrderByDescending(n => n.Date)
-                .Select(n => n.Title).ToList();
+                .Select(n => n.Title).ToListAsync();
+        }
+
+        public async Task<string> GenerateNewNotificationId()
+        {
+            var lastNotif = await _context.Notifications.OrderByDescending(n => Convert.ToInt32(n.NotificationId)).FirstOrDefaultAsync();
+            int newId = 1;
+            if (lastNotif != null)
+            {
+                newId = int.Parse(lastNotif.NotificationId) + 1;
+            }
+            return newId.ToString();
         }
     }
 }

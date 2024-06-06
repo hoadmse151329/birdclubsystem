@@ -166,7 +166,7 @@ namespace DAL.Models
             modelBuilder.Entity<FieldtripAdditionalDetail>(entity =>
             {
                 entity.HasOne(d => d.Trip)
-                    .WithMany(p => p.FieldTripAdditionalDetails)
+                    .WithMany(p => p.FieldtripAdditionalDetails)
                     .HasForeignKey(d => d.TripId)
                     .HasConstraintName("FK_FieldTripAdditionalDetails_Trip");
             });
@@ -174,7 +174,7 @@ namespace DAL.Models
             modelBuilder.Entity<FieldtripDaybyDay>(entity =>
             {
                 entity.HasOne(d => d.Trip)
-                    .WithMany(p => p.FieldTripDaybyDays)
+                    .WithMany(p => p.FieldtripDaybyDays)
                     .HasForeignKey(d => d.TripId)
                     .HasConstraintName("FK_FieldTripDaybyDay_FieldTrip");
             });
@@ -182,7 +182,7 @@ namespace DAL.Models
             modelBuilder.Entity<FieldtripGettingThere>(entity =>
             {
                 entity.HasOne(d => d.Trip)
-                    .WithOne(p => p.FieldTripGettingThereDetails)
+                    .WithOne(p => p.FieldtripGettingTheres)
                     .HasForeignKey<FieldtripGettingThere>(d => d.TripId)
                     .HasConstraintName("FK_FieldTripGettingThere_FieldTrip");
             });
@@ -190,7 +190,7 @@ namespace DAL.Models
             modelBuilder.Entity<FieldtripInclusion>(entity =>
             {
                 entity.HasOne(d => d.Trip)
-                    .WithMany(p => p.FieldTripInclusions)
+                    .WithMany(p => p.FieldtripInclusions)
                     .HasForeignKey(d => d.TripId)
                     .HasConstraintName("FK_FieldTripInclusions_FieldTrip");
             });
@@ -201,7 +201,7 @@ namespace DAL.Models
                     .HasName("PK__FieldTri__769A271A1A196F52");
 
                 entity.HasOne(d => d.Trip)
-                    .WithMany(p => p.FieldTripPictures)
+                    .WithMany(p => p.FieldtripPictures)
                     .HasForeignKey(d => d.TripId)
                     .HasConstraintName("FK_FieldTripMedia_FieldTrip");
             });

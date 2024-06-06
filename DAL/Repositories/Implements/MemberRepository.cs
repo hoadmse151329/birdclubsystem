@@ -21,17 +21,17 @@ namespace DAL.Repositories.Implements
 
         public async Task<IEnumerable<Member>> GetAllByRole(string role)
         {
-            return _context.Members.AsNoTracking().Where(x => x.Role == role).OrderBy(m => m.Status).ToList();
+            return await _context.Members.AsNoTracking().Where(x => x.Role == role).OrderBy(m => m.Status).ToListAsync();
         }
 
         public async Task<IEnumerable<Member>> GetSortedMembers(
-            string? memberId = null, 
-            string? memberUserName = null, 
-            string? memberFullName = null, 
+            string? memberId = null,
+            string? memberUserName = null,
+            string? memberFullName = null,
             DateTime? expiryDateTime = null,
-            List<string>? roles = null, 
-            List<string>? statuses = null, 
-            string? orderBy = null, 
+            List<string>? roles = null,
+            List<string>? statuses = null,
+            string? orderBy = null,
             bool isManagerGetMemberList = false,
             bool isManagerGetStaffList = false,
             bool isAdmin = false)
@@ -102,17 +102,17 @@ namespace DAL.Repositories.Implements
 
         public async Task<Member?> GetByEmail(string email)
         {
-            return _context.Members.AsNoTrackingWithIdentityResolution().SingleOrDefault(mem => mem.Email == email);
+            return await _context.Members.AsNoTrackingWithIdentityResolution().SingleOrDefaultAsync(mem => mem.Email == email);
         }
 
         public async Task<Member?> GetByIdNoTracking(string id)
         {
-            return await _context.Members.AsNoTrackingWithIdentityResolution().Include(mem => mem.UserDetail).SingleOrDefaultAsync(mem => mem.MemberId == id);
+            return await _context.Members.AsNoTrackingWithIdentityResolution().Include(mem => mem.UserDetails).SingleOrDefaultAsync(mem => mem.MemberId == id);
         }
 
         public async Task<Member?> GetByIdTracking(string id)
         {
-            return await _context.Members.Include(mem => mem.UserDetail).SingleOrDefaultAsync(mem => mem.MemberId == id);
+            return await _context.Members.Include(mem => mem.UserDetails).SingleOrDefaultAsync(mem => mem.MemberId == id);
         }
 
         public async Task<string?> GetMemberNameById(string id)
@@ -122,12 +122,12 @@ namespace DAL.Repositories.Implements
 
         public async Task<IEnumerable<Member>> GetAllMemberOnly()
         {
-            return _context.Members.Where(mem => mem.Role == "Member").OrderBy(mem => mem.MemberId).ToList();
+            return await _context.Members.Where(mem => mem.Role == "Member").OrderBy(mem => mem.MemberId).ToListAsync();
         }
 
         public async Task<IEnumerable<Member>> UpdateAllMemberStatus(List<Member> members)
         {
-            foreach(var memberViewModel in members)
+            foreach (var memberViewModel in members)
             {
                 var mem = await _context.Members.SingleOrDefaultAsync(mem => mem.MemberId == memberViewModel.MemberId);
                 if (mem != null)
@@ -144,7 +144,8 @@ namespace DAL.Repositories.Implements
                             {
                                 mem.ExpiryDate = DateTime.UtcNow.AddMonths(1);
                             }
-                        } else
+                        }
+                        else
                         if (mem.Status == "Inactive" && memberViewModel.Status == "Denied")
                         {
                             mem.ExpiryDate = null;
@@ -166,8 +167,12 @@ namespace DAL.Repositories.Implements
                 {
                     if (mem.Status != memberViewModel.Status)
                     {
-                        if((mem.Status == "Expired" || mem.Status == "Inactive") && memberViewModel.Status == "Active")
+                        if ((mem.Status == "Expired" || mem.Status == "Inactive") && memberViewModel.Status == "Active")
                         {
+                            if (mem.JoinDate == null && mem.Status == "Inactive")
+                            {
+                                mem.JoinDate = DateTime.Now;
+                            }
                             if (DateTime.Now.Day >= DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month))
                             {
                                 mem.ExpiryDate = DateTime.UtcNow.AddDays(30);
@@ -176,7 +181,8 @@ namespace DAL.Repositories.Implements
                             {
                                 mem.ExpiryDate = DateTime.UtcNow.AddMonths(1);
                             }
-                        } else
+                        }
+                        else
                         if (mem.Status == "Inactive" && memberViewModel.Status == "Denied")
                         {
                             mem.ExpiryDate = null;
@@ -186,14 +192,25 @@ namespace DAL.Repositories.Implements
                     }
                     if (mem.Role != memberViewModel.Role)
                     {
-                        mem = await _context.Members.Include(m => m.UserDetail).SingleOrDefaultAsync(mem => mem.MemberId == memberViewModel.MemberId);
+                        mem = await _context.Members.Include(m => m.UserDetails).SingleOrDefaultAsync(mem => mem.MemberId == memberViewModel.MemberId);
                         mem.Role = memberViewModel.Role;
-                        mem.UserDetail.Role = memberViewModel.Role;
+                        mem.UserDetails.Role = memberViewModel.Role;
                         _context.Update(mem);
                     }
                 }
             }
             return members;
+        }
+
+        public string GenerateNewMemberId()
+        {
+            var lastMember = _context.Members.OrderByDescending(m => Convert.ToInt32(m.MemberId)).FirstOrDefault();
+            int newId = 1;
+            if (lastMember != null)
+            {
+                newId = int.Parse(lastMember.MemberId) + 1;
+            }
+            return newId.ToString();
         }
     }
 }

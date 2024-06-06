@@ -22,7 +22,7 @@ namespace DAL.Repositories.Implements
         {
             return await _context.Blogs
                 .AsNoTracking()
-                .Include(b => b.UserDetail.MemberDetail)
+                .Include(b => b.UserDetails.MemberDetails)
                 .ToListAsync();
         }
 
@@ -31,7 +31,7 @@ namespace DAL.Repositories.Implements
             return await _context.Blogs
                 .AsNoTracking()
                 .Where(b => b.UserId == usrId)
-                .Include(b => b.UserDetail.MemberDetail)
+                .Include(b => b.UserDetails.MemberDetails)
                 .ToListAsync();
         }
 
@@ -43,16 +43,16 @@ namespace DAL.Repositories.Implements
         }
 
         public async Task<IEnumerable<Blog>?> GetSortedBlogs(
-            string? description, 
-            string? category, 
-            DateTime? uploadDate, 
-            int? vote, 
-            List<string>? statuses, 
-            string? orderBy, 
-            int? userId = null, 
+            string? description,
+            string? category,
+            DateTime? uploadDate,
+            int? vote,
+            List<string>? statuses,
+            string? orderBy,
+            int? userId = null,
             bool isMemberOrGuest = false)
         {
-            var newsfeeds = _context.Blogs.AsNoTracking().Include(b => b.UserDetail.MemberDetail).AsQueryable();
+            var newsfeeds = _context.Blogs.AsNoTracking().Include(b => b.UserDetails.MemberDetails).AsQueryable();
             /*  Draft: The post has been created but not yet published.
                 Archived: The post is no longer visible to the public but is kept for record-keeping.
                 Hidden: The post is temporarily hidden from the public view.
@@ -90,7 +90,7 @@ namespace DAL.Repositories.Implements
 
             if (uploadDate.HasValue)
             {
-                newsfeeds = newsfeeds.Where(m => m.UploadDate.Date.Equals(uploadDate.Value.Date));
+                newsfeeds = newsfeeds.Where(m => m.UploadDate.Value.Date.Equals(uploadDate.Value.Date));
             }
             if (statuses != null && statuses.Any())
             {
@@ -102,8 +102,8 @@ namespace DAL.Repositories.Implements
                 "vote_desc" => newsfeeds.OrderByDescending(m => m.Vote),
                 "category_asc" => newsfeeds.OrderBy(m => m.Category),
                 "category_desc" => newsfeeds.OrderByDescending(m => m.Category),
-                "uploaddate_asc" => newsfeeds.OrderBy(m => m.UploadDate.Date),
-                "uploaddate_desc" => newsfeeds.OrderByDescending(m => m.UploadDate.Date),
+                "uploaddate_asc" => newsfeeds.OrderBy(m => m.UploadDate.Value.Date),
+                "uploaddate_desc" => newsfeeds.OrderByDescending(m => m.UploadDate.Value.Date),
                 "status_asc" => newsfeeds.OrderBy(m => statusListDefault.IndexOf(m.Status)),
                 "status_desc" => newsfeeds.OrderByDescending(m => statusListDefault.IndexOf(m.Status)),
                 _ => newsfeeds.OrderBy(m => m.BlogId)
@@ -116,7 +116,7 @@ namespace DAL.Repositories.Implements
         {
             return await _context.Blogs
                 .AsNoTracking()
-                .Include(b => b.UserDetail.MemberDetail)
+                .Include(b => b.UserDetails.MemberDetails)
                 .FirstOrDefaultAsync(b => b.BlogId.Equals(blogId));
         }
     }
