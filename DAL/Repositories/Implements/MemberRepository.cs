@@ -29,6 +29,8 @@ namespace DAL.Repositories.Implements
             string? memberUserName = null, 
             string? memberFullName = null, 
             DateTime? expiryDateTime = null,
+            DateTime? registerDateTime = null,
+            DateTime? joinDateTime = null,
             List<string>? roles = null, 
             List<string>? statuses = null, 
             string? orderBy = null, 

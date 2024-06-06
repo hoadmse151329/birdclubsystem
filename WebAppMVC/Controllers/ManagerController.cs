@@ -2300,7 +2300,6 @@ namespace WebAppMVC.Controllers
             }
             managerDetails.Data.DefaultUserGenderSelectList = methcall.GetUserGenderSelectableList(managerDetails.Data.Gender);
             managerInvalids.managerDetail = managerDetails.Data;
-            TempData["Success"] = "Successfully updated Profile!";
             return View(managerInvalids);
         }
         [HttpPost("Profile")]
