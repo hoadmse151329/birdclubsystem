@@ -1,6 +1,6 @@
 ﻿@model WebAppMVC.Models.ViewModels.ManagerMeetingDetailsVM
 @{
-    Layout = null;
+    Layout = "~/Views/Shared/_MLayout.cshtml";
     ViewData["Title"] = "Manager Meeting Detail Page";
     BAL.ViewModels.MeetingViewModel detailsMeeting = Model.MeetingDetails;
     BAL.ViewModels.Manager.UpdateMeetingDetailsVM updateMeeting = Model.UpdateMeeting;
@@ -16,8 +16,6 @@
     BAL.ViewModels.MeetingMediaViewModel updateMediaSpotlight = Model.UpdateMeetingMediaSpotlight;
     BAL.ViewModels.MeetingMediaViewModel updateMediaLocationMap = Model.UpdateMeetingMediaLocationMap;
     List<BAL.ViewModels.MeetingMediaViewModel> updateMediaAdditionals = Model.UpdateMeetingMediaAdditional;
-
-    Layout = "~/Views/Shared/_MLayout.cshtml";
 }
 <html lang="en">
 <head>
@@ -389,7 +387,7 @@
                                                     <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
                                                         <div class="modal-content modal-addRoom">
                                                             <div class="modal-header">
-                                                                <h4 class="modal-title">Update Meeting Spotlight Media</h4>
+                                                                <h4 class="modal-title">Update Meeting Location Map Media</h4>
                                                             </div>
                                                             <form asp-action="ManagerUpdateMeetingMediaLocation" asp-controller="Manager" method="post" asp-route-meetingId="@detailsMeeting.MeetingId" asp-route-meetingMediaId="@LocationMap.PictureId" class="form-group" enctype="multipart/form-data">
                                                                 <div class="modal-content modal-addRoom">
@@ -397,7 +395,7 @@
                                                                         <div class="col-12 col-md-6">
                                                                             <input asp-for="@updateMediaLocationMap.PictureId" value="@updateMediaLocationMap.PictureId" required hidden />
                                                                             <div class="form-group row">
-                                                                                <label asp-for="@updateMediaLocationMap.Image" class="col-sm-4 col-form-label">Upload Meeting Spotlight Image</label>
+                                                                                <label asp-for="@updateMediaLocationMap.Image" class="col-sm-4 col-form-label">Upload Meeting Location Map Image</label>
                                                                                 <img class="profile-pic" style="width:300px; height:300px" src="@updateMediaLocationMap.Image" />
                                                                                 <input asp-for="@updateMediaLocationMap.ImageUpload" type="file" class="file-upload" accept=".jpg, .png, .jpeg">
                                                                                 <input asp-for="@updateMediaLocationMap.Image" type="text" value="@updateMediaLocationMap.Image" class="form-control" required hidden>
@@ -496,7 +494,7 @@
                                                         <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
                                                             <div class="modal-content modal-addRoom">
                                                                 <div class="modal-header">
-                                                                    <h4 class="modal-title">Update Meeting Spotlight Media</h4>
+                                                                    <h4 class="modal-title">Update Meeting Additional Media</h4>
                                                                 </div>
                                                                 <form asp-action="ManagerUpdateMeetingMediaAdditional" asp-controller="Manager" method="post" asp-route-meetingId="@detailsMeeting.MeetingId" asp-route-meetingMediaId="@pic.PictureId" class="form-group" enctype="multipart/form-data">
                                                                     <div class="modal-content modal-addRoom">
@@ -504,7 +502,7 @@
                                                                             <div class="col-12 col-md-6">
                                                                                 <input asp-for="@updateMediaAdditional.PictureId" value="@updateMediaAdditional.PictureId" required hidden />
                                                                                 <div class="form-group row">
-                                                                                    <label asp-for="@updateMediaAdditional.Image" class="col-sm-4 col-form-label">Upload Meeting Spotlight Image</label>
+                                                                                    <label asp-for="@updateMediaAdditional.Image" class="col-sm-4 col-form-label">Upload Meeting Additional Image</label>
                                                                                     <img class="profile-pic" style="width:300px; height:300px" src="@updateMediaAdditional.Image" />
                                                                                     <input asp-for="@updateMediaAdditional.ImageUpload" type="file" class="file-upload" accept=".jpg, .png, .jpeg">
                                                                                     <input asp-for="@updateMediaAdditional.Image" type="text" value="@updateMediaAdditional.Image" class="form-control" required hidden>

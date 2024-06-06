@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BAL.Services.Interfaces;
 using BAL.ViewModels;
+using BAL.ViewModels.Manager;
 using DAL.Infrastructure;
 using DAL.Models;
 using System;
@@ -188,6 +189,25 @@ namespace BAL.Services.Implements
             _unitOfWork.ContestRepository.Create(contest);
             _unitOfWork.Save();
         }
+        public void Create(CreateNewContestVM entity)
+        {
+            var loc = _unitOfWork.LocationRepository.GetLocationByName(entity.Address.Trim()).Result;
+
+            if (loc == null)
+            {
+                _unitOfWork.LocationRepository.Update(loc = new Location
+                {
+                    LocationName = entity.Address.Trim(),
+                    Description = string.Empty
+                });
+                _unitOfWork.Save();
+                loc = _unitOfWork.LocationRepository.GetLocationByName(entity.Address.Trim()).Result;
+            }
+            var contest = _mapper.Map<Contest>(entity);
+            contest.LocationId = loc.LocationId;
+            _unitOfWork.ContestRepository.Create(contest);
+            _unitOfWork.Save();
+        }
 
         public void Update(ContestViewModel entity)
         {
@@ -208,6 +228,41 @@ namespace BAL.Services.Implements
             _unitOfWork.ContestRepository.Update(contest);
             _unitOfWork.Save();
         }
+        public void Update(UpdateContestDetailsVM entity)
+        {
+            var loc = _unitOfWork.LocationRepository.GetLocationByContestId(entity.ContestId.Value).Result;
+
+            if (!loc.Equals(entity.Address.Trim()))
+            {
+                _unitOfWork.LocationRepository.Update(loc = new Location
+                {
+                    LocationName = entity.Address,
+                    Description = loc.Description
+                });
+                _unitOfWork.Save();
+                loc = _unitOfWork.LocationRepository.GetLocationByContestId(entity.ContestId.Value).Result;
+            }
+            var media = _unitOfWork.ContestMediaRepository.GetContestMediasByContestId(entity.ContestId.Value).Result;
+
+            if (media == null)
+            {
+                _unitOfWork.ContestMediaRepository.Update(new ContestMedia
+                {
+                    ContestId = entity.ContestId.Value,
+                });
+                _unitOfWork.Save();
+                media = _unitOfWork.ContestMediaRepository.GetContestMediasByContestId(entity.ContestId.Value).Result;
+            }
+            /*if (entity.Status.Equals("ClosedRegistration") && contest.NumberOfParticipants < 10)
+            {
+                return false;
+            }*/
+            var contest = _mapper.Map<Contest>(entity);
+            contest.LocationId = loc.LocationId;
+            contest.ContestPictures = (ICollection<ContestMedia>)media;
+            _unitOfWork.ContestRepository.Update(contest);
+            _unitOfWork.Save();
+        }
 
         public async Task<bool> GetBoolContestId(int id)
         {
@@ -219,6 +274,24 @@ namespace BAL.Services.Implements
         public async Task<int> CountContest()
         {
             return await _unitOfWork.ContestRepository.CountContest();
+        }
+
+        public async Task<int> CountContestByStatus(string status)
+        {
+            return await _unitOfWork.ContestRepository.CountContestByStatus(status);
+        }
+
+        public async Task<bool> UpdateStatus(UpdateContestStatusVM entity)
+        {
+            var contest = await _unitOfWork.ContestRepository.GetContestById(entity.ContestId.Value);
+            if (entity.Status.Equals("ClosedRegistration") && contest.NumberOfParticipants < 10)
+            {
+                return false;
+            }
+            contest.Status = entity.Status;
+            _unitOfWork.ContestRepository.Update(contest);
+            _unitOfWork.Save();
+            return true;
         }
     }
 }

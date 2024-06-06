@@ -40,7 +40,7 @@ namespace BAL.Services.Implements
         {
             var meet = await _unitOfWork.MeetingRepository.GetMeetingById(meetingId);
             if (meet == null) return false;
-            var pic = await _unitOfWork.MeetingMediaRepository.GetMeetingMediaByIdTracking(pictureId);
+            var pic = await _unitOfWork.MeetingMediaRepository.GetMeetingMediaById(pictureId);
             if (pic == null) return false;
             _unitOfWork.MeetingMediaRepository.Delete(pic);
             _unitOfWork.Save();

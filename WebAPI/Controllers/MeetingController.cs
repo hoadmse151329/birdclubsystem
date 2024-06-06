@@ -235,53 +235,23 @@ namespace WebAPI.Controllers
             }
             catch (Exception ex)
             {
+                if (ex.InnerException != null)
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = ex.Message,
+                        InnerExceptionMessage = ex.InnerException.Message
+                    });
+                }
+                // Log the exception if needed
                 return BadRequest(new
                 {
                     Status = false,
-                    ErrorMessage = ex.Message,
-                    InnerExceptionMessage = ex.InnerException?.Message
+                    ErrorMessage = ex.Message
                 });
             }
         }
-        /*[HttpPut("{id:int}/Update")]
-        [Authorize(Roles = "Manager,Staff")]
-        [ProducesResponseType(typeof(MeetingViewModel), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Update(
-            [Required][FromRoute] int id,
-            [FromBody] MeetingViewModel meet)
-        {
-            try
-            {
-                var result = _meetingService.GetById(id).Result;
-                if (result == null)
-                {
-                    return NotFound(new
-                    {
-                        Status = false,
-                        ErrorMessage = "Meeting does not exist!"
-                    });
-                }
-                meet.MeetingId = id;
-                _meetingService.Update(meet);
-                result = await _meetingService.GetById(meet.MeetingId.Value);
-                return Ok(new
-                {
-                    Status = true,
-                    Data = result
-                });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new
-                {
-                    Status = false,
-                    ErrorMessage = ex.Message,
-                    InnerExceptionMessage = ex.InnerException?.Message
-                });
-            }
-        }*/
         [HttpPut("{id:int}/Update")]
         [Authorize(Roles = "Manager")]
         [ProducesResponseType(typeof(MeetingViewModel), StatusCodes.Status200OK)]

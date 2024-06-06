@@ -110,7 +110,16 @@ namespace WebAPI.Controllers
 						ErrorMessage = "Username or Password is invalid!"
                     });
                 }
-				if (result.Status == "Inactive")
+                if (result.Status == "Suspended")
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = "User Account is Suspended! Due to your violations of our club guidelines",
+                        Data = result
+                    });
+                }
+                if (result.Status == "Inactive")
 				{
 					return BadRequest(new
 					{

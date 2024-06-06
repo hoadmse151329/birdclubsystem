@@ -15,6 +15,10 @@ namespace WebAppMVC.Constants
                 .ReverseMap();
             CreateMap<MeetingViewModel, UpdateMeetingStatusVM>()
                 .ReverseMap();
+            CreateMap<ContestViewModel, UpdateContestDetailsVM>()
+                .ReverseMap();
+            CreateMap<ContestViewModel, UpdateContestStatusVM>()
+                .ReverseMap();
         }
     }
 }
