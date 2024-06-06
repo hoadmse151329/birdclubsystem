@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -9,33 +10,29 @@ namespace DAL.Models
     [Table("Blog")]
     public partial class Blog
     {
-        public Blog()
-        {
-            Vote = 0;
-        }
         [Key]
         [Column("blogId")]
         public int BlogId { get; set; }
         [Column("userId")]
-        public int UserId { get; set; }
+        public int? UserId { get; set; }
         [Column("description")]
-        public string Description { get; set; } = null!;
+        public string? Description { get; set; }
         [Column("category")]
         [StringLength(255)]
         public string? Category { get; set; }
         [Column("uploadDate", TypeName = "datetime")]
-        public DateTime UploadDate { get; set; }
+        public DateTime? UploadDate { get; set; }
         [Column("vote")]
-        public int Vote { get; set; }
+        public int? Vote { get; set; }
         [Column("image")]
         [Unicode(false)]
         public string? Image { get; set; }
         [Column("status")]
         [StringLength(20)]
-        public string Status { get; set; } = null!;
+        public string? Status { get; set; }
 
         [ForeignKey(nameof(UserId))]
         [InverseProperty(nameof(User.Blogs))]
-        public virtual User UserDetail { get; set; } = null!;
+        public virtual User? UserDetails { get; set; }
     }
 }

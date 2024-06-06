@@ -14,25 +14,25 @@ namespace DAL.Models
         public int NewsId { get; set; }
         [Column("title")]
         [StringLength(255)]
-        public string Title { get; set; } = null!;
+        public string? Title { get; set; }
         [Column("category")]
         [StringLength(50)]
-        public string Category { get; set; } = null!;
+        public string? Category { get; set; }
         [Column("newsContent")]
-        public string NewsContent { get; set; } = null!;
+        public string? NewsContent { get; set; }
         [Column("uploadDate", TypeName = "datetime")]
-        public DateTime UploadDate { get; set; }
+        public DateTime? UploadDate { get; set; }
         [Column("status")]
         [StringLength(20)]
-        public string Status { get; set; } = null!;
+        public string? Status { get; set; }
         [Column("picture")]
         [Unicode(false)]
         public string? Picture { get; set; }
         [Column("userId")]
-        public int UserId { get; set; }
+        public int? UserId { get; set; }
 
         [ForeignKey(nameof(UserId))]
-        [InverseProperty(nameof(User.NewsDetail))]
-        public virtual User UserDetail { get; set; } = null!;
+        [InverseProperty(nameof(User.NewsList))]
+        public virtual User? UserDetails { get; set; }
     }
 }
