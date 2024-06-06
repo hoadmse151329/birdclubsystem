@@ -318,7 +318,7 @@ namespace WebAPI.Controllers
                 });
             }
         }
-        [HttpPut("Contest/{id:int}/Participant/All/Score/Update")]
+        [HttpPut("Contest/{id:int}/Participant/Score/Update")]
         [Authorize(Roles = "Manager")]
         [ProducesResponseType(typeof(IEnumerable<ContestParticipantViewModel>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

@@ -1,4 +1,5 @@
 ﻿using BAL.ViewModels;
+using BAL.ViewModels.Manager;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,7 +30,10 @@ namespace BAL.Services.Interfaces
             bool isMemberOrGuest = false
             );
         void Create(ContestViewModel entity);
+        void Create(CreateNewContestVM entity);
         void Update(ContestViewModel entity);
+        void Update(UpdateContestDetailsVM entity);
+        Task<bool> UpdateStatus(UpdateContestStatusVM entity);
         Task<bool> GetBoolContestId(int id);
         Task<int> CountContest();
         Task<int> CountContestByStatus(string status);

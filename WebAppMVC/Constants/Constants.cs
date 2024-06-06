@@ -99,6 +99,7 @@ namespace WebAppMVC.Constants
         public readonly static string UPDATE_FIELDTRIP_MEDIA_VALID = "UFieldTripMediaValid";
         public readonly static string CREATE_CONTEST_VALID = "CContestValid";
         public readonly static string UPDATE_CONTEST_VALID = "UContestValid";
+        public readonly static string UPDATE_CONTEST_STATUS_VALID = "UContestStatusValid";
         public readonly static string CREATE_CONTEST_MEDIA_VALID = "CContestMediaValid";
         public readonly static string UPDATE_CONTEST_MEDIA_VALID = "UContestMediaValid";
         public readonly static string CREATE_CONTEST_PARTICIPATION_VALID = "CContestparticipantValid";
@@ -244,6 +245,8 @@ namespace WebAppMVC.Constants
         public readonly static string SYSTEM_DEFAULT_AZURE_BLOB_NEWS_FOLDER_URL = "AzureStorage:BlobNewsContainerNamePath";
         public readonly static string SYSTEM_DEFAULT_AZURE_BLOB_BLOG_FOLDER_URL = "AzureStorage:BlobBlogContainerNamePath";
         public readonly static string SYSTEM_DEFAULT_AZURE_BLOB_MEETING_FOLDER_URL = "AzureStorage:BlobMeetingsContainerNamePath";
+        public readonly static string SYSTEM_DEFAULT_AZURE_BLOB_FIELDTRIP_FOLDER_URL = "AzureStorage:BlobFieldTripsContainerNamePath";
+        public readonly static string SYSTEM_DEFAULT_AZURE_BLOB_CONTEST_FOLDER_URL = "AzureStorage:BlobContestsContainerNamePath";
         public readonly static string SYSTEM_DEFAULT_AZURE_BLOB_BIRD_FOLDER_URL = "AzureStorage:BlobBirdsContainerNamePath";
     }
 }
