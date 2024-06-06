@@ -294,7 +294,7 @@ namespace WebAppMVC.Controllers
                 TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_MEETING_VALID, updateMeeting, jsonOptions);
                 return RedirectToAction("ManagerMeetingDetail", new { id });
             }
-            if (!ModelState.IsValid && !updateMeeting.Status.Equals(Constants.Constants.EVENT_STATUS_POSTPONED))
+            if (!ModelState.IsValid)
             {
                 TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_MEETING_VALID, updateMeeting, jsonOptions);
                 return RedirectToAction("ManagerMeetingDetail", new { id });
@@ -348,7 +348,7 @@ namespace WebAppMVC.Controllers
                 TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_MEETING_STATUS_VALID, updateMeetingStatus, jsonOptions);
                 return RedirectToAction("ManagerMeetingDetail", new { id });
             }
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid && !updateMeetingStatus.Status.Equals(Constants.Constants.EVENT_STATUS_POSTPONED))
             {
                 TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_MEETING_STATUS_VALID, updateMeetingStatus, jsonOptions);
                 return RedirectToAction("ManagerMeetingDetail", new { id });
@@ -546,7 +546,7 @@ namespace WebAppMVC.Controllers
                     if (updateMediaSpotlight.Image.Contains(defaultUrl + meetingContainerName))
                     {
                         string photoName = meetingContainerName + updateMediaSpotlight.Image.Substring((defaultUrl + meetingContainerName).Length);
-                        await _blobContainerClient.DeleteBlobAsync(photoName);
+                        await _blobContainerClient.DeleteBlobIfExistsAsync(photoName);
                     }
                     azureResponse.Add(client);
                 }
@@ -625,7 +625,7 @@ namespace WebAppMVC.Controllers
                     if (updateMediaAdditional.Image.Contains(defaultUrl + meetingContainerName))
                     {
                         string photoName = meetingContainerName + updateMediaAdditional.Image.Substring((defaultUrl + meetingContainerName).Length);
-                        await _blobContainerClient.DeleteBlobAsync(photoName);
+                        await _blobContainerClient.DeleteBlobIfExistsAsync(photoName);
                     }
                     azureResponse.Add(client);
                 }
@@ -664,16 +664,16 @@ namespace WebAppMVC.Controllers
         }
         [HttpPost("Meeting/{meetingId:int}/Media/LocationMap/{meetingMediaId:int}/Update")]
         public async Task<IActionResult> ManagerUpdateMeetingMediaLocation(
-            [Required][FromRoute] int contestId,
-            [Required][FromRoute] int contestMediaId,
+            [Required][FromRoute] int meetingId,
+            [Required][FromRoute] int meetingMediaId,
             [FromForm] MeetingMediaViewModel? updateMediaLocationMap)
         {
-            ManagerAPI_URL += "Meeting/" + contestId + "/Media/" + contestMediaId + "/Update";
+            ManagerAPI_URL += "Meeting/" + meetingId + "/Media/" + meetingMediaId + "/Update";
             if (!ModelState.IsValid)
             {
                 updateMediaLocationMap.ImageUpload = null;
                 TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_MEETING_MEDIA_VALID, updateMediaLocationMap, jsonOptions);
-                return RedirectToAction("ManagerMeetingDetail", new { id = contestId });
+                return RedirectToAction("ManagerMeetingDetail", new { id = meetingId });
             }
 
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
@@ -704,7 +704,7 @@ namespace WebAppMVC.Controllers
                     if (updateMediaLocationMap.Image.Contains(defaultUrl + meetingContainerName))
                     {
                         string photoName = meetingContainerName + updateMediaLocationMap.Image.Substring((defaultUrl + meetingContainerName).Length);
-                        await _blobContainerClient.DeleteBlobAsync(photoName);
+                        await _blobContainerClient.DeleteBlobIfExistsAsync(photoName);
                     }
                     azureResponse.Add(client);
                 }
@@ -728,7 +728,7 @@ namespace WebAppMVC.Controllers
             {
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Create Meeting Media!).\n Meeting Not Found!";
-                return RedirectToAction("ManagerMeetingDetail", new { id = contestId });
+                return RedirectToAction("ManagerMeetingDetail", new { id = meetingId });
             }
             if (!meetMediaResponse.Status)
             {
@@ -736,10 +736,10 @@ namespace WebAppMVC.Controllers
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Create Meeting Media!).\n"
                     + meetMediaResponse.ErrorMessage;
-                return RedirectToAction("ManagerMeetingDetail", new { id = contestId });
+                return RedirectToAction("ManagerMeetingDetail", new { id = meetingId });
             }
             TempData[Constants.Constants.ALERT_DEFAULT_SUCCESS_NAME] = meetMediaResponse.SuccessMessage;
-            return RedirectToAction("ManagerMeetingDetail", new { id = contestId });
+            return RedirectToAction("ManagerMeetingDetail", new { id = meetingId });
         }
 
         [HttpPost("Meeting/{id:int}/Cancel")]
@@ -1709,7 +1709,7 @@ namespace WebAppMVC.Controllers
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] = "Not enough people to close registration";
                 return RedirectToAction("ManagerContestDetail", new { id });
             }
-            if (!ModelState.IsValid && !updateContest.Status.Equals(Constants.Constants.EVENT_STATUS_POSTPONED))
+            if (!ModelState.IsValid)
             {
                 _logger.LogError(ModelState.Values.ToString());
                 TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_CONTEST_VALID, updateContest, jsonOptions);
@@ -2013,7 +2013,7 @@ namespace WebAppMVC.Controllers
                     if (updateMediaSpotlight.Image.Contains(defaultUrl + contestContainerName))
                     {
                         string photoName = contestContainerName + updateMediaSpotlight.Image.Substring((defaultUrl + contestContainerName).Length);
-                        await _blobContainerClient.DeleteBlobAsync(photoName);
+                        await _blobContainerClient.DeleteBlobIfExistsAsync(photoName);
                     }
                     azureResponse.Add(client);
                 }
@@ -2092,7 +2092,7 @@ namespace WebAppMVC.Controllers
                     if (updateMediaAdditional.Image.Contains(defaultUrl + contestContainerName))
                     {
                         string photoName = contestContainerName + updateMediaAdditional.Image.Substring((defaultUrl + contestContainerName).Length);
-                        await _blobContainerClient.DeleteBlobAsync(photoName);
+                        await _blobContainerClient.DeleteBlobIfExistsAsync(photoName);
                     }
                     azureResponse.Add(client);
                 }
@@ -2135,7 +2135,7 @@ namespace WebAppMVC.Controllers
             [Required][FromRoute] int contestMediaId,
             [FromForm] ContestMediaViewModel? updateMediaLocationMap)
         {
-            ManagerAPI_URL += "Meeting/" + contestId + "/Media/" + contestMediaId + "/Update";
+            ManagerAPI_URL += "Contest/" + contestId + "/Media/" + contestMediaId + "/Update";
             if (!ModelState.IsValid)
             {
                 updateMediaLocationMap.ImageUpload = null;
@@ -2171,7 +2171,7 @@ namespace WebAppMVC.Controllers
                     if (updateMediaLocationMap.Image.Contains(defaultUrl + contestContainerName))
                     {
                         string photoName = contestContainerName + updateMediaLocationMap.Image.Substring((defaultUrl + contestContainerName).Length);
-                        await _blobContainerClient.DeleteBlobAsync(photoName);
+                        await _blobContainerClient.DeleteBlobIfExistsAsync(photoName);
                     }
                     azureResponse.Add(client);
                 }
@@ -2183,7 +2183,7 @@ namespace WebAppMVC.Controllers
 
             updateMediaLocationMap.ImageUpload = null;
 
-            var contestMediaResponse = await methcall.CallMethodReturnObject<GetMeetingMediaResponse>(
+            var contestMediaResponse = await methcall.CallMethodReturnObject<GetContestMediaResponse>(
                     _httpClient: _httpClient,
                     options: jsonOptions,
                     methodName: Constants.Constants.PUT_METHOD,
@@ -2957,7 +2957,7 @@ namespace WebAppMVC.Controllers
                     if (updateNews.Picture.Contains(defaultUrl + newsContainerName))
                     {
                         string photoName = newsContainerName + updateNews.Picture.Substring((defaultUrl + newsContainerName).Length);
-                        await _blobContainerClient.DeleteBlobAsync(photoName);
+                        await _blobContainerClient.DeleteBlobIfExistsAsync(photoName);
                     }
                     azureResponse.Add(client);
                 }
