@@ -57,10 +57,14 @@ namespace BAL.ViewModels.Manager
         [DateGreaterThan(comparisonProperty: "StartDate", comparisonRange: 1, comparisonType: "Day", ErrorMessage = "End Date must be greater than Start Date at least 1 day")]
         [DataType(DataType.DateTime)]
         public DateTime EndDate { get; set; }
+        [Required(ErrorMessage = "Minimum ELO to join this contest is required")]
         [DisplayName("Required Minimum ELO")]
         public int? ReqMinELO { get; set; }
+        [NumberGreaterThan(comparisonProperty: "ReqMinELO",comparisonRange: 500, comparisonCurrency: "ELO")]
+        [Required(ErrorMessage = "Maximum ELO to join this contest is required")]
         [DisplayName("Required Maximum ELO")]
         public int? ReqMaxELO { get; set; }
+        [Required(ErrorMessage = "Elo gained from contest is required")]
         [DisplayName("After ELO")]
         public int? AfterELO { get; set; }
         [Required(ErrorMessage = "Fee is required")]
@@ -69,6 +73,8 @@ namespace BAL.ViewModels.Manager
         [Range(5000, int.MaxValue, ErrorMessage = "Fee must be at least 5000đ")]
         public int? Fee { get; set; }
         [DisplayName("Prize")]
+        [DisplayFormat(ApplyFormatInEditMode = true, ConvertEmptyStringToNull = true, DataFormatString = "{0:0,0}")]
+        [Range(0, int.MaxValue, ErrorMessage = "Prize must be at least 0đ")]
         public int? Prize { get; set; }
         [Required(ErrorMessage = "Host is required")]
         [DisplayName("Host")]

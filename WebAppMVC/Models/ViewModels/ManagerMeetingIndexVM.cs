@@ -1,5 +1,4 @@
-﻿using BAL.ViewModels.Manager;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace WebAppMVC.Models.ViewModels
 {
@@ -27,7 +26,7 @@ namespace WebAppMVC.Models.ViewModels
         public List<BAL.ViewModels.MeetingViewModel> MeetingList {  get; set; }
         public BAL.ViewModels.Manager.CreateNewMeetingVM CreateMeeting {  get; set; }
 
-        public void SetCreateMeeting(CreateNewMeetingVM createNewMeeting, string? hostname, List<SelectListItem> staffnames)
+        public void SetCreateMeeting(BAL.ViewModels.Manager.CreateNewMeetingVM createNewMeeting, string? hostname, List<SelectListItem> staffnames)
         {
             CreateMeeting = createNewMeeting != null ? createNewMeeting : new();
             CreateMeeting.Host = hostname;

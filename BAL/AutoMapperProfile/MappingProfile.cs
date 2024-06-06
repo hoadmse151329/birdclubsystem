@@ -75,6 +75,8 @@ namespace BAL.AutoMapperProfile
             CreateMap<UpdateMeetingDetailsVM, Meeting>();
             CreateMap<CreateNewContestVM, Contest>();
             CreateMap<UpdateContestDetailsVM, Contest>();
+            CreateMap<CreateNewFieldtripVM, FieldTrip>();
+            CreateMap<UpdateFieldtripDetailsVM, FieldTrip>();
             CreateMap<FieldTripParticipant, GetEventParticipation>()
                 .AfterMap((src, dest) =>
                 {

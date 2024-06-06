@@ -1,10 +1,10 @@
-﻿@model dynamic
+﻿@model WebAppMVC.Models.ViewModels.ManagerContestIndexVM
 @{
     Layout = null;
     ViewData["Title"] = "Manager Contest Page";
-    List<string> locationList = Model.Locations;
-    List<BAL.ViewModels.ContestViewModel> contestList = Model.Contests;
-    BAL.ViewModels.ContestViewModel createContest = Model.CreateContest != null ? Model.CreateContest : new BAL.ViewModels.ContestViewModel();
+    List<string> locationList = Model.Roads;
+    List<BAL.ViewModels.ContestViewModel> contestList = Model.ContestList;
+    BAL.ViewModels.Manager.CreateNewContestVM createContest = Model.CreateContest;
     string? search = string.Empty;
     Layout = "~/Views/Shared/_MLayout.cshtml";
 }
@@ -268,7 +268,7 @@
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
                                     <label asp-for="@createContest.Incharge" class="col-md-3 col-form-label mt-3 text-md-right">Incharge</label>
-                                    <input asp-for="@createContest.Incharge" value="@createContest.Incharge" type="text" placeholder="Staff incharge of Contest" class="form-control col-md-7 mt-3" rows="3" required>
+                                    <select asp-for="@createContest.Incharge" asp-items="@createContest.StaffNames" placeholder="Staff incharge of Contest" class="custom-select form-control col-md-7 mt-3" required></select>
                                     <span asp-validation-for="@createContest.Incharge" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
@@ -323,5 +323,13 @@
             </div>
         </div>
     </div>
+    <script src="~/ckeditor/ckeditor.js"></script>
+    <script src="~/ckfinder/ckfinder.js"></script>
+    <script>
+
+        var editor = CKEDITOR.replace('createContest.Description');
+        CKFinder.setupCKEditor(editor, 'ckfinder/');
+        data["createContest.Description"] = editor.getData();
+    </script>
 </body>
 </html>

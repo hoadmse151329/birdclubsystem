@@ -247,36 +247,32 @@ namespace WebAppMVC.Controllers
             managerMeetingDetailsVM.MeetingDetails = meetPostResponse.Data;
             managerMeetingDetailsVM.MeetingParticipants = meetpartPostResponse.Data;
 
-            var updateMeeting = methcall.GetValidationTempData<UpdateMeetingDetailsVM>(this, TempData, Constants.Constants.UPDATE_MEETING_VALID, "updateMeeting", jsonOptions);
-            var updateMeetingStatus = methcall.GetValidationTempData<UpdateMeetingStatusVM>(this, TempData, Constants.Constants.UPDATE_MEETING_STATUS_VALID, "updateMeetingStatus", jsonOptions);
-            var createMeetingMedia = methcall.GetValidationTempData<MeetingMediaViewModel>(this, TempData, Constants.Constants.CREATE_MEETING_MEDIA_VALID, "createMedia", jsonOptions);
-            var updateMeetingMediaSpotlight = methcall.GetValidationTempData<MeetingMediaViewModel>(this, TempData, Constants.Constants.UPDATE_MEETING_MEDIA_VALID, "updateMediaSpotlight", jsonOptions);
-            var updateMeetingMediaLocationMap = methcall.GetValidationTempData<MeetingMediaViewModel>(this, TempData, Constants.Constants.UPDATE_MEETING_MEDIA_VALID, "updateMediaLocationMap", jsonOptions);
-            var updateMeetingMediaAdditional = methcall.GetValidationTempData<MeetingMediaViewModel>(this, TempData, Constants.Constants.UPDATE_MEETING_MEDIA_VALID, "updateMediaAdditional", jsonOptions);
-
-            managerMeetingDetailsVM.UpdateMeeting = updateMeeting != null ? updateMeeting : _mapper.Map<UpdateMeetingDetailsVM>(managerMeetingDetailsVM.MeetingDetails);
-            managerMeetingDetailsVM.UpdateMeetingStatus = updateMeetingStatus != null ? updateMeetingStatus : new()
-            {
-                MeetingId = managerMeetingDetailsVM.MeetingDetails.MeetingId,
-                NumberOfParticipants = managerMeetingDetailsVM.MeetingDetails.NumberOfParticipants,
-                Status = managerMeetingDetailsVM.MeetingDetails.Status,
-                MeetingStatusSelectableList = methcall.GetManagerEventStatusSelectableList(managerMeetingDetailsVM.MeetingDetails.Status)
-            };
-
-            managerMeetingDetailsVM.CreateMeetingMedia = createMeetingMedia != null ? createMeetingMedia : new();
-            managerMeetingDetailsVM.UpdateMeetingMediaSpotlight = updateMeetingMediaSpotlight != null ? updateMeetingMediaSpotlight : managerMeetingDetailsVM.MeetingDetails.SpotlightImage;
-            managerMeetingDetailsVM.UpdateMeetingMediaLocationMap = updateMeetingMediaLocationMap != null ? updateMeetingMediaSpotlight : managerMeetingDetailsVM.MeetingDetails.LocationMapImage;
-
-            if(updateMeetingMediaAdditional != null)
-            {
-                var updateMMA = managerMeetingDetailsVM.MeetingDetails.MeetingPictures.FirstOrDefault(mm => mm.PictureId.Value.Equals(updateMeetingMediaAdditional.PictureId));
-                updateMMA = updateMeetingMediaAdditional != null ? updateMeetingMediaAdditional : updateMMA;
-            }
-
-            managerMeetingDetailsVM.UpdateMeetingMediaAdditional = managerMeetingDetailsVM.MeetingDetails.MeetingPictures;
-            
-            managerMeetingDetailsVM.UpdateMeeting.MeetingStatusSelectableList = methcall.GetManagerEventStatusSelectableList(meetPostResponse.Data.Status);
-            managerMeetingDetailsVM.UpdateMeeting.MeetingStaffNames = methcall.GetStaffNameSelectableList(managerMeetingDetailsVM.UpdateMeeting.Incharge, listStaffNameResponse.Data);
+            managerMeetingDetailsVM.SetIfUpdateMeetingDetails(
+                methcall.GetValidationTempData<UpdateMeetingDetailsVM>(this, TempData, Constants.Constants.UPDATE_MEETING_VALID, "updateMeeting", jsonOptions),
+                _mapper.Map<UpdateMeetingDetailsVM>(managerMeetingDetailsVM.MeetingDetails),
+                methcall.GetManagerEventStatusSelectableList(meetPostResponse.Data.Status),
+                methcall.GetStaffNameSelectableList(managerMeetingDetailsVM.MeetingDetails.Incharge, listStaffNameResponse.Data)
+                );
+            managerMeetingDetailsVM.SetIfUpdateMeetingStatus(
+                methcall.GetValidationTempData<UpdateMeetingStatusVM>(this, TempData, Constants.Constants.UPDATE_MEETING_STATUS_VALID, "updateMeetingStatus", jsonOptions),
+                meetPostResponse.Data,
+                methcall.GetManagerEventStatusSelectableList(meetPostResponse.Data.Status)
+                );
+            managerMeetingDetailsVM.SetIfCreateMeetingMedia(
+                methcall.GetValidationTempData<MeetingMediaViewModel>(this, TempData, Constants.Constants.CREATE_MEETING_MEDIA_VALID, "createMedia", jsonOptions)
+                );
+            managerMeetingDetailsVM.SetIfUpdateMeetingMediaSpotlight(
+                methcall.GetValidationTempData<MeetingMediaViewModel>(this, TempData, Constants.Constants.UPDATE_MEETING_MEDIA_VALID, "updateMediaSpotlight", jsonOptions),
+                managerMeetingDetailsVM.MeetingDetails.SpotlightImage
+                );
+            managerMeetingDetailsVM.SetIfUpdateMeetingMediaLocationMap(
+                methcall.GetValidationTempData<MeetingMediaViewModel>(this, TempData, Constants.Constants.UPDATE_MEETING_MEDIA_VALID, "updateMediaLocationMap", jsonOptions),
+                managerMeetingDetailsVM.MeetingDetails.LocationMapImage
+                );
+            managerMeetingDetailsVM.SetIfUpdateMeetingMediaAdditional(
+                managerMeetingDetailsVM.MeetingDetails.MeetingPictures,
+                methcall.GetValidationTempData<MeetingMediaViewModel>(this, TempData, Constants.Constants.UPDATE_MEETING_MEDIA_VALID, "updateMediaAdditional", jsonOptions)
+                );
 
             return View(managerMeetingDetailsVM);
         }
@@ -1530,7 +1526,7 @@ namespace WebAppMVC.Controllers
 
             string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
 
-            var fieldtripPostResponse = await methcall.CallMethodReturnObject<GetMeetingPostResponse>(
+            var fieldtripPostResponse = await methcall.CallMethodReturnObject<GetFieldTripPostResponse>(
                                 _httpClient: _httpClient,
                                 options: jsonOptions,
                                 methodName: Constants.Constants.GET_METHOD,
@@ -1540,7 +1536,7 @@ namespace WebAppMVC.Controllers
             if (fieldtripPostResponse == null)
             {
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
-                    "Error while processing your request! (Updating FieldTrip!).\n Meeting Not Found!";
+                    "Error while processing your request! (Updating FieldTrip!).\n FieldTrip Not Found!";
                 return RedirectToAction("ManagerFieldTrip");
             }
             if (!fieldtripPostResponse.Status)
@@ -1559,6 +1555,8 @@ namespace WebAppMVC.Controllers
         {
             _logger.LogInformation(search);
             string LocationAPI_URL_All = ManagerAPI_URL + "Location/AllAddresses";
+            string ManagerNameAPI_URL = ManagerAPI_URL + "Manager/Profile";
+            string ManagerStaffListAPI_URL = ManagerAPI_URL + "Manager/Staff";
 
             if (search != null || !string.IsNullOrEmpty(search))
             {
@@ -1567,12 +1565,14 @@ namespace WebAppMVC.Controllers
             }
             else ManagerAPI_URL += "Contest/All";
 
-            dynamic testmodel3 = new ExpandoObject();
+            ManagerContestIndexVM managerContestListVM = new();
 
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
 
             string? role = HttpContext.Session.GetString(Constants.Constants.ROLE_NAME);
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
+            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
 
             var listLocationResponse = await methcall.CallMethodReturnObject<GetLocationAddressResponseByList>(
                 _httpClient: _httpClient,
@@ -1588,8 +1588,27 @@ namespace WebAppMVC.Controllers
                 url: ManagerAPI_URL,
                 inputType: role,
                 _logger: _logger);
+            var managerDetails = await methcall.CallMethodReturnObject<GetMemberProfileResponse>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: Constants.Constants.POST_METHOD,
+                url: ManagerNameAPI_URL,
+                _logger: _logger,
+                inputType: usrId,
+                accessToken: accToken);
 
-            if (listContestResponse == null || listLocationResponse == null)
+            var listStaffNameResponse = await methcall.CallMethodReturnObject<GetListStaffName>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: Constants.Constants.GET_METHOD,
+                url: ManagerStaffListAPI_URL,
+                accessToken: accToken,
+                _logger: _logger);
+
+            if (
+                listContestResponse == null || 
+                listLocationResponse == null
+                )
             {
                 _logger.LogInformation(
                     "Error while processing your request! (Getting List Contest!). List was Empty!: " + listContestResponse);
@@ -1598,17 +1617,24 @@ namespace WebAppMVC.Controllers
                 return View("ManagerIndex");
             }
             else
-            if (!listContestResponse.Status || !listLocationResponse.Status)
+            if (
+                !listContestResponse.Status || 
+                !listLocationResponse.Status
+                )
             {
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
-                    "Error while processing your request! (Getting List Meeting!).\n"
+                    "Error while processing your request! (Getting List Contest!).\n"
                     + listContestResponse.ErrorMessage + "\n" + listLocationResponse.ErrorMessage;
                 return View("ManagerIndex");
             }
-            testmodel3.CreateContest = methcall.GetValidationTempData<ContestViewModel>(this, TempData, Constants.Constants.CREATE_CONTEST_VALID, "createContest", jsonOptions);
-            testmodel3.Contests = listContestResponse.Data;
-            testmodel3.Locations = listLocationResponse.Data;
-            return View(testmodel3);
+            managerContestListVM.SetCreateMeeting(
+                methcall.GetValidationTempData<CreateNewContestVM>(this, TempData, Constants.Constants.CREATE_CONTEST_VALID, "createContest", jsonOptions),
+                managerDetails.Data.FullName,
+                methcall.GetStaffNameSelectableList(managerContestListVM.CreateContest.Incharge, listStaffNameResponse.Data)
+                );
+            managerContestListVM.ContestList = listContestResponse.Data;
+            managerContestListVM.Roads = listLocationResponse.Data;
+            return View(managerContestListVM);
         }
         [HttpGet("Contest/{id:int}")]
         /*[Route("Manager/Contest/{id:int}")]*/
