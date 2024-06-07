@@ -1,4 +1,5 @@
 ﻿using BAL.ViewModels;
+using BAL.ViewModels.Manager;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,7 +29,10 @@ namespace BAL.Services.Interfaces
             bool isMemberOrGuest = false
             );
         void Create(FieldTripViewModel entity);
+        void Create(CreateNewFieldtripVM entity);
         void Update(FieldTripViewModel entity);
+        void Update(UpdateFieldtripDetailsVM entity);
+        Task<bool> UpdateStatus(UpdateFieldtripStatusVM entity);
         bool UpdateGettingThere(FieldtripGettingThereViewModel entity);
         Task<bool> GetBoolFieldTripId(int id);
         bool UpdateMedia(FieldtripMediaViewModel entity);

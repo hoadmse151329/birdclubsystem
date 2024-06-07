@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BAL.Services.Interfaces;
 using BAL.ViewModels;
+using BAL.ViewModels.Manager;
 using DAL.Infrastructure;
 using DAL.Models;
 using System;
@@ -285,6 +286,72 @@ namespace BAL.Services.Implements
         public async Task<int> CountFieldTrip()
         {
             return await _unitOfWork.FieldTripRepository.CountFieldTrip();
+        }
+
+        public void Create(CreateNewFieldtripVM entity)
+        {
+            var loc = _unitOfWork.LocationRepository.GetLocationByName(entity.Address.Trim()).Result;
+
+            if (loc == null)
+            {
+                _unitOfWork.LocationRepository.Update(loc = new Location
+                {
+                    LocationName = entity.Address.Trim()
+                });
+                _unitOfWork.Save();
+                loc = _unitOfWork.LocationRepository.GetLocationByName(entity.Address.Trim()).Result;
+            }
+            var trip = _mapper.Map<FieldTrip>(entity);
+            trip.LocationId = loc.LocationId;
+            _unitOfWork.FieldTripRepository.Create(trip);
+            _unitOfWork.Save();
+        }
+
+        public void Update(UpdateFieldtripDetailsVM entity)
+        {
+            var loc = _unitOfWork.LocationRepository.GetLocationByName(entity.Address.Trim()).Result;
+
+            if (loc == null)
+            {
+                _unitOfWork.LocationRepository.Update(new Location
+                {
+                    LocationName = entity.Address.Trim()
+                });
+                _unitOfWork.Save();
+                loc = _unitOfWork.LocationRepository.GetLocationByName(entity.Address.Trim()).Result;
+            }
+
+            var getting = _unitOfWork.FieldTripGettingThereRepository.GetFieldTripGettingTheresByTripId(entity.TripId.Value).Result;
+
+            if (getting == null)
+            {
+                _unitOfWork.FieldTripGettingThereRepository.Update(new FieldtripGettingThere
+                {
+                    TripId = entity.TripId.Value
+                });
+                _unitOfWork.Save();
+                getting = _unitOfWork.FieldTripGettingThereRepository.GetFieldTripGettingTheresByTripId(entity.TripId.Value).Result;
+            }
+
+            var trip = _mapper.Map<FieldTrip>(entity);
+
+            trip.LocationId = loc.LocationId;
+            trip.FieldtripGettingTheres = getting;
+            _unitOfWork.FieldTripRepository.Update(trip);
+            _unitOfWork.Save();
+        }
+
+        public async Task<bool> UpdateStatus(UpdateFieldtripStatusVM entity)
+        {
+            var fieldtrip = await _unitOfWork.FieldTripRepository.GetFieldTripById(entity.TripId.Value);
+            if (entity.Status.Equals("ClosedRegistration") && fieldtrip.NumberOfParticipants < 10)
+            {
+                return false;
+            }
+            fieldtrip.Status = entity.Status;
+            _unitOfWork.FieldTripRepository.Update(fieldtrip);
+            _unitOfWork.Save();
+            return true;
         }
     }
 }

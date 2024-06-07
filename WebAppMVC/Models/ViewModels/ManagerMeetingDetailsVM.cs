@@ -18,7 +18,8 @@ namespace WebAppMVC.Models.ViewModels
         public BAL.ViewModels.MeetingMediaViewModel CreateMeetingMedia { get; set; }
         public BAL.ViewModels.MeetingMediaViewModel UpdateMeetingMediaSpotlight { get; set; }
         public BAL.ViewModels.MeetingMediaViewModel UpdateMeetingMediaLocationMap { get; set; }
-        public List<BAL.ViewModels.MeetingMediaViewModel> UpdateMeetingMediaAdditional { get; set; }
+        public BAL.ViewModels.MeetingMediaViewModel UpdateMeetingMediaAdditional { get; set; }
+
         public BAL.ViewModels.MeetingViewModel MeetingDetails { get; set; }
         public BAL.ViewModels.Manager.UpdateMeetingDetailsVM UpdateMeeting { get; set; }
         public BAL.ViewModels.Manager.UpdateMeetingStatusVM UpdateMeetingStatus { get; set; }
@@ -70,16 +71,17 @@ namespace WebAppMVC.Models.ViewModels
                                           updateMeetingMediaLocationMapSecondResult != null ? updateMeetingMediaLocationMapSecondResult : new();
         }
         public void SetIfUpdateMeetingMediaAdditional(
-            List<BAL.ViewModels.MeetingMediaViewModel> meetingPictures,
             BAL.ViewModels.MeetingMediaViewModel updateMeetingMediaAdditional
             )
         {
-            if (updateMeetingMediaAdditional != null)
+            UpdateMeetingMediaAdditional = updateMeetingMediaAdditional != null ? updateMeetingMediaAdditional : new();
+
+            /*if (updateMeetingMediaAdditional != null)
             {
                 var updateCMA = meetingPictures.FirstOrDefault(mm => mm.PictureId.Value.Equals(updateMeetingMediaAdditional.PictureId));
                 updateCMA = updateMeetingMediaAdditional != null ? updateMeetingMediaAdditional : updateCMA;
             }
-            UpdateMeetingMediaAdditional = meetingPictures;
+            UpdateMeetingMediaAdditional = meetingPictures;*/
         }
     }
 }

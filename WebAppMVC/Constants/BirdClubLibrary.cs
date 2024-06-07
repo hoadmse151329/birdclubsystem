@@ -1,19 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
-using System.Net.Http;
 using System.Net.Http.Headers;
-using WebAppMVC.Constants;
 using System.Text;
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
-using Azure;
-using BAL.ViewModels;
-using Org.BouncyCastle.Ocsp;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using WebAppMVC.Models;
 using WebAppMVC.Models.Error;
-using Microsoft.AspNetCore.Http.Json;
-using WebAppMVC.Models.Auth;
 using BAL.ViewModels.Manager;
 
 namespace WebAppMVC.Constants

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -10,7 +11,11 @@ namespace BAL.ViewModels
 {
     public class FieldtripInclusionViewModel
     {
-        //public int? TripId { get; set; }
+        public FieldtripInclusionViewModel()
+        {
+            InclusionId = 0;
+        }
+        public int? TripId { get; set; }
         public int? InclusionId { get; set; }
         [Required(ErrorMessage = "Title is required")]
         [StringLength(100, ErrorMessage = "Item Title length must not be longer than {0} characters")]
@@ -30,5 +35,6 @@ namespace BAL.ViewModels
         [MaxLength(50, ErrorMessage = "Inclusion Type length must not be longer than {0} characters")]
         [DisplayName("Type of inclusion")]
         public string? Inclusiontype { get; set; }
+        public List<SelectListItem>? InclusionTypesSelectableList { get; set; }
     }
 }

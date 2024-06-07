@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
-
-namespace WebAppMVC.Constants
+﻿namespace WebAppMVC.Constants
 {
     public static class Constants
     {
@@ -84,6 +82,7 @@ namespace WebAppMVC.Constants
         public readonly static string UPDATE_MEETING_MEDIA_VALID = "UMeetingMediaValid";
         public readonly static string CREATE_FIELDTRIP_VALID = "CFieldTripValid";
         public readonly static string UPDATE_FIELDTRIP_VALID = "UFieldTripValid";
+        public readonly static string UPDATE_FIELDTRIP_STATUS_VALID = "UFieldtripStatusValid";
         public readonly static string UPDATE_FIELDTRIP_GETTHERE_VALID = "UFieldTripGettingThereValid";
         public readonly static string CREATE_FIELDTRIP_DAYBYDAY_VALID = "CFieldTripDayByDayValid";
         public readonly static string UPDATE_FIELDTRIP_DAYBYDAY_VALID = "UFieldTripDayByDayValid";

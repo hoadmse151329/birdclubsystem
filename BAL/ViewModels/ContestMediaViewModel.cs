@@ -13,6 +13,7 @@ namespace BAL.ViewModels
     {
         public ContestMediaViewModel()
         {
+            PictureId = 0;
             Image = "https://edwinbirdclubstorage.blob.core.windows.net/images/contest/contest_image_1.png";
         }
         public int? PictureId { get; set; }

@@ -159,6 +159,14 @@
                                                                     <span>@data.NumberOfParticipantsLimit</span>
                                                                 </li>
                                                                 <li>
+                                                                    <h6>Minimum ELO Required:</h6>
+                                                                    <span>@data.ReqMinELO</span>
+                                                                </li>
+                                                                <li>
+                                                                    <h6>Maximum ELO Required:</h6>
+                                                                    <span>@data.ReqMaxELO</span>
+                                                                </li>
+                                                                <li>
                                                                     <h6>Location:</h6>
                                                                     <span class="truncate">@data.AreaNumber,@data.Street,@data.District,@data.City</span>
                                                                 </li>
@@ -295,11 +303,6 @@
                                     <label asp-for="@createContest.ReqMaxELO" class="col-md-3 col-form-label mt-3 text-md-right"></label>
                                     <input asp-for="@createContest.ReqMaxELO" value="@createContest.ReqMaxELO" type="number" placeholder="0" class="form-control col-md-7 mt-3" rows="3" required></input>
                                     <span asp-validation-for="@createContest.ReqMaxELO" id="error_message"
-                                          class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-
-                                    <label asp-for="@createContest.AfterELO" class="col-md-3 col-form-label mt-3 text-md-right"></label>
-                                    <input asp-for="@createContest.AfterELO" value="@createContest.AfterELO" type="number" placeholder="0" class="form-control col-md-7 mt-3" rows="3" required></input>
-                                    <span asp-validation-for="@createContest.AfterELO" id="error_message"
                                           class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
                                     <label asp-for="@createContest.Prize" class="col-md-3 col-form-label mt-3 text-md-right"></label>
