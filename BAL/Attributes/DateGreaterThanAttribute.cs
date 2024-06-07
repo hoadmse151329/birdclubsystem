@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -37,12 +38,14 @@ namespace BAL.Attributes
         }
 
         // Validate the date comparison
-        protected override ValidationResult IsValid(object? value, ValidationContext validationContext)
+        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             var currentValue = (DateTime)value;
+            var property = validationContext.ObjectType.GetProperty(_comparisonProperty);
+            if (property == null)
+                throw new ArgumentException("Property with this name not found");
 
-            var comparisonValue = (DateTime)validationContext.ObjectType.GetProperty(_comparisonProperty)
-                                                                        .GetValue(validationContext.ObjectInstance);
+            var comparisonValue = (DateTime)property.GetValue(validationContext.ObjectInstance);
             if (_comparisonType != null)
             {
                 switch (_comparisonType)

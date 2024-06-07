@@ -15,7 +15,7 @@
     BAL.ViewModels.ContestMediaViewModel createMedia = Model.CreateContestMedia;
     BAL.ViewModels.ContestMediaViewModel updateMediaSpotlight = Model.UpdateContestMediaSpotlight;
     BAL.ViewModels.ContestMediaViewModel updateMediaLocationMap = Model.UpdateContestMediaLocationMap;
-    List<BAL.ViewModels.ContestMediaViewModel> updateMediaAdditionals = Model.UpdateContestMediaAdditional;
+    BAL.ViewModels.ContestMediaViewModel updateMediaAdd = Model.UpdateContestMediaAdditional;
 }
 <html lang="en">
 <head>
@@ -187,14 +187,6 @@
                                         </div>
                                         <div class="col-sm-7 text-sm-left">
                                             <span>@detailsContest.ReqMaxELO</span>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-sm-2">
-                                        <div class="col-sm-5 text-sm-right">
-                                            <span>After ELO:</span>
-                                        </div>
-                                        <div class="col-sm-7 text-sm-left">
-                                            <span>@detailsContest.AfterELO</span>
                                         </div>
                                     </div>
                                     <div class="row mb-sm-2">
@@ -512,7 +504,7 @@
                                                 </div>
                                                 if (detailsContest.Status.Equals("OnHold") || detailsContest.Status.Equals("Postponed"))
                                                 {
-                                                    var updateMediaAdditional = updateMediaAdditionals.FirstOrDefault(ma => ma.PictureId.Value.Equals(pic.PictureId)) != null ? updateMediaAdditionals.FirstOrDefault(ma => ma.PictureId.Value.Equals(pic.PictureId)) : pic;
+                                                    var updateMediaAdditional = updateMediaAdd.PictureId.Value.Equals(pic.PictureId) ? updateMediaAdd : pic;
                                                     <!-- update meeting location map media -->
                                                     <div id="editmedia_@pic.PictureId" class="modal fade" role="dialog">
                                                         <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
@@ -760,15 +752,8 @@
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                     </div>
                                 </div>
-                                <div class="form-group row">
-                                    <label asp-for="@updateContest.AfterELO" class="col-sm-4 col-form-label"></label>
-                                    <div class="col-sm-8">
-                                        <input asp-for="@updateContest.AfterELO" type="number" min="0"
-                                               value="@updateContest.AfterELO" class="form-control" required>
-                                        <span asp-validation-for="@updateContest.AfterELO" id="error_message"
-                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-                                    </div>
-                                </div>
+                                <input asp-for="@updateContest.AfterELO" type="number" min="0"
+                                               value="@updateContest.AfterELO" class="form-control" hidden>
                             </div>
                             <div class="modal-footer justify-content-center">
                                 <button class="btn btn-success" type="submit" value="Update">Save</button>

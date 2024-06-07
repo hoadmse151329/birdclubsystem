@@ -10,7 +10,7 @@ namespace DAL.Repositories.Interfaces
 {
     public interface IFieldtripMediaRepository : IRepositoryBase<FieldtripMedia>
     {
-        Task<FieldtripMedia> GetFieldTripMediaById(int tripId, int pictureId);
+        Task<FieldtripMedia> GetFieldTripMediaById(int pictureId);
         Task<FieldtripMedia> GetFieldTripMediaByIdTracking(int tripId, int pictureId);
         Task<IEnumerable<FieldtripMedia>> GetFieldTripMediasByTripId(int tripId);
         Task<FieldtripMedia> GetFieldTripMediaByFieldTripIdAndType(int tripId, string mediaType);

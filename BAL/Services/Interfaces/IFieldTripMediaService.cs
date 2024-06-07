@@ -12,6 +12,7 @@ namespace BAL.Services.Interfaces
         Task<bool> Create(int tripId, FieldtripMediaViewModel media);
         Task<bool> Delete(int pictureId, int tripId);
         Task<bool> Update(int tripId, FieldtripMediaViewModel media);
+        Task<FieldtripMediaViewModel> GetById(int pictureId);
         Task<IEnumerable<FieldtripMediaViewModel>> GetAllByTripId(int tripId);
     }
 }

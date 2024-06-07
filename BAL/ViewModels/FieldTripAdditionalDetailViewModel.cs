@@ -12,10 +12,12 @@ namespace BAL.ViewModels
     {
         public FieldTripAdditionalDetailViewModel()
         {
+            TripDetailsId = 0;
             Type = "tour_features";
         }
         public FieldTripAdditionalDetailViewModel(string type)
         {
+            TripDetailsId = 0;
             Type = type;
         }
         //public int? TripId { get; set; }

@@ -18,9 +18,9 @@ namespace DAL.Repositories.Implements
             _context = context;
         }
 
-        public async Task<FieldtripMedia> GetFieldTripMediaById(int tripId, int pictureId)
+        public async Task<FieldtripMedia> GetFieldTripMediaById(int pictureId)
         {
-            return _context.FieldtripMedia.AsNoTracking().SingleOrDefault(f => f.TripId.Equals(tripId) && f.PictureId.Equals(pictureId));
+            return _context.FieldtripMedia.AsNoTracking().SingleOrDefault(f => f.PictureId.Equals(pictureId));
         }
 
         public async Task<FieldtripMedia> GetFieldTripMediaByIdTracking(int tripId, int pictureId)

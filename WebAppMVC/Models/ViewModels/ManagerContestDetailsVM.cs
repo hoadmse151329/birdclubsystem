@@ -22,7 +22,7 @@ namespace WebAppMVC.Models.ViewModels
         public BAL.ViewModels.ContestMediaViewModel CreateContestMedia { get; set; }
         public BAL.ViewModels.ContestMediaViewModel UpdateContestMediaSpotlight { get; set; }
         public BAL.ViewModels.ContestMediaViewModel UpdateContestMediaLocationMap { get; set; }
-        public List<BAL.ViewModels.ContestMediaViewModel> UpdateContestMediaAdditional { get; set; }
+        public BAL.ViewModels.ContestMediaViewModel UpdateContestMediaAdditional { get; set; }
         // 
         public void SetIfUpdateContestDetails(
             BAL.ViewModels.Manager.UpdateContestDetailsVM updateContestFirstResult, 
@@ -71,16 +71,10 @@ namespace WebAppMVC.Models.ViewModels
                                           updateContestMediaLocationMapSecondResult != null ? updateContestMediaLocationMapSecondResult : new();
         }
         public void SetIfUpdateContestMediaAdditional(
-            List<BAL.ViewModels.ContestMediaViewModel> contestPictures,
             BAL.ViewModels.ContestMediaViewModel updateContestMediaAdditional
             )
         {
-            if(updateContestMediaAdditional != null)
-            {
-                var updateCMA = contestPictures.FirstOrDefault(mm => mm.PictureId.Value.Equals(updateContestMediaAdditional.PictureId));
-                updateCMA = updateContestMediaAdditional != null ? updateContestMediaAdditional : updateCMA;
-            }
-            UpdateContestMediaAdditional = contestPictures;
+            UpdateContestMediaAdditional = updateContestMediaAdditional != null ? updateContestMediaAdditional : new();
         }
     }
 }

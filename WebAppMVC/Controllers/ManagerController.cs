@@ -247,36 +247,31 @@ namespace WebAppMVC.Controllers
             managerMeetingDetailsVM.MeetingDetails = meetPostResponse.Data;
             managerMeetingDetailsVM.MeetingParticipants = meetpartPostResponse.Data;
 
-            var updateMeeting = methcall.GetValidationTempData<UpdateMeetingDetailsVM>(this, TempData, Constants.Constants.UPDATE_MEETING_VALID, "updateMeeting", jsonOptions);
-            var updateMeetingStatus = methcall.GetValidationTempData<UpdateMeetingStatusVM>(this, TempData, Constants.Constants.UPDATE_MEETING_STATUS_VALID, "updateMeetingStatus", jsonOptions);
-            var createMeetingMedia = methcall.GetValidationTempData<MeetingMediaViewModel>(this, TempData, Constants.Constants.CREATE_MEETING_MEDIA_VALID, "createMedia", jsonOptions);
-            var updateMeetingMediaSpotlight = methcall.GetValidationTempData<MeetingMediaViewModel>(this, TempData, Constants.Constants.UPDATE_MEETING_MEDIA_VALID, "updateMediaSpotlight", jsonOptions);
-            var updateMeetingMediaLocationMap = methcall.GetValidationTempData<MeetingMediaViewModel>(this, TempData, Constants.Constants.UPDATE_MEETING_MEDIA_VALID, "updateMediaLocationMap", jsonOptions);
-            var updateMeetingMediaAdditional = methcall.GetValidationTempData<MeetingMediaViewModel>(this, TempData, Constants.Constants.UPDATE_MEETING_MEDIA_VALID, "updateMediaAdditional", jsonOptions);
-
-            managerMeetingDetailsVM.UpdateMeeting = updateMeeting != null ? updateMeeting : _mapper.Map<UpdateMeetingDetailsVM>(managerMeetingDetailsVM.MeetingDetails);
-            managerMeetingDetailsVM.UpdateMeetingStatus = updateMeetingStatus != null ? updateMeetingStatus : new()
-            {
-                MeetingId = managerMeetingDetailsVM.MeetingDetails.MeetingId,
-                NumberOfParticipants = managerMeetingDetailsVM.MeetingDetails.NumberOfParticipants,
-                Status = managerMeetingDetailsVM.MeetingDetails.Status,
-                MeetingStatusSelectableList = methcall.GetManagerEventStatusSelectableList(managerMeetingDetailsVM.MeetingDetails.Status)
-            };
-
-            managerMeetingDetailsVM.CreateMeetingMedia = createMeetingMedia != null ? createMeetingMedia : new();
-            managerMeetingDetailsVM.UpdateMeetingMediaSpotlight = updateMeetingMediaSpotlight != null ? updateMeetingMediaSpotlight : managerMeetingDetailsVM.MeetingDetails.SpotlightImage;
-            managerMeetingDetailsVM.UpdateMeetingMediaLocationMap = updateMeetingMediaLocationMap != null ? updateMeetingMediaSpotlight : managerMeetingDetailsVM.MeetingDetails.LocationMapImage;
-
-            if(updateMeetingMediaAdditional != null)
-            {
-                var updateMMA = managerMeetingDetailsVM.MeetingDetails.MeetingPictures.FirstOrDefault(mm => mm.PictureId.Value.Equals(updateMeetingMediaAdditional.PictureId));
-                updateMMA = updateMeetingMediaAdditional != null ? updateMeetingMediaAdditional : updateMMA;
-            }
-
-            managerMeetingDetailsVM.UpdateMeetingMediaAdditional = managerMeetingDetailsVM.MeetingDetails.MeetingPictures;
-            
-            managerMeetingDetailsVM.UpdateMeeting.MeetingStatusSelectableList = methcall.GetManagerEventStatusSelectableList(meetPostResponse.Data.Status);
-            managerMeetingDetailsVM.UpdateMeeting.MeetingStaffNames = methcall.GetStaffNameSelectableList(managerMeetingDetailsVM.UpdateMeeting.Incharge, listStaffNameResponse.Data);
+            managerMeetingDetailsVM.SetIfUpdateMeetingDetails(
+                methcall.GetValidationTempData<UpdateMeetingDetailsVM>(this, TempData, Constants.Constants.UPDATE_MEETING_VALID, "updateMeeting", jsonOptions),
+                _mapper.Map<UpdateMeetingDetailsVM>(managerMeetingDetailsVM.MeetingDetails),
+                methcall.GetManagerEventStatusSelectableList(meetPostResponse.Data.Status),
+                methcall.GetStaffNameSelectableList(managerMeetingDetailsVM.MeetingDetails.Incharge, listStaffNameResponse.Data)
+                );
+            managerMeetingDetailsVM.SetIfUpdateMeetingStatus(
+                methcall.GetValidationTempData<UpdateMeetingStatusVM>(this, TempData, Constants.Constants.UPDATE_MEETING_STATUS_VALID, "updateMeetingStatus", jsonOptions),
+                meetPostResponse.Data,
+                methcall.GetManagerEventStatusSelectableList(meetPostResponse.Data.Status)
+                );
+            managerMeetingDetailsVM.SetIfCreateMeetingMedia(
+                methcall.GetValidationTempData<MeetingMediaViewModel>(this, TempData, Constants.Constants.CREATE_MEETING_MEDIA_VALID, "createMedia", jsonOptions)
+                );
+            managerMeetingDetailsVM.SetIfUpdateMeetingMediaSpotlight(
+                methcall.GetValidationTempData<MeetingMediaViewModel>(this, TempData, Constants.Constants.UPDATE_MEETING_MEDIA_VALID, "updateMediaSpotlight", jsonOptions),
+                managerMeetingDetailsVM.MeetingDetails.SpotlightImage
+                );
+            managerMeetingDetailsVM.SetIfUpdateMeetingMediaLocationMap(
+                methcall.GetValidationTempData<MeetingMediaViewModel>(this, TempData, Constants.Constants.UPDATE_MEETING_MEDIA_VALID, "updateMediaLocationMap", jsonOptions),
+                managerMeetingDetailsVM.MeetingDetails.LocationMapImage
+                );
+            managerMeetingDetailsVM.SetIfUpdateMeetingMediaAdditional(
+                methcall.GetValidationTempData<MeetingMediaViewModel>(this, TempData, Constants.Constants.UPDATE_MEETING_MEDIA_VALID, "updateMediaAdditional", jsonOptions)
+                );
 
             return View(managerMeetingDetailsVM);
         }
@@ -784,6 +779,8 @@ namespace WebAppMVC.Controllers
         {
             _logger.LogInformation(search);
             string LocationAPI_URL_All = ManagerAPI_URL + "Location/AllAddresses";
+            string ManagerNameAPI_URL = ManagerAPI_URL + "Manager/Profile";
+            string ManagerStaffListAPI_URL = ManagerAPI_URL + "Manager/Staff";
 
             if (search != null || !string.IsNullOrEmpty(search))
             {
@@ -792,12 +789,14 @@ namespace WebAppMVC.Controllers
             }
             else ManagerAPI_URL += "FieldTrip/All";
 
-            dynamic fieldtripIndexVM = new ExpandoObject();
+            ManagerFieldTripIndexVM managerFieldtripListVM = new();
 
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
 
             string? role = HttpContext.Session.GetString(Constants.Constants.ROLE_NAME);
+            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
 
             var listLocationResponse = await methcall.CallMethodReturnObject<GetLocationAddressResponseByList>(
@@ -813,6 +812,22 @@ namespace WebAppMVC.Controllers
                 methodName: Constants.Constants.POST_METHOD,
                 url: ManagerAPI_URL,
                 inputType: role,
+                _logger: _logger);
+            var managerDetails = await methcall.CallMethodReturnObject<GetMemberProfileResponse>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: Constants.Constants.POST_METHOD,
+                url: ManagerNameAPI_URL,
+                _logger: _logger,
+                inputType: usrId,
+                accessToken: accToken);
+
+            var listStaffNameResponse = await methcall.CallMethodReturnObject<GetListStaffName>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: Constants.Constants.GET_METHOD,
+                url: ManagerStaffListAPI_URL,
+                accessToken: accToken,
                 _logger: _logger);
 
             if (listFieldTripResponse == null || listLocationResponse == null)
@@ -831,19 +846,23 @@ namespace WebAppMVC.Controllers
                     + listFieldTripResponse.ErrorMessage + "\n" + listLocationResponse.ErrorMessage;
                 return View("ManagerIndex");
             }
-
-            fieldtripIndexVM.CreateFieldTrip = methcall.GetValidationTempData<FieldTripViewModel>(this, TempData, Constants.Constants.CREATE_FIELDTRIP_VALID, "createFieldTrip", jsonOptions);
-            fieldtripIndexVM.FieldTrips = listFieldTripResponse.Data;
-            fieldtripIndexVM.Locations = listLocationResponse.Data;
-            return View(fieldtripIndexVM);
+            managerFieldtripListVM.SetCreateFieldtrip(
+                methcall.GetValidationTempData<CreateNewFieldtripVM>(this, TempData, Constants.Constants.CREATE_FIELDTRIP_VALID, "createFieldTrip", jsonOptions),
+                managerDetails.Data.FullName,
+                methcall.GetStaffNameSelectableList(managerFieldtripListVM.CreateFieldtrip.InCharge, listStaffNameResponse.Data)
+                );
+            managerFieldtripListVM.FieldtripList = listFieldTripResponse.Data;
+            managerFieldtripListVM.Roads = listLocationResponse.Data;
+            return View(managerFieldtripListVM);
         }
         [HttpGet("FieldTrip/{id:int}")]
         /*[Route("Manager/FieldTrip/{id:int}")]*/
         public async Task<IActionResult> ManagerFieldTripDetail(int id)
         {
             string ManagerFieldTripDetailAPI_URL = ManagerAPI_URL + "FieldTrip/AllParticipants/" + id;
+            string ManagerStaffListAPI_URL = ManagerAPI_URL + "Manager/Staff";
             ManagerAPI_URL += "FieldTrip/" + id;
-            dynamic fieldtripDetailVM = new ExpandoObject();
+            ManagerFieldTripDetailsVM fieldtripDetailVM = new();
 
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
@@ -865,6 +884,13 @@ namespace WebAppMVC.Controllers
                                 url: ManagerFieldTripDetailAPI_URL,
                                 accessToken: accToken,
                                 _logger: _logger);
+            var listStaffNameResponse = await methcall.CallMethodReturnObject<GetListStaffName>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: Constants.Constants.GET_METHOD,
+                url: ManagerStaffListAPI_URL,
+                accessToken: accToken,
+                _logger: _logger);
             if (fieldtripPostResponse == null)
             {
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
@@ -879,9 +905,74 @@ namespace WebAppMVC.Controllers
                     + fieldtripPostResponse.ErrorMessage;
                 return RedirectToAction("ManagerFieldTrip");
             }
-            fieldtripDetailVM.UpdateFieldTrip = methcall.GetValidationTempData<FieldTripViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_VALID, "updateTrip", jsonOptions);
-            fieldtripDetailVM.UpdateFieldTripGettingThere = methcall.GetValidationTempData<FieldtripGettingThereViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_GETTHERE_VALID, "updateGettingThere", jsonOptions);
-            fieldtripDetailVM.UpdateFieldTripDayByDayErrors = methcall.GetValidationModelStateErrorMessageList<FieldtripDaybyDayViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_DAYBYDAY_VALID, "updateDayByDay", jsonOptions);
+            fieldtripDetailVM.FieldTripDetails = fieldtripPostResponse.Data;
+            fieldtripDetailVM.FieldTripTourFeatures = fieldtripPostResponse.Data.FieldtripAdditionalDetails.Where(f => f.Type.Equals("tour_features")).ToList();
+            fieldtripDetailVM.FieldTripImportants = fieldtripPostResponse.Data.FieldtripAdditionalDetails.Where(f => f.Type.Equals("important_to_know")).ToList();
+            fieldtripDetailVM.FieldTripActAndTrass = fieldtripPostResponse.Data.FieldtripAdditionalDetails.Where(f => f.Type.Equals("activities_and_transportation")).ToList();
+            fieldtripDetailVM.FieldTripParticipants = fieldtrippartPostResponse.Data;
+
+            fieldtripDetailVM.SetIfUpdateFieldTripDetails(
+                methcall.GetValidationTempData<UpdateFieldtripDetailsVM>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_VALID, "updateTrip", jsonOptions),
+                _mapper.Map<UpdateFieldtripDetailsVM>(fieldtripDetailVM.FieldTripDetails),
+                methcall.GetManagerEventStatusSelectableList(fieldtripPostResponse.Data.Status),
+                methcall.GetStaffNameSelectableList(fieldtripDetailVM.FieldTripDetails.InCharge, listStaffNameResponse.Data)
+                );
+            fieldtripDetailVM.SetIfUpdateFieldTripGettingThere(
+                methcall.GetValidationTempData<FieldtripGettingThereViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_GETTHERE_VALID, "updateGettingThere", jsonOptions),
+                fieldtripDetailVM.FieldTripDetails.FieldtripGettingTheres
+                );
+            fieldtripDetailVM.SetIfUpdateFieldTripDayByDay(
+                methcall.GetValidationTempData<FieldtripDaybyDayViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_DAYBYDAY_VALID, "updateDayByDay", jsonOptions)
+                );
+            fieldtripDetailVM.SetIfUpdateFieldTripInclusion(
+                methcall.GetValidationTempData<FieldtripInclusionViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_INCLUSION_VALID, "updateInclusion", jsonOptions),
+                methcall.GetManagerFieldTripInclusionTypeSelectableList(fieldtripDetailVM.UpdateFieldTripInclusion.Type != null ? fieldtripDetailVM.UpdateFieldTripInclusion.Type : Constants.Constants.FIELDTRIP_INCLUSION_TYPE_INCLUDED)
+                );
+            fieldtripDetailVM.SetIfUpdateFieldTripTourFeature(
+                methcall.GetValidationTempData<FieldTripAdditionalDetailViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_TOURFEATURES_VALID, "updateTourFeature", jsonOptions)
+                );
+            fieldtripDetailVM.SetIfUpdateFieldTripImportant(
+                methcall.GetValidationTempData<FieldTripAdditionalDetailViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_IMPORTANTTOKNOW_VALID, "updateImportant", jsonOptions)
+                );
+            fieldtripDetailVM.SetIfUpdateFieldTripActAndTras(
+                methcall.GetValidationTempData<FieldTripAdditionalDetailViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_ACTIVITIESANDTRANSPORTATION_VALID, "updateActAndTras", jsonOptions)
+                );
+            fieldtripDetailVM.SetIfCreateFieldTripDayByDay(
+                methcall.GetValidationTempData<FieldtripDaybyDayViewModel>(this, TempData, Constants.Constants.CREATE_FIELDTRIP_DAYBYDAY_VALID, "createDayByDay", jsonOptions)
+                );
+            fieldtripDetailVM.SetIfCreateFieldTripInclusion(
+                methcall.GetValidationTempData<FieldtripInclusionViewModel>(this, TempData, Constants.Constants.CREATE_FIELDTRIP_INCLUSION_VALID, "createInclusion", jsonOptions),
+                methcall.GetManagerFieldTripInclusionTypeSelectableList(Constants.Constants.FIELDTRIP_INCLUSION_TYPE_INCLUDED)
+                );
+            fieldtripDetailVM.SetIfCreateFieldTripTourFeature(
+                methcall.GetValidationTempData<FieldTripAdditionalDetailViewModel>(this, TempData, Constants.Constants.CREATE_FIELDTRIP_TOURFEATURES_VALID, "createTourFeatures", jsonOptions)
+                );
+            fieldtripDetailVM.SetIfCreateFieldTripImportant(
+                methcall.GetValidationTempData<FieldTripAdditionalDetailViewModel>(this, TempData, Constants.Constants.CREATE_FIELDTRIP_IMPORTANTTOKNOW_VALID, "createImportant", jsonOptions)
+                );
+            fieldtripDetailVM.SetIfCreateFieldTripActAndTras(
+                methcall.GetValidationTempData<FieldTripAdditionalDetailViewModel>(this, TempData, Constants.Constants.CREATE_FIELDTRIP_ACTIVITIESANDTRANSPORTATION_VALID, "createActAndTras", jsonOptions)
+                );
+            fieldtripDetailVM.SetIfUpdateFieldTripStatus(
+                methcall.GetValidationTempData<UpdateFieldtripStatusVM>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_STATUS_VALID, "updateTripStatus", jsonOptions),
+                fieldtripPostResponse.Data,
+                methcall.GetManagerEventStatusSelectableList(fieldtripPostResponse.Data.Status)
+                );
+            fieldtripDetailVM.SetIfCreateFieldTripMedia(
+                methcall.GetValidationTempData<FieldtripMediaViewModel>(this, TempData, Constants.Constants.CREATE_FIELDTRIP_MEDIA_VALID, "createMedia", jsonOptions)
+                );
+            fieldtripDetailVM.SetIfUpdateFieldTripMediaSpotlight(
+                methcall.GetValidationTempData<FieldtripMediaViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_MEDIA_VALID, "updateMediaSpotlight", jsonOptions),
+                fieldtripDetailVM.FieldTripDetails.SpotlightImage
+                );
+            fieldtripDetailVM.SetIfUpdateFieldTripMediaLocationMap(
+                methcall.GetValidationTempData<FieldtripMediaViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_MEDIA_VALID, "updateMediaLocationMap", jsonOptions),
+                fieldtripDetailVM.FieldTripDetails.LocationMapImage
+                );
+            fieldtripDetailVM.SetIfUpdateFieldTripMediaAdditional(
+                methcall.GetValidationTempData<FieldtripMediaViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_MEDIA_VALID, "updateMediaAdditional", jsonOptions)
+                );
+            /*fieldtripDetailVM.UpdateFieldTripDayByDayErrors = methcall.GetValidationModelStateErrorMessageList<FieldtripDaybyDayViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_DAYBYDAY_VALID, "updateDayByDay", jsonOptions);
             fieldtripDetailVM.UpdateFieldTripDayByDays = methcall.GetValidationTempDataList<FieldtripDaybyDayViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_DAYBYDAY_VALID, "updateDayByDay", jsonOptions);
             fieldtripDetailVM.UpdateFieldTripInclusionErrors = methcall.GetValidationModelStateErrorMessageList<FieldtripInclusionViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_INCLUSION_VALID, "updateInclusion", jsonOptions);
             fieldtripDetailVM.UpdateFieldTripInclusions = methcall.GetValidationTempDataList<FieldtripInclusionViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_INCLUSION_VALID, "updateInclusion", jsonOptions);
@@ -890,35 +981,66 @@ namespace WebAppMVC.Controllers
             fieldtripDetailVM.UpdateFieldTripImportantErrors = methcall.GetValidationModelStateErrorMessageList<FieldTripAdditionalDetailViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_IMPORTANTTOKNOW_VALID, "updateImportant", jsonOptions);
             fieldtripDetailVM.UpdateFieldTripImportants = methcall.GetValidationTempDataList<FieldTripAdditionalDetailViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_IMPORTANTTOKNOW_VALID, "updateImportant", jsonOptions);
             fieldtripDetailVM.UpdateFieldTripActAndTrasErrors = methcall.GetValidationModelStateErrorMessageList<FieldTripAdditionalDetailViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_ACTIVITIESANDTRANSPORTATION_VALID, "updateActAndTras", jsonOptions);
-            fieldtripDetailVM.UpdateFieldTripActAndTrass = methcall.GetValidationTempDataList<FieldTripAdditionalDetailViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_ACTIVITIESANDTRANSPORTATION_VALID, "updateActAndTras", jsonOptions);
-
-
-            fieldtripDetailVM.CreateFieldTripDayByDay = methcall.GetValidationTempData<FieldtripDaybyDayViewModel>(this, TempData, Constants.Constants.CREATE_FIELDTRIP_DAYBYDAY_VALID, "createDayByDay", jsonOptions);
-            fieldtripDetailVM.CreateFieldTripInclusion = methcall.GetValidationTempData<FieldtripInclusionViewModel>(this, TempData, Constants.Constants.CREATE_FIELDTRIP_INCLUSION_VALID, "createInclusion", jsonOptions);
-            fieldtripDetailVM.CreateFieldTripTourFeatures = methcall.GetValidationTempData<FieldTripAdditionalDetailViewModel>(this, TempData, Constants.Constants.CREATE_FIELDTRIP_TOURFEATURES_VALID, "createTourFeatures", jsonOptions);
-            fieldtripDetailVM.CreateFieldTripImportant = methcall.GetValidationTempData<FieldTripAdditionalDetailViewModel>(this, TempData, Constants.Constants.CREATE_FIELDTRIP_IMPORTANTTOKNOW_VALID, "createImportant", jsonOptions);
-            fieldtripDetailVM.CreateFieldTripActAndTras = methcall.GetValidationTempData<FieldTripAdditionalDetailViewModel>(this, TempData, Constants.Constants.CREATE_FIELDTRIP_ACTIVITIESANDTRANSPORTATION_VALID, "createActAndTras", jsonOptions);
-            fieldtripDetailVM.CreateFieldTripMedia = methcall.GetValidationTempData<FieldtripMediaViewModel>(this, TempData, Constants.Constants.CREATE_FIELDTRIP_MEDIA_VALID, "createMedia", jsonOptions);
-
-            fieldtripDetailVM.SelectListStatus = methcall.GetManagerEventStatusSelectableList(fieldtripPostResponse.Data.Status);
-            fieldtripDetailVM.SelectListInclusionTypes = methcall.GetManagerFieldTripInclusionTypeSelectableList(Constants.Constants.FIELDTRIP_INCLUSION_TYPE_INCLUDED);
-
-            fieldtripDetailVM.FieldTripDetails = fieldtripPostResponse.Data;
-            fieldtripDetailVM.FieldTripTourFeatures = fieldtripPostResponse.Data.FieldtripAdditionalDetails.Where(f => f.Type.Equals("tour_features")).ToList();
-            fieldtripDetailVM.FieldTripImportantToKnows = fieldtripPostResponse.Data.FieldtripAdditionalDetails.Where(f => f.Type.Equals("important_to_know")).ToList();
-            fieldtripDetailVM.FieldTripActivitiesAndTransportation = fieldtripPostResponse.Data.FieldtripAdditionalDetails.Where(f => f.Type.Equals("activities_and_transportation")).ToList();
-            fieldtripDetailVM.FieldTripParticipants = fieldtrippartPostResponse.Data;
-
+            fieldtripDetailVM.UpdateFieldTripActAndTrass = methcall.GetValidationTempDataList<FieldTripAdditionalDetailViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_ACTIVITIESANDTRANSPORTATION_VALID, "updateActAndTras", jsonOptions);*/
             return View(fieldtripDetailVM);
         }
         [HttpPost("FieldTrip/{id:int}/Update")]
         /*[Route("Manager/FieldTrip/Update/{id:int}")]*/
         public async Task<IActionResult> ManagerUpdateFieldTripDetail(
             [FromRoute][Required] int id,
-            [Required] FieldTripViewModel updateTrip
+            [Required] UpdateFieldtripStatusVM updateTripStatus
             )
         {
             ManagerAPI_URL += "FieldTrip/" + id + "/Update";
+            if (updateTripStatus.Status.Equals(Constants.Constants.EVENT_STATUS_CLOSED_REGISTRATION) && updateTripStatus.NumberOfParticipants < 10)
+            {
+                ModelState.AddModelError("updateTrip.Status", "Error while processing your request (Updating FieldTrip). Not enough people to closed registration");
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_FIELDTRIP_VALID, updateTripStatus, jsonOptions);
+                return RedirectToAction("ManagerFieldTripDetail", new { id });
+            }
+            if (!ModelState.IsValid && !updateTripStatus.Status.Equals(Constants.Constants.EVENT_STATUS_POSTPONED))
+            {
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_FIELDTRIP_VALID, updateTripStatus, jsonOptions);
+                return RedirectToAction("ManagerFieldTripDetail", new { id });
+            }
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
+
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
+
+            var fieldtripPostResponse = await methcall.CallMethodReturnObject<GetFieldTripPostResponse>(
+                                _httpClient: _httpClient,
+                                options: jsonOptions,
+                                methodName: Constants.Constants.PUT_METHOD,
+                                url: ManagerAPI_URL,
+                                inputType: updateTripStatus,
+                                accessToken: accToken,
+                                _logger: _logger);
+            if (fieldtripPostResponse == null)
+            {
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
+                    "Error while processing your request! (Updating FieldTrip!).\n FieldTrip Not Found!";
+                return RedirectToAction("ManagerFieldTripDetail", new { id });
+            }
+            if (!fieldtripPostResponse.Status)
+            {
+                _logger.LogInformation("Error while processing your request: " + fieldtripPostResponse.Status + " , Error Message: " + fieldtripPostResponse.ErrorMessage);
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
+                    "Error while processing your request! (Updating FieldTrip Post!).\n"
+                    + fieldtripPostResponse.ErrorMessage;
+                return RedirectToAction("ManagerFieldTripDetail", new { id });
+            }
+            TempData["Success"] = fieldtripPostResponse.SuccessMessage;
+            return RedirectToAction("ManagerFieldTripDetail", new { id });
+        }
+        [HttpPost("FieldTrip/{id:int}/Status/Update")]
+        /*[Route("Manager/FieldTrip/Update/{id:int}")]*/
+        public async Task<IActionResult> ManagerUpdateFieldTripStatus(
+            [FromRoute][Required] int id,
+            [Required] UpdateFieldtripStatusVM updateTrip
+            )
+        {
+            ManagerAPI_URL += "FieldTrip/" + id + "/Status/Update";
             if (updateTrip.Status.Equals(Constants.Constants.EVENT_STATUS_CLOSED_REGISTRATION) && updateTrip.NumberOfParticipants < 10)
             {
                 ModelState.AddModelError("updateTrip.Status", "Error while processing your request (Updating FieldTrip). Not enough people to closed registration");
@@ -1017,7 +1139,8 @@ namespace WebAppMVC.Controllers
             ManagerAPI_URL += "FieldTrip/" + id + "/DayByDay/" + dayId + "/Update";
             if (!ModelState.IsValid)
             {
-                TempData = methcall.SetValidationTempDataWithId(TempData, Constants.Constants.UPDATE_FIELDTRIP_DAYBYDAY_VALID, dayId, updateDayByDay, jsonOptions);
+                //TempData = methcall.SetValidationTempDataWithId(TempData, Constants.Constants.UPDATE_FIELDTRIP_DAYBYDAY_VALID, dayId, updateDayByDay, jsonOptions);
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_FIELDTRIP_DAYBYDAY_VALID, updateDayByDay, jsonOptions);
                 return RedirectToAction("ManagerFieldTripDetail", new { id });
             }
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
@@ -1063,7 +1186,8 @@ namespace WebAppMVC.Controllers
             ManagerAPI_URL += "FieldTrip/" + id + "/Inclusion/" + incId + "/Update";
             if (!ModelState.IsValid)
             {
-                TempData = methcall.SetValidationTempDataWithId(TempData, Constants.Constants.UPDATE_FIELDTRIP_INCLUSION_VALID, incId, updateInclusion, jsonOptions);
+                //TempData = methcall.SetValidationTempDataWithId(TempData, Constants.Constants.UPDATE_FIELDTRIP_INCLUSION_VALID, incId, updateInclusion, jsonOptions);
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_FIELDTRIP_INCLUSION_VALID, updateInclusion, jsonOptions);
                 return RedirectToAction("ManagerFieldTripDetail", new { id });
             }
 
@@ -1110,7 +1234,8 @@ namespace WebAppMVC.Controllers
             ManagerAPI_URL += "FieldTrip/" + id + "/AdditionalDetail/" + addDeId + "/Update";
             if (!ModelState.IsValid)
             {
-                TempData = methcall.SetValidationTempDataWithId(TempData, Constants.Constants.UPDATE_FIELDTRIP_TOURFEATURES_VALID, addDeId, updateTourFeature, jsonOptions);
+                //TempData = methcall.SetValidationTempDataWithId(TempData, Constants.Constants.UPDATE_FIELDTRIP_TOURFEATURES_VALID, addDeId, updateTourFeature, jsonOptions);
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_FIELDTRIP_TOURFEATURES_VALID, updateTourFeature, jsonOptions);
                 return RedirectToAction("ManagerFieldTripDetail", new { id });
             }
 
@@ -1157,7 +1282,8 @@ namespace WebAppMVC.Controllers
             ManagerAPI_URL += "FieldTrip/" + id + "/AdditionalDetail/" + addDeId + "/Update";
             if (!ModelState.IsValid)
             {
-                TempData = methcall.SetValidationTempDataWithId(TempData, Constants.Constants.UPDATE_FIELDTRIP_IMPORTANTTOKNOW_VALID, addDeId, updateImportant, jsonOptions);
+                //TempData = methcall.SetValidationTempDataWithId(TempData, Constants.Constants.UPDATE_FIELDTRIP_IMPORTANTTOKNOW_VALID, addDeId, updateImportant, jsonOptions);
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_FIELDTRIP_IMPORTANTTOKNOW_VALID, updateImportant, jsonOptions);
                 return RedirectToAction("ManagerFieldTripDetail", new { id });
             }
 
@@ -1204,7 +1330,8 @@ namespace WebAppMVC.Controllers
             ManagerAPI_URL += "FieldTrip/" + id + "/AdditionalDetail/" + addDeId + "/Update";
             if (!ModelState.IsValid)
             {
-                TempData = methcall.SetValidationTempDataWithId(TempData, Constants.Constants.UPDATE_FIELDTRIP_ACTIVITIESANDTRANSPORTATION_VALID, addDeId, updateActAndTras, jsonOptions);
+                //TempData = methcall.SetValidationTempDataWithId(TempData, Constants.Constants.UPDATE_FIELDTRIP_ACTIVITIESANDTRANSPORTATION_VALID, addDeId, updateActAndTras, jsonOptions);
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_FIELDTRIP_ACTIVITIESANDTRANSPORTATION_VALID, updateActAndTras, jsonOptions);
                 return RedirectToAction("ManagerFieldTripDetail", new { id });
             }
 
@@ -1241,7 +1368,6 @@ namespace WebAppMVC.Controllers
             return RedirectToAction("ManagerFieldTripDetail", new { id });
         }
         [HttpPost("FieldTrip/Create")]
-        /*[Route("Manager/Meeting/Update/{id:int}")]*/
         public async Task<IActionResult> ManagerCreateFieldTrip(FieldTripViewModel createFieldTrip)
         {
             ManagerAPI_URL += "FieldTrip/Create";
@@ -1269,14 +1395,14 @@ namespace WebAppMVC.Controllers
             if (fieldtripPostResponse == null)
             {
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
-                    "Error while processing your request! (Create FieldTrip!).\n Meeting Not Found!";
+                    "Error while processing your request! (Create FieldTrip Post!).\n FieldTrip Not Found!";
                 return RedirectToAction("ManagerFieldTrip");
             }
             if (!fieldtripPostResponse.Status)
             {
                 _logger.LogInformation("Error while processing your request: " + fieldtripPostResponse.Status + " , Error Message: " + fieldtripPostResponse.ErrorMessage);
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
-                    "Error while processing your request! (Create Meeting Post!).\n"
+                    "Error while processing your request! (Create FieldTrip Post!).\n"
                     + fieldtripPostResponse.ErrorMessage;
                 return RedirectToAction("ManagerFieldTrip");
             }
@@ -1285,7 +1411,6 @@ namespace WebAppMVC.Controllers
         }
 
         [HttpPost("FieldTrip/{tripId:int}/Create/DayByDay")]
-        /*[Route("Manager/Meeting/Update/{id:int}")]*/
         public async Task<IActionResult> ManagerCreateFieldTripDayByDay(
             [FromRoute][Required] int tripId,
             [Required] FieldtripDaybyDayViewModel createDayByDay
@@ -1316,14 +1441,14 @@ namespace WebAppMVC.Controllers
             if (ftDayByDayResponse == null)
             {
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
-                    "Error while processing your request! (Create FieldTrip!).\n Meeting Not Found!";
+                    "Error while processing your request! (Create FieldTrip!).\n FieldTrip Not Found!";
                 return RedirectToAction("ManagerFieldTripDetail", new { id = tripId });
             }
             if (!ftDayByDayResponse.Status)
             {
                 _logger.LogInformation("Error while processing your request: " + ftDayByDayResponse.Status + " , Error Message: " + ftDayByDayResponse.ErrorMessage);
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
-                    "Error while processing your request! (Create Meeting Post!).\n"
+                    "Error while processing your request! (Create FieldTrip Post!).\n"
                     + ftDayByDayResponse.ErrorMessage;
                 return RedirectToAction("ManagerFieldTripDetail", new { id = tripId });
             }
@@ -1332,7 +1457,6 @@ namespace WebAppMVC.Controllers
         }
 
         [HttpPost("FieldTrip/{tripId:int}/Create/Inclusion")]
-        /*[Route("Manager/Meeting/Update/{id:int}")]*/
         public async Task<IActionResult> ManagerCreateFieldTripInclusion(
             [FromRoute][Required] int tripId,
             [Required] FieldtripInclusionViewModel createInclusion
@@ -1363,14 +1487,14 @@ namespace WebAppMVC.Controllers
             if (ftInclusionResponse == null)
             {
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
-                    "Error while processing your request! (Create FieldTrip!).\n Meeting Not Found!";
+                    "Error while processing your request! (Create FieldTrip!).\n FieldTrip Not Found!";
                 return RedirectToAction("ManagerFieldTripDetail", new { id = tripId });
             }
             if (!ftInclusionResponse.Status)
             {
                 _logger.LogInformation("Error while processing your request: " + ftInclusionResponse.Status + " , Error Message: " + ftInclusionResponse.ErrorMessage);
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
-                    "Error while processing your request! (Create Meeting Post!).\n"
+                    "Error while processing your request! (Create FieldTrip Post!).\n"
                     + ftInclusionResponse.ErrorMessage;
                 return RedirectToAction("ManagerFieldTripDetail", new { id = tripId });
             }
@@ -1379,7 +1503,6 @@ namespace WebAppMVC.Controllers
         }
 
         [HttpPost("FieldTrip/{tripId:int}/Create/TourFeatures")]
-        /*[Route("Manager/Meeting/Update/{id:int}")]*/
         public async Task<IActionResult> ManagerCreateFieldTripTourFeatures(
             [FromRoute][Required] int tripId,
             [Required] FieldTripAdditionalDetailViewModel createTourFeatures
@@ -1410,14 +1533,14 @@ namespace WebAppMVC.Controllers
             if (ftDayByDayResponse == null)
             {
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
-                    "Error while processing your request! (Create FieldTrip!).\n Meeting Not Found!";
+                    "Error while processing your request! (Create FieldTrip!).\n FieldTrip Not Found!";
                 return RedirectToAction("ManagerFieldTripDetail", new { id = tripId });
             }
             if (!ftDayByDayResponse.Status)
             {
                 _logger.LogInformation("Error while processing your request: " + ftDayByDayResponse.Status + " , Error Message: " + ftDayByDayResponse.ErrorMessage);
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
-                    "Error while processing your request! (Create Meeting Post!).\n"
+                    "Error while processing your request! (Create FieldTrip Post!).\n"
                     + ftDayByDayResponse.ErrorMessage;
                 return RedirectToAction("ManagerFieldTripDetail", new { id = tripId });
             }
@@ -1516,6 +1639,315 @@ namespace WebAppMVC.Controllers
             TempData["Success"] = ftActAndTrasResponse.SuccessMessage;
             return RedirectToAction("ManagerFieldTripDetail", new { id = tripId });
         }
+        [HttpPost("FieldTrip/{fieldtripId:int}/Create/Media")]
+        public async Task<IActionResult> ManagerCreateFieldTripMedia(
+            [Required][FromRoute] int fieldtripId,
+            [Required] FieldtripMediaViewModel createMedia)
+        {
+            ManagerAPI_URL += "FieldTrip/" + fieldtripId + "/Create/Media";
+            if (!ModelState.IsValid)
+            {
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.CREATE_FIELDTRIP_MEDIA_VALID, createMedia, jsonOptions);
+                return RedirectToAction("ManagerFieldTripDetail", new { id = fieldtripId });
+            }
+
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
+
+            IFormFile photo = createMedia.ImageUpload;
+
+            if (photo != null && photo.Length > 0)
+            {
+                string connectionString = _config.GetSection(Constants.Constants.SYSTEM_DEFAULT_AZURE_CONNECTION_STRING).Value;
+                string defaultUrl = _config.GetSection(Constants.Constants.SYSTEM_DEFAULT_AZURE_DEFAULT_BLOB_FOLDER_URL).Value;
+                string containerName = _config.GetSection(Constants.Constants.SYSTEM_DEFAULT_AZURE_DEFAULT_BLOB_FOLDER_NAME).Value;
+                string fieldtripContainerName = _config.GetValue<string>(Constants.Constants.SYSTEM_DEFAULT_AZURE_BLOB_FIELDTRIP_FOLDER_URL);
+
+                BlobServiceClient _blobServiceClient = new BlobServiceClient(connectionString);
+                BlobContainerClient _blobContainerClient = _blobServiceClient.GetBlobContainerClient(containerName);
+
+                var azureResponse = new List<BlobContentInfo>();
+                string filename = photo.FileName;
+                string uniqueBlobName = fieldtripContainerName + $"{Guid.NewGuid()}-{filename}";
+                using (var memoryStream = new MemoryStream())
+                {
+                    photo.CopyTo(memoryStream);
+                    memoryStream.Position = 0;
+
+                    var client = await _blobContainerClient.UploadBlobAsync(uniqueBlobName, memoryStream);
+                    azureResponse.Add(client);
+                }
+
+                var image = defaultUrl + uniqueBlobName;
+
+                createMedia.Image = image;
+            }
+
+            createMedia.ImageUpload = null;
+
+            var tripMediaResponse = await methcall.CallMethodReturnObject<GetFieldTripMediaResponse>(
+                    _httpClient: _httpClient,
+                    options: jsonOptions,
+                    methodName: Constants.Constants.POST_METHOD,
+                    url: ManagerAPI_URL,
+                    inputType: createMedia,
+                    accessToken: accToken,
+                    _logger: _logger);
+            if (tripMediaResponse == null)
+            {
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
+                    "Error while processing your request! (Create Fieldtrip Media!).\n Fieldtrip Not Found!";
+                return RedirectToAction("ManagerFieldTripDetail", new { id = fieldtripId });
+            }
+            if (!tripMediaResponse.Status)
+            {
+                _logger.LogInformation("Error while processing your request: " + tripMediaResponse.Status + " , Error Message: " + tripMediaResponse.ErrorMessage);
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
+                    "Error while processing your request! (Create Fieldtrip Media!).\n"
+                    + tripMediaResponse.ErrorMessage;
+                return RedirectToAction("ManagerFieldTripDetail", new { id = fieldtripId });
+            }
+            TempData[Constants.Constants.ALERT_DEFAULT_SUCCESS_NAME] = tripMediaResponse.SuccessMessage;
+            return RedirectToAction("ManagerFieldTripDetail", new { id = fieldtripId });
+        }
+        [HttpPost("FieldTrip/{fieldtripId:int}/Media/Spotlight/{fieldtripMediaId:int}/Update")]
+        public async Task<IActionResult> ManagerUpdateFieldTripMediaSpotlight(
+            [Required][FromRoute] int fieldtripId,
+            [Required][FromRoute] int fieldtripMediaId,
+            [FromForm] FieldtripMediaViewModel? updateMediaSpotlight)
+        {
+            ManagerAPI_URL += "FieldTrip/" + fieldtripId + "/Media/" + fieldtripMediaId + "/Update";
+            if (!ModelState.IsValid)
+            {
+                updateMediaSpotlight.ImageUpload = null;
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_FIELDTRIP_MEDIA_VALID, updateMediaSpotlight, jsonOptions);
+                return RedirectToAction("ManagerFieldTripDetail", new { id = fieldtripId });
+            }
+
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
+
+            IFormFile photo = updateMediaSpotlight.ImageUpload;
+
+            if (photo != null && photo.Length > 0)
+            {
+                string connectionString = _config.GetSection(Constants.Constants.SYSTEM_DEFAULT_AZURE_CONNECTION_STRING).Value;
+                string defaultUrl = _config.GetSection(Constants.Constants.SYSTEM_DEFAULT_AZURE_DEFAULT_BLOB_FOLDER_URL).Value;
+                string containerName = _config.GetSection(Constants.Constants.SYSTEM_DEFAULT_AZURE_DEFAULT_BLOB_FOLDER_NAME).Value;
+                string fieldtripContainerName = _config.GetValue<string>(Constants.Constants.SYSTEM_DEFAULT_AZURE_BLOB_FIELDTRIP_FOLDER_URL);
+
+                BlobServiceClient _blobServiceClient = new BlobServiceClient(connectionString);
+                BlobContainerClient _blobContainerClient = _blobServiceClient.GetBlobContainerClient(containerName);
+
+                var azureResponse = new List<BlobContentInfo>();
+                string filename = photo.FileName;
+                string uniqueBlobName = fieldtripContainerName + $"{Guid.NewGuid()}-{filename}";
+                using (var memoryStream = new MemoryStream())
+                {
+                    photo.CopyTo(memoryStream);
+                    memoryStream.Position = 0;
+
+                    var client = await _blobContainerClient.UploadBlobAsync(uniqueBlobName, memoryStream);
+                    if (updateMediaSpotlight.Image.Contains(defaultUrl + fieldtripContainerName))
+                    {
+                        string photoName = fieldtripContainerName + updateMediaSpotlight.Image.Substring((defaultUrl + fieldtripContainerName).Length);
+                        await _blobContainerClient.DeleteBlobIfExistsAsync(photoName);
+                    }
+                    azureResponse.Add(client);
+                }
+
+                var image = defaultUrl + uniqueBlobName;
+
+                updateMediaSpotlight.Image = image;
+            }
+
+            updateMediaSpotlight.ImageUpload = null;
+
+            var tripMediaResponse = await methcall.CallMethodReturnObject<GetFieldTripMediaResponse>(
+                    _httpClient: _httpClient,
+                    options: jsonOptions,
+                    methodName: Constants.Constants.PUT_METHOD,
+                    url: ManagerAPI_URL,
+                    inputType: updateMediaSpotlight,
+                    accessToken: accToken,
+                    _logger: _logger);
+            if (tripMediaResponse == null)
+            {
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
+                    "Error while processing your request! (Update Fieldtrip Media!).\n Fieldtrip Not Found!";
+                return RedirectToAction("ManagerFieldTripDetail", new { id = fieldtripId });
+            }
+            if (!tripMediaResponse.Status)
+            {
+                _logger.LogInformation("Error while processing your request: " + tripMediaResponse.Status + " , Error Message: " + tripMediaResponse.ErrorMessage);
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
+                    "Error while processing your request! (Update Fieldtrip Media!).\n"
+                    + tripMediaResponse.ErrorMessage;
+                return RedirectToAction("ManagerFieldTripDetail", new { id = fieldtripId });
+            }
+            TempData[Constants.Constants.ALERT_DEFAULT_SUCCESS_NAME] = tripMediaResponse.SuccessMessage;
+            return RedirectToAction("ManagerFieldTripDetail", new { id = fieldtripId });
+        }
+        [HttpPost("FieldTrip/{fieldtripId:int}/Media/Additional/{contestMediaId:int}/Update")]
+        public async Task<IActionResult> ManagerUpdateFieldTripMediaAdditional(
+            [Required][FromRoute] int fieldtripId,
+            [Required][FromRoute] int fieldtripMediaId,
+            [FromForm] FieldtripMediaViewModel? updateMediaAdditional)
+        {
+            ManagerAPI_URL += "FieldTrip/" + fieldtripId + "/Media/" + fieldtripMediaId + "/Update";
+            if (!ModelState.IsValid)
+            {
+                updateMediaAdditional.ImageUpload = null;
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_FIELDTRIP_MEDIA_VALID, updateMediaAdditional, jsonOptions);
+                return RedirectToAction("ManagerFieldTripDetail", new { id = fieldtripId });
+            }
+
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
+
+            IFormFile photo = updateMediaAdditional.ImageUpload;
+
+            if (photo != null && photo.Length > 0)
+            {
+                string connectionString = _config.GetSection(Constants.Constants.SYSTEM_DEFAULT_AZURE_CONNECTION_STRING).Value;
+                string defaultUrl = _config.GetSection(Constants.Constants.SYSTEM_DEFAULT_AZURE_DEFAULT_BLOB_FOLDER_URL).Value;
+                string containerName = _config.GetSection(Constants.Constants.SYSTEM_DEFAULT_AZURE_DEFAULT_BLOB_FOLDER_NAME).Value;
+                string fieldtripContainerName = _config.GetValue<string>(Constants.Constants.SYSTEM_DEFAULT_AZURE_BLOB_FIELDTRIP_FOLDER_URL);
+
+                BlobServiceClient _blobServiceClient = new BlobServiceClient(connectionString);
+                BlobContainerClient _blobContainerClient = _blobServiceClient.GetBlobContainerClient(containerName);
+
+                var azureResponse = new List<BlobContentInfo>();
+                string filename = photo.FileName;
+                string uniqueBlobName = fieldtripContainerName + $"{Guid.NewGuid()}-{filename}";
+                using (var memoryStream = new MemoryStream())
+                {
+                    photo.CopyTo(memoryStream);
+                    memoryStream.Position = 0;
+
+                    var client = await _blobContainerClient.UploadBlobAsync(uniqueBlobName, memoryStream);
+                    if (updateMediaAdditional.Image.Contains(defaultUrl + fieldtripContainerName))
+                    {
+                        string photoName = fieldtripContainerName + updateMediaAdditional.Image.Substring((defaultUrl + fieldtripContainerName).Length);
+                        await _blobContainerClient.DeleteBlobIfExistsAsync(photoName);
+                    }
+                    azureResponse.Add(client);
+                }
+
+                var image = defaultUrl + uniqueBlobName;
+
+                updateMediaAdditional.Image = image;
+            }
+
+            updateMediaAdditional.ImageUpload = null;
+
+            var tripMediaResponse = await methcall.CallMethodReturnObject<GetFieldTripMediaResponse>(
+                    _httpClient: _httpClient,
+                    options: jsonOptions,
+                    methodName: Constants.Constants.PUT_METHOD,
+                    url: ManagerAPI_URL,
+                    inputType: updateMediaAdditional,
+                    accessToken: accToken,
+                    _logger: _logger);
+            if (tripMediaResponse == null)
+            {
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
+                    "Error while processing your request! (Update Fieldtrip Media!).\n Fieldtrip Not Found!";
+                return RedirectToAction("ManagerFieldTripDetail", new { id = fieldtripId });
+            }
+            if (!tripMediaResponse.Status)
+            {
+                _logger.LogInformation("Error while processing your request: " + tripMediaResponse.Status + " , Error Message: " + tripMediaResponse.ErrorMessage);
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
+                    "Error while processing your request! (Update Fieldtrip Media!).\n"
+                    + tripMediaResponse.ErrorMessage;
+                return RedirectToAction("ManagerFieldTripDetail", new { id = fieldtripId });
+            }
+            TempData[Constants.Constants.ALERT_DEFAULT_SUCCESS_NAME] = tripMediaResponse.SuccessMessage;
+            return RedirectToAction("ManagerFieldTripDetail", new { id = fieldtripId });
+        }
+        [HttpPost("FieldTrip/{fieldtripId:int}/Media/LocationMap/{fieldtripMediaId:int}/Update")]
+        public async Task<IActionResult> ManagerUpdateFieldTripMediaLocation(
+            [Required][FromRoute] int fieldtripId,
+            [Required][FromRoute] int fieldtripMediaId,
+            [FromForm] FieldtripMediaViewModel? updateMediaLocationMap)
+        {
+            ManagerAPI_URL += "FieldTrip/" + fieldtripId + "/Media/" + fieldtripMediaId + "/Update";
+            if (!ModelState.IsValid)
+            {
+                updateMediaLocationMap.ImageUpload = null;
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_CONTEST_MEDIA_VALID, updateMediaLocationMap, jsonOptions);
+                return RedirectToAction("ManagerFieldTripDetail", new { id = fieldtripId });
+            }
+
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
+
+            IFormFile photo = updateMediaLocationMap.ImageUpload;
+
+            if (photo != null && photo.Length > 0)
+            {
+                string connectionString = _config.GetSection(Constants.Constants.SYSTEM_DEFAULT_AZURE_CONNECTION_STRING).Value;
+                string defaultUrl = _config.GetSection(Constants.Constants.SYSTEM_DEFAULT_AZURE_DEFAULT_BLOB_FOLDER_URL).Value;
+                string containerName = _config.GetSection(Constants.Constants.SYSTEM_DEFAULT_AZURE_DEFAULT_BLOB_FOLDER_NAME).Value;
+                string fieldtripContainerName = _config.GetValue<string>(Constants.Constants.SYSTEM_DEFAULT_AZURE_BLOB_FIELDTRIP_FOLDER_URL);
+
+                BlobServiceClient _blobServiceClient = new BlobServiceClient(connectionString);
+                BlobContainerClient _blobContainerClient = _blobServiceClient.GetBlobContainerClient(containerName);
+
+                var azureResponse = new List<BlobContentInfo>();
+                string filename = photo.FileName;
+                string uniqueBlobName = fieldtripContainerName + $"{Guid.NewGuid()}-{filename}";
+                using (var memoryStream = new MemoryStream())
+                {
+                    photo.CopyTo(memoryStream);
+                    memoryStream.Position = 0;
+
+                    var client = await _blobContainerClient.UploadBlobAsync(uniqueBlobName, memoryStream);
+                    if (updateMediaLocationMap.Image.Contains(defaultUrl + fieldtripContainerName))
+                    {
+                        string photoName = fieldtripContainerName + updateMediaLocationMap.Image.Substring((defaultUrl + fieldtripContainerName).Length);
+                        await _blobContainerClient.DeleteBlobIfExistsAsync(photoName);
+                    }
+                    azureResponse.Add(client);
+                }
+
+                var image = defaultUrl + uniqueBlobName;
+
+                updateMediaLocationMap.Image = image;
+            }
+
+            updateMediaLocationMap.ImageUpload = null;
+
+            var tripMediaResponse = await methcall.CallMethodReturnObject<GetFieldTripMediaResponse>(
+                    _httpClient: _httpClient,
+                    options: jsonOptions,
+                    methodName: Constants.Constants.PUT_METHOD,
+                    url: ManagerAPI_URL,
+                    inputType: updateMediaLocationMap,
+                    accessToken: accToken,
+                    _logger: _logger);
+            if (tripMediaResponse == null)
+            {
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
+                    "Error while processing your request! (Update Fieldtrip Media!).\n Fieldtrip Not Found!";
+                return RedirectToAction("ManagerFieldTripDetail", new { id = fieldtripId });
+            }
+            if (!tripMediaResponse.Status)
+            {
+                _logger.LogInformation("Error while processing your request: " + tripMediaResponse.Status + " , Error Message: " + tripMediaResponse.ErrorMessage);
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
+                    "Error while processing your request! (Update Fieldtrip Media!).\n"
+                    + tripMediaResponse.ErrorMessage;
+                return RedirectToAction("ManagerFieldTripDetail", new { id = fieldtripId });
+            }
+            TempData[Constants.Constants.ALERT_DEFAULT_SUCCESS_NAME] = tripMediaResponse.SuccessMessage;
+            return RedirectToAction("ManagerContestDetail", new { id = fieldtripId });
+        }
 
         [HttpPost("FieldTrip/{id:int}/Cancel")]
         public async Task<IActionResult> ManagerCancelFieldTrip(
@@ -1530,7 +1962,7 @@ namespace WebAppMVC.Controllers
 
             string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
 
-            var fieldtripPostResponse = await methcall.CallMethodReturnObject<GetMeetingPostResponse>(
+            var fieldtripPostResponse = await methcall.CallMethodReturnObject<GetFieldTripPostResponse>(
                                 _httpClient: _httpClient,
                                 options: jsonOptions,
                                 methodName: Constants.Constants.GET_METHOD,
@@ -1540,7 +1972,7 @@ namespace WebAppMVC.Controllers
             if (fieldtripPostResponse == null)
             {
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
-                    "Error while processing your request! (Updating FieldTrip!).\n Meeting Not Found!";
+                    "Error while processing your request! (Updating FieldTrip!).\n FieldTrip Not Found!";
                 return RedirectToAction("ManagerFieldTrip");
             }
             if (!fieldtripPostResponse.Status)
@@ -1559,6 +1991,8 @@ namespace WebAppMVC.Controllers
         {
             _logger.LogInformation(search);
             string LocationAPI_URL_All = ManagerAPI_URL + "Location/AllAddresses";
+            string ManagerNameAPI_URL = ManagerAPI_URL + "Manager/Profile";
+            string ManagerStaffListAPI_URL = ManagerAPI_URL + "Manager/Staff";
 
             if (search != null || !string.IsNullOrEmpty(search))
             {
@@ -1567,12 +2001,14 @@ namespace WebAppMVC.Controllers
             }
             else ManagerAPI_URL += "Contest/All";
 
-            dynamic testmodel3 = new ExpandoObject();
+            ManagerContestIndexVM managerContestListVM = new();
 
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
 
             string? role = HttpContext.Session.GetString(Constants.Constants.ROLE_NAME);
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
+            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
 
             var listLocationResponse = await methcall.CallMethodReturnObject<GetLocationAddressResponseByList>(
                 _httpClient: _httpClient,
@@ -1588,8 +2024,27 @@ namespace WebAppMVC.Controllers
                 url: ManagerAPI_URL,
                 inputType: role,
                 _logger: _logger);
+            var managerDetails = await methcall.CallMethodReturnObject<GetMemberProfileResponse>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: Constants.Constants.POST_METHOD,
+                url: ManagerNameAPI_URL,
+                _logger: _logger,
+                inputType: usrId,
+                accessToken: accToken);
 
-            if (listContestResponse == null || listLocationResponse == null)
+            var listStaffNameResponse = await methcall.CallMethodReturnObject<GetListStaffName>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: Constants.Constants.GET_METHOD,
+                url: ManagerStaffListAPI_URL,
+                accessToken: accToken,
+                _logger: _logger);
+
+            if (
+                listContestResponse == null || 
+                listLocationResponse == null
+                )
             {
                 _logger.LogInformation(
                     "Error while processing your request! (Getting List Contest!). List was Empty!: " + listContestResponse);
@@ -1598,17 +2053,24 @@ namespace WebAppMVC.Controllers
                 return View("ManagerIndex");
             }
             else
-            if (!listContestResponse.Status || !listLocationResponse.Status)
+            if (
+                !listContestResponse.Status || 
+                !listLocationResponse.Status
+                )
             {
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
-                    "Error while processing your request! (Getting List Meeting!).\n"
+                    "Error while processing your request! (Getting List Contest!).\n"
                     + listContestResponse.ErrorMessage + "\n" + listLocationResponse.ErrorMessage;
                 return View("ManagerIndex");
             }
-            testmodel3.CreateContest = methcall.GetValidationTempData<ContestViewModel>(this, TempData, Constants.Constants.CREATE_CONTEST_VALID, "createContest", jsonOptions);
-            testmodel3.Contests = listContestResponse.Data;
-            testmodel3.Locations = listLocationResponse.Data;
-            return View(testmodel3);
+            managerContestListVM.SetCreateMeeting(
+                methcall.GetValidationTempData<CreateNewContestVM>(this, TempData, Constants.Constants.CREATE_CONTEST_VALID, "createContest", jsonOptions),
+                managerDetails.Data.FullName,
+                methcall.GetStaffNameSelectableList(managerContestListVM.CreateContest.Incharge, listStaffNameResponse.Data)
+                );
+            managerContestListVM.ContestList = listContestResponse.Data;
+            managerContestListVM.Roads = listLocationResponse.Data;
+            return View(managerContestListVM);
         }
         [HttpGet("Contest/{id:int}")]
         /*[Route("Manager/Contest/{id:int}")]*/
@@ -1688,7 +2150,6 @@ namespace WebAppMVC.Controllers
                 managerContestDetailsVM.ContestDetails.LocationMapImage
                 );
             managerContestDetailsVM.SetIfUpdateContestMediaAdditional(
-                managerContestDetailsVM.ContestDetails.ContestPictures,
                 methcall.GetValidationTempData<ContestMediaViewModel>(this, TempData, Constants.Constants.UPDATE_CONTEST_MEDIA_VALID, "updateMediaAdditional", jsonOptions)
                 );
 
@@ -2832,7 +3293,6 @@ namespace WebAppMVC.Controllers
             return View(managerNewsPostDetailsVM);
         }
         [HttpPost("News/{id:int}/Update")]
-        /*[Route("Manager/FieldTrip/Update/{id:int}")]*/
         public async Task<IActionResult> ManagerUpdateNewsDetail(
             [FromRoute][Required] int id,
             [Required] UpdateNewsDetail updateNews
