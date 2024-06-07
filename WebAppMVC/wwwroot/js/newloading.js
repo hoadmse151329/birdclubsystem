@@ -111,18 +111,18 @@
         });
     };
 
-    //const addEventListeners = () => {
-    //    const buttons = document.querySelectorAll('.view-detail');
-    //    buttons.forEach(button => {
-    //        button.addEventListener('click', (e) => {
-    //            e.preventDefault();
-    //            const newsItem = e.target.closest('.news-item');
-    //            const newsId = newsItem.getAttribute('data-id');
-    //            // Redirect to news detail page with the news ID
-    //            window.location.href = `news-detail.html?id=${newsId}`;
-    //        });
-    //    });
-    //};
+    const addEventListeners = () => {
+        const buttons = document.querySelectorAll('.view-detail');
+        buttons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                const newsItem = e.target.closest('.news-item');
+                const newsId = newsItem.getAttribute('data-id');
+                // Redirect to news detail page with the news ID
+                window.location.href = `news-detail.html?id=${newsId}`;
+            });
+        });
+    };
 
     // Initial load of news items
     displayNews(newsData.slice(0, limit));
