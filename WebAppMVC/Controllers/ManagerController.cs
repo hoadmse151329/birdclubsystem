@@ -3050,6 +3050,7 @@ namespace WebAppMVC.Controllers
 
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
             ManagerBlogIndexVM managerBlogListVM = new();
 
@@ -3058,6 +3059,7 @@ namespace WebAppMVC.Controllers
                 options: jsonOptions,
                 methodName: Constants.Constants.GET_METHOD,
                 url: ManagerAPI_URL,
+                accessToken: accToken,
                 _logger: _logger);
 
             if (listBlogResponse == null)
@@ -3066,7 +3068,7 @@ namespace WebAppMVC.Controllers
                     "Error while processing your request! (Getting List Blog Status!). List was Empty!: " + listBlogResponse);
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting List Blog Status!).\n List was Empty!";
-                return View("ManagerIndex");
+                return RedirectToAction("ManagerIndex");
             }
             else
             if (!listBlogResponse.Status)
@@ -3074,7 +3076,7 @@ namespace WebAppMVC.Controllers
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting List Blog Status!).\n"
                     + listBlogResponse.ErrorMessage;
-                return View("ManagerIndex");
+                return RedirectToAction("ManagerIndex");
             }
 
             managerBlogListVM.Blogs = listBlogResponse.Data;
@@ -3151,7 +3153,7 @@ namespace WebAppMVC.Controllers
                     "Error while processing your request! (Getting List News Status!). List was Empty!: " + listNewsResponse);
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting List News Status!).\n List was Empty!";
-                return View("ManagerIndex");
+                return RedirectToAction("ManagerIndex");
             }
             else
             if (!listNewsResponse.Status)
@@ -3159,7 +3161,7 @@ namespace WebAppMVC.Controllers
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting List News Status!).\n"
                     + listNewsResponse.ErrorMessage;
-                return View("ManagerIndex");
+                return RedirectToAction("ManagerIndex");
             }
             managerNewsListVM.News = listNewsResponse.Data;
             managerNewsListVM.createNews = methcall.GetValidationTempData<CreateNewNews>(this, TempData, Constants.Constants.CREATE_NEWS_VALID, "createNews", jsonOptions);
