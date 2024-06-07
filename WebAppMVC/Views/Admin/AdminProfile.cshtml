@@ -72,11 +72,11 @@
                                                 <h4>Personal Information</h4>
                                             </div>
                                             <div class="info-content">
-                                                <form asp-action="AdminProfileUpdate" asp-controller="Admin" class="form-check">
+                                                <form asp-action="AdminProfileUpdate" asp-controller="Admin" class="form-check" method="post">
                                                     <div class="row username-content">
                                                         <label class="contact-title col-md-5 col-sm-4 mt-3">Username: </label>
 
-                                                        <input asp-for="@adminDetail.UserName" id="userName" type="text" name="username"
+                                                        <input asp-for="@adminDetail.UserName" type="text"
                                                                class="form-control col-md-5 col-sm-8 mt-2" readonly
                                                                value="@adminDetail.UserName">
                                                         <span asp-validation-for="@adminDetail.UserName" id="error_message"
@@ -86,7 +86,7 @@
                                                     <div class="row fullname-content">
                                                         <label class="contact-title col-md-5 col-sm-4 mt-3">Full Name: </label>
 
-                                                        <input asp-for="@adminDetail.FullName" id="fullName" type="text" name="fullname"
+                                                        <input asp-for="@adminDetail.FullName" type="text"
                                                                class="form-control col-md-5 col-sm-8 mt-2" readonly
                                                                value="@adminDetail.FullName">
                                                         <span asp-validation-for="@adminDetail.FullName" id="error_message"
@@ -96,7 +96,7 @@
                                                     <div class="row phone-content">
                                                         <label class="contact-title col-md-5 col-sm-4 mt-3">Phone Number: </label>
 
-                                                        <input asp-for="@adminDetail.Phone" id="phone" type="tel" name="phone" value="@adminDetail.Phone"
+                                                        <input asp-for="@adminDetail.Phone" type="tel" value="@adminDetail.Phone"
                                                                class="form-control col-md-5 col-sm-8 mt-2">
                                                         <span asp-validation-for="@adminDetail.Phone" id="error_message"
                                                               class="error-message col-md-2 mt-3"></span>
@@ -105,7 +105,7 @@
                                                     <div class="row address-content">
                                                         <label class="contact-title col-md-5 col-sm-4 mt-3">Address: </label>
 
-                                                        <input asp-for="@adminDetail.Address" type="text" name="address" value="@adminDetail.Address"
+                                                        <input asp-for="@adminDetail.Address" type="text" value="@adminDetail.Address"
                                                                class="form-control col-md-5 col-sm-8 mt-2">
                                                         <span asp-validation-for="@adminDetail.Address" id="error_message"
                                                               class="error-message col-md-2 mt-3"></span>
@@ -114,7 +114,7 @@
                                                     <div class="row email-content">
                                                         <label class="contact-title col-md-5 col-sm-4 mt-3">Email: </label>
 
-                                                        <input asp-for="@adminDetail.Email" id="email" type="email" name="email" value="@adminDetail.Email"
+                                                        <input asp-for="@adminDetail.Email" type="email" value="@adminDetail.Email"
                                                                class="form-control col-md-5 col-sm-8 mt-2">
                                                         <span asp-validation-for="@adminDetail.Email" id="error_message"
                                                               class="error-message col-md-2 mt-3"></span>
@@ -122,7 +122,7 @@
                                                     </div>
                                                     <div class="row gender-content">
                                                         <label class="contact-title col-md-5 col-sm-4 mt-3">Gender: </label>
-                                                        <select class="form-control col-md-5 col-sm-8 mt-2" asp-for="@adminDetail.Gender" asp-items="@genders" class="custom-select" name="gender" id="gender">
+                                                        <select class="form-control col-md-5 col-sm-8 mt-2" asp-for="@adminDetail.Gender" asp-items="@genders" class="custom-select" id="gender">
                                                         </select>
                                                     </div>
                                                     <input asp-for="@adminDetail.ImagePath" type="text" value="@adminDetail.ImagePath" hidden />
