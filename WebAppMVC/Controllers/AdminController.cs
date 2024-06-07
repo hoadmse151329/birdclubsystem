@@ -167,7 +167,7 @@ namespace WebAppMVC.Controllers
             if (memberInvalidDetails != null)
             {
                 memberInvalidDetails.ImagePath = imagePath;
-                memberInvalidDetails.DefaultUserGenderSelectList = methcall.GetUserGenderSelectableList(memberInvalidDetails.Gender);
+                memberInvalidDetails.DefaultUserGenderSelectList = methcall.GetUserGenderSelectableList(memberInvalidDetails.Gender != null ? memberInvalidDetails.Gender : Constants.Constants.MALE);
                 adminInvalids.adminDetail = memberInvalidDetails;
                 return View(adminInvalids);
             }
@@ -268,7 +268,9 @@ namespace WebAppMVC.Controllers
         }
         [HttpPost("Profile")]
         //[Authorize(Roles = "Member")]
-        public async Task<IActionResult> AdminProfileUpdate(MemberViewModel adminDetail)
+        public async Task<IActionResult> AdminProfileUpdate(
+            [FromForm]MemberViewModel adminDetail
+            )
         {
             AdminAPI_URL += "Admin/Profile/Update";
 
