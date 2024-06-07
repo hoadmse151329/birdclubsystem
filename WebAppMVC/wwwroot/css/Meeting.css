@@ -5,7 +5,10 @@
     justify-content: center;
     width: 100%;
 }
-
+#map {
+    height: 400px;
+    width: 100%;
+}
     .member-meetings .overlap-wrapper {
         background-color: #ffffff;
         overflow: hidden;
@@ -784,6 +787,7 @@
     flex-direction: row;
     justify-content: center;
     width: 100%;
+    margin-bottom: 120px;
 }
 
     .member-meeting-post .overlap-wrapper {
