@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.Execution;
 using BAL.Services.Interfaces;
 using BAL.ViewModels;
 using BAL.ViewModels.Manager;
@@ -27,12 +28,16 @@ namespace BAL.Services.Implements
             _jwtService = jwtService;
             _configuration = configuration;
         }
-        public async Task<IEnumerable<MeetingViewModel>> GetAllMeetings(string? role)
+        public async Task<IEnumerable<MeetingViewModel>> GetAllMeetings(string? role, string? accToken = null)
         {
             string locationName;
             var listmeet = await _unitOfWork.MeetingRepository.GetAllMeetings(role);
             var listmeetview = _mapper.Map<IEnumerable<MeetingViewModel>>(listmeet);
-
+            string member = string.Empty;
+            if (accToken != null)
+            {
+                member = await _unitOfWork.MemberRepository.GetMemberNameById(_jwtService.ExtractToken(accToken, _configuration).UserId);
+            }
             foreach (var itemview in listmeetview)
             {
                 foreach (var item in listmeet)
@@ -44,7 +49,10 @@ namespace BAL.Services.Implements
                         itemview.SpotlightImage = (media != null) ? _mapper.Map<MeetingMediaViewModel>(media) : itemview.SpotlightImage;
 
                         locationName = await _unitOfWork.LocationRepository.GetLocationNameById(item.LocationId.Value);
-
+                        if(!string.IsNullOrEmpty(member) && !string.IsNullOrWhiteSpace(member))
+                        {
+                            itemview.isIncharge = member.Equals(itemview.Incharge);
+                        }
                         itemview.Address = locationName;
 
                         string[] temp = locationName.Split(",");
@@ -167,7 +175,9 @@ namespace BAL.Services.Implements
             List<string>? cities = null,
             List<string>? statuses = null,
             string? orderBy = null,
-            bool isMemberOrGuest = false)
+            bool isMemberOrGuest = false,
+            string? accToken = null
+            )
         {
             var listmeet = _unitOfWork.MeetingRepository.GetSortedMeetings(
                 meetingId,
@@ -199,6 +209,11 @@ namespace BAL.Services.Implements
                 orderBy,
                 isMemberOrGuest
                 ));
+            string member = string.Empty;
+            if (accToken != null)
+            {
+                member = await _unitOfWork.MemberRepository.GetMemberNameById(_jwtService.ExtractToken(accToken, _configuration).UserId);
+            }
             string locationName;
             foreach (var itemview in listmeetview)
             {
@@ -209,7 +224,10 @@ namespace BAL.Services.Implements
                         //int partAmount = await _unitOfWork.MeetingParticipantRepository.GetCountMeetingParticipantsByMeetId(meet.MeetingId);
                         var media = await _unitOfWork.MeetingMediaRepository.GetMeetingMediaByMeetingIdAndType(item.MeetingId, "Spotlight");
                         itemview.SpotlightImage = (media != null) ? _mapper.Map<MeetingMediaViewModel>(media) : itemview.SpotlightImage;
-
+                        if (!string.IsNullOrEmpty(member) && !string.IsNullOrWhiteSpace(member))
+                        {
+                            itemview.isIncharge = member.Equals(itemview.Incharge);
+                        }
                         locationName = await _unitOfWork.LocationRepository.GetLocationNameById(item.LocationId.Value);
 
                         itemview.Address = locationName;
