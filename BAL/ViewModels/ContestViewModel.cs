@@ -24,6 +24,7 @@ namespace BAL.ViewModels
             NumberOfParticipantsMinReq = 10;
             NumberOfParticipantsLimit = 10;
             ContestPictures = new List<ContestMediaViewModel>();
+            isIncharge = false;
         }
         public int? ContestId { get; set; }
         [Required(ErrorMessage = "Contest Name is required")]
@@ -81,6 +82,7 @@ namespace BAL.ViewModels
         [Required(ErrorMessage = "InCharge is required")]
         [DisplayName("InCharge")]
         public string? Incharge { get; set; }
+        public bool isIncharge { get; set; }
         [Required(ErrorMessage = "Note is required")]
         [DisplayName("Note")]
         public string? Note { get; set; }

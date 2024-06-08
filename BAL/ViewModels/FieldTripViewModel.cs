@@ -27,6 +27,7 @@ namespace BAL.ViewModels
             NumberOfParticipants = 0;
             NumberOfParticipantsMinReq = 10;
             NumberOfParticipantsLimit = 200;
+            isIncharge = false;
         }
         public int? TripId { get; set; }
         [Required(ErrorMessage = "Fieldtrip Name is required")]
@@ -90,6 +91,7 @@ namespace BAL.ViewModels
         [Required(ErrorMessage = "InCharge is required")]
         [DisplayName("InCharge")]
         public string? InCharge { get; set; }
+        public bool isIncharge { get; set; }
         [Required(ErrorMessage = "Note is required")]
         [DisplayName("Note")]
         public string? Note { get; set; }

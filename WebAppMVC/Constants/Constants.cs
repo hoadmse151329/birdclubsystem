@@ -228,9 +228,9 @@
         public const string GOOGLE_LINK_GET_TOKEN = "https://accounts.google.com/o/oauth2/token";
         public const string GOOGLE_LINK_GET_USER_INFO = "https://www.googleapis.com/oauth2/v1/userinfo?access_token=";
 
-        public const string JWT_SECRET_KEY = "Authentication:JWT:SecretKey";
+        /*public const string JWT_SECRET_KEY = "Authentication:JWT:SecretKey";
         public const string JWT_VALID_ISSUER = "Authentication:JWT:ValidIssuer";
-        public const string JWT_VALID_AUDIENCE = "Authentication:JWT:ValidAudience";
+        public const string JWT_VALID_AUDIENCE = "Authentication:JWT:ValidAudience";*/
 
         public readonly static string TEMP_FILE_LOCATION_FOLDER = "wwwroot/tempFiles";
 

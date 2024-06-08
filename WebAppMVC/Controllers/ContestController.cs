@@ -567,7 +567,6 @@ namespace WebAppMVC.Controllers
                 methodName: Constants.Constants.PUT_METHOD,
                 url: TransactionAPI_URL,
                 inputType: unmtr,
-                accessToken: accToken,
                 _logger: _logger);
 
             if (transactionResponse == null)

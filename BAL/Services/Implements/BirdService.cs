@@ -50,6 +50,7 @@ namespace BAL.Services.Implements
             var bird = _mapper.Map<Bird>(birdModel);
 
             bird.MemberId = memberId;
+            _unitOfWork.BirdRepository.Update(bird);
             _unitOfWork.Save();
             return true;
         }

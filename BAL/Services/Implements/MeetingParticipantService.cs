@@ -88,7 +88,7 @@ namespace BAL.Services.Implements
 
         public async Task<MeetingParticipantViewModel?> GetById(string memberId, int meetId)
         {
-            var meetpart = await _unitOfWork.MeetingParticipantRepository.GetMeetingParticipantById(meetId, memberId);
+            var meetpart = await _unitOfWork.MeetingParticipantRepository.GetMeetingParticipantByIdNoTracking(meetId, memberId);
             if (meetpart != null)
             {
                 var meetingpart = _mapper.Map<MeetingParticipantViewModel>(meetpart);

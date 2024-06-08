@@ -5,7 +5,6 @@ using BAL.Services.Interfaces;
 using System.ComponentModel.DataAnnotations;
 using BAL.ViewModels.Manager;
 using BAL.Services.Implements;
-using BAL.ViewModels.Event;
 
 namespace WebAPI.Controllers
 {
@@ -88,7 +87,7 @@ namespace WebAPI.Controllers
 
         [HttpGet("Index")]
         [Authorize(Roles = "Manager")]
-        [ProducesResponseType(typeof(GetDashboardResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(GetManagerDashboard), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetManagerDashboard()

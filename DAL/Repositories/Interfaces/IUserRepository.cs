@@ -18,5 +18,7 @@ namespace DAL.Repositories.Interfaces
         Task<User?> GetByMemberId(string memid);
         Task<int> GetIdByUsername(string username);
         Task<bool> ChangeUserAvatar(string usrId, string imageAvatar);
+        Task<int> CountUser();
+        Task<int> CountUserByRole(string role);
     }
 }

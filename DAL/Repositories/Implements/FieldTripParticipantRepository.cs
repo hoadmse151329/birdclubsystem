@@ -37,7 +37,7 @@ namespace DAL.Repositories.Implements
 
         public async Task<FieldTripParticipant> GetFieldTripParticipantById(int tripId, string memberId)
         {
-            return await _context.FieldTripParticipants.AsNoTracking().FirstOrDefaultAsync(fp => fp.TripId == tripId && fp.MemberId == memberId);
+            return await _context.FieldTripParticipants.FirstOrDefaultAsync(fp => fp.TripId == tripId && fp.MemberId == memberId);
         }
 
         public async Task<IEnumerable<FieldTripParticipant>> GetFieldTripParticipantsByTripId(int tripId)
@@ -82,6 +82,11 @@ namespace DAL.Repositories.Implements
                 }
             }
             return part;
+        }
+
+        public async Task<FieldTripParticipant> GetFieldTripParticipantByIdNoTracking(int tripId, string memberId)
+        {
+            return await _context.FieldTripParticipants.AsNoTracking().FirstOrDefaultAsync(fp => fp.TripId == tripId && fp.MemberId == memberId);
         }
     }
 }

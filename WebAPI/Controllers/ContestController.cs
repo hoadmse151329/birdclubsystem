@@ -131,7 +131,7 @@ namespace WebAPI.Controllers
                     return NotFound(new
                     {
                         Status = false,
-                        ErrorMessage = "List of FieldTrips Not Found!"
+                        ErrorMessage = "List of Contests Not Found!"
                     });
                 }
 
@@ -148,6 +148,168 @@ namespace WebAPI.Controllers
                     Status = false,
                     ErrorMessage = ex.Message,
                     InnerExceptionMessage = ex.InnerException?.Message
+                });
+            }
+        }
+        [HttpPost("Staff/All")]
+        [Authorize(Roles ="Staff")]
+        [ProducesResponseType(typeof(List<ContestViewModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetStaffAllContests(
+            [Required][FromBody] string? accToken
+            )
+        {
+            try
+            {
+                var result = await _contestService.GetAllContests("Staff",accToken);
+                if (result == null)
+                {
+                    return NotFound(new
+                    {
+                        Status = false,
+                        ErrorMessage = "List of Contests Not Found!"
+                    });
+                }
+
+                return Ok(new
+                {
+                    Status = true,
+                    Data = result
+                });
+            }
+            catch (Exception ex)
+            {
+                if (ex.InnerException != null)
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = ex.Message,
+                        InnerExceptionMessage = ex.InnerException.Message
+                    });
+                }
+                // Log the exception if needed
+                return BadRequest(new
+                {
+                    Status = false,
+                    ErrorMessage = ex.Message
+                });
+            }
+        }
+
+        [HttpPost("Staff/Search")]
+        [ProducesResponseType(typeof(List<ContestViewModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetStaffContestsByAttributes(
+            [Required][FromBody] string? accToken,
+            [FromQuery] int? tripId,
+            [FromQuery] string? tripName,
+            [FromQuery] DateTime? openRegistration,
+            [FromQuery] DateTime? registrationDeadline,
+            [FromQuery] DateTime? startDate,
+            [FromQuery] DateTime? endDate,
+            [FromQuery] int? numberOfParticipants,
+            [FromQuery] int? reqMinElo,
+            [FromQuery] int? reqMaxElo,
+            [FromQuery] List<string>? road,
+            [FromQuery] List<string>? district,
+            [FromQuery] List<string>? city,
+            [FromQuery] List<string>? status,
+            [FromQuery] string? orderBy)
+        {
+            try
+            {
+                bool isMemberOrGuest = false;
+                var result = await _contestService.GetSortedContests(
+                    tripId: tripId,
+                    tripName: tripName,
+                    openRegistration: openRegistration,
+                    registrationDeadline: registrationDeadline,
+                    startDate: startDate,
+                    endDate: endDate,
+                    numberOfParticipants: numberOfParticipants,
+                    reqMinElo: reqMinElo,
+                    reqMaxElo: reqMaxElo,
+                    roads: road,
+                    districts: district,
+                    cities: city,
+                    statuses: status,
+                    orderBy: orderBy,
+                    isMemberOrGuest,
+                    accToken: accToken
+                    );
+                if (result == null)
+                {
+                    return NotFound(new
+                    {
+                        Status = false,
+                        ErrorMessage = "List of Contests Not Found!"
+                    });
+                }
+
+                return Ok(new
+                {
+                    Status = true,
+                    Data = result
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new
+                {
+                    Status = false,
+                    ErrorMessage = ex.Message,
+                    InnerExceptionMessage = ex.InnerException?.Message
+                });
+            }
+        }
+
+        [HttpPost("{id:int}")]
+        [Authorize(Roles = "Staff")]
+        [ProducesResponseType(typeof(ContestViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetStaffContestById(
+            [FromRoute] int id,
+            [FromBody][Required] string accToken
+            )
+        {
+            try
+            {
+                var result = await _contestService.GetByIdCheckIncharge(id, accToken);
+                if (result == null)
+                {
+                    return NotFound(new
+                    {
+                        Status = false,
+                        ErrorMessage = "Contest Not Found!"
+                    });
+                }
+
+                return Ok(new
+                {
+                    Status = true,
+                    Data = result
+                });
+            }
+            catch (Exception ex)
+            {
+                if (ex.InnerException != null)
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = ex.Message,
+                        InnerExceptionMessage = ex.InnerException.Message
+                    });
+                }
+                // Log the exception if needed
+                return BadRequest(new
+                {
+                    Status = false,
+                    ErrorMessage = ex.Message
                 });
             }
         }

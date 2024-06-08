@@ -224,7 +224,9 @@ namespace WebAppMVC.Controllers
             return View(listNewsResponse.Data);
 		}
         [HttpGet("News/{newsId:int}")]
-        public async Task<IActionResult> NewsDetail(int newsId)
+        public async Task<IActionResult> NewsDetail(
+            [Required][FromRoute]int newsId
+            )
         {
             methcall.SetUserDefaultData(this);
             string? role = HttpContext.Session.GetString(Constants.Constants.ROLE_NAME);
@@ -258,18 +260,19 @@ namespace WebAppMVC.Controllers
             if (newsResponse == null)
             {
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] = "Error while processing your request! (Getting News!).\n News was empty or not found!";
-                RedirectToAction("Index");
+                RedirectToAction("News");
             }
             if (!newsResponse.Status)
             {
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] = "Error while processing your request! (Getting News!).\n" + newsResponse.ErrorMessage;
-                RedirectToAction("Index");
+                RedirectToAction("News");
             }
             return View(newsResponse.Data);
         }
         [Route("Gallery")]
         public IActionResult Gallery()
         {
+            methcall.SetUserDefaultData(this);
             return View();
         }
         [HttpGet("Blog")]

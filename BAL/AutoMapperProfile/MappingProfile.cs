@@ -222,6 +222,7 @@ namespace BAL.AutoMapperProfile
                     dest.AvatarImage = src.UserDetails.ImagePath;
                 })
                 .ReverseMap();
+            CreateMap<Gallery, GalleryViewModel>().ReverseMap();
         }
     }
 }
