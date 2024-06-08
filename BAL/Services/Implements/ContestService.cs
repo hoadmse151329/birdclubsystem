@@ -65,7 +65,10 @@ namespace BAL.Services.Implements
             }
             return null;
         }
-        public async Task<IEnumerable<ContestViewModel>> GetAllContests(string? role)
+        public async Task<IEnumerable<ContestViewModel>> GetAllContests(
+            string? role,
+            string? accToken = null
+            )
         {
             string locationName;
             var listcontest = await _unitOfWork.ContestRepository.GetAllContests(role);
@@ -108,7 +111,9 @@ namespace BAL.Services.Implements
             List<string>? cities, 
             List<string>? statuses, 
             string? orderBy, 
-            bool isMemberOrGuest = false)
+            bool isMemberOrGuest = false,
+            string? accToken = null
+            )
         {
             var listcontest = _unitOfWork.ContestRepository.GetSortedContests(
                 tripId,
@@ -292,6 +297,11 @@ namespace BAL.Services.Implements
             _unitOfWork.ContestRepository.Update(contest);
             _unitOfWork.Save();
             return true;
+        }
+
+        public Task<ContestViewModel?> GetByIdCheckIncharge(int id, string accToken)
+        {
+            throw new NotImplementedException();
         }
     }
 }

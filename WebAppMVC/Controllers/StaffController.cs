@@ -153,6 +153,7 @@ namespace WebAppMVC.Controllers
                                 methodName: Constants.Constants.POST_METHOD,
                                 url: StaffAPI_URL,
                                 inputType: accToken,
+                                accessToken: accToken,
                                 _logger: _logger);
             var meetpartPostResponse = await methcall.CallMethodReturnObject<GetListMeetingParticipation>(
                                 _httpClient: _httpClient,
@@ -285,16 +286,16 @@ namespace WebAppMVC.Controllers
             if (search != null || !string.IsNullOrEmpty(search))
             {
                 search = search.Trim();
-                StaffAPI_URL += "FieldTrip/Search?tripName=" + search;
+                StaffAPI_URL += "FieldTrip/Staff/Search?tripName=" + search;
             }
-            else StaffAPI_URL += "FieldTrip/All";
+            else StaffAPI_URL += "FieldTrip/Staff/All";
 
             dynamic testmodel2 = new ExpandoObject();
 
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.STAFF) != null)
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.STAFF));
 
-            string? role = HttpContext.Session.GetString(Constants.Constants.ROLE_NAME);
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
             var listLocationResponse = await methcall.CallMethodReturnObject<GetLocationResponseByList>(
                 _httpClient: _httpClient,
@@ -308,7 +309,8 @@ namespace WebAppMVC.Controllers
                 options: jsonOptions,
                 methodName: Constants.Constants.POST_METHOD,
                 url: StaffAPI_URL,
-                inputType: role,
+                inputType: accToken,
+                accessToken: accToken,
                 _logger: _logger);
 
             if (listFieldTripResponse == null || listLocationResponse == null)
@@ -346,8 +348,10 @@ namespace WebAppMVC.Controllers
             var fieldtripPostResponse = await methcall.CallMethodReturnObject<GetFieldTripPostResponse>(
                                 _httpClient: _httpClient,
                                 options: jsonOptions,
-                                methodName: Constants.Constants.GET_METHOD,
+                                methodName: Constants.Constants.POST_METHOD,
                                 url: StaffAPI_URL,
+                                inputType: accToken,
+                                accessToken: accToken,
                                 _logger: _logger);
             var fieldtrippartPostResponse = await methcall.CallMethodReturnObject<GetListFieldTripParticipation>(
                                 _httpClient: _httpClient,
@@ -510,7 +514,7 @@ namespace WebAppMVC.Controllers
             if (!listContestResponse.Status || !listLocationResponse.Status)
             {
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
-                    "Error while processing your request! (Getting List Meeting!).\n"
+                    "Error while processing your request! (Getting List Contest!).\n"
                     + listContestResponse.ErrorMessage + "\n" + listLocationResponse.ErrorMessage;
                 return View("StaffIndex");
             }

@@ -29,6 +29,6 @@ namespace BAL.ViewModels
         public string? Type { get; set; }
         public int? DayByDayId { get; set; }
         public IFormFile? ImageUpload { get; set; }
-        public List<SelectListItem> DayNumberSelectableList { get; set; }
+        public List<SelectListItem>? DayNumberSelectableList { get; set; }
     }
 }

@@ -4,6 +4,7 @@ using BAL.ViewModels;
 using BAL.ViewModels.Manager;
 using DAL.Infrastructure;
 using DAL.Models;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,18 +16,30 @@ namespace BAL.Services.Implements
     public class FieldTripService : IFieldTripService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IJWTService _jwtService;
         private readonly IMapper _mapper;
-        public FieldTripService(IUnitOfWork unitOfWork, IMapper mapper)
+        private readonly IConfiguration _configuration;
+        public FieldTripService(IUnitOfWork unitOfWork, IMapper mapper, IJWTService jwtService, IConfiguration configuration)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _jwtService = jwtService;
+            _configuration = configuration;
         }
 
-        public async Task<IEnumerable<FieldTripViewModel>> GetAllFieldTrips(string? role)
+        public async Task<IEnumerable<FieldTripViewModel>> GetAllFieldTrips(
+            string? role,
+            string? accToken = null
+            )
         {
             string[] locationName;
             var listtrip = await _unitOfWork.FieldTripRepository.GetAllFieldTrips(role);
             var listtripview = _mapper.Map<IEnumerable<FieldTripViewModel>>(listtrip);
+            string member = string.Empty;
+            if (accToken != null)
+            {
+                member = await _unitOfWork.MemberRepository.GetMemberNameById(_jwtService.ExtractToken(accToken, _configuration).UserId);
+            }
             foreach (var itemview in listtripview)
             {
                 var trip = listtrip.SingleOrDefault(ft => ft.TripId == itemview.TripId);
@@ -34,7 +47,10 @@ namespace BAL.Services.Implements
                 {
                     var media = await _unitOfWork.FieldTripMediaRepository.GetFieldTripMediaByFieldTripIdAndType(trip.TripId, "Spotlight");
                     itemview.SpotlightImage = (media != null) ? _mapper.Map<FieldtripMediaViewModel>(media) : itemview.SpotlightImage;
-                    
+                    if (!string.IsNullOrEmpty(member) && !string.IsNullOrWhiteSpace(member))
+                    {
+                        itemview.isIncharge = member.Equals(itemview.InCharge);
+                    }
                     var locationAddress = await _unitOfWork.LocationRepository.GetLocationNameById(trip.LocationId.Value);
                     itemview.Address = locationAddress;
 
@@ -56,12 +72,14 @@ namespace BAL.Services.Implements
             DateTime? startDate, 
             DateTime? endDate, 
             int? numberOfParticipants, 
-            List<string>? roads, 
-            List<string>? districts, 
-            List<string>? cities, 
-            List<string>? statuses, 
-            string? orderBy, 
-            bool isMemberOrGuest = false)
+            List<string>? roads = null, 
+            List<string>? districts = null, 
+            List<string>? cities = null, 
+            List<string>? statuses = null, 
+            string? orderBy = null, 
+            bool isMemberOrGuest = false,
+            string? accToken = null
+            )
         {
             var listtrip = _unitOfWork.FieldTripRepository.GetSortedFieldTrips(
                 tripId,
@@ -93,6 +111,11 @@ namespace BAL.Services.Implements
                 orderBy,
                 isMemberOrGuest
                 ));
+            string member = string.Empty;
+            if (accToken != null)
+            {
+                member = await _unitOfWork.MemberRepository.GetMemberNameById(_jwtService.ExtractToken(accToken, _configuration).UserId);
+            }
             string locationName;
             foreach (var itemview in listtripview)
             {
@@ -103,7 +126,10 @@ namespace BAL.Services.Implements
                         //int partAmount = await _unitOfWork.MeetingParticipantRepository.GetCountMeetingParticipantsByMeetId(meet.MeetingId);
                         var media = await _unitOfWork.FieldTripMediaRepository.GetFieldTripMediaByFieldTripIdAndType(item.TripId, "SpotlightImage");
                         itemview.SpotlightImage = (media != null) ? _mapper.Map<FieldtripMediaViewModel>(media) : itemview.SpotlightImage;
-
+                        if (!string.IsNullOrEmpty(member) && !string.IsNullOrWhiteSpace(member))
+                        {
+                            itemview.isIncharge = member.Equals(itemview.InCharge);
+                        }
                         locationName = await _unitOfWork.LocationRepository.GetLocationNameById(item.LocationId.Value);
 
                         itemview.Address = locationName;
@@ -352,6 +378,66 @@ namespace BAL.Services.Implements
             _unitOfWork.FieldTripRepository.Update(fieldtrip);
             _unitOfWork.Save();
             return true;
+        }
+
+        public async Task<FieldTripViewModel?> GetByIdCheckIncharge(
+            int id, 
+            string accToken
+            )
+        {
+            var trip = await _unitOfWork.FieldTripRepository.GetFieldTripById(id);
+            if (trip != null)
+            {
+                var media = await _unitOfWork.FieldTripMediaRepository.GetFieldTripMediasByTripId(trip.TripId);
+                var locationName = await _unitOfWork.LocationRepository.GetLocationNameById(trip.LocationId.Value);
+                if (locationName == null) return null;
+
+                var locationSplit = locationName.Split(",");
+
+                int partAmount = await _unitOfWork.FieldTripParticipantRepository.GetCountFieldTripParticipantsByTripId(trip.TripId);
+
+                var fieldTrip = _mapper.Map<FieldTripViewModel>(trip);
+
+                fieldTrip.FieldtripPictures = (media.Count() > 0) ? _mapper.Map<IEnumerable<FieldtripMediaViewModel>>(media).ToList() : fieldTrip.FieldtripPictures;
+
+                fieldTrip.NumberOfParticipants = partAmount;
+                fieldTrip.Address = locationName;
+
+                fieldTrip.AreaNumber = locationSplit[0];
+                fieldTrip.Street = locationSplit[1];
+                fieldTrip.District = locationSplit[2];
+                fieldTrip.City = locationSplit[3];
+
+                var member = await _unitOfWork.MemberRepository.GetMemberNameById(_jwtService.ExtractToken(accToken, _configuration).UserId);
+                fieldTrip.isIncharge = member.Equals(fieldTrip.InCharge);
+
+                foreach (var picture in fieldTrip.FieldtripPictures.ToList())
+                {
+                    if (picture.Type == "Spotlight")
+                    {
+                        fieldTrip.SpotlightImage = picture;
+                        fieldTrip.FieldtripPictures.Remove(picture);
+                    }
+                    else
+                    if (picture.Type == "LocationMap")
+                    {
+                        fieldTrip.LocationMapImage = picture;
+                        fieldTrip.FieldtripPictures.Remove(picture);
+                    }
+                    else
+                    if (picture.Type == "DayByDay")
+                    {
+                        var day = fieldTrip.FieldtripDaybyDays.SingleOrDefault(f => f.DaybyDayId.Value.Equals(picture.DayByDayId.Value));
+                        if (day != null)
+                        {
+                            day.Media.Add(picture);
+                            fieldTrip.FieldtripPictures.Remove(picture);
+                        }
+                    }
+                }
+                return fieldTrip;
+            }
+            return null;
         }
     }
 }

@@ -988,19 +988,19 @@ namespace WebAppMVC.Controllers
         /*[Route("Manager/FieldTrip/Update/{id:int}")]*/
         public async Task<IActionResult> ManagerUpdateFieldTripDetail(
             [FromRoute][Required] int id,
-            [Required] UpdateFieldtripStatusVM updateTripStatus
+            [Required] UpdateFieldtripDetailsVM updateTrip
             )
         {
             ManagerAPI_URL += "FieldTrip/" + id + "/Update";
-            if (updateTripStatus.Status.Equals(Constants.Constants.EVENT_STATUS_CLOSED_REGISTRATION) && updateTripStatus.NumberOfParticipants < 10)
+            if (updateTrip.Status.Equals(Constants.Constants.EVENT_STATUS_CLOSED_REGISTRATION) && updateTrip.NumberOfParticipants < 10)
             {
                 ModelState.AddModelError("updateTrip.Status", "Error while processing your request (Updating FieldTrip). Not enough people to closed registration");
-                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_FIELDTRIP_VALID, updateTripStatus, jsonOptions);
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_FIELDTRIP_VALID, updateTrip, jsonOptions);
                 return RedirectToAction("ManagerFieldTripDetail", new { id });
             }
-            if (!ModelState.IsValid && !updateTripStatus.Status.Equals(Constants.Constants.EVENT_STATUS_POSTPONED))
+            if (!ModelState.IsValid)
             {
-                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_FIELDTRIP_VALID, updateTripStatus, jsonOptions);
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_FIELDTRIP_VALID, updateTrip, jsonOptions);
                 return RedirectToAction("ManagerFieldTripDetail", new { id });
             }
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
@@ -1013,7 +1013,7 @@ namespace WebAppMVC.Controllers
                                 options: jsonOptions,
                                 methodName: Constants.Constants.PUT_METHOD,
                                 url: ManagerAPI_URL,
-                                inputType: updateTripStatus,
+                                inputType: updateTrip,
                                 accessToken: accToken,
                                 _logger: _logger);
             if (fieldtripPostResponse == null)
@@ -1037,19 +1037,19 @@ namespace WebAppMVC.Controllers
         /*[Route("Manager/FieldTrip/Update/{id:int}")]*/
         public async Task<IActionResult> ManagerUpdateFieldTripStatus(
             [FromRoute][Required] int id,
-            [Required] UpdateFieldtripStatusVM updateTrip
+            [Required] UpdateFieldtripStatusVM updateTripStatus
             )
         {
             ManagerAPI_URL += "FieldTrip/" + id + "/Status/Update";
-            if (updateTrip.Status.Equals(Constants.Constants.EVENT_STATUS_CLOSED_REGISTRATION) && updateTrip.NumberOfParticipants < 10)
+            if (updateTripStatus.Status.Equals(Constants.Constants.EVENT_STATUS_CLOSED_REGISTRATION) && updateTripStatus.NumberOfParticipants < 10)
             {
                 ModelState.AddModelError("updateTrip.Status", "Error while processing your request (Updating FieldTrip). Not enough people to closed registration");
-                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_FIELDTRIP_VALID, updateTrip, jsonOptions);
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_FIELDTRIP_VALID, updateTripStatus, jsonOptions);
                 return RedirectToAction("ManagerFieldTripDetail", new { id });
             }
-            if (!ModelState.IsValid && !updateTrip.Status.Equals(Constants.Constants.EVENT_STATUS_POSTPONED))
+            if (!ModelState.IsValid && !updateTripStatus.Status.Equals(Constants.Constants.EVENT_STATUS_POSTPONED))
             {
-                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_FIELDTRIP_VALID, updateTrip, jsonOptions);
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_FIELDTRIP_VALID, updateTripStatus, jsonOptions);
                 return RedirectToAction("ManagerFieldTripDetail", new { id });
             }
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
@@ -1062,7 +1062,7 @@ namespace WebAppMVC.Controllers
                                 options: jsonOptions,
                                 methodName: Constants.Constants.PUT_METHOD,
                                 url: ManagerAPI_URL,
-                                inputType: updateTrip,
+                                inputType: updateTripStatus,
                                 accessToken: accToken,
                                 _logger: _logger);
             if (fieldtripPostResponse == null)
@@ -1647,6 +1647,7 @@ namespace WebAppMVC.Controllers
             ManagerAPI_URL += "FieldTrip/" + fieldtripId + "/Create/Media";
             if (!ModelState.IsValid)
             {
+                createMedia.ImageUpload = null;
                 TempData = methcall.SetValidationTempData(TempData, Constants.Constants.CREATE_FIELDTRIP_MEDIA_VALID, createMedia, jsonOptions);
                 return RedirectToAction("ManagerFieldTripDetail", new { id = fieldtripId });
             }
@@ -2367,6 +2368,7 @@ namespace WebAppMVC.Controllers
             ManagerAPI_URL += "Contest/" + contestId + "/Create/Media";
             if (!ModelState.IsValid)
             {
+                createMedia.ImageUpload = null;
                 TempData = methcall.SetValidationTempData(TempData, Constants.Constants.CREATE_CONTEST_MEDIA_VALID, createMedia, jsonOptions);
                 return RedirectToAction("ManagerContestDetail", new { id = contestId });
             }

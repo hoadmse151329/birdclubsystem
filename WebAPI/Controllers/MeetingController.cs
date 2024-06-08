@@ -280,12 +280,13 @@ namespace WebAPI.Controllers
             }
         }
         [HttpPost("{id}")]
+        [Authorize(Roles = "Staff")]
         [ProducesResponseType(typeof(MeetingViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetStaffMeetingById(
             [FromRoute] int id,
-            [FromBody][Required] string? accToken)
+            [FromBody][Required] string accToken)
         {
             try
             {

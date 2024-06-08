@@ -11,8 +11,15 @@ namespace BAL.Services.Interfaces
     public interface IFieldTripService
     {
         Task<FieldTripViewModel?> GetById(int id);
+        Task<FieldTripViewModel?> GetByIdCheckIncharge(
+            int id, 
+            string accToken
+            );
         Task<FieldTripViewModel?> GetByIdWithoutInclude(int id);
-        Task<IEnumerable<FieldTripViewModel>> GetAllFieldTrips(string? role);
+        Task<IEnumerable<FieldTripViewModel>> GetAllFieldTrips(
+            string? role, 
+            string? accToken = null
+            );
         Task<IEnumerable<FieldTripViewModel>?> GetSortedFieldTrips(
             int? tripId,
             string? tripName,
@@ -21,12 +28,13 @@ namespace BAL.Services.Interfaces
             DateTime? startDate,
             DateTime? endDate,
             int? numberOfParticipants,
-            List<string>? roads,
-            List<string>? districts,
-            List<string>? cities,
-            List<string>? statuses,
-            string? orderBy,
-            bool isMemberOrGuest = false
+            List<string>? roads = null,
+            List<string>? districts = null,
+            List<string>? cities = null,
+            List<string>? statuses = null,
+            string? orderBy = null,
+            bool isMemberOrGuest = false,
+            string? accToken = null
             );
         void Create(FieldTripViewModel entity);
         void Create(CreateNewFieldtripVM entity);

@@ -84,7 +84,7 @@
                                 <div class="card-header">
                                     <h4>FieldTrip Information</h4>
                                     @{
-                                        if (!(detailsTrip.Status.Equals("Ongoing") || detailsTrip.Status.Equals("Cancelled") || detailsTrip.Status.Equals("Ended")))
+                                        if (!(detailsTrip.Status.Equals("Ongoing") || detailsTrip.Status.Equals("Cancelled") || detailsTrip.Status.Equals("Ended")) && detailsTrip.isIncharge)
                                         {
                                             <div class="edit-info">
                                                 <i class='bx bxs-edit-alt' data-toggle="modal" data-target="#editprofile"></i>
@@ -815,34 +815,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                <input asp-for="@updateTrip.TripName" type="text"
-                               value="@updateTrip.TripName" required hidden>
-                                <input asp-for="@updateTrip.OpenRegistration" type="datetime-local" asp-format="{0:yyyy-MM-ddTHH:mm}"
-                                        value="@updateTrip.OpenRegistration.ToString("yyyy-MM-ddTHH:mm")" required hidden />
-                                <input asp-for="@updateTrip.RegistrationDeadline" type="datetime-local" asp-format="{0:yyyy-MM-ddTHH:mm}"
-                                       value="@updateTrip.RegistrationDeadline.ToString("yyyy-MM-ddTHH:mm")" required hidden />
-                                <input asp-for="@updateTrip.StartDate" type="datetime-local" asp-format="{0:yyyy-MM-ddTHH:mm}"
-                                       value="@updateTrip.StartDate.ToString("yyyy-MM-ddTHH:mm")" required hidden />
-                                <input asp-for="@updateTrip.EndDate" type="datetime-local" asp-format="{0:yyyy-MM-ddTHH:mm}"
-                                       value="@updateTrip.EndDate.ToString("yyyy-MM-ddTHH:mm")" required hidden />
-                                <input asp-for="@updateTrip.NumberOfParticipantsLimit" type="number"
-                               value="@updateTrip.NumberOfParticipantsLimit" required hidden>
-                                <input asp-for="@updateTrip.Host" type="text"
-                               value="@updateTrip.Host" required hidden>
-                                <input asp-for="@updateTrip.InCharge" type="text"
-                               value="@updateTrip.InCharge" required hidden>
-                                <input asp-for="@updateTrip.Fee" type="number"
-                               value="@updateTrip.Fee" required hidden>
-                                <input asp-for="@updateTrip.Address" type="text"
-                               value="@updateTrip.Address" required hidden>
-                                <textarea asp-for="@updateTrip.Description" type="text"
-                                  value="@updateTrip.Description" required hidden></textarea>
-                                <textarea asp-for="@updateTrip.Details" type="text"
-                                  value="@updateTrip.Details" required hidden></textarea>
-                                <textarea asp-for="@updateTrip.Note" type="text"
-                                  value="@updateTrip.Note" required hidden></textarea>
-                                <input asp-for="@updateTrip.NumberOfParticipants" type="number"
-                               value="@updateTrip.NumberOfParticipants" required hidden>
                             </div>
                             <div class="modal-footer justify-content-center">
                                 <button class="btn btn-success" type="submit" value="Update">Save</button>

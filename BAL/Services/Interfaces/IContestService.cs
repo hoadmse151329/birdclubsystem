@@ -11,7 +11,14 @@ namespace BAL.Services.Interfaces
     public interface IContestService
     {
         Task<ContestViewModel?> GetById(int id);
-        Task<IEnumerable<ContestViewModel>> GetAllContests(string? role);
+        Task<ContestViewModel?> GetByIdCheckIncharge(
+            int id, 
+            string accToken
+            );
+        Task<IEnumerable<ContestViewModel>> GetAllContests(
+            string? role,
+            string? accToken = null
+            );
         Task<IEnumerable<ContestViewModel>?> GetSortedContests(
             int? tripId,
             string? tripName,
@@ -22,12 +29,13 @@ namespace BAL.Services.Interfaces
             int? numberOfParticipants,
             int? reqMinElo,
             int? reqMaxElo,
-            List<string>? roads,
-            List<string>? districts,
-            List<string>? cities,
-            List<string>? statuses,
-            string? orderBy,
-            bool isMemberOrGuest = false
+            List<string>? roads = null,
+            List<string>? districts = null,
+            List<string>? cities = null,
+            List<string>? statuses = null,
+            string? orderBy = null,
+            bool isMemberOrGuest = false,
+            string? accToken = null
             );
         void Create(ContestViewModel entity);
         void Create(CreateNewContestVM entity);

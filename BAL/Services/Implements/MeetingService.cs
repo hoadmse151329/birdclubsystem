@@ -47,12 +47,11 @@ namespace BAL.Services.Implements
                         //int partAmount = await _unitOfWork.MeetingParticipantRepository.GetCountMeetingParticipantsByMeetId(meet.MeetingId);
                         var media = await _unitOfWork.MeetingMediaRepository.GetMeetingMediaByMeetingIdAndType(item.MeetingId, "Spotlight");
                         itemview.SpotlightImage = (media != null) ? _mapper.Map<MeetingMediaViewModel>(media) : itemview.SpotlightImage;
-
-                        locationName = await _unitOfWork.LocationRepository.GetLocationNameById(item.LocationId.Value);
-                        if(!string.IsNullOrEmpty(member) && !string.IsNullOrWhiteSpace(member))
+                        if (!string.IsNullOrEmpty(member) && !string.IsNullOrWhiteSpace(member))
                         {
                             itemview.isIncharge = member.Equals(itemview.Incharge);
                         }
+                        locationName = await _unitOfWork.LocationRepository.GetLocationNameById(item.LocationId.Value);
                         itemview.Address = locationName;
 
                         string[] temp = locationName.Split(",");
@@ -114,7 +113,7 @@ namespace BAL.Services.Implements
             }
             return null;
         }
-        public async Task<MeetingViewModel?> GetByIdCheckIncharge(int id, string? accToken)
+        public async Task<MeetingViewModel?> GetByIdCheckIncharge(int id, string accToken)
         {
             var meet = await _unitOfWork.MeetingRepository.GetMeetingById(id);
             if (meet != null)
