@@ -26,7 +26,7 @@ namespace BAL.ViewModels
             {
                 new SelectListItem() { Text = "Status", Value = ""},
                 new SelectListItem { Text = "Active", Value = "Active"},
-                new SelectListItem { Text = "Sick", Value = "Sick"},
+                new SelectListItem { Text = "Inactive", Value = "Inactive"},
                 new SelectListItem { Text = "Injured", Value = "Injured"},
                 new SelectListItem { Text = "Unavailable", Value = "Unavailable"}
             };

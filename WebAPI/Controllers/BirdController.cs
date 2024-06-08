@@ -1,5 +1,6 @@
 ﻿using BAL.Services.Interfaces;
 using BAL.ViewModels;
+using BAL.ViewModels.Bird;
 using BAL.ViewModels.Event;
 using DAL.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -267,7 +268,7 @@ namespace WebAPI.Controllers
         }
         [HttpGet("{id:int}/Contest/All/Participant")]
         [Authorize(Roles = "Member")]
-        [ProducesResponseType(typeof(GetLeaderboardResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(List<GetBirdContestParticipantDetail>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetBirdHistoryContestParticipant(
@@ -282,7 +283,7 @@ namespace WebAPI.Controllers
                     Status = false,
                     ErrorMessage = "Bird does not exist!"
                 });
-                var result = await _birdService.GetBirdLeaderboard();
+                var result = await _contestParticipantService.GetMemberAllByBirdIdInclude(id);
                 return Ok(new
                 {
                     Status = true,

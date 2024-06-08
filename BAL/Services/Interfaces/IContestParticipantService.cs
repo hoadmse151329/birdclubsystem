@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DAL.Models;
+using BAL.ViewModels.Bird;
 
 namespace BAL.Services.Interfaces
 {
@@ -16,6 +17,7 @@ namespace BAL.Services.Interfaces
         Task<IEnumerable<ContestParticipantViewModel>> GetAll();
         Task<IEnumerable<ContestParticipantViewModel>> GetAllByBirdId(int birdId);
         Task<IEnumerable<GetEventParticipation>> GetAllByBirdIdInclude(int birdId);
+        Task<IEnumerable<GetBirdContestParticipantDetail>> GetMemberAllByBirdIdInclude(int birdId);
         Task<IEnumerable<ContestParticipantViewModel>> GetAllByContestId(int contestId);
         Task<IEnumerable<ContestParticipantViewModel>> GetAllByMemberId(string memberId);
         Task<IEnumerable<GetEventParticipation>> GetAllByMemberIdInclude(string memberId);

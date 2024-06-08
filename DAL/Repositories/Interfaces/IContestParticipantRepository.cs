@@ -13,7 +13,8 @@ namespace DAL.Repositories.Interfaces
         Task<IEnumerable<ContestParticipant>> GetContestParticipantsByContestId(int contestId);
 		Task<IEnumerable<ContestParticipant>> GetContestParticipantsByBirdId(int birdId);
 		Task<IEnumerable<ContestParticipant>> GetContestParticipantsByBirdIdInclude(int birdId);
-		Task<IEnumerable<ContestParticipant>> GetContestParticipantsByMemberId(string memberId);
+        Task<IEnumerable<ContestParticipant>> GetContestParticipantsByBirdIdIncludeMember(int birdId);
+        Task<IEnumerable<ContestParticipant>> GetContestParticipantsByMemberId(string memberId);
 		Task<IEnumerable<ContestParticipant>> GetContestParticipantsByMemberIdInclude(string memberId);
 		Task<int> GetCountContestParticipantsByContestId(int contestId);
 		Task<int> GetCountContestParticipantsByBirdId(int birdId);

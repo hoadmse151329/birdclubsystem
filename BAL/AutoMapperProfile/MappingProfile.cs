@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BAL.ViewModels;
 using BAL.ViewModels.Admin;
+using BAL.ViewModels.Bird;
 using BAL.ViewModels.Blog;
 using BAL.ViewModels.Event;
 using BAL.ViewModels.Manager;
@@ -159,6 +160,17 @@ namespace BAL.AutoMapperProfile
                         dest.BirdDetails.Elo = src.ParticipantElo;
                     }
                     dest.MemberDetails.FullName = src.MemberName;
+                });
+            CreateMap<ContestParticipant, GetBirdContestParticipantDetail>()
+                .AfterMap((src, dest) =>
+                {
+                    dest.ContestElo = src.Elo;
+                    if (src.BirdDetails != null)
+                    {
+                        dest.ParticipantElo = src.BirdDetails.Elo.Value;
+                    }
+                    dest.ContestName = src.ContestDetails.ContestName;
+                    dest.MemberName = src.MemberDetails.FullName;
                 });
             CreateMap<Meeting, MeetingViewModel>()
                 .ReverseMap();

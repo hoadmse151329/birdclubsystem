@@ -129,7 +129,7 @@ namespace DAL.Repositories.Implements
                 {
                     if (conpart.Score != participant.Score)
                     {
-                        conpart.Score = participant.Score;
+                        //conpart.Score = participant.Score;
 
                         // Calculate basic Elo change for the player based on the provided parameters
                         double basicEloChange = CalculateBasicEloChange(conpart.BirdDetails.Elo.Value, averageElo, conpart.Score.Value, totalPoints, n, Y);
@@ -137,6 +137,8 @@ namespace DAL.Repositories.Implements
                         int updatedElo = UpdateElo(conpart.BirdDetails.Elo.Value, (int)Math.Round(basicEloChange, MidpointRounding.AwayFromZero));
 
                         conpart.Elo = updatedElo;
+
+                        conpart.Score = (int)Math.Round(basicEloChange, MidpointRounding.AwayFromZero);
 
                         _context.Update(conpart);
                     }
@@ -199,6 +201,11 @@ namespace DAL.Repositories.Implements
         {
             // Update the player's Elo rating based on the calculated real Elo change
             return originalElo + realEloChange;
+        }
+
+        public async Task<IEnumerable<ContestParticipant>> GetContestParticipantsByBirdIdIncludeMember(int birdId)
+        {
+            return await _context.ContestParticipants.Where(b => b.BirdId == birdId).Include(c => c.ContestDetails).Include(m => m.MemberDetails).ToListAsync();
         }
     }
 }

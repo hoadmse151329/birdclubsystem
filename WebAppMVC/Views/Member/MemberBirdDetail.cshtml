@@ -1,14 +1,9 @@
-﻿@model dynamic
+﻿@model WebAppMVC.Models.ViewModels.MemberBirdDetailsVM
 @{
     ViewData["Title"] = "Member Bird Detail Page";
     BAL.ViewModels.BirdViewModel detailsBird = Model.MemberBirdDetails;
-    BAL.ViewModels.BirdViewModel updateBird = Model.UpdateBird != null ? Model.UpdateBird : Model.MemberBirdDetails;
-    List<SelectListItem> birdStatus = new()
-    {
-        new SelectListItem {Text = "Inactive", Value = "Inactive"},
-        new SelectListItem {Text = "Injured", Value = "Injured"},
-        new SelectListItem {Text = "Active", Value = "Active"}
-    };
+    BAL.ViewModels.BirdViewModel updateBird = Model.UpdateBirdDetails;
+    List<BAL.ViewModels.Bird.GetBirdContestParticipantDetail> listBirdContestParticipationHistory = Model.BirdContestParticipationHistoryList;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <html lang="en">
@@ -225,104 +220,40 @@
                                                 <div class="col-lg-8">
                                                     <div class="profile-content">
                                                         <div class="contact-infor">
-                                                            <div class="info-content">
-                                                                <div class="card-header">
-                                                                    <h4>Meeting Information</h4>
-                                                                </div>
-                                                                <div class="card-body">
-                                                                    <div class="row">
-                                                                        <div class="col-sm-5 text-sm-right">
-                                                                            <span>Status:</span>
-                                                                        </div>
-                                                                        <div class="col-sm-7">
-                                                                            @{
-                                                                                switch (detailsBird.Status)
-                                                                                {
-                                                                                    case "Active":
-                                                                                        {
-                                                                                            <span class="stt1" style="float: left;">Status:<h6>@detailsBird.Status</h6></span>
-                                                                                            break;
-                                                                                        }
-                                                                                    case "Injured":
-                                                                                        {
-                                                                                            <span class="stt3" style="float: left;">Status:<h6>@detailsBird.Status</h6></span>
-                                                                                            break;
-                                                                                        }
-                                                                                    case "Inactive":
-                                                                                        {
-                                                                                            <span class="stt2" style="float: left;">Status:<h6>@detailsBird.Status</h6></span>
-                                                                                            break;
-                                                                                        }
-                                                                                }
-                                                                            }
-                                                                        </div>
+                                                            @foreach (var participation in listBirdContestParticipationHistory)
+                                                            {
+                                                                <div class="info-content">
+                                                                    <div class="card-header">
+                                                                        <h4>Contest Participation Information</h4>
                                                                     </div>
-                                                                    <div class="row">
-                                                                        <div class="col-md-5 text-md-right">
-                                                                            <label for="meeting-name">Bird Name:</label>
+                                                                    <div class="card-body">
+                                                                        <div class="row">
+                                                                            <div class="col-sm-5 text-sm-right">
+                                                                                <span>Contest Name:</span>
+                                                                            </div>
+                                                                            <div class="col-sm-7">
+                                                                                <span>@participation.ContestName</span>
+                                                                            </div>
                                                                         </div>
-                                                                        <div class="col-md-7">
-                                                                            <span>@detailsBird.BirdName</span>
+                                                                        <div class="row mb-sm-2">
+                                                                            <div class="col-sm-5 text-sm-right">
+                                                                                <span>Scored ELO :</span>
+                                                                            </div>
+                                                                            <div class="col-sm-7 text-sm-left">
+                                                                                <span>@participation.ContestElo</span>
+                                                                            </div>
                                                                         </div>
-                                                                    </div>
-                                                                    <div class="row">
-                                                                        <div class="col-md-5 text-md-right">
-                                                                            <label for="customer-name">Added Date:</label>
-                                                                        </div>
-                                                                        <div class="col-md-7">
-                                                                            <span>@detailsBird.AddDate.Value.ToString("dd-MM-yyyy HH:mm")</span>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="row mb-sm-2">
-                                                                        <div class="col-sm-5 text-sm-right">
-                                                                            <span>ELO:</span>
-                                                                        </div>
-                                                                        <div class="col-sm-7 text-sm-left">
-                                                                            <span>@detailsBird.Elo</span>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="row mb-sm-2">
-                                                                        <div class="col-sm-5 text-sm-right">
-                                                                            <span>Age:</span>
-                                                                        </div>
-                                                                        <div class="col-sm-7 text-sm-left">
-                                                                            <span>@detailsBird.Age</span>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="row mb-sm-2">
-                                                                        <div class="col-sm-5 text-sm-right">
-                                                                            <span>Color:</span>
-                                                                        </div>
-                                                                        <div class="col-sm-7 text-sm-left">
-                                                                            <span>@detailsBird.Color</span>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="row mb-sm-2">
-                                                                        <div class="col-sm-5 text-sm-right">
-                                                                            <span>Description:</span>
-                                                                        </div>
-                                                                        <div class="col-sm-7 text-sm-left">
-                                                                            <span>@detailsBird.Description</span>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="row mb-sm-2">
-                                                                        <div class="col-sm-5 text-sm-right">
-                                                                            <span>Origin:</span>
-                                                                        </div>
-                                                                        <div class="col-sm-7 text-sm-left">
-                                                                            <span>@detailsBird.Origin</span>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="row mb-sm-2">
-                                                                        <div class="col-sm-5 text-sm-right">
-                                                                            <span>Profile pic:</span>
-                                                                        </div>
-                                                                        <div class="col-sm-7 text-sm-left">
-                                                                            <img class="img-fluid" src="@detailsBird.ProfilePic" alt="n1">
+                                                                        <div class="row mb-sm-2">
+                                                                            <div class="col-sm-5 text-sm-right">
+                                                                                <span>Score points :</span>
+                                                                            </div>
+                                                                            <div class="col-sm-7 text-sm-left">
+                                                                                <span>@participation.Score</span>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                            </div>
+                                                            }
                                                         </div>
                                                     </div>
                                                 </div>

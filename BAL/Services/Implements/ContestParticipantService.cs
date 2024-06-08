@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BAL.ViewModels.Bird;
 
 namespace BAL.Services.Implements
 {
@@ -118,6 +119,12 @@ namespace BAL.Services.Implements
                 return true;
             }
             return false;
+        }
+
+        public async Task<IEnumerable<GetBirdContestParticipantDetail>> GetMemberAllByBirdIdInclude(int birdId)
+        {
+            return _mapper.Map<IEnumerable<GetBirdContestParticipantDetail>>(await
+                _unitOfWork.ContestParticipantRepository.GetContestParticipantsByBirdIdIncludeMember(birdId));
         }
     }
 }
