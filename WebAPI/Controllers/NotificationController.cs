@@ -137,7 +137,6 @@ namespace WebAPI.Controllers
                 });
                 NotificationViewModel notification = new NotificationViewModel()
                 {
-                    NotificationId = Guid.NewGuid().ToString(),
                     Title = notif.Title,
                     Description = notif.Description,
                     Date = DateTime.Now,
