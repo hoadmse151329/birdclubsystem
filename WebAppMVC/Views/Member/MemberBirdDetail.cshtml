@@ -192,9 +192,9 @@
                                             <div class="row">
                                                 <div class="card profile col-12 mb-4">
                                                     <div class="card-header">
-                                                        <h4>Medias</h4>
+                                                        <h4>Bird Additional Pictures</h4>
                                                         <div class="edit-info">
-                                                            <i class='bx bxs-edit-alt' data-toggle="modal" data-target="#editbird"></i>
+                                                            <i class='bx bxs-edit-alt' data-toggle="modal" data-target="#editmedia"></i>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -324,16 +324,6 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="row">
-                                                            <div class="card profile col-12 mb-4">
-                                                                <div class="card-header">
-                                                                    <h4>Medias</h4>
-                                                                    <div class="edit-info">
-                                                                        <i class='bx bxs-edit-alt' data-toggle="modal" data-target="#editbird"></i>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -353,7 +343,7 @@
         <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
             <div class="modal-content modal-addRoom">
                 <div class="modal-header">
-                    <h4 class="modal-title">Edit Bird</h4>
+                    <h4 class="modal-title">Edit Bird Details</h4>
                 </div>
                 <form asp-action="MemberUpdateBirdDetail" asp-controller="Member" method="post" asp-route-birdId="@detailsBird.BirdId" class="form-group" enctype="multipart/form-data">
                     <div class="row p-4">

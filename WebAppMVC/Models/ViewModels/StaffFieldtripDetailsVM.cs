@@ -1,6 +1,4 @@
-﻿using BAL.ViewModels;
-using BAL.ViewModels.Manager;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace WebAppMVC.Models.ViewModels
 {
@@ -30,12 +28,12 @@ namespace WebAppMVC.Models.ViewModels
                 FieldtripStatusSelectableList = fieldtripStatusSelectableList
             };
         }
-        public FieldTripViewModel? FieldTripDetails {  get; set; }
-        public UpdateFieldtripStatusVM UpdateFieldtripStatus { get; set; }
-        public List<FieldTripAdditionalDetailViewModel>? FieldTripTourFeatures { get; set;}
-        public List<FieldTripAdditionalDetailViewModel>? FieldTripImportantToKnows { get; set; }
-        public List<FieldTripAdditionalDetailViewModel>? FieldTripActivitiesAndTransportation { get; set; }
-        public List<FieldTripParticipantViewModel>? FieldTripParticipants { get; set; }
+        public BAL.ViewModels.FieldTripViewModel? FieldTripDetails {  get; set; }
+        public BAL.ViewModels.Manager.UpdateFieldtripStatusVM UpdateFieldtripStatus { get; set; }
+        public List<BAL.ViewModels.FieldTripAdditionalDetailViewModel>? FieldTripTourFeatures { get; set;}
+        public List<BAL.ViewModels.FieldTripAdditionalDetailViewModel>? FieldTripImportantToKnows { get; set; }
+        public List<BAL.ViewModels.FieldTripAdditionalDetailViewModel>? FieldTripActivitiesAndTransportation { get; set; }
+        public List<BAL.ViewModels.FieldTripParticipantViewModel>? FieldTripParticipants { get; set; }
         public List<SelectListItem> ParticipantStatusSelectableList { get; set; }
     }
 }
