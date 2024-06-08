@@ -35,6 +35,7 @@ namespace DAL.Infrastructure
         private IBlogRepository _blogRepository;
         private INewsRepository _newsRepository;
         private ICommentRepository _commentRepository;
+        private IGalleryRepository _galleryRepository;
 		public UnitOfWork(BirdClubContext context)
 		{
 			_context = context;
@@ -62,6 +63,7 @@ namespace DAL.Infrastructure
         public IBlogRepository BlogRepository => _blogRepository ??= new BlogRepository(_context);
         public INewsRepository NewsRepository => _newsRepository ??= new NewsRepository(_context);
         public ICommentRepository CommentRepository => _commentRepository ??= new CommentRepository(_context);
+        public IGalleryRepository GalleryRepository => _galleryRepository ??= new GalleryRepository(_context);
 
         public void Dispose()
         {

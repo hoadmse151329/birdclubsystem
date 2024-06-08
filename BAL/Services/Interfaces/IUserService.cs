@@ -31,5 +31,7 @@ namespace BAL.Services.Interfaces
         void UpdatePassword(UserViewModel entity);
         Task<UserViewModel?> GetByEmailModel(string email);
         Task<int> GetIdByUsername(string username);
+        Task<int> CountUser();
+        Task<int> CountUserByRole(string role);
     }
 }

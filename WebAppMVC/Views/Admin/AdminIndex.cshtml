@@ -1,4 +1,5 @@
-﻿@{
+﻿@model BAL.ViewModels.Admin.GetAdminDashboard
+@{
     Layout = null;
     ViewData["Title"] = "Admin Index Page";
     Layout = "~/Views/Shared/_ALayout.cshtml";
@@ -20,7 +21,7 @@
                     <i class='bx bx-home-heart'></i>
                 </div>
                 <div>
-                    <div class="number">30</div>
+                    <div class="number">@Model.TotalUsers</div>
                     <div class="cardName">Total Accounts</div>
                 </div>
             </div>
@@ -29,7 +30,7 @@
                     <i class='bx bx-conversation'></i>
                 </div>
                 <div>
-                    <div class="number">15</div>
+                    <div class="number">@Model.TotalManagers</div>
                     <div class="cardName">Manager Accounts</div>
                 </div>
             </div>
@@ -38,7 +39,7 @@
                     <i class='bx bx-money'></i>
                 </div>
                 <div>
-                    <div class="number">15</div>
+                    <div class="number">@Model.TotalStaffs</div>
                     <div class="cardName">Staff Accounts</div>
                 </div>
             </div>

@@ -23,6 +23,7 @@ namespace BAL.ViewModels.Manager
             NumberOfParticipants = 0;
             NumberOfParticipantsMinReq = 10;
             NumberOfParticipantsLimit = 10;
+            ClubId = 1;
         }
         public int? ContestId { get; set; }
         [Required(ErrorMessage = "Contest Name is required")]
@@ -94,6 +95,8 @@ namespace BAL.ViewModels.Manager
         [DisplayName("Maximum Participants")]
         [Range(10, 200, ErrorMessage = "Maximum Participants must be at least 10 people and less than 200 people")]
         public int NumberOfParticipantsLimit { get; set; }
+        [DisplayName("ClubId")]
+        public int? ClubId { get; set; }
         public List<SelectListItem>? StaffNames { get; set; }
     }
 }

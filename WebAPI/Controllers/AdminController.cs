@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using BAL.ViewModels.Admin;
 using BAL.Services.Implements;
 using BAL.ViewModels.Authenticates;
+using BAL.ViewModels.Staff;
 
 namespace WebAPI.Controllers
 {
@@ -32,6 +33,51 @@ namespace WebAPI.Controllers
             _contestParticipantService = contestParticipantService;
             _config = config;
         }
+
+        [HttpGet("Index")]
+        [Authorize(Roles = "Admin")]
+        [ProducesResponseType(typeof(GetAdminDashboard), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetStaffDashboard()
+        {
+            try
+            {
+                int userCount = await _userService.CountUser();
+                int managerCount = await _userService.CountUserByRole("Manager");
+                int staffCount = await _userService.CountUserByRole("Staff");
+                GetAdminDashboard result = new GetAdminDashboard()
+                {
+                    TotalUsers = userCount,
+                    TotalManagers = managerCount,
+                    TotalStaffs = staffCount,
+                };
+                return Ok(new
+                {
+                    Status = true,
+                    Data = result
+                });
+            }
+            catch (Exception ex)
+            {
+                if (ex.InnerException != null)
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = ex.Message,
+                        InnerExceptionMessage = ex.InnerException.Message
+                    });
+                }
+                // Log the exception if needed
+                return BadRequest(new
+                {
+                    Status = false,
+                    ErrorMessage = ex.Message
+                });
+            }
+        }
+
         [HttpPost("Profile")]
         [Authorize(Roles = "Admin")]
         [ProducesResponseType(typeof(MemberViewModel), StatusCodes.Status200OK)]
