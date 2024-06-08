@@ -4,6 +4,7 @@ using BAL.ViewModels;
 using BAL.ViewModels.Manager;
 using DAL.Infrastructure;
 using DAL.Models;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
@@ -16,11 +17,15 @@ namespace BAL.Services.Implements
     public class ContestService : IContestService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IJWTService _jwtService;
         private readonly IMapper _mapper;
-        public ContestService(IUnitOfWork unitOfWork, IMapper mapper)
+        private readonly IConfiguration _configuration;
+        public ContestService(IUnitOfWork unitOfWork, IMapper mapper, IJWTService jWTService, IConfiguration configuration)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _jwtService = jWTService;
+            _configuration = configuration;
         }
         public async Task<ContestViewModel?> GetById(int id)
         {
@@ -73,6 +78,11 @@ namespace BAL.Services.Implements
             string locationName;
             var listcontest = await _unitOfWork.ContestRepository.GetAllContests(role);
             var listcontestview = _mapper.Map<IEnumerable<ContestViewModel>>(listcontest);
+            string member = string.Empty;
+            if (accToken != null)
+            {
+                member = await _unitOfWork.MemberRepository.GetMemberNameById(_jwtService.ExtractToken(accToken, _configuration).UserId);
+            }
             foreach (var itemview in listcontestview)
             {
                 foreach(var item in listcontest)
@@ -81,7 +91,10 @@ namespace BAL.Services.Implements
                     {
                         var media = await _unitOfWork.ContestMediaRepository.GetContestMediaByContestIdAndType(item.ContestId, "Spotlight");
                         itemview.SpotlightImage = (media != null) ? _mapper.Map<ContestMediaViewModel>(media) : itemview.SpotlightImage;
-
+                        if (!string.IsNullOrEmpty(member) && !string.IsNullOrWhiteSpace(member))
+                        {
+                            itemview.isIncharge = member.Equals(itemview.InCharge);
+                        }
                         locationName = await _unitOfWork.LocationRepository.GetLocationNameById(item.LocationId.Value);
 
                         string[] temp = locationName.Split(',');
@@ -149,6 +162,11 @@ namespace BAL.Services.Implements
                 orderBy,
                 isMemberOrGuest
                 ));
+            string member = string.Empty;
+            if (accToken != null)
+            {
+                member = await _unitOfWork.MemberRepository.GetMemberNameById(_jwtService.ExtractToken(accToken, _configuration).UserId);
+            }
             string locationName;
             foreach (var itemview in listcontestview)
             {
@@ -159,7 +177,10 @@ namespace BAL.Services.Implements
                         //int partAmount = await _unitOfWork.MeetingParticipantRepository.GetCountMeetingParticipantsByMeetId(meet.MeetingId);
                         var media = await _unitOfWork.ContestMediaRepository.GetContestMediaByContestIdAndType(item.ContestId, "SpotlightImage");
                         itemview.SpotlightImage = (media != null) ? _mapper.Map<ContestMediaViewModel>(media) : itemview.SpotlightImage;
-
+                        if (!string.IsNullOrEmpty(member) && !string.IsNullOrWhiteSpace(member))
+                        {
+                            itemview.isIncharge = member.Equals(itemview.InCharge);
+                        }
                         locationName = await _unitOfWork.LocationRepository.GetLocationNameById(item.LocationId.Value);
 
                         itemview.Address = locationName;
@@ -299,9 +320,52 @@ namespace BAL.Services.Implements
             return true;
         }
 
-        public Task<ContestViewModel?> GetByIdCheckIncharge(int id, string accToken)
+        public async Task<ContestViewModel?> GetByIdCheckIncharge(int id, string accToken)
         {
-            throw new NotImplementedException();
+            var con = await _unitOfWork.ContestRepository.GetContestById(id);
+            if (con != null)
+            {
+                var media = await _unitOfWork.ContestMediaRepository.GetContestMediasByContestId(con.ContestId);
+                string locationName = await _unitOfWork.LocationRepository.GetLocationNameById(con.LocationId.Value);
+                if (locationName == null)
+                {
+                    return null;
+                }
+                int partAmount = await _unitOfWork.ContestParticipantRepository.GetCountContestParticipantsByContestId(con.ContestId);
+
+                var contest = _mapper.Map<ContestViewModel>(con);
+                contest.NumberOfParticipants = partAmount;
+                contest.Address = locationName;
+
+                contest.ContestPictures = (media.Count() > 0) ? _mapper.Map<IEnumerable<ContestMediaViewModel>>(media).ToList() : contest.ContestPictures;
+
+                string[] temp = locationName.Split(",");
+
+                contest.AreaNumber = temp[0];
+                contest.Street = temp[1];
+                contest.District = temp[2];
+                contest.City = temp[3];
+
+                var member = await _unitOfWork.MemberRepository.GetMemberNameById(_jwtService.ExtractToken(accToken, _configuration).UserId);
+                contest.isIncharge = member.Equals(contest.Incharge);
+
+                foreach (var picture in contest.ContestPictures.ToList())
+                {
+                    if (picture.Type == "Spotlight")
+                    {
+                        contest.SpotlightImage = picture;
+                        contest.ContestPictures.Remove(picture);
+                    }
+                    else
+                    if (picture.Type == "LocationMap")
+                    {
+                        contest.LocationMapImage = picture;
+                        contest.ContestPictures.Remove(picture);
+                    }
+                }
+                return contest;
+            }
+            return null;
         }
     }
 }
