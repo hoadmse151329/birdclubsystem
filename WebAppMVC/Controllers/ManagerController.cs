@@ -1946,7 +1946,7 @@ namespace WebAppMVC.Controllers
                 return RedirectToAction("ManagerFieldTripDetail", new { id = fieldtripId });
             }
             TempData[Constants.Constants.ALERT_DEFAULT_SUCCESS_NAME] = tripMediaResponse.SuccessMessage;
-            return RedirectToAction("ManagerContestDetail", new { id = fieldtripId });
+            return RedirectToAction("ManagerFieldTripDetail", new { id = fieldtripId });
         }
 
         [HttpPost("FieldTrip/{id:int}/Cancel")]

@@ -60,11 +60,10 @@ namespace BAL.ViewModels.Manager
         [Required(ErrorMessage = "Minimum ELO to join this contest is required")]
         [DisplayName("Required Minimum ELO")]
         public int? ReqMinELO { get; set; }
-        [NumberGreaterThan(comparisonProperty: "ReqMinELO", comparisonRange: 500, comparisonCurrency: "ELO")]
+        [NumberGreaterThan(comparisonProperty: "ReqMinELO", comparisonRange: 200, comparisonCurrency: "ELO")]
         [Required(ErrorMessage = "Maximum ELO to join this contest is required")]
         [DisplayName("Required Maximum ELO")]
         public int? ReqMaxELO { get; set; }
-        [Required(ErrorMessage = "Elo gained from contest is required")]
         [DisplayName("After ELO")]
         public int? AfterELO { get; set; }
         [Required(ErrorMessage = "Fee is required")]
