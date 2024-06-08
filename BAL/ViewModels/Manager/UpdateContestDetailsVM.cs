@@ -65,7 +65,6 @@ namespace BAL.ViewModels.Manager
         [Required(ErrorMessage = "Maximum ELO to join this contest is required")]
         [DisplayName("Required Maximum ELO")]
         public int? ReqMaxELO { get; set; }
-        [Required(ErrorMessage = "Elo gained from contest is required")]
         [DisplayName("After ELO")]
         public int? AfterELO { get; set; }
         [Required(ErrorMessage = "Fee is required")]

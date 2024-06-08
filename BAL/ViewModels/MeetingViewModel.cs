@@ -25,8 +25,6 @@ namespace BAL.ViewModels
             NumberOfParticipantsMinReq = 10;
             NumberOfParticipantsLimit = 200;
             isIncharge = false;
-            SpotlightImage = new();
-            LocationMapImage = new();
         }
         public int? MeetingId { get; set; }
         [Required(ErrorMessage = "Meeting Name is required")]
