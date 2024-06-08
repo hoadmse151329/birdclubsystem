@@ -1,5 +1,6 @@
 ﻿using BAL.Services.Interfaces;
 using BAL.ViewModels;
+using BAL.ViewModels.Staff;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -82,6 +83,52 @@ namespace WebAPI.Controllers
                 });
             }
         }*/
+
+        [HttpGet("Index")]
+        [Authorize(Roles = "Staff")]
+        [ProducesResponseType(typeof(GetStaffDashboard), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetStaffDashboard()
+        {
+            try
+            {
+                int eventCount = await _meetingService.CountMeeting() + await _fieldTripService.CountFieldTrip() + await _contestService.CountContest();
+                int meetingCount = await _meetingService.CountMeeting();
+                int fieldTripCount = await _fieldTripService.CountFieldTrip();
+                int contestCount = await _contestService.CountContest();
+                GetStaffDashboard result = new GetStaffDashboard()
+                {
+                    TotalEvents = eventCount,
+                    TotalMeetings = meetingCount,
+                    TotalFieldTrips = fieldTripCount,
+                    TotalContests = contestCount,
+                };
+                return Ok(new
+                {
+                    Status = true,
+                    Data = result
+                });
+            }
+            catch (Exception ex)
+            {
+                if (ex.InnerException != null)
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = ex.Message,
+                        InnerExceptionMessage = ex.InnerException.Message
+                    });
+                }
+                // Log the exception if needed
+                return BadRequest(new
+                {
+                    Status = false,
+                    ErrorMessage = ex.Message
+                });
+            }
+        }
 
         [HttpPost("Profile")]
         [Authorize(Roles = "Staff")]

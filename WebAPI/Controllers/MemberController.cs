@@ -2,6 +2,7 @@
 using BAL.Services.Interfaces;
 using BAL.ViewModels;
 using BAL.ViewModels.Manager;
+using BAL.ViewModels.Member;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
@@ -294,5 +295,92 @@ namespace WebAPI.Controllers
                 });
             }
 		}
+
+        [HttpPost("MemberName")]
+        [ProducesResponseType(typeof(MemberViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetMemberNameById([FromBody] string id)
+        {
+            try
+            {
+                var result = await _memberService.GetMemberNameById(id);
+                if (result == null) return NotFound(new
+                {
+                    Status = false,
+                    ErrorMessage = "Member Full Name Not Found!"
+                });
+                return Ok(new
+                {
+                    Status = true,
+                    Data = result
+                });
+            }
+            catch (Exception ex)
+            {
+                if (ex.InnerException != null)
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = ex.Message,
+                        InnerExceptionMessage = ex.InnerException.Message
+                    });
+                }
+                // Log the exception if needed
+                return BadRequest(new
+                {
+                    Status = false,
+                    ErrorMessage = ex.Message
+                });
+            }
+        }
+        [HttpPut("RenewMembership")]
+        [ProducesResponseType(typeof(MemberViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> RenewMembership([FromBody] string id)
+        {
+            try
+            {
+                var check = await _memberService.GetById(id);
+                if (check == null) return NotFound(new
+                {
+                    Status = false,
+                    ErrorMessage = "Member not Found!"
+                });
+                if (check.Status != "Expired") return BadRequest(new
+                {
+                    Status = false,
+                    ErrorMessage = "Member is not yet Expired!"
+                });
+                _memberService.RenewMembership(id);
+                var result = await _memberService.GetById(id);
+                return Ok(new
+                {
+                    Status = true,
+                    SuccessMessage = "Successfully renewed Membership!",
+                    Data = result
+                });
+            }
+            catch (Exception ex)
+            {
+                if (ex.InnerException != null)
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = ex.Message,
+                        InnerExceptionMessage = ex.InnerException.Message
+                    });
+                }
+                // Log the exception if needed
+                return BadRequest(new
+                {
+                    Status = false,
+                    ErrorMessage = ex.Message
+                });
+            }
+        }
     }
 }

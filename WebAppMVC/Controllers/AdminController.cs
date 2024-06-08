@@ -17,6 +17,7 @@ using WebAppMVC.Models.Auth;
 using WebAppMVC.Models.Notification;
 using WebAppMVC.Models.Transaction;
 using System.ComponentModel.DataAnnotations;
+using WebAppMVC.Models.Manager;
 
 namespace WebAppMVC.Controllers
 {
@@ -49,7 +50,7 @@ namespace WebAppMVC.Controllers
             var contentType = new MediaTypeWithQualityHeaderValue("application/json");
             _httpClient.DefaultRequestHeaders.Accept.Add(contentType);
             _httpClient.BaseAddress = new Uri(config.GetSection("DefaultApiUrl:ConnectionString").Value);
-            AdminAPI_URL = "/api/";
+            AdminAPI_URL = config.GetSection("DefaultApiUrl:ApiConnectionString").Value;
         }
 
         [HttpGet("Index")]
@@ -58,7 +59,19 @@ namespace WebAppMVC.Controllers
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.ADMIN) != null)
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.ADMIN));
 
-            return View();
+            AdminAPI_URL += "Admin/Index";
+
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
+
+            var dashboardResponse = await methcall.CallMethodReturnObject<GetAdminDashboardResponse>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: Constants.Constants.GET_METHOD,
+                url: AdminAPI_URL,
+                accessToken: accToken,
+                _logger: _logger);
+
+            return View(dashboardResponse.Data);
         }
         [HttpGet("Account/Index")]
         public async Task<IActionResult> AdminAccountIndex([FromQuery] string? search)

@@ -52,7 +52,7 @@
                             if (TempData["ErrorCheck"] != null)
                             {
                                 <span class="text-danger">@TempData["ErrorCheck"].ToString()</span>
-                                if (TempData["ErrorCheck"].ToString() == "User Account is Currently Expired!")
+                                if (TempData["ErrorCheck"].ToString() == "User Account is Currently Expired! Please renew your Membership")
                                 {
                                     <a href="@Url.Action("RenewMembership", "Auth")">Renew Now!</a>
                                 }
