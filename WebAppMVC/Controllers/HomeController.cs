@@ -25,6 +25,9 @@ using Azure.Storage.Blobs;
 using BAL.ViewModels.News;
 using System.ComponentModel.DataAnnotations;
 using BAL.ViewModels.Blog;
+using static Org.BouncyCastle.Math.EC.ECCurve;
+using static WebAppMVC.Models.ViewModels.GuestIndexVM;
+using Microsoft.Extensions.Configuration;
 
 namespace WebAppMVC.Controllers
 {
@@ -57,7 +60,7 @@ namespace WebAppMVC.Controllers
             string MeetingAPI_URL = HomeAPI_URL + "Meeting/All";
             string FieldTripAPI_URL_All = HomeAPI_URL + "FieldTrip/All";
             string ContestAPI_URL_All = HomeAPI_URL + "Contest/All";
-            dynamic testmodel = new ExpandoObject();
+            GuestIndexVM GuestIndexDetailsVM = new();
 
             methcall.SetUserDefaultData(this);
 
@@ -173,10 +176,17 @@ namespace WebAppMVC.Controllers
                     + listMeetResponse.ErrorMessage + "\n" + listFieldTripResponse.ErrorMessage;
                 Redirect("~/Home/Error");
             }
-            testmodel.Meetings = listMeetResponse.Data;
-            testmodel.FieldTrips = listFieldTripResponse.Data;
-            testmodel.Contests = listContestResponse.Data;
-            return View(testmodel);
+            GuestIndexDetailsVM.Banners = _config.GetSection("BannerImages").Get<List<string>>();
+            GuestIndexDetailsVM.Features = _config.GetSection("Features").Get<List<Feature>>();
+            GuestIndexDetailsVM.WelcomeMess = _config.GetSection("WelcomeMessage").Get<WelcomeMessage>();
+            GuestIndexDetailsVM.About = _config.GetSection("aboutUs").Get<AboutUs>();
+            GuestIndexDetailsVM.TeamMembers = _config.GetSection("team").Get<List<TeamMember>>();
+            GuestIndexDetailsVM.Services = _config.GetSection("services").Get<List<Service>>();
+            GuestIndexDetailsVM.FooterBlock = _config.GetSection("footer").Get<Footer>();
+            GuestIndexDetailsVM.Meetings = listMeetResponse.Data;
+            GuestIndexDetailsVM.FieldTrips = listFieldTripResponse.Data;
+            GuestIndexDetailsVM.Contests = listContestResponse.Data;
+            return View(GuestIndexDetailsVM);
 		}
         [HttpGet("News")]
         public async Task<IActionResult> News()
