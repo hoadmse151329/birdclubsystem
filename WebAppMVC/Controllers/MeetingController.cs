@@ -73,7 +73,7 @@ namespace WebAppMVC.Controllers
                 var notificationCount = await methcall.CallMethodReturnObject<GetNotificationCountResponse>(
                 _httpClient: _httpClient,
                 options: jsonOptions,
-                methodName: "POST",
+                methodName: Constants.Constants.POST_METHOD,
                 url: NotificationCountAPI_URL,
                 inputType: usrId,
                 _logger: _logger);
@@ -81,7 +81,7 @@ namespace WebAppMVC.Controllers
                 var notificationUnread = await methcall.CallMethodReturnObject<GetNotificationTitleResponse>(
                 _httpClient: _httpClient,
                 options: jsonOptions,
-                methodName: "POST",
+                methodName: Constants.Constants.POST_METHOD,
                 url: NotificationUnreadAPI_URL,
                 inputType: usrId,
                 _logger: _logger);
@@ -89,7 +89,7 @@ namespace WebAppMVC.Controllers
                 var notificationRead = await methcall.CallMethodReturnObject<GetNotificationTitleResponse>(
                 _httpClient: _httpClient,
                 options: jsonOptions,
-                methodName: "POST",
+                methodName: Constants.Constants.POST_METHOD,
                 url: NotificationReadAPI_URL,
                 inputType: usrId,
                 _logger: _logger);
@@ -111,13 +111,13 @@ namespace WebAppMVC.Controllers
             {
                 _logger.LogInformation(
                     "Error while processing your request! (Getting List Meeting!). List was Empty!: " + listMeetResponse + " , Error Message: " + listMeetResponse.ErrorMessage);
-                ViewBag.error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting List Meeting!).\n List was Empty!";
                 Redirect("~/Home/Index");
             }
             else if (!listMeetResponse.Status)
             {
-                ViewBag.error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting List Meeting!).\n"
                     + listMeetResponse.ErrorMessage;
                 Redirect("~/Home/Index");
@@ -197,13 +197,13 @@ namespace WebAppMVC.Controllers
             {
                 _logger.LogInformation(
                     "Error while processing your request! (Getting List Meeting!). List was Empty!: " + listMeetResponse + " , Error Message: " + listMeetResponse.ErrorMessage);
-                ViewBag.error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting List Meeting!).\n List was Empty!";
                 Redirect("~/Home/Index");
             }
             else if (!listMeetResponse.Status)
             {
-                ViewBag.error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting List Meeting!).\n"
                     + listMeetResponse.ErrorMessage;
                 Redirect("~/Home/Index");
@@ -243,7 +243,7 @@ namespace WebAppMVC.Controllers
                 var notificationCount = await methcall.CallMethodReturnObject<GetNotificationCountResponse>(
                 _httpClient: _httpClient,
                 options: jsonOptions,
-                methodName: "POST",
+                methodName: Constants.Constants.POST_METHOD,
                 url: NotificationCountAPI_URL,
                 inputType: usrId,
                 _logger: _logger);
@@ -251,7 +251,7 @@ namespace WebAppMVC.Controllers
                 var notificationUnread = await methcall.CallMethodReturnObject<GetNotificationTitleResponse>(
                 _httpClient: _httpClient,
                 options: jsonOptions,
-                methodName: "POST",
+                methodName: Constants.Constants.POST_METHOD,
                 url: NotificationUnreadAPI_URL,
                 inputType: usrId,
                 _logger: _logger);
@@ -259,7 +259,7 @@ namespace WebAppMVC.Controllers
                 var notificationRead = await methcall.CallMethodReturnObject<GetNotificationTitleResponse>(
                 _httpClient: _httpClient,
                 options: jsonOptions,
-                methodName: "POST",
+                methodName: Constants.Constants.POST_METHOD,
                 url: NotificationReadAPI_URL,
                 inputType: usrId,
                 _logger: _logger);
@@ -297,7 +297,7 @@ namespace WebAppMVC.Controllers
             if (meetPostResponse == null)
             {
                 //_logger.LogInformation("Username or Password is invalid: " + meetPostResponse.Status + " , Error Message: " + meetPostResponse.ErrorMessage);
-                ViewBag.error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting Meeting!).\n Meeting Not Found!";
                 View("Index");
             }
@@ -306,7 +306,7 @@ namespace WebAppMVC.Controllers
             if (!meetPostResponse.Status)
             {
                 _logger.LogInformation("Username or Password is invalid: " + meetPostResponse.Status + " , Error Message: " + meetPostResponse.ErrorMessage);
-                ViewBag.error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting Meeting Post!).\n"
                     + meetPostResponse.ErrorMessage;
                 View("Index");
@@ -342,7 +342,7 @@ namespace WebAppMVC.Controllers
             if (participationNo == null)
             {
                 _logger.LogInformation("Error while processing your request! (Registering Meeting Participation!): Meeting Not Found!");
-                ViewBag.error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Registering Meeting Participation!).\n Meeting Not Found!";
                 RedirectToAction("MeetingPost", new { id = meetingId });
             }
@@ -350,7 +350,7 @@ namespace WebAppMVC.Controllers
             if (!participationNo.Status)
             {
                 _logger.LogInformation("Error while processing your request! (Registering Meeting Participation!): " + participationNo.Status + " , Error Message: " + participationNo.ErrorMessage);
-                ViewBag.error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Registering Meeting Participation!).\n"
                     + participationNo.ErrorMessage;
                 RedirectToAction("MeetingPost", new { id = meetingId });
@@ -368,7 +368,7 @@ namespace WebAppMVC.Controllers
             if (meetPostResponse == null)
             {
                 //_logger.LogInformation("Username or Password is invalid: " + meetPostResponse.Status + " , Error Message: " + meetPostResponse.ErrorMessage);
-                ViewBag.error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting Meeting!).\n Meeting Not Found!";
                 View("Index");
             }
@@ -376,7 +376,7 @@ namespace WebAppMVC.Controllers
             if (!meetPostResponse.Status)
             {
                 _logger.LogInformation("Username or Password is invalid: " + meetPostResponse.Status + " , Error Message: " + meetPostResponse.ErrorMessage);
-                ViewBag.error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting Meeting Post!).\n"
                     + meetPostResponse.ErrorMessage;
                 View("Index");
@@ -392,7 +392,7 @@ namespace WebAppMVC.Controllers
             var notificationResponse = await methcall.CallMethodReturnObject<GetNotificationPostResponse>(
                     _httpClient: _httpClient,
                     options: jsonOptions,
-                    methodName: "POST",
+                    methodName: Constants.Constants.POST_METHOD,
                     url: NotificationAPI_URL,
                     inputType: notif,
                     accessToken: accToken,
@@ -400,14 +400,14 @@ namespace WebAppMVC.Controllers
 
             if (notificationResponse == null)
             {
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Create Notification).\n User Not Found!";
                 return RedirectToAction("MeetingPost", new { id = meetingId });
             }
             if (!notificationResponse.Status)
             {
                 _logger.LogInformation("Error while processing your request: " + notificationResponse.Status + " , Error Message: " + notificationResponse.ErrorMessage);
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Create Notification!).\n"
                     + notificationResponse.ErrorMessage;
                 return RedirectToAction("MeetingPost", new { id = meetingId });
@@ -417,7 +417,9 @@ namespace WebAppMVC.Controllers
         }
         [HttpPost("{meetingId:int}/DeRegister")]
         //[Authorize(Roles = "Member")]
-        public async Task<IActionResult> MeetingDeRegister([FromRoute][Required] int meetingId)
+        public async Task<IActionResult> MeetingDeRegister(
+            [FromRoute][Required] int meetingId
+            )
         {
             MeetingAPI_URL += "/" + meetingId + "/Participant/Remove";
 
@@ -439,7 +441,7 @@ namespace WebAppMVC.Controllers
             if (participationNo == null)
             {
                 _logger.LogInformation("Error while processing your request! (Remove Meeting Participation Registration!): Meeting Participation Not Found!");
-                ViewBag.error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Remove Meeting Participation Registration!).\n Meeting Participation Not Found!";
                 RedirectToAction("MeetingPost", new { id = meetingId });
             }
@@ -447,7 +449,7 @@ namespace WebAppMVC.Controllers
             if (!participationNo.Status)
             {
                 _logger.LogInformation("Error while processing your request! (Remove Meeting Participation Registration!): " + participationNo.Status + " , Error Message: " + participationNo.ErrorMessage);
-                ViewBag.error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Remove Meeting Participation Registration!).\n"
                     + participationNo.ErrorMessage;
                 RedirectToAction("MeetingPost", new { id = meetingId });
@@ -464,7 +466,7 @@ namespace WebAppMVC.Controllers
             if (meetPostResponse == null)
             {
                 //_logger.LogInformation("Username or Password is invalid: " + meetPostResponse.Status + " , Error Message: " + meetPostResponse.ErrorMessage);
-                ViewBag.error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting Meeting!).\n Meeting Not Found!";
                 View("Index");
             }
@@ -472,7 +474,7 @@ namespace WebAppMVC.Controllers
             if (!meetPostResponse.Status)
             {
                 _logger.LogInformation("Username or Password is invalid: " + meetPostResponse.Status + " , Error Message: " + meetPostResponse.ErrorMessage);
-                ViewBag.error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting Meeting Post!).\n"
                     + meetPostResponse.ErrorMessage;
                 View("Index");
@@ -490,7 +492,7 @@ namespace WebAppMVC.Controllers
             var notificationResponse = await methcall.CallMethodReturnObject<GetNotificationPostResponse>(
                     _httpClient: _httpClient,
                     options: jsonOptions,
-                    methodName: "POST",
+                    methodName: Constants.Constants.POST_METHOD,
                     url: NotificationAPI_URL,
                     inputType: notif,
                     accessToken: accToken,
@@ -498,20 +500,20 @@ namespace WebAppMVC.Controllers
 
             if (notificationResponse == null)
             {
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Create Notification).\n User Not Found!";
                 return RedirectToAction("MeetingPost", new { id = meetingId });
             }
             if (!notificationResponse.Status)
             {
                 _logger.LogInformation("Error while processing your request: " + notificationResponse.Status + " , Error Message: " + notificationResponse.ErrorMessage);
-                ViewBag.Error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Create Notification!).\n"
                     + notificationResponse.ErrorMessage;
                 return RedirectToAction("MeetingPost", new { id = meetingId });
             }
-            TempData["Success"] = participationNo.SuccessMessage;
-            return RedirectToAction("MemberHistoryEvent","Member");
+            TempData[Constants.Constants.ALERT_DEFAULT_SUCCESS_NAME] = participationNo.SuccessMessage;
+            return RedirectToAction("MeetingPost", new { id = meetingId });
         }
     }
 }
