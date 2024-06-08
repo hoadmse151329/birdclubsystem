@@ -93,7 +93,7 @@ namespace BAL.Services.Implements
                         itemview.SpotlightImage = (media != null) ? _mapper.Map<ContestMediaViewModel>(media) : itemview.SpotlightImage;
                         if (!string.IsNullOrEmpty(member) && !string.IsNullOrWhiteSpace(member))
                         {
-                            itemview.isIncharge = member.Equals(itemview.InCharge);
+                            itemview.isIncharge = member.Equals(itemview.Incharge);
                         }
                         locationName = await _unitOfWork.LocationRepository.GetLocationNameById(item.LocationId.Value);
 
@@ -179,7 +179,7 @@ namespace BAL.Services.Implements
                         itemview.SpotlightImage = (media != null) ? _mapper.Map<ContestMediaViewModel>(media) : itemview.SpotlightImage;
                         if (!string.IsNullOrEmpty(member) && !string.IsNullOrWhiteSpace(member))
                         {
-                            itemview.isIncharge = member.Equals(itemview.InCharge);
+                            itemview.isIncharge = member.Equals(itemview.Incharge);
                         }
                         locationName = await _unitOfWork.LocationRepository.GetLocationNameById(item.LocationId.Value);
 
