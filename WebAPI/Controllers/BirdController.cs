@@ -14,11 +14,13 @@ namespace WebAPI.Controllers
     public class BirdController : ControllerBase
     {
         private readonly IBirdService _birdService;
+        private readonly IContestParticipantService _contestParticipantService;
         private readonly IMemberService _memberService;
-        public BirdController(IBirdService birdService, IMemberService memberService)
+        public BirdController(IBirdService birdService, IMemberService memberService, IContestParticipantService contestParticipantService)
         {
             _birdService = birdService;
             _memberService = memberService;
+            _contestParticipantService = contestParticipantService;
         }
         [HttpPost("AllBirds")]
         [Authorize(Roles = "Member")]
@@ -237,6 +239,49 @@ namespace WebAPI.Controllers
         {
             try
             {
+                var result = await _birdService.GetBirdLeaderboard();
+                return Ok(new
+                {
+                    Status = true,
+                    Data = result
+                });
+            }
+            catch (Exception ex)
+            {
+                if (ex.InnerException != null)
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = ex.Message,
+                        InnerExceptionMessage = ex.InnerException.Message
+                    });
+                }
+                // Log the exception if needed
+                return BadRequest(new
+                {
+                    Status = false,
+                    ErrorMessage = ex.Message
+                });
+            }
+        }
+        [HttpGet("{id:int}/Contest/All/Participant")]
+        [Authorize(Roles = "Member")]
+        [ProducesResponseType(typeof(GetLeaderboardResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetBirdHistoryContestParticipant(
+            [FromRoute][Required] int id
+            )
+        {
+            try
+            {
+                var bird = await _birdService.GetById(id);
+                if (bird == null) return NotFound(new
+                {
+                    Status = false,
+                    ErrorMessage = "Bird does not exist!"
+                });
                 var result = await _birdService.GetBirdLeaderboard();
                 return Ok(new
                 {
