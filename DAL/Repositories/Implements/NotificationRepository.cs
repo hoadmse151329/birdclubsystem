@@ -73,9 +73,9 @@ namespace DAL.Repositories.Implements
                 .Select(n => n.Title).ToListAsync();
         }
 
-        public async Task<string> GenerateNewNotificationId()
+        public string GenerateNewNotificationId()
         {
-            var lastNotif = await _context.Notifications.OrderByDescending(n => Convert.ToInt32(n.NotificationId)).FirstOrDefaultAsync();
+            var lastNotif = _context.Notifications.OrderByDescending(n => Convert.ToInt32(n.NotificationId)).FirstOrDefault();
             int newId = 1;
             if (lastNotif != null)
             {

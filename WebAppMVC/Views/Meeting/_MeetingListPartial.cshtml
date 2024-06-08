@@ -20,64 +20,64 @@
                 <h3 class="heading">Filter</h3>
             </div>
             <div class="tabs-left-filter" style="background-color:white">
-                    <fieldset class="filter-group">
-                        <legend>Road</legend>
-                        <div class="checkboxes">
-                            @foreach (var data in roadNameList)
-                            {
-                                <div class="input-group">
-                                    <div class="form-check">
-                                        <input class="form-check-input road-checkbox" type="checkbox" name="road" id="road_@data.Trim()" value="@data.Trim()" @(selectedRoadNameList.Contains(data.Trim()) ? "checked" : "")>
-                                        <label class="form-check-label" for="road_@data.Trim()">@data.Trim()</label>
-                                    </div>
-                                </div>
-                            }
-                        </div>
-                        @if (roadNameList.Count() > 3)
+                <fieldset class="filter-group">
+                    <legend>Road</legend>
+                    <div class="checkboxes">
+                        @foreach (var data in roadNameList)
                         {
-                            <button class="toggle-btn btn-primary" aria-expanded="false" aria-label="Toggle More"><span>More</span></button>
-                        }
-                    </fieldset>
-                    <fieldset class="filter-group">
-                        <legend>District</legend>
-                        <div class="checkboxes">
-                            @foreach (var data in districtNameList)
-                            {
-                                <div class="input-group">
-                                    <div class="form-check">
-                                        <input class="form-check-input district-checkbox" type="checkbox" name="district" id="district_@data.Trim()" value="@data.Trim()" @(selectedDistrictList.Contains(data.Trim()) ? "checked" : "")>
-                                        <label class="form-check-label" for="district_@data.Trim()">@data.Trim()</label>
-                                    </div>
+                            <div class="input-group">
+                                <div class="form-check">
+                                    <input class="form-check-input road-checkbox" type="checkbox" name="road" id="road_@data.Trim()" value="@data.Trim()" @(selectedRoadNameList.Contains(data.Trim()) ? "checked" : "")>
+                                    <label class="form-check-label" for="road_@data.Trim()">@data.Trim()</label>
                                 </div>
-                            }
-                        </div>
-                        @if (districtNameList.Count() > 3)
-                        {
-                            <button class="toggle-btn btn-primary" aria-expanded="false" aria-label="Toggle More"><span>More</span></button>
+                            </div>
                         }
-                    </fieldset>
-                    <fieldset class="filter-group">
-                        <legend>City</legend>
-                        <div class="checkboxes">
-                            @foreach (var data in cityNameList)
-                            {
-                                <div class="input-group">
-                                    <div class="form-check">
-                                        <input class="form-check-input city-checkbox" type="checkbox" name="city" id="city_@data.Trim()" value="@data.Trim()" @(selectedCityNameList.Contains(data.Trim()) ? "checked" : "")>
-                                        <label class="form-check-label" for="city_@data.Trim()">@data.Trim()</label>
-                                    </div>
+                    </div>
+                    @if (roadNameList.Count() > 3)
+                    {
+                        <button class="toggle-btn btn-primary" aria-expanded="false" aria-label="Toggle More"><span>More</span></button>
+                    }
+                </fieldset>
+                <fieldset class="filter-group">
+                    <legend>District</legend>
+                    <div class="checkboxes">
+                        @foreach (var data in districtNameList)
+                        {
+                            <div class="input-group">
+                                <div class="form-check">
+                                    <input class="form-check-input district-checkbox" type="checkbox" name="district" id="district_@data.Trim()" value="@data.Trim()" @(selectedDistrictList.Contains(data.Trim()) ? "checked" : "")>
+                                    <label class="form-check-label" for="district_@data.Trim()">@data.Trim()</label>
                                 </div>
-                            }
-                        </div>
-                        @if (cityNameList.Count() > 3)
-                        {
-                            <button class="toggle-btn btn-primary" aria-expanded="false" aria-label="Toggle More"><span>More</span></button>
+                            </div>
                         }
-                    </fieldset>
+                    </div>
+                    @if (districtNameList.Count() > 3)
+                    {
+                        <button class="toggle-btn btn-primary" aria-expanded="false" aria-label="Toggle More"><span>More</span></button>
+                    }
+                </fieldset>
+                <fieldset class="filter-group">
+                    <legend>City</legend>
+                    <div class="checkboxes">
+                        @foreach (var data in cityNameList)
+                        {
+                            <div class="input-group">
+                                <div class="form-check">
+                                    <input class="form-check-input city-checkbox" type="checkbox" name="city" id="city_@data.Trim()" value="@data.Trim()" @(selectedCityNameList.Contains(data.Trim()) ? "checked" : "")>
+                                    <label class="form-check-label" for="city_@data.Trim()">@data.Trim()</label>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    @if (cityNameList.Count() > 3)
+                    {
+                        <button class="toggle-btn btn-primary" aria-expanded="false" aria-label="Toggle More"><span>More</span></button>
+                    }
+                </fieldset>
             </div>
             <div class="col-bg">
-                <img class="bg-1" src="~/images/meeting.png"></img>
-                <img class="bg-2" src="~/images/Club-Meeting-Minutes.jpg"></img>
+                <img class="bg-1" src="~/images/meeting.png">
+                <img class="bg-2" src="~/images/Club-Meeting-Minutes.jpg">
             </div>
         </div>
     </div>
@@ -132,100 +132,186 @@
     </div>
 </div>
 <script>
-    $(document).ready(function() {
-        $('.form-check-input').change(function() {
-            applyFilters();
+    function getPageList(totalPages, page, maxLength) {
+    function range(start, end) {
+        return Array.from(Array(end - start + 1), (_, i) => i + start);
+    }
+
+    var sideWidth = maxLength < 9 ? 1 : 2;
+    var leftWidth = (maxLength - sideWidth * 2 - 3) >> 1;
+    var rightWidth = (maxLength - sideWidth * 2 - 3) >> 1;
+
+    if (totalPages <= maxLength) {
+        return range(1, totalPages);
+    }
+
+    if (page <= maxLength - sideWidth - 1 - rightWidth) {
+        return range(1, maxLength - sideWidth - 1).concat(0, range(totalPages - sideWidth + 1, totalPages));
+    }
+
+    if (page >= totalPages - sideWidth - 1 - rightWidth) {
+        return range(1, sideWidth).concat(0, range(totalPages - sideWidth - 1 - rightWidth - leftWidth, totalPages));
+    }
+
+    return range(1, sideWidth).concat(0, range(page - leftWidth, page + rightWidth), 0, range(totalPages - sideWidth + 1, totalPages));
+}
+
+// Pagination initialization function
+function initPagination() {
+    var numberOfItems = $(".content__list, .club-item").length;
+    var limitPerPage = 9;
+    var totalPages = Math.ceil(numberOfItems / limitPerPage);
+    var paginationSize = 7;
+    var currentPage;
+
+    function showPage(whichPage) {
+        if (whichPage < 1 || whichPage > totalPages) return false;
+        currentPage = whichPage;
+        $(".content__list .club-item").hide().slice((currentPage - 1) * limitPerPage, currentPage * limitPerPage).show();
+        $(".pagination li").slice(1, -1).remove();
+        getPageList(totalPages, currentPage, paginationSize).forEach((item) => {
+            $("<li>")
+                .addClass("pages page-item")
+                .addClass(item ? "current-page" : "dots")
+                .toggleClass("active", item === currentPage)
+                .append($("<a>").addClass("page-link").attr({ href: "javascript: void(0)" }).text(item || "..."))
+                .insertBefore(".next-page");
         });
 
-        function applyFilters() {
-            var selectedRoads = [];
-            var selectedDistricts = [];
-            var selectedCities = [];
+        $(".previous-page").toggleClass("disabled", currentPage === 1);
+        $(".next-page").toggleClass("disabled", currentPage === totalPages);
+        return true;
+    }
 
-            // Collect selected checkboxes
-            $('input[name="road"]:checked').each(function() {
-                selectedRoads.push($(this).val());
-            });
+    $(".pagination").append(
+        $("<li>").addClass("page-item previous-page").append(
+            $("<a>").addClass("page-link btn").attr({ href: "javascript: void(0)" }).append($("<i>").addClass("fa fa-circle-left"))
+        ),
+        $("<li>").addClass("page-item next-page").append(
+            $("<a>").addClass("page-link btn").attr({ href: "javascript: void(0)" }).append($("<i>").addClass("fa fa-circle-right"))
+        )
+    );
 
-            $('input[name="district"]:checked').each(function() {
-                selectedDistricts.push($(this).val());
-            });
+    $(".content__list").show();
+    showPage(1);
 
-            $('input[name="city"]:checked').each(function() {
-                selectedCities.push($(this).val());
-            });
+    $(document).on("click", ".pagination li.current-page:not(.active)", function () {
+        return showPage(+$(this).text());
+    });
 
-            var queryString = customParam({
-                road: selectedRoads,
-                district: selectedDistricts,
-                city: selectedCities
-            });
-            console.log(queryString);
+    $(".next-page").on("click", function () {
+        return showPage(currentPage + 1);
+    });
 
-            // Make AJAX GET request to filter meetings
-            $.ajax({
-                url: '@Url.Action("IndexFilter", "Meeting")' + '?' + queryString,
-                method: 'GET',
-                success: function(response) {
-                    renderMeetings(response);
-                }
-            });
-        }
+    $(".previous-page").on("click", function () {
+        return showPage(currentPage - 1);
+    });
+}
 
-        function renderMeetings(meetingsHtml) {
-            var meetingList = $('#full-filter');
-            meetingList.html(meetingsHtml);
-        }
+// Update pagination function
+function updatePagination() {
+    // Reinitialize pagination
+    initPagination();
+}
 
-        function customParam(object) {
-            var serializedParams = [];
+$(document).ready(function() {
+    $('.form-check-input').change(function() {
+        applyFilters();
+    });
 
-            function serialize(params, prefix) {
-                for (var key in params) {
-                    if (Object.prototype.hasOwnProperty.call(params, key)) {
-                        var paramKey = prefix ? prefix + "[" + key + "]" : key;
-                        var paramValue = params[key];
+    function applyFilters() {
+        var selectedRoads = [];
+        var selectedDistricts = [];
+        var selectedCities = [];
 
-                        if (typeof paramValue === "object") {
-                            serialize(paramValue, paramKey);
-                        } else {
-                            serializedParams.push(
-                                encodeURIComponent(paramKey) + "=" + encodeURIComponent(paramValue)
-                            );
-                        }
+        // Collect selected checkboxes
+        $('input[name="road"]:checked').each(function() {
+            selectedRoads.push($(this).val());
+        });
+
+        $('input[name="district"]:checked').each(function() {
+            selectedDistricts.push($(this).val());
+        });
+
+        $('input[name="city"]:checked').each(function() {
+            selectedCities.push($(this).val());
+        });
+
+        var queryString = customParam({
+            road: selectedRoads,
+            district: selectedDistricts,
+            city: selectedCities
+        });
+        console.log(queryString);
+
+        // Make AJAX GET request to filter meetings
+        $.ajax({
+            url: '@Url.Action("IndexFilter", "Meeting")' + '?' + queryString,
+            method: 'GET',
+            success: function(response) {
+                renderMeetings(response);
+                updatePagination();
+            }
+        });
+    }
+
+    function renderMeetings(meetingsHtml) {
+        var meetingList = $('#full-filter');
+        meetingList.html(meetingsHtml);
+    }
+
+    function customParam(object) {
+        var serializedParams = [];
+
+        function serialize(params, prefix) {
+            for (var key in params) {
+                if (Object.prototype.hasOwnProperty.call(params, key)) {
+                    var paramKey = prefix ? prefix + "[" + key + "]" : key;
+                    var paramValue = params[key];
+
+                    if (typeof paramValue === "object") {
+                        serialize(paramValue, paramKey);
+                    } else {
+                        serializedParams.push(
+                            encodeURIComponent(paramKey) + "=" + encodeURIComponent(paramValue)
+                        );
                     }
                 }
             }
-
-            serialize(object);
-
-            return serializedParams.join("&");
         }
 
-        // Toggle functionality for filter checkboxes
-        $('.toggle-btn').on('click', function(event) {
-            var fieldset = $(this).closest('.filter-group');
-                var checkBoxes = fieldset.find('.input-group');
+        serialize(object);
 
-                var isExpanded = $(this).attr('aria-expanded') === 'true';
+        return serializedParams.join("&");
+    }
 
-                if (isExpanded) {
-                    checkBoxes.slice(3).hide();
-                    $(this).attr('aria-expanded', 'false').find('span').text('More');
-                } else {
-                    checkBoxes.show();
-                    $(this).attr('aria-expanded', 'true').find('span').text('Less');
-                }
-            });
+    // Pagination initialization
+    initPagination();
 
-            // Initialize toggle button states
-            $('.filter-group').each(function() {
-                var checkBoxes = $(this).find('.input-group');
-                if (checkBoxes.length <= 3) {
-                    $(this).find('.toggle-btn').attr('aria-expanded', 'true').find('span').text('Less');
-                } else {
-                    checkBoxes.slice(3).hide();
-                }
-            });
+    // Toggle functionality for filter checkboxes
+    $('.toggle-btn').on('click', function(event) {
+        var fieldset = $(this).closest('.filter-group');
+        var checkBoxes = fieldset.find('.input-group');
+
+        var isExpanded = $(this).attr('aria-expanded') === 'true';
+
+        if (isExpanded) {
+            checkBoxes.slice(3).hide();
+            $(this).attr('aria-expanded', 'false').find('span').text('More');
+        } else {
+            checkBoxes.show();
+            $(this).attr('aria-expanded', 'true').find('span').text('Less');
+            }
         });
+
+        // Initialize toggle button states
+        $('.filter-group').each(function() {
+            var checkBoxes = $(this).find('.input-group');
+            if (checkBoxes.length <= 3) {
+                $(this).find('.toggle-btn').attr('aria-expanded', 'true').find('span').text('Less');
+            } else {
+                checkBoxes.slice(3).hide();
+            }
+        });
+    });
 </script>

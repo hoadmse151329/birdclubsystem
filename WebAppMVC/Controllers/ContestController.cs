@@ -121,14 +121,14 @@ namespace WebAppMVC.Controllers
             {
                 _logger.LogInformation(
                     "Error while processing your request! (Getting List Contest!). List was Empty!: " + listContestResponse + " , Error Message: " + listContestResponse.ErrorMessage);
-                ViewBag.error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting List Contest!).\n List was Empty!";
                 Redirect("~/Home/Index");
             }
             else
             if (!listContestResponse.Status)
             {
-                ViewBag.error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting List Meeting!).\n"
                     + listContestResponse.ErrorMessage;
                 Redirect("~/Home/Index");
@@ -217,13 +217,13 @@ namespace WebAppMVC.Controllers
             {
                 _logger.LogInformation(
                     "Error while processing your request! (Getting List Contest!). List was Empty!: " + listContestResponse + " , Error Message: " + listContestResponse.ErrorMessage);
-                ViewBag.error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting List Contest!).\n List was Empty!";
                 Redirect("~/Home/Index");
             }
             else if (!listContestResponse.Status)
             {
-                ViewBag.error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting List Contest!).\n"
                     + listContestResponse.ErrorMessage;
                 Redirect("~/Home/Index");
@@ -317,14 +317,14 @@ namespace WebAppMVC.Controllers
             if (contestPostResponse == null)
             {
                 //_logger.LogInformation("Error while processing your request: " + contestPostResponse.Status + " , Error Message: " + contestPostResponse.ErrorMessage);
-                ViewBag.error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting Contest!).\n Contest Not Found!";
                 return View("Index");
             }
             if (!contestPostResponse.Status)
             {
                 _logger.LogInformation("Error while processing your request: " + contestPostResponse.Status + " , Error Message: " + contestPostResponse.ErrorMessage);
-                ViewBag.error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting Contest Post!).\n"
                     + contestPostResponse.ErrorMessage;
                 return View("Index");
@@ -414,45 +414,45 @@ namespace WebAppMVC.Controllers
 
             if (contestPostResponse == null)
             {
-                ViewBag.error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting Contest!).\n Contest Not Found!";
                 return RedirectToAction("Index");
             }
             if (!contestPostResponse.Status)
             {
-                ViewBag.error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting Contest Post!).\n"
                     + contestPostResponse.ErrorMessage;
                 return RedirectToAction("Index");
             }
             if (memberDetails == null)
             {
-                ViewBag.error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting Member!).\n Member Not Found!";
                 return RedirectToAction("ContestPost", new { id = contestId });
             }
             if (!memberDetails.Status)
             {
-                ViewBag.error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting Member!).\n"
                     + contestPostResponse.ErrorMessage;
                 return RedirectToAction("ContestPost", new { id = contestId });
             }
             if (birdDetails == null)
             {
-                ViewBag.error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting Bird for Contest Registration!).\n Bird Not Found!";
                 return RedirectToAction("ContestPost",new { id = contestId});
             }
             if (!birdDetails.Status)
             {
-                ViewBag.error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                    "Error while processing your request! (Getting Bird for Contest Registration!).\n";
                 return RedirectToAction("ContestPost", new { id = contestId });
             }
-            if (birdDetails.Data.Elo < contestPostResponse.Data.ReqMinELO && birdDetails.Data.Elo > contestPostResponse.Data.ReqMaxELO)
+            if (birdDetails.Data.Elo < contestPostResponse.Data.ReqMinELO || birdDetails.Data.Elo > contestPostResponse.Data.ReqMaxELO)
             {
-                ViewBag.error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                    "Error while processing your request! (Your Bird Elo must be more than "
                    + contestPostResponse.Data.ReqMinELO + " and less than "
                    + contestPostResponse.Data.ReqMaxELO + " to register a Contest!).\n";
@@ -527,7 +527,7 @@ namespace WebAppMVC.Controllers
             if (participationNo == null)
             {
                 _logger.LogInformation("Error while processing your request! (Registering Contest Participation!): Contest Not Found!");
-                ViewBag.error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Registering Contest Participation!).\n Contest Not Found!";
                 return RedirectToAction("ContestPost", new { id = conId });
             }
@@ -535,7 +535,7 @@ namespace WebAppMVC.Controllers
             if (!participationNo.Status)
             {
                 _logger.LogInformation("Error while processing your request! (Registering Contest Participation!): " + participationNo.Status + " , Error Message: " + participationNo.ErrorMessage);
-                ViewBag.error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Registering Contest Participation!).\n"
                     + participationNo.ErrorMessage;
                 return RedirectToAction("ContestPost", new { id = conId });
@@ -547,7 +547,7 @@ namespace WebAppMVC.Controllers
             {
                 _logger.LogError("Error while registering your bird for contest participation: Your Registration Transaction not found!");
 
-                ViewBag.error = "Error while registering your bird for contest participation: Your Registration Transaction not found! " +
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] = "Error while registering your bird for contest participation: Your Registration Transaction not found! " +
                     "\nPlease contact birdclub manager for assistance with resolving this issue";
 
                 return RedirectToAction("ContestPost", new { id = conId });
@@ -567,14 +567,13 @@ namespace WebAppMVC.Controllers
                 methodName: Constants.Constants.PUT_METHOD,
                 url: TransactionAPI_URL,
                 inputType: unmtr,
-                accessToken: accToken,
                 _logger: _logger);
 
             if (transactionResponse == null)
             {
                 _logger.LogError("Error while registering your bird for contest participation: User Transaction Saving Failed!");
 
-                ViewBag.error = "Error while registering your bird for contest participation: User Transaction Saving Failed!, " +
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] = "Error while registering your bird for contest participation: User Transaction Saving Failed!, " +
                     "\nPlease contact the birdclub manager for assistance with resolving this issue!";
 
                 return RedirectToAction("ContestPost", new { id = conId });
@@ -642,7 +641,7 @@ namespace WebAppMVC.Controllers
             if (participationNo == null)
             {
                 _logger.LogInformation("Error while processing your request! (Remove Contest Participation Registration!): Contest Participation Not Found!");
-                ViewBag.error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Remove Contest Participation Registration!).\n Contest Participation Not Found!";
                 RedirectToAction("ContestPost", new { id = contestId });
             }
@@ -650,7 +649,7 @@ namespace WebAppMVC.Controllers
             if (!participationNo.Status)
             {
                 _logger.LogInformation("Error while processing your request! (Remove Contest Participation Registration!): " + participationNo.Status + " , Error Message: " + participationNo.ErrorMessage);
-                ViewBag.error =
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Remove Contest Participation Registration!).\n"
                     + participationNo.ErrorMessage;
                 RedirectToAction("ContestPost", new { id = contestId });

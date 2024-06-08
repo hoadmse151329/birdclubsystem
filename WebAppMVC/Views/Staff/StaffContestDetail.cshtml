@@ -1,16 +1,15 @@
-﻿@model dynamic
+﻿@model WebAppMVC.Models.ViewModels.StaffContestDetailsVM
 @{
     Layout = null;
     ViewData["Title"] = "Staff Contest Detail Page";
     BAL.ViewModels.ContestViewModel detailsContest = Model.ContestDetails;
-    BAL.ViewModels.ContestViewModel updateContest = Model.UpdateContest != null ? Model.UpdateContest : detailsContest;
+    BAL.ViewModels.Manager.UpdateContestStatusVM updateContestStatus = Model.UpdateContestStatus;
     List<BAL.ViewModels.ContestParticipantViewModel> contestPartView = Model.ContestParticipants;
     BAL.ViewModels.ContestMediaViewModel Spotlight = detailsContest.SpotlightImage;
     BAL.ViewModels.ContestMediaViewModel LocationMap = detailsContest.LocationMapImage;
 
     List<BAL.ViewModels.ContestMediaViewModel> Media = detailsContest.ContestPictures;
-    List<SelectListItem> checkInStatus = Model.SelectListParticipationStatus;
-    List<SelectListItem> defaultContestStatus = Model.SelectListStatus;
+    List<SelectListItem> checkInStatus = Model.ParticipantStatusSelectableList;
     Layout = "~/Views/Shared/_SLayout.cshtml";
 }
 <html lang="en">
@@ -521,37 +520,17 @@
                             <div class="modal-body">
                                 <div class="row justify-content-center">
                                     <div class="col-12 col-md-6">
+                                    <input asp-for="@updateContestStatus.NumberOfParticipants" value="@updateContestStatus.NumberOfParticipants" type="number" hidden />
                                         <div class="form-group row">
-                                            <label asp-for="@updateContest.Status" class="col-sm-4 col-form-label"></label>
+                                            <label asp-for="@updateContestStatus.Status" class="col-sm-4 col-form-label"></label>
                                             <div class="col-sm-8">
-                                                <select class="form-control" asp-for="@updateContest.Status" asp-items="@defaultContestStatus" class="custom-select" required></select>
-                                                <span asp-validation-for="@updateContest.Status" id="error_message"
+                                                <select class="form-control" asp-for="@updateContestStatus.Status" asp-items="@updateContestStatus.ContestStatusSelectableList" class="custom-select" required></select>
+                                                <span asp-validation-for="@updateContestStatus.Status" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <input asp-for="@updateContest.ContestName" type="text" value="@updateContest.ContestName" required hidden>
-                                <input asp-for="@updateContest.OpenRegistration" type="datetime-local" asp-format="{0:yyyy-MM-ddTHH:mm}"
-                                       value="@updateContest.OpenRegistration.ToString("yyyy-MM-ddTHH:mm")" required hidden />
-                                <input asp-for="@updateContest.RegistrationDeadline" type="datetime-local" asp-format="{0:yyyy-MM-ddTHH:mm}"
-                                       value="@updateContest.RegistrationDeadline.ToString("yyyy-MM-ddTHH:mm")" required hidden />
-                                <input asp-for="@updateContest.StartDate" type="datetime-local" asp-format="{0:yyyy-MM-ddTHH:mm}"
-                                       value="@updateContest.StartDate.ToString("yyyy-MM-ddTHH:mm")" required hidden />
-                                <input asp-for="@updateContest.EndDate" type="datetime-local" asp-format="{0:yyyy-MM-ddTHH:mm}"
-                                       value="@updateContest.EndDate.ToString("yyyy-MM-ddTHH:mm")" required hidden />
-                                <input asp-for="@updateContest.NumberOfParticipantsLimit" type="number" value="@updateContest.NumberOfParticipantsLimit" required hidden>
-                                <input asp-for="@updateContest.Host" type="text" value="@updateContest.Host" required hidden>
-                                <input asp-for="@updateContest.ReqMinELO" type="number" value="@updateContest.ReqMinELO" required hidden />
-                                <input asp-for="@updateContest.ReqMaxELO" type="number" value="@updateContest.ReqMaxELO" required hidden />
-                                <input asp-for="@updateContest.AfterELO" type="number" value="@updateContest.AfterELO" required hidden />
-                                <input asp-for="@updateContest.Prize" type="Prize" value="@updateContest.Prize" required hidden />
-                                <input asp-for="@updateContest.Incharge" type="text" value="@updateContest.Incharge" required hidden>
-                                <input asp-for="@updateContest.Fee" type="number" value="@updateContest.Fee" required hidden>
-                                <input asp-for="@updateContest.Address" type="text" value="@updateContest.Address" required hidden>
-                                <textarea asp-for="@updateContest.Description" type="text" value="@updateContest.Description" required hidden></textarea>
-                                <textarea asp-for="@updateContest.Note" type="text" value="@updateContest.Note" required hidden></textarea>
-                                <input asp-for="@updateContest.NumberOfParticipants" type="number" value="@updateContest.NumberOfParticipants" required hidden>
                             </div>
                             <div class="modal-footer justify-content-center">
                                 <button class="btn btn-success" type="submit" value="Update">Save</button>
@@ -563,5 +542,13 @@
             </div>
         }
     }
+     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+     <script>
+        $(document).ready(function () {
+            setTimeout(function () {
+                $('#notif').css('display', 'none');
+            }, 3000);
+        })
+    </script>
 </body>
 </html>

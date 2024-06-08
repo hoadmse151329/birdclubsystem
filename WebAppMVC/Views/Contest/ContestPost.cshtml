@@ -82,13 +82,15 @@
                                 <div class="tittle">
                                     <div class="overlap-group-2"><p class="text-wrapper-4" id="dynamicText">@con.ContestName</p></div>
                                 </div>
-                                <div class="text-wrapper-5">From @con.StartDate.ToString("MM/dd/yyyy") to @con.EndDate.ToString("MM/dd/syyyy")</div>
+                                <div class="text-wrapper-5">From @con.StartDate.ToString("dd/MM/yyyy") to @con.EndDate.ToString("dd/MM/yyyy")</div>
                                 <div class="group-2">
                                     <div class="text-wrapper-6">Participation Limit</div>
                                     <div class="text-wrapper-7">Registration Deadlines</div>
                                     <div class="text-wrapper-8">Location</div>
                                     <div class="text-wrapper-9">Contact</div>
                                     <div class="text-wrapper-10">Organizer</div>
+                                    <div class="text-wrapper-22">Minimum ELO Required</div>
+                                    <div class="text-wrapper-24">Maximum ELO Accepted</div>
                                     <div class="text-wrapper-17">Fee</div>
                                     <div class="text-wrapper-19">Prize</div>
                                 </div>
@@ -96,9 +98,11 @@
                                     <div class="text-wrapper-11">@con.AreaNumber,@con.Street,@con.District,@con.City</div>
                                     @*<div class="text-wrapper-11">@con.Street</div>*@
                                     <p class="text-wrapper-12">@con.NumberOfParticipantsLimit</p>
-                                    <div class="text-wrapper-13">@con.RegistrationDeadline.ToString("MM/dd/yyyy")</div>
+                                    <div class="text-wrapper-13">@con.RegistrationDeadline.ToString("dd/MM/yyyy")</div>
                                     <div class="text-wrapper-14">ChaoMaoClub@gmail.com</div>
                                     <div class="text-wrapper-15">@con.Host</div>
+                                    <div class="text-wrapper-21">@con.ReqMinELO</div>
+                                    <div class="text-wrapper-23">@con.ReqMaxELO</div>
                                     <div class="text-wrapper-18"><span class="price-format" data-price="@con.Fee""></span></div>
                                     <div class="text-wrapper-20"><span class="price-format" data-price="@con.Prize""></span></div>
                                 </div>
@@ -249,7 +253,7 @@
                                                     <label asp-for="@selectedBird.AddDate" class="col-sm-4 col-form-label"></label>
                                                     <div class="col-sm-8">
                                                         <input asp-for="@selectedBird.AddDate" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}" id="createAddDate"
-                                                               value="@selectedBird.AddDate.ToString("yyyy-MM-ddTHH:mm")" class="form-control" required readonly>
+                                                               value="@selectedBird.AddDate.Value.ToString("yyyy-MM-ddTHH:mm")" class="form-control" required readonly>
                                                         <span asp-validation-for="@selectedBird.AddDate" id="error_message"
                                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                                     </div>

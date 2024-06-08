@@ -138,6 +138,10 @@ namespace DAL.Repositories.Implements
                     {
                         if ((mem.Status == "Expired" || mem.Status == "Inactive") && memberViewModel.Status == "Active")
                         {
+                            if (mem.JoinDate == null && mem.Status == "Inactive")
+                            {
+                                mem.JoinDate = DateTime.Now;
+                            }
                             if (DateTime.Now.Day >= DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month))
                             {
                                 mem.ExpiryDate = DateTime.UtcNow.AddDays(30);

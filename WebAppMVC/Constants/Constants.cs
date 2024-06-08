@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
-
-namespace WebAppMVC.Constants
+﻿namespace WebAppMVC.Constants
 {
     public static class Constants
     {
@@ -84,6 +82,7 @@ namespace WebAppMVC.Constants
         public readonly static string UPDATE_MEETING_MEDIA_VALID = "UMeetingMediaValid";
         public readonly static string CREATE_FIELDTRIP_VALID = "CFieldTripValid";
         public readonly static string UPDATE_FIELDTRIP_VALID = "UFieldTripValid";
+        public readonly static string UPDATE_FIELDTRIP_STATUS_VALID = "UFieldtripStatusValid";
         public readonly static string UPDATE_FIELDTRIP_GETTHERE_VALID = "UFieldTripGettingThereValid";
         public readonly static string CREATE_FIELDTRIP_DAYBYDAY_VALID = "CFieldTripDayByDayValid";
         public readonly static string UPDATE_FIELDTRIP_DAYBYDAY_VALID = "UFieldTripDayByDayValid";
@@ -229,9 +228,9 @@ namespace WebAppMVC.Constants
         public const string GOOGLE_LINK_GET_TOKEN = "https://accounts.google.com/o/oauth2/token";
         public const string GOOGLE_LINK_GET_USER_INFO = "https://www.googleapis.com/oauth2/v1/userinfo?access_token=";
 
-        public const string JWT_SECRET_KEY = "Authentication:JWT:SecretKey";
+        /*public const string JWT_SECRET_KEY = "Authentication:JWT:SecretKey";
         public const string JWT_VALID_ISSUER = "Authentication:JWT:ValidIssuer";
-        public const string JWT_VALID_AUDIENCE = "Authentication:JWT:ValidAudience";
+        public const string JWT_VALID_AUDIENCE = "Authentication:JWT:ValidAudience";*/
 
         public readonly static string TEMP_FILE_LOCATION_FOLDER = "wwwroot/tempFiles";
 

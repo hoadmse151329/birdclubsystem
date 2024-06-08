@@ -2,6 +2,7 @@
 using BAL.Services.Interfaces;
 using BAL.ViewModels;
 using BAL.ViewModels.Event;
+using BAL.ViewModels.Manager;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -18,6 +19,7 @@ namespace WebAPI.Controllers
         private readonly IFieldTripDayByDayService _dayByDayService;
         private readonly IFieldTripInclusionService _inclusionService;
         private readonly IFieldTripAdditionalDetailService _addDetailService;
+        private readonly IFieldTripMediaService _mediaService;
         private readonly IMemberService _memberService;
         private readonly IUserService _userService;
         private readonly IConfiguration _config;
@@ -29,7 +31,8 @@ namespace WebAPI.Controllers
             IFieldTripParticipantService fieldTripParticipantService,
             IFieldTripDayByDayService dayByDayService,
             IFieldTripInclusionService inclusionService,
-            IFieldTripAdditionalDetailService additionalDetailService
+            IFieldTripAdditionalDetailService additionalDetailService,
+            IFieldTripMediaService mediaService
             )
         {
             _fieldTripService = fieldTripService;
@@ -40,6 +43,7 @@ namespace WebAPI.Controllers
             _dayByDayService = dayByDayService;
             _inclusionService = inclusionService;
             _addDetailService = additionalDetailService;
+            _mediaService = mediaService;
         }
 
         [HttpPost("All")]
@@ -151,6 +155,117 @@ namespace WebAPI.Controllers
                 });
             }
         }
+        [HttpPost("Staff/All")]
+        [Authorize(Roles = "Staff")]
+        [ProducesResponseType(typeof(List<FieldTripViewModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetStaffAllFieldTrips(
+            [Required][FromBody] string? accToken
+            )
+        {
+            try
+            {
+                var result = await _fieldTripService.GetAllFieldTrips("Staff",accToken);
+                if (result == null)
+                {
+                    return NotFound(new
+                    {
+                        Status = false,
+                        ErrorMessage = "List of Field Trips Not Found!"
+                    });
+                }
+
+                return Ok(new
+                {
+                    Status = true,
+                    Data = result
+                });
+            }
+            catch (Exception ex)
+            {
+                if (ex.InnerException != null)
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = ex.Message,
+                        InnerExceptionMessage = ex.InnerException.Message
+                    });
+                }
+                // Log the exception if needed
+                return BadRequest(new
+                {
+                    Status = false,
+                    ErrorMessage = ex.Message
+                });
+            }
+        }
+
+        [HttpPost("Staff/Search")]
+        [Authorize(Roles = "Staff")]
+        [ProducesResponseType(typeof(List<FieldTripViewModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetStaffFieldTripsByAttributes(
+            [Required][FromBody] string? accToken,
+            [FromQuery] int? tripId,
+            [FromQuery] string? tripName,
+            [FromQuery] DateTime? openRegistration,
+            [FromQuery] DateTime? registrationDeadline,
+            [FromQuery] DateTime? startDate,
+            [FromQuery] DateTime? endDate,
+            [FromQuery] int? numberOfParticipants,
+            [FromQuery] List<string>? road,
+            [FromQuery] List<string>? district,
+            [FromQuery] List<string>? city,
+            [FromQuery] List<string>? status,
+            [FromQuery] string? orderBy)
+        {
+            try
+            {
+                bool isMemberOrGuest = false;
+                var result = await _fieldTripService.GetSortedFieldTrips(
+                    tripId: tripId,
+                    tripName: tripName,
+                    openRegistration: openRegistration,
+                    registrationDeadline: registrationDeadline,
+                    startDate: startDate,
+                    endDate: endDate,
+                    numberOfParticipants: numberOfParticipants,
+                    roads: road,
+                    districts: district,
+                    cities: city,
+                    statuses: status,
+                    orderBy: orderBy,
+                    isMemberOrGuest,
+                    accToken: accToken
+                    );
+                if (result == null)
+                {
+                    return NotFound(new
+                    {
+                        Status = false,
+                        ErrorMessage = "List of FieldTrips Not Found!"
+                    });
+                }
+
+                return Ok(new
+                {
+                    Status = true,
+                    Data = result
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new
+                {
+                    Status = false,
+                    ErrorMessage = ex.Message,
+                    InnerExceptionMessage = ex.InnerException?.Message
+                });
+            }
+        }
 
         [HttpGet("{id:int}")]
         [ProducesResponseType(typeof(FieldTripViewModel), StatusCodes.Status200OK)]
@@ -192,6 +307,44 @@ namespace WebAPI.Controllers
                 {
                     Status = false,
                     ErrorMessage = ex.Message
+                });
+            }
+        }
+        [HttpPost("{id}")]
+        [Authorize(Roles = "Staff")]
+        [ProducesResponseType(typeof(FieldTripViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetStaffFieldtripById(
+            [FromRoute] int id,
+            [FromBody][Required] string accToken
+            )
+        {
+            try
+            {
+                var result = await _fieldTripService.GetByIdCheckIncharge(id, accToken);
+                if (result == null)
+                {
+                    return NotFound(new
+                    {
+                        status = false,
+                        errorMessage = "Fieldtrip Not Found!"
+                    });
+                }
+
+                return Ok(new
+                {
+                    status = true,
+                    Data = result
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new
+                {
+                    Status = false,
+                    ErrorMessage = ex.Message,
+                    InnerExceptionMessage = ex.InnerException?.Message
                 });
             }
         }
@@ -244,7 +397,7 @@ namespace WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Create (
-            [Required][FromBody] FieldTripViewModel trip)
+            [Required][FromBody] CreateNewFieldtripVM trip)
         {
             try
             {
@@ -558,13 +711,13 @@ namespace WebAPI.Controllers
             }
         }
         [HttpPut("{id:int}/Update")]
-        [Authorize(Roles = "Manager,Staff")]
+        [Authorize(Roles = "Manager")]
         [ProducesResponseType(typeof(FieldTripViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Update(
             [Required][FromRoute] int id,
-            [Required][FromBody] FieldTripViewModel trip)
+            [Required][FromBody] UpdateFieldtripDetailsVM trip)
         {
             try
             {
@@ -603,6 +756,53 @@ namespace WebAPI.Controllers
                 {
                     Status = false,
                     ErrorMessage = ex.Message
+                });
+            }
+        }
+        [HttpPut("{id:int}/Status/Update")]
+        [Authorize(Roles = "Manager,Staff")]
+        [ProducesResponseType(typeof(FieldTripViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> UpdateStatus(
+            [Required][FromRoute] int id,
+            [Required][FromBody] UpdateFieldtripStatusVM trip)
+        {
+            try
+            {
+                var result = _fieldTripService.GetById(id).Result;
+                if (result == null)
+                {
+                    return NotFound(new
+                    {
+                        Status = false,
+                        ErrorMessage = "Fieldtrip does not exist!"
+                    });
+                }
+                trip.TripId = id;
+                var isUpdated = await _fieldTripService.UpdateStatus(trip);
+                if (!isUpdated)
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = "Fieldtrip does not have enough participants to close registration!"
+                    });
+                }
+                result = await _fieldTripService.GetById(trip.TripId.Value);
+                return Ok(new
+                {
+                    Status = true,
+                    Data = result
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new
+                {
+                    Status = false,
+                    ErrorMessage = ex.Message,
+                    InnerExceptionMessage = ex.InnerException?.Message
                 });
             }
         }
@@ -856,6 +1056,87 @@ namespace WebAPI.Controllers
                 {
                     Status = false,
                     ErrorMessage = ex.Message
+                });
+            }
+        }
+        [HttpPost("{id:int}/Create/Media")]
+        [Authorize(Roles = "Manager")]
+        [ProducesResponseType(typeof(FieldtripMediaViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> CreateMeetingMedia(
+            [Required][FromRoute] int id,
+            [Required][FromBody] FieldtripMediaViewModel media)
+        {
+            try
+            {
+                if (await _mediaService.Create(id, media))
+                    return Ok(new
+                    {
+                        Status = true,
+                        SuccessMessage = "Fieldtrip Media Create successfully!",
+                        BoolData = true
+                    });
+                else return StatusCode(StatusCodes.Status500InternalServerError, new
+                {
+                    Status = true,
+                    Message = "Fieldtrip Media Create Failed!",
+                    BoolData = false
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new
+                {
+                    Status = false,
+                    ErrorMessage = ex.Message,
+                    InnerExceptionMessage = ex.InnerException?.Message
+                });
+            }
+        }
+        [HttpPut("{tripId:int}/Media/{pictureId:int}/Update")]
+        [Authorize(Roles = "Manager")]
+        [ProducesResponseType(typeof(ContestMediaViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> UpdateMeetingMedia(
+            [Required][FromRoute] int tripId,
+            [Required][FromRoute] int pictureId,
+            [Required][FromBody] FieldtripMediaViewModel media)
+        {
+            try
+            {
+                var check = _fieldTripService.GetById(tripId).Result;
+                if (check == null) return NotFound(new
+                {
+                    Status = false,
+                    ErrorMessage = "Fieldtrip does not exist!"
+                });
+                var pic = await _mediaService.GetById(pictureId);
+                if (pic == null) return NotFound(new
+                {
+                    Status = false,
+                    ErrorMessage = "Fieldtrip Media does not exist!"
+                });
+                var result = await _mediaService.Update(tripId, media);
+                if (result) return Ok(new
+                {
+                    Status = true,
+                    BoolData = result
+                });
+                return NotFound(new
+                {
+                    Status = false,
+                    ErrorMessage = "Fieldtrip does not exist or internal server error"
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new
+                {
+                    Status = false,
+                    ErrorMessage = ex.Message,
+                    InnerExceptionMessage = ex.InnerException?.Message
                 });
             }
         }

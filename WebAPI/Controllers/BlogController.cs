@@ -160,7 +160,7 @@ namespace WebAPI.Controllers
                 });
             }
         }
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         [Authorize(Roles = "Manager,Member,Guest")]
         [ProducesResponseType(typeof(BlogViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

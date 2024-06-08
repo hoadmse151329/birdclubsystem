@@ -8,6 +8,7 @@ namespace BAL.ViewModels.Manager
 {
     public class GetManagerDashboard
     {
+        private List<GetFeedbackResponse> feedbacks;
         public int TotalEvents { get; set; }
         public int TotalFeedbacks { get; set; }
         public int TotalBlogs { get; set; }

@@ -15,7 +15,7 @@
     BAL.ViewModels.MeetingMediaViewModel createMedia = Model.CreateMeetingMedia;
     BAL.ViewModels.MeetingMediaViewModel updateMediaSpotlight = Model.UpdateMeetingMediaSpotlight;
     BAL.ViewModels.MeetingMediaViewModel updateMediaLocationMap = Model.UpdateMeetingMediaLocationMap;
-    List<BAL.ViewModels.MeetingMediaViewModel> updateMediaAdditionals = Model.UpdateMeetingMediaAdditional;
+    BAL.ViewModels.MeetingMediaViewModel updateMediaAdd = Model.UpdateMeetingMediaAdditional;
 }
 <html lang="en">
 <head>
@@ -488,7 +488,7 @@
                                                 </div>
                                                 if (detailsMeeting.Status.Equals("OnHold") || detailsMeeting.Status.Equals("Postponed"))
                                                 {
-                                                    var updateMediaAdditional = updateMediaAdditionals.FirstOrDefault(ma => ma.PictureId.Value.Equals(pic.PictureId)) != null ? updateMediaAdditionals.FirstOrDefault(ma => ma.PictureId.Value.Equals(pic.PictureId)) : pic;
+                                                    var updateMediaAdditional = updateMediaAdd.PictureId.Value.Equals(pic.PictureId) ? updateMediaAdd : pic;
                                                     <!-- update meeting location map media -->
                                                     <div id="editmedia_@pic.PictureId" class="modal fade" role="dialog">
                                                         <div class="modal-dialog modal-dialog-centered modal-lg" role="content">
@@ -873,7 +873,7 @@
                             <div class="modal-body">
                                 <div class="row justify-content-center">
                                     <div class="col-12 col-md-6">
-                                    <input asp-for="@updateMeetingStatus.NumberOfParticipants" value="@updateMeetingStatus.NumberOfParticipants" required hidden/>
+                                    <input asp-for="@updateMeetingStatus.NumberOfParticipants" value="@updateMeetingStatus.NumberOfParticipants" type="number" required hidden/>
                                         <div class="form-group row">
                                             <label asp-for="@updateMeetingStatus.Status" class="col-sm-4 col-form-label"></label>
                                             <div class="col-sm-8">

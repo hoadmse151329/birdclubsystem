@@ -51,7 +51,7 @@ namespace BAL.ViewModels
         [Required(ErrorMessage = "Date Added is required")]
         [DisplayName("Date Added")]
         [DataType(DataType.DateTime)]
-        public DateTime AddDate { get; set; }
+        public DateTime? AddDate { get; set; }
         [DisplayName("Profile Picture")]
         public string? ProfilePic { get; set; }
         [Required(ErrorMessage = "Status is required")]

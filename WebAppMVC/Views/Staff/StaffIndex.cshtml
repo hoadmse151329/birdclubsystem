@@ -1,3 +1,4 @@
+@model BAL.ViewModels.Staff.GetStaffDashboard
 @{
     Layout = null;
     ViewData["Title"] = "Staff Index Page";
@@ -20,6 +21,7 @@
 <body>
     <!-- Main Content -->
     <div class="main-content">
+        
         <!-- num of data -->
         <div class="cardBox">
             <div class="card event">
@@ -27,7 +29,7 @@
                     <i class='bx bx-home-heart'></i>
                 </div>
                 <div>
-                    <div class="number">100</div>
+                    <div class="number">@Model.TotalEvents</div>
                     <div class="cardName">Total Events</div>
                 </div>
             </div>
@@ -37,7 +39,7 @@
                     <i class='bx bx-conversation'></i>
                 </div>
                 <div>
-                    <div class="number">100</div>
+                    <div class="number">@Model.TotalMeetings</div>
                     <div class="cardName">Total Meeting</div>
                 </div>
             </div>
@@ -46,7 +48,7 @@
                     <i class='bx bx-conversation'></i>
                 </div>
                 <div>
-                    <div class="number">100</div>
+                    <div class="number">@Model.TotalFieldTrips</div>
                     <div class="cardName">Total Fieldtrip</div>
                 </div>
             </div>
@@ -55,52 +57,43 @@
                     <i class='bx bx-conversation'></i>
                 </div>
                 <div>
-                    <div class="number">100</div>
+                    <div class="number">@Model.TotalContests</div>
                     <div class="cardName">Total Contest</div>
                 </div>
             </div>
-            <div class="card blog">
-                <div class="inconBx">
-                    <i class='bx bx-group'></i>
+        @if (TempData["Success"] != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show" id="notif">
+                    <i class='bx bx-message-alt-x p-1'></i>
+                    <strong class="mr-1">@TempData["Success"]</strong>
+                    <button type="button" class="close h-100" data-dismiss="alert" aria-label="Close">
+                        <span><i class='bx bx-x'></i></span>
+                    </button>
                 </div>
-                <div>
-                    <div class="number">100</div>
-                    <div class="cardName">Total Open Registration Events</div>
+                TempData["Success"] = null;
+            }
+            else if (TempData["Error"] != null)
+            {
+                <div class="alert alert-danger alert-dismissible fade show" id="notif">
+                    <i class='bx bx-message-alt-x p-1'></i>
+                    <strong class="mr-1">@TempData["Error"]</strong>
+                    <button type="button" class="close h-100" data-dismiss="alert" aria-label="Close">
+                        <span><i class='bx bx-x'></i></span>
+                    </button>
                 </div>
-            </div>
-            <div class="card blog">
-                <div class="inconBx">
-                    <i class='bx bx-group'></i>
-                </div>
-                <div>
-                    <div class="number">100</div>
-                    <div class="cardName">Total Closed Registration Events</div>
-                </div>
-            </div>
-            <div class="card blog">
-                <div class="inconBx">
-                    <i class='bx bx-group'></i>
-                </div>
-                <div>
-                    <div class="number">100</div>
-                    <div class="cardName">Total Checked-in Events</div>
-                </div>
-            </div>
-            <div class="card blog">
-                <div class="inconBx">
-                    <i class='bx bx-group'></i>
-                </div>
-                <div>
-                    <div class="number">100</div>
-                    <div class="cardName">Total Ongoing Events</div>
-                </div>
-            </div>
-        </div>
+                TempData["Error"] = null;
+            }
     </div>
 
 
     <!-- jQuery first, then Popper.js, then Bootstrap JS. -->
-
+        <script>
+        $(document).ready(function () {
+            setTimeout(function () {
+                $('#notif').css('display', 'none');
+            }, 3000);
+        })
+    </script>
 </body>
 
 </html>

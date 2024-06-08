@@ -1,5 +1,4 @@
 ﻿using BAL.ViewModels;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Dynamic;
 using System.Net.Http.Headers;
@@ -10,23 +9,13 @@ using WebAppMVC.Models.Location;
 using WebAppMVC.Models.Meeting;
 using WebAppMVC.Models.Contest;
 using System.Text.Encodings.Web;
-using static Org.BouncyCastle.Math.EC.ECCurve;
 using WebAppMVC.Models.Member;
-using Azure;
-using Microsoft.DotNet.MSIdentity.Shared;
-using System.Security.Policy;
 using BAL.ViewModels.Member;
-using BAL.ViewModels.Staff;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using System.ComponentModel.DataAnnotations;
 using WebAppMVC.Models.Staff;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
-using DAL.Models;
-using Microsoft.AspNetCore.Http.Json;
 using WebAppMVC.Models.ViewModels;
-using WebAppMVC.Models.Manager;
 using BAL.ViewModels.Manager;
 
 namespace WebAppMVC.Controllers
@@ -58,7 +47,7 @@ namespace WebAppMVC.Controllers
 
         // GET: StaffController
         [HttpGet("Index")]
-        public IActionResult StaffIndex()
+        public async Task<IActionResult> StaffIndex()
         {
             string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
             if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
@@ -79,7 +68,17 @@ namespace WebAppMVC.Controllers
             TempData["USER_NAME"] = usrname;
             TempData["IMAGE_PATH"] = imagepath;
 
-            return View();
+            StaffAPI_URL += "Staff/Index";
+
+            var dashboardResponse = await methcall.CallMethodReturnObject<GetStaffDashboardResponse>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: Constants.Constants.GET_METHOD,
+                url: StaffAPI_URL,
+                accessToken: accToken,
+                _logger: _logger);
+
+            return View(dashboardResponse.Data);
         }
         [HttpGet("Meeting")]
         public async Task<IActionResult> StaffMeeting([FromQuery] string search)
@@ -89,30 +88,15 @@ namespace WebAppMVC.Controllers
             if (search != null || !string.IsNullOrEmpty(search))
             {
                 search = search.Trim();
-                StaffAPI_URL += "Meeting/Search?meetingName=" + search;
+                StaffAPI_URL += "Meeting/Staff/Search?meetingName=" + search;
             }
-            else StaffAPI_URL += "Meeting/All";
+            else StaffAPI_URL += "Meeting/Staff/All";
 
             dynamic testmodel = new ExpandoObject();
 
-            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
-            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
-
-            string? role = HttpContext.Session.GetString("ROLE_NAME");
-            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Staff")) return View("Index");
-
-            string? usrId = HttpContext.Session.GetString("USER_ID");
-            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
-
-            string? usrname = HttpContext.Session.GetString("USER_NAME");
-            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
-
-            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
-
-            TempData["ROLE_NAME"] = role;
-            TempData["USER_NAME"] = usrname;
-            TempData["IMAGE_PATH"] = imagepath;
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.STAFF) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.STAFF));
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
             var listLocationResponse = await methcall.CallMethodReturnObject<GetLocationResponseByList>(
                 _httpClient: _httpClient,
@@ -126,7 +110,8 @@ namespace WebAppMVC.Controllers
                 options: jsonOptions,
                 methodName: Constants.Constants.POST_METHOD,
                 url: StaffAPI_URL,
-                inputType: role,
+                inputType: accToken,
+                accessToken: accToken,
                 _logger: _logger);
 
             if (listMeetResponse == null || listLocationResponse == null)
@@ -167,6 +152,7 @@ namespace WebAppMVC.Controllers
                                 methodName: Constants.Constants.POST_METHOD,
                                 url: StaffAPI_URL,
                                 inputType: accToken,
+                                accessToken: accToken,
                                 _logger: _logger);
             var meetpartPostResponse = await methcall.CallMethodReturnObject<GetListMeetingParticipation>(
                                 _httpClient: _httpClient,
@@ -189,12 +175,11 @@ namespace WebAppMVC.Controllers
                     + meetPostResponse.ErrorMessage;
                 return RedirectToAction("StaffMeeting");
             }
-            staffMeetingDetailsVM.UpdateMeetingStatus = methcall.GetValidationTempData<UpdateMeetingStatusVM>(this, TempData, Constants.Constants.UPDATE_MEETING_STATUS_VALID, "updateMeetingStatus", jsonOptions);
-            if(staffMeetingDetailsVM.UpdateMeetingStatus == null)
-            {
-                staffMeetingDetailsVM.UpdateMeetingStatus = new();
-            }
-            staffMeetingDetailsVM.UpdateMeetingStatus.MeetingStatusSelectableList = methcall.GetStaffEventStatusSelectableList(meetPostResponse.Data.Status);
+            staffMeetingDetailsVM.SetIfUpdateMeetingStatus(
+                methcall.GetValidationTempData<UpdateMeetingStatusVM>(this, TempData, Constants.Constants.UPDATE_MEETING_STATUS_VALID, "updateMeetingStatus", jsonOptions),
+                meetPostResponse.Data,
+                methcall.GetStaffEventStatusSelectableList(meetPostResponse.Data.Status)
+                );
             staffMeetingDetailsVM.ParticipantStatusSelectableList = methcall.GetStaffEventParticipationStatusSelectableList(meetPostResponse.Data.Status);
             staffMeetingDetailsVM.MeetingDetails = meetPostResponse.Data;
             staffMeetingDetailsVM.MeetingParticipants = meetpartPostResponse.Data;
@@ -252,7 +237,7 @@ namespace WebAppMVC.Controllers
             return RedirectToAction("StaffMeetingDetail", new { id });
         }
 
-        [HttpPost("Meeting/{id:int}/Participant/Status/Update")]
+        [HttpPost("Meeting/{id:int}/Participant/All/Status/Update")]
         public async Task<IActionResult> StaffUpdateMeetingPartStatus(
             int id,
             List<MeetingParticipantViewModel> meetPartView)
@@ -299,16 +284,16 @@ namespace WebAppMVC.Controllers
             if (search != null || !string.IsNullOrEmpty(search))
             {
                 search = search.Trim();
-                StaffAPI_URL += "FieldTrip/Search?tripName=" + search;
+                StaffAPI_URL += "FieldTrip/Staff/Search?tripName=" + search;
             }
-            else StaffAPI_URL += "FieldTrip/All";
+            else StaffAPI_URL += "FieldTrip/Staff/All";
 
             dynamic testmodel2 = new ExpandoObject();
 
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.STAFF) != null)
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.STAFF));
 
-            string? role = HttpContext.Session.GetString(Constants.Constants.ROLE_NAME);
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
             var listLocationResponse = await methcall.CallMethodReturnObject<GetLocationResponseByList>(
                 _httpClient: _httpClient,
@@ -322,7 +307,8 @@ namespace WebAppMVC.Controllers
                 options: jsonOptions,
                 methodName: Constants.Constants.POST_METHOD,
                 url: StaffAPI_URL,
-                inputType: role,
+                inputType: accToken,
+                accessToken: accToken,
                 _logger: _logger);
 
             if (listFieldTripResponse == null || listLocationResponse == null)
@@ -351,7 +337,7 @@ namespace WebAppMVC.Controllers
         {
             string StaffFieldTripDetailAPI_URL = StaffAPI_URL + "FieldTrip/AllParticipants/" + id;
             StaffAPI_URL += "FieldTrip/" + id;
-            dynamic fieldtripDetailBigModel = new ExpandoObject();
+            StaffFieldtripDetailsVM stafffieldtripDetailsVM = new();
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.STAFF) != null)
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.STAFF));
 
@@ -360,8 +346,10 @@ namespace WebAppMVC.Controllers
             var fieldtripPostResponse = await methcall.CallMethodReturnObject<GetFieldTripPostResponse>(
                                 _httpClient: _httpClient,
                                 options: jsonOptions,
-                                methodName: Constants.Constants.GET_METHOD,
+                                methodName: Constants.Constants.POST_METHOD,
                                 url: StaffAPI_URL,
+                                inputType: accToken,
+                                accessToken: accToken,
                                 _logger: _logger);
             var fieldtrippartPostResponse = await methcall.CallMethodReturnObject<GetListFieldTripParticipation>(
                                 _httpClient: _httpClient,
@@ -384,29 +372,32 @@ namespace WebAppMVC.Controllers
                     + fieldtripPostResponse.ErrorMessage;
                 return RedirectToAction("StaffFieldTrip");
             }
-            fieldtripDetailBigModel.FieldTripDetails = fieldtripPostResponse.Data;
-            fieldtripDetailBigModel.UpdateFieldTrip = methcall.GetValidationTempData<FieldTripViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_VALID, "updateTrip", jsonOptions);
-            fieldtripDetailBigModel.FieldTripTourFeatures = fieldtripPostResponse.Data.FieldtripAdditionalDetails.Where(f => f.Type.Equals("tour_features")).ToList();
-            fieldtripDetailBigModel.FieldTripImportantToKnows = fieldtripPostResponse.Data.FieldtripAdditionalDetails.Where(f => f.Type.Equals("important_to_know")).ToList();
-            fieldtripDetailBigModel.FieldTripActivitiesAndTransportation = fieldtripPostResponse.Data.FieldtripAdditionalDetails.Where(f => f.Type.Equals("activities_and_transportation")).ToList();
-            fieldtripDetailBigModel.FieldTripParticipants = fieldtrippartPostResponse.Data;
-            fieldtripDetailBigModel.SelectListParticipationStatus = methcall.GetStaffEventParticipationStatusSelectableList(fieldtripPostResponse.Data.Status);
-            fieldtripDetailBigModel.SelectListStatus = methcall.GetStaffEventStatusSelectableList(fieldtripPostResponse.Data.Status);
+            stafffieldtripDetailsVM.SetIfUpdateFieldTripStatus(
+                methcall.GetValidationTempData<UpdateFieldtripStatusVM>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_STATUS_VALID, "updateTripStatus", jsonOptions),
+                fieldtripPostResponse.Data,
+                methcall.GetStaffEventStatusSelectableList(fieldtripPostResponse.Data.Status)
+                );
+            stafffieldtripDetailsVM.FieldTripDetails = fieldtripPostResponse.Data;
+            stafffieldtripDetailsVM.FieldTripTourFeatures = fieldtripPostResponse.Data.FieldtripAdditionalDetails.Where(f => f.Type.Equals("tour_features")).ToList();
+            stafffieldtripDetailsVM.FieldTripImportantToKnows = fieldtripPostResponse.Data.FieldtripAdditionalDetails.Where(f => f.Type.Equals("important_to_know")).ToList();
+            stafffieldtripDetailsVM.FieldTripActivitiesAndTransportation = fieldtripPostResponse.Data.FieldtripAdditionalDetails.Where(f => f.Type.Equals("activities_and_transportation")).ToList();
+            stafffieldtripDetailsVM.FieldTripParticipants = fieldtrippartPostResponse.Data;
+            stafffieldtripDetailsVM.ParticipantStatusSelectableList = methcall.GetStaffEventParticipationStatusSelectableList(fieldtripPostResponse.Data.Status);
 
-            return View(fieldtripDetailBigModel);
+            return View(stafffieldtripDetailsVM);
         }
-        [HttpPost("FieldTrip/{id:int}/Update")]
+        [HttpPost("FieldTrip/{id:int}/Status/Update")]
         public async Task<IActionResult> StaffUpdateFieldTripStatus(
             [FromRoute][Required] int id,
-            [Required] FieldTripViewModel updateTrip)
+            [FromForm][Required] UpdateFieldtripStatusVM updateTripStatus)
         {
-            StaffAPI_URL += "FieldTrip/" + id + "/Update";
+            StaffAPI_URL += "FieldTrip/" + id + "/Status/Update";
 
-            if (updateTrip.Status.Equals(Constants.Constants.EVENT_STATUS_CLOSED_REGISTRATION) && (updateTrip.NumberOfParticipantsLimit - updateTrip.NumberOfParticipants) < 10)
+            if (updateTripStatus.Status.Equals(Constants.Constants.EVENT_STATUS_CLOSED_REGISTRATION) && updateTripStatus.NumberOfParticipants < 10)
             {
                 ModelState.AddModelError("updateTrip.Status", "Error while processing your request (Updating FieldTrip).\n Not enough people to closed registration");
-                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_FIELDTRIP_VALID, updateTrip, jsonOptions);
-                TempData["Error"] = "Not enough participants to close registration!";
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_FIELDTRIP_STATUS_VALID, updateTripStatus, jsonOptions);
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] = "Not enough participants to close registration!";
                 return RedirectToAction("StaffFieldTripDetail", new { id });
             }
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.STAFF) != null)
@@ -418,7 +409,7 @@ namespace WebAppMVC.Controllers
                                 options: jsonOptions,
                                 methodName: Constants.Constants.PUT_METHOD,
                                 url: StaffAPI_URL,
-                                inputType: updateTrip,
+                                inputType: updateTripStatus,
                                 accessToken: accToken,
                                 _logger: _logger);
             if (fieldtripPostResponse == null)
@@ -438,9 +429,9 @@ namespace WebAppMVC.Controllers
             return RedirectToAction("StaffFieldTripDetail", new { id });
         }
 
-        [HttpPost("FieldTrip/UpdateStatus/{id:int}")]
+        [HttpPost("FieldTrip/{id:int}/Participant/All/Status/Update")]
         public async Task<IActionResult> StaffUpdateFieldTripPartStatus(
-            int id,
+            [FromRoute][Required] int id,
             List<FieldTripParticipantViewModel> tripPartView)
         {
             StaffAPI_URL += "Staff/FieldTripStatus/Update/" + id;
@@ -479,23 +470,25 @@ namespace WebAppMVC.Controllers
         }
 
         [HttpGet("Contest")]
-        public async Task<IActionResult> StaffContest([FromQuery] string search)
+        public async Task<IActionResult> StaffContest(
+            [FromQuery] string? search
+            )
         {
             _logger.LogInformation(search);
             string LocationAPI_URL_All = StaffAPI_URL + "Location/All";
             if (search != null || !string.IsNullOrEmpty(search))
             {
                 search = search.Trim();
-                StaffAPI_URL += "Contest/Search?contestName=" + search;
+                StaffAPI_URL += "Contest/Staff/Search?contestName=" + search;
             }
-            else StaffAPI_URL += "Contest/All";
+            else StaffAPI_URL += "Contest/Staff/All";
 
             dynamic testmodel3 = new ExpandoObject();
 
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.STAFF) != null)
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.STAFF));
 
-            string? role = HttpContext.Session.GetString(Constants.Constants.ROLE_NAME);
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
             var listLocationResponse = await methcall.CallMethodReturnObject<GetLocationResponseByList>(
                 _httpClient: _httpClient,
@@ -509,7 +502,8 @@ namespace WebAppMVC.Controllers
                 options: jsonOptions,
                 methodName: Constants.Constants.POST_METHOD,
                 url: StaffAPI_URL,
-                inputType: role,
+                inputType: accToken,
+                accessToken: accToken,
                 _logger: _logger);
 
             if (listContestResponse == null || listLocationResponse == null)
@@ -524,7 +518,7 @@ namespace WebAppMVC.Controllers
             if (!listContestResponse.Status || !listLocationResponse.Status)
             {
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
-                    "Error while processing your request! (Getting List Meeting!).\n"
+                    "Error while processing your request! (Getting List Contest!).\n"
                     + listContestResponse.ErrorMessage + "\n" + listLocationResponse.ErrorMessage;
                 return View("StaffIndex");
             }
@@ -540,7 +534,7 @@ namespace WebAppMVC.Controllers
         {
             string StaffContestDetailAPI_URL = StaffAPI_URL + "Contest/AllParticipants/" + id;
             StaffAPI_URL += "Contest/" + id;
-            dynamic contestDetailBigModel = new ExpandoObject();
+            StaffContestDetailsVM contestDetailBigModel = new();
 
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.STAFF) != null)
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.STAFF));
@@ -550,8 +544,10 @@ namespace WebAppMVC.Controllers
             var contestPostResponse = await methcall.CallMethodReturnObject<GetContestPostResponse>(
                                 _httpClient: _httpClient,
                                 options: jsonOptions,
-                                methodName: Constants.Constants.GET_METHOD,
+                                methodName: Constants.Constants.POST_METHOD,
                                 url: StaffAPI_URL,
+                                inputType: accToken,
+                                accessToken: accToken,
                                 _logger: _logger);
             var contestpartPostResponse = await methcall.CallMethodReturnObject<GetListContestParticipation>(
                                 _httpClient: _httpClient,
@@ -575,26 +571,29 @@ namespace WebAppMVC.Controllers
                 return RedirectToAction("StaffContest");
             }
 
-            contestDetailBigModel.UpdateContest = methcall.GetValidationTempData<ContestViewModel>(this, TempData, Constants.Constants.UPDATE_CONTEST_VALID, "updateContest", jsonOptions);
+            contestDetailBigModel.SetIfUpdateContestStatus(
+                methcall.GetValidationTempData<UpdateContestStatusVM>(this, TempData, Constants.Constants.UPDATE_CONTEST_STATUS_VALID, "updateContestStatus", jsonOptions),
+                contestPostResponse.Data,
+                methcall.GetStaffEventStatusSelectableList(contestPostResponse.Data.Status)
+                );
             contestDetailBigModel.ContestDetails = contestPostResponse.Data;
             contestDetailBigModel.ContestParticipants = contestpartPostResponse.Data;
-            contestDetailBigModel.SelectListParticipationStatus = methcall.GetStaffEventParticipationStatusSelectableList(contestPostResponse.Data.Status);
-            contestDetailBigModel.SelectListStatus = methcall.GetStaffEventStatusSelectableList(contestPostResponse.Data.Status);
+            contestDetailBigModel.ParticipantStatusSelectableList = methcall.GetStaffEventParticipationStatusSelectableList(contestPostResponse.Data.Status);
             return View(contestDetailBigModel);
         }
         [HttpPost("Contest/{id:int}/Status/Update")]
         public async Task<IActionResult> StaffUpdateContestStatus(
             [FromRoute][Required] int id,
-            [Required] ContestViewModel updateContest
+            [FromForm][Required] UpdateContestStatusVM updateContestStatus
             )
         {
-            StaffAPI_URL += "Contest/Update/" + id;
+            StaffAPI_URL += "Contest/" + id + "/Status/Update";
 
-            if (updateContest.Status.Equals(Constants.Constants.EVENT_STATUS_CLOSED_REGISTRATION) && (updateContest.NumberOfParticipantsLimit - updateContest.NumberOfParticipants) < 10)
+            if (updateContestStatus.Status.Equals(Constants.Constants.EVENT_STATUS_CLOSED_REGISTRATION) && updateContestStatus.NumberOfParticipants < 10)
             {
                 ModelState.AddModelError("updateContest.Status", "Error while processing your request (Updating Contest).\n Not enough people to closed registration");
-                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_CONTEST_VALID, updateContest, jsonOptions);
-                TempData["Error"] = "Not enough participants to close registration!";
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_CONTEST_STATUS_VALID, updateContestStatus, jsonOptions);
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] = "Not enough participants to close registration!";
                 return RedirectToAction("StaffContestDetail", new { id });
             }
 
@@ -603,7 +602,7 @@ namespace WebAppMVC.Controllers
 
             if (!ModelState.IsValid)
             {
-                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_CONTEST_VALID, updateContest, jsonOptions);
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_CONTEST_STATUS_VALID, updateContestStatus, jsonOptions);
                 return RedirectToAction("StaffContestDetail", new { id });
             }
 
@@ -614,7 +613,7 @@ namespace WebAppMVC.Controllers
                                 options: jsonOptions,
                                 methodName: Constants.Constants.PUT_METHOD,
                                 url: StaffAPI_URL,
-                                inputType: updateContest,
+                                inputType: updateContestStatus,
                                 accessToken: accToken,
                                 _logger: _logger);
             if (contestPostResponse == null)

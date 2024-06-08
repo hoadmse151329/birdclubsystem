@@ -1,16 +1,10 @@
-﻿@model dynamic
+﻿@model WebAppMVC.Models.ViewModels.ManagerFieldTripIndexVM
 @{
     Layout = null;
     ViewData["Title"] = "Manager Field Trip Page";
-    List<string> locationList = Model.Locations;
-    List<BAL.ViewModels.FieldTripViewModel> fieldtripList = Model.FieldTrips;
-    BAL.ViewModels.FieldTripViewModel createFieldTrip = Model.CreateFieldTrip != null ? Model.CreateFieldTrip : new BAL.ViewModels.FieldTripViewModel();
-
-    //BAL.ViewModels.FieldtripDaybyDayViewModel createFieldTripDayByDay = new();
-    //BAL.ViewModels.FieldTripAdditionalDetailViewModel createFieldTripRates = new();
-    //BAL.ViewModels.FieldtripMediaViewModel createFieldTripMedia = new();
-    //BAL.ViewModels.FieldtripInclusionViewModel createFieldTripInclsion = new();
-    //BAL.ViewModels.FieldtripGettingThereViewModel createFieldTripGettingthere = new();
+    List<string> locationList = Model.Roads;
+    List<BAL.ViewModels.FieldTripViewModel> fieldtripList = Model.FieldtripList;
+    BAL.ViewModels.Manager.CreateNewFieldtripVM createFieldTrip = Model.CreateFieldtrip;
 
     string? search = string.Empty;
     Layout = "~/Views/Shared/_MLayout.cshtml";
@@ -274,7 +268,7 @@
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
                                     <label asp-for="@createFieldTrip.InCharge" class="col-md-3 col-form-label mt-3 text-md-right"></label>
-                                    <input asp-for="@createFieldTrip.InCharge" value="@createFieldTrip.InCharge" type="text" placeholder="Staff incharge of Field trip" class="form-control col-md-7 mt-3" rows="3" required>
+                                    <select asp-for="@createFieldTrip.InCharge" asp-items="@createFieldTrip.StaffNames" placeholder="Staff incharge of Fieldtrip" class="custom-select form-control col-md-7 mt-3" required></select>
                                     <span asp-validation-for="@createFieldTrip.InCharge" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
@@ -334,5 +328,13 @@
             </div>
         </div>
     </div>
+    <script src="~/ckeditor/ckeditor.js"></script>
+    <script src="~/ckfinder/ckfinder.js"></script>
+    <script>
+        var data = {};
+        var editor = CKEDITOR.replace('createFieldTrip.Description');
+        CKFinder.setupCKEditor(editor, 'ckfinder/');
+        data["createFieldTrip.Description"] = editor.getData();
+    </script>
 </body>
 </html>

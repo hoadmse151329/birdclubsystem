@@ -1,10 +1,10 @@
-﻿@model dynamic
+﻿@model WebAppMVC.Models.ViewModels.ManagerContestIndexVM
 @{
     Layout = null;
     ViewData["Title"] = "Manager Contest Page";
-    List<string> locationList = Model.Locations;
-    List<BAL.ViewModels.ContestViewModel> contestList = Model.Contests;
-    BAL.ViewModels.ContestViewModel createContest = Model.CreateContest != null ? Model.CreateContest : new BAL.ViewModels.ContestViewModel();
+    List<string> locationList = Model.Roads;
+    List<BAL.ViewModels.ContestViewModel> contestList = Model.ContestList;
+    BAL.ViewModels.Manager.CreateNewContestVM createContest = Model.CreateContest;
     string? search = string.Empty;
     Layout = "~/Views/Shared/_MLayout.cshtml";
 }
@@ -159,6 +159,14 @@
                                                                     <span>@data.NumberOfParticipantsLimit</span>
                                                                 </li>
                                                                 <li>
+                                                                    <h6>Minimum ELO Required:</h6>
+                                                                    <span>@data.ReqMinELO</span>
+                                                                </li>
+                                                                <li>
+                                                                    <h6>Maximum ELO Required:</h6>
+                                                                    <span>@data.ReqMaxELO</span>
+                                                                </li>
+                                                                <li>
                                                                     <h6>Location:</h6>
                                                                     <span class="truncate">@data.AreaNumber,@data.Street,@data.District,@data.City</span>
                                                                 </li>
@@ -257,7 +265,7 @@
                                     <span asp-validation-for="@createContest.EndDate" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
-                                    <label asp-for="@createContest.NumberOfParticipantsLimit"  class="col-md-3 col-form-label mt-3 text-md-right">Number of Participants</label>
+                                    <label asp-for="@createContest.NumberOfParticipantsLimit"  class="col-md-3 col-form-label mt-3 text-md-right">Maximum Participants</label>
                                     <input asp-for="@createContest.NumberOfParticipantsLimit" value="@createContest.NumberOfParticipantsLimit" type="number" class="form-control col-md-7 mt-3" required>
                                     <span asp-validation-for="@createContest.NumberOfParticipantsLimit" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
@@ -268,7 +276,7 @@
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
                                     <label asp-for="@createContest.Incharge" class="col-md-3 col-form-label mt-3 text-md-right">Incharge</label>
-                                    <input asp-for="@createContest.Incharge" value="@createContest.Incharge" type="text" placeholder="Staff incharge of Contest" class="form-control col-md-7 mt-3" rows="3" required>
+                                    <select asp-for="@createContest.Incharge" asp-items="@createContest.StaffNames" placeholder="Staff incharge of Contest" class="custom-select form-control col-md-7 mt-3" required></select>
                                     <span asp-validation-for="@createContest.Incharge" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
@@ -297,11 +305,6 @@
                                     <span asp-validation-for="@createContest.ReqMaxELO" id="error_message"
                                           class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
-                                    <label asp-for="@createContest.AfterELO" class="col-md-3 col-form-label mt-3 text-md-right"></label>
-                                    <input asp-for="@createContest.AfterELO" value="@createContest.AfterELO" type="number" placeholder="0" class="form-control col-md-7 mt-3" rows="3" required></input>
-                                    <span asp-validation-for="@createContest.AfterELO" id="error_message"
-                                          class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
-
                                     <label asp-for="@createContest.Prize" class="col-md-3 col-form-label mt-3 text-md-right"></label>
                                     <input asp-for="@createContest.Prize" value="@createContest.Prize" type="number" placeholder="0" class="form-control col-md-7 mt-3" rows="3" required></input>
                                     <span asp-validation-for="@createContest.Prize" id="error_message"
@@ -323,5 +326,13 @@
             </div>
         </div>
     </div>
+    <script src="~/ckeditor/ckeditor.js"></script>
+    <script src="~/ckfinder/ckfinder.js"></script>
+    <script>
+        var data = {};
+        var editor = CKEDITOR.replace('createContest.Description');
+        CKFinder.setupCKEditor(editor, 'ckfinder/');
+        data["createContest.Description"] = editor.getData();
+    </script>
 </body>
 </html>

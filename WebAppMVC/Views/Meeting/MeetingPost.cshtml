@@ -9,7 +9,6 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="~/css/Meeting.css">
-    <!-- main CSS -->
 </head>
 <body class="background">
     <div class="member-meeting-post">
@@ -87,7 +86,7 @@
                             <div class="tittle">
                                 <div class="overlap-group-2"><p class="text-wrapper-4" id="dynamicText">@Model.MeetingName</p></div>
                             </div>
-                            <div class="text-wrapper-5">From @Model.StartDate.ToString("MM/dd/yyyy") to @Model.EndDate.ToString("MM/dd/syyyy")</div>
+                            <div class="text-wrapper-5">From @Model.StartDate.ToString("dd/MM/yyyy") to @Model.EndDate.ToString("dd/MM/yyyy")</div>
 
 
                             <div class="group-2">
@@ -124,7 +123,7 @@
                                 {
                                     <div class="register">
                                         <form asp-action="MeetingRegister" asp-controller="Meeting" method="post" asp-route-meetingId="@Model.MeetingId">
-                                                <button class="overlap-group-3 text-wrapper-16 button-rgb" data-toggle="modal" data-target="#registerContest" type="submit">Register</button>
+                                            <button class="overlap-group-3 text-wrapper-16 button-rgb" data-toggle="modal" data-target="#registerContest" type="submit">Register</button>
                                         </form>
                                     </div>
                                 }
@@ -143,8 +142,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.5/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        $(document).ready(function () {
-            setTimeout(function () {
+        $(document).ready(function() {
+            setTimeout(function() {
                 $('#notif').css('display', 'none');
             }, 3000);
         })

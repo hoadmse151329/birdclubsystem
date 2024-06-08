@@ -15,7 +15,7 @@ namespace DAL.Models
         [StringLength(255)]
         public string? VnPayId { get; set; }
         [Column("userId")]
-        public int UserId { get; set; }
+        public int? UserId { get; set; }
         [Column("transactionType")]
         [StringLength(255)]
         public string? TransactionType { get; set; }
