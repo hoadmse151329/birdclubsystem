@@ -10,5 +10,6 @@ namespace DAL.Repositories.Interfaces
 {
     public interface IGalleryRepository : IRepositoryBase<Gallery>
     {
+        Task<IEnumerable<Gallery>> GetAllGalleries();
     }
 }

@@ -88,5 +88,15 @@ namespace DAL.Repositories.Implements
                 return await _context.Users.AsNoTrackingWithIdentityResolution().Include(usr => usr.MemberDetails).SingleOrDefaultAsync(usr => usr.MemberDetails.UserName == username);
             return null;
         }
+
+        public async Task<int> CountUser()
+        {
+            return await _context.Users.CountAsync();
+        }
+
+        public async Task<int> CountUserByRole(string role)
+        {
+            return await _context.Users.Where(u => u.Role == role).CountAsync();
+        }
     }
 }

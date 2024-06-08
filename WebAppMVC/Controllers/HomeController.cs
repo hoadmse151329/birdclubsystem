@@ -272,6 +272,7 @@ namespace WebAppMVC.Controllers
         [Route("Gallery")]
         public IActionResult Gallery()
         {
+            methcall.SetUserDefaultData(this);
             return View();
         }
         [HttpGet("Blog")]

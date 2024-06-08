@@ -284,5 +284,15 @@ namespace BAL.Services.Implements
             }
             return false;
         }
+
+        public async Task<int> CountUser()
+        {
+            return await _unitOfWork.UserRepository.CountUser();
+        }
+
+        public async Task<int> CountUserByRole(string role)
+        {
+            return await _unitOfWork.UserRepository.CountUserByRole(role);
+        }
     }
 }
