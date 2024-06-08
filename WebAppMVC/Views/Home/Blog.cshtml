@@ -68,7 +68,7 @@
                                             <img src="@createBlog.MemberAvatar" alt="Profile Picture">
                                             <div class="post-header-text">
                                                 <h3>@createBlog.Fullname</h3>
-                                                <p>@createBlog.UploadDate.Value.ToString("MM/dd/yyyy HH:mm")</p>
+                                                <p>@createBlog.UploadDate.Value.ToString("dd/MM/yyyy HH:mm")</p>
                                                 <input asp-for="@createBlog.Fullname" value="@createBlog.Fullname" type="text" hidden required class="form-control col-md-7">
                                                 <input asp-for="@createBlog.UploadDate" value="@createBlog.UploadDate.Value.ToString("yyyy-MM-ddTHH:mm")" type="datetime-local" asp-format="{0:yyyy-MM-ddTHH:mm}" hidden required class="form-control col-md-7">
                                             </div>
@@ -114,7 +114,7 @@
                         <img src="@blogpost.MemberAvatar" alt="Profile Picture">
                         <div class="post-header-text">
                             <h3>@blogpost.Fullname</h3>
-                            <p>@blogpost.UploadDate.Value.ToString("MM/dd/yyyy HH:mm")</p>
+                            <p>@blogpost.UploadDate.Value.ToString("dd/MM/yyyy HH:mm")</p>
                         </div>
                     </div>
                     <p>@Html.Raw(blogpost.Description)</p>

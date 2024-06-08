@@ -30,6 +30,7 @@ namespace BAL.Services.Implements
         public void Create(NotificationViewModel notifModel)
         {
             var notif = _mapper.Map<Notification>(notifModel);
+            notif.NotificationId = _unitOfWork.NotificationRepository.GenerateNewNotificationId();
             _unitOfWork.NotificationRepository.Create(notif);
             _unitOfWork.Save();
         }
