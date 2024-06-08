@@ -18,118 +18,140 @@
 
 <body>
     <div class="main-content">
-        <div id="accordion">
-            @if (TempData["Success"] != null)
-            {
-                <div class="alert alert-success alert-dismissible fade show" id="notif">
-                    <i class='bx bx-message-alt-x p-1'></i>
-                    <strong class="mr-1">@TempData["Success"]</strong>
-                    <button type="button" class="close h-100" data-dismiss="alert" aria-label="Close">
-                        <span><i class='bx bx-x'></i></span>
-                    </button>
+        <div class="main">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="offset-sm-6 col-sm-6  d-flex justify-content-sm-end p-md-0 mt-2 mt-sm-0 ">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumd-item">
+                                <a href="#">Manage</a>
+                            </li>
+                            <li class="breadcrumd-item">
+                                <span>/</span>
+                            </li>
+                        </ol>
+                    </div>
                 </div>
-                TempData["Success"] = null;
-            }
-            else if (TempData["Error"] != null)
-            {
-                <div class="alert alert-danger alert-dismissible fade show" id="notif">
-                    <i class='bx bx-message-alt-x p-1'></i>
-                    <strong class="mr-1">@TempData["Error"]</strong>
-                    <button type="button" class="close h-100" data-dismiss="alert" aria-label="Close">
-                        <span><i class='bx bx-x'></i></span>
-                    </button>
-                </div>
-                TempData["Error"] = null;
-            }
-            <!-- Personal infomations -->
-            <div class="card mx-5 mb-2">
-                <div class="card-header card-setting" id="headingOne">
-                    <h5 class="mb-0">
-                        <button class="btn btn-link" data-toggle="collapse" data-target="#profile"
-                                aria-expanded="true" aria-controls="profile">
-                            My Profile <i class='bx bx-chevron-right'></i>
-                        </button>
-                    </h5>
-                </div>
-                <div class="collapse show" id="profile" aria-labelledby="profile" data-parent="#accordion">
-                    <div class="card-body">
-                        <div class="user-profile">
-                            <div class="row">
-                                <div class="col-lg-4">
-                                    <div class="profile-pic">
-                                        <img src="@adminDetail.ImagePath" id="output" width="200" />
-                                        <div class="upload">
-                                            <button class="btn btn-warning" data-toggle="modal" data-target="#uploadImg">Details</button>
-                                            <i class='bx bxs-camera-plus'></i>
-                                        </div>
+                <section>
+                    <div class="card">
+                        <div class="card-body">
+                            <div id="accordion">
+                                @if (TempData["Success"] != null)
+                                {
+                                    <div class="alert alert-success alert-dismissible fade show" id="notif">
+                                        <i class='bx bx-message-alt-x p-1'></i>
+                                        <strong class="mr-1">@TempData["Success"]</strong>
+                                        <button type="button" class="close h-100" data-dismiss="alert" aria-label="Close">
+                                            <span><i class='bx bx-x'></i></span>
+                                        </button>
                                     </div>
-                                    <div class="profile-name">@adminDetail.FullName</div>
-                                </div>
-                                <div class="col-lg-8">
-                                    <div class="profile-content">
-                                        <div class="contact-infor">
-                                            <div class="info-title">
-                                                <h4>Personal Information</h4>
-                                            </div>
-                                            <div class="info-content">
-                                                <form asp-action="AdminProfileUpdate" asp-controller="Admin" class="form-check" method="post">
-                                                    <div class="row username-content">
-                                                        <label class="contact-title col-md-5 col-sm-4 mt-3">Username: </label>
-
-                                                        <input asp-for="@adminDetail.UserName" type="text"
-                                                               class="form-control col-md-5 col-sm-8 mt-2" readonly
-                                                               value="@adminDetail.UserName">
-                                                        <span asp-validation-for="@adminDetail.UserName" id="error_message"
-                                                              class="error-message col-md-2 mt-3"></span>
-
+                                    TempData["Success"] = null;
+                                }
+                                else if (TempData["Error"] != null)
+                                {
+                                    <div class="alert alert-danger alert-dismissible fade show" id="notif">
+                                        <i class='bx bx-message-alt-x p-1'></i>
+                                        <strong class="mr-1">@TempData["Error"]</strong>
+                                        <button type="button" class="close h-100" data-dismiss="alert" aria-label="Close">
+                                            <span><i class='bx bx-x'></i></span>
+                                        </button>
+                                    </div>
+                                    TempData["Error"] = null;
+                                }
+                                <!-- Personal infomations -->
+                                <div class="card mx-5 mb-2">
+                                    <div class="card-header card-setting" id="headingOne">
+                                        <h5 class="mb-0">
+                                            <button class="btn btn-link" data-toggle="collapse" data-target="#profile"
+                                                    aria-expanded="true" aria-controls="profile">
+                                                My Profile <i class='bx bx-chevron-right'></i>
+                                            </button>
+                                        </h5>
+                                    </div>
+                                    <div class="collapse show" id="profile" aria-labelledby="profile" data-parent="#accordion">
+                                        <div class="card-body">
+                                            <div class="user-profile">
+                                                <div class="row">
+                                                    <div class="col-lg-4">
+                                                        <div class="profile-pic">
+                                                            <img src="@adminDetail.ImagePath" id="output" width="200" />
+                                                            <div class="upload">
+                                                                <button class="btn btn-warning" data-toggle="modal" data-target="#uploadImg">Details</button>
+                                                                <i class='bx bxs-camera-plus'></i>
+                                                            </div>
+                                                        </div>
+                                                        <div class="profile-name">@adminDetail.FullName</div>
                                                     </div>
-                                                    <div class="row fullname-content">
-                                                        <label class="contact-title col-md-5 col-sm-4 mt-3">Full Name: </label>
+                                                    <div class="col-lg-8">
+                                                        <div class="profile-content">
+                                                            <div class="contact-infor">
+                                                                <div class="info-title">
+                                                                    <h4>Personal Information</h4>
+                                                                </div>
+                                                                <div class="info-content">
+                                                                    <form asp-action="AdminProfileUpdate" asp-controller="Admin" class="form-check" method="post">
+                                                                        <div class="row username-content">
+                                                                            <label class="contact-title col-md-5 col-sm-4 mt-3">Username: </label>
 
-                                                        <input asp-for="@adminDetail.FullName" type="text"
-                                                               class="form-control col-md-5 col-sm-8 mt-2" readonly
-                                                               value="@adminDetail.FullName">
-                                                        <span asp-validation-for="@adminDetail.FullName" id="error_message"
-                                                              class="error-message col-md-2 mt-3"></span>
+                                                                            <input asp-for="@adminDetail.UserName" type="text"
+                                                                                   class="form-control col-md-5 col-sm-8 mt-2" readonly
+                                                                                   value="@adminDetail.UserName">
+                                                                            <span asp-validation-for="@adminDetail.UserName" id="error_message"
+                                                                                  class="error-message col-md-2 mt-3"></span>
 
+                                                                        </div>
+                                                                        <div class="row fullname-content">
+                                                                            <label class="contact-title col-md-5 col-sm-4 mt-3">Full Name: </label>
+
+                                                                            <input asp-for="@adminDetail.FullName" type="text"
+                                                                                   class="form-control col-md-5 col-sm-8 mt-2" readonly
+                                                                                   value="@adminDetail.FullName">
+                                                                            <span asp-validation-for="@adminDetail.FullName" id="error_message"
+                                                                                  class="error-message col-md-2 mt-3"></span>
+
+                                                                        </div>
+                                                                        <div class="row phone-content">
+                                                                            <label class="contact-title col-md-5 col-sm-4 mt-3">Phone Number: </label>
+
+                                                                            <input asp-for="@adminDetail.Phone" type="tel" value="@adminDetail.Phone"
+                                                                                   class="form-control col-md-5 col-sm-8 mt-2">
+                                                                            <span asp-validation-for="@adminDetail.Phone" id="error_message"
+                                                                                  class="error-message col-md-2 mt-3"></span>
+
+                                                                        </div>
+                                                                        <div class="row address-content">
+                                                                            <label class="contact-title col-md-5 col-sm-4 mt-3">Address: </label>
+
+                                                                            <input asp-for="@adminDetail.Address" type="text" value="@adminDetail.Address"
+                                                                                   class="form-control col-md-5 col-sm-8 mt-2">
+                                                                            <span asp-validation-for="@adminDetail.Address" id="error_message"
+                                                                                  class="error-message col-md-2 mt-3"></span>
+
+                                                                        </div>
+                                                                        <div class="row email-content">
+                                                                            <label class="contact-title col-md-5 col-sm-4 mt-3">Email: </label>
+
+                                                                            <input asp-for="@adminDetail.Email" type="email" value="@adminDetail.Email"
+                                                                                   class="form-control col-md-5 col-sm-8 mt-2">
+                                                                            <span asp-validation-for="@adminDetail.Email" id="error_message"
+                                                                                  class="error-message col-md-2 mt-3"></span>
+
+                                                                        </div>
+                                                                        <div class="row gender-content">
+                                                                            <label class="contact-title col-md-5 col-sm-4 mt-3">Gender: </label>
+                                                                            <select class="form-control col-md-5 col-sm-8 mt-2" asp-for="@adminDetail.Gender" asp-items="@genders" class="custom-select" id="gender">
+                                                                            </select>
+                                                                        </div>
+                                                                        <input asp-for="@adminDetail.ImagePath" type="text" value="@adminDetail.ImagePath" hidden />
+                                                                        <div class="row pt-3 d-flex">
+                                                                            <button type="submit" class="offset-3 btn btn-success">Confirm Changes</button>
+                                                                        </div>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                    <div class="row phone-content">
-                                                        <label class="contact-title col-md-5 col-sm-4 mt-3">Phone Number: </label>
-
-                                                        <input asp-for="@adminDetail.Phone" type="tel" value="@adminDetail.Phone"
-                                                               class="form-control col-md-5 col-sm-8 mt-2">
-                                                        <span asp-validation-for="@adminDetail.Phone" id="error_message"
-                                                              class="error-message col-md-2 mt-3"></span>
-
-                                                    </div>
-                                                    <div class="row address-content">
-                                                        <label class="contact-title col-md-5 col-sm-4 mt-3">Address: </label>
-
-                                                        <input asp-for="@adminDetail.Address" type="text" value="@adminDetail.Address"
-                                                               class="form-control col-md-5 col-sm-8 mt-2">
-                                                        <span asp-validation-for="@adminDetail.Address" id="error_message"
-                                                              class="error-message col-md-2 mt-3"></span>
-
-                                                    </div>
-                                                    <div class="row email-content">
-                                                        <label class="contact-title col-md-5 col-sm-4 mt-3">Email: </label>
-
-                                                        <input asp-for="@adminDetail.Email" type="email" value="@adminDetail.Email"
-                                                               class="form-control col-md-5 col-sm-8 mt-2">
-                                                        <span asp-validation-for="@adminDetail.Email" id="error_message"
-                                                              class="error-message col-md-2 mt-3"></span>
-
-                                                    </div>
-                                                    <div class="row gender-content">
-                                                        <label class="contact-title col-md-5 col-sm-4 mt-3">Gender: </label>
-                                                        <select class="form-control col-md-5 col-sm-8 mt-2" asp-for="@adminDetail.Gender" asp-items="@genders" class="custom-select" id="gender">
-                                                        </select>
-                                                    </div>
-                                                    <input asp-for="@adminDetail.ImagePath" type="text" value="@adminDetail.ImagePath" hidden />
-                                                    <div class="row pt-3 d-flex">
-                                                        <button type="submit" class="offset-3 btn btn-success">Confirm Changes</button>
-                                                    </div>
-                                                </form>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -137,53 +159,53 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </section>
             </div>
-            <!--End of personal info -->
-
-            <!--Change password -->
-            <div class="card mx-5 mb-2">
-                <div class="card-header card-setting" id="headingTwo">
-                    <h5 class="mb-0">
-                        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo"
-                                aria-expanded="false" aria-controls="collapseTwo">
-                            Change Password <i class='bx bx-chevron-right'></i>
-                        </button>
-                    </h5>
-                </div>
-                <div class="collapse" id="collapseTwo" aria-labelledby="headingTwo" data-parent="#accordion">
-                    <div class="card-body">
-                        <div class="card-group d-block">
-                            <form asp-action="ChangePassword" asp-controller="Admin" method="post">
-                                <div class="row form-group">
-                                    <label asp-for=@adminPassword.password class="offset-md-3 col-md-2 col-sm-3 col-form-label">Old Password</label>
-                                    <input asp-for=@adminPassword.password class="col-md-3 col-sm-5 form-control" type="password"
-                                           required value=@adminPassword.password>
-                                    <span asp-validation-for=@adminPassword.password class="error-message col-sm-3 mt-2"></span>
-                                </div>
-                                <div class="row form-group">
-                                    <label asp-for=@adminPassword.Newpassword class="offset-md-3 col-md-2 col-sm-3 col-form-label">New Password</label>
-                                    <input asp-for=@adminPassword.Newpassword class="col-md-3 col-sm-5 form-control" type="password"
-                                           id="password" required value=@adminPassword.Newpassword>
-                                    <span asp-validation-for=@adminPassword.Newpassword class="error-message col-sm-3 mt-2"></span>
-                                </div>
-                                <div class="row form-group">
-                                    <label asp-for=@adminPassword.NewConfirmPassword class="offset-md-3 col-md-2 col-sm-3 col-form-label">Confirm</label>
-                                    <input asp-for=@adminPassword.NewConfirmPassword class="col-md-3 col-sm-5 form-control" type="password"
-                                           id="confirm" required value=@adminPassword.NewConfirmPassword>
-                                    <span asp-validation-for=@adminPassword.NewConfirmPassword class="error-message col-sm-3 mt-2"></span>
-                                </div>
-                                <div class="row form-group justify-content-center">
-                                    <button type="submit" class="btn btn-success">Confirm Change</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!--End of change password -->
-
         </div>
+    </div>
+    <!--End of personal info -->
+    <!--Change password -->
+    <div class="card mx-5 mb-2">
+        <div class="card-header card-setting" id="headingTwo">
+            <h5 class="mb-0">
+                <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo"
+                        aria-expanded="false" aria-controls="collapseTwo">
+                    Change Password <i class='bx bx-chevron-right'></i>
+                </button>
+            </h5>
+        </div>
+        <div class="collapse" id="collapseTwo" aria-labelledby="headingTwo" data-parent="#accordion">
+            <div class="card-body">
+                <div class="card-group d-block">
+                    <form asp-action="ChangePassword" asp-controller="Admin" method="post">
+                        <div class="row form-group">
+                            <label asp-for=@adminPassword.password class="offset-md-3 col-md-2 col-sm-3 col-form-label">Old Password</label>
+                            <input asp-for=@adminPassword.password class="col-md-3 col-sm-5 form-control" type="password"
+                                   required value=@adminPassword.password>
+                            <span asp-validation-for=@adminPassword.password class="error-message col-sm-3 mt-2"></span>
+                        </div>
+                        <div class="row form-group">
+                            <label asp-for=@adminPassword.Newpassword class="offset-md-3 col-md-2 col-sm-3 col-form-label">New Password</label>
+                            <input asp-for=@adminPassword.Newpassword class="col-md-3 col-sm-5 form-control" type="password"
+                                   id="password" required value=@adminPassword.Newpassword>
+                            <span asp-validation-for=@adminPassword.Newpassword class="error-message col-sm-3 mt-2"></span>
+                        </div>
+                        <div class="row form-group">
+                            <label asp-for=@adminPassword.NewConfirmPassword class="offset-md-3 col-md-2 col-sm-3 col-form-label">Confirm</label>
+                            <input asp-for=@adminPassword.NewConfirmPassword class="col-md-3 col-sm-5 form-control" type="password"
+                                   id="confirm" required value=@adminPassword.NewConfirmPassword>
+                            <span asp-validation-for=@adminPassword.NewConfirmPassword class="error-message col-sm-3 mt-2"></span>
+                        </div>
+                        <div class="row form-group justify-content-center">
+                            <button type="submit" class="btn btn-success">Confirm Change</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--End of change password -->
+    </div>
     </div>
 
     <!-- edit Home -->
