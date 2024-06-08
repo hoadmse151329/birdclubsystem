@@ -3083,6 +3083,48 @@ namespace WebAppMVC.Controllers
 
             return View(managerBlogListVM);
         }
+        [HttpGet("Blog/{id:int}")]
+        public async Task<IActionResult> ManagerBlog(
+            [FromQuery] int id
+            )
+        {
+            ManagerAPI_URL += "Blog/" + id;
+
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
+
+            ManagerBlogIndexVM managerBlogListVM = new();
+
+            var listBlogResponse = await methcall.CallMethodReturnObject<GetListBlogResponse>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: Constants.Constants.GET_METHOD,
+                url: ManagerAPI_URL,
+                accessToken: accToken,
+                _logger: _logger);
+
+            if (listBlogResponse == null)
+            {
+                _logger.LogInformation(
+                    "Error while processing your request! (Getting List Blog Status!). List was Empty!: " + listBlogResponse);
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
+                    "Error while processing your request! (Getting List Blog Status!).\n List was Empty!";
+                return RedirectToAction("ManagerIndex");
+            }
+            else
+            if (!listBlogResponse.Status)
+            {
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
+                    "Error while processing your request! (Getting List Blog Status!).\n"
+                    + listBlogResponse.ErrorMessage;
+                return RedirectToAction("ManagerIndex");
+            }
+
+            managerBlogListVM.Blogs = listBlogResponse.Data;
+
+            return View(managerBlogListVM);
+        }
         [HttpPost("Blog/{id:int}/Disable")]
         public async Task<IActionResult> ManagerDisableBlog(
             [FromRoute][Required] int id)

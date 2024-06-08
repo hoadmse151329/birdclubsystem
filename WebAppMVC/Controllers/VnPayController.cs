@@ -139,7 +139,6 @@ namespace WebAppMVC.Controllers
                             var tran = new TransactionViewModel()
                             {
                                 Value = (int)(response.Value / 100),
-                                UserId = null,
                                 VnPayId = response.TransactionId.ToString(),
                                 TransactionType = response.TransactionType,
                                 TransactionDate = DateTime.Now,
@@ -187,7 +186,6 @@ namespace WebAppMVC.Controllers
                             var tran = new TransactionViewModel()
                             {
                                 Value = (int)(response.Value / 100),
-                                UserId = null,
                                 VnPayId = response.TransactionId.ToString(),
                                 TransactionType = response.TransactionType,
                                 TransactionDate = DateTime.Now,
@@ -233,7 +231,6 @@ namespace WebAppMVC.Controllers
                             var tran = new TransactionViewModel()
                             {
                                 Value = (int)(response.Value / 100),
-                                UserId = null,
                                 VnPayId = response.TransactionId.ToString(),
                                 TransactionType = response.TransactionType,
                                 TransactionDate = DateTime.Now,

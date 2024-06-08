@@ -89,30 +89,15 @@ namespace WebAppMVC.Controllers
             if (search != null || !string.IsNullOrEmpty(search))
             {
                 search = search.Trim();
-                StaffAPI_URL += "Meeting/Search?meetingName=" + search;
+                StaffAPI_URL += "Meeting/Staff/Search?meetingName=" + search;
             }
-            else StaffAPI_URL += "Meeting/All";
+            else StaffAPI_URL += "Meeting/Staff/All";
 
             dynamic testmodel = new ExpandoObject();
 
-            string? accToken = HttpContext.Session.GetString("ACCESS_TOKEN");
-            if (string.IsNullOrEmpty(accToken)) return RedirectToAction("Login", "Auth");
-
-            string? role = HttpContext.Session.GetString("ROLE_NAME");
-            if (string.IsNullOrEmpty(role)) return RedirectToAction("Login", "Auth");
-            else if (!role.Equals("Staff")) return View("Index");
-
-            string? usrId = HttpContext.Session.GetString("USER_ID");
-            if (string.IsNullOrEmpty(usrId)) return RedirectToAction("Login", "Auth");
-
-            string? usrname = HttpContext.Session.GetString("USER_NAME");
-            if (string.IsNullOrEmpty(usrname)) return RedirectToAction("Login", "Auth");
-
-            string? imagepath = HttpContext.Session.GetString("IMAGE_PATH");
-
-            TempData["ROLE_NAME"] = role;
-            TempData["USER_NAME"] = usrname;
-            TempData["IMAGE_PATH"] = imagepath;
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.STAFF) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.STAFF));
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
             var listLocationResponse = await methcall.CallMethodReturnObject<GetLocationResponseByList>(
                 _httpClient: _httpClient,
@@ -126,7 +111,8 @@ namespace WebAppMVC.Controllers
                 options: jsonOptions,
                 methodName: Constants.Constants.POST_METHOD,
                 url: StaffAPI_URL,
-                inputType: role,
+                inputType: accToken,
+                accessToken: accToken,
                 _logger: _logger);
 
             if (listMeetResponse == null || listLocationResponse == null)
