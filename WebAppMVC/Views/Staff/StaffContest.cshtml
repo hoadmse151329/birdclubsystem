@@ -159,11 +159,14 @@
                                                             </ul>
                                                         </div>
                                                     </div>
-                                                    <div class="form-group mx-auto">
-                                                        <form asp-action="Contest" asp-controller="Staff" method="get" asp-route-id="@data.ContestId">
-                                                            <button class="btn btn-primary clickable-row" type="submit">See Detail</button>
-                                                        </form>
-                                                    </div>
+                                                    @if (data.isIncharge)
+                                                    {
+                                                        <div class="form-group mx-auto">
+                                                            <form asp-action="Contest" asp-controller="Staff" method="get" asp-route-id="@data.ContestId">
+                                                                <button class="btn btn-primary clickable-row" type="submit">See Detail</button>
+                                                            </form>
+                                                        </div>
+                                                    }
                                                 </div>
                                             </div>
                                         }

@@ -317,7 +317,8 @@ namespace WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetStaffFieldtripById(
             [FromRoute] int id,
-            [FromBody][Required] string accToken)
+            [FromBody][Required] string accToken
+            )
         {
             try
             {

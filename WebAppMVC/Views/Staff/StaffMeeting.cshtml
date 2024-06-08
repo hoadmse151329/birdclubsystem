@@ -160,11 +160,14 @@
                                                             </ul>
                                                         </div>
                                                     </div>
+                                                    @if (data.isIncharge)
+                                                    {
                                                         <div class="form-group mx-auto">
                                                             <form asp-action="Meeting" asp-controller="Staff" method="get" asp-route-id="@data.MeetingId">
                                                                 <button class="btn btn-primary clickable-row" type="submit">See Detail</button>
                                                             </form>
                                                         </div>
+                                                    }
                                                 </div>
                                             </div>
                                         }
