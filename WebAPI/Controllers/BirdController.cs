@@ -192,6 +192,7 @@ namespace WebAPI.Controllers
                     Status = false,
                     ErrorMessage = "Bird does not exist!"
                 });
+                birdModel.BirdId = birdId;
                 var result = await _birdService.Update(birdModel.MemberId, birdModel);
                 if (result)
                 {

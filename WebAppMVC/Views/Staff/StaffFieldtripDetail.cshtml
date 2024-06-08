@@ -1,9 +1,9 @@
-﻿@model dynamic
+﻿@model WebAppMVC.Models.ViewModels.StaffFieldtripDetailsVM
 @{
     Layout = null;
     ViewData["Title"] = "Staff Field Trip Detail Page";
     BAL.ViewModels.FieldTripViewModel detailsTrip = Model.FieldTripDetails;
-    BAL.ViewModels.FieldTripViewModel updateTrip = Model.UpdateFieldTrip != null ? Model.UpdateFieldTrip : detailsTrip;
+    BAL.ViewModels.Manager.UpdateFieldtripStatusVM updateTripStatus = Model.UpdateFieldtripStatus;
 
     List<BAL.ViewModels.FieldtripDaybyDayViewModel>? DayByDay = detailsTrip.FieldtripDaybyDays;
     List<BAL.ViewModels.FieldTripAdditionalDetailViewModel>? TourFeatures = Model.FieldTripTourFeatures;
@@ -19,8 +19,7 @@
 
     List<BAL.ViewModels.FieldTripParticipantViewModel>? tripPartView = Model.FieldTripParticipants;
 
-    List<SelectListItem> checkInStatus = Model.SelectListParticipationStatus;
-    List<SelectListItem> defaultTripStatus = Model.SelectListStatus;
+    List<SelectListItem> checkInStatus = Model.ParticipantStatusSelectableList;
     Layout = "~/Views/Shared/_SLayout.cshtml";
 }
 <html lang="en">
@@ -805,11 +804,12 @@
                             <div class="modal-body">
                                 <div class="row justify-content-center">
                                     <div class="col-12 col-md-6">
+                                    <input asp-for="@updateTripStatus.NumberOfParticipants" value="@updateTripStatus.NumberOfParticipants" type="number" hidden />
                                         <div class="form-group row">
-                                            <label asp-for="@updateTrip.Status" class="col-sm-4 col-form-label"></label>
+                                            <label asp-for="@updateTripStatus.Status" class="col-sm-4 col-form-label"></label>
                                             <div class="col-sm-8">
-                                                <select class="form-control" asp-for="@updateTrip.Status" asp-items="@defaultTripStatus" class="custom-select" required></select>
-                                                <span asp-validation-for="@updateTrip.Status" id="error_message"
+                                                <select class="form-control" asp-for="@updateTripStatus.Status" asp-items="@updateTripStatus.FieldtripStatusSelectableList" class="custom-select" required></select>
+                                                <span asp-validation-for="@updateTripStatus.Status" id="error_message"
                                               class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                             </div>
                                         </div>

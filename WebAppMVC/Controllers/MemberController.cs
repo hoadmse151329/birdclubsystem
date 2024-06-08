@@ -694,7 +694,7 @@ namespace WebAppMVC.Controllers
         [HttpPost("Bird/{birdId:int}/Update")]
         public async Task<IActionResult> MemberUpdateBirdDetail(
             [FromRoute][Required] int birdId,
-            [Required] BirdViewModel updateBird)
+            [FromForm][Required] BirdViewModel updateBird)
         {
             string MemberBirdAPI_URL = "/api/Bird/" + birdId + "/Update";
 
@@ -721,14 +721,14 @@ namespace WebAppMVC.Controllers
                 string connectionString = _config.GetValue<string>(Constants.Constants.SYSTEM_DEFAULT_AZURE_CONNECTION_STRING);
                 string defaultUrl = _config.GetValue<string>(Constants.Constants.SYSTEM_DEFAULT_AZURE_DEFAULT_BLOB_FOLDER_URL);
                 string containerName = _config.GetValue<string>(Constants.Constants.SYSTEM_DEFAULT_AZURE_DEFAULT_BLOB_FOLDER_NAME);
-                string newsContainerName = _config.GetValue<string>(Constants.Constants.SYSTEM_DEFAULT_AZURE_BLOB_BIRD_FOLDER_URL);
+                string birdContainerName = _config.GetValue<string>(Constants.Constants.SYSTEM_DEFAULT_AZURE_BLOB_BIRD_FOLDER_URL);
 
                 BlobServiceClient _blobServiceClient = new BlobServiceClient(connectionString);
                 BlobContainerClient _blobContainerClient = _blobServiceClient.GetBlobContainerClient(containerName);
 
                 var azureResponse = new List<BlobContentInfo>();
                 string filename = photo.FileName;
-                string uniqueBlobName = newsContainerName + $"{Guid.NewGuid()}-{filename}";
+                string uniqueBlobName = birdContainerName + $"{Guid.NewGuid()}-{filename}";
                 using (var memoryStream = new MemoryStream())
                 {
                     photo.CopyTo(memoryStream);
@@ -736,10 +736,10 @@ namespace WebAppMVC.Controllers
 
                     var client = await _blobContainerClient.UploadBlobAsync(uniqueBlobName, memoryStream);
 
-                    if (updateBird.ProfilePic.Contains(defaultUrl + newsContainerName))
+                    if (updateBird.ProfilePic.Contains(defaultUrl + birdContainerName))
                     {
-                        string photoName = newsContainerName + updateBird.ProfilePic.Substring((defaultUrl + newsContainerName).Length);
-                        await _blobContainerClient.DeleteBlobAsync(photoName);
+                        string photoName = birdContainerName + updateBird.ProfilePic.Substring((defaultUrl + birdContainerName).Length);
+                        await _blobContainerClient.DeleteBlobIfExistsAsync(photoName);
                     }
                     azureResponse.Add(client);
                 }
@@ -754,7 +754,7 @@ namespace WebAppMVC.Controllers
             var memberBirdUpdate = await methcall.CallMethodReturnObject<GetBirdResponse>(
                 _httpClient: _httpClient,
                 options: jsonOptions,
-                methodName: Constants.Constants.POST_METHOD,
+                methodName: Constants.Constants.PUT_METHOD,
                 url: MemberBirdAPI_URL,
                 inputType: updateBird,
                 accessToken: accToken,

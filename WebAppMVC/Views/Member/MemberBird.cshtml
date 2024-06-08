@@ -163,7 +163,7 @@
                                 </div>
                                 <div class="row form-group">
                                     <label asp-for="@createBird.AddDate" class="col-md-3 col-form-label mt-3 text-md-right"></label>
-                                    <input asp-for="@createBird.AddDate" value="@createBird.AddDate.ToString("yyyy-MM-ddTHH:mm")" type="datetime-local" readonly class="form-control col-md-7 mt-3" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}">
+                                    <input asp-for="@createBird.AddDate" value="@createBird.AddDate.Value.ToString("yyyy-MM-ddTHH:mm")" type="datetime-local" readonly class="form-control col-md-7 mt-3" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="{0:yyyy-MM-ddTHH:mm}">
                                     <span asp-validation-for="@createBird.AddDate" id="error_message"
                                           class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                                 </div>

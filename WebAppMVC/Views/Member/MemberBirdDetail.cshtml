@@ -135,7 +135,7 @@
                                                                 <label for="customer-name">Added Date:</label>
                                                             </div>
                                                             <div class="col-md-7">
-                                                                <span>@detailsBird.AddDate.ToString("dd-MM-yyyy HH:mm")</span>
+                                                                <span>@detailsBird.AddDate.Value.ToString("dd-MM-yyyy HH:mm")</span>
                                                             </div>
                                                         </div>
                                                         <div class="row mb-sm-2">
@@ -270,7 +270,7 @@
                                                                             <label for="customer-name">Added Date:</label>
                                                                         </div>
                                                                         <div class="col-md-7">
-                                                                            <span>@detailsBird.AddDate.ToString("dd-MM-yyyy HH:mm")</span>
+                                                                            <span>@detailsBird.AddDate.Value.ToString("dd-MM-yyyy HH:mm")</span>
                                                                         </div>
                                                                     </div>
                                                                     <div class="row mb-sm-2">
@@ -394,9 +394,9 @@
                                 <span asp-validation-for="@updateBird.Origin" id="error_message"
                                       class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
                             </div>
-                            <input asp-for="@updateBird.Elo" value="@updateBird.Elo" class="form-control" hidden>
-                            <input asp-for="@updateBird.AddDate" value="@updateBird.AddDate" class="form-control" hidden>
-                            <input asp-for="@updateBird.MemberId" value="@updateBird.MemberId" class="form-control" hidden>
+                            <input asp-for="@updateBird.Elo" value="@updateBird.Elo" type="number" class="form-control" hidden>
+                            <input asp-for="@updateBird.AddDate" value="@updateBird.AddDate.Value.ToString("yyyy-MM-ddTHH:mm")" type="datetime-local" asp-format="{0:yyyy-MM-ddTHH:mm}" class="form-control" hidden>
+                            <input asp-for="@updateBird.MemberId" value="@updateBird.MemberId" type="text" class="form-control" hidden>
                         </div>
                         <div class="modal-footer justify-content-center">
                             <button class="btn btn-success" type="submit" value="Update">Save</button>

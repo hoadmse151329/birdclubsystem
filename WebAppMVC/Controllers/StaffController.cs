@@ -1,5 +1,4 @@
 ﻿using BAL.ViewModels;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Dynamic;
 using System.Net.Http.Headers;
@@ -10,23 +9,13 @@ using WebAppMVC.Models.Location;
 using WebAppMVC.Models.Meeting;
 using WebAppMVC.Models.Contest;
 using System.Text.Encodings.Web;
-using static Org.BouncyCastle.Math.EC.ECCurve;
 using WebAppMVC.Models.Member;
-using Azure;
-using Microsoft.DotNet.MSIdentity.Shared;
-using System.Security.Policy;
 using BAL.ViewModels.Member;
-using BAL.ViewModels.Staff;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using System.ComponentModel.DataAnnotations;
 using WebAppMVC.Models.Staff;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
-using DAL.Models;
-using Microsoft.AspNetCore.Http.Json;
 using WebAppMVC.Models.ViewModels;
-using WebAppMVC.Models.Manager;
 using BAL.ViewModels.Manager;
 
 namespace WebAppMVC.Controllers
@@ -176,12 +165,11 @@ namespace WebAppMVC.Controllers
                     + meetPostResponse.ErrorMessage;
                 return RedirectToAction("StaffMeeting");
             }
-            staffMeetingDetailsVM.UpdateMeetingStatus = methcall.GetValidationTempData<UpdateMeetingStatusVM>(this, TempData, Constants.Constants.UPDATE_MEETING_STATUS_VALID, "updateMeetingStatus", jsonOptions);
-            if(staffMeetingDetailsVM.UpdateMeetingStatus == null)
-            {
-                staffMeetingDetailsVM.UpdateMeetingStatus = new();
-            }
-            staffMeetingDetailsVM.UpdateMeetingStatus.MeetingStatusSelectableList = methcall.GetStaffEventStatusSelectableList(meetPostResponse.Data.Status);
+            staffMeetingDetailsVM.SetIfUpdateMeetingStatus(
+                methcall.GetValidationTempData<UpdateMeetingStatusVM>(this, TempData, Constants.Constants.UPDATE_MEETING_STATUS_VALID, "updateMeetingStatus", jsonOptions),
+                meetPostResponse.Data,
+                methcall.GetStaffEventStatusSelectableList(meetPostResponse.Data.Status)
+                );
             staffMeetingDetailsVM.ParticipantStatusSelectableList = methcall.GetStaffEventParticipationStatusSelectableList(meetPostResponse.Data.Status);
             staffMeetingDetailsVM.MeetingDetails = meetPostResponse.Data;
             staffMeetingDetailsVM.MeetingParticipants = meetpartPostResponse.Data;
@@ -339,7 +327,7 @@ namespace WebAppMVC.Controllers
         {
             string StaffFieldTripDetailAPI_URL = StaffAPI_URL + "FieldTrip/AllParticipants/" + id;
             StaffAPI_URL += "FieldTrip/" + id;
-            dynamic fieldtripDetailBigModel = new ExpandoObject();
+            StaffFieldtripDetailsVM stafffieldtripDetailsVM = new();
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.STAFF) != null)
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.STAFF));
 
@@ -374,28 +362,31 @@ namespace WebAppMVC.Controllers
                     + fieldtripPostResponse.ErrorMessage;
                 return RedirectToAction("StaffFieldTrip");
             }
-            fieldtripDetailBigModel.FieldTripDetails = fieldtripPostResponse.Data;
-            fieldtripDetailBigModel.UpdateFieldTrip = methcall.GetValidationTempData<FieldTripViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_VALID, "updateTrip", jsonOptions);
-            fieldtripDetailBigModel.FieldTripTourFeatures = fieldtripPostResponse.Data.FieldtripAdditionalDetails.Where(f => f.Type.Equals("tour_features")).ToList();
-            fieldtripDetailBigModel.FieldTripImportantToKnows = fieldtripPostResponse.Data.FieldtripAdditionalDetails.Where(f => f.Type.Equals("important_to_know")).ToList();
-            fieldtripDetailBigModel.FieldTripActivitiesAndTransportation = fieldtripPostResponse.Data.FieldtripAdditionalDetails.Where(f => f.Type.Equals("activities_and_transportation")).ToList();
-            fieldtripDetailBigModel.FieldTripParticipants = fieldtrippartPostResponse.Data;
-            fieldtripDetailBigModel.SelectListParticipationStatus = methcall.GetStaffEventParticipationStatusSelectableList(fieldtripPostResponse.Data.Status);
-            fieldtripDetailBigModel.SelectListStatus = methcall.GetStaffEventStatusSelectableList(fieldtripPostResponse.Data.Status);
+            stafffieldtripDetailsVM.SetIfUpdateFieldTripStatus(
+                methcall.GetValidationTempData<UpdateFieldtripStatusVM>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_STATUS_VALID, "updateTripStatus", jsonOptions),
+                fieldtripPostResponse.Data,
+                methcall.GetStaffEventStatusSelectableList(fieldtripPostResponse.Data.Status)
+                );
+            stafffieldtripDetailsVM.FieldTripDetails = fieldtripPostResponse.Data;
+            stafffieldtripDetailsVM.FieldTripTourFeatures = fieldtripPostResponse.Data.FieldtripAdditionalDetails.Where(f => f.Type.Equals("tour_features")).ToList();
+            stafffieldtripDetailsVM.FieldTripImportantToKnows = fieldtripPostResponse.Data.FieldtripAdditionalDetails.Where(f => f.Type.Equals("important_to_know")).ToList();
+            stafffieldtripDetailsVM.FieldTripActivitiesAndTransportation = fieldtripPostResponse.Data.FieldtripAdditionalDetails.Where(f => f.Type.Equals("activities_and_transportation")).ToList();
+            stafffieldtripDetailsVM.FieldTripParticipants = fieldtrippartPostResponse.Data;
+            stafffieldtripDetailsVM.ParticipantStatusSelectableList = methcall.GetStaffEventParticipationStatusSelectableList(fieldtripPostResponse.Data.Status);
 
-            return View(fieldtripDetailBigModel);
+            return View(stafffieldtripDetailsVM);
         }
-        [HttpPost("FieldTrip/{id:int}/Update")]
+        [HttpPost("FieldTrip/{id:int}/Status/Update")]
         public async Task<IActionResult> StaffUpdateFieldTripStatus(
             [FromRoute][Required] int id,
-            [Required] FieldTripViewModel updateTrip)
+            [FromForm][Required] UpdateFieldtripStatusVM updateTripStatus)
         {
             StaffAPI_URL += "FieldTrip/" + id + "/Update";
 
-            if (updateTrip.Status.Equals(Constants.Constants.EVENT_STATUS_CLOSED_REGISTRATION) && (updateTrip.NumberOfParticipantsLimit - updateTrip.NumberOfParticipants) < 10)
+            if (updateTripStatus.Status.Equals(Constants.Constants.EVENT_STATUS_CLOSED_REGISTRATION) && updateTripStatus.NumberOfParticipants < 10)
             {
                 ModelState.AddModelError("updateTrip.Status", "Error while processing your request (Updating FieldTrip).\n Not enough people to closed registration");
-                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_FIELDTRIP_VALID, updateTrip, jsonOptions);
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_FIELDTRIP_STATUS_VALID, updateTripStatus, jsonOptions);
                 TempData["Error"] = "Not enough participants to close registration!";
                 return RedirectToAction("StaffFieldTripDetail", new { id });
             }
@@ -408,7 +399,7 @@ namespace WebAppMVC.Controllers
                                 options: jsonOptions,
                                 methodName: Constants.Constants.PUT_METHOD,
                                 url: StaffAPI_URL,
-                                inputType: updateTrip,
+                                inputType: updateTripStatus,
                                 accessToken: accToken,
                                 _logger: _logger);
             if (fieldtripPostResponse == null)
