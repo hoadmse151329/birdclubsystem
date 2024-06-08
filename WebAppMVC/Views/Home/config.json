@@ -1,0 +1,124 @@
+{
+  "bannerImages": [
+    "~/images/chao-mao2.png",
+    "~/images/chaomao5.png",
+    "~/images/chao-mao-2.png"
+  ],
+  "features": [
+    {
+      "image": "~/images/best-choice.png",
+      "title": "Best choice",
+      "description": "CHAO MAO BIRDCLUB gives you suitable accommodation options for you to have a wonderful bird hobby."
+    },
+    {
+      "image": "~/images/security.png",
+      "title": "Safety & security",
+      "description": "Cohesion information, high security and reputable services bring the best experience for you."
+    },
+    {
+      "image": "~/images/support.png",
+      "title": "Support 24/7",
+      "description": "Always listen, always support you with all services at CHAO MAO BIRDCLUB."
+    }
+  ],
+  "welcomeMessage": {
+    "part1": "Welcome to ",
+    "part2": "ChaoMao",
+    "part3": "BirdClub"
+  },
+  "aboutUs": {
+    "heading": "About Us",
+    "description": "Chao Mao Bird Club CMBC, WE GIVE NOT ONLY WHAT YOU NEED BUT ALSO WHAT YOU DESIRE",
+    "short-name": "- CMBC Inc. -",
+    "founder": "Founded in 2012 by Mr. Duy, the Chao Mao Bird Club has been active in VietNam for over 11 years. Our mission is to encourage and promote birdwatching, conservation and contest and beyond.",
+    "mission": "As CMBC, we always listen and understand the needs of not only finding a place to stop but also an environment and services that bring comfort and safety to customers.Dear customers!",
+    "image-url": "url(../images/chaomao1.jpg)"
+  },
+  "team": [
+    {
+      "name": "Ho Tran Khanh Duy",
+      "role": "Manager",
+      "experience": "Chao Mao Bird Manager, expert in Chao Mao Bird with 5 years of experience.",
+      "image": "~/images/tv-4.jpg",
+      "github": "https://github.com/DuyZomega"
+    },
+    {
+      "name": "Dao Minh Hoa",
+      "role": "Staff",
+      "experience": "Chao Mao Bird Staff, expert in Chao Mao Bird with 3 years of experience.",
+      "image": "~/images/tv-2.jpg",
+      "github": "https://github.com/hoadmse151329"
+    },
+    {
+      "name": "Dao Minh Hoa",
+      "role": "Staff",
+      "experience": "Chao Mao Bird Staff, expert in Chao Mao Bird with 3 years of experience.",
+      "image": "~/images/tv-2.jpg",
+      "github": "https://github.com/hoadmse151329"
+    },
+    {
+      "name": "Dao Minh Hoa",
+      "role": "Staff",
+      "experience": "Chao Mao Bird Staff, expert in Chao Mao Bird with 3 years of experience.",
+      "image": "~/images/tv-2.jpg",
+      "github": "https://github.com/hoadmse151329"
+    }
+  ],
+  "services": [
+    {
+      "icon": "fa-cog",
+      "title": "Account Manager",
+      "description": "Contact with Ho Tran Khanh Duy for emergency"
+    },
+    {
+      "icon": "fa-cog",
+      "title": "Account Staff",
+      "description": "Contact with Dao Minh Hoa, Dang Hoang Minh, Bui Huu Vinh for help"
+    }
+  ],
+  "footer": {
+    "text": "We welcome donations in any amount to help fund club initiatives and activities, such as the purchase of bird seed for feeding birds, necessaries for harmed bird treatments, the annual Contests, Field trips and other club events, the purchase of supplies and tools for our volunteer projects, etc.",
+    "buttonLink": "/VnPay/Index",
+    "buttonText": "Donate",
+    "copyright": "@@2024 ChaoMao BirdClub"
+  },
+  "contestimages": {
+    "class": "col-bg",
+    "images": [
+      {
+        "class": "bg-1",
+        "src": "~/images/contest.png"
+      },
+      {
+        "class": "bg-2",
+        "src": "~/images/contest-2.jpg"
+      }
+    ]
+  },
+  "fieldtripimages" {
+    "class": "col-bg",
+    "images": [
+      {
+        "class": "bg-1",
+        "src": "~/images/fieldtrip.png"
+      },
+      {
+        "class": "bg-2",
+        "src": "~/images/background.jpg"
+      }
+    ]
+  },
+  "meetingimages" {
+    "class": "col-bg",
+    "images": [
+      {
+        "class": "bg-1",
+        "src": "~/images/meeting.png"
+      },
+      {
+        "class": "bg-1",
+        "src": "~/images/Club-Meeting-Minutes.jpg"
+      }
+    ]
+  }
+}

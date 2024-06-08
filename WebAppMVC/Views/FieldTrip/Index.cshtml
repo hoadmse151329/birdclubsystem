@@ -46,35 +46,42 @@
             $('.form-check-input').change(function () {
                 applyFilters();
             });
+
             function applyFilters() {
                 var selectedRoads = [];
                 var selectedDistricts = [];
                 var selectedCities = [];
+
                 // Collect selected checkboxes
                 $('input[name="road"]:checked').each(function () {
                     selectedRoads.push($(this).val());
                 });
+
                 $('input[name="district"]:checked').each(function () {
                     selectedDistricts.push($(this).val());
                 });
+
                 $('input[name="city"]:checked').each(function () {
                     selectedCities.push($(this).val());
                 });
+
                 var queryString = customParam({
                     road: selectedRoads,
                     district: selectedDistricts,
                     city: selectedCities
                 });
                 console.log(queryString);
+
                 // Make AJAX GET request to filter fieldtrips
                 $.ajax({
-                    url: '@Url.Action("IndexFilter", "FieldTrip")' + '?' + queryString,
-                    method: 'GET',
-                    success: function (response) {
-                        renderMeetings(response);
-                    }
-                });
-            }
+                url: '@Url.Action("IndexFilter", "FieldTrip")' + '?' + queryString,
+                method: 'GET',
+                success: function (response) {
+                    renderMeetings(response);
+                    updatePagination();
+                }
+            });
+        }
             function renderMeetings(meetingsHtml) {
                 var meetingList = $('#full-filter');
                 meetingList.html(meetingsHtml);
@@ -82,11 +89,13 @@
 
             function customParam(object) {
                 var serializedParams = [];
+
                 function serialize(params, prefix) {
                     for (var key in params) {
                         if (Object.prototype.hasOwnProperty.call(params, key)) {
                             var paramKey = prefix ? prefix + "[" + key + "]" : key;
                             var paramValue = params[key];
+
                             if (typeof paramValue === "object") {
                                 serialize(paramValue, paramKey);
                             } else {
@@ -95,14 +104,21 @@
                                 );
                             }
                         }
+                    }
+                }
+
                 serialize(object);
+
                 return serializedParams.join("&");
             }
+
             // Toggle functionality for filter checkboxes
             $('.toggle-btn').on('click', function (event) {
                 var fieldset = $(this).closest('.filter-group');
                 var checkBoxes = fieldset.find('.input-group');
+
                 var isExpanded = $(this).attr('aria-expanded') === 'true';
+
                 //if (isExpanded) {
                 //    checkBoxes.slice(3).hide();
                 //    $(this).attr('aria-expanded', 'false').find('span').text('More');
@@ -111,6 +127,7 @@
                 //    $(this).attr('aria-expanded', 'true').find('span').text('Less');
                 //}
             });
+
             // Initialize toggle button states
             $('.filter-group').each(function () {
                 var checkBoxes = $(this).find('.input-group');

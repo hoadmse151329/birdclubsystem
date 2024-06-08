@@ -16,41 +16,7 @@
 <body>
     <div class="main-content">
         <div class="main">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="offset-sm-6 col-sm-6  d-flex justify-content-sm-end p-md-0 mt-2 mt-sm-0 ">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumd-item">
-                                <a href="#">Manage</a>
-                            </li>
-                            <li class="breadcrumd-item">
-                                <span>/</span>
-                            </li>
-                        </ol>
-                    </div>
-                </div>
-                @if (TempData["Success"] != null)
-                {
-                    <div class="alert alert-success alert-dismissible fade show" id="notif">
-                        <i class='bx bx-message-alt-x p-1'></i>
-                        <strong class="mr-1">@TempData["Success"]</strong>
-                        <button type="button" class="close h-100" data-dismiss="alert" aria-label="Close">
-                            <span><i class='bx bx-x'></i></span>
-                        </button>
-                    </div>
-                    TempData["Success"] = null;
-                }
-                else if (TempData["Error"] != null)
-                {
-                    <div class="alert alert-danger alert-dismissible fade show" id="notif">
-                        <i class='bx bx-message-alt-x p-1'></i>
-                        <strong class="mr-1">@TempData["Error"]</strong>
-                        <button type="button" class="close h-100" data-dismiss="alert" aria-label="Close">
-                            <span><i class='bx bx-x'></i></span>
-                        </button>
-                    </div>
-                    TempData["Error"] = null;
-                }
+            <div class="container-fluid">               
                 <section>
                     <div class="card">
                         <div class="card-body">
@@ -61,7 +27,7 @@
                                         <i class='bx bx-home-alt-2'></i>
                                         <span>News</span>
                                     </a>
-                                </li>              
+                                </li>
                             </ul>
                             @if (TempData["Success"] != null)
                             {
@@ -87,14 +53,13 @@
                             }
                             <!-- Tab panes -->
                             <div class="tab-content">
-                                <!-- home1 -->
                                 <div class="tab-pane active" id="home1" role="tabpanel">
                                     <div class="row search">
                                         <div class="col-sm-12 d-flex">
-                                            <div class="col-sm-6 d-flex address-home">
+                                            <div class="col-sm-7 d-flex address-home">
                                             </div>
-                                            <div class="col-sm-6 d-flex justify-content-end">
-                                                <form asp-action="ManagerNews" asp-controller="Manager" method="get" asp-route-search="@search">                   
+                                            <div class="col-sm-5 d-flex justify-content-end search-details">
+                                                <form asp-action="ManagerNews" asp-controller="Manager" method="get" asp-route-search="@search" class="filter form-group">
                                                     <div>
                                                         <label>
                                                             <input asp-for="@search" class="form-control" type="text" placeholder="Search News Title..." value="@search">
@@ -107,20 +72,20 @@
                                     </div>
                                     <div class="row card-content">
                                         <div class="col-xl-3 col-lg-6 col-sm-6 my-3 item">
-                                            <div class="card card-child">
-                                                <div class="card-body add-room">
-                                                    <button class="border-0" data-toggle="modal"  data-target="#addNews">
+                                            <div class="card1 card-child">
+                                                <div class="card-body add-club">
+                                                    <button class="border-0" data-toggle="modal" data-target="#addNews">
                                                         <span>Add News</span>
                                                         <i class='bx bx-add-to-queue'></i>
                                                     </button>
                                                 </div>
                                             </div>
                                         </div>
-                                        @foreach(var data in newsList)
+                                        @foreach (var data in newsList)
                                         {
                                             <div class="col-xl-3 col-lg-6 col-sm-6 my-3">
-                                                <div class="card card-child">
-                                                    <div class="room-name">
+                                                <div class="card1 card-child">
+                                                    <div class="club-name">
                                                         <span>News ID: @data.NewsId</span>
                                                         <div class="status">
                                                             @{
@@ -149,7 +114,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="card-body">
-                                                        <div class="room-title">
+                                                        <div class="club-title">
                                                             <ul>
                                                                 <li>
                                                                     <h6>News Title:</h6>
@@ -211,8 +176,10 @@
                                                 </div>
                                             </div>
                                         }
-                                </div>                               
-                            <!-- end tapnet -->
+                                    </div>
+                                    <!-- end tapnet -->
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -252,7 +219,7 @@
                                     <label asp-for="@createNews.NewsContent" class="col-md-3 col-form-label mt-3 text-md-right"></label>
                                     <textarea asp-for="@createNews.NewsContent" value="@createNews.NewsContent" type="text" placeholder="Content..." class="form-control col-md-7 mt-3" rows="3" required></textarea>
                                     <span asp-validation-for="@createNews.NewsContent" id="error_message"
-                                              class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
+                                          class="helper-text text-danger d-block offset-md-5 col-md-5 col-sm-8 mt-2"></span>
 
                                     <label asp-for="@createNews.Status" class="col-md-3 col-form-label text-md-right"></label>
                                     <input asp-for="@createNews.Status" value="@createNews.Status" type="text" placeholder="Status" required class="form-control col-md-7" readonly>
@@ -264,9 +231,9 @@
                                     <input asp-for="@createNews.ImageUpload" type="file" class="file-upload" accept=".jpg, .png, .jpeg">
                                     <input asp-for="@createNews.Picture" type="text" value="@createNews.Picture" class="form-control" required hidden>
                                 </div>
-                            </div>                
+                            </div>
                             <div class="modal-footer justify-content-center">
-                                <button class="btn btn-success" type="submit" name="action" value="createNews" >Save</button>
+                                <button class="btn btn-success" type="submit" name="action" value="createNews">Save</button>
                                 <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
                             </div>
                         </div>
@@ -278,7 +245,7 @@
     <script src="~/ckeditor/ckeditor.js"></script>
     <script src="~/ckfinder/ckfinder.js"></script>
     <script>
-
+        var data = {};
         var editor = CKEDITOR.replace('createNews.NewsContent');
         CKFinder.setupCKEditor(editor, 'ckfinder/');
         data["createNews.NewsContent"] = editor.getData();
