@@ -81,7 +81,6 @@ namespace WebAPI.Controllers
 			try
 			{
 				_transactionService.Create(newTransaction);
-
 				var result = await _transactionService.GetTransactionByVnPayId(newTransaction.VnPayId);
 				if (result == null)
 				{
