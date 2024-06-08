@@ -1,4 +1,10 @@
-
+.form-group .field-icon {
+    float: right;
+    margin-left: -25px;
+    margin-top: -25px;
+    position: relative;
+    z-index: 2;
+}
 .pagination, .pagination .btn, .pagination .pages .page-link {
     display: flex;
     align-items: center;
