@@ -25,7 +25,7 @@ namespace BAL.AutoMapperProfile
                 .AfterMap((src, dest) =>
                 {
                     dest.UserId = src.UserDetails.UserId;
-                    if(src.UserDetails != null && src.UserDetails.ImagePath != null)
+                    if (src.UserDetails != null && src.UserDetails.ImagePath != null)
                     {
                         dest.ImagePath = src.UserDetails.ImagePath;
                     }
@@ -40,6 +40,7 @@ namespace BAL.AutoMapperProfile
             CreateMap<Member, GetMemberStatus>().ReverseMap();
             CreateMap<Member, GetEmployeeStatus>().ReverseMap();
             CreateMap<Member, GetMembershipExpire>().ReverseMap();
+            CreateMap<Member, GetStaffName>().ReverseMap();
             CreateMap<MeetingParticipant, GetEventParticipation>()
                 .AfterMap((src, dest) =>
                 {
@@ -58,17 +59,24 @@ namespace BAL.AutoMapperProfile
                     dest.CheckInStatus = src.CheckInStatus;
                 })
                 .ReverseMap();
-                /*.AfterMap((src, dest) =>
-                {
-                    dest.MeetingId = src.MeetingId;
-                    dest.MeetingName = src.Meeting.MeetingName;
-                    dest.StartDate = src.Meeting.StartDate;
-                    dest.EndDate = src.Meeting.EndDate;
-                    dest.RegistrationDeadline = src.Meeting.RegistrationDeadline;
-                    dest.Status = src.Meeting.Status == 0 ? "Inactive" : "Active";
-                    dest.ParticipationNo = Int32.Parse(src.ParticipantNo);
-                    dest.Incharge = src.Meeting.Incharge;
-                })*/;
+            /*.AfterMap((src, dest) =>
+            {
+                dest.MeetingId = src.MeetingId;
+                dest.MeetingName = src.Meeting.MeetingName;
+                dest.StartDate = src.Meeting.StartDate;
+                dest.EndDate = src.Meeting.EndDate;
+                dest.RegistrationDeadline = src.Meeting.RegistrationDeadline;
+                dest.Status = src.Meeting.Status == 0 ? "Inactive" : "Active";
+                dest.ParticipationNo = Int32.Parse(src.ParticipantNo);
+                dest.Incharge = src.Meeting.Incharge;
+            })*/
+            ;
+            CreateMap<CreateNewMeetingVM, Meeting>();
+            CreateMap<UpdateMeetingDetailsVM, Meeting>();
+            CreateMap<CreateNewContestVM, Contest>();
+            CreateMap<UpdateContestDetailsVM, Contest>();
+            CreateMap<CreateNewFieldtripVM, FieldTrip>();
+            CreateMap<UpdateFieldtripDetailsVM, FieldTrip>();
             CreateMap<FieldTripParticipant, GetEventParticipation>()
                 .AfterMap((src, dest) =>
                 {
@@ -189,9 +197,9 @@ namespace BAL.AutoMapperProfile
             CreateMap<Transaction, TransactionViewModel>()
                 .ReverseMap();
             CreateMap<Bird, BirdViewModel>().ReverseMap();
-            CreateMap<Notification, NotificationViewModel>() .ReverseMap();
-            CreateMap<Feedback, FeedbackViewModel>() .ReverseMap();
-            CreateMap<Blog,BlogViewModel>()
+            CreateMap<Notification, NotificationViewModel>().ReverseMap();
+            CreateMap<Feedback, FeedbackViewModel>().ReverseMap();
+            CreateMap<Blog, BlogViewModel>()
                 .AfterMap((src, dest) =>
                 {
                     dest.Fullname = src.UserDetails.MemberDetails.FullName;
@@ -205,8 +213,8 @@ namespace BAL.AutoMapperProfile
                     dest.UserFullName = src.UserDetails.MemberDetails.FullName;
                 })
                 .ReverseMap();
-            CreateMap<News,NewsViewModel>() .ReverseMap();
-            CreateMap<News, CreateNewNews>() .ReverseMap();
+            CreateMap<News, NewsViewModel>().ReverseMap();
+            CreateMap<News, CreateNewNews>().ReverseMap();
             CreateMap<Feedback, GetFeedbackResponse>()
                 .AfterMap((src, dest) =>
                 {

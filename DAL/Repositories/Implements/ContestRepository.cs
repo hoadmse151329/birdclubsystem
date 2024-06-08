@@ -31,20 +31,20 @@ namespace DAL.Repositories.Implements
         }
 
         public IEnumerable<Contest> GetSortedContests(
-            int? contestId = null, 
+            int? contestId = null,
             string? contestName = null,
-            DateTime? openRegistration = null, 
-            DateTime? registrationDeadline = null, 
-            DateTime? startDate = null, 
-            DateTime? endDate = null, 
-            int? numberOfParticipants = null, 
-            int? reqMinElo = null, 
-            int? reqMaxElo = null, 
-            List<string>? roads = null, 
-            List<string>? districts = null, 
-            List<string>? cities = null, 
-            List<string>? statuses = null, 
-            string? orderBy = null, 
+            DateTime? openRegistration = null,
+            DateTime? registrationDeadline = null,
+            DateTime? startDate = null,
+            DateTime? endDate = null,
+            int? numberOfParticipants = null,
+            int? reqMinElo = null,
+            int? reqMaxElo = null,
+            List<string>? roads = null,
+            List<string>? districts = null,
+            List<string>? cities = null,
+            List<string>? statuses = null,
+            string? orderBy = null,
             bool isMemberOrGuest = false)
         {
             var roadLocationIds = roads != null && roads.Any() ? GetLocationIdListByLocationName(roads).ToList() : new List<int>();
@@ -91,7 +91,7 @@ namespace DAL.Repositories.Implements
             {
                 contests = contests.AsNoTracking().Where(c => c.NumberOfParticipants == numberOfParticipants.Value);
             }
-            if(reqMinElo.HasValue && reqMaxElo.HasValue)
+            if (reqMinElo.HasValue && reqMaxElo.HasValue)
             {
                 contests = contests.AsNoTracking().Where(c => c.ReqMinELO >= reqMinElo.Value && c.ReqMaxELO <= reqMaxElo.Value);
             }

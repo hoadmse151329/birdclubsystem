@@ -10,7 +10,8 @@ namespace DAL.Repositories.Interfaces
 {
     public interface IContestMediaRepository : IRepositoryBase<ContestMedia>
     {
-        Task<ContestMedia> GetContestMediaById(int contestId, int pictureId);
+        Task<ContestMedia> GetContestMediaById(int pictureId);
+        Task<ContestMedia> GetContestMediaByIdTracking(int pictureId);
         Task<IEnumerable<ContestMedia>> GetContestMediasByContestId(int contestId);
         Task<ContestMedia> GetContestMediaByContestIdAndType(int contestId, string mediaType);
     }

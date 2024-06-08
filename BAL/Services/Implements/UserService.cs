@@ -53,6 +53,19 @@ namespace BAL.Services.Implements
                 }
                 //var role = _unitOfWork.UserRepository
                 var accessToken = _jwtService.GenerateJWTToken(user.MemberId, user.UserName, user.Role, _configuration);
+                /*if(user.MemberDetails.Role == "Staff")
+                {
+                    return new AuthenResponse()
+                    {
+                        UserId = user.MemberId,
+                        RoleName = user.Role,
+                        UserName = user.UserName,
+                        AccessToken = accessToken,
+                        ImagePath = user.ImagePath,
+                        Status = user.MemberDetails.Status,
+                        FullName = user.MemberDetails.FullName
+                    };
+                }*/
                 return new AuthenResponse()
                 {
                     UserId = user.MemberId,
@@ -105,7 +118,7 @@ namespace BAL.Services.Implements
             usr.MemberDetails.Role = "Member";
 			usr.MemberDetails.Email = entity.Email;
             usr.MemberDetails.RegisterDate = DateTime.Now;
-
+            usr.MemberDetails.ClubId = 1;
             if (newmem != null)
             {
                 usr.MemberDetails.FullName = newmem.FullName;
@@ -260,6 +273,16 @@ namespace BAL.Services.Implements
                 UserName = request.Username,
                 AccessToken = accessToken
             };
+        }
+
+        public async Task<bool> IsUserExistByUsername(string username)
+        {
+            var user = await _unitOfWork.UserRepository.GetByUsername(username);
+            if (user != null)
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

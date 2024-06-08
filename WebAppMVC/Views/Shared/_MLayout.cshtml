@@ -12,67 +12,69 @@
     <!--Boxicons-->
     <link rel='stylesheet' href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css'>
     <!-- Other-->
-    <link rel="stylesheet" href="https://unpkg.com/filepond-plugin-file-poster/dist/filepond-plugin-file-poster.css" >
+    <link rel="stylesheet" href="https://unpkg.com/filepond-plugin-file-poster/dist/filepond-plugin-file-poster.css">
     <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,100&family=Roboto+Condensed:wght@400;700&display=swap"
-    rel="stylesheet">
+          rel="stylesheet">
     <link rel="stylesheet" href="~/fonts/fontawesome-free-5.15.4-web/css/all.min.css">
     <link rel="stylesheet" href="~/css/main.css">
+    <link rel="icon" type="image/x-icon" href="data:image/x-icon;,">
 </head>
 <body>
     <!-- sidebar -->
     <div class="sidebar">
         <div class="container">
-            <div class="navigation">  
+            <div class="navigation">
                 <ul class="slide-menu">
                     <div class="logo">
                         <a href="@Url.Action("ManagerIndex", "Manager")">
                             <img class="logo" src="~/images/Red_whiskered_bulbul_bird_logo_eps_10_generated 1.png" alt="logo">
                         </a>
                     </div>
-                    <li class="active" data-toggle="tooltip"data-placement="right" title="Overview">
+                    <li data-toggle="tooltip" data-placement="right" title="Overview">
                         <a href="@Url.Action("ManagerIndex", "Manager")">
                             <span><i class='bx bx-tachometer'></i></span>
                             <span class="title">Overview</span>
                         </a>
                     </li>
-                    <li>
+                    <li class="noactive">
                         <a href="#" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
                             <i class='bx bx-bookmarks'></i>
                             <span class="title">Manage</span>
                             <i class='bx bxs-chevron-down drop'></i>
                         </a>
                         <ul class="collapse sub-menu" id="collapseOne">
-                            <li data-toggle="tooltip"data-placement="right" title="Manage Meeting">
+                            <li class="sub-active" data-toggle="tooltip" data-placement="right" title="Manage Meeting">
                                 <a href="@Url.Action("ManagerMeeting", "Manager")" li class="dropdown-item">
                                     <i class='bx bx-home-alt-2'></i>
                                     <span class="title">Meeting</span>
-                                </a> 
+                                </a>
                             </li>
-                            <li data-toggle="tooltip"data-placement="right" title="Manage Fieldtrip">
+                            <li class="sub-active" data-toggle="tooltip" data-placement="right" title="Manage Fieldtrip">
                                 <a href="@Url.Action("ManagerFieldtrip", "Manager")" li class="dropdown-item">
                                     <i class='bx bx-calendar-edit'></i>
                                     <span class="title">Fieldtrip</span>
                                 </a>
-                            </li> 
-                            <li data-toggle="tooltip"data-placement="right" title="Manage Bird Contest">
+                            </li>
+                            <li class="sub-active" data-toggle="tooltip" data-placement="right" title="Manage Bird Contest">
                                 <a href="@Url.Action("ManagerContest", "Manager")" li class="dropdown-item">
                                     <i class='bx bx-trophy'></i>
                                     <span class="title">Bird Contest</span>
                                 </a>
                             </li>
-                            <li data-toggle="tooltip" data-placement="right" title="Manage Member Status">
+                            <li class="sub-active" data-toggle="tooltip" data-placement="right" title="Manage Member Status">
                                 <a href="@Url.Action("ManagerMemberStatus", "Manager")" li class="dropdown-item">
                                     <i class='bx bx-message-square-check'></i>
                                     <span class="title">Member Status</span>
                                 </a>
                             </li>
-                            <li data-toggle="tooltip" data-placement="right" title="Manage Blog">
+                            <li class="sub-active" data-toggle="tooltip" data-placement="right" title="Manage Blog">
                                 <a href="@Url.Action("ManagerBlog", "Manager")" li class="dropdown-item">
                                     <i class='bx bx-conversation'></i>
                                     <span class="title">Blog</span>
                                 </a>
                             </li>
-                            <li data-toggle="tooltip" data-placement="right" title="Manage News">
+                            <li class="sub-active" data-toggle="tooltip" data-placement="right" title="Manage News">
+
                                 <a href="@Url.Action("ManagerNews", "Manager")" li class="dropdown-item">
                                     <i class='bx bx-message-square'></i>
                                     <span class="title">News</span>
@@ -80,25 +82,13 @@
                             </li>
                         </ul>
                     </li>
-                    <li data-toggle="tooltip"data-placement="right" title="Manage Feedback">
+                    <li data-toggle="tooltip" data-placement="right" title="Manage Feedback">
                         <a href="@Url.Action("ManagerFeedback", "Manager")">
                             <span><i class="bx bx-detail"></i></span>
                             <span class="title">Feedback</span>
                         </a>
                     </li>
-                    <li data-toggle="tooltip"data-placement="right" title="Thống kê">
-                            <a href="@Url.Action("ManagerStatistical", "Manager")">
-                                <span><i class='bx bx-line-chart'></i></span>
-                                <span class="title">Statical</span>
-                            </a>
-                    </li>
-                    <li data-toggle="tooltip"data-placement="right" title="Thông báo">
-                            <a href="@Url.Action("ManagerNotification", "Manager")">
-                                <span><i class='bx bx-notification'></i></span>
-                                <span class="title">Notification</span>
-                            </a>
-                    </li>
-                    <li data-toggle="tooltip"data-placement="right" title="Manager Profile">
+                    <li data-toggle="tooltip" data-placement="right" title="Manager Profile">
                         <a href="@Url.Action("ManagerProfile", "Manager")">
                             <span><i class='bx bx-user'></i></span>
                             <span class="title">Your Profile</span>
@@ -109,25 +99,24 @@
         </div>
     </div>
     <!-- End sidebar -->
-
     <!-- Header -->
     <div class="header">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-sm-12">
-                        <div class="toggle float-left">
-                            <i class='bx bx-menu'></i>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="toggle float-left">
+                        <i class='bx bx-menu'></i>
+                    </div>
+                    <div class="float-left">
+                        <div class="dashboard_bar d-flex">
+                            Home
                         </div>
-                        <div class="float-left">
-                            <div class="dashboard_bar d-flex">
-                                Home
-                            </div>
-                        </div>
-                        <div class="float-right">
-                            <div class="btn-group me-1 mb-1">
-                                <div class="dropdown">
-                                    @if (TempData["ROLE_NAME"] != null)
-                                    {
+                    </div>
+                    <div class="float-right">
+                        <div class="btn-group me-1 mb-1">
+                            <div class="dropdown">
+                                @if (TempData["ROLE_NAME"] != null)
+                                {
                                     <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         @TempData["USER_NAME"]
                                     </button>
@@ -136,37 +125,15 @@
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="@Url.Action("Logout", "Auth")">Logout</a>
                                     </div>
-                                    }
-                                </div>  
+                                }
                             </div>
-                        </div>   
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    @if (TempData["Success"] != null)
-    {
-        <div class="alert alert-success alert-dismissible fade show" id="notif">
-            <i class='bx bx-message-alt-x p-1'></i>
-            <strong class="mr-1">@TempData["Success"]</strong>
-            <button type="button" class="close h-100" data-dismiss="alert" aria-label="Close">
-                <span><i class='bx bx-x'></i></span>
-            </button>
-        </div>
-        TempData["Success"] = null;
-    }
-    else if (TempData["Error"] != null)
-    {
-        <div class="alert alert-danger alert-dismissible fade show" id="notif">
-            <i class='bx bx-message-alt-x p-1'></i>
-            <strong class="mr-1">@TempData["Error"]</strong>
-            <button type="button" class="close h-100" data-dismiss="alert" aria-label="Close">
-                <span><i class='bx bx-x'></i></span>
-            </button>
-        </div>
-        TempData["Error"] = null;
-    }
-        @RenderBody()
+    </div>
+    @RenderBody()
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js"></script>
@@ -178,5 +145,47 @@
     <script src="~/js/user-script.js"></script>
     <script src="https://unpkg.com/filepond-plugin-file-poster/dist/filepond-plugin-file-poster.js"></script>
     <script src="~/js/chart.js"></script>
+    <script>
+$(document).ready(function() {
+    // Get the current URL path
+    var currentUrl = window.location.pathname;
+
+    // Find the corresponding <a> element with the href attribute matching the current URL
+    var $currentLink = $('.slide-menu a[href="' + currentUrl + '"]');
+
+    // Add the active class based on the current URL
+    if ($currentLink.closest('ul').hasClass('sub-menu')) {
+        $currentLink.closest('li.sub-active').addClass('active');
+    } else {
+        $currentLink.closest('li').addClass('active');
+    }
+
+    // Handle click events on <a> elements
+    $('.slide-menu a').click(function(e) {
+        var $clickedLi = $(this).closest('li');
+
+        // Check if the clicked <a> is inside a <li> with class noactive
+        if (!$clickedLi.hasClass('noactive')) {
+            // Prevent the default action of the link
+            e.preventDefault();
+
+            // Remove the active class from all <li> elements
+            $('.slide-menu li').removeClass('active');
+
+            // Check if the clicked link is inside a sub-menu and its parent <li> has the class sub-active
+            if ($clickedLi.hasClass('sub-active')) {
+                // Add active class to the <li> with sub-active class
+                $clickedLi.addClass('active');
+            } else if (!$clickedLi.hasClass('noactive')) {
+                // Add active class to the <li> of the clicked <a> if it is not noactive
+                $clickedLi.addClass('active');
+            }
+
+            // Redirect to the href of the clicked link
+            window.location.href = $(this).attr('href');
+        }
+    });
+});
+    </script>
 </body>
 </html>

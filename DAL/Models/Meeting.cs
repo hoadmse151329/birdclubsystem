@@ -12,7 +12,6 @@ namespace DAL.Models
     {
         public Meeting()
         {
-            MeetingAssignments = new HashSet<MeetingAssignment>();
             MeetingPictures = new HashSet<MeetingMedia>();
             MeetingParticipants = new HashSet<MeetingParticipant>();
         }
@@ -52,9 +51,6 @@ namespace DAL.Models
         public int? NumberOfParticipantsMinReq { get; set; }
         [Column("numberOfParticipantsLimit")]
         public int? NumberOfParticipantsLimit { get; set; }
-
-        [InverseProperty(nameof(MeetingAssignment.MeetingDetails))]
-        public virtual ICollection<MeetingAssignment> MeetingAssignments { get; set; }
         [InverseProperty(nameof(MeetingMedia.MeetingDetails))]
         public virtual ICollection<MeetingMedia> MeetingPictures { get; set; }
         [InverseProperty(nameof(MeetingParticipant.MeetingDetails))]

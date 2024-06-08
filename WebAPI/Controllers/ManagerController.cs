@@ -5,6 +5,7 @@ using BAL.Services.Interfaces;
 using System.ComponentModel.DataAnnotations;
 using BAL.ViewModels.Manager;
 using BAL.Services.Implements;
+using BAL.ViewModels.Event;
 
 namespace WebAPI.Controllers
 {
@@ -87,7 +88,7 @@ namespace WebAPI.Controllers
 
         [HttpGet("Index")]
         [Authorize(Roles = "Manager")]
-        [ProducesResponseType(typeof(GetManagerDashboard), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(GetDashboardResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetManagerDashboard()
@@ -184,6 +185,51 @@ namespace WebAPI.Controllers
                 });
             }
         }
+        [HttpGet("Staff")]
+        [Authorize(Roles = "Manager")]
+        [ProducesResponseType(typeof(IEnumerable<GetMemberStatus>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetAllStaff(
+            [FromQuery] string? stafffullname
+            )
+        {
+            try
+            {
+                var result = await _memberService.GetSortedStaffNames(memberFullName: stafffullname, isManagerGetStaffList: true);
+                if (result == null)
+                {
+                    return NotFound(new
+                    {
+                        Status = false,
+                        ErrorMessage = "All Staff not found!"
+                    });
+                }
+                return Ok(new
+                {
+                    Status = true,
+                    Data = result
+                });
+            }
+            catch (Exception ex)
+            {
+                if (ex.InnerException != null)
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = ex.Message,
+                        InnerExceptionMessage = ex.InnerException.Message
+                    });
+                }
+                // Log the exception if needed
+                return BadRequest(new
+                {
+                    Status = false,
+                    ErrorMessage = ex.Message
+                });
+            }
+        }
         [HttpGet("MemberStatus")]
         [Authorize(Roles = "Manager")]
         [ProducesResponseType(typeof(IEnumerable<GetMemberStatus>), StatusCodes.Status200OK)]
@@ -195,7 +241,7 @@ namespace WebAPI.Controllers
         {
             try
             {
-                var result = await _memberService.GetSortedMembers(memberUserName: memberusername, isManager: true);
+                var result = await _memberService.GetSortedMembers(memberUserName: memberusername, isManagerGetMemberList: true);
                 if (result == null)
                 {
                     return NotFound(new
@@ -273,7 +319,7 @@ namespace WebAPI.Controllers
                 });
             }
         }
-        [HttpPut("Contest/{id:int}/Participant/All/Score/Update")]
+        [HttpPut("Contest/{id:int}/Participant/Score/Update")]
         [Authorize(Roles = "Manager")]
         [ProducesResponseType(typeof(IEnumerable<ContestParticipantViewModel>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

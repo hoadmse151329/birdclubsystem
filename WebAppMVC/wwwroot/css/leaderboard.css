@@ -22,7 +22,11 @@ h1 {
     text-transform: uppercase;
     letter-spacing: 2px;
 }
-
+.contain {
+    max-height: 3400px;
+    height: auto;
+    margin-bottom:150px;
+}
 .leaderboard {
     width: 100%;
     border-collapse: collapse;

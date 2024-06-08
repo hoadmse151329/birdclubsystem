@@ -27,12 +27,12 @@ namespace DAL.Repositories.Implements
 
         public async Task<Feedback?> GetFeedbackById(int id)
         {
-            return await _context.Feedbacks.AsNoTracking().SingleOrDefaultAsync(f => f.FeedbackId == id);
+            return _context.Feedbacks.AsNoTracking().SingleOrDefault(f => f.FeedbackId == id);
         }
 
         public async Task<int> CountFeedback()
         {
-            return await _context.Feedbacks.AsNoTracking().CountAsync();
+            return _context.Feedbacks.AsNoTracking().Count();
         }
     }
 }

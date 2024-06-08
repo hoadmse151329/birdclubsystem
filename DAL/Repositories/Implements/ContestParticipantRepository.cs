@@ -48,49 +48,49 @@ namespace DAL.Repositories.Implements
             return await _context.ContestParticipants.Where(b => b.BirdId == birdId).Include(c => c.ContestDetails).ToListAsync();
         }
 
-		public async Task<IEnumerable<ContestParticipant>> GetContestParticipantsByMemberId(string memberId)
-		{
-			return await _context.ContestParticipants.Where(cp => cp.MemberId == memberId).ToListAsync();
-		}
+        public async Task<IEnumerable<ContestParticipant>> GetContestParticipantsByMemberId(string memberId)
+        {
+            return await _context.ContestParticipants.Where(cp => cp.MemberId == memberId).ToListAsync();
+        }
 
-		public async Task<IEnumerable<ContestParticipant>> GetContestParticipantsByMemberIdInclude(string memberId)
-		{
+        public async Task<IEnumerable<ContestParticipant>> GetContestParticipantsByMemberIdInclude(string memberId)
+        {
             return await _context.ContestParticipants.AsNoTracking().Where(c => c.MemberId == memberId).Include(c => c.ContestDetails).ToListAsync();
-		}
+        }
 
-		public async Task<int> GetCountContestParticipantsByMemberId(string memberId)
-		{
-			return await _context.ContestParticipants.CountAsync(b => b.MemberId == memberId);
-		}
+        public async Task<int> GetCountContestParticipantsByMemberId(string memberId)
+        {
+            return await _context.ContestParticipants.CountAsync(b => b.MemberId == memberId);
+        }
 
-		public async Task<bool> GetBoolContestParticipantById(int contestId, string memberId, int? birdId = null)
-		{
+        public async Task<bool> GetBoolContestParticipantById(int contestId, string memberId, int? birdId = null)
+        {
             ContestParticipant cp = null;
-            if(birdId.HasValue)
+            if (birdId.HasValue)
             {
                 cp = await _context.ContestParticipants.FirstOrDefaultAsync(b => b.ContestId == contestId && b.MemberId == memberId && b.BirdId == birdId);
-                if(cp != null)
+                if (cp != null)
                     return true;
                 return false;
-			}
-			cp = await _context.ContestParticipants.FirstOrDefaultAsync(b => b.ContestId == contestId && b.MemberId == memberId);
+            }
+            cp = await _context.ContestParticipants.FirstOrDefaultAsync(b => b.ContestId == contestId && b.MemberId == memberId);
             if (cp != null) return true;
             return false;
 
-		}
+        }
 
-		public async Task<int> GetParticipationNoContestParticipantById(int contestId, string memberId, int? birdId = null)
-		{
+        public async Task<int> GetParticipationNoContestParticipantById(int contestId, string memberId, int? birdId = null)
+        {
             var cp = await _context.ContestParticipants.FirstOrDefaultAsync(cp => cp.ContestId == contestId && cp.MemberId == memberId);
             if (cp == null) return 0;
             return cp.ParticipantNo.Value;
-		}
+        }
 
-		public async Task<ContestParticipant> GetContestParticipantById(int contestId, string memberId, int? birdId = null)
-		{
+        public async Task<ContestParticipant> GetContestParticipantById(int contestId, string memberId, int? birdId = null)
+        {
             if (birdId != null) return await _context.ContestParticipants.FirstOrDefaultAsync(b => b.ContestId == contestId && b.MemberId == memberId && b.BirdId == birdId);
-			return await _context.ContestParticipants.FirstOrDefaultAsync(b => b.ContestId == contestId && b.MemberId == memberId);
-		}
+            return await _context.ContestParticipants.FirstOrDefaultAsync(b => b.ContestId == contestId && b.MemberId == memberId);
+        }
 
         public async Task<IEnumerable<ContestParticipant>> UpdateAllContestParticipantStatus(List<ContestParticipant> part)
         {
@@ -168,7 +168,7 @@ namespace DAL.Repositories.Implements
         private static double CalculateBasicEloChange(int playerCurBirdElo, double averageContestElo, int birdContestPoints, int totalbirdContestPoints, int totalAmountOfBird, List<int> Y)
         {
             // Calculate the expected score of the player
-            int expected = (int)Math.Round( CalculateExpectedScore(playerCurBirdElo, averageContestElo), MidpointRounding.AwayFromZero);
+            int expected = (int)Math.Round(CalculateExpectedScore(playerCurBirdElo, averageContestElo), MidpointRounding.AwayFromZero);
             // Determine if the player won or lost the match based on bird points
             int result = birdContestPoints > totalbirdContestPoints / totalAmountOfBird ? 1 : 0;
 

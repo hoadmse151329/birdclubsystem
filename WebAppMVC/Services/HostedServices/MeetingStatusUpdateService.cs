@@ -1,4 +1,6 @@
 ﻿
+using AutoMapper;
+using BAL.ViewModels.Manager;
 using System.Net.Http.Headers;
 using System.Text.Encodings.Web;
 using System.Text.Json;
@@ -12,6 +14,7 @@ namespace WebAppMVC.Services.HostedServices
     public class MeetingStatusUpdateService : IHostedService, IDisposable
     {
         private readonly IServiceScopeFactory _scopeFactory;
+        private readonly IMapper _mapper;
         private readonly ILogger<MeetingStatusUpdateService> _logger;
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly IConfiguration _config;
@@ -31,12 +34,19 @@ namespace WebAppMVC.Services.HostedServices
         };
         private readonly BirdClubLibrary methcall = new();
 
-        public MeetingStatusUpdateService(IConfiguration configuration, IServiceScopeFactory scopeFactory, ILogger<MeetingStatusUpdateService> logger, IHttpClientFactory httpClientFactory)
+        public MeetingStatusUpdateService(
+            IConfiguration configuration, 
+            IServiceScopeFactory scopeFactory, 
+            ILogger<MeetingStatusUpdateService> logger, 
+            IHttpClientFactory httpClientFactory,
+            IMapper mapper
+            )
         {
             _scopeFactory = scopeFactory;
             _logger = logger;
             _httpClientFactory = httpClientFactory;
             _config = configuration;
+            _mapper = mapper;
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
@@ -87,14 +97,19 @@ namespace WebAppMVC.Services.HostedServices
                         meetingToUpdate.Status.Equals(Constants.Constants.EVENT_STATUS_ON_HOLD)
                         )
                     {
-                        meetingToUpdate.Status = Constants.Constants.EVENT_STATUS_OPEN_REGISTRATION;
+                        UpdateMeetingStatusVM meetingtoUpdateVM = new()
+                        {
+                            MeetingId = meetingToUpdate.MeetingId,
+                            NumberOfParticipants = meetingToUpdate.NumberOfParticipants,
+                            Status = Constants.Constants.EVENT_STATUS_OPEN_REGISTRATION
+                        };
                         // Call the API to update the membership status
                         var meetingStatusResponse = await methcall.CallMethodReturnObject<GetMeetingPostResponse>(
                                         _httpClient: client,
                                         options: jsonOptions,
                                         methodName: Constants.Constants.PUT_METHOD,
-                                        url: MeetingStatusUpdateAPI_URL + meetingToUpdate.MeetingId + "/Update",
-                                        inputType: meetingToUpdate,
+                                        url: MeetingStatusUpdateAPI_URL + meetingToUpdate.MeetingId + "/Status/Update",
+                                        inputType: meetingtoUpdateVM,
                                         _logger: _logger,
                                         accessToken: accToken);
                         if (meetingStatusResponse == null || !meetingStatusResponse.Status || meetingStatusResponse.Data == null)
@@ -116,14 +131,19 @@ namespace WebAppMVC.Services.HostedServices
                         meetingToUpdate.Status.Equals(Constants.Constants.EVENT_STATUS_OPEN_REGISTRATION)
                         )
                     {
-                        meetingToUpdate.Status = Constants.Constants.EVENT_STATUS_CLOSED_REGISTRATION;
+                        UpdateMeetingStatusVM meetingtoUpdateVM = new()
+                        {
+                            MeetingId = meetingToUpdate.MeetingId,
+                            NumberOfParticipants = meetingToUpdate.NumberOfParticipants,
+                            Status = Constants.Constants.EVENT_STATUS_CLOSED_REGISTRATION
+                        };
                         // Call the API to update the membership status
                         var meetingStatusResponse = await methcall.CallMethodReturnObject<GetMeetingPostResponse>(
                                         _httpClient: client,
                                         options: jsonOptions,
                                         methodName: Constants.Constants.PUT_METHOD,
-                                        url: MeetingStatusUpdateAPI_URL + meetingToUpdate.MeetingId + "/Update",
-                                        inputType: meetingToUpdate,
+                                        url: MeetingStatusUpdateAPI_URL + meetingToUpdate.MeetingId + "/Status/Update",
+                                        inputType: meetingtoUpdateVM,
                                         _logger: _logger,
                                         accessToken: accToken);
                         if (meetingStatusResponse == null || !meetingStatusResponse.Status || meetingStatusResponse.Data == null)
@@ -143,14 +163,19 @@ namespace WebAppMVC.Services.HostedServices
                         meetingToUpdate.NumberOfParticipants < meetingToUpdate.NumberOfParticipantsMinReq
                         )
                     {
-                        meetingToUpdate.Status = Constants.Constants.EVENT_STATUS_CANCELLED;
+                        UpdateMeetingStatusVM meetingtoUpdateVM = new()
+                        {
+                            MeetingId = meetingToUpdate.MeetingId,
+                            NumberOfParticipants = meetingToUpdate.NumberOfParticipants,
+                            Status = Constants.Constants.EVENT_STATUS_CANCELLED
+                        };
                         // Call the API to update the membership status
                         var meetingStatusResponse = await methcall.CallMethodReturnObject<GetMeetingPostResponse>(
                                         _httpClient: client,
                                         options: jsonOptions,
                                         methodName: Constants.Constants.PUT_METHOD,
-                                        url: MeetingStatusUpdateAPI_URL + meetingToUpdate.MeetingId + "/Update",
-                                        inputType: meetingToUpdate,
+                                        url: MeetingStatusUpdateAPI_URL + meetingToUpdate.MeetingId + "/Status/Update",
+                                        inputType: meetingtoUpdateVM,
                                         _logger: _logger,
                                         accessToken: accToken);
                         if (meetingStatusResponse == null || !meetingStatusResponse.Status || meetingStatusResponse.Data == null)

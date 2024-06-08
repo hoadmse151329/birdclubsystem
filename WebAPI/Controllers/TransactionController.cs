@@ -70,6 +70,7 @@ namespace WebAPI.Controllers
         }
 
 		[HttpPost("Create")]
+		[Authorize(Roles = "Member,TempMember")]
 		[ProducesResponseType(typeof(OkObjectResult), StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -80,7 +81,6 @@ namespace WebAPI.Controllers
 			try
 			{
 				_transactionService.Create(newTransaction);
-
 				var result = await _transactionService.GetTransactionByVnPayId(newTransaction.VnPayId);
 				if (result == null)
 				{
@@ -265,6 +265,7 @@ namespace WebAPI.Controllers
 				});
 			}
 		}
+		[Authorize(Roles = "Member,TempMember")]
 		[HttpPut("UpdateUser")]
 		[ProducesResponseType(typeof(TransactionViewModel), StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]

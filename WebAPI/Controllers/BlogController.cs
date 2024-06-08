@@ -160,7 +160,7 @@ namespace WebAPI.Controllers
                 });
             }
         }
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         [Authorize(Roles = "Manager,Member,Guest")]
         [ProducesResponseType(typeof(BlogViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -248,45 +248,6 @@ namespace WebAPI.Controllers
                 }
                 blogVM.BlogId = id;
                 _blogService.Update(blogVM);
-                result = await _blogService.GetBlogByIdNoTracking(blogVM.BlogId.Value);
-                return Ok(new
-                {
-                    Status = true,
-                    Data = result
-                });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new
-                {
-                    Status = false,
-                    ErrorMessage = ex.Message,
-                    InnerExceptionMessage = ex.InnerException?.Message
-                });
-            }
-        }
-        [HttpPut("{id:int}/Status/Update")]
-        [Authorize(Roles = "Manager")]
-        [ProducesResponseType(typeof(OkObjectResult), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> UpdateBlogStatus(
-            [Required][FromRoute] int id,
-            [Required][FromBody] UpdateBlogStatus blogVM)
-        {
-            try
-            {
-                var result = await _blogService.GetBlogByIdNoTracking(id);
-                if (result == null)
-                {
-                    return NotFound(new
-                    {
-                        Status = false,
-                        ErrorMessage = "Blog does not exist!"
-                    });
-                }
-                blogVM.BlogId = id;
-                _blogService.UpdateStatus(blogVM);
                 result = await _blogService.GetBlogByIdNoTracking(blogVM.BlogId.Value);
                 return Ok(new
                 {

@@ -43,13 +43,13 @@ namespace DAL.Repositories.Implements
         }
 
         public async Task<IEnumerable<Blog>?> GetSortedBlogs(
-            string? description, 
-            string? category, 
-            DateTime? uploadDate, 
-            int? vote, 
-            List<string>? statuses, 
-            string? orderBy, 
-            int? userId = null, 
+            string? description,
+            string? category,
+            DateTime? uploadDate,
+            int? vote,
+            List<string>? statuses,
+            string? orderBy,
+            int? userId = null,
             bool isMemberOrGuest = false)
         {
             var newsfeeds = _context.Blogs.AsNoTracking().Include(b => b.UserDetails.MemberDetails).AsQueryable();

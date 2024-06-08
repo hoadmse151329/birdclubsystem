@@ -96,7 +96,7 @@ namespace DAL.Repositories.Implements
             }
             if (districtLocationIds.Any())
             {
-                meetings = meetings.AsNoTracking()  .Where(m => districtLocationIds.Contains(m.LocationId.Value));
+                meetings = meetings.AsNoTracking().Where(m => districtLocationIds.Contains(m.LocationId.Value));
             }
 
             if (cityLocationIds.Any())

@@ -83,7 +83,9 @@ namespace WebAPI
             services.AddScoped<IFieldTripDayByDayService, FieldTripDayByDayService>();
             services.AddScoped<IFieldTripInclusionService, FieldTripInclusionService>();
             services.AddScoped<IFieldTripAdditionalDetailService, FieldTripAdditionalDetailService>();
+            services.AddScoped<IFieldTripMediaService, FieldTripMediaService>();
             services.AddScoped<IContestService, ContestService>();
+            services.AddScoped<IContestMediaService, ContestMediaService>();
             services.AddScoped<IContestParticipantService, ContestParticipantService>();
             services.AddScoped<ITransactionService, TransactionService>();
             services.AddScoped<IMediaService, MediaService>();

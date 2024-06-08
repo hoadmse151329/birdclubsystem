@@ -1,12 +1,9 @@
 ﻿using BAL.Services.Interfaces;
 using BAL.ViewModels;
-using BAL.ViewModels.Manager;
-using BAL.ViewModels.Staff;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
-using System.Threading.Channels;
 
 namespace WebAPI.Controllers
 {
@@ -85,54 +82,6 @@ namespace WebAPI.Controllers
                 });
             }
         }*/
-
-        [HttpGet("Index")]
-        [Authorize(Roles = "Staff")]
-        [ProducesResponseType(typeof(GetStaffDashboard), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> GetStaffDashboard()
-        {
-            try
-            {
-                int eventCount = await _meetingService.CountMeeting() + await _fieldTripService.CountFieldTrip() + await _contestService.CountContest();
-                int eventOpen = await _meetingService.CountMeetingByStatus("OpenRegistration") + await _fieldTripService.CountFieldTripByStatus("OpenRegistration") + await _contestService.CountContestByStatus("OpenRegistration");
-                int eventClosed = await _meetingService.CountMeetingByStatus("ClosedRegistration") + await _fieldTripService.CountFieldTripByStatus("ClosedRegistration") + await _contestService.CountContestByStatus("ClosedRegistration");
-                int eventCheckingIn = await _meetingService.CountMeetingByStatus("CheckingIn") + await _fieldTripService.CountFieldTripByStatus("CheckingIn") + await _contestService.CountContestByStatus("CheckingIn");
-                int eventOngoing = await _meetingService.CountMeetingByStatus("Ongoing") + await _fieldTripService.CountFieldTripByStatus("Ongoing") + await _contestService.CountContestByStatus("Ongoing");
-                GetStaffDashboard result = new GetStaffDashboard()
-                {
-                    TotalEvents = eventCount,
-                    TotalEventsOpenRegistration = eventOpen,
-                    TotalEventsClosedRegistration = eventClosed,
-                    TotalEventsCheckingIn = eventCheckingIn,
-                    TotalEventsOngoing = eventOngoing
-                };
-                return Ok(new
-                {
-                    Status = true,
-                    Data = result
-                });
-            }
-            catch (Exception ex)
-            {
-                if (ex.InnerException != null)
-                {
-                    return BadRequest(new
-                    {
-                        Status = false,
-                        ErrorMessage = ex.Message,
-                        InnerExceptionMessage = ex.InnerException.Message
-                    });
-                }
-                // Log the exception if needed
-                return BadRequest(new
-                {
-                    Status = false,
-                    ErrorMessage = ex.Message
-                });
-            }
-        }
 
         [HttpPost("Profile")]
         [Authorize(Roles = "Staff")]

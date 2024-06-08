@@ -29,6 +29,7 @@ using BAL.ViewModels.News;
 using Microsoft.AspNetCore.Authorization;
 using AutoMapper;
 using BAL.ViewModels.Blog;
+using System;
 // thêm crud của meeting, fieldtrip, contest.
 namespace WebAppMVC.Controllers
 {
@@ -92,11 +93,15 @@ namespace WebAppMVC.Controllers
             return View(dashboardResponse.Data);
         }
         [HttpGet("Meeting")]
-        public async Task<IActionResult> ManagerMeeting([FromQuery] string search)
+        public async Task<IActionResult> ManagerMeeting(
+            [FromQuery] string search
+            )
         {
             _logger.LogInformation(search);
 
             string LocationAPI_URL_All = ManagerAPI_URL + "Location/AllAddresses";
+            string ManagerNameAPI_URL = ManagerAPI_URL + "Manager/Profile";
+            string ManagerStaffListAPI_URL = ManagerAPI_URL + "Manager/Staff";
 
             if (search != null || !string.IsNullOrEmpty(search))
             {
@@ -105,12 +110,14 @@ namespace WebAppMVC.Controllers
             }
             else ManagerAPI_URL += "Meeting/All";
 
-            dynamic testmodel = new ExpandoObject();
+            ManagerMeetingIndexVM managerMeetingListVM = new();
 
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
 
             string? role = HttpContext.Session.GetString(Constants.Constants.ROLE_NAME);
+            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
             var listLocationResponse = await methcall.CallMethodReturnObject<GetLocationAddressResponseByList>(
                 _httpClient: _httpClient,
@@ -127,59 +134,103 @@ namespace WebAppMVC.Controllers
                 inputType: role,
                 _logger: _logger);
 
-            if (listMeetResponse == null || listLocationResponse == null)
+            var managerDetails = await methcall.CallMethodReturnObject<GetMemberProfileResponse>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: Constants.Constants.POST_METHOD,
+                url: ManagerNameAPI_URL,
+                _logger: _logger,
+                inputType: usrId,
+                accessToken: accToken);
+
+            var listStaffNameResponse = await methcall.CallMethodReturnObject<GetListStaffName>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: Constants.Constants.GET_METHOD,
+                url: ManagerStaffListAPI_URL,
+                accessToken: accToken,
+                _logger: _logger);
+
+            if (
+                listMeetResponse == null || 
+                listLocationResponse == null || 
+                managerDetails == null ||
+                listStaffNameResponse == null ||
+                listMeetResponse.Data == null ||
+                listLocationResponse.Data == null ||
+                managerDetails.Data == null ||
+                listStaffNameResponse.Data == null
+                )
             {
-                _logger.LogInformation(
-                    "Error while processing your request! (Getting List Meeting!). List was Empty!: " + listMeetResponse);
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting List Meeting!).\n List was Empty!";
-                return RedirectToAction("ManagerIndex");
+                return View("ManagerIndex");
             }
             else
-            if (!listMeetResponse.Status || !listLocationResponse.Status)
+            if (
+                !listMeetResponse.Status || 
+                !listLocationResponse.Status || 
+                !managerDetails.Status ||
+                !listStaffNameResponse.Status
+                )
             {
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting List Meeting!).\n"
                     + listMeetResponse.ErrorMessage + "\n" + listLocationResponse.ErrorMessage;
-                return RedirectToAction("ManagerIndex");
+                return View("ManagerIndex");
             }
 
-            testmodel.CreateMeeting = methcall.GetValidationTempData<MeetingViewModel>(this, TempData, Constants.Constants.CREATE_MEETING_VALID, "createMeeting", jsonOptions);
-            testmodel.Locations = listLocationResponse.Data;
-            testmodel.Meetings = listMeetResponse.Data;
-            return View(testmodel);
+            managerMeetingListVM.SetCreateMeeting(
+                methcall.GetValidationTempData<CreateNewMeetingVM>(this, TempData, Constants.Constants.CREATE_MEETING_VALID, "createMeeting", jsonOptions),
+                managerDetails.Data.FullName,
+                methcall.GetStaffNameSelectableList(managerMeetingListVM.CreateMeeting.Incharge, listStaffNameResponse.Data)
+                );
+            managerMeetingListVM.Roads = listLocationResponse.Data;
+            managerMeetingListVM.MeetingList = listMeetResponse.Data;
+            return View(managerMeetingListVM);
         }
         [HttpGet("Meeting/{id:int}")]
         /*[Route("Manager/Meeting/{id:int}")]*/
-        public async Task<IActionResult> ManagerMeetingDetail([FromRoute][Required] int id)
+        public async Task<IActionResult> ManagerMeetingDetail(
+            [FromRoute][Required] int id
+            )
         {
             string ManagerMeetingDetailAPI_URL = ManagerAPI_URL + "Meeting/AllParticipants/" + id;
+            string ManagerStaffListAPI_URL = ManagerAPI_URL + "Manager/Staff";
 
             ManagerAPI_URL += "Meeting/" + id;
 
-            dynamic meetingDetailBigModel = new ExpandoObject();
+            ManagerMeetingDetailsVM managerMeetingDetailsVM = new();
 
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
 
             string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
-
-            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
-
+            //Get meeting details
             var meetPostResponse = await methcall.CallMethodReturnObject<GetMeetingPostResponse>(
-                                _httpClient: _httpClient,
-                                options: jsonOptions,
-                                methodName: Constants.Constants.GET_METHOD,
-                                url: ManagerAPI_URL,
-                                _logger: _logger);
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: Constants.Constants.GET_METHOD,
+                url: ManagerAPI_URL,
+                _logger: _logger);
+            //Get meeting participant list
             var meetpartPostResponse = await methcall.CallMethodReturnObject<GetListMeetingParticipation>(
-                                _httpClient: _httpClient,
-                                options: jsonOptions,
-                                methodName: Constants.Constants.GET_METHOD,
-                                url: ManagerMeetingDetailAPI_URL,
-                                accessToken: accToken,
-                                _logger: _logger);
-            if (meetPostResponse == null)
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: Constants.Constants.GET_METHOD,
+                url: ManagerMeetingDetailAPI_URL,
+                accessToken: accToken,
+                _logger: _logger);
+            //Get staff names list for meeting assignment (incharge)
+            var listStaffNameResponse = await methcall.CallMethodReturnObject<GetListStaffName>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: Constants.Constants.GET_METHOD,
+                url: ManagerStaffListAPI_URL,
+                accessToken: accToken,
+                _logger: _logger);
+
+            if (meetPostResponse == null || meetPostResponse.Data == null || meetpartPostResponse == null || meetpartPostResponse.Data == null)
             {
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting Meeting!).\n Meeting Not Found!";
@@ -193,25 +244,46 @@ namespace WebAppMVC.Controllers
                     + meetPostResponse.ErrorMessage;
                 return RedirectToAction("ManagerMeeting");
             }
-            meetingDetailBigModel.UpdateMeeting = methcall.GetValidationTempData<MeetingViewModel>(this, TempData, Constants.Constants.UPDATE_MEETING_VALID, "updateMeeting", jsonOptions);
-            meetingDetailBigModel.SelectListStatus = methcall.GetManagerEventStatusSelectableList(meetPostResponse.Data.Status);
+            managerMeetingDetailsVM.MeetingDetails = meetPostResponse.Data;
+            managerMeetingDetailsVM.MeetingParticipants = meetpartPostResponse.Data;
 
-            meetingDetailBigModel.CreateMeetingMedia = methcall.GetValidationTempData<MeetingMediaViewModel>(this, TempData, Constants.Constants.CREATE_MEETING_MEDIA_VALID, "createMedia", jsonOptions);
+            managerMeetingDetailsVM.SetIfUpdateMeetingDetails(
+                methcall.GetValidationTempData<UpdateMeetingDetailsVM>(this, TempData, Constants.Constants.UPDATE_MEETING_VALID, "updateMeeting", jsonOptions),
+                _mapper.Map<UpdateMeetingDetailsVM>(managerMeetingDetailsVM.MeetingDetails),
+                methcall.GetManagerEventStatusSelectableList(meetPostResponse.Data.Status),
+                methcall.GetStaffNameSelectableList(managerMeetingDetailsVM.MeetingDetails.Incharge, listStaffNameResponse.Data)
+                );
+            managerMeetingDetailsVM.SetIfUpdateMeetingStatus(
+                methcall.GetValidationTempData<UpdateMeetingStatusVM>(this, TempData, Constants.Constants.UPDATE_MEETING_STATUS_VALID, "updateMeetingStatus", jsonOptions),
+                meetPostResponse.Data,
+                methcall.GetManagerEventStatusSelectableList(meetPostResponse.Data.Status)
+                );
+            managerMeetingDetailsVM.SetIfCreateMeetingMedia(
+                methcall.GetValidationTempData<MeetingMediaViewModel>(this, TempData, Constants.Constants.CREATE_MEETING_MEDIA_VALID, "createMedia", jsonOptions)
+                );
+            managerMeetingDetailsVM.SetIfUpdateMeetingMediaSpotlight(
+                methcall.GetValidationTempData<MeetingMediaViewModel>(this, TempData, Constants.Constants.UPDATE_MEETING_MEDIA_VALID, "updateMediaSpotlight", jsonOptions),
+                managerMeetingDetailsVM.MeetingDetails.SpotlightImage
+                );
+            managerMeetingDetailsVM.SetIfUpdateMeetingMediaLocationMap(
+                methcall.GetValidationTempData<MeetingMediaViewModel>(this, TempData, Constants.Constants.UPDATE_MEETING_MEDIA_VALID, "updateMediaLocationMap", jsonOptions),
+                managerMeetingDetailsVM.MeetingDetails.LocationMapImage
+                );
+            managerMeetingDetailsVM.SetIfUpdateMeetingMediaAdditional(
+                methcall.GetValidationTempData<MeetingMediaViewModel>(this, TempData, Constants.Constants.UPDATE_MEETING_MEDIA_VALID, "updateMediaAdditional", jsonOptions)
+                );
 
-            meetingDetailBigModel.MeetingDetails = meetPostResponse.Data;
-            meetingDetailBigModel.MeetingParticipants = meetpartPostResponse.Data;
-
-            return View(meetingDetailBigModel);
+            return View(managerMeetingDetailsVM);
         }
         [HttpPost("Meeting/{id:int}/Update")]
         public async Task<IActionResult> ManagerUpdateMeetingDetail(
             [FromRoute][Required] int id,
-            [Required] MeetingViewModel updateMeeting
+            [FromForm][Required] UpdateMeetingDetailsVM updateMeeting
             )
         {
             ManagerAPI_URL += "Meeting/" + id + "/Update";
 
-            if (updateMeeting.Status.Equals(Constants.Constants.EVENT_STATUS_CLOSED_REGISTRATION) && (updateMeeting.NumberOfParticipantsLimit - updateMeeting.NumberOfParticipants) < 10)
+            if (updateMeeting.Status.Equals(Constants.Constants.EVENT_STATUS_CLOSED_REGISTRATION) && updateMeeting.NumberOfParticipants < 10)
             {
                 ModelState.AddModelError("updateMeeting.Status", "Error while processing your request (Updating Meeting). Not enough people to closed registration");
                 TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_MEETING_VALID, updateMeeting, jsonOptions);
@@ -227,8 +299,6 @@ namespace WebAppMVC.Controllers
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
 
             string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
-
-            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
 
             var meetPostResponse = await methcall.CallMethodReturnObject<GetMeetingPostResponse>(
                                 _httpClient: _httpClient,
@@ -256,12 +326,63 @@ namespace WebAppMVC.Controllers
                     + meetPostResponse.ErrorMessage;
                 return RedirectToAction("ManagerMeetingDetail", new { id });
             }
-            TempData["Success"] = meetPostResponse.SuccessMessage;
+            TempData[Constants.Constants.ALERT_DEFAULT_SUCCESS_NAME] = meetPostResponse.SuccessMessage;
+            return RedirectToAction("ManagerMeetingDetail", new { id });
+        }
+        [HttpPost("Meeting/{id:int}/Status/Update")]
+        public async Task<IActionResult> ManagerUpdateMeetingStatus(
+            [FromRoute][Required] int id,
+            [Required] UpdateMeetingStatusVM updateMeetingStatus
+            )
+        {
+            ManagerAPI_URL += "Meeting/" + id + "/Status/Update";
+
+            if (updateMeetingStatus.Status.Equals(Constants.Constants.EVENT_STATUS_CLOSED_REGISTRATION) && updateMeetingStatus.NumberOfParticipants < 10)
+            {
+                ModelState.AddModelError("updateMeeting.Status", "Error while processing your request (Updating Meeting). Not enough people to closed registration");
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_MEETING_STATUS_VALID, updateMeetingStatus, jsonOptions);
+                return RedirectToAction("ManagerMeetingDetail", new { id });
+            }
+            if (!ModelState.IsValid && !updateMeetingStatus.Status.Equals(Constants.Constants.EVENT_STATUS_POSTPONED))
+            {
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_MEETING_STATUS_VALID, updateMeetingStatus, jsonOptions);
+                return RedirectToAction("ManagerMeetingDetail", new { id });
+            }
+
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
+
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
+
+            var meetPostResponse = await methcall.CallMethodReturnObject<GetMeetingPostResponse>(
+                                _httpClient: _httpClient,
+                                options: jsonOptions,
+                                methodName: Constants.Constants.PUT_METHOD,
+                                url: ManagerAPI_URL,
+                                inputType: updateMeetingStatus,
+                                accessToken: accToken,
+                                _logger: _logger);
+            if (meetPostResponse == null)
+            {
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_MEETING_VALID, updateMeetingStatus, jsonOptions);
+
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
+                    "Error while processing your request! (Updating Meeting Status!).\n Meeting Not Found!";
+                return RedirectToAction("ManagerMeetingDetail", new { id });
+            }
+            if (!meetPostResponse.Status)
+            {
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_MEETING_VALID, updateMeetingStatus, jsonOptions);
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
+                    "Error while processing your request! (Updating Meeting Status!).\n"
+                    + meetPostResponse.ErrorMessage;
+                return RedirectToAction("ManagerMeetingDetail", new { id });
+            }
+            TempData[Constants.Constants.ALERT_DEFAULT_SUCCESS_NAME] = meetPostResponse.SuccessMessage;
             return RedirectToAction("ManagerMeetingDetail", new { id });
         }
         [HttpPost("Meeting/Create")]
-        /*[Route("Manager/Meeting/Update/{id:int}")]*/
-        public async Task<IActionResult> ManagerCreateMeeting([Required] MeetingViewModel createMeeting)
+        public async Task<IActionResult> ManagerCreateMeeting([Required] CreateNewMeetingVM createMeeting)
         {
             ManagerAPI_URL += "Meeting/Create";
             if (!ModelState.IsValid)
@@ -275,7 +396,7 @@ namespace WebAppMVC.Controllers
 
             string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
-            var meetPostResponse = await methcall.CallMethodReturnObject<GetMeetingPostResponse>(
+            var meetPostResponse = await methcall.CallMethodReturnObject<GetMeetingCreateResponse>(
                                 _httpClient: _httpClient,
                                 options: jsonOptions,
                                 methodName: Constants.Constants.POST_METHOD,
@@ -301,7 +422,7 @@ namespace WebAppMVC.Controllers
                     + meetPostResponse.ErrorMessage;
                 return RedirectToAction("ManagerMeeting");
             }
-            TempData["Success"] = meetPostResponse.SuccessMessage;
+            TempData[Constants.Constants.ALERT_DEFAULT_SUCCESS_NAME] = meetPostResponse.SuccessMessage;
             return RedirectToAction("ManagerMeeting");
         }
 
@@ -325,17 +446,17 @@ namespace WebAppMVC.Controllers
 
             if (photo != null && photo.Length > 0)
             {
-                string connectionString = _config.GetSection("AzureStorage:BlobConnectionString").Value;
-                string defaultUrl = _config.GetSection("MyBirdClubAzureStorageString:blob").Value;
-                string containerName = _config.GetSection("AzureStorage:BlobContainerName").Value;
-                string meetingContainerName = _config.GetValue<string>("AzureStorage:BlobNewsContainerName");
+                string connectionString = _config.GetSection(Constants.Constants.SYSTEM_DEFAULT_AZURE_CONNECTION_STRING).Value;
+                string defaultUrl = _config.GetSection(Constants.Constants.SYSTEM_DEFAULT_AZURE_DEFAULT_BLOB_FOLDER_URL).Value;
+                string containerName = _config.GetSection(Constants.Constants.SYSTEM_DEFAULT_AZURE_DEFAULT_BLOB_FOLDER_NAME).Value;
+                string meetingContainerName = _config.GetValue<string>(Constants.Constants.SYSTEM_DEFAULT_AZURE_BLOB_MEETING_FOLDER_URL);
 
                 BlobServiceClient _blobServiceClient = new BlobServiceClient(connectionString);
                 BlobContainerClient _blobContainerClient = _blobServiceClient.GetBlobContainerClient(containerName);
 
                 var azureResponse = new List<BlobContentInfo>();
                 string filename = photo.FileName;
-                string uniqueBlobName = $"{Guid.NewGuid()}-{filename}";
+                string uniqueBlobName = meetingContainerName + $"{Guid.NewGuid()}-{filename}";
                 using (var memoryStream = new MemoryStream())
                 {
                     photo.CopyTo(memoryStream);
@@ -345,7 +466,7 @@ namespace WebAppMVC.Controllers
                     azureResponse.Add(client);
                 }
 
-                var image = defaultUrl + containerName + meetingContainerName + uniqueBlobName;
+                var image = defaultUrl + uniqueBlobName;
 
                 createMedia.Image = image;
             }
@@ -374,8 +495,246 @@ namespace WebAppMVC.Controllers
                     + meetMediaResponse.ErrorMessage;
                 return RedirectToAction("ManagerMeetingDetail", new { id = meetingId });
             }
-            TempData["Success"] = meetMediaResponse.SuccessMessage;
+            TempData[Constants.Constants.ALERT_DEFAULT_SUCCESS_NAME] = meetMediaResponse.SuccessMessage;
             return RedirectToAction("ManagerMeetingDetail", new {id = meetingId});
+        }
+
+        [HttpPost("Meeting/{meetingId:int}/Media/Spotlight/{meetingMediaId:int}/Update")]
+        public async Task<IActionResult> ManagerUpdateMeetingMediaSpotlight(
+            [Required][FromRoute] int meetingId,
+            [Required][FromRoute] int meetingMediaId, 
+            [FromForm] MeetingMediaViewModel? updateMediaSpotlight)
+        {
+            ManagerAPI_URL += "Meeting/" + meetingId + "/Media/" + meetingMediaId + "/Update";
+            if (!ModelState.IsValid)
+            {
+                updateMediaSpotlight.ImageUpload = null;
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_MEETING_MEDIA_VALID, updateMediaSpotlight, jsonOptions);
+                return RedirectToAction("ManagerMeetingDetail", new { id = meetingId });
+            }
+
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
+
+            IFormFile photo = updateMediaSpotlight.ImageUpload;
+
+            if (photo != null && photo.Length > 0)
+            {
+                string connectionString = _config.GetSection(Constants.Constants.SYSTEM_DEFAULT_AZURE_CONNECTION_STRING).Value;
+                string defaultUrl = _config.GetSection(Constants.Constants.SYSTEM_DEFAULT_AZURE_DEFAULT_BLOB_FOLDER_URL).Value;
+                string containerName = _config.GetSection(Constants.Constants.SYSTEM_DEFAULT_AZURE_DEFAULT_BLOB_FOLDER_NAME).Value;
+                string meetingContainerName = _config.GetValue<string>(Constants.Constants.SYSTEM_DEFAULT_AZURE_BLOB_MEETING_FOLDER_URL);
+
+                BlobServiceClient _blobServiceClient = new BlobServiceClient(connectionString);
+                BlobContainerClient _blobContainerClient = _blobServiceClient.GetBlobContainerClient(containerName);
+
+                var azureResponse = new List<BlobContentInfo>();
+                string filename = photo.FileName;
+                string uniqueBlobName = meetingContainerName + $"{Guid.NewGuid()}-{filename}";
+                using (var memoryStream = new MemoryStream())
+                {
+                    photo.CopyTo(memoryStream);
+                    memoryStream.Position = 0;
+
+                    var client = await _blobContainerClient.UploadBlobAsync(uniqueBlobName, memoryStream);
+                    if (updateMediaSpotlight.Image.Contains(defaultUrl + meetingContainerName))
+                    {
+                        string photoName = meetingContainerName + updateMediaSpotlight.Image.Substring((defaultUrl + meetingContainerName).Length);
+                        await _blobContainerClient.DeleteBlobIfExistsAsync(photoName);
+                    }
+                    azureResponse.Add(client);
+                }
+
+                var image = defaultUrl + uniqueBlobName;
+
+                updateMediaSpotlight.Image = image;
+            }
+
+            updateMediaSpotlight.ImageUpload = null;
+
+            var meetMediaResponse = await methcall.CallMethodReturnObject<GetMeetingMediaResponse>(
+                    _httpClient: _httpClient,
+                    options: jsonOptions,
+                    methodName: Constants.Constants.PUT_METHOD,
+                    url: ManagerAPI_URL,
+                    inputType: updateMediaSpotlight,
+                    accessToken: accToken,
+                    _logger: _logger);
+            if (meetMediaResponse == null)
+            {
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
+                    "Error while processing your request! (Create Meeting Media!).\n Meeting Not Found!";
+                return RedirectToAction("ManagerMeetingDetail", new { id = meetingId });
+            }
+            if (!meetMediaResponse.Status)
+            {
+                _logger.LogInformation("Error while processing your request: " + meetMediaResponse.Status + " , Error Message: " + meetMediaResponse.ErrorMessage);
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
+                    "Error while processing your request! (Create Meeting Media!).\n"
+                    + meetMediaResponse.ErrorMessage;
+                return RedirectToAction("ManagerMeetingDetail", new { id = meetingId });
+            }
+            TempData[Constants.Constants.ALERT_DEFAULT_SUCCESS_NAME] = meetMediaResponse.SuccessMessage;
+            return RedirectToAction("ManagerMeetingDetail", new { id = meetingId });
+        }
+        [HttpPost("Meeting/{meetingId:int}/Media/Additional/{meetingMediaId:int}/Update")]
+        public async Task<IActionResult> ManagerUpdateMeetingMediaAdditional(
+            [Required][FromRoute] int meetingId,
+            [Required][FromRoute] int meetingMediaId,
+            [FromForm] MeetingMediaViewModel? updateMediaAdditional)
+        {
+            ManagerAPI_URL += "Meeting/" + meetingId + "/Media/" + meetingMediaId + "/Update";
+            if (!ModelState.IsValid)
+            {
+                updateMediaAdditional.ImageUpload = null;
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_MEETING_MEDIA_VALID, updateMediaAdditional, jsonOptions);
+                return RedirectToAction("ManagerMeetingDetail", new { id = meetingId });
+            }
+
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
+
+            IFormFile photo = updateMediaAdditional.ImageUpload;
+
+            if (photo != null && photo.Length > 0)
+            {
+                string connectionString = _config.GetSection(Constants.Constants.SYSTEM_DEFAULT_AZURE_CONNECTION_STRING).Value;
+                string defaultUrl = _config.GetSection(Constants.Constants.SYSTEM_DEFAULT_AZURE_DEFAULT_BLOB_FOLDER_URL).Value;
+                string containerName = _config.GetSection(Constants.Constants.SYSTEM_DEFAULT_AZURE_DEFAULT_BLOB_FOLDER_NAME).Value;
+                string meetingContainerName = _config.GetValue<string>(Constants.Constants.SYSTEM_DEFAULT_AZURE_BLOB_MEETING_FOLDER_URL);
+
+                BlobServiceClient _blobServiceClient = new BlobServiceClient(connectionString);
+                BlobContainerClient _blobContainerClient = _blobServiceClient.GetBlobContainerClient(containerName);
+
+                var azureResponse = new List<BlobContentInfo>();
+                string filename = photo.FileName;
+                string uniqueBlobName = meetingContainerName + $"{Guid.NewGuid()}-{filename}";
+                using (var memoryStream = new MemoryStream())
+                {
+                    photo.CopyTo(memoryStream);
+                    memoryStream.Position = 0;
+
+                    var client = await _blobContainerClient.UploadBlobAsync(uniqueBlobName, memoryStream);
+                    if (updateMediaAdditional.Image.Contains(defaultUrl + meetingContainerName))
+                    {
+                        string photoName = meetingContainerName + updateMediaAdditional.Image.Substring((defaultUrl + meetingContainerName).Length);
+                        await _blobContainerClient.DeleteBlobIfExistsAsync(photoName);
+                    }
+                    azureResponse.Add(client);
+                }
+
+                var image = defaultUrl + uniqueBlobName;
+
+                updateMediaAdditional.Image = image;
+            }
+
+            updateMediaAdditional.ImageUpload = null;
+
+            var meetMediaResponse = await methcall.CallMethodReturnObject<GetMeetingMediaResponse>(
+                    _httpClient: _httpClient,
+                    options: jsonOptions,
+                    methodName: Constants.Constants.PUT_METHOD,
+                    url: ManagerAPI_URL,
+                    inputType: updateMediaAdditional,
+                    accessToken: accToken,
+                    _logger: _logger);
+            if (meetMediaResponse == null)
+            {
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
+                    "Error while processing your request! (Create Meeting Media!).\n Meeting Not Found!";
+                return RedirectToAction("ManagerMeetingDetail", new { id = meetingId });
+            }
+            if (!meetMediaResponse.Status)
+            {
+                _logger.LogInformation("Error while processing your request: " + meetMediaResponse.Status + " , Error Message: " + meetMediaResponse.ErrorMessage);
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
+                    "Error while processing your request! (Create Meeting Media!).\n"
+                    + meetMediaResponse.ErrorMessage;
+                return RedirectToAction("ManagerMeetingDetail", new { id = meetingId });
+            }
+            TempData[Constants.Constants.ALERT_DEFAULT_SUCCESS_NAME] = meetMediaResponse.SuccessMessage;
+            return RedirectToAction("ManagerMeetingDetail", new { id = meetingId });
+        }
+        [HttpPost("Meeting/{meetingId:int}/Media/LocationMap/{meetingMediaId:int}/Update")]
+        public async Task<IActionResult> ManagerUpdateMeetingMediaLocation(
+            [Required][FromRoute] int meetingId,
+            [Required][FromRoute] int meetingMediaId,
+            [FromForm] MeetingMediaViewModel? updateMediaLocationMap)
+        {
+            ManagerAPI_URL += "Meeting/" + meetingId + "/Media/" + meetingMediaId + "/Update";
+            if (!ModelState.IsValid)
+            {
+                updateMediaLocationMap.ImageUpload = null;
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_MEETING_MEDIA_VALID, updateMediaLocationMap, jsonOptions);
+                return RedirectToAction("ManagerMeetingDetail", new { id = meetingId });
+            }
+
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
+
+            IFormFile photo = updateMediaLocationMap.ImageUpload;
+
+            if (photo != null && photo.Length > 0)
+            {
+                string connectionString = _config.GetSection(Constants.Constants.SYSTEM_DEFAULT_AZURE_CONNECTION_STRING).Value;
+                string defaultUrl = _config.GetSection(Constants.Constants.SYSTEM_DEFAULT_AZURE_DEFAULT_BLOB_FOLDER_URL).Value;
+                string containerName = _config.GetSection(Constants.Constants.SYSTEM_DEFAULT_AZURE_DEFAULT_BLOB_FOLDER_NAME).Value;
+                string meetingContainerName = _config.GetValue<string>(Constants.Constants.SYSTEM_DEFAULT_AZURE_BLOB_MEETING_FOLDER_URL);
+
+                BlobServiceClient _blobServiceClient = new BlobServiceClient(connectionString);
+                BlobContainerClient _blobContainerClient = _blobServiceClient.GetBlobContainerClient(containerName);
+
+                var azureResponse = new List<BlobContentInfo>();
+                string filename = photo.FileName;
+                string uniqueBlobName = meetingContainerName + $"{Guid.NewGuid()}-{filename}";
+                using (var memoryStream = new MemoryStream())
+                {
+                    photo.CopyTo(memoryStream);
+                    memoryStream.Position = 0;
+
+                    var client = await _blobContainerClient.UploadBlobAsync(uniqueBlobName, memoryStream);
+                    if (updateMediaLocationMap.Image.Contains(defaultUrl + meetingContainerName))
+                    {
+                        string photoName = meetingContainerName + updateMediaLocationMap.Image.Substring((defaultUrl + meetingContainerName).Length);
+                        await _blobContainerClient.DeleteBlobIfExistsAsync(photoName);
+                    }
+                    azureResponse.Add(client);
+                }
+
+                var image = defaultUrl + uniqueBlobName;
+
+                updateMediaLocationMap.Image = image;
+            }
+
+            updateMediaLocationMap.ImageUpload = null;
+
+            var meetMediaResponse = await methcall.CallMethodReturnObject<GetMeetingMediaResponse>(
+                    _httpClient: _httpClient,
+                    options: jsonOptions,
+                    methodName: Constants.Constants.PUT_METHOD,
+                    url: ManagerAPI_URL,
+                    inputType: updateMediaLocationMap,
+                    accessToken: accToken,
+                    _logger: _logger);
+            if (meetMediaResponse == null)
+            {
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
+                    "Error while processing your request! (Create Meeting Media!).\n Meeting Not Found!";
+                return RedirectToAction("ManagerMeetingDetail", new { id = meetingId });
+            }
+            if (!meetMediaResponse.Status)
+            {
+                _logger.LogInformation("Error while processing your request: " + meetMediaResponse.Status + " , Error Message: " + meetMediaResponse.ErrorMessage);
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
+                    "Error while processing your request! (Create Meeting Media!).\n"
+                    + meetMediaResponse.ErrorMessage;
+                return RedirectToAction("ManagerMeetingDetail", new { id = meetingId });
+            }
+            TempData[Constants.Constants.ALERT_DEFAULT_SUCCESS_NAME] = meetMediaResponse.SuccessMessage;
+            return RedirectToAction("ManagerMeetingDetail", new { id = meetingId });
         }
 
         [HttpPost("Meeting/{id:int}/Cancel")]
@@ -401,14 +760,14 @@ namespace WebAppMVC.Controllers
             if (meetPostResponse == null)
             {
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
-                    "Error while processing your request! (Create Meeting Media!).\n Meeting Not Found!";
+                    "Error while processing your request! (Cancel Meeting!).\n Meeting Not Found!";
                 return RedirectToAction("ManagerMeeting");
             }
             if (!meetPostResponse.Status)
             {
                 _logger.LogInformation("Error while processing your request: " + meetPostResponse.Status + " , Error Message: " + meetPostResponse.ErrorMessage);
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
-                    "Error while processing your request! (Create Meeting Media!).\n"
+                    "Error while processing your request! (Cancel Meeting!).\n"
                     + meetPostResponse.ErrorMessage;
                 return RedirectToAction("ManagerMeeting");
             }
@@ -420,6 +779,8 @@ namespace WebAppMVC.Controllers
         {
             _logger.LogInformation(search);
             string LocationAPI_URL_All = ManagerAPI_URL + "Location/AllAddresses";
+            string ManagerNameAPI_URL = ManagerAPI_URL + "Manager/Profile";
+            string ManagerStaffListAPI_URL = ManagerAPI_URL + "Manager/Staff";
 
             if (search != null || !string.IsNullOrEmpty(search))
             {
@@ -428,12 +789,14 @@ namespace WebAppMVC.Controllers
             }
             else ManagerAPI_URL += "FieldTrip/All";
 
-            dynamic fieldtripIndexVM = new ExpandoObject();
+            ManagerFieldTripIndexVM managerFieldtripListVM = new();
 
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
 
             string? role = HttpContext.Session.GetString(Constants.Constants.ROLE_NAME);
+            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
 
             var listLocationResponse = await methcall.CallMethodReturnObject<GetLocationAddressResponseByList>(
@@ -450,6 +813,22 @@ namespace WebAppMVC.Controllers
                 url: ManagerAPI_URL,
                 inputType: role,
                 _logger: _logger);
+            var managerDetails = await methcall.CallMethodReturnObject<GetMemberProfileResponse>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: Constants.Constants.POST_METHOD,
+                url: ManagerNameAPI_URL,
+                _logger: _logger,
+                inputType: usrId,
+                accessToken: accToken);
+
+            var listStaffNameResponse = await methcall.CallMethodReturnObject<GetListStaffName>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: Constants.Constants.GET_METHOD,
+                url: ManagerStaffListAPI_URL,
+                accessToken: accToken,
+                _logger: _logger);
 
             if (listFieldTripResponse == null || listLocationResponse == null)
             {
@@ -457,7 +836,7 @@ namespace WebAppMVC.Controllers
                     "Error while processing your request! (Getting List FieldTrip!). List was Empty!: " + listLocationResponse + ",\n" + listFieldTripResponse);
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting List FieldTrip!).\n List was Empty!";
-                return RedirectToAction("ManagerIndex");
+                return View("ManagerIndex");
             }
             else
             if (!listFieldTripResponse.Status || !listLocationResponse.Status)
@@ -465,21 +844,25 @@ namespace WebAppMVC.Controllers
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting List FieldTrip!).\n"
                     + listFieldTripResponse.ErrorMessage + "\n" + listLocationResponse.ErrorMessage;
-                return RedirectToAction("ManagerIndex");
+                return View("ManagerIndex");
             }
-
-            fieldtripIndexVM.CreateFieldTrip = methcall.GetValidationTempData<FieldTripViewModel>(this, TempData, Constants.Constants.CREATE_FIELDTRIP_VALID, "createFieldTrip", jsonOptions);
-            fieldtripIndexVM.FieldTrips = listFieldTripResponse.Data;
-            fieldtripIndexVM.Locations = listLocationResponse.Data;
-            return View(fieldtripIndexVM);
+            managerFieldtripListVM.SetCreateFieldtrip(
+                methcall.GetValidationTempData<CreateNewFieldtripVM>(this, TempData, Constants.Constants.CREATE_FIELDTRIP_VALID, "createFieldTrip", jsonOptions),
+                managerDetails.Data.FullName,
+                methcall.GetStaffNameSelectableList(managerFieldtripListVM.CreateFieldtrip.InCharge, listStaffNameResponse.Data)
+                );
+            managerFieldtripListVM.FieldtripList = listFieldTripResponse.Data;
+            managerFieldtripListVM.Roads = listLocationResponse.Data;
+            return View(managerFieldtripListVM);
         }
         [HttpGet("FieldTrip/{id:int}")]
         /*[Route("Manager/FieldTrip/{id:int}")]*/
         public async Task<IActionResult> ManagerFieldTripDetail(int id)
         {
             string ManagerFieldTripDetailAPI_URL = ManagerAPI_URL + "FieldTrip/AllParticipants/" + id;
+            string ManagerStaffListAPI_URL = ManagerAPI_URL + "Manager/Staff";
             ManagerAPI_URL += "FieldTrip/" + id;
-            dynamic fieldtripDetailVM = new ExpandoObject();
+            ManagerFieldTripDetailsVM fieldtripDetailVM = new();
 
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
@@ -501,6 +884,13 @@ namespace WebAppMVC.Controllers
                                 url: ManagerFieldTripDetailAPI_URL,
                                 accessToken: accToken,
                                 _logger: _logger);
+            var listStaffNameResponse = await methcall.CallMethodReturnObject<GetListStaffName>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: Constants.Constants.GET_METHOD,
+                url: ManagerStaffListAPI_URL,
+                accessToken: accToken,
+                _logger: _logger);
             if (fieldtripPostResponse == null)
             {
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
@@ -515,9 +905,74 @@ namespace WebAppMVC.Controllers
                     + fieldtripPostResponse.ErrorMessage;
                 return RedirectToAction("ManagerFieldTrip");
             }
-            fieldtripDetailVM.UpdateFieldTrip = methcall.GetValidationTempData<FieldTripViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_VALID, "updateTrip", jsonOptions);
-            fieldtripDetailVM.UpdateFieldTripGettingThere = methcall.GetValidationTempData<FieldtripGettingThereViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_GETTHERE_VALID, "updateGettingThere", jsonOptions);
-            fieldtripDetailVM.UpdateFieldTripDayByDayErrors = methcall.GetValidationModelStateErrorMessageList<FieldtripDaybyDayViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_DAYBYDAY_VALID, "updateDayByDay", jsonOptions);
+            fieldtripDetailVM.FieldTripDetails = fieldtripPostResponse.Data;
+            fieldtripDetailVM.FieldTripTourFeatures = fieldtripPostResponse.Data.FieldtripAdditionalDetails.Where(f => f.Type.Equals("tour_features")).ToList();
+            fieldtripDetailVM.FieldTripImportants = fieldtripPostResponse.Data.FieldtripAdditionalDetails.Where(f => f.Type.Equals("important_to_know")).ToList();
+            fieldtripDetailVM.FieldTripActAndTrass = fieldtripPostResponse.Data.FieldtripAdditionalDetails.Where(f => f.Type.Equals("activities_and_transportation")).ToList();
+            fieldtripDetailVM.FieldTripParticipants = fieldtrippartPostResponse.Data;
+
+            fieldtripDetailVM.SetIfUpdateFieldTripDetails(
+                methcall.GetValidationTempData<UpdateFieldtripDetailsVM>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_VALID, "updateTrip", jsonOptions),
+                _mapper.Map<UpdateFieldtripDetailsVM>(fieldtripDetailVM.FieldTripDetails),
+                methcall.GetManagerEventStatusSelectableList(fieldtripPostResponse.Data.Status),
+                methcall.GetStaffNameSelectableList(fieldtripDetailVM.FieldTripDetails.InCharge, listStaffNameResponse.Data)
+                );
+            fieldtripDetailVM.SetIfUpdateFieldTripGettingThere(
+                methcall.GetValidationTempData<FieldtripGettingThereViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_GETTHERE_VALID, "updateGettingThere", jsonOptions),
+                fieldtripDetailVM.FieldTripDetails.FieldtripGettingTheres
+                );
+            fieldtripDetailVM.SetIfUpdateFieldTripDayByDay(
+                methcall.GetValidationTempData<FieldtripDaybyDayViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_DAYBYDAY_VALID, "updateDayByDay", jsonOptions)
+                );
+            fieldtripDetailVM.SetIfUpdateFieldTripInclusion(
+                methcall.GetValidationTempData<FieldtripInclusionViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_INCLUSION_VALID, "updateInclusion", jsonOptions),
+                methcall.GetManagerFieldTripInclusionTypeSelectableList(fieldtripDetailVM.UpdateFieldTripInclusion.Type != null ? fieldtripDetailVM.UpdateFieldTripInclusion.Type : Constants.Constants.FIELDTRIP_INCLUSION_TYPE_INCLUDED)
+                );
+            fieldtripDetailVM.SetIfUpdateFieldTripTourFeature(
+                methcall.GetValidationTempData<FieldTripAdditionalDetailViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_TOURFEATURES_VALID, "updateTourFeature", jsonOptions)
+                );
+            fieldtripDetailVM.SetIfUpdateFieldTripImportant(
+                methcall.GetValidationTempData<FieldTripAdditionalDetailViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_IMPORTANTTOKNOW_VALID, "updateImportant", jsonOptions)
+                );
+            fieldtripDetailVM.SetIfUpdateFieldTripActAndTras(
+                methcall.GetValidationTempData<FieldTripAdditionalDetailViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_ACTIVITIESANDTRANSPORTATION_VALID, "updateActAndTras", jsonOptions)
+                );
+            fieldtripDetailVM.SetIfCreateFieldTripDayByDay(
+                methcall.GetValidationTempData<FieldtripDaybyDayViewModel>(this, TempData, Constants.Constants.CREATE_FIELDTRIP_DAYBYDAY_VALID, "createDayByDay", jsonOptions)
+                );
+            fieldtripDetailVM.SetIfCreateFieldTripInclusion(
+                methcall.GetValidationTempData<FieldtripInclusionViewModel>(this, TempData, Constants.Constants.CREATE_FIELDTRIP_INCLUSION_VALID, "createInclusion", jsonOptions),
+                methcall.GetManagerFieldTripInclusionTypeSelectableList(Constants.Constants.FIELDTRIP_INCLUSION_TYPE_INCLUDED)
+                );
+            fieldtripDetailVM.SetIfCreateFieldTripTourFeature(
+                methcall.GetValidationTempData<FieldTripAdditionalDetailViewModel>(this, TempData, Constants.Constants.CREATE_FIELDTRIP_TOURFEATURES_VALID, "createTourFeatures", jsonOptions)
+                );
+            fieldtripDetailVM.SetIfCreateFieldTripImportant(
+                methcall.GetValidationTempData<FieldTripAdditionalDetailViewModel>(this, TempData, Constants.Constants.CREATE_FIELDTRIP_IMPORTANTTOKNOW_VALID, "createImportant", jsonOptions)
+                );
+            fieldtripDetailVM.SetIfCreateFieldTripActAndTras(
+                methcall.GetValidationTempData<FieldTripAdditionalDetailViewModel>(this, TempData, Constants.Constants.CREATE_FIELDTRIP_ACTIVITIESANDTRANSPORTATION_VALID, "createActAndTras", jsonOptions)
+                );
+            fieldtripDetailVM.SetIfUpdateFieldTripStatus(
+                methcall.GetValidationTempData<UpdateFieldtripStatusVM>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_STATUS_VALID, "updateTripStatus", jsonOptions),
+                fieldtripPostResponse.Data,
+                methcall.GetManagerEventStatusSelectableList(fieldtripPostResponse.Data.Status)
+                );
+            fieldtripDetailVM.SetIfCreateFieldTripMedia(
+                methcall.GetValidationTempData<FieldtripMediaViewModel>(this, TempData, Constants.Constants.CREATE_FIELDTRIP_MEDIA_VALID, "createMedia", jsonOptions)
+                );
+            fieldtripDetailVM.SetIfUpdateFieldTripMediaSpotlight(
+                methcall.GetValidationTempData<FieldtripMediaViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_MEDIA_VALID, "updateMediaSpotlight", jsonOptions),
+                fieldtripDetailVM.FieldTripDetails.SpotlightImage
+                );
+            fieldtripDetailVM.SetIfUpdateFieldTripMediaLocationMap(
+                methcall.GetValidationTempData<FieldtripMediaViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_MEDIA_VALID, "updateMediaLocationMap", jsonOptions),
+                fieldtripDetailVM.FieldTripDetails.LocationMapImage
+                );
+            fieldtripDetailVM.SetIfUpdateFieldTripMediaAdditional(
+                methcall.GetValidationTempData<FieldtripMediaViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_MEDIA_VALID, "updateMediaAdditional", jsonOptions)
+                );
+            /*fieldtripDetailVM.UpdateFieldTripDayByDayErrors = methcall.GetValidationModelStateErrorMessageList<FieldtripDaybyDayViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_DAYBYDAY_VALID, "updateDayByDay", jsonOptions);
             fieldtripDetailVM.UpdateFieldTripDayByDays = methcall.GetValidationTempDataList<FieldtripDaybyDayViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_DAYBYDAY_VALID, "updateDayByDay", jsonOptions);
             fieldtripDetailVM.UpdateFieldTripInclusionErrors = methcall.GetValidationModelStateErrorMessageList<FieldtripInclusionViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_INCLUSION_VALID, "updateInclusion", jsonOptions);
             fieldtripDetailVM.UpdateFieldTripInclusions = methcall.GetValidationTempDataList<FieldtripInclusionViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_INCLUSION_VALID, "updateInclusion", jsonOptions);
@@ -526,42 +981,73 @@ namespace WebAppMVC.Controllers
             fieldtripDetailVM.UpdateFieldTripImportantErrors = methcall.GetValidationModelStateErrorMessageList<FieldTripAdditionalDetailViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_IMPORTANTTOKNOW_VALID, "updateImportant", jsonOptions);
             fieldtripDetailVM.UpdateFieldTripImportants = methcall.GetValidationTempDataList<FieldTripAdditionalDetailViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_IMPORTANTTOKNOW_VALID, "updateImportant", jsonOptions);
             fieldtripDetailVM.UpdateFieldTripActAndTrasErrors = methcall.GetValidationModelStateErrorMessageList<FieldTripAdditionalDetailViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_ACTIVITIESANDTRANSPORTATION_VALID, "updateActAndTras", jsonOptions);
-            fieldtripDetailVM.UpdateFieldTripActAndTrass = methcall.GetValidationTempDataList<FieldTripAdditionalDetailViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_ACTIVITIESANDTRANSPORTATION_VALID, "updateActAndTras", jsonOptions);
-
-
-            fieldtripDetailVM.CreateFieldTripDayByDay = methcall.GetValidationTempData<FieldtripDaybyDayViewModel>(this, TempData, Constants.Constants.CREATE_FIELDTRIP_DAYBYDAY_VALID, "createDayByDay", jsonOptions);
-            fieldtripDetailVM.CreateFieldTripInclusion = methcall.GetValidationTempData<FieldtripInclusionViewModel>(this, TempData, Constants.Constants.CREATE_FIELDTRIP_INCLUSION_VALID, "createInclusion", jsonOptions);
-            fieldtripDetailVM.CreateFieldTripTourFeatures = methcall.GetValidationTempData<FieldTripAdditionalDetailViewModel>(this, TempData, Constants.Constants.CREATE_FIELDTRIP_TOURFEATURES_VALID, "createTourFeatures", jsonOptions);
-            fieldtripDetailVM.CreateFieldTripImportant = methcall.GetValidationTempData<FieldTripAdditionalDetailViewModel>(this, TempData, Constants.Constants.CREATE_FIELDTRIP_IMPORTANTTOKNOW_VALID, "createImportant", jsonOptions);
-            fieldtripDetailVM.CreateFieldTripActAndTras = methcall.GetValidationTempData<FieldTripAdditionalDetailViewModel>(this, TempData, Constants.Constants.CREATE_FIELDTRIP_ACTIVITIESANDTRANSPORTATION_VALID, "createActAndTras", jsonOptions);
-            fieldtripDetailVM.CreateFieldTripMedia = methcall.GetValidationTempData<FieldtripMediaViewModel>(this, TempData, Constants.Constants.CREATE_FIELDTRIP_MEDIA_VALID, "createMedia", jsonOptions);
-
-            fieldtripDetailVM.SelectListStatus = methcall.GetManagerEventStatusSelectableList(fieldtripPostResponse.Data.Status);
-            fieldtripDetailVM.SelectListInclusionTypes = methcall.GetManagerFieldTripInclusionTypeSelectableList(Constants.Constants.FIELDTRIP_INCLUSION_TYPE_INCLUDED);
-
-            fieldtripDetailVM.FieldTripDetails = fieldtripPostResponse.Data;
-            fieldtripDetailVM.FieldTripTourFeatures = fieldtripPostResponse.Data.FieldtripAdditionalDetails.Where(f => f.Type.Equals("tour_features")).ToList();
-            fieldtripDetailVM.FieldTripImportantToKnows = fieldtripPostResponse.Data.FieldtripAdditionalDetails.Where(f => f.Type.Equals("important_to_know")).ToList();
-            fieldtripDetailVM.FieldTripActivitiesAndTransportation = fieldtripPostResponse.Data.FieldtripAdditionalDetails.Where(f => f.Type.Equals("activities_and_transportation")).ToList();
-            fieldtripDetailVM.FieldTripParticipants = fieldtrippartPostResponse.Data;
-
+            fieldtripDetailVM.UpdateFieldTripActAndTrass = methcall.GetValidationTempDataList<FieldTripAdditionalDetailViewModel>(this, TempData, Constants.Constants.UPDATE_FIELDTRIP_ACTIVITIESANDTRANSPORTATION_VALID, "updateActAndTras", jsonOptions);*/
             return View(fieldtripDetailVM);
         }
         [HttpPost("FieldTrip/{id:int}/Update")]
         /*[Route("Manager/FieldTrip/Update/{id:int}")]*/
         public async Task<IActionResult> ManagerUpdateFieldTripDetail(
             [FromRoute][Required] int id,
-            [Required] FieldTripViewModel updateTrip
+            [Required] UpdateFieldtripStatusVM updateTripStatus
             )
         {
             ManagerAPI_URL += "FieldTrip/" + id + "/Update";
-            if (updateTrip.Status.Equals(Constants.Constants.EVENT_STATUS_CLOSED_REGISTRATION) && (updateTrip.NumberOfParticipantsLimit - updateTrip.NumberOfParticipants) < 10)
+            if (updateTripStatus.Status.Equals(Constants.Constants.EVENT_STATUS_CLOSED_REGISTRATION) && updateTripStatus.NumberOfParticipants < 10)
+            {
+                ModelState.AddModelError("updateTrip.Status", "Error while processing your request (Updating FieldTrip). Not enough people to closed registration");
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_FIELDTRIP_VALID, updateTripStatus, jsonOptions);
+                return RedirectToAction("ManagerFieldTripDetail", new { id });
+            }
+            if (!ModelState.IsValid && !updateTripStatus.Status.Equals(Constants.Constants.EVENT_STATUS_POSTPONED))
+            {
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_FIELDTRIP_VALID, updateTripStatus, jsonOptions);
+                return RedirectToAction("ManagerFieldTripDetail", new { id });
+            }
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
+
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
+
+            var fieldtripPostResponse = await methcall.CallMethodReturnObject<GetFieldTripPostResponse>(
+                                _httpClient: _httpClient,
+                                options: jsonOptions,
+                                methodName: Constants.Constants.PUT_METHOD,
+                                url: ManagerAPI_URL,
+                                inputType: updateTripStatus,
+                                accessToken: accToken,
+                                _logger: _logger);
+            if (fieldtripPostResponse == null)
+            {
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
+                    "Error while processing your request! (Updating FieldTrip!).\n FieldTrip Not Found!";
+                return RedirectToAction("ManagerFieldTripDetail", new { id });
+            }
+            if (!fieldtripPostResponse.Status)
+            {
+                _logger.LogInformation("Error while processing your request: " + fieldtripPostResponse.Status + " , Error Message: " + fieldtripPostResponse.ErrorMessage);
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
+                    "Error while processing your request! (Updating FieldTrip Post!).\n"
+                    + fieldtripPostResponse.ErrorMessage;
+                return RedirectToAction("ManagerFieldTripDetail", new { id });
+            }
+            TempData["Success"] = fieldtripPostResponse.SuccessMessage;
+            return RedirectToAction("ManagerFieldTripDetail", new { id });
+        }
+        [HttpPost("FieldTrip/{id:int}/Status/Update")]
+        /*[Route("Manager/FieldTrip/Update/{id:int}")]*/
+        public async Task<IActionResult> ManagerUpdateFieldTripStatus(
+            [FromRoute][Required] int id,
+            [Required] UpdateFieldtripStatusVM updateTrip
+            )
+        {
+            ManagerAPI_URL += "FieldTrip/" + id + "/Status/Update";
+            if (updateTrip.Status.Equals(Constants.Constants.EVENT_STATUS_CLOSED_REGISTRATION) && updateTrip.NumberOfParticipants < 10)
             {
                 ModelState.AddModelError("updateTrip.Status", "Error while processing your request (Updating FieldTrip). Not enough people to closed registration");
                 TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_FIELDTRIP_VALID, updateTrip, jsonOptions);
                 return RedirectToAction("ManagerFieldTripDetail", new { id });
             }
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid && !updateTrip.Status.Equals(Constants.Constants.EVENT_STATUS_POSTPONED))
             {
                 TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_FIELDTRIP_VALID, updateTrip, jsonOptions);
                 return RedirectToAction("ManagerFieldTripDetail", new { id });
@@ -653,7 +1139,8 @@ namespace WebAppMVC.Controllers
             ManagerAPI_URL += "FieldTrip/" + id + "/DayByDay/" + dayId + "/Update";
             if (!ModelState.IsValid)
             {
-                TempData = methcall.SetValidationTempDataWithId(TempData, Constants.Constants.UPDATE_FIELDTRIP_DAYBYDAY_VALID, dayId, updateDayByDay, jsonOptions);
+                //TempData = methcall.SetValidationTempDataWithId(TempData, Constants.Constants.UPDATE_FIELDTRIP_DAYBYDAY_VALID, dayId, updateDayByDay, jsonOptions);
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_FIELDTRIP_DAYBYDAY_VALID, updateDayByDay, jsonOptions);
                 return RedirectToAction("ManagerFieldTripDetail", new { id });
             }
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
@@ -699,7 +1186,8 @@ namespace WebAppMVC.Controllers
             ManagerAPI_URL += "FieldTrip/" + id + "/Inclusion/" + incId + "/Update";
             if (!ModelState.IsValid)
             {
-                TempData = methcall.SetValidationTempDataWithId(TempData, Constants.Constants.UPDATE_FIELDTRIP_INCLUSION_VALID, incId, updateInclusion, jsonOptions);
+                //TempData = methcall.SetValidationTempDataWithId(TempData, Constants.Constants.UPDATE_FIELDTRIP_INCLUSION_VALID, incId, updateInclusion, jsonOptions);
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_FIELDTRIP_INCLUSION_VALID, updateInclusion, jsonOptions);
                 return RedirectToAction("ManagerFieldTripDetail", new { id });
             }
 
@@ -746,7 +1234,8 @@ namespace WebAppMVC.Controllers
             ManagerAPI_URL += "FieldTrip/" + id + "/AdditionalDetail/" + addDeId + "/Update";
             if (!ModelState.IsValid)
             {
-                TempData = methcall.SetValidationTempDataWithId(TempData, Constants.Constants.UPDATE_FIELDTRIP_TOURFEATURES_VALID, addDeId, updateTourFeature, jsonOptions);
+                //TempData = methcall.SetValidationTempDataWithId(TempData, Constants.Constants.UPDATE_FIELDTRIP_TOURFEATURES_VALID, addDeId, updateTourFeature, jsonOptions);
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_FIELDTRIP_TOURFEATURES_VALID, updateTourFeature, jsonOptions);
                 return RedirectToAction("ManagerFieldTripDetail", new { id });
             }
 
@@ -793,7 +1282,8 @@ namespace WebAppMVC.Controllers
             ManagerAPI_URL += "FieldTrip/" + id + "/AdditionalDetail/" + addDeId + "/Update";
             if (!ModelState.IsValid)
             {
-                TempData = methcall.SetValidationTempDataWithId(TempData, Constants.Constants.UPDATE_FIELDTRIP_IMPORTANTTOKNOW_VALID, addDeId, updateImportant, jsonOptions);
+                //TempData = methcall.SetValidationTempDataWithId(TempData, Constants.Constants.UPDATE_FIELDTRIP_IMPORTANTTOKNOW_VALID, addDeId, updateImportant, jsonOptions);
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_FIELDTRIP_IMPORTANTTOKNOW_VALID, updateImportant, jsonOptions);
                 return RedirectToAction("ManagerFieldTripDetail", new { id });
             }
 
@@ -840,7 +1330,8 @@ namespace WebAppMVC.Controllers
             ManagerAPI_URL += "FieldTrip/" + id + "/AdditionalDetail/" + addDeId + "/Update";
             if (!ModelState.IsValid)
             {
-                TempData = methcall.SetValidationTempDataWithId(TempData, Constants.Constants.UPDATE_FIELDTRIP_ACTIVITIESANDTRANSPORTATION_VALID, addDeId, updateActAndTras, jsonOptions);
+                //TempData = methcall.SetValidationTempDataWithId(TempData, Constants.Constants.UPDATE_FIELDTRIP_ACTIVITIESANDTRANSPORTATION_VALID, addDeId, updateActAndTras, jsonOptions);
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_FIELDTRIP_ACTIVITIESANDTRANSPORTATION_VALID, updateActAndTras, jsonOptions);
                 return RedirectToAction("ManagerFieldTripDetail", new { id });
             }
 
@@ -877,7 +1368,6 @@ namespace WebAppMVC.Controllers
             return RedirectToAction("ManagerFieldTripDetail", new { id });
         }
         [HttpPost("FieldTrip/Create")]
-        /*[Route("Manager/Meeting/Update/{id:int}")]*/
         public async Task<IActionResult> ManagerCreateFieldTrip(FieldTripViewModel createFieldTrip)
         {
             ManagerAPI_URL += "FieldTrip/Create";
@@ -905,14 +1395,14 @@ namespace WebAppMVC.Controllers
             if (fieldtripPostResponse == null)
             {
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
-                    "Error while processing your request! (Create FieldTrip!).\n Meeting Not Found!";
+                    "Error while processing your request! (Create FieldTrip Post!).\n FieldTrip Not Found!";
                 return RedirectToAction("ManagerFieldTrip");
             }
             if (!fieldtripPostResponse.Status)
             {
                 _logger.LogInformation("Error while processing your request: " + fieldtripPostResponse.Status + " , Error Message: " + fieldtripPostResponse.ErrorMessage);
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
-                    "Error while processing your request! (Create Meeting Post!).\n"
+                    "Error while processing your request! (Create FieldTrip Post!).\n"
                     + fieldtripPostResponse.ErrorMessage;
                 return RedirectToAction("ManagerFieldTrip");
             }
@@ -921,7 +1411,6 @@ namespace WebAppMVC.Controllers
         }
 
         [HttpPost("FieldTrip/{tripId:int}/Create/DayByDay")]
-        /*[Route("Manager/Meeting/Update/{id:int}")]*/
         public async Task<IActionResult> ManagerCreateFieldTripDayByDay(
             [FromRoute][Required] int tripId,
             [Required] FieldtripDaybyDayViewModel createDayByDay
@@ -952,14 +1441,14 @@ namespace WebAppMVC.Controllers
             if (ftDayByDayResponse == null)
             {
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
-                    "Error while processing your request! (Create FieldTrip!).\n Meeting Not Found!";
+                    "Error while processing your request! (Create FieldTrip!).\n FieldTrip Not Found!";
                 return RedirectToAction("ManagerFieldTripDetail", new { id = tripId });
             }
             if (!ftDayByDayResponse.Status)
             {
                 _logger.LogInformation("Error while processing your request: " + ftDayByDayResponse.Status + " , Error Message: " + ftDayByDayResponse.ErrorMessage);
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
-                    "Error while processing your request! (Create Meeting Post!).\n"
+                    "Error while processing your request! (Create FieldTrip Post!).\n"
                     + ftDayByDayResponse.ErrorMessage;
                 return RedirectToAction("ManagerFieldTripDetail", new { id = tripId });
             }
@@ -968,7 +1457,6 @@ namespace WebAppMVC.Controllers
         }
 
         [HttpPost("FieldTrip/{tripId:int}/Create/Inclusion")]
-        /*[Route("Manager/Meeting/Update/{id:int}")]*/
         public async Task<IActionResult> ManagerCreateFieldTripInclusion(
             [FromRoute][Required] int tripId,
             [Required] FieldtripInclusionViewModel createInclusion
@@ -999,14 +1487,14 @@ namespace WebAppMVC.Controllers
             if (ftInclusionResponse == null)
             {
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
-                    "Error while processing your request! (Create FieldTrip!).\n Meeting Not Found!";
+                    "Error while processing your request! (Create FieldTrip!).\n FieldTrip Not Found!";
                 return RedirectToAction("ManagerFieldTripDetail", new { id = tripId });
             }
             if (!ftInclusionResponse.Status)
             {
                 _logger.LogInformation("Error while processing your request: " + ftInclusionResponse.Status + " , Error Message: " + ftInclusionResponse.ErrorMessage);
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
-                    "Error while processing your request! (Create Meeting Post!).\n"
+                    "Error while processing your request! (Create FieldTrip Post!).\n"
                     + ftInclusionResponse.ErrorMessage;
                 return RedirectToAction("ManagerFieldTripDetail", new { id = tripId });
             }
@@ -1015,7 +1503,6 @@ namespace WebAppMVC.Controllers
         }
 
         [HttpPost("FieldTrip/{tripId:int}/Create/TourFeatures")]
-        /*[Route("Manager/Meeting/Update/{id:int}")]*/
         public async Task<IActionResult> ManagerCreateFieldTripTourFeatures(
             [FromRoute][Required] int tripId,
             [Required] FieldTripAdditionalDetailViewModel createTourFeatures
@@ -1046,14 +1533,14 @@ namespace WebAppMVC.Controllers
             if (ftDayByDayResponse == null)
             {
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
-                    "Error while processing your request! (Create FieldTrip!).\n Meeting Not Found!";
+                    "Error while processing your request! (Create FieldTrip!).\n FieldTrip Not Found!";
                 return RedirectToAction("ManagerFieldTripDetail", new { id = tripId });
             }
             if (!ftDayByDayResponse.Status)
             {
                 _logger.LogInformation("Error while processing your request: " + ftDayByDayResponse.Status + " , Error Message: " + ftDayByDayResponse.ErrorMessage);
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
-                    "Error while processing your request! (Create Meeting Post!).\n"
+                    "Error while processing your request! (Create FieldTrip Post!).\n"
                     + ftDayByDayResponse.ErrorMessage;
                 return RedirectToAction("ManagerFieldTripDetail", new { id = tripId });
             }
@@ -1152,6 +1639,315 @@ namespace WebAppMVC.Controllers
             TempData["Success"] = ftActAndTrasResponse.SuccessMessage;
             return RedirectToAction("ManagerFieldTripDetail", new { id = tripId });
         }
+        [HttpPost("FieldTrip/{fieldtripId:int}/Create/Media")]
+        public async Task<IActionResult> ManagerCreateFieldTripMedia(
+            [Required][FromRoute] int fieldtripId,
+            [Required] FieldtripMediaViewModel createMedia)
+        {
+            ManagerAPI_URL += "FieldTrip/" + fieldtripId + "/Create/Media";
+            if (!ModelState.IsValid)
+            {
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.CREATE_FIELDTRIP_MEDIA_VALID, createMedia, jsonOptions);
+                return RedirectToAction("ManagerFieldTripDetail", new { id = fieldtripId });
+            }
+
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
+
+            IFormFile photo = createMedia.ImageUpload;
+
+            if (photo != null && photo.Length > 0)
+            {
+                string connectionString = _config.GetSection(Constants.Constants.SYSTEM_DEFAULT_AZURE_CONNECTION_STRING).Value;
+                string defaultUrl = _config.GetSection(Constants.Constants.SYSTEM_DEFAULT_AZURE_DEFAULT_BLOB_FOLDER_URL).Value;
+                string containerName = _config.GetSection(Constants.Constants.SYSTEM_DEFAULT_AZURE_DEFAULT_BLOB_FOLDER_NAME).Value;
+                string fieldtripContainerName = _config.GetValue<string>(Constants.Constants.SYSTEM_DEFAULT_AZURE_BLOB_FIELDTRIP_FOLDER_URL);
+
+                BlobServiceClient _blobServiceClient = new BlobServiceClient(connectionString);
+                BlobContainerClient _blobContainerClient = _blobServiceClient.GetBlobContainerClient(containerName);
+
+                var azureResponse = new List<BlobContentInfo>();
+                string filename = photo.FileName;
+                string uniqueBlobName = fieldtripContainerName + $"{Guid.NewGuid()}-{filename}";
+                using (var memoryStream = new MemoryStream())
+                {
+                    photo.CopyTo(memoryStream);
+                    memoryStream.Position = 0;
+
+                    var client = await _blobContainerClient.UploadBlobAsync(uniqueBlobName, memoryStream);
+                    azureResponse.Add(client);
+                }
+
+                var image = defaultUrl + uniqueBlobName;
+
+                createMedia.Image = image;
+            }
+
+            createMedia.ImageUpload = null;
+
+            var tripMediaResponse = await methcall.CallMethodReturnObject<GetFieldTripMediaResponse>(
+                    _httpClient: _httpClient,
+                    options: jsonOptions,
+                    methodName: Constants.Constants.POST_METHOD,
+                    url: ManagerAPI_URL,
+                    inputType: createMedia,
+                    accessToken: accToken,
+                    _logger: _logger);
+            if (tripMediaResponse == null)
+            {
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
+                    "Error while processing your request! (Create Fieldtrip Media!).\n Fieldtrip Not Found!";
+                return RedirectToAction("ManagerFieldTripDetail", new { id = fieldtripId });
+            }
+            if (!tripMediaResponse.Status)
+            {
+                _logger.LogInformation("Error while processing your request: " + tripMediaResponse.Status + " , Error Message: " + tripMediaResponse.ErrorMessage);
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
+                    "Error while processing your request! (Create Fieldtrip Media!).\n"
+                    + tripMediaResponse.ErrorMessage;
+                return RedirectToAction("ManagerFieldTripDetail", new { id = fieldtripId });
+            }
+            TempData[Constants.Constants.ALERT_DEFAULT_SUCCESS_NAME] = tripMediaResponse.SuccessMessage;
+            return RedirectToAction("ManagerFieldTripDetail", new { id = fieldtripId });
+        }
+        [HttpPost("FieldTrip/{fieldtripId:int}/Media/Spotlight/{fieldtripMediaId:int}/Update")]
+        public async Task<IActionResult> ManagerUpdateFieldTripMediaSpotlight(
+            [Required][FromRoute] int fieldtripId,
+            [Required][FromRoute] int fieldtripMediaId,
+            [FromForm] FieldtripMediaViewModel? updateMediaSpotlight)
+        {
+            ManagerAPI_URL += "FieldTrip/" + fieldtripId + "/Media/" + fieldtripMediaId + "/Update";
+            if (!ModelState.IsValid)
+            {
+                updateMediaSpotlight.ImageUpload = null;
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_FIELDTRIP_MEDIA_VALID, updateMediaSpotlight, jsonOptions);
+                return RedirectToAction("ManagerFieldTripDetail", new { id = fieldtripId });
+            }
+
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
+
+            IFormFile photo = updateMediaSpotlight.ImageUpload;
+
+            if (photo != null && photo.Length > 0)
+            {
+                string connectionString = _config.GetSection(Constants.Constants.SYSTEM_DEFAULT_AZURE_CONNECTION_STRING).Value;
+                string defaultUrl = _config.GetSection(Constants.Constants.SYSTEM_DEFAULT_AZURE_DEFAULT_BLOB_FOLDER_URL).Value;
+                string containerName = _config.GetSection(Constants.Constants.SYSTEM_DEFAULT_AZURE_DEFAULT_BLOB_FOLDER_NAME).Value;
+                string fieldtripContainerName = _config.GetValue<string>(Constants.Constants.SYSTEM_DEFAULT_AZURE_BLOB_FIELDTRIP_FOLDER_URL);
+
+                BlobServiceClient _blobServiceClient = new BlobServiceClient(connectionString);
+                BlobContainerClient _blobContainerClient = _blobServiceClient.GetBlobContainerClient(containerName);
+
+                var azureResponse = new List<BlobContentInfo>();
+                string filename = photo.FileName;
+                string uniqueBlobName = fieldtripContainerName + $"{Guid.NewGuid()}-{filename}";
+                using (var memoryStream = new MemoryStream())
+                {
+                    photo.CopyTo(memoryStream);
+                    memoryStream.Position = 0;
+
+                    var client = await _blobContainerClient.UploadBlobAsync(uniqueBlobName, memoryStream);
+                    if (updateMediaSpotlight.Image.Contains(defaultUrl + fieldtripContainerName))
+                    {
+                        string photoName = fieldtripContainerName + updateMediaSpotlight.Image.Substring((defaultUrl + fieldtripContainerName).Length);
+                        await _blobContainerClient.DeleteBlobIfExistsAsync(photoName);
+                    }
+                    azureResponse.Add(client);
+                }
+
+                var image = defaultUrl + uniqueBlobName;
+
+                updateMediaSpotlight.Image = image;
+            }
+
+            updateMediaSpotlight.ImageUpload = null;
+
+            var tripMediaResponse = await methcall.CallMethodReturnObject<GetFieldTripMediaResponse>(
+                    _httpClient: _httpClient,
+                    options: jsonOptions,
+                    methodName: Constants.Constants.PUT_METHOD,
+                    url: ManagerAPI_URL,
+                    inputType: updateMediaSpotlight,
+                    accessToken: accToken,
+                    _logger: _logger);
+            if (tripMediaResponse == null)
+            {
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
+                    "Error while processing your request! (Update Fieldtrip Media!).\n Fieldtrip Not Found!";
+                return RedirectToAction("ManagerFieldTripDetail", new { id = fieldtripId });
+            }
+            if (!tripMediaResponse.Status)
+            {
+                _logger.LogInformation("Error while processing your request: " + tripMediaResponse.Status + " , Error Message: " + tripMediaResponse.ErrorMessage);
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
+                    "Error while processing your request! (Update Fieldtrip Media!).\n"
+                    + tripMediaResponse.ErrorMessage;
+                return RedirectToAction("ManagerFieldTripDetail", new { id = fieldtripId });
+            }
+            TempData[Constants.Constants.ALERT_DEFAULT_SUCCESS_NAME] = tripMediaResponse.SuccessMessage;
+            return RedirectToAction("ManagerFieldTripDetail", new { id = fieldtripId });
+        }
+        [HttpPost("FieldTrip/{fieldtripId:int}/Media/Additional/{contestMediaId:int}/Update")]
+        public async Task<IActionResult> ManagerUpdateFieldTripMediaAdditional(
+            [Required][FromRoute] int fieldtripId,
+            [Required][FromRoute] int fieldtripMediaId,
+            [FromForm] FieldtripMediaViewModel? updateMediaAdditional)
+        {
+            ManagerAPI_URL += "FieldTrip/" + fieldtripId + "/Media/" + fieldtripMediaId + "/Update";
+            if (!ModelState.IsValid)
+            {
+                updateMediaAdditional.ImageUpload = null;
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_FIELDTRIP_MEDIA_VALID, updateMediaAdditional, jsonOptions);
+                return RedirectToAction("ManagerFieldTripDetail", new { id = fieldtripId });
+            }
+
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
+
+            IFormFile photo = updateMediaAdditional.ImageUpload;
+
+            if (photo != null && photo.Length > 0)
+            {
+                string connectionString = _config.GetSection(Constants.Constants.SYSTEM_DEFAULT_AZURE_CONNECTION_STRING).Value;
+                string defaultUrl = _config.GetSection(Constants.Constants.SYSTEM_DEFAULT_AZURE_DEFAULT_BLOB_FOLDER_URL).Value;
+                string containerName = _config.GetSection(Constants.Constants.SYSTEM_DEFAULT_AZURE_DEFAULT_BLOB_FOLDER_NAME).Value;
+                string fieldtripContainerName = _config.GetValue<string>(Constants.Constants.SYSTEM_DEFAULT_AZURE_BLOB_FIELDTRIP_FOLDER_URL);
+
+                BlobServiceClient _blobServiceClient = new BlobServiceClient(connectionString);
+                BlobContainerClient _blobContainerClient = _blobServiceClient.GetBlobContainerClient(containerName);
+
+                var azureResponse = new List<BlobContentInfo>();
+                string filename = photo.FileName;
+                string uniqueBlobName = fieldtripContainerName + $"{Guid.NewGuid()}-{filename}";
+                using (var memoryStream = new MemoryStream())
+                {
+                    photo.CopyTo(memoryStream);
+                    memoryStream.Position = 0;
+
+                    var client = await _blobContainerClient.UploadBlobAsync(uniqueBlobName, memoryStream);
+                    if (updateMediaAdditional.Image.Contains(defaultUrl + fieldtripContainerName))
+                    {
+                        string photoName = fieldtripContainerName + updateMediaAdditional.Image.Substring((defaultUrl + fieldtripContainerName).Length);
+                        await _blobContainerClient.DeleteBlobIfExistsAsync(photoName);
+                    }
+                    azureResponse.Add(client);
+                }
+
+                var image = defaultUrl + uniqueBlobName;
+
+                updateMediaAdditional.Image = image;
+            }
+
+            updateMediaAdditional.ImageUpload = null;
+
+            var tripMediaResponse = await methcall.CallMethodReturnObject<GetFieldTripMediaResponse>(
+                    _httpClient: _httpClient,
+                    options: jsonOptions,
+                    methodName: Constants.Constants.PUT_METHOD,
+                    url: ManagerAPI_URL,
+                    inputType: updateMediaAdditional,
+                    accessToken: accToken,
+                    _logger: _logger);
+            if (tripMediaResponse == null)
+            {
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
+                    "Error while processing your request! (Update Fieldtrip Media!).\n Fieldtrip Not Found!";
+                return RedirectToAction("ManagerFieldTripDetail", new { id = fieldtripId });
+            }
+            if (!tripMediaResponse.Status)
+            {
+                _logger.LogInformation("Error while processing your request: " + tripMediaResponse.Status + " , Error Message: " + tripMediaResponse.ErrorMessage);
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
+                    "Error while processing your request! (Update Fieldtrip Media!).\n"
+                    + tripMediaResponse.ErrorMessage;
+                return RedirectToAction("ManagerFieldTripDetail", new { id = fieldtripId });
+            }
+            TempData[Constants.Constants.ALERT_DEFAULT_SUCCESS_NAME] = tripMediaResponse.SuccessMessage;
+            return RedirectToAction("ManagerFieldTripDetail", new { id = fieldtripId });
+        }
+        [HttpPost("FieldTrip/{fieldtripId:int}/Media/LocationMap/{fieldtripMediaId:int}/Update")]
+        public async Task<IActionResult> ManagerUpdateFieldTripMediaLocation(
+            [Required][FromRoute] int fieldtripId,
+            [Required][FromRoute] int fieldtripMediaId,
+            [FromForm] FieldtripMediaViewModel? updateMediaLocationMap)
+        {
+            ManagerAPI_URL += "FieldTrip/" + fieldtripId + "/Media/" + fieldtripMediaId + "/Update";
+            if (!ModelState.IsValid)
+            {
+                updateMediaLocationMap.ImageUpload = null;
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_CONTEST_MEDIA_VALID, updateMediaLocationMap, jsonOptions);
+                return RedirectToAction("ManagerFieldTripDetail", new { id = fieldtripId });
+            }
+
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
+
+            IFormFile photo = updateMediaLocationMap.ImageUpload;
+
+            if (photo != null && photo.Length > 0)
+            {
+                string connectionString = _config.GetSection(Constants.Constants.SYSTEM_DEFAULT_AZURE_CONNECTION_STRING).Value;
+                string defaultUrl = _config.GetSection(Constants.Constants.SYSTEM_DEFAULT_AZURE_DEFAULT_BLOB_FOLDER_URL).Value;
+                string containerName = _config.GetSection(Constants.Constants.SYSTEM_DEFAULT_AZURE_DEFAULT_BLOB_FOLDER_NAME).Value;
+                string fieldtripContainerName = _config.GetValue<string>(Constants.Constants.SYSTEM_DEFAULT_AZURE_BLOB_FIELDTRIP_FOLDER_URL);
+
+                BlobServiceClient _blobServiceClient = new BlobServiceClient(connectionString);
+                BlobContainerClient _blobContainerClient = _blobServiceClient.GetBlobContainerClient(containerName);
+
+                var azureResponse = new List<BlobContentInfo>();
+                string filename = photo.FileName;
+                string uniqueBlobName = fieldtripContainerName + $"{Guid.NewGuid()}-{filename}";
+                using (var memoryStream = new MemoryStream())
+                {
+                    photo.CopyTo(memoryStream);
+                    memoryStream.Position = 0;
+
+                    var client = await _blobContainerClient.UploadBlobAsync(uniqueBlobName, memoryStream);
+                    if (updateMediaLocationMap.Image.Contains(defaultUrl + fieldtripContainerName))
+                    {
+                        string photoName = fieldtripContainerName + updateMediaLocationMap.Image.Substring((defaultUrl + fieldtripContainerName).Length);
+                        await _blobContainerClient.DeleteBlobIfExistsAsync(photoName);
+                    }
+                    azureResponse.Add(client);
+                }
+
+                var image = defaultUrl + uniqueBlobName;
+
+                updateMediaLocationMap.Image = image;
+            }
+
+            updateMediaLocationMap.ImageUpload = null;
+
+            var tripMediaResponse = await methcall.CallMethodReturnObject<GetFieldTripMediaResponse>(
+                    _httpClient: _httpClient,
+                    options: jsonOptions,
+                    methodName: Constants.Constants.PUT_METHOD,
+                    url: ManagerAPI_URL,
+                    inputType: updateMediaLocationMap,
+                    accessToken: accToken,
+                    _logger: _logger);
+            if (tripMediaResponse == null)
+            {
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
+                    "Error while processing your request! (Update Fieldtrip Media!).\n Fieldtrip Not Found!";
+                return RedirectToAction("ManagerFieldTripDetail", new { id = fieldtripId });
+            }
+            if (!tripMediaResponse.Status)
+            {
+                _logger.LogInformation("Error while processing your request: " + tripMediaResponse.Status + " , Error Message: " + tripMediaResponse.ErrorMessage);
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
+                    "Error while processing your request! (Update Fieldtrip Media!).\n"
+                    + tripMediaResponse.ErrorMessage;
+                return RedirectToAction("ManagerFieldTripDetail", new { id = fieldtripId });
+            }
+            TempData[Constants.Constants.ALERT_DEFAULT_SUCCESS_NAME] = tripMediaResponse.SuccessMessage;
+            return RedirectToAction("ManagerContestDetail", new { id = fieldtripId });
+        }
 
         [HttpPost("FieldTrip/{id:int}/Cancel")]
         public async Task<IActionResult> ManagerCancelFieldTrip(
@@ -1166,7 +1962,7 @@ namespace WebAppMVC.Controllers
 
             string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
 
-            var fieldtripPostResponse = await methcall.CallMethodReturnObject<GetMeetingPostResponse>(
+            var fieldtripPostResponse = await methcall.CallMethodReturnObject<GetFieldTripPostResponse>(
                                 _httpClient: _httpClient,
                                 options: jsonOptions,
                                 methodName: Constants.Constants.GET_METHOD,
@@ -1176,7 +1972,7 @@ namespace WebAppMVC.Controllers
             if (fieldtripPostResponse == null)
             {
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
-                    "Error while processing your request! (Updating FieldTrip!).\n Meeting Not Found!";
+                    "Error while processing your request! (Updating FieldTrip!).\n FieldTrip Not Found!";
                 return RedirectToAction("ManagerFieldTrip");
             }
             if (!fieldtripPostResponse.Status)
@@ -1195,6 +1991,8 @@ namespace WebAppMVC.Controllers
         {
             _logger.LogInformation(search);
             string LocationAPI_URL_All = ManagerAPI_URL + "Location/AllAddresses";
+            string ManagerNameAPI_URL = ManagerAPI_URL + "Manager/Profile";
+            string ManagerStaffListAPI_URL = ManagerAPI_URL + "Manager/Staff";
 
             if (search != null || !string.IsNullOrEmpty(search))
             {
@@ -1203,12 +2001,14 @@ namespace WebAppMVC.Controllers
             }
             else ManagerAPI_URL += "Contest/All";
 
-            dynamic testmodel3 = new ExpandoObject();
+            ManagerContestIndexVM managerContestListVM = new();
 
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
 
             string? role = HttpContext.Session.GetString(Constants.Constants.ROLE_NAME);
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
+            string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
 
             var listLocationResponse = await methcall.CallMethodReturnObject<GetLocationAddressResponseByList>(
                 _httpClient: _httpClient,
@@ -1224,27 +2024,53 @@ namespace WebAppMVC.Controllers
                 url: ManagerAPI_URL,
                 inputType: role,
                 _logger: _logger);
+            var managerDetails = await methcall.CallMethodReturnObject<GetMemberProfileResponse>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: Constants.Constants.POST_METHOD,
+                url: ManagerNameAPI_URL,
+                _logger: _logger,
+                inputType: usrId,
+                accessToken: accToken);
 
-            if (listContestResponse == null || listLocationResponse == null)
+            var listStaffNameResponse = await methcall.CallMethodReturnObject<GetListStaffName>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: Constants.Constants.GET_METHOD,
+                url: ManagerStaffListAPI_URL,
+                accessToken: accToken,
+                _logger: _logger);
+
+            if (
+                listContestResponse == null || 
+                listLocationResponse == null
+                )
             {
                 _logger.LogInformation(
                     "Error while processing your request! (Getting List Contest!). List was Empty!: " + listContestResponse);
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting List Contest!).\n List was Empty!";
-                return RedirectToAction("ManagerIndex");
+                return View("ManagerIndex");
             }
             else
-            if (!listContestResponse.Status || !listLocationResponse.Status)
+            if (
+                !listContestResponse.Status || 
+                !listLocationResponse.Status
+                )
             {
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
-                    "Error while processing your request! (Getting List Meeting!).\n"
+                    "Error while processing your request! (Getting List Contest!).\n"
                     + listContestResponse.ErrorMessage + "\n" + listLocationResponse.ErrorMessage;
-                return RedirectToAction("ManagerIndex");
+                return View("ManagerIndex");
             }
-            testmodel3.CreateContest = methcall.GetValidationTempData<ContestViewModel>(this, TempData, Constants.Constants.CREATE_CONTEST_VALID, "createContest", jsonOptions);
-            testmodel3.Contests = listContestResponse.Data;
-            testmodel3.Locations = listLocationResponse.Data;
-            return View(testmodel3);
+            managerContestListVM.SetCreateMeeting(
+                methcall.GetValidationTempData<CreateNewContestVM>(this, TempData, Constants.Constants.CREATE_CONTEST_VALID, "createContest", jsonOptions),
+                managerDetails.Data.FullName,
+                methcall.GetStaffNameSelectableList(managerContestListVM.CreateContest.Incharge, listStaffNameResponse.Data)
+                );
+            managerContestListVM.ContestList = listContestResponse.Data;
+            managerContestListVM.Roads = listLocationResponse.Data;
+            return View(managerContestListVM);
         }
         [HttpGet("Contest/{id:int}")]
         /*[Route("Manager/Contest/{id:int}")]*/
@@ -1253,8 +2079,9 @@ namespace WebAppMVC.Controllers
             )
         {
             string ManagerContestDetailAPI_URL = ManagerAPI_URL + "Contest/AllParticipants/" + id;
+            string ManagerStaffListAPI_URL = ManagerAPI_URL + "Manager/Staff";
             ManagerAPI_URL += "Contest/" + id;
-            dynamic contestDetailBigModel = new ExpandoObject();
+            ManagerContestDetailsVM managerContestDetailsVM = new();
 
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
@@ -1264,18 +2091,25 @@ namespace WebAppMVC.Controllers
             string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
 
             var contestPostResponse = await methcall.CallMethodReturnObject<GetContestPostResponse>(
-                                _httpClient: _httpClient,
-                                options: jsonOptions,
-                                methodName: Constants.Constants.GET_METHOD,
-                                url: ManagerAPI_URL,
-                                _logger: _logger);
+                                            _httpClient: _httpClient,
+                                            options: jsonOptions,
+                                            methodName: Constants.Constants.GET_METHOD,
+                                            url: ManagerAPI_URL,
+                                            _logger: _logger);
             var contestpartPostResponse = await methcall.CallMethodReturnObject<GetListContestParticipation>(
-                                _httpClient: _httpClient,
-                                options: jsonOptions,
-                                methodName: Constants.Constants.GET_METHOD,
-                                url: ManagerContestDetailAPI_URL,
-                                accessToken: accToken,
-                                _logger: _logger);
+                                            _httpClient: _httpClient,
+                                            options: jsonOptions,
+                                            methodName: Constants.Constants.GET_METHOD,
+                                            url: ManagerContestDetailAPI_URL,
+                                            accessToken: accToken,
+                                            _logger: _logger);
+            var listStaffNameResponse = await methcall.CallMethodReturnObject<GetListStaffName>(
+                                            _httpClient: _httpClient,
+                                            options: jsonOptions,
+                                            methodName: Constants.Constants.GET_METHOD,
+                                            url: ManagerStaffListAPI_URL,
+                                            accessToken: accToken,
+                                            _logger: _logger);
             if (contestPostResponse == null)
             {
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
@@ -1290,34 +2124,108 @@ namespace WebAppMVC.Controllers
                     + contestPostResponse.ErrorMessage;
                 return RedirectToAction("ManagerContest");
             }
-            contestPostResponse.Data.ContestParticipants = contestpartPostResponse.Data;
-            contestDetailBigModel.UpdateContest = methcall.GetValidationTempData<ContestViewModel>(this, TempData, Constants.Constants.UPDATE_CONTEST_VALID, "updateContest", jsonOptions);
-            contestDetailBigModel.CreateContestMedia = methcall.GetValidationTempData<ContestMediaViewModel>(this, TempData, Constants.Constants.CREATE_CONTEST_MEDIA_VALID, "createMedia", jsonOptions);
+            managerContestDetailsVM.ContestDetails = contestPostResponse.Data;
+            managerContestDetailsVM.ContestParticipants = contestPostResponse.Data.ContestParticipants = contestpartPostResponse.Data;
 
-            contestDetailBigModel.SelectListStatus = methcall.GetManagerEventStatusSelectableList(contestPostResponse.Data.Status);
-            contestDetailBigModel.ContestDetails = contestPostResponse.Data;
-            contestDetailBigModel.ContestParticipants = contestpartPostResponse.Data;
+            managerContestDetailsVM.SetIfUpdateContestDetails(
+                methcall.GetValidationTempData<UpdateContestDetailsVM>(this, TempData, Constants.Constants.UPDATE_CONTEST_VALID, "updateContest", jsonOptions),
+                _mapper.Map<UpdateContestDetailsVM>(managerContestDetailsVM.ContestDetails),
+                methcall.GetManagerEventStatusSelectableList(contestPostResponse.Data.Status),
+                methcall.GetStaffNameSelectableList(managerContestDetailsVM.ContestDetails.Incharge, listStaffNameResponse.Data)
+                );
+            managerContestDetailsVM.SetIfUpdateContestStatus(
+                methcall.GetValidationTempData<UpdateContestStatusVM>(this, TempData, Constants.Constants.UPDATE_CONTEST_STATUS_VALID, "updateContestStatus", jsonOptions),
+                contestPostResponse.Data,
+                methcall.GetManagerEventStatusSelectableList(contestPostResponse.Data.Status)
+                );
+            managerContestDetailsVM.SetIfCreateContestMedia(
+                methcall.GetValidationTempData<ContestMediaViewModel>(this, TempData, Constants.Constants.CREATE_CONTEST_MEDIA_VALID, "createMedia", jsonOptions)
+                );
+            managerContestDetailsVM.SetIfUpdateContestMediaSpotlight(
+                methcall.GetValidationTempData<ContestMediaViewModel>(this, TempData, Constants.Constants.UPDATE_CONTEST_MEDIA_VALID, "updateMediaSpotlight", jsonOptions),
+                managerContestDetailsVM.ContestDetails.SpotlightImage
+                );
+            managerContestDetailsVM.SetIfUpdateContestMediaLocationMap(
+                methcall.GetValidationTempData<ContestMediaViewModel>(this, TempData, Constants.Constants.UPDATE_CONTEST_MEDIA_VALID, "updateMediaLocationMap", jsonOptions),
+                managerContestDetailsVM.ContestDetails.LocationMapImage
+                );
+            managerContestDetailsVM.SetIfUpdateContestMediaAdditional(
+                methcall.GetValidationTempData<ContestMediaViewModel>(this, TempData, Constants.Constants.UPDATE_CONTEST_MEDIA_VALID, "updateMediaAdditional", jsonOptions)
+                );
 
-            return View(contestDetailBigModel);
+            return View(managerContestDetailsVM);
         }
         [HttpPost("Contest/{id:int}/Update")]
         public async Task<IActionResult> ManagerUpdateContestDetail(
             [FromRoute][Required] int id,
-            [Required] ContestViewModel updateContest
+            [FromForm][Required] UpdateContestDetailsVM updateContest
             )
         {
-            string ManagerContestDetailAPI_URL = ManagerAPI_URL + "Contest/AllParticipants/" + id;
-            ManagerAPI_URL += "Contest/Update/" + id;
-            if(updateContest.Status.Equals(Constants.Constants.EVENT_STATUS_CLOSED_REGISTRATION) && (updateContest.NumberOfParticipantsLimit - updateContest.NumberOfParticipants) < 10)
+            //string ManagerContestDetailAPI_URL = ManagerAPI_URL + "Contest/AllParticipants/" + id;
+            ManagerAPI_URL += "Contest/" + id + "/Update";
+            if(updateContest.Status.Equals(Constants.Constants.EVENT_STATUS_CLOSED_REGISTRATION) && updateContest.NumberOfParticipants < 10)
             {
                 ModelState.AddModelError("updateContest.Status", "Error while processing your request (Updating Contest). Not enough people to closed registration");
                 TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_CONTEST_VALID, updateContest, jsonOptions);
-                TempData["Error"] = "Not enough people to close registration";
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] = "Not enough people to close registration";
                 return RedirectToAction("ManagerContestDetail", new { id });
             }
             if (!ModelState.IsValid)
             {
+                _logger.LogError(ModelState.Values.ToString());
                 TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_CONTEST_VALID, updateContest, jsonOptions);
+                return RedirectToAction("ManagerContestDetail", "Manager", new { id });
+            }
+
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
+
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
+
+            var contestPostResponse = await methcall.CallMethodReturnObject<GetContestPostResponse>(
+                                _httpClient: _httpClient,
+                                options: jsonOptions,
+                                methodName: Constants.Constants.PUT_METHOD,
+                                url: ManagerAPI_URL,
+                                inputType: updateContest,
+                                accessToken: accToken,
+                                _logger: _logger);
+            if (contestPostResponse == null)
+            {
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
+                    "Error while processing your request! (Updating Contest!).\n Contest Not Found!";
+                return RedirectToAction("ManagerContestDetail", "Manager", new { id });
+            }
+            if (!contestPostResponse.Status)
+            {
+                _logger.LogInformation("Error while processing your request: " + contestPostResponse.Status + " , Error Message: " + contestPostResponse.ErrorMessage);
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
+                    "Error while processing your request! (Updating Contest Post!).\n"
+                    + contestPostResponse.ErrorMessage;
+                return RedirectToAction("ManagerContestDetail", "Manager", new { id });
+            }
+            TempData[Constants.Constants.ALERT_DEFAULT_SUCCESS_NAME] = contestPostResponse.SuccessMessage;
+            return RedirectToAction("ManagerContestDetail", "Manager", new { id });
+        }
+        [HttpPost("Contest/{id:int}/Status/Update")]
+        public async Task<IActionResult> ManagerUpdateContestStatus(
+            [FromRoute][Required] int id,
+            [FromForm][Required] UpdateContestStatusVM updateContestStatus
+            )
+        {
+            string ManagerContestDetailAPI_URL = ManagerAPI_URL + "Contest/AllParticipants/" + id;
+            ManagerAPI_URL += "Contest/" + id + "/Status/Update";
+            if (updateContestStatus.Status.Equals(Constants.Constants.EVENT_STATUS_CLOSED_REGISTRATION) && updateContestStatus.NumberOfParticipants < 10)
+            {
+                ModelState.AddModelError("updateContest.Status", "Error while processing your request (Updating Contest). Not enough people to closed registration");
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_CONTEST_STATUS_VALID, updateContestStatus, jsonOptions);
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] = "Not enough people to close registration";
+                return RedirectToAction("ManagerContestDetail", new { id });
+            }
+            if (!ModelState.IsValid && !updateContestStatus.Status.Equals(Constants.Constants.EVENT_STATUS_POSTPONED))
+            {
+                _logger.LogError(ModelState.Values.ToString());
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_CONTEST_STATUS_VALID, updateContestStatus, jsonOptions);
                 return RedirectToAction("ManagerContestDetail", "Manager", new { id });
             }
 
@@ -1333,7 +2241,7 @@ namespace WebAppMVC.Controllers
                                 options: jsonOptions,
                                 methodName: Constants.Constants.PUT_METHOD,
                                 url: ManagerAPI_URL,
-                                inputType: updateContest,
+                                inputType: updateContestStatus,
                                 accessToken: accToken,
                                 _logger: _logger);
             if (contestPostResponse == null)
@@ -1376,7 +2284,7 @@ namespace WebAppMVC.Controllers
                 var contestToUpdate = contestPostResponse.Data;
                 contestToUpdate.ContestParticipants = contestpartPostResponse.Data;
 
-                string ManagerContestEndedAPI_URL = "/api/Manager/Contest/" + id + "/Participant/All/Score/Update";
+                string ManagerContestEndedAPI_URL = "/api/Manager/Contest/" + id + "/Participant/Score/Update";
 
                 var contestLastUpdateResponse = await methcall.CallMethodReturnObject<GetContestEndedUpdateResponse>(
                                 _httpClient: _httpClient,
@@ -1403,12 +2311,14 @@ namespace WebAppMVC.Controllers
                     return RedirectToAction("ManagerContestDetail", "Manager", new { id });
                 }
             }
-            TempData["Success"] = contestPostResponse.SuccessMessage;
+            TempData[Constants.Constants.ALERT_DEFAULT_SUCCESS_NAME] = contestPostResponse.SuccessMessage;
             return RedirectToAction("ManagerContestDetail", "Manager", new { id });
         }
         [HttpPost("Contest/Create")]
         /*[Route("Manager/Contest/Update/{id:int}")]*/
-        public async Task<IActionResult> ManagerCreateContest(ContestViewModel createContest)
+        public async Task<IActionResult> ManagerCreateContest(
+            CreateNewContestVM createContest
+            )
         {
             ManagerAPI_URL += "Contest/Create";
             if (!ModelState.IsValid)
@@ -1449,12 +2359,322 @@ namespace WebAppMVC.Controllers
             TempData["Success"] = contestPostResponse.SuccessMessage;
             return RedirectToAction("ManagerContest");
         }
+        [HttpPost("Contest/{contestId:int}/Create/Media")]
+        public async Task<IActionResult> ManagerCreateContestMedia(
+            [Required][FromRoute] int contestId,
+            [Required] ContestMediaViewModel createMedia)
+        {
+            ManagerAPI_URL += "Contest/" + contestId + "/Create/Media";
+            if (!ModelState.IsValid)
+            {
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.CREATE_CONTEST_MEDIA_VALID, createMedia, jsonOptions);
+                return RedirectToAction("ManagerContestDetail", new { id = contestId });
+            }
+
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
+
+            IFormFile photo = createMedia.ImageUpload;
+
+            if (photo != null && photo.Length > 0)
+            {
+                string connectionString = _config.GetSection(Constants.Constants.SYSTEM_DEFAULT_AZURE_CONNECTION_STRING).Value;
+                string defaultUrl = _config.GetSection(Constants.Constants.SYSTEM_DEFAULT_AZURE_DEFAULT_BLOB_FOLDER_URL).Value;
+                string containerName = _config.GetSection(Constants.Constants.SYSTEM_DEFAULT_AZURE_DEFAULT_BLOB_FOLDER_NAME).Value;
+                string contestContainerName = _config.GetValue<string>(Constants.Constants.SYSTEM_DEFAULT_AZURE_BLOB_CONTEST_FOLDER_URL);
+
+                BlobServiceClient _blobServiceClient = new BlobServiceClient(connectionString);
+                BlobContainerClient _blobContainerClient = _blobServiceClient.GetBlobContainerClient(containerName);
+
+                var azureResponse = new List<BlobContentInfo>();
+                string filename = photo.FileName;
+                string uniqueBlobName = contestContainerName + $"{Guid.NewGuid()}-{filename}";
+                using (var memoryStream = new MemoryStream())
+                {
+                    photo.CopyTo(memoryStream);
+                    memoryStream.Position = 0;
+
+                    var client = await _blobContainerClient.UploadBlobAsync(uniqueBlobName, memoryStream);
+                    azureResponse.Add(client);
+                }
+
+                var image = defaultUrl + uniqueBlobName;
+
+                createMedia.Image = image;
+            }
+
+            createMedia.ImageUpload = null;
+
+            var meetMediaResponse = await methcall.CallMethodReturnObject<GetContestMediaResponse>(
+                    _httpClient: _httpClient,
+                    options: jsonOptions,
+                    methodName: Constants.Constants.POST_METHOD,
+                    url: ManagerAPI_URL,
+                    inputType: createMedia,
+                    accessToken: accToken,
+                    _logger: _logger);
+            if (meetMediaResponse == null)
+            {
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
+                    "Error while processing your request! (Create Contest Media!).\n Contest Not Found!";
+                return RedirectToAction("ManagerContestDetail", new { id = contestId });
+            }
+            if (!meetMediaResponse.Status)
+            {
+                _logger.LogInformation("Error while processing your request: " + meetMediaResponse.Status + " , Error Message: " + meetMediaResponse.ErrorMessage);
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
+                    "Error while processing your request! (Create Contest Media!).\n"
+                    + meetMediaResponse.ErrorMessage;
+                return RedirectToAction("ManagerContestDetail", new { id = contestId });
+            }
+            TempData[Constants.Constants.ALERT_DEFAULT_SUCCESS_NAME] = meetMediaResponse.SuccessMessage;
+            return RedirectToAction("ManagerContestDetail", new { id = contestId });
+        }
+
+        [HttpPost("Contest/{contestId:int}/Media/Spotlight/{contestMediaId:int}/Update")]
+        public async Task<IActionResult> ManagerUpdateContestMediaSpotlight(
+            [Required][FromRoute] int contestId,
+            [Required][FromRoute] int contestMediaId,
+            [FromForm] ContestMediaViewModel? updateMediaSpotlight)
+        {
+            ManagerAPI_URL += "Contest/" + contestId + "/Media/" + contestMediaId + "/Update";
+            if (!ModelState.IsValid)
+            {
+                updateMediaSpotlight.ImageUpload = null;
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_CONTEST_MEDIA_VALID, updateMediaSpotlight, jsonOptions);
+                return RedirectToAction("ManagerContestDetail", new { id = contestId });
+            }
+
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
+
+            IFormFile photo = updateMediaSpotlight.ImageUpload;
+
+            if (photo != null && photo.Length > 0)
+            {
+                string connectionString = _config.GetSection(Constants.Constants.SYSTEM_DEFAULT_AZURE_CONNECTION_STRING).Value;
+                string defaultUrl = _config.GetSection(Constants.Constants.SYSTEM_DEFAULT_AZURE_DEFAULT_BLOB_FOLDER_URL).Value;
+                string containerName = _config.GetSection(Constants.Constants.SYSTEM_DEFAULT_AZURE_DEFAULT_BLOB_FOLDER_NAME).Value;
+                string contestContainerName = _config.GetValue<string>(Constants.Constants.SYSTEM_DEFAULT_AZURE_BLOB_CONTEST_FOLDER_URL);
+
+                BlobServiceClient _blobServiceClient = new BlobServiceClient(connectionString);
+                BlobContainerClient _blobContainerClient = _blobServiceClient.GetBlobContainerClient(containerName);
+
+                var azureResponse = new List<BlobContentInfo>();
+                string filename = photo.FileName;
+                string uniqueBlobName = contestContainerName + $"{Guid.NewGuid()}-{filename}";
+                using (var memoryStream = new MemoryStream())
+                {
+                    photo.CopyTo(memoryStream);
+                    memoryStream.Position = 0;
+
+                    var client = await _blobContainerClient.UploadBlobAsync(uniqueBlobName, memoryStream);
+                    if (updateMediaSpotlight.Image.Contains(defaultUrl + contestContainerName))
+                    {
+                        string photoName = contestContainerName + updateMediaSpotlight.Image.Substring((defaultUrl + contestContainerName).Length);
+                        await _blobContainerClient.DeleteBlobIfExistsAsync(photoName);
+                    }
+                    azureResponse.Add(client);
+                }
+
+                var image = defaultUrl + uniqueBlobName;
+
+                updateMediaSpotlight.Image = image;
+            }
+
+            updateMediaSpotlight.ImageUpload = null;
+
+            var meetMediaResponse = await methcall.CallMethodReturnObject<GetContestMediaResponse>(
+                    _httpClient: _httpClient,
+                    options: jsonOptions,
+                    methodName: Constants.Constants.PUT_METHOD,
+                    url: ManagerAPI_URL,
+                    inputType: updateMediaSpotlight,
+                    accessToken: accToken,
+                    _logger: _logger);
+            if (meetMediaResponse == null)
+            {
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
+                    "Error while processing your request! (Update Contest Media!).\n Contest Not Found!";
+                return RedirectToAction("ManagerContestDetail", new { id = contestId });
+            }
+            if (!meetMediaResponse.Status)
+            {
+                _logger.LogInformation("Error while processing your request: " + meetMediaResponse.Status + " , Error Message: " + meetMediaResponse.ErrorMessage);
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
+                    "Error while processing your request! (Update Contest Media!).\n"
+                    + meetMediaResponse.ErrorMessage;
+                return RedirectToAction("ManagerContestDetail", new { id = contestId });
+            }
+            TempData[Constants.Constants.ALERT_DEFAULT_SUCCESS_NAME] = meetMediaResponse.SuccessMessage;
+            return RedirectToAction("ManagerContestDetail", new { id = contestId });
+        }
+        [HttpPost("Contest/{contestId:int}/Media/Additional/{contestMediaId:int}/Update")]
+        public async Task<IActionResult> ManagerUpdateContestMediaAdditional(
+            [Required][FromRoute] int contestId,
+            [Required][FromRoute] int contestMediaId,
+            [FromForm] ContestMediaViewModel? updateMediaAdditional)
+        {
+            ManagerAPI_URL += "Contest/" + contestId + "/Media/" + contestMediaId + "/Update";
+            if (!ModelState.IsValid)
+            {
+                updateMediaAdditional.ImageUpload = null;
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_CONTEST_MEDIA_VALID, updateMediaAdditional, jsonOptions);
+                return RedirectToAction("ManagerContestDetail", new { id = contestId });
+            }
+
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
+
+            IFormFile photo = updateMediaAdditional.ImageUpload;
+
+            if (photo != null && photo.Length > 0)
+            {
+                string connectionString = _config.GetSection(Constants.Constants.SYSTEM_DEFAULT_AZURE_CONNECTION_STRING).Value;
+                string defaultUrl = _config.GetSection(Constants.Constants.SYSTEM_DEFAULT_AZURE_DEFAULT_BLOB_FOLDER_URL).Value;
+                string containerName = _config.GetSection(Constants.Constants.SYSTEM_DEFAULT_AZURE_DEFAULT_BLOB_FOLDER_NAME).Value;
+                string contestContainerName = _config.GetValue<string>(Constants.Constants.SYSTEM_DEFAULT_AZURE_BLOB_CONTEST_FOLDER_URL);
+
+                BlobServiceClient _blobServiceClient = new BlobServiceClient(connectionString);
+                BlobContainerClient _blobContainerClient = _blobServiceClient.GetBlobContainerClient(containerName);
+
+                var azureResponse = new List<BlobContentInfo>();
+                string filename = photo.FileName;
+                string uniqueBlobName = contestContainerName + $"{Guid.NewGuid()}-{filename}";
+                using (var memoryStream = new MemoryStream())
+                {
+                    photo.CopyTo(memoryStream);
+                    memoryStream.Position = 0;
+
+                    var client = await _blobContainerClient.UploadBlobAsync(uniqueBlobName, memoryStream);
+                    if (updateMediaAdditional.Image.Contains(defaultUrl + contestContainerName))
+                    {
+                        string photoName = contestContainerName + updateMediaAdditional.Image.Substring((defaultUrl + contestContainerName).Length);
+                        await _blobContainerClient.DeleteBlobIfExistsAsync(photoName);
+                    }
+                    azureResponse.Add(client);
+                }
+
+                var image = defaultUrl + uniqueBlobName;
+
+                updateMediaAdditional.Image = image;
+            }
+
+            updateMediaAdditional.ImageUpload = null;
+
+            var contestMediaResponse = await methcall.CallMethodReturnObject<GetContestMediaResponse>(
+                    _httpClient: _httpClient,
+                    options: jsonOptions,
+                    methodName: Constants.Constants.PUT_METHOD,
+                    url: ManagerAPI_URL,
+                    inputType: updateMediaAdditional,
+                    accessToken: accToken,
+                    _logger: _logger);
+            if (contestMediaResponse == null)
+            {
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
+                    "Error while processing your request! (Update Contest Media!).\n Contest Not Found!";
+                return RedirectToAction("ManagerContestDetail", new { id = contestId });
+            }
+            if (!contestMediaResponse.Status)
+            {
+                _logger.LogInformation("Error while processing your request: " + contestMediaResponse.Status + " , Error Message: " + contestMediaResponse.ErrorMessage);
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
+                    "Error while processing your request! (Update Contest Media!).\n"
+                    + contestMediaResponse.ErrorMessage;
+                return RedirectToAction("ManagerContestDetail", new { id = contestId });
+            }
+            TempData[Constants.Constants.ALERT_DEFAULT_SUCCESS_NAME] = contestMediaResponse.SuccessMessage;
+            return RedirectToAction("ManagerContestDetail", new { id = contestId });
+        }
+        [HttpPost("Contest/{contestId:int}/Media/LocationMap/{contestMediaId:int}/Update")]
+        public async Task<IActionResult> ManagerUpdateContestMediaLocation(
+            [Required][FromRoute] int contestId,
+            [Required][FromRoute] int contestMediaId,
+            [FromForm] ContestMediaViewModel? updateMediaLocationMap)
+        {
+            ManagerAPI_URL += "Contest/" + contestId + "/Media/" + contestMediaId + "/Update";
+            if (!ModelState.IsValid)
+            {
+                updateMediaLocationMap.ImageUpload = null;
+                TempData = methcall.SetValidationTempData(TempData, Constants.Constants.UPDATE_CONTEST_MEDIA_VALID, updateMediaLocationMap, jsonOptions);
+                return RedirectToAction("ManagerContestDetail", new { id = contestId });
+            }
+
+            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
+                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
+            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
+
+            IFormFile photo = updateMediaLocationMap.ImageUpload;
+
+            if (photo != null && photo.Length > 0)
+            {
+                string connectionString = _config.GetSection(Constants.Constants.SYSTEM_DEFAULT_AZURE_CONNECTION_STRING).Value;
+                string defaultUrl = _config.GetSection(Constants.Constants.SYSTEM_DEFAULT_AZURE_DEFAULT_BLOB_FOLDER_URL).Value;
+                string containerName = _config.GetSection(Constants.Constants.SYSTEM_DEFAULT_AZURE_DEFAULT_BLOB_FOLDER_NAME).Value;
+                string contestContainerName = _config.GetValue<string>(Constants.Constants.SYSTEM_DEFAULT_AZURE_BLOB_CONTEST_FOLDER_URL);
+
+                BlobServiceClient _blobServiceClient = new BlobServiceClient(connectionString);
+                BlobContainerClient _blobContainerClient = _blobServiceClient.GetBlobContainerClient(containerName);
+
+                var azureResponse = new List<BlobContentInfo>();
+                string filename = photo.FileName;
+                string uniqueBlobName = contestContainerName + $"{Guid.NewGuid()}-{filename}";
+                using (var memoryStream = new MemoryStream())
+                {
+                    photo.CopyTo(memoryStream);
+                    memoryStream.Position = 0;
+
+                    var client = await _blobContainerClient.UploadBlobAsync(uniqueBlobName, memoryStream);
+                    if (updateMediaLocationMap.Image.Contains(defaultUrl + contestContainerName))
+                    {
+                        string photoName = contestContainerName + updateMediaLocationMap.Image.Substring((defaultUrl + contestContainerName).Length);
+                        await _blobContainerClient.DeleteBlobIfExistsAsync(photoName);
+                    }
+                    azureResponse.Add(client);
+                }
+
+                var image = defaultUrl + uniqueBlobName;
+
+                updateMediaLocationMap.Image = image;
+            }
+
+            updateMediaLocationMap.ImageUpload = null;
+
+            var contestMediaResponse = await methcall.CallMethodReturnObject<GetContestMediaResponse>(
+                    _httpClient: _httpClient,
+                    options: jsonOptions,
+                    methodName: Constants.Constants.PUT_METHOD,
+                    url: ManagerAPI_URL,
+                    inputType: updateMediaLocationMap,
+                    accessToken: accToken,
+                    _logger: _logger);
+            if (contestMediaResponse == null)
+            {
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
+                    "Error while processing your request! (Update Contest Media!).\n Contest Not Found!";
+                return RedirectToAction("ManagerContestDetail", new { id = contestId });
+            }
+            if (!contestMediaResponse.Status)
+            {
+                _logger.LogInformation("Error while processing your request: " + contestMediaResponse.Status + " , Error Message: " + contestMediaResponse.ErrorMessage);
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
+                    "Error while processing your request! (Update Contest Media!).\n"
+                    + contestMediaResponse.ErrorMessage;
+                return RedirectToAction("ManagerContestDetail", new { id = contestId });
+            }
+            TempData[Constants.Constants.ALERT_DEFAULT_SUCCESS_NAME] = contestMediaResponse.SuccessMessage;
+            return RedirectToAction("ManagerContestDetail", new { id = contestId });
+        }
 
         [HttpPost("Contest/{id:int}/Cancel")]
         public async Task<IActionResult> ManagerCancelContest(
             [FromRoute][Required] int id)
         {
-            ManagerAPI_URL += "Contest/Update/Cancel/" + id;
+            ManagerAPI_URL += "Contest/" + id + "/Cancel";
 
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
@@ -1508,7 +2728,6 @@ namespace WebAppMVC.Controllers
                 managerInvalidDetails.ImagePath = imagePath;
                 managerInvalidDetails.DefaultUserGenderSelectList = methcall.GetUserGenderSelectableList(managerInvalidDetails.Gender);
                 managerInvalids.managerDetail = managerInvalidDetails;
-                TempData["Error"] = "There are invalid details.";
                 return View(managerInvalids);
             }
 
@@ -1721,7 +2940,7 @@ namespace WebAppMVC.Controllers
                     "Error while processing your request! (Getting List Feedback!). List was Empty!: " + listFeedbackResponse);
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting List Feedback!).\n List was Empty!";
-                return RedirectToAction("ManagerIndex");
+                return View("ManagerIndex");
             }
             else
             if (!listFeedbackResponse.Status)
@@ -1729,7 +2948,7 @@ namespace WebAppMVC.Controllers
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting List Feedback!).\n"
                     + listFeedbackResponse.ErrorMessage;
-                return RedirectToAction("ManagerIndex");
+                return View("ManagerIndex");
             }
 
             dynamic listFeedback = new ExpandoObject();
@@ -1767,7 +2986,7 @@ namespace WebAppMVC.Controllers
                     "Error while processing your request! (Getting List Member Status!). List was Empty!: " + listMemberStatusResponse);
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting List Member Status!).\n List was Empty!";
-                return RedirectToAction("ManagerIndex");
+                return View("ManagerIndex");
             }
             else
             if (!listMemberStatusResponse.Status)
@@ -1775,7 +2994,7 @@ namespace WebAppMVC.Controllers
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting List Member Status!).\n"
                     + listMemberStatusResponse.ErrorMessage;
-                return RedirectToAction("ManagerIndex");
+                return View("ManagerIndex");
             }
             managerMemberStatusListVM.MemberStatuses = listMemberStatusResponse.Data;
             foreach(var status in managerMemberStatusListVM.MemberStatuses)
@@ -1785,9 +3004,7 @@ namespace WebAppMVC.Controllers
             return View(managerMemberStatusListVM);
         }
         [HttpPost("MemberStatus/Update")]
-        public async Task<IActionResult> ManagerUpdateMemberStatus(
-            List<GetMemberStatus> listRequest
-            )
+        public async Task<IActionResult> ManagerUpdateMemberStatus(List<GetMemberStatus> listRequest)
         {
             ManagerAPI_URL += "Manager/MemberStatus/Update";
 
@@ -1813,7 +3030,7 @@ namespace WebAppMVC.Controllers
                     "Error while processing your request! (Getting List Member Status!). List was Empty!: " + listMemberStatusResponse);
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting List Member Status!).\n List was Empty!";
-                return RedirectToAction("ManagerMemberStatus");
+                return View("ManagerIndex");
             }
             else
             if (!listMemberStatusResponse.Status)
@@ -1821,18 +3038,13 @@ namespace WebAppMVC.Controllers
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                     "Error while processing your request! (Getting List Member Status!).\n"
                     + listMemberStatusResponse.ErrorMessage;
-                return RedirectToAction("ManagerMemberStatus");
+                return View("ManagerIndex");
             }
             TempData["Success"] = listMemberStatusResponse.SuccessMessage;
             return RedirectToAction("ManagerMemberStatus");
         }
-        [HttpGet("Statistical")]
-        public IActionResult ManagerStatistical()
-        {
-            return View();
-        }
         [HttpGet("Blog")]
-        public async Task<IActionResult> ManagerBlog([FromQuery] string? search)
+        public async Task<IActionResult> ManagerBlog([FromQuery] string search)
         {
             ManagerAPI_URL += "Blog/All";
 
@@ -1872,80 +3084,46 @@ namespace WebAppMVC.Controllers
             return View(managerBlogListVM);
         }
         [HttpGet("Blog/{id:int}")]
-        /*[Route("Manager/Contest/{id:int}")]*/
-        public async Task<IActionResult> ManagerBlogDetail(
-            [FromRoute][Required] int id
+        public async Task<IActionResult> ManagerBlog(
+            [FromQuery] int id
             )
         {
             ManagerAPI_URL += "Blog/" + id;
-            ManagerBlogDetailsVM managerBlogPostDetailsVM = new();
 
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
-
             string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
-            var managerBlogPostVM = await methcall.CallMethodReturnObject<GetBlogPostResponse>(
-                                _httpClient: _httpClient,
-                                options: jsonOptions,
-                                methodName: Constants.Constants.GET_METHOD,
-                                url: ManagerAPI_URL,
-                                accessToken: accToken,
-                                _logger: _logger);
-            if (managerBlogPostVM == null)
+            ManagerBlogIndexVM managerBlogListVM = new();
+
+            var listBlogResponse = await methcall.CallMethodReturnObject<GetListBlogResponse>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: Constants.Constants.GET_METHOD,
+                url: ManagerAPI_URL,
+                accessToken: accToken,
+                _logger: _logger);
+
+            if (listBlogResponse == null)
+            {
+                _logger.LogInformation(
+                    "Error while processing your request! (Getting List Blog Status!). List was Empty!: " + listBlogResponse);
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
+                    "Error while processing your request! (Getting List Blog Status!).\n List was Empty!";
+                return RedirectToAction("ManagerIndex");
+            }
+            else
+            if (!listBlogResponse.Status)
             {
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
-                    "Error while processing your request! (Getting Blog!).\n Blog Not Found!";
-                return RedirectToAction("ManagerBlog");
+                    "Error while processing your request! (Getting List Blog Status!).\n"
+                    + listBlogResponse.ErrorMessage;
+                return RedirectToAction("ManagerIndex");
             }
-            if (!managerBlogPostVM.Status)
-            {
-                _logger.LogInformation("Error while processing your request: " + managerBlogPostVM.Status + " , Error Message: " + managerBlogPostVM.ErrorMessage);
-                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
-                    "Error while processing your request! (Getting Blog Post!).\n"
-                    + managerBlogPostVM.ErrorMessage;
-                return RedirectToAction("ManagerBlog");
-            }
-            managerBlogPostDetailsVM.Blog = managerBlogPostVM.Data;
 
-            return View(managerBlogPostDetailsVM);
-        }
-        [HttpPost("Blog/{id:int}/Status/Update")]
-        public async Task<IActionResult> ManagerUpdateBlogStatus(
-            [FromRoute][Required] int id,
-            [FromForm][Required] UpdateBlogStatus updateBlogStatus)
-        {
-            ManagerAPI_URL += "Blog/" + id + "/Status/Update";
+            managerBlogListVM.Blogs = listBlogResponse.Data;
 
-            if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
-                return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));
-
-            string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
-
-            var blogPostResponse = await methcall.CallMethodReturnObject<GetBlogPostResponse>(
-                                _httpClient: _httpClient,
-                                options: jsonOptions,
-                                methodName: Constants.Constants.PUT_METHOD,
-                                url: ManagerAPI_URL,
-                                accessToken: accToken,
-                                inputType: updateBlogStatus,
-                                _logger: _logger);
-            if (blogPostResponse == null)
-            {
-                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
-                    "Error while processing your request! (Update Blog Status!).\n Post Not Found!";
-                return RedirectToAction("ManagerBlogDetail", new {id = id});
-            }
-            if (!blogPostResponse.Status)
-            {
-                _logger.LogInformation("Error while processing your request: " + blogPostResponse.Status + " , Error Message: " + blogPostResponse.ErrorMessage);
-                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
-                    "Error while processing your request! (Update Blog Status!).\n"
-                    + blogPostResponse.ErrorMessage;
-                return RedirectToAction("ManagerBlogDetail", new { id = id });
-            }
-            TempData[Constants.Constants.ALERT_DEFAULT_SUCCESS_NAME] = "Successfully update Blog Status";
-            return RedirectToAction("ManagerBlogDetail", new { id = id });
+            return View(managerBlogListVM);
         }
         [HttpPost("Blog/{id:int}/Disable")]
         public async Task<IActionResult> ManagerDisableBlog(
@@ -2005,8 +3183,10 @@ namespace WebAppMVC.Controllers
             var listNewsResponse = await methcall.CallMethodReturnObject<GetListNews>(
                 _httpClient: _httpClient,
                 options: jsonOptions,
-                methodName: Constants.Constants.GET_METHOD,
+                methodName: Constants.Constants.POST_METHOD,
                 url: ManagerAPI_URL,
+                accessToken: accToken,
+                inputType: usrId,
                 _logger: _logger);
 
             if (listNewsResponse == null)
@@ -2034,7 +3214,6 @@ namespace WebAppMVC.Controllers
             return View(managerNewsListVM);
         }
         [HttpPost("News/Create")]
-        /*[Route("Manager/Meeting/Update/{id:int}")]*/
         public async Task<IActionResult> ManagerCreateNews([Required] CreateNewNews createNews)
         {
             ManagerAPI_URL += "News/Create";
@@ -2158,7 +3337,6 @@ namespace WebAppMVC.Controllers
             return View(managerNewsPostDetailsVM);
         }
         [HttpPost("News/{id:int}/Update")]
-        /*[Route("Manager/FieldTrip/Update/{id:int}")]*/
         public async Task<IActionResult> ManagerUpdateNewsDetail(
             [FromRoute][Required] int id,
             [Required] UpdateNewsDetail updateNews
@@ -2198,7 +3376,7 @@ namespace WebAppMVC.Controllers
                     if (updateNews.Picture.Contains(defaultUrl + newsContainerName))
                     {
                         string photoName = newsContainerName + updateNews.Picture.Substring((defaultUrl + newsContainerName).Length);
-                        await _blobContainerClient.DeleteBlobAsync(photoName);
+                        await _blobContainerClient.DeleteBlobIfExistsAsync(photoName);
                     }
                     azureResponse.Add(client);
                 }
@@ -2269,11 +3447,6 @@ namespace WebAppMVC.Controllers
             }
             TempData["Success"] = "Successfully disabled News post";
             return RedirectToAction("ManagerNews");
-        }
-        [HttpGet("Notification")]
-        public IActionResult ManagerNotification()
-        {
-            return View();
         }
     }
 }

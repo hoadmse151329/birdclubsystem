@@ -10,7 +10,13 @@ body {
 h1 {
     margin: 20px 0;
 }
-
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    margin-bottom: 180px;
+    margin-top: 120px;
+}
 form {
     margin: 20px 0;
 }
@@ -34,8 +40,8 @@ form {
 }
 
     .gallery-item img {
-        max-width: 100%;
-        height: auto;
+        height: 400px;
+        width: 700px;
     }
 
     .gallery-item .info {

@@ -12,6 +12,7 @@ namespace BAL.ViewModels
     {
         public FieldtripDaybyDayViewModel()
         {
+            DaybyDayId = 0;
             Media = new List<FieldtripMediaViewModel>();
         }
         public int? TripId { get; set; }

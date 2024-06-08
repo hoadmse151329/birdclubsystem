@@ -25,16 +25,17 @@ namespace DAL.Repositories.Implements
         }
 
         public async Task<IEnumerable<Member>> GetSortedMembers(
-            string? memberId = null, 
-            string? memberUserName = null, 
-            string? memberFullName = null, 
+            string? memberId = null,
+            string? memberUserName = null,
+            string? memberFullName = null,
             DateTime? expiryDateTime = null,
             DateTime? registerDateTime = null,
             DateTime? joinDateTime = null,
             List<string>? roles = null, 
             List<string>? statuses = null, 
             string? orderBy = null, 
-            bool isManager = false,
+            bool isManagerGetMemberList = false,
+            bool isManagerGetStaffList = false,
             bool isAdmin = false)
         {
             /*var roadLocationIds = roles != null && roles.Any() ? GetLocationIdListByLocationName(roads).ToList() : new List<int>();
@@ -45,9 +46,13 @@ namespace DAL.Repositories.Implements
             List<string> statusListDefault = new List<string> { "Inactive", "Active", "Expired", "Denied", "Suspended" };
             List<string> roleListDefault = new List<string> { "Member", "Manager", "Staff" };
 
-            if (isManager)
+            if (isManagerGetMemberList)
             {
                 roles = new List<string>() { "Member" };
+            }
+            if (isManagerGetStaffList)
+            {
+                roles = new List<string>() { "Staff" };
             }
 
             if (isAdmin)
@@ -124,7 +129,7 @@ namespace DAL.Repositories.Implements
 
         public async Task<IEnumerable<Member>> UpdateAllMemberStatus(List<Member> members)
         {
-            foreach(var memberViewModel in members)
+            foreach (var memberViewModel in members)
             {
                 var mem = await _context.Members.SingleOrDefaultAsync(mem => mem.MemberId == memberViewModel.MemberId);
                 if (mem != null)
@@ -141,7 +146,8 @@ namespace DAL.Repositories.Implements
                             {
                                 mem.ExpiryDate = DateTime.UtcNow.AddMonths(1);
                             }
-                        } else
+                        }
+                        else
                         if (mem.Status == "Inactive" && memberViewModel.Status == "Denied")
                         {
                             mem.ExpiryDate = null;
@@ -163,7 +169,7 @@ namespace DAL.Repositories.Implements
                 {
                     if (mem.Status != memberViewModel.Status)
                     {
-                        if((mem.Status == "Expired" || mem.Status == "Inactive") && memberViewModel.Status == "Active")
+                        if ((mem.Status == "Expired" || mem.Status == "Inactive") && memberViewModel.Status == "Active")
                         {
                             if (mem.JoinDate == null && mem.Status == "Inactive")
                             {
@@ -177,7 +183,8 @@ namespace DAL.Repositories.Implements
                             {
                                 mem.ExpiryDate = DateTime.UtcNow.AddMonths(1);
                             }
-                        } else
+                        }
+                        else
                         if (mem.Status == "Inactive" && memberViewModel.Status == "Denied")
                         {
                             mem.ExpiryDate = null;

@@ -1,16 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
-
-namespace WebAppMVC.Constants
+﻿namespace WebAppMVC.Constants
 {
-	public static class Constants
-	{
-		public readonly static string ADMIN_URL = "/Admin/Index";
-		public readonly static string MEMBER_URL = "/Home/Index";
-		public readonly static string MANAGER_URL = "/Manager/Index";
-		public readonly static string STAFF_URL = "/Staff/Index";
-		public readonly static string NOTFOUND_URL = "/Auth/NotFound";
-		public readonly static string LOGIN_URL = "/Auth/Login";
-		public readonly static string NEW_MEMBER_CONFIRM_REGISTRATION_URL = "/Auth/SignUp";
+    public static class Constants
+    {
+        public readonly static string ADMIN_URL = "/Admin/Index";
+        public readonly static string MEMBER_URL = "/Home/Index";
+        public readonly static string MANAGER_URL = "/Manager/Index";
+        public readonly static string STAFF_URL = "/Staff/Index";
+        public readonly static string NOTFOUND_URL = "/Auth/NotFound";
+        public readonly static string LOGIN_URL = "/Auth/Login";
+        public readonly static string NEW_MEMBER_CONFIRM_REGISTRATION_URL = "/Auth/SignUp";
 
         public readonly static string NEW_MEMBER_REGISTRATION_COOKIE = "New-Membership-Registration-Cookie";
         public readonly static string NEW_MEMBER_REGISTRATION_TRANSACTION_COOKIE = "New-Membership-Registration-Transaction-Cookie";
@@ -22,7 +20,7 @@ namespace WebAppMVC.Constants
         public readonly static string MEMBERSHIP_RENEWAL_TRANSACTION_COOKIE = "Membership-Renewal-Transaction-Cookie";
 
         public readonly static string NEW_MEMBER_REGISTRATION_TRANSACTION_TYPE = "New-Membership-Registration";
-		public readonly static string MEMBER_FIELDTRIP_REGISTRATION_TRANSACTION_TYPE = "Member-FieldTrip-Registration";
+        public readonly static string MEMBER_FIELDTRIP_REGISTRATION_TRANSACTION_TYPE = "Member-FieldTrip-Registration";
         public readonly static string MEMBER_CONTEST_REGISTRATION_TRANSACTION_TYPE = "Member-Contest-Registration";
         public readonly static string MEMBERSHIP_RENEWAL_TRANSACTION_TYPE = "Membership-Renewal-Transaction-Type";
 
@@ -79,10 +77,12 @@ namespace WebAppMVC.Constants
         public readonly static string UPDATE_BIRD_VALID = "UBirdValid";
         public readonly static string CREATE_MEETING_VALID = "CMeetingValid";
         public readonly static string UPDATE_MEETING_VALID = "UMeetingValid";
+        public readonly static string UPDATE_MEETING_STATUS_VALID = "UMeetingStatusValid";
         public readonly static string CREATE_MEETING_MEDIA_VALID = "CMeetingMediaValid";
         public readonly static string UPDATE_MEETING_MEDIA_VALID = "UMeetingMediaValid";
         public readonly static string CREATE_FIELDTRIP_VALID = "CFieldTripValid";
         public readonly static string UPDATE_FIELDTRIP_VALID = "UFieldTripValid";
+        public readonly static string UPDATE_FIELDTRIP_STATUS_VALID = "UFieldtripStatusValid";
         public readonly static string UPDATE_FIELDTRIP_GETTHERE_VALID = "UFieldTripGettingThereValid";
         public readonly static string CREATE_FIELDTRIP_DAYBYDAY_VALID = "CFieldTripDayByDayValid";
         public readonly static string UPDATE_FIELDTRIP_DAYBYDAY_VALID = "UFieldTripDayByDayValid";
@@ -98,6 +98,7 @@ namespace WebAppMVC.Constants
         public readonly static string UPDATE_FIELDTRIP_MEDIA_VALID = "UFieldTripMediaValid";
         public readonly static string CREATE_CONTEST_VALID = "CContestValid";
         public readonly static string UPDATE_CONTEST_VALID = "UContestValid";
+        public readonly static string UPDATE_CONTEST_STATUS_VALID = "UContestStatusValid";
         public readonly static string CREATE_CONTEST_MEDIA_VALID = "CContestMediaValid";
         public readonly static string UPDATE_CONTEST_MEDIA_VALID = "UContestMediaValid";
         public readonly static string CREATE_CONTEST_PARTICIPATION_VALID = "CContestparticipantValid";
@@ -132,6 +133,11 @@ namespace WebAppMVC.Constants
         public readonly static string EVENT_STATUS_NAME_CHECKING_IN = "Checking In";
         public readonly static string EVENT_STATUS_ONGOING = "Ongoing";
         public readonly static string EVENT_STATUS_NAME_ONGOING = "Ongoing";
+
+        public readonly static string EVENT_MEDIA_TYPE_SPOTLIGHT = "Spotlight";
+        public readonly static string EVENT_MEDIA_TYPE_LOCATION_MAP = "LocationMap";
+        public readonly static string EVENT_MEDIA_TYPE_ADDITIONAL = "Additional";
+        public readonly static string FIELDTRIP_MEDIA_TYPE_DAYBYDAY = "DayByDay";
 
         public readonly static int EVENT_MEETING_MIN_PART_REQ = 10;
         public readonly static int EVENT_FIELDTRIP_MIN_PART_REQ = 10;
@@ -187,16 +193,17 @@ namespace WebAppMVC.Constants
 
         public readonly static string ROLE_NAME = "ROLE_NAME";
         public readonly static string ACC_TOKEN = "ACCESS_TOKEN";
+        //public readonly static string USR_FULL_NAME = "USER_FULL_NAME";
         public readonly static string USR_ID = "USER_ID";
         public readonly static string USR_NAME = "USER_NAME";
         public readonly static string USR_IMAGE = "IMAGE_PATH";
 
         public readonly static string ADMIN = "Admin";
-		public readonly static string MEMBER = "Member";
-		public readonly static string TEMPMEMBER = "TempMember";
+        public readonly static string MEMBER = "Member";
+        public readonly static string TEMPMEMBER = "TempMember";
         public readonly static string GUEST = "Guest";
-		public readonly static string STAFF = "Staff";
-		public readonly static string MANAGER = "Manager";
+        public readonly static string STAFF = "Staff";
+        public readonly static string MANAGER = "Manager";
 
         public readonly static string MALE = "Male";
         public readonly static string FEMALE = "Female";
@@ -204,8 +211,8 @@ namespace WebAppMVC.Constants
 
         public readonly static string GET_METHOD = "GET";
         public readonly static string POST_METHOD = "POST";
-		public readonly static string PUT_METHOD = "PUT";
-		public readonly static string DELETE_METHOD = "DELETE";
+        public readonly static string PUT_METHOD = "PUT";
+        public readonly static string DELETE_METHOD = "DELETE";
 
         public const string GOOGLE_CLIENT_ID = "Authentication:Google:ClientId";
         public const string GOOGLE_CLIENT_SECRET = "Authentication:Google:ClientSecret";
@@ -237,6 +244,8 @@ namespace WebAppMVC.Constants
         public readonly static string SYSTEM_DEFAULT_AZURE_BLOB_NEWS_FOLDER_URL = "AzureStorage:BlobNewsContainerNamePath";
         public readonly static string SYSTEM_DEFAULT_AZURE_BLOB_BLOG_FOLDER_URL = "AzureStorage:BlobBlogContainerNamePath";
         public readonly static string SYSTEM_DEFAULT_AZURE_BLOB_MEETING_FOLDER_URL = "AzureStorage:BlobMeetingsContainerNamePath";
+        public readonly static string SYSTEM_DEFAULT_AZURE_BLOB_FIELDTRIP_FOLDER_URL = "AzureStorage:BlobFieldTripsContainerNamePath";
+        public readonly static string SYSTEM_DEFAULT_AZURE_BLOB_CONTEST_FOLDER_URL = "AzureStorage:BlobContestsContainerNamePath";
         public readonly static string SYSTEM_DEFAULT_AZURE_BLOB_BIRD_FOLDER_URL = "AzureStorage:BlobBirdsContainerNamePath";
     }
 }

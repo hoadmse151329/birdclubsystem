@@ -82,8 +82,8 @@
                 </fieldset>
             </div>
             <div class="col-bg">
-                <img class="bg-1" src="~/images/chao-mao.png"></img>
-                <img class="bg-2" src="~/images/chao-mao-2.png"></img>
+                <img class="bg-1" src="~/images/contest.png"></img>
+                <img class="bg-2" src="~/images/contest-2.jpg"></img>
             </div>
         </div>
     </div>
@@ -117,7 +117,7 @@
                             to @data.EndDate.ToString("MM-dd-yyyy")
                         </p>
                         <div class="club-address" data-toggle="tooltip" data-placement="auto"
-                             title="@data.City">
+                         title="@data.City">
                             <p class="address">
                                 <i class="fas fa-map-marker-alt" style="color:white"></i>
                                 <span class="district text-white truncate" id="address">Address @data.AreaNumber,@data.Street,@data.District,@data.City</span>
@@ -138,8 +138,90 @@
     </div>
 </div>
 <script>
-    $(document).ready(function () {
-        $('.form-check-input').change(function () {
+    function getPageList(totalPages, page, maxLength) {
+        function range(start, end) {
+            return Array.from(Array(end - start + 1), (_, i) => i + start);
+        }
+
+        var sideWidth = maxLength < 9 ? 1 : 2;
+        var leftWidth = (maxLength - sideWidth * 2 - 3) >> 1;
+        var rightWidth = (maxLength - sideWidth * 2 - 3) >> 1;
+
+        if (totalPages <= maxLength) {
+            return range(1, totalPages);
+        }
+
+        if (page <= maxLength - sideWidth - 1 - rightWidth) {
+            return range(1, maxLength - sideWidth - 1).concat(0, range(totalPages - sideWidth + 1, totalPages));
+        }
+
+        if (page >= totalPages - sideWidth - 1 - rightWidth) {
+            return range(1, sideWidth).concat(0, range(totalPages - sideWidth - 1 - rightWidth - leftWidth, totalPages));
+        }
+
+        return range(1, sideWidth).concat(0, range(page - leftWidth, page + rightWidth), 0, range(totalPages - sideWidth + 1, totalPages));
+    }
+
+    // Pagination initialization function
+    function initPagination() {
+        var numberOfItems = $(".content__list, .club-item").length;
+        var limitPerPage = 9;
+        var totalPages = Math.ceil(numberOfItems / limitPerPage);
+        var paginationSize = 7;
+        var currentPage;
+
+        function showPage(whichPage) {
+            if (whichPage < 1 || whichPage > totalPages) return false;
+            currentPage = whichPage;
+            $(".content__list .club-item").hide().slice((currentPage - 1) * limitPerPage, currentPage * limitPerPage).show();
+            $(".pagination li").slice(1, -1).remove();
+            getPageList(totalPages, currentPage, paginationSize).forEach((item) => {
+                $("<li>")
+                    .addClass("pages page-item")
+                    .addClass(item ? "current-page" : "dots")
+                    .toggleClass("active", item === currentPage)
+                    .append($("<a>").addClass("page-link").attr({ href: "javascript: void(0)" }).text(item || "..."))
+                    .insertBefore(".next-page");
+            });
+
+            $(".previous-page").toggleClass("disabled", currentPage === 1);
+            $(".next-page").toggleClass("disabled", currentPage === totalPages);
+            return true;
+        }
+
+        $(".pagination").append(
+            $("<li>").addClass("page-item previous-page").append(
+                $("<a>").addClass("page-link btn").attr({ href: "javascript: void(0)" }).append($("<i>").addClass("fa fa-circle-left"))
+            ),
+            $("<li>").addClass("page-item next-page").append(
+                $("<a>").addClass("page-link btn").attr({ href: "javascript: void(0)" }).append($("<i>").addClass("fa fa-circle-right"))
+            )
+        );
+
+        $(".content__list").show();
+        showPage(1);
+
+        $(document).on("click", ".pagination li.current-page:not(.active)", function() {
+            return showPage(+$(this).text());
+        });
+
+        $(".next-page").on("click", function() {
+            return showPage(currentPage + 1);
+        });
+
+        $(".previous-page").on("click", function() {
+            return showPage(currentPage - 1);
+        });
+    }
+
+    // Update pagination function
+    function updatePagination() {
+        // Reinitialize pagination
+        initPagination();
+    }
+
+    $(document).ready(function() {
+        $('.form-check-input').change(function() {
             applyFilters();
         });
 
@@ -149,15 +231,15 @@
             var selectedCities = [];
 
             // Collect selected checkboxes
-            $('input[name="road"]:checked').each(function () {
+            $('input[name="road"]:checked').each(function() {
                 selectedRoads.push($(this).val());
             });
 
-            $('input[name="district"]:checked').each(function () {
+            $('input[name="district"]:checked').each(function() {
                 selectedDistricts.push($(this).val());
             });
 
-            $('input[name="city"]:checked').each(function () {
+            $('input[name="city"]:checked').each(function() {
                 selectedCities.push($(this).val());
             });
 
@@ -172,8 +254,9 @@
             $.ajax({
                 url: '@Url.Action("IndexFilter", "Contest")' + '?' + queryString,
                 method: 'GET',
-                success: function (response) {
+                success: function(response) {
                     renderMeetings(response);
+                    updatePagination();
                 }
             });
         }
@@ -208,8 +291,11 @@
             return serializedParams.join("&");
         }
 
+        // Pagination initialization
+        initPagination();
+
         // Toggle functionality for filter checkboxes
-        $('.toggle-btn').on('click', function (event) {
+        $('.toggle-btn').on('click', function(event) {
             var fieldset = $(this).closest('.filter-group');
             var checkBoxes = fieldset.find('.input-group');
 
@@ -225,7 +311,7 @@
         });
 
         // Initialize toggle button states
-        $('.filter-group').each(function () {
+        $('.filter-group').each(function() {
             var checkBoxes = $(this).find('.input-group');
             if (checkBoxes.length <= 3) {
                 $(this).find('.toggle-btn').attr('aria-expanded', 'true').find('span').text('Less');

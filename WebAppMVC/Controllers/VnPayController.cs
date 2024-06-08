@@ -139,7 +139,6 @@ namespace WebAppMVC.Controllers
                             var tran = new TransactionViewModel()
                             {
                                 Value = (int)(response.Value / 100),
-                                UserId = null,
                                 VnPayId = response.TransactionId.ToString(),
                                 TransactionType = response.TransactionType,
                                 TransactionDate = DateTime.Now,
@@ -154,6 +153,7 @@ namespace WebAppMVC.Controllers
                                             methodName: Constants.Constants.POST_METHOD,
                                             url: TransactionAPI_URL,
                                             inputType: tran,
+                                            accessToken: accToken,
                                             _logger: _logger);
 
                             if (transactionResponse == null)
@@ -186,7 +186,6 @@ namespace WebAppMVC.Controllers
                             var tran = new TransactionViewModel()
                             {
                                 Value = (int)(response.Value / 100),
-                                UserId = null,
                                 VnPayId = response.TransactionId.ToString(),
                                 TransactionType = response.TransactionType,
                                 TransactionDate = DateTime.Now,
@@ -201,6 +200,7 @@ namespace WebAppMVC.Controllers
                                             methodName: Constants.Constants.POST_METHOD,
                                             url: TransactionAPI_URL,
                                             inputType: tran,
+                                            accessToken: accToken,
                                             _logger: _logger);
 
                             if (transactionResponse == null)
@@ -231,7 +231,6 @@ namespace WebAppMVC.Controllers
                             var tran = new TransactionViewModel()
                             {
                                 Value = (int)(response.Value / 100),
-                                UserId = null,
                                 VnPayId = response.TransactionId.ToString(),
                                 TransactionType = response.TransactionType,
                                 TransactionDate = DateTime.Now,
@@ -246,6 +245,7 @@ namespace WebAppMVC.Controllers
                                             methodName: Constants.Constants.POST_METHOD,
                                             url: TransactionAPI_URL,
                                             inputType: tran,
+                                            accessToken: accToken,
                                             _logger: _logger);
 
                             if (transactionResponse == null)
@@ -266,50 +266,6 @@ namespace WebAppMVC.Controllers
                         }
                         ViewBag.Error = "Error while processing your request! (Getting Transaction Response!)";
                         return RedirectToAction("Index", "Contest");
-                    }
-                case var value when value.Equals(Constants.Constants.MEMBERSHIP_RENEWAL_TRANSACTION_TYPE):
-                    {
-                        if (response.Success)
-                        {
-                            TransactionAPI_URL += "Create";
-
-                            var tran = new TransactionViewModel()
-                            {
-                                Value = (int)(response.Value / 100),
-                                UserId = null,
-                                VnPayId = response.TransactionId.ToString(),
-                                TransactionType = response.TransactionType,
-                                TransactionDate = DateTime.Now,
-                                PaymentDate = DateTime.Now,
-                                DocNo = response.DocNo,
-                                Status = "Completed"
-                            };
-                            var transactionResponse = await methcall.CallMethodReturnObject<GetTransactionResponse>(
-                                            _httpClient: _httpClient,
-                                            options: jsonOptions,
-                                            methodName: Constants.Constants.POST_METHOD,
-                                            url: TransactionAPI_URL,
-                                            inputType: tran,
-                                            _logger: _logger);
-
-                            if (transactionResponse == null)
-                            {
-                                ViewBag.Error =
-                                    "Error while processing your request! (Getting Transaction Response!)";
-                                return RedirectToAction("Login", "Auth");
-                            }
-                            else
-                            if (!transactionResponse.Status)
-                            {
-                                ViewBag.Error =
-                                    "Error while processing your request! (Getting Transaction Response!)";
-                                return RedirectToAction("Login", "Auth");
-                            }
-                            methcall.SetCookie(Response, Constants.Constants.MEMBERSHIP_RENEWAL_TRANSACTION_COOKIE, transactionResponse.Data, cookieOptions, jsonOptions, 5);
-                            return RedirectToAction("ConfirmRenewMembership", "Auth");
-                        }
-                        ViewBag.Error = "Error while processing your request! (Getting Transaction Response!)";
-                        return RedirectToAction("Login", "Auth");
                     }
             }
 			return View(response);

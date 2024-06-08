@@ -6,18 +6,31 @@ namespace WebAppMVC.Models.ViewModels
     {
         public ManagerMeetingIndexVM()
         {
-            locationList = new List<string>();
-            meetingList = new();
-            createMeeting = new();
-            cancelMeet = new();
+            Roads = new List<string>();
+            Districts = new List<string>();
+            Cities = new List<string>();
+            SelectedRoads = new List<string>();
+            SelectedDistricts = new List<string>();
+            SelectedCities = new List<string>();
+            MeetingList = new();
+            CreateMeeting = new();
         }
 
-        public List<string>? locationList {  get; set; }
-        /*public List<BAL.ViewModels.MemberViewModel>? staffList { get; set; }
-        public BAL.ViewModels.MemberViewModel? selectedStaff { get; set; }
-        public List<SelectListItem> DefaultStaffSelectableList { get; set; }*/
-        public List<BAL.ViewModels.MeetingViewModel>? meetingList {  get; set; }
-        public BAL.ViewModels.MeetingViewModel? createMeeting {  get; set; }
-        public BAL.ViewModels.MeetingViewModel? cancelMeet {  get; set; }
+        public List<string> Roads { get; set; }
+        public List<string> Districts { get; set; }
+        public List<string> Cities { get; set; }
+
+        public List<string> SelectedRoads { get; set; }
+        public List<string> SelectedDistricts { get; set; }
+        public List<string> SelectedCities { get; set; }
+        public List<BAL.ViewModels.MeetingViewModel> MeetingList {  get; set; }
+        public BAL.ViewModels.Manager.CreateNewMeetingVM CreateMeeting {  get; set; }
+
+        public void SetCreateMeeting(BAL.ViewModels.Manager.CreateNewMeetingVM createNewMeeting, string? hostname, List<SelectListItem> staffnames)
+        {
+            CreateMeeting = createNewMeeting != null ? createNewMeeting : new();
+            CreateMeeting.Host = hostname;
+            CreateMeeting.StaffNames = staffnames;
+        }
     }
 }

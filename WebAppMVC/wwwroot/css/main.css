@@ -4,7 +4,11 @@
     align-items: center;
     justify-content: center;
 }
-
+    .pagination1, .pagination1 .btn, .pagination .pages .page-link {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 .nav-tabs {
     padding-top: 50px;
     border-bottom: 1px solid #dee2e6;
@@ -837,7 +841,60 @@ body .lb-cancel {
     .pagination .disabled .btn {
         border-color: #ccc;
     }
+.pagination1 {
+    gap: 16px;
+    margin-top: 20px;
+}
 
+    .pagination1 .btn {
+        background-color: #fff;
+        color: #2c3e50;
+        border: 1px solid #2c3e50;
+        width: 40px;
+        height: 40px;
+        border-radius: 50% !important;
+        cursor: pointer;
+    }
+
+        .pagination1 .btn:hover {
+            background-color: #2c3e50;
+            color: #fff;
+        }
+
+    .pagination1 .pages {
+        display: flex;
+        flex-direction: row;
+        gap: 20px;
+    }
+
+        .pagination1 .pages .page-link {
+            width: 40px;
+            height: 40px;
+            color: #2c3e50;
+            border-radius: 50%;
+            cursor: pointer;
+            gap: 10px;
+        }
+
+            .pagination1 .pages .page-link:hover {
+                background-color: #2c3e50;
+                color: #fff;
+            }
+
+    .pagination1 .page-link:focus {
+        outline: none;
+        box-shadow: none;
+    }
+
+    .pagination1 .active .page-link {
+        background-color: #2c3e50;
+        color: #fff;
+        border-color: #2c3e50;
+    }
+
+    .pagination1 .disabled .btn {
+        border-color: #ccc;
+    }
 .col-bg {
     display: grid;
     row-gap: 50px;
@@ -1319,14 +1376,14 @@ body .lb-cancel {
 
 
 .owl-carousel .owl-nav button.owl-prev, .owl-carousel .owl-nav button.owl-next {
-    color: white;
-    background-color: white;
+    color: white !important;
+    background-color: #2c3e50 !important;
     width: 44px;
     height: 44px;
     line-height: 40px;
     border-radius: 50%;
-    border: 1px solid #b0b0b0;
-    font-size: 25px;
+    border: 1px solid black !important;
+    font-size: 25px !important;
     position: absolute;
     transition: all 0.5s;
     top: 50%;
@@ -1336,7 +1393,7 @@ body .lb-cancel {
     .owl-carousel .owl-nav button.owl-prev:hover, .owl-carousel .owl-nav button.owl-next:hover {
         background-color: white;
         box-shadow: 0 2px 8px 2px #b0b0b0;
-        color: white;
+        color: black;
     }
 
     .owl-carousel .owl-nav button.owl-prev:focus, .owl-carousel .owl-nav button.owl-next:focus {
@@ -1678,8 +1735,8 @@ body .lb-cancel {
     }
 
 .infor .infor__content img {
-    width: 155px;
-    height: 155px;
+    width: 125px;
+    height: 125px;
     border-radius: 50%;
 }
 

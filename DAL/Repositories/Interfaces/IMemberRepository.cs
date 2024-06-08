@@ -21,7 +21,8 @@ namespace DAL.Repositories.Interfaces
             List<string>? roles,
             List<string>? statuses,
             string? orderBy,
-            bool isManager = false,
+            bool isManagerGetMemberList = false,
+            bool isManagerGetStaffList = false,
             bool isAdmin = false
             );
         Task<Member?> GetByIdNoTracking(string id);

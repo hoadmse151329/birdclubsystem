@@ -3,6 +3,7 @@ using BAL.Services.Interfaces;
 using BAL.ViewModels;
 using BAL.ViewModels.Authenticates;
 using BAL.ViewModels.Event;
+using BAL.ViewModels.Manager;
 using DAL.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -75,7 +76,108 @@ namespace WebAPI.Controllers
                 });
             }
         }
+        [HttpPost("Staff/All")]
+        [Authorize(Roles ="Staff")]
+        [ProducesResponseType(typeof(List<MeetingViewModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetStaffAllMeetings(
+            [Required][FromBody] string? accToken
+            )
+        {
+            try
+            {
+                var result = await _meetingService.GetAllMeetings("Staff", accToken);
+                if (result == null || !result.Any())
+                {
+                    return NotFound(new
+                    {
+                        Status = false,
+                        ErrorMessage = "List of Meetings Not Found!"
+                    });
+                }
 
+                return Ok(new
+                {
+                    Status = true,
+                    Data = result
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new
+                {
+                    Status = false,
+                    ErrorMessage = ex.Message,
+                    InnerExceptionMessage = ex.InnerException?.Message
+                });
+            }
+        }
+
+        [HttpPost("Staff/Search")]
+        [Authorize(Roles = "Staff")]
+        [ProducesResponseType(typeof(List<MeetingViewModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetStaffMeetingsByAttributes(
+            [Required][FromBody] string? accToken,
+            [FromQuery] int? meetingId,
+            [FromQuery] string? meetingName,
+            [FromQuery] DateTime? openRegistration,
+            [FromQuery] DateTime? registrationDeadline,
+            [FromQuery] DateTime? startDate,
+            [FromQuery] DateTime? endDate,
+            [FromQuery] int? numberOfParticipants,
+            [FromQuery] List<string>? road,
+            [FromQuery] List<string>? district,
+            [FromQuery] List<string>? city,
+            [FromQuery] List<string>? status,
+            [FromQuery] string? orderBy)
+        {
+            try
+            {
+                bool isMemberOrGuest = false;
+                var result = await _meetingService.GetSortedMeetings(
+                    meetingId: meetingId,
+                    meetingName: meetingName,
+                    openRegistration: openRegistration,
+                    registrationDeadline: registrationDeadline,
+                    startDate: startDate,
+                    endDate: endDate,
+                    numberOfParticipants: numberOfParticipants,
+                    roads: road,
+                    districts: district,
+                    cities: city,
+                    statuses: status,
+                    orderBy: orderBy,
+                    isMemberOrGuest,
+                    accToken: accToken
+                    );
+                if (result == null)
+                {
+                    return NotFound(new
+                    {
+                        Status = false,
+                        ErrorMessage = "List of Meetings Not Found!"
+                    });
+                }
+
+                return Ok(new
+                {
+                    Status = true,
+                    Data = result
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new
+                {
+                    Status = false,
+                    ErrorMessage = ex.Message,
+                    InnerExceptionMessage = ex.InnerException?.Message
+                });
+            }
+        }
         [HttpPost("Search")]
         [ProducesResponseType(typeof(List<MeetingViewModel>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -98,7 +200,7 @@ namespace WebAPI.Controllers
             try
             {
                 bool isMemberOrGuest = false;
-                if(string.IsNullOrEmpty(role) || string.IsNullOrWhiteSpace(role) || role.Equals("Member") || role.Equals("Guest"))
+                if (string.IsNullOrEmpty(role) || string.IsNullOrWhiteSpace(role) || role.Equals("Member") || role.Equals("Guest"))
                 {
                     isMemberOrGuest = true;
                 }
@@ -177,6 +279,42 @@ namespace WebAPI.Controllers
                 });
             }
         }
+        [HttpPost("{id}")]
+        [ProducesResponseType(typeof(MeetingViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetStaffMeetingById(
+            [FromRoute] int id,
+            [FromBody][Required] string? accToken)
+        {
+            try
+            {
+                var result = await _meetingService.GetByIdCheckIncharge(id,accToken);
+                if (result == null)
+                {
+                    return NotFound(new
+                    {
+                        status = false,
+                        errorMessage = "Meeting Not Found!"
+                    });
+                }
+
+                return Ok(new
+                {
+                    status = true,
+                    Data = result
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new
+                {
+                    Status = false,
+                    ErrorMessage = ex.Message,
+                    InnerExceptionMessage = ex.InnerException?.Message
+                });
+            }
+        }
 
         [HttpPost("Create")]
         [Authorize(Roles = "Manager")]
@@ -184,7 +322,7 @@ namespace WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Create(
-            [Required][FromBody] MeetingViewModel meet)
+            [Required][FromBody] CreateNewMeetingVM meet)
         {
             try
             {
@@ -198,22 +336,31 @@ namespace WebAPI.Controllers
             }
             catch (Exception ex)
             {
+                if (ex.InnerException != null)
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = ex.Message,
+                        InnerExceptionMessage = ex.InnerException.Message
+                    });
+                }
+                // Log the exception if needed
                 return BadRequest(new
                 {
                     Status = false,
-                    ErrorMessage = ex.Message,
-                    InnerExceptionMessage = ex.InnerException?.Message
+                    ErrorMessage = ex.Message
                 });
             }
         }
         [HttpPut("{id:int}/Update")]
-        [Authorize(Roles = "Manager,Staff")]
+        [Authorize(Roles = "Manager")]
         [ProducesResponseType(typeof(MeetingViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Update(
+        public async Task<IActionResult> UpdateDetails(
             [Required][FromRoute] int id,
-            [FromBody] MeetingViewModel meet)
+            [FromBody] UpdateMeetingDetailsVM meet)
         {
             try
             {
@@ -228,6 +375,53 @@ namespace WebAPI.Controllers
                 }
                 meet.MeetingId = id;
                 _meetingService.Update(meet);
+                result = await _meetingService.GetById(meet.MeetingId.Value);
+                return Ok(new
+                {
+                    Status = true,
+                    Data = result
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new
+                {
+                    Status = false,
+                    ErrorMessage = ex.Message,
+                    InnerExceptionMessage = ex.InnerException?.Message
+                });
+            }
+        }
+        [HttpPut("{id:int}/Status/Update")]
+        [Authorize(Roles = "Manager,Staff")]
+        [ProducesResponseType(typeof(MeetingViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> UpdateStatus(
+            [Required][FromRoute] int id,
+            [FromBody] UpdateMeetingStatusVM meet)
+        {
+            try
+            {
+                var result = _meetingService.GetById(id).Result;
+                if (result == null)
+                {
+                    return NotFound(new
+                    {
+                        Status = false,
+                        ErrorMessage = "Meeting does not exist!"
+                    });
+                }
+                meet.MeetingId = id;
+                var isUpdated = await _meetingService.UpdateStatus(meet);
+                if (!isUpdated)
+                {
+                    return BadRequest(new
+                    {
+                        Status = false,
+                        ErrorMessage = "Meeting does not have enough participants to close registration!"
+                    });
+                }
                 result = await _meetingService.GetById(meet.MeetingId.Value);
                 return Ok(new
                 {

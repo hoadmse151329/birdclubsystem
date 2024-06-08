@@ -1,19 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
-using System.Net.Http;
 using System.Net.Http.Headers;
-using WebAppMVC.Constants;
 using System.Text;
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
-using Azure;
-using BAL.ViewModels;
-using Org.BouncyCastle.Ocsp;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using WebAppMVC.Models;
 using WebAppMVC.Models.Error;
-using Microsoft.AspNetCore.Http.Json;
-using WebAppMVC.Models.Auth;
+using BAL.ViewModels.Manager;
 
 namespace WebAppMVC.Constants
 {
@@ -366,6 +358,22 @@ namespace WebAppMVC.Constants
             }
             return defaultEmployeeStatus;
         }
+        public List<SelectListItem> GetStaffNameSelectableList(string? staffName, List<GetStaffName> staffNameList)
+        {
+            List<SelectListItem> defaultStaffNameList = new();
+            foreach(var name in staffNameList)
+            {
+                if(!string.IsNullOrEmpty(staffName) && !string.IsNullOrWhiteSpace(staffName) && staffName.Equals(name))
+                {
+                    defaultStaffNameList.Add(new SelectListItem { Text = name.FullName, Value = name.FullName, Selected = true });
+                }
+                else
+                {
+                    defaultStaffNameList.Add(new SelectListItem { Text = name.FullName, Value = name.FullName });
+                }
+            }
+            return defaultStaffNameList;
+        }
         public List<SelectListItem> GetUserGenderSelectableList(string userGender)
         {
             List<SelectListItem> defaultUserGenders = new();
@@ -400,9 +408,9 @@ namespace WebAppMVC.Constants
             List<SelectListItem> defaultBirdStatus = new();
             switch (birdStatus)
             {
-                case var value when value.Equals(Constants.BIRD_STATUS_UNAVAILABLE):
+                case var value when value.Equals(Constants.BIRD_STATUS_INACTIVE):
                     {
-                        defaultBirdStatus.Add(new SelectListItem { Text = Constants.BIRD_STATUS_UNAVAILABLE, Value = Constants.BIRD_STATUS_UNAVAILABLE, Selected = true });
+                        defaultBirdStatus.Add(new SelectListItem { Text = Constants.BIRD_STATUS_INACTIVE, Value = Constants.BIRD_STATUS_INACTIVE, Selected = true });
                         defaultBirdStatus.Add(new SelectListItem { Text = Constants.BIRD_STATUS_ACTIVE, Value = Constants.BIRD_STATUS_ACTIVE });
                         defaultBirdStatus.Add(new SelectListItem { Text = Constants.BIRD_STATUS_INJURED, Value = Constants.BIRD_STATUS_INJURED });
                         defaultBirdStatus.Add(new SelectListItem { Text = Constants.BIRD_STATUS_UNAVAILABLE, Value = Constants.BIRD_STATUS_UNAVAILABLE });
@@ -410,7 +418,7 @@ namespace WebAppMVC.Constants
                     }
                 case var value when value.Equals(Constants.BIRD_STATUS_ACTIVE):
                     {
-                        defaultBirdStatus.Add(new SelectListItem { Text = Constants.BIRD_STATUS_UNAVAILABLE, Value = Constants.BIRD_STATUS_UNAVAILABLE });
+                        defaultBirdStatus.Add(new SelectListItem { Text = Constants.BIRD_STATUS_INACTIVE, Value = Constants.BIRD_STATUS_INACTIVE });
                         defaultBirdStatus.Add(new SelectListItem { Text = Constants.BIRD_STATUS_ACTIVE, Value = Constants.BIRD_STATUS_ACTIVE, Selected = true });
                         defaultBirdStatus.Add(new SelectListItem { Text = Constants.BIRD_STATUS_INJURED, Value = Constants.BIRD_STATUS_INJURED });
                         defaultBirdStatus.Add(new SelectListItem { Text = Constants.BIRD_STATUS_UNAVAILABLE, Value = Constants.BIRD_STATUS_UNAVAILABLE });
@@ -418,7 +426,7 @@ namespace WebAppMVC.Constants
                     }
                 case var value when value.Equals(Constants.BIRD_STATUS_INJURED):
                     {
-                        defaultBirdStatus.Add(new SelectListItem { Text = Constants.BIRD_STATUS_UNAVAILABLE, Value = Constants.BIRD_STATUS_UNAVAILABLE });
+                        defaultBirdStatus.Add(new SelectListItem { Text = Constants.BIRD_STATUS_INACTIVE, Value = Constants.BIRD_STATUS_INACTIVE });
                         defaultBirdStatus.Add(new SelectListItem { Text = Constants.BIRD_STATUS_ACTIVE, Value = Constants.BIRD_STATUS_ACTIVE });
                         defaultBirdStatus.Add(new SelectListItem { Text = Constants.BIRD_STATUS_INJURED, Value = Constants.BIRD_STATUS_INJURED, Selected = true });
                         defaultBirdStatus.Add(new SelectListItem { Text = Constants.BIRD_STATUS_UNAVAILABLE, Value = Constants.BIRD_STATUS_UNAVAILABLE });
@@ -426,7 +434,7 @@ namespace WebAppMVC.Constants
                     }
                 case var value when value.Equals(Constants.BIRD_STATUS_UNAVAILABLE):
                     {
-                        defaultBirdStatus.Add(new SelectListItem { Text = Constants.BIRD_STATUS_UNAVAILABLE, Value = Constants.BIRD_STATUS_UNAVAILABLE });
+                        defaultBirdStatus.Add(new SelectListItem { Text = Constants.BIRD_STATUS_INACTIVE, Value = Constants.BIRD_STATUS_INACTIVE });
                         defaultBirdStatus.Add(new SelectListItem { Text = Constants.BIRD_STATUS_ACTIVE, Value = Constants.BIRD_STATUS_ACTIVE });
                         defaultBirdStatus.Add(new SelectListItem { Text = Constants.BIRD_STATUS_INJURED, Value = Constants.BIRD_STATUS_INJURED });
                         defaultBirdStatus.Add(new SelectListItem { Text = Constants.BIRD_STATUS_UNAVAILABLE, Value = Constants.BIRD_STATUS_UNAVAILABLE, Selected = true });
@@ -489,7 +497,7 @@ namespace WebAppMVC.Constants
             return defaultReqEloRange;
         }
 
-        public T GetValidationTempData<T>(
+        public T? GetValidationTempData<T>(
             ControllerBase context,
             ITempDataDictionary tempData, 
             string tempDataName, 
@@ -501,6 +509,7 @@ namespace WebAppMVC.Constants
             {
                 var objectForValidation = JsonSerializer.Deserialize<T>(tempData[tempDataName].ToString(), jsonOptions);
                 tempData.Remove(tempDataName);
+                //viewObjectName is basically a prefix
                 context.TryValidateModel(objectForValidation, viewObjectName);
                 return objectForValidation;
             }

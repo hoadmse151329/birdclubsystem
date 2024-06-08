@@ -12,11 +12,8 @@ namespace DAL.Models
         public Member()
         {
             Birds = new HashSet<Bird>();
-            ContestAssignments = new HashSet<ContestAssignment>();
             ContestParticipants = new HashSet<ContestParticipant>();
             FieldTripParticipants = new HashSet<FieldTripParticipant>();
-            FieldtripAssignments = new HashSet<FieldtripAssignment>();
-            MeetingAssignments = new HashSet<MeetingAssignment>();
             MeetingParticipants = new HashSet<MeetingParticipant>();
             UserDetails = new User();
         }
@@ -61,16 +58,10 @@ namespace DAL.Models
 
         [InverseProperty(nameof(Bird.MemberDetails))]
         public virtual ICollection<Bird> Birds { get; set; }
-        [InverseProperty(nameof(ContestAssignment.MemberDetails))]
-        public virtual ICollection<ContestAssignment> ContestAssignments { get; set; }
         [InverseProperty(nameof(ContestParticipant.MemberDetails))]
         public virtual ICollection<ContestParticipant> ContestParticipants { get; set; }
         [InverseProperty(nameof(FieldTripParticipant.MemberDetails))]
         public virtual ICollection<FieldTripParticipant> FieldTripParticipants { get; set; }
-        [InverseProperty(nameof(FieldtripAssignment.MemberDetails))]
-        public virtual ICollection<FieldtripAssignment> FieldtripAssignments { get; set; }
-        [InverseProperty(nameof(MeetingAssignment.MemberDetails))]
-        public virtual ICollection<MeetingAssignment> MeetingAssignments { get; set; }
         [InverseProperty(nameof(MeetingParticipant.MemberDetails))]
         public virtual ICollection<MeetingParticipant> MeetingParticipants { get; set; }
         [InverseProperty(nameof(User.MemberDetails))]

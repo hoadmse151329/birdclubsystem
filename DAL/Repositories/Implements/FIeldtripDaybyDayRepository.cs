@@ -20,16 +20,16 @@ namespace DAL.Repositories.Implements
 
         public async Task<IEnumerable<FieldtripDaybyDay>> GetAllFieldTripDayByDaysByTripId(int tripId)
         {
-            return await _context.FieldtripDaybyDays.AsNoTracking().Where(f => f.TripId.Equals(tripId)).ToListAsync();
+            return _context.FieldtripDaybyDays.AsNoTracking().Where(f => f.TripId.Equals(tripId));
         }
 
         public async Task<FieldtripDaybyDay> GetFieldTripDayByDayById(int dayId)
         {
-            return await _context.FieldtripDaybyDays.AsNoTracking().SingleOrDefaultAsync(f =>  f.DayByDayId.Equals(dayId));
+            return _context.FieldtripDaybyDays.AsNoTracking().SingleOrDefault(f =>  f.DayByDayId.Equals(dayId));
         }
         public async Task<FieldtripDaybyDay> GetFieldTripDayByDayByIdTracking(int dayId)
         {
-            return await _context.FieldtripDaybyDays.SingleOrDefaultAsync(f =>  f.DayByDayId.Equals(dayId));
+            return _context.FieldtripDaybyDays.SingleOrDefault(f =>  f.DayByDayId.Equals(dayId));
         }
     }
 }

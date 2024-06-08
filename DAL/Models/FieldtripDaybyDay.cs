@@ -6,18 +6,18 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Models
 {
-    [Table("FieldTripDaybyDay")]
+    [Table("FieldtripDaybyDay")]
     public partial class FieldtripDaybyDay
     {
         [Column("tripId")]
-        public int? TripId { get; set; }
+        public int TripId { get; set; }
         [Key]
         [Column("dayByDayId")]
         public int DayByDayId { get; set; }
         [Column("day")]
-        public int? Day { get; set; }
+        public int Day { get; set; }
         [Column("description")]
-        public string? Description { get; set; }
+        public string Description { get; set; } = null!;
         [Column("mainDestination")]
         [StringLength(100)]
         public string? MainDestination { get; set; }
@@ -29,7 +29,7 @@ namespace DAL.Models
         public string? MealsAndDrinks { get; set; }
 
         [ForeignKey(nameof(TripId))]
-        [InverseProperty(nameof(FieldTrip.FieldTripDaybyDays))]
-        public virtual FieldTrip? Trip { get; set; }
+        [InverseProperty(nameof(FieldTrip.FieldtripDaybyDays))]
+        public virtual FieldTrip Trip { get; set; } = null!;
     }
 }

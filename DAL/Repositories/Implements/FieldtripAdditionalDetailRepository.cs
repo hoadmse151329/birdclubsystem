@@ -29,7 +29,7 @@ namespace DAL.Repositories.Implements
 
         public async Task<IEnumerable<FieldtripAdditionalDetail>> GetFieldTripAdditionalDetailsByTripId(int tripId)
         {
-            return await _context.FieldtripAdditionalDetails.AsNoTracking().Where(f => f.TripId.Equals(tripId)).ToListAsync();
+            return _context.FieldtripAdditionalDetails.AsNoTracking().Where(f => f.TripId.Equals(tripId));
         }
     }
 }

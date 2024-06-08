@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Models
 {
-    [Table("Transactions")]
     public partial class Transaction
     {
         [Key]
