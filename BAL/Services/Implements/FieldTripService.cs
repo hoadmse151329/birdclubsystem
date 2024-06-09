@@ -370,7 +370,7 @@ namespace BAL.Services.Implements
         public async Task<bool> UpdateStatus(UpdateFieldtripStatusVM entity)
         {
             var fieldtrip = await _unitOfWork.FieldTripRepository.GetFieldTripById(entity.TripId.Value);
-            if (entity.Status.Equals("ClosedRegistration") && fieldtrip.NumberOfParticipants < 10)
+            if (entity.Status.Equals("CheckingIn") && fieldtrip.NumberOfParticipants < 10)
             {
                 return false;
             }

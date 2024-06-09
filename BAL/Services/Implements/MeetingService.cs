@@ -374,7 +374,7 @@ namespace BAL.Services.Implements
         public async Task<bool> UpdateStatus(UpdateMeetingStatusVM entity)
         {
             var meeting = await _unitOfWork.MeetingRepository.GetMeetingById(entity.MeetingId.Value);
-            if(entity.Status.Equals("ClosedRegistration") && meeting.NumberOfParticipants < 10)
+            if(entity.Status.Equals("CheckingIn") && meeting.NumberOfParticipants < 10)
             {
                 return false;
             }
