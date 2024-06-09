@@ -34,7 +34,7 @@ namespace WebAppMVC.Services.Implements
             var contentType = new MediaTypeWithQualityHeaderValue("application/json");
             client.DefaultRequestHeaders.Accept.Add(contentType);
             client.BaseAddress = new Uri(config.GetSection("DefaultApiUrl:ConnectionString").Value);
-            AuthenAPI_URL = "/api/User";
+            AuthenAPI_URL = "/webapi/api/User";
         }
 
         public async Task<string?> GetTokenAsync()

@@ -17,8 +17,8 @@ namespace WebAppMVC.Services.HostedServices
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly IConfiguration _config;
         private Timer _timer;
-        private string ContestSearchAPI_URL = "/api/Contest/Search?status=OnHold&status=OpenRegistration";
-        private string ContestStatusUpdateAPI_URL = "/api/Contest/";
+        private string ContestSearchAPI_URL = "/webapi/api/Contest/Search?status=OnHold&status=OpenRegistration";
+        private string ContestStatusUpdateAPI_URL = "/webapi/api/Contest/";
         private readonly MediaTypeWithQualityHeaderValue contentType = new("application/json");
         private int contestStatusUpdated = 0;
         private int contestStatusUpdatedToOpen = 0;
