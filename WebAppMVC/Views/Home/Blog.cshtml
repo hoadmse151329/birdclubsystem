@@ -119,9 +119,12 @@
                     </div>
                     <p>@Html.Raw(blogpost.Description)</p>
                     <div class="post-actions">
+                        @if (!isGuest)
+                    {
                         <button class="like-button" onclick="toggleLike(this)">
                             <i class='bx bx-like'></i>Like
                         </button>
+                    }
                         <span class="like-count">@blogpost.Vote.Value Likes</span>
                     </div>
                     <div class="comments">
