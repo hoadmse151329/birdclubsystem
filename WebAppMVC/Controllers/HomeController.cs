@@ -183,6 +183,7 @@ namespace WebAppMVC.Controllers
             GuestIndexDetailsVM.TeamMembers = _config.GetSection("team").Get<List<TeamMember>>();
             GuestIndexDetailsVM.Services = _config.GetSection("services").Get<List<Service>>();
             GuestIndexDetailsVM.FooterBlock = _config.GetSection("footer").Get<Footer>();
+
             GuestIndexDetailsVM.Meetings = listMeetResponse.Data;
             GuestIndexDetailsVM.FieldTrips = listFieldTripResponse.Data;
             GuestIndexDetailsVM.Contests = listContestResponse.Data;

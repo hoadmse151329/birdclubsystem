@@ -255,74 +255,26 @@
         <div class="container">
             <h3 class="heading" style="background-color:white"><i class="fa fa-users"></i>Team</h3>
             <div class="team-carousel owl-carousel owl-theme">
-                <div class="team__item">
-                    <img src="~/images/avatar2.png" alt="team 1" />
-                    <div class="team__title">
-                        <h5>Ho Tran Khanh Duy</h5>
-                        <p>- Manager</p>
-                    </div>
-                    <div class="team__details">
-                        <h5>Ho Tran Khanh Duy</h5>
-                        <p class="team__text">- Manager</p>
-                        <p>
-                            Chao Mao Bird Manager, expert in Chao Mao Bird with experienced of 5 years.
-                        </p>
-                        <div class="team__socials">
-                            <a href="https://github.com/DuyZomega" target="_blank"><i class="fab fa-github"></i></a>
+                @foreach(var teamMember in Model.TeamMembers)
+                {
+                    <div class="team__item">
+                        <img src="@teamMember.Image.ToString()" alt="team 1" />
+                        <div class="team__title">
+                            <h5>@teamMember.Name</h5>
+                            <p>- @teamMember.Role</p>
+                        </div>
+                        <div class="team__details">
+                            <h5>@teamMember.Name</h5>
+                            <p class="team__text">- @teamMember.Role</p>
+                            <p>
+                                @teamMember.Experience
+                            </p>
+                            <div class="team__socials">
+                                <a href="@teamMember.Github.ToString()" target="_blank"><i class="fab fa-github"></i></a>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="team__item">
-                    <img src="~/images/avatar2.png" alt="team 1" />
-                    <div class="team__title">
-                        <h5>Dao Minh Hoa</h5>
-                        <p>- Staff</p>
-                    </div>
-                    <div class="team__details">
-                        <h5>Dao Minh Hoa</h5>
-                        <p class="team__text">- Staff</p>
-                        <p>
-                            Chao Mao Bird Staff, expert in Chao Mao Bird with experienced of 3 years.
-                        </p>
-                        <div class="team__socials">
-                            <a href="https://github.com/hoadmse151329" target="_blank"><i class="fab fa-github"></i></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="team__item">
-                    <img src="~/images/avatar2.png" alt="team 1" />
-                    <div class="team__title">
-                        <h5>Dang Hoang Minh</h5>
-                        <p>- Staff</p>
-                    </div>
-                    <div class="team__details">
-                        <h5>Dang Hoang Minh</h5>
-                        <p class="team__text">- Staff</p>
-                        <p>
-                            Chao Mao Bird Staff, expert in Chao Mao Bird with experienced of 3 years.
-                        </p>
-                        <div class="team__socials">
-                            <a href="https://github.com/Echo2craft" target="_blank"><i class="fab fa-github"></i></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="team__item">
-                    <img src="~/images/avatar2.png" alt="team 1" />
-                    <div class="team__title">
-                        <h5>Bui Huu Vinh</h5>
-                        <p>- Staff</p>
-                    </div>
-                    <div class="team__details">
-                        <h5>Bui Huu Vinh</h5>
-                        <p class="team__text">- Staff</p>
-                        <p>
-                            Chao Mao Bird Staff, expert in Chao Mao Bird with experienced of 3 years.
-                        </p>
-                        <div class="team__socials">
-                            <a href="https://github.com/Edwin2002104" target="_blank"><i class="fab fa-github"></i></a>
-                        </div>
-                    </div>
-                </div>
+                }
             </div>
         </div>
     </section>
