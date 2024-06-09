@@ -5,6 +5,7 @@ using WebAppMVC.Constants;
 using WebAppMVC.Models.Manager;
 using WebAppMVC.Services.Interfaces;
 using WebAppMVC.Models.FieldTrip;
+using BAL.ViewModels.Manager;
 
 namespace WebAppMVC.Services.HostedServices
 {
@@ -86,14 +87,19 @@ namespace WebAppMVC.Services.HostedServices
                         fieldtripToUpdate.Status.Equals(Constants.Constants.EVENT_STATUS_ON_HOLD)
                         )
                     {
-                        fieldtripToUpdate.Status = Constants.Constants.EVENT_STATUS_OPEN_REGISTRATION;
+                        UpdateFieldtripStatusVM fieldtripToUpdateVM = new()
+                        {
+                            TripId = fieldtripToUpdate.TripId,
+                            NumberOfParticipants = fieldtripToUpdate.NumberOfParticipants,
+                            Status = Constants.Constants.EVENT_STATUS_OPEN_REGISTRATION
+                        };
                         // Call the API to update the membership status
                         var fieldtripStatusResponse = await methcall.CallMethodReturnObject<GetFieldTripPostResponse>(
                                         _httpClient: client,
                                         options: jsonOptions,
                                         methodName: Constants.Constants.PUT_METHOD,
-                                        url: FieldTripUpdateAPI_URL + fieldtripToUpdate.TripId + "/Update",
-                                        inputType: fieldtripToUpdate,
+                                        url: FieldTripUpdateAPI_URL + fieldtripToUpdate.TripId + "/Status/Update",
+                                        inputType: fieldtripToUpdateVM,
                                         _logger: _logger,
                                         accessToken: accToken);
                         if (fieldtripStatusResponse == null || !fieldtripStatusResponse.Status || fieldtripStatusResponse.Data == null)
@@ -115,14 +121,19 @@ namespace WebAppMVC.Services.HostedServices
                         fieldtripToUpdate.Status.Equals(Constants.Constants.EVENT_STATUS_OPEN_REGISTRATION)
                         )
                     {
-                        fieldtripToUpdate.Status = Constants.Constants.EVENT_STATUS_CLOSED_REGISTRATION;
+                        UpdateFieldtripStatusVM fieldtripToUpdateVM = new()
+                        {
+                            TripId = fieldtripToUpdate.TripId,
+                            NumberOfParticipants = fieldtripToUpdate.NumberOfParticipants,
+                            Status = Constants.Constants.EVENT_STATUS_CLOSED_REGISTRATION
+                        };
                         // Call the API to update the membership status
                         var fieldtripStatusResponse = await methcall.CallMethodReturnObject<GetFieldTripPostResponse>(
                                         _httpClient: client,
                                         options: jsonOptions,
                                         methodName: Constants.Constants.PUT_METHOD,
-                                        url: FieldTripUpdateAPI_URL + fieldtripToUpdate.TripId + "/Update",
-                                        inputType: fieldtripToUpdate,
+                                        url: FieldTripUpdateAPI_URL + fieldtripToUpdate.TripId + "/Status/Update",
+                                        inputType: fieldtripToUpdateVM,
                                         _logger: _logger,
                                         accessToken: accToken);
                         if (fieldtripStatusResponse == null || !fieldtripStatusResponse.Status || fieldtripStatusResponse.Data == null)
@@ -142,14 +153,19 @@ namespace WebAppMVC.Services.HostedServices
                         fieldtripToUpdate.NumberOfParticipants < fieldtripToUpdate.NumberOfParticipantsMinReq
                         )
                     {
-                        fieldtripToUpdate.Status = Constants.Constants.EVENT_STATUS_CANCELLED;
+                        UpdateFieldtripStatusVM fieldtripToUpdateVM = new()
+                        {
+                            TripId = fieldtripToUpdate.TripId,
+                            NumberOfParticipants = fieldtripToUpdate.NumberOfParticipants,
+                            Status = Constants.Constants.EVENT_STATUS_CANCELLED
+                        };
                         // Call the API to update the membership status
                         var fieldtripStatusResponse = await methcall.CallMethodReturnObject<GetFieldTripPostResponse>(
                                         _httpClient: client,
                                         options: jsonOptions,
                                         methodName: Constants.Constants.PUT_METHOD,
-                                        url: FieldTripUpdateAPI_URL + fieldtripToUpdate.TripId + "/Update",
-                                        inputType: fieldtripToUpdate,
+                                        url: FieldTripUpdateAPI_URL + fieldtripToUpdate.TripId + "/Status/Update",
+                                        inputType: fieldtripToUpdateVM,
                                         _logger: _logger,
                                         accessToken: accToken);
                         if (fieldtripStatusResponse == null || !fieldtripStatusResponse.Status || fieldtripStatusResponse.Data == null)
