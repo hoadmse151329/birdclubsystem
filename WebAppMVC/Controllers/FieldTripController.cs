@@ -55,7 +55,7 @@ namespace WebAppMVC.Controllers
 			var contentType = new MediaTypeWithQualityHeaderValue("application/json");
             _httpClient.DefaultRequestHeaders.Accept.Add(contentType);
             _httpClient.BaseAddress = new Uri(config.GetSection("DefaultApiUrl:ConnectionString").Value);
-			FieldTripAPI_URL = "/api/FieldTrip";
+			FieldTripAPI_URL = "/webapi/api/FieldTrip";
         }
 
 		[HttpGet("Index")]
@@ -73,9 +73,9 @@ namespace WebAppMVC.Controllers
             // show read and unread notifications when you click on the bell in the header bar
             if (usrId != null)
             {
-                string NotificationCountAPI_URL = "/api/Notification/Count";
-                string NotificationUnreadAPI_URL = "/api/Notification/Unread";
-                string NotificationReadAPI_URL = "/api/Notification/Read";
+                string NotificationCountAPI_URL = "/webapi/api/Notification/Count";
+                string NotificationUnreadAPI_URL = "/webapi/api/Notification/Unread";
+                string NotificationReadAPI_URL = "/webapi/api/Notification/Read";
 
                 var notificationCount = await methcall.CallMethodReturnObject<GetNotificationCountResponse>(
                 _httpClient: _httpClient,
@@ -244,9 +244,9 @@ namespace WebAppMVC.Controllers
             // show read and unread notifications when you click on the bell in the header bar
             if (usrId != null)
             {
-                string NotificationCountAPI_URL = "/api/Notification/Count";
-                string NotificationUnreadAPI_URL = "/api/Notification/Unread";
-                string NotificationReadAPI_URL = "/api/Notification/Read";
+                string NotificationCountAPI_URL = "/webapi/api/Notification/Count";
+                string NotificationUnreadAPI_URL = "/webapi/api/Notification/Unread";
+                string NotificationReadAPI_URL = "/webapi/api/Notification/Read";
 
                 var notificationCount = await methcall.CallMethodReturnObject<GetNotificationCountResponse>(
                 _httpClient: _httpClient,
@@ -338,7 +338,7 @@ namespace WebAppMVC.Controllers
             )
         {
             FieldTripAPI_URL += "/" + tripId + "/Lite";
-            string MemberAPI_URL = "/api/Member/Profile";
+            string MemberAPI_URL = "/webapi/api/Member/Profile";
 
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER) != null)
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER));
@@ -416,8 +416,8 @@ namespace WebAppMVC.Controllers
 
             FieldTripAPI_URL += "/Register/" + tripId;
 
-            string TransactionAPI_URL = "/api/Transaction/UpdateUser";
-            string MemberAPI_URL = "/api/Member/Profile";
+            string TransactionAPI_URL = "/webapi/api/Transaction/UpdateUser";
+            string MemberAPI_URL = "/webapi/api/Member/Profile";
 
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER) != null)
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER));
@@ -505,7 +505,7 @@ namespace WebAppMVC.Controllers
                 MemberId = usrId
             };
 
-            string NotificationAPI_URL = "/api/Notification/CreateEvent";
+            string NotificationAPI_URL = "/webapi/api/Notification/CreateEvent";
 
             var notificationResponse = await methcall.CallMethodReturnObject<GetNotificationPostResponse>(
                     _httpClient: _httpClient,
@@ -569,7 +569,7 @@ namespace WebAppMVC.Controllers
                 RedirectToAction("FieldTripPost", new { id = tripId });
             }
 
-            string FieldTripPostAPI_URL = "/api/FieldTrip/" + tripId;
+            string FieldTripPostAPI_URL = "/webapi/api/FieldTrip/" + tripId;
 
             var fieldtripPostResponse = await methcall.CallMethodReturnObject<GetFieldTripPostResponse>(
                                    _httpClient: _httpClient,
@@ -601,7 +601,7 @@ namespace WebAppMVC.Controllers
                 MemberId = usrId
             };
 
-            string NotificationAPI_URL = "/api/Notification/CreateEvent";
+            string NotificationAPI_URL = "/webapi/api/Notification/CreateEvent";
 
             var notificationResponse = await methcall.CallMethodReturnObject<GetNotificationPostResponse>(
                     _httpClient: _httpClient,

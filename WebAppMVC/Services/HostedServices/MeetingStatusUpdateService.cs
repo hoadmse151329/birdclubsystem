@@ -19,8 +19,8 @@ namespace WebAppMVC.Services.HostedServices
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly IConfiguration _config;
         private Timer _timer;
-        private string MeetingSearchAPI_URL = "/api/Meeting/Search?status=OnHold&status=OpenRegistration";
-        private string MeetingStatusUpdateAPI_URL = "/api/Meeting/";
+        private string MeetingSearchAPI_URL = "/webapi/api/Meeting/Search?status=OnHold&status=OpenRegistration";
+        private string MeetingStatusUpdateAPI_URL = "/webapi/api/Meeting/";
         private readonly MediaTypeWithQualityHeaderValue contentType = new("application/json");
         private int meetingStatusUpdated = 0;
         private int meetingStatusUpdatedToOpen = 0;

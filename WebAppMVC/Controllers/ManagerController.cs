@@ -64,7 +64,7 @@ namespace WebAppMVC.Controllers
             var contentType = new MediaTypeWithQualityHeaderValue("application/json");
             _httpClient.DefaultRequestHeaders.Accept.Add(contentType);
             _httpClient.BaseAddress = new Uri(config.GetValue<string>("DefaultApiUrl:ConnectionString"));
-            ManagerAPI_URL = config.GetValue<string>("DefaultApiUrl:ApiConnectionString");
+            ManagerAPI_URL = "/webapi/api/";
         }
 
         // GET: ManagerController
@@ -2285,7 +2285,7 @@ namespace WebAppMVC.Controllers
                 var contestToUpdate = contestPostResponse.Data;
                 contestToUpdate.ContestParticipants = contestpartPostResponse.Data;
 
-                string ManagerContestEndedAPI_URL = "/api/Manager/Contest/" + id + "/Participant/Score/Update";
+                string ManagerContestEndedAPI_URL = "/webapi/api/Manager/Contest/" + id + "/Participant/Score/Update";
 
                 var contestLastUpdateResponse = await methcall.CallMethodReturnObject<GetContestEndedUpdateResponse>(
                                 _httpClient: _httpClient,
@@ -2814,7 +2814,7 @@ namespace WebAppMVC.Controllers
         //[Authorize(Roles = "Member")]
         public async Task<IActionResult> ChangePassword(UpdateMemberPassword managerPassword)
         {
-            string ManagerChangePasswordAPI_URL = "/api/User/ChangePassword";
+            string ManagerChangePasswordAPI_URL = "/webapi/api/User/ChangePassword";
 
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER) != null)
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MANAGER));

@@ -44,7 +44,7 @@ namespace WebAppMVC.Controllers
 			var contentType = new MediaTypeWithQualityHeaderValue("application/json");
 			_httpClient.DefaultRequestHeaders.Accept.Add(contentType);
 			_httpClient.BaseAddress = new Uri(config.GetSection("DefaultApiUrl:ConnectionString").Value);
-			TransactionAPI_URL = "/api/Transaction/";
+			TransactionAPI_URL = "/webapi/api/Transaction/";
 			_vnPayService = vnPayService;
         }
         public async Task<IActionResult> Index()
@@ -67,9 +67,9 @@ namespace WebAppMVC.Controllers
             // show read and unread notifications when you click on the bell in the header bar
             if (usrId != null)
             {
-                string NotificationCountAPI_URL = "/api/Notification/Count";
-                string NotificationUnreadAPI_URL = "/api/Notification/Unread";
-                string NotificationReadAPI_URL = "/api/Notification/Read";
+                string NotificationCountAPI_URL = "/webapi/api/Notification/Count";
+                string NotificationUnreadAPI_URL = "/webapi/api/Notification/Unread";
+                string NotificationReadAPI_URL = "/webapi/api/Notification/Read";
 
                 var notificationCount = await methcall.CallMethodReturnObject<GetNotificationCountResponse>(
                 _httpClient: _httpClient,

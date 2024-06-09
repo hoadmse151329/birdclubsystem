@@ -50,7 +50,7 @@ namespace WebAppMVC.Controllers
             var contentType = new MediaTypeWithQualityHeaderValue("application/json");
             _httpClient.DefaultRequestHeaders.Accept.Add(contentType);
             _httpClient.BaseAddress = new Uri(config.GetSection("DefaultApiUrl:ConnectionString").Value);
-            AdminAPI_URL = config.GetSection("DefaultApiUrl:ApiConnectionString").Value;
+            AdminAPI_URL = "/webapi/api/";
         }
 
         [HttpGet("Index")]
