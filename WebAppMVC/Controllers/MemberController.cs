@@ -544,6 +544,7 @@ namespace WebAppMVC.Controllers
         public async Task<IActionResult> MemberBirdDetail([FromRoute][Required] int birdId)
         {
             string MemberBirdAPI_URL = "/webapi/api/Bird/" + birdId;
+            string MemberBirdContestParticipationHistoryAPI_URL = "/webapi/api/Bird/" + birdId + "/Contest/All/Participant";
 
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER) != null)
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER));
@@ -598,13 +599,24 @@ namespace WebAppMVC.Controllers
                 _logger: _logger,
                 accessToken: accToken
                 );
-            if (memberBirdDetail == null)
+            var memberBirdHistory = await methcall.CallMethodReturnObject<GetBirdContestParticipationHistoryResponse>(
+                _httpClient: _httpClient,
+                options: jsonOptions,
+                methodName: Constants.Constants.GET_METHOD,
+                url: MemberBirdContestParticipationHistoryAPI_URL,
+                _logger: _logger,
+                accessToken: accToken
+                );
+            if (memberBirdDetail == null ||
+                memberBirdDetail.Data == null ||
+                memberBirdHistory == null ||
+                memberBirdHistory.Data == null)
             {
                 ViewBag.Error =
                     "Error while processing your request! (Getting Bird Detail!). \n Bird Not Found!";
                 return RedirectToAction("MemberProfile");
             }
-            if (!memberBirdDetail.Status)
+            if (!memberBirdDetail.Status || !memberBirdHistory.Status)
             {
                 _logger.LogInformation("Error while processing your request: " + memberBirdDetail.Status + " , Error Message: " + memberBirdDetail.ErrorMessage);
                 ViewBag.Error =
@@ -613,14 +625,20 @@ namespace WebAppMVC.Controllers
                 return RedirectToAction("MemberProfile");
             }
 
-            dynamic memberBirdVM = new ExpandoObject();
+            MemberBirdDetailsVM memberBirdVM = new();
+            memberBirdVM.SetIfUpdateBirdDetails(
+                methcall.GetValidationTempData<BirdViewModel>(this, TempData, Constants.Constants.UPDATE_BIRD_VALID, "updateBird", jsonOptions),
+                memberBirdDetail.Data,
+                methcall.GetBirdStatusSelectableList(memberBirdDetail.Data.Status)
+                );
             memberBirdVM.MemberBirdDetails = memberBirdDetail.Data;
-            //memberBirdVM.UpdateBird = methcall.GetValidationTempData<BirdViewModel>(this, TempData, Constants.Constants.UPDATE_BIRD_VALID, "updateBird", jsonOptions);
-            memberBirdVM.UpdateBird = null;
+            memberBirdVM.BirdContestParticipationHistoryList = memberBirdHistory.Data;
             return View(memberBirdVM);
         }
         [HttpPost("Bird/Create")]
-        public async Task<IActionResult> MemberCreateBird(BirdViewModel createBird)
+        public async Task<IActionResult> MemberCreateBird(
+            [FromForm][Required] BirdViewModel createBird
+            )
         {
             string MemberBirdAPI_URL = "/webapi/api/Bird/Create";
 

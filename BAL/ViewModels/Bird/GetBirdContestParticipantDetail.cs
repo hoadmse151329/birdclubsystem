@@ -16,7 +16,8 @@ namespace BAL.ViewModels.Bird
         }
         [DisplayName("Contest Id")]
         public int? ContestId { get; set; }
-        public string? MemberId { get; set; }
+        [DisplayName("Contest Name")]
+        public string? ContestName { get; set; }
         [Required(ErrorMessage = "Participant Full Name is required")]
         [DisplayName("Full Name")]
         public string? MemberName { get; set; }
@@ -25,7 +26,7 @@ namespace BAL.ViewModels.Bird
         public int? BirdId { get; set; }
         [DisplayName("Bird Name")]
         public int? BirdName { get; set; }
-        [DisplayName("Participant Old Elo")]
+        [DisplayName("Participant Recent Elo")]
         public int ParticipantElo { get; set; }
         [DisplayName("Participant Scored Elo")]
         public int? ContestElo { get; set; }
@@ -34,8 +35,5 @@ namespace BAL.ViewModels.Bird
         public int? Score { get; set; }
         [DisplayName("Participant No")]
         public string? ParticipantNo { get; set; }
-        [Required(ErrorMessage = "Check-In Status is required")]
-        [DisplayName("Check-In Status")]
-        public string? CheckInStatus { get; set; }
     }
 }

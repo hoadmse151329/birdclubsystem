@@ -364,30 +364,6 @@ namespace WebAppMVC.Controllers
             string? accToken = HttpContext.Session.GetString(Constants.Constants.ACC_TOKEN);
 
             string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
-            /*selectedBird.MemberId = usrId;
-            if (selectedBird.BirdMainImage != null && selectedBird.BirdMainImage.Length > 0 )
-            {
-                string connectionString = _config.GetSection("AzureStorage:BlobConnectionString").Value;
-                string containerName = _config.GetSection("AzureStorage:BlobContainerName").Value;
-                BlobServiceClient _blobServiceClient = new BlobServiceClient(connectionString);
-                BlobContainerClient _blobContainerClient = _blobServiceClient.GetBlobContainerClient(containerName);
-
-                var azureResponse = new List<BlobContentInfo>();
-                string filename = selectedBird.BirdMainImage.FileName;
-                string uniqueBlobName = $"bird/{Guid.NewGuid()}-{filename}";
-                using (var memoryStream = new MemoryStream())
-                {
-                    selectedBird.BirdMainImage.CopyTo(memoryStream);
-                    memoryStream.Position = 0;
-
-                    var client = await _blobContainerClient.UploadBlobAsync(uniqueBlobName, memoryStream);
-                    azureResponse.Add(client);
-                }
-
-                var image = "https://edwinbirdclubstorage.blob.core.windows.net/images/" + uniqueBlobName;
-                selectedBird.ProfilePic = image;
-                selectedBird.BirdMainImage = null;
-            }*/
             var contestPostResponse = await methcall.CallMethodReturnObject<GetContestPostResponse>(
                                    _httpClient: _httpClient,
                                    options: jsonOptions,
@@ -448,6 +424,12 @@ namespace WebAppMVC.Controllers
             {
                 TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
                    "Error while processing your request! (Getting Bird for Contest Registration!).\n";
+                return RedirectToAction("ContestPost", new { id = contestId });
+            }
+            if (!birdDetails.Data.Status.Equals(Constants.Constants.BIRD_STATUS_ACTIVE))
+            {
+                TempData[Constants.Constants.ALERT_DEFAULT_ERROR_NAME] =
+                   "Error while processing your request! (Getting Bird for Contest Registration!).\n Bird status is not Active!";
                 return RedirectToAction("ContestPost", new { id = contestId });
             }
             if (birdDetails.Data.Elo < contestPostResponse.Data.ReqMinELO || birdDetails.Data.Elo > contestPostResponse.Data.ReqMaxELO)

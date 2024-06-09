@@ -19,6 +19,24 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="stylesheet" href="~/css/FieldTrip.css">
+        <style>
+    .gallery__preview--row {
+        display: flex;
+        flex-wrap: wrap; /* This ensures that items wrap to the next line if they overflow */
+        gap: 10px; /* Adjust the gap between images as needed */
+    }
+
+    .gallery__preview--item {
+        flex: 1 1 auto; /* Adjust the basis and growth/shrink as necessary */
+        /* Additional styles for individual items can go here */
+    }
+
+    .small-img {
+        max-width: 100%; /* Ensure images fit within their container */
+        height: auto; /* Maintain aspect ratio */
+        display: block; /* Remove any inline spacing */
+    }
+</style>
 </head>
  <body class="background">
     <div class="member-field-trips-post">
@@ -203,7 +221,7 @@
                                                             @foreach(var picture in day.Media)
                                                             {
                                                                     <div>
-                                                                        <img class="" src="@picture.Image" alt="">
+                                                                        <img class="small-img" src="@picture.Image" alt="">
                                                                     </div>
                                                             }
                                                         </div>
@@ -220,7 +238,7 @@
                                 </div>
                                 <div class="tour__content__block tour__content__block--rates avoid-break-p">
                                     <h2>Important to Know</h2>
-                                    <ul class="list list--icon list--icon-arrow">
+                                    <ul class="list list--icon list--icon-arrow txt--small">
                                         @{
                                             @foreach (var imtk in importantToKnow)
                                             {
@@ -237,7 +255,7 @@
                                     <div class="day">
                                         <div class="day__header  day__header--text   startend  ">
                                             <div class="caption  ">
-                                                <h3 class="hide-t"><i class="sbi sbi--map-pin"></i><span>Arrival <span class="txt--small hide show-ti">(See Getting There for more details)</span></span></h3><h3 class="no-title hide show-t"></h3><h2 class="hide show-t startend"><i class="sbi sbi--map-pin"></i><span>Arrival <span class="txt--small hide show-ti">(See <a href="#home6" class="tablink scrolltop" rel="nofollow">Getting There</a> for more details)</span></span></h2>
+                                                <h3 class="hide-t"><i class="sbi sbi--map-pin"></i><span>Arrival <span class="txt--small hide show-ti">(See Getting There for more details)</span></span></h3><h3 class="no-title hide show-t"></h3><h2 class="hide show-t startend"><i class="sbi sbi--map-pin"></i><span>Arrival <span class="txt--small hide show-ti">(See Getting There for more details)</span></span></h2>
                                             </div>
                                         </div>
 
@@ -265,22 +283,22 @@
                                                                 }
                                                                 else
                                                                 {
-                                                                    <img class="" alt="Day @day.Day Image" src="">
+                                                                    <img class="" alt="" src="https://edwinbirdclubstorage.blob.core.windows.net/images/fieldtrip/fieldtrip_image_7.jpg">
                                                                 }
                                                             }
                                                         </picture>
                                                     </div>
-                                                    <div class="caption  caption--photo  ">
+                                                    <div class="caption  caption--photo  txt--small">
                                                         <h3><span>Day @day.Day</span></h3><h2 class="hide show-t"><span>@day.MainDestination</span></h2>
                                                     </div>
                                                 </div>
 
                                                 <div class="day__inner">
-                                                    <div class="day__inner__block">
+                                                    <div class="day__inner__block txt--small">
                                                         <h2 class="hide-t serif">@day.MainDestination</h2>
                                                         <p class="shorten-m" data-shorten="300">@day.Description</p>
                                                     </div>
-                                                    <div class="day__inner__block">
+                                                    <div class="day__inner__block txt--small">
                                                         <dl>
                                                             <dt>
                                                                 Main Destination:
@@ -312,7 +330,7 @@
                                     <div class="day">
                                         <div class="day__header  day__header--text   startend  ">
                                             <div class="caption  ">
-                                                <h3 class="hide-t"><i class="sbi sbi--map-pin"></i><span>End of tour <span class="txt--small hide show-ti">(See <a href="https://www.safaribookings.com/gettingthere/t56551" class="tablink scrolltop" rel="nofoll">Getting There</a> for more details)</span></span></h3><h3 class="no-title hide show-t"></h3><h2 class="hide show-t startend"><i class="sbi sbi--map-pin"></i><span>End of tour <span class="txt--small hide show-ti">(See <a href="https://www.safaribookings.com/gettingthere/t56551" class="tablink scrolltop" rel="nofoll">Getting There</a> for more details)</span></span></h2>
+                                                <h3 class="hide-t"><i class="sbi sbi--map-pin"></i><span>End of tour <span class="txt--small hide show-ti">(See Getting There for more details)</span></span></h3><h3 class="no-title hide show-t"></h3><h2 class="hide show-t startend"><i class="sbi sbi--map-pin"></i><span>End of tour <span class="txt--small hide show-ti">(See Getting There for more details)</span></span></h2>
                                             </div>
                                         </div>
                                         <div class="day__inner">
@@ -329,7 +347,7 @@
                             <div class="tab-pane" id="home5" role="tabpanel">
                                 <div class="tour__content__block tour__content__block--inclusions">
                                     <h2 class="with-icon"><span><i class="sbi sbi--plus"></i> Included</span></h2>
-                                    <ul class="list list--icon">
+                                    <ul class="list list--icon txt--small">
                                         @{
                                             @foreach (var inclusion in inclusions)
                                             {
@@ -340,7 +358,7 @@
                                 </div>
                                 <div class="tour__content__block tour__content__block--inclusions">
                                     <h2 class="with-icon"><span><i class="sbi sbi--minus"></i> Excluded</span></h2>
-                                    <ul class="list list--icon">
+                                    <ul class="list list--icon txt--small">
                                         @{
                                             @foreach (var exclusion in exclusions)
                                             {
@@ -353,7 +371,7 @@
                             <div class="tab-pane" id="home6" role="tabpanel">
                                 <div class="tour__content__block tour__content__block--gettingthere">
                                     <h2>Getting There</h2>
-                                    <ul>
+                                    <ul class="txt--small">
                                         <li>
                                             <div>
                                                 <picture>

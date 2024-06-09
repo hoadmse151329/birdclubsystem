@@ -161,6 +161,7 @@ namespace WebAppMVC.Controllers
                     + listMemberStatusResponse.ErrorMessage;
                 return View("AdminIndex");
             }
+            TempData["Success"] = listMemberStatusResponse.SuccessMessage;
             return RedirectToAction("AdminAccountIndex");
         }
         [HttpGet("Profile")]
@@ -323,6 +324,7 @@ namespace WebAppMVC.Controllers
                 + memberDetailupdate.ErrorMessage;
                 return RedirectToAction("AdminProfile");
             }
+            TempData["Success"] = "Successfully updated profile!";
             return RedirectToAction("AdminProfile");
         }
         [HttpPost("ChangePassword")]

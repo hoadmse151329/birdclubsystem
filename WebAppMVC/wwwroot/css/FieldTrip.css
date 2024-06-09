@@ -9,6 +9,10 @@
     margin-top: 0.3125rem;
     list-style: none;
 }
+    .tour__content__block--accommodations ul li .small-img {
+        height: 100px;
+        width: 150px;
+    }
     .tour__content__block--accommodations ul li.footnote {
         padding-top: 0;
         margin-bottom: 0.9375rem;
