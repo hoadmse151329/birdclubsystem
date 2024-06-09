@@ -49,7 +49,7 @@ namespace WebAppMVC.Controllers
             var contentType = new MediaTypeWithQualityHeaderValue("application/json");
             _httpClient.DefaultRequestHeaders.Accept.Add(contentType);
             _httpClient.BaseAddress = new Uri(config.GetSection("DefaultApiUrl:ConnectionString").Value);
-            MemberInfoAPI_URL = "/api/Member/";
+            MemberInfoAPI_URL = "/webapi/api/Member/";
         }
 
         [HttpGet("Profile")]
@@ -79,9 +79,9 @@ namespace WebAppMVC.Controllers
             // show read and unread notifications when you click on the bell in the header bar
             if (usrId != null)
             {
-                string NotificationCountAPI_URL = "/api/Notification/Count";
-                string NotificationUnreadAPI_URL = "/api/Notification/Unread";
-                string NotificationReadAPI_URL = "/api/Notification/Read";
+                string NotificationCountAPI_URL = "/webapi/api/Notification/Count";
+                string NotificationUnreadAPI_URL = "/webapi/api/Notification/Unread";
+                string NotificationReadAPI_URL = "/webapi/api/Notification/Read";
 
                 var notificationCount = await methcall.CallMethodReturnObject<GetNotificationCountResponse>(
                 _httpClient: _httpClient,
@@ -199,7 +199,7 @@ namespace WebAppMVC.Controllers
         //[Authorize(Roles = "Member")]
         public async Task<IActionResult> ChangePassword(UpdateMemberPassword memberPassword)
         {
-            string MemberChangePasswordAPI_URL = "/api/User/ChangePassword";
+            string MemberChangePasswordAPI_URL = "/webapi/api/User/ChangePassword";
 
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER) != null)
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER));
@@ -257,9 +257,9 @@ namespace WebAppMVC.Controllers
             // show read and unread notifications when you click on the bell in the header bar
             if (usrId != null)
             {
-                string NotificationCountAPI_URL = "/api/Notification/Count";
-                string NotificationUnreadAPI_URL = "/api/Notification/Unread";
-                string NotificationReadAPI_URL = "/api/Notification/Read";
+                string NotificationCountAPI_URL = "/webapi/api/Notification/Count";
+                string NotificationUnreadAPI_URL = "/webapi/api/Notification/Unread";
+                string NotificationReadAPI_URL = "/webapi/api/Notification/Read";
 
                 var notificationCount = await methcall.CallMethodReturnObject<GetNotificationCountResponse>(
                 _httpClient: _httpClient,
@@ -291,9 +291,9 @@ namespace WebAppMVC.Controllers
             }
             #endregion
 
-            string MemberMeetingPartAPI_URL = "/api/Meeting/Participation/AllMeetings";
-            string MemberFieldTripPartAPI_URL = "/api/FieldTrip/Participation/AllFieldTrips";
-            string MemberContestPartAPI_URL = "/api/Contest/Participation/AllContests";
+            string MemberMeetingPartAPI_URL = "/webapi/api/Meeting/Participation/AllMeetings";
+            string MemberFieldTripPartAPI_URL = "/webapi/api/FieldTrip/Participation/AllFieldTrips";
+            string MemberContestPartAPI_URL = "/webapi/api/Contest/Participation/AllContests";
 
             dynamic registeredModel = new ExpandoObject();
 
@@ -360,7 +360,7 @@ namespace WebAppMVC.Controllers
 
             createFeedback.MemberId = usrId;
 
-            string FeedbackAPI_URL = "/api/Feedback/Create";
+            string FeedbackAPI_URL = "/webapi/api/Feedback/Create";
 
             var feedbackResponse = await methcall.CallMethodReturnObject<GetFeedbackPostResponse>(
                 _httpClient: _httpClient,
@@ -401,7 +401,7 @@ namespace WebAppMVC.Controllers
 
             string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
 
-            string MemberAvatarAPI_URL = "/api/User/Upload";
+            string MemberAvatarAPI_URL = "/webapi/api/User/Upload";
 
             if (photo != null && photo.Length > 0)
             {
@@ -464,7 +464,7 @@ namespace WebAppMVC.Controllers
         [HttpGet("Bird")]
         public async Task<IActionResult> MemberBird()
         {
-            string MemberBirdAPI_URL = "/api/Bird/AllBirds";
+            string MemberBirdAPI_URL = "/webapi/api/Bird/AllBirds";
 
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER) != null)
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER));
@@ -477,9 +477,9 @@ namespace WebAppMVC.Controllers
             // show read and unread notifications when you click on the bell in the header bar
             if (usrId != null)
             {
-                string NotificationCountAPI_URL = "/api/Notification/Count";
-                string NotificationUnreadAPI_URL = "/api/Notification/Unread";
-                string NotificationReadAPI_URL = "/api/Notification/Read";
+                string NotificationCountAPI_URL = "/webapi/api/Notification/Count";
+                string NotificationUnreadAPI_URL = "/webapi/api/Notification/Unread";
+                string NotificationReadAPI_URL = "/webapi/api/Notification/Read";
 
                 var notificationCount = await methcall.CallMethodReturnObject<GetNotificationCountResponse>(
                 _httpClient: _httpClient,
@@ -543,8 +543,8 @@ namespace WebAppMVC.Controllers
         [HttpGet("Bird/{birdId:int}")]
         public async Task<IActionResult> MemberBirdDetail([FromRoute][Required] int birdId)
         {
-            string MemberBirdAPI_URL = "/api/Bird/" + birdId;
-            string MemberBirdContestParticipationHistoryAPI_URL = "/api/Bird/" + birdId + "/Contest/All/Participant";
+            string MemberBirdAPI_URL = "/webapi/api/Bird/" + birdId;
+            string MemberBirdContestParticipationHistoryAPI_URL = "/webapi/api/Bird/" + birdId + "/Contest/All/Participant";
 
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER) != null)
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER));
@@ -557,9 +557,9 @@ namespace WebAppMVC.Controllers
             // show read and unread notifications when you click on the bell in the header bar
             if (usrId != null)
             {
-                string NotificationCountAPI_URL = "/api/Notification/Count";
-                string NotificationUnreadAPI_URL = "/api/Notification/Unread";
-                string NotificationReadAPI_URL = "/api/Notification/Read";
+                string NotificationCountAPI_URL = "/webapi/api/Notification/Count";
+                string NotificationUnreadAPI_URL = "/webapi/api/Notification/Unread";
+                string NotificationReadAPI_URL = "/webapi/api/Notification/Read";
 
                 var notificationCount = await methcall.CallMethodReturnObject<GetNotificationCountResponse>(
                 _httpClient: _httpClient,
@@ -640,7 +640,7 @@ namespace WebAppMVC.Controllers
             [FromForm][Required] BirdViewModel createBird
             )
         {
-            string MemberBirdAPI_URL = "/api/Bird/Create";
+            string MemberBirdAPI_URL = "/webapi/api/Bird/Create";
 
             if (!ModelState.IsValid)
             {
@@ -714,7 +714,7 @@ namespace WebAppMVC.Controllers
             [FromRoute][Required] int birdId,
             [FromForm][Required] BirdViewModel updateBird)
         {
-            string MemberBirdAPI_URL = "/api/Bird/" + birdId + "/Update";
+            string MemberBirdAPI_URL = "/webapi/api/Bird/" + birdId + "/Update";
 
             if (!ModelState.IsValid)
             {
@@ -799,7 +799,7 @@ namespace WebAppMVC.Controllers
         [HttpGet("Payment")]
         public async Task<IActionResult> MemberPayment()
         {
-            string MemberPaymentAPI_URL = "/api/Transaction/AllTransactions";
+            string MemberPaymentAPI_URL = "/webapi/api/Transaction/AllTransactions";
 
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER) != null)
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER));
@@ -812,9 +812,9 @@ namespace WebAppMVC.Controllers
             // show read and unread notifications when you click on the bell in the header bar
             if (usrId != null)
             {
-                string NotificationCountAPI_URL = "/api/Notification/Count";
-                string NotificationUnreadAPI_URL = "/api/Notification/Unread";
-                string NotificationReadAPI_URL = "/api/Notification/Read";
+                string NotificationCountAPI_URL = "/webapi/api/Notification/Count";
+                string NotificationUnreadAPI_URL = "/webapi/api/Notification/Unread";
+                string NotificationReadAPI_URL = "/webapi/api/Notification/Read";
 
                 var notificationCount = await methcall.CallMethodReturnObject<GetNotificationCountResponse>(
                 _httpClient: _httpClient,
@@ -878,7 +878,7 @@ namespace WebAppMVC.Controllers
         [HttpGet("Notification")]
         public async Task<IActionResult> MemberNotification()
         {
-            string MemberNotificationAPI_URL = "/api/Notification/AllNotifications";
+            string MemberNotificationAPI_URL = "/webapi/api/Notification/AllNotifications";
 
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER) != null)
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER));
@@ -887,15 +887,15 @@ namespace WebAppMVC.Controllers
 
             string? usrId = HttpContext.Session.GetString(Constants.Constants.USR_ID);
 
-            string? NotificationReadAllAPI_URL = "/api/Notification/Update";
+            string? NotificationReadAllAPI_URL = "/webapi/api/Notification/Update";
 
             #region NotificationBell
             // show read and unread notifications when you click on the bell in the header bar
             if (usrId != null)
             {
-                string NotificationCountAPI_URL = "/api/Notification/Count";
-                string NotificationUnreadAPI_URL = "/api/Notification/Unread";
-                string NotificationReadAPI_URL = "/api/Notification/Read";
+                string NotificationCountAPI_URL = "/webapi/api/Notification/Count";
+                string NotificationUnreadAPI_URL = "/webapi/api/Notification/Unread";
+                string NotificationReadAPI_URL = "/webapi/api/Notification/Read";
 
                 var notificationCount = await methcall.CallMethodReturnObject<GetNotificationCountResponse>(
                 _httpClient: _httpClient,

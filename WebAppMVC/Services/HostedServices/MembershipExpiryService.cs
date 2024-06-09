@@ -25,8 +25,8 @@ namespace WebAppMVC.Services.HostedServices
         private int meetingStatusUpdatedToOpen = 0;
         private int meetingStatusUpdatedToClosed = 0;
         private DateTime today = DateTime.UtcNow;
-        private readonly string MembershipAPI_URL = "/api/Member/All/Role/Member";
-        private readonly string MembershipUpdateAPI_URL = "/api/Member/Update/Status";
+        private readonly string MembershipAPI_URL = "/webapi/api/Member/All/Role/Member";
+        private readonly string MembershipUpdateAPI_URL = "/webapi/api/Member/Update/Status";
         private readonly MediaTypeWithQualityHeaderValue contentType = new("application/json");
         private readonly JsonSerializerOptions jsonOptions = new JsonSerializerOptions
         {

@@ -15,8 +15,8 @@ namespace WebAppMVC.Services.HostedServices
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly IConfiguration _config;
         private Timer _timer;
-        private string FieldTripSearchAPI_URL = "/api/FieldTrip/Search?status=OnHold&status=OpenRegistration";
-        private string FieldTripUpdateAPI_URL = "/api/FieldTrip/";
+        private string FieldTripSearchAPI_URL = "/webapi/api/FieldTrip/Search?status=OnHold&status=OpenRegistration";
+        private string FieldTripUpdateAPI_URL = "/webapi/api/FieldTrip/";
         private readonly MediaTypeWithQualityHeaderValue contentType = new("application/json");
         private int fieldtripStatusUpdated = 0;
         private int fieldtripStatusUpdatedToOpen = 0;

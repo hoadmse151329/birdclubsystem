@@ -29,4 +29,8 @@
     <ProjectReference Include="..\BAL\BAL.csproj" />
   </ItemGroup>
 
+  <PropertyGroup>
+    <AspNetCoreHostingModel>OutOfProcess</AspNetCoreHostingModel>
+  </PropertyGroup>
+
 </Project>
