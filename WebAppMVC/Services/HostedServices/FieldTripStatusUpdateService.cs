@@ -148,7 +148,7 @@ namespace WebAppMVC.Services.HostedServices
                         }
                     }
                     if (
-                        fieldtripToUpdate.StartDate <= today &&
+                        fieldtripToUpdate.RegistrationDeadline <= today &&
                         fieldtripToUpdate.Status.Equals(Constants.Constants.EVENT_STATUS_CLOSED_REGISTRATION) &&
                         fieldtripToUpdate.NumberOfParticipants < fieldtripToUpdate.NumberOfParticipantsMinReq
                         )

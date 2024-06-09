@@ -149,7 +149,7 @@ namespace WebAppMVC.Services.HostedServices
                     }
                     if (
                         contestToUpdate.RegistrationDeadline <= today &&
-                        contestToUpdate.Status.Equals(Constants.Constants.EVENT_STATUS_OPEN_REGISTRATION) &&
+                        contestToUpdate.Status.Equals(Constants.Constants.EVENT_STATUS_CLOSED_REGISTRATION) &&
                         contestToUpdate.NumberOfParticipants < Constants.Constants.EVENT_CONTEST_MIN_PART_REQ
                         )
                     {

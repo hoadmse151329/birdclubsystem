@@ -158,7 +158,7 @@ namespace WebAppMVC.Services.HostedServices
                         }
                     }
                     if (
-                        meetingToUpdate.StartDate <= today &&
+                        meetingToUpdate.RegistrationDeadline <= today &&
                         meetingToUpdate.Status.Equals(Constants.Constants.EVENT_STATUS_CLOSED_REGISTRATION) &&
                         meetingToUpdate.NumberOfParticipants < meetingToUpdate.NumberOfParticipantsMinReq
                         )
