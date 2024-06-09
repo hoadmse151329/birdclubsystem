@@ -129,16 +129,14 @@ namespace DAL.Repositories.Implements
                 {
                     if (conpart.Score != participant.Score)
                     {
-                        //conpart.Score = participant.Score;
-
                         // Calculate basic Elo change for the player based on the provided parameters
-                        double basicEloChange = CalculateBasicEloChange(conpart.BirdDetails.Elo.Value, averageElo, conpart.Score.Value, totalPoints, n, Y);
+                        double basicEloChange = CalculateBasicEloChange(conpart.BirdDetails.Elo.Value, averageElo, participant.Score.Value, totalPoints, n, Y);
                         // Update the player's Elo using the calculated Elo change
                         int updatedElo = UpdateElo(conpart.BirdDetails.Elo.Value, (int)Math.Round(basicEloChange, MidpointRounding.AwayFromZero));
 
                         conpart.Elo = updatedElo;
 
-                        conpart.Score = (int)Math.Round(basicEloChange, MidpointRounding.AwayFromZero);
+                        conpart.Score = participant.Score;
 
                         _context.Update(conpart);
                     }
