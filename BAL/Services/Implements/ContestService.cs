@@ -310,10 +310,12 @@ namespace BAL.Services.Implements
         public async Task<bool> UpdateStatus(UpdateContestStatusVM entity)
         {
             var contest = await _unitOfWork.ContestRepository.GetContestById(entity.ContestId.Value);
-            if (entity.Status.Equals("CheckingIn") && contest.NumberOfParticipants < 10)
+            var contestpart = await _unitOfWork.ContestParticipantRepository.GetCountContestParticipantsByContestId(entity.ContestId.Value);
+            if (entity.Status.Equals("CheckingIn") && contestpart < 10)
             {
                 return false;
             }
+            contest.NumberOfParticipants = contestpart;
             contest.Status = entity.Status;
             _unitOfWork.ContestRepository.Update(contest);
             _unitOfWork.Save();
