@@ -49,7 +49,7 @@ namespace WebAppMVC.Controllers
             var contentType = new MediaTypeWithQualityHeaderValue("application/json");
             _httpClient.DefaultRequestHeaders.Accept.Add(contentType);
             _httpClient.BaseAddress = new Uri(config.GetValue<string>("DefaultApiUrl:ConnectionString"));
-            HomeAPI_URL = config.GetValue<string>("DefaultApiUrl:ApiConnectionString");
+            HomeAPI_URL = "/webapi/api/";
         }
         [HttpGet]
         public async Task<IActionResult> Index()

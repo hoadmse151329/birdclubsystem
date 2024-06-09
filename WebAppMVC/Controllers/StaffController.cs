@@ -42,7 +42,7 @@ namespace WebAppMVC.Controllers
             var contentType = new MediaTypeWithQualityHeaderValue("application/json");
             _httpClient.DefaultRequestHeaders.Accept.Add(contentType);
             _httpClient.BaseAddress = new Uri(config.GetSection("DefaultApiUrl:ConnectionString").Value);
-            StaffAPI_URL = "/api/";
+            StaffAPI_URL = "/webapi/api/";
         }
 
         // GET: StaffController

@@ -49,7 +49,7 @@ namespace WebAppMVC.Controllers
 			var contentType = new MediaTypeWithQualityHeaderValue("application/json");
 			_httpClient.DefaultRequestHeaders.Accept.Add(contentType);
 			_httpClient.BaseAddress = new Uri(config.GetSection("DefaultApiUrl:ConnectionString").Value);
-			AuthenAPI_URL = "/api/User";
+			AuthenAPI_URL = "/webapi/api/User";
 		}
 		[HttpGet("Register")]
 		public async Task<IActionResult> Register()
@@ -271,7 +271,7 @@ namespace WebAppMVC.Controllers
 		{
 			AuthenAPI_URL += "/Register";
 
-			string TransactionAPI_URL = "/api/Transaction/UpdateUser";
+			string TransactionAPI_URL = "/webapi/api/Transaction/UpdateUser";
 
 			var newmemRequest = await methcall.GetCookie<CreateNewMember>(Request, Constants.Constants.NEW_MEMBER_REGISTRATION_COOKIE, jsonOptions);
 
@@ -357,7 +357,7 @@ namespace WebAppMVC.Controllers
 				UserId = transactionResponse.Data.UserId,
 				Status = Constants.Constants.NOTIFICATION_STATUS_UNREAD
 			};
-			string NotificationAPI_URL = "/api/Notification/CreateRegister";
+			string NotificationAPI_URL = "/webapi/api/Notification/CreateRegister";
 
 			var notificationResponse = await methcall.CallMethodReturnObject<GetNotificationPostResponse>(
 					_httpClient: _httpClient,
@@ -438,7 +438,7 @@ namespace WebAppMVC.Controllers
 		{
 			string? usrId = HttpContext.Session.GetString("USER_ID");
 
-			string MemberAPI_URL = "/api/Member/MemberName";
+			string MemberAPI_URL = "/webapi/api/Member/MemberName";
 
 			var memberDetails = await methcall.CallMethodReturnObject<GetMemberFullNameResponse>(
 				_httpClient: _httpClient,
@@ -463,7 +463,7 @@ namespace WebAppMVC.Controllers
 		{
 			string? usrId = HttpContext.Session.GetString("USER_ID");
 
-			string MemberAPI_URL = "/api/Member/RenewMembership";
+			string MemberAPI_URL = "/webapi/api/Member/RenewMembership";
 
 			var membershipRenew = await methcall.CallMethodReturnObject<GetMemberProfileResponse>(
 				_httpClient: _httpClient,
@@ -504,7 +504,7 @@ namespace WebAppMVC.Controllers
 				TransactionId = tran.TransactionId
 			};
 
-			string TransactionAPI_URL = "/api/Transaction/UpdateUser";
+			string TransactionAPI_URL = "/webapi/api/Transaction/UpdateUser";
 
 			var transactionResponse = await methcall.CallMethodReturnObject<GetTransactionResponse>(
 				_httpClient: _httpClient,
