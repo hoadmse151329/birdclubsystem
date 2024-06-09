@@ -183,7 +183,7 @@ namespace WebAPI
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "ProjectAPI v1");
+                c.SwaggerEndpoint("/webapi/swagger/v1/swagger.json", "ProjectAPI v1");
             });
         }
         private static void ConfigurePipeline(WebApplication app)

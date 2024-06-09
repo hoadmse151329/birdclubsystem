@@ -25,9 +25,9 @@ namespace WebAppMVC.Controllers
     [Route("Meeting")]
     public class MeetingController : Controller
     {
-        private readonly string LocationAPI_URL_All_Road = "/api/Location/AllAddressRoads";
-        private readonly string LocationAPI_URL_All_District = "/api/Location/AllAddressDistricts";
-        private readonly string LocationAPI_URL_All_City = "/api/Location/AllAddressCities";
+        private readonly string LocationAPI_URL_All_Road = "/webapi/api/Location/AllAddressRoads";
+        private readonly string LocationAPI_URL_All_District = "/webapi/api/Location/AllAddressDistricts";
+        private readonly string LocationAPI_URL_All_City = "/webapi/api/Location/AllAddressCities";
         private readonly ILogger<MeetingController> _logger;
         private readonly IConfiguration _config;
 		    private readonly HttpClient _httpClient = null;
@@ -47,7 +47,7 @@ namespace WebAppMVC.Controllers
             var contentType = new MediaTypeWithQualityHeaderValue("application/json");
             _httpClient.DefaultRequestHeaders.Accept.Add(contentType);
             _httpClient.BaseAddress = new Uri(config.GetSection("DefaultApiUrl:ConnectionString").Value);
-            MeetingAPI_URL = config.GetValue<string>("DefaultApiUrl:ApiConnectionString") + "Meeting";
+            MeetingAPI_URL = "/webapi/api/Meeting";
         }
         [HttpGet("Index")]
         public async Task<IActionResult> Index()
@@ -63,12 +63,12 @@ namespace WebAppMVC.Controllers
             
             #region NotificationBell
             // show read and unread notifications when you click on the bell in the header bar
-            string NotificationAPI_URL = "/api/Notification/Count";
+            string NotificationAPI_URL = "/webapi/api/Notification/Count";
             if (usrId != null)
             {
-                string NotificationCountAPI_URL = "/api/Notification/Count";
-                string NotificationUnreadAPI_URL = "/api/Notification/Unread";
-                string NotificationReadAPI_URL = "/api/Notification/Read";
+                string NotificationCountAPI_URL = "/webapi/api/Notification/Count";
+                string NotificationUnreadAPI_URL = "/webapi/api/Notification/Unread";
+                string NotificationReadAPI_URL = "/webapi/api/Notification/Read";
 
                 var notificationCount = await methcall.CallMethodReturnObject<GetNotificationCountResponse>(
                 _httpClient: _httpClient,
@@ -236,9 +236,9 @@ namespace WebAppMVC.Controllers
             // show read and unread notifications when you click on the bell in the header bar
             if (usrId != null)
             {
-                string NotificationCountAPI_URL = "/api/Notification/Count";
-                string NotificationUnreadAPI_URL = "/api/Notification/Unread";
-                string NotificationReadAPI_URL = "/api/Notification/Read";
+                string NotificationCountAPI_URL = "/webapi/api/Notification/Count";
+                string NotificationUnreadAPI_URL = "/webapi/api/Notification/Unread";
+                string NotificationReadAPI_URL = "/webapi/api/Notification/Read";
 
                 var notificationCount = await methcall.CallMethodReturnObject<GetNotificationCountResponse>(
                 _httpClient: _httpClient,
@@ -322,7 +322,7 @@ namespace WebAppMVC.Controllers
         {
             MeetingAPI_URL += "/Register/" + meetingId;
 
-            string NotificationAPI_URL = "/api/Notification/CreateEvent";
+            string NotificationAPI_URL = "/webapi/api/Notification/CreateEvent";
 
             if (methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER) != null)
                 return Redirect(methcall.GetUrlStringIfUserSessionDataInValid(this, Constants.Constants.MEMBER));
@@ -356,7 +356,7 @@ namespace WebAppMVC.Controllers
                 RedirectToAction("MeetingPost", new { id = meetingId });
             }
 
-            string MeetingPostAPI_URL = "/api/Meeting/" + meetingId;
+            string MeetingPostAPI_URL = "/webapi/api/Meeting/" + meetingId;
 
             var meetPostResponse = await methcall.CallMethodReturnObject<GetMeetingPostResponse>(
                                    _httpClient: _httpClient,
@@ -454,7 +454,7 @@ namespace WebAppMVC.Controllers
                     + participationNo.ErrorMessage;
                 RedirectToAction("MeetingPost", new { id = meetingId });
             }
-            string MeetingPostAPI_URL = "/api/Meeting/" + meetingId;
+            string MeetingPostAPI_URL = "/webapi/api/Meeting/" + meetingId;
 
             var meetPostResponse = await methcall.CallMethodReturnObject<GetMeetingPostResponse>(
                                    _httpClient: _httpClient,
@@ -487,7 +487,7 @@ namespace WebAppMVC.Controllers
                 MemberId = usrId
             };
 
-            string NotificationAPI_URL = "/api/Notification/CreateEvent";
+            string NotificationAPI_URL = "/webapi/api/Notification/CreateEvent";
 
             var notificationResponse = await methcall.CallMethodReturnObject<GetNotificationPostResponse>(
                     _httpClient: _httpClient,
